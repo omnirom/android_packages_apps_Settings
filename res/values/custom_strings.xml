@@ -151,4 +151,7 @@
     <string name="navigation_bar_ime_button_summary">Input switcher in navigation bar</string>
     <string name="input_method_category">Input method switcher</string>
 
+    <!-- Hostname setting -->
+    <string name="device_hostname">Device hostname</string>
+
 </resources>
