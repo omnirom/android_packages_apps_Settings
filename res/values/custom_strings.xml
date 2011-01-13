@@ -89,4 +89,7 @@
     <string name="notification_volume_option_title">Notification volume</string>
     <string name="ring_notification_volume_option_tile">Ring and notification volume</string>
 
+    <!-- Hostname setting -->
+    <string name="device_hostname">Device hostname</string>
+
 </resources>
