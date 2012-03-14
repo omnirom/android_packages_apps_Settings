@@ -83,4 +83,8 @@
     <string name="lock_numpad_random_always">Always</string>
     <string name="lock_numpad_random_on_request">On request</string>
 
+    <!-- About device screen, Cpu info and Free memory info -->
+    <string name="cpu_info">CPU</string>
+    <string name="mem_info">Memory</string>
+
 </resources>
