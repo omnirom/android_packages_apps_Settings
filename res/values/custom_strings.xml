@@ -94,6 +94,7 @@
     <string name="lock_numpad_random_always">Always</string>
     <string name="lock_numpad_random_on_request">On request</string>
 
+<<<<<<< HEAD
     <string name="interface_more_title">More\u2026</string>
     <string name="interface_bars_title">Bars</string>
     <string name="interface_menus_title">Menus</string>
@@ -157,5 +158,9 @@
     <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
     <string name="custom_runtime_warning_title">Warning</string>
     <string name="custom_runtime_warning_message">ART is not supported by OmniROM. This setting is included for experimentation only and has the potential to cause instability, crashes, data loss or prevent the proper boot of your device. Visit &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introducing ART&lt;/a&gt; for more information.&lt;br/&gt;&lt;br/&gt;We request you do not file bug reports if you have enabled ART as your runtime.&lt;br/&gt;&lt;br/&gt;Are you sure you want to reboot to change runtime from <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> to <xliff:g id="new" example="libart.so">%2$s</xliff:g>?</string>
+
+    <!-- About device screen, Cpu info and Free memory info -->
+    <string name="cpu_info">CPU</string>
+    <string name="mem_info">Memory</string>
 
 </resources>
