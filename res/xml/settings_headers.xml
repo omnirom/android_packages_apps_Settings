@@ -96,6 +96,7 @@
         android:breadCrumbTitle="@string/interface_more_title"
         android:fragment="org.omnirom.omnigears.interfacesettings.MoreInterfaceSettings"
         android:icon="@drawable/empty_icon" />
+    </header>
 
     <!-- DEVICE -->
     <header android:id="@+id/device_section"
@@ -129,6 +130,15 @@
         android:breadCrumbTitle="@string/header_button_settings"
         android:fragment="org.omnirom.omnigears.ButtonSettings"
         android:icon="@drawable/ic_settings_buttons" />
+
+    <!-- Device Settings -->
+    <header android:id="@+id/advanced_settings"
+            android:title="@string/advanced_settings_title"
+            android:icon="@drawable/ic_settings_advanced">
+        <intent
+                android:action="com.cyanogenmod.action.LAUNCH_DEVICE_SETTINGS"
+                android:targetPackage="com.cyanogenmod.settings.device"
+                android:targetClass="com.cyanogenmod.settings.device.DeviceSettings" />
 
     <!-- Storage -->
     <header
