@@ -25,6 +25,7 @@
     <string name="notification_light_settings">Notification light</string>
     <string name="battery_light_settings">Battery light</string>
     <string name="header_button_settings">Buttons</string>
+    <string name="advanced_settings_title">Device settings</string>
 
     <!-- Volume panel tweaks -->
     <string name="volume_adjust_sounds_enable_title">Volume adjust sound</string>
