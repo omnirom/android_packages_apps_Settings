@@ -130,6 +130,16 @@
         android:fragment="org.omnirom.omnigears.ButtonSettings"
         android:icon="@drawable/ic_settings_buttons" />
 
+    <header
+        android:id="@+id/advanced_settings"
+        android:title=""
+        android:icon="@drawable/ic_settings_advanced">
+        <intent
+                android:action="android.intent.action.MAIN"
+                android:targetClass="org.omnirom.device.DeviceSettings"
+                android:targetPackage="org.omnirom.device" />
+    </header>
+
     <!-- Storage -->
     <header
         android:id="@+id/storage_settings"
