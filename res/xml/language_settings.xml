@@ -102,4 +102,15 @@
                 android:summaryOff="@string/vibrate_input_devices_summary"
                 android:persistent="false"/>
     </PreferenceCategory>
+
+    <PreferenceCategory android:key="keyboard_settings_additional_category"
+            android:title="@string/keyboard_settings_additional_category_title">
+        <ListPreference
+                android:key="volume_key_cursor_control"
+                android:persistent="false"
+                android:dialogTitle="@string/volume_key_cursor_control_title"
+                android:title="@string/volume_key_cursor_control_title"
+                android:entries="@array/volume_key_cursor_control_entries"
+                android:entryValues="@array/volume_key_cursor_control_values" />
+    </PreferenceCategory>
 </PreferenceScreen>
