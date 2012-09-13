@@ -421,7 +421,6 @@
         <item>2</item>
     </string-array>
 
-
     <!-- Display options for UsageStats class -->
     <string-array name="usage_stats_display_order_types">
         <item>Usage time</item>
