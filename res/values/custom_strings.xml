@@ -111,4 +111,8 @@
     <string name="stylus_icon_enabled_title">Show icon when using stylus</string>
     <string name="stylus_icon_enabled_summary">Show the pointer icon while using stylus</string>
 
+	<!-- default alarm tone -->
+    <string name="alarm_sound_title">Default alarm sound</string>
+    <string name="alarm_sound_dialog_title">Default alarm sound</string>
+
 </resources>
