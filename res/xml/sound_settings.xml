@@ -62,6 +62,13 @@
             android:persistent="false"
             android:ringtoneType="notification" />
 
+    <com.android.settings.DefaultRingtonePreference
+            android:key="alarm_sound"
+            android:title="@string/alarm_sound_title"
+            android:dialogTitle="@string/alarm_sound_dialog_title"
+            android:persistent="false"
+            android:ringtoneType="alarm" />
+
     <CheckBoxPreference
             android:key="dtmf_tone"
             android:title="@string/dtmf_tone_enable_title"
