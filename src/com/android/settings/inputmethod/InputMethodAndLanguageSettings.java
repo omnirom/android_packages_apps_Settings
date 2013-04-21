@@ -43,7 +43,6 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
-import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
 import android.provider.Settings.System;
@@ -180,10 +179,12 @@ public class InputMethodAndLanguageSettings extends SettingsPreferenceFragment
         mStylusGestures = (PreferenceScreen) findPreference(KEY_STYLUS_GESTURES);
         // remove stylus preference for non stylus devices
         if (!getResources().getBoolean(com.android.internal.R.bool.config_stylusGestures)) {
-            PreferenceGroup pointerSettingsCategory = (PreferenceGroup)
+            PreferenceCategory pointerSettingsCategory = (PreferenceGroup)
                     findPreference(KEY_POINTER_SETTINGS_CATEGORY);
-            pointerSettingsCategory.removePreference(mStylusGestures);
-            pointerSettingsCategory.removePreference(mStylusIconEnabled);
+            if(pointerSettingsCategory != null) {
+                pointerSettingsCategory.removePreference(mStylusGestures);
+                pointerSettingsCategory.removePreference(mStylusIconEnabled);
+            }
         }
 
         // Spell Checker
