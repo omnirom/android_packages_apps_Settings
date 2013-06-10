@@ -54,6 +54,13 @@
                 layout="@layout/two_buttons_panel"
                 android:id="@+id/more_control_buttons_panel"/>
 
+            <!-- Go to AppOps -->
+            <Button
+                android:id="@+id/app_ops_button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_ops_settings" />
+
             <!-- Ban notifications for this package -->
             <CheckBox android:id="@+id/notification_switch"
                 android:layout_width="wrap_content"
