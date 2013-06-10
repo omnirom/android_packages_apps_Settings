@@ -141,6 +141,7 @@ public class InstalledAppDetails extends Fragment
     private Button mForceStopButton;
     private Button mClearDataButton;
     private Button mMoveAppButton;
+    private Button mAppOpsButton;
     private CompoundButton mNotificationSwitch;
 
     private PackageMoveObserver mPackageMoveObserver;
@@ -405,6 +406,13 @@ public class InstalledAppDetails extends Fragment
             // Register listener
             mUninstallButton.setOnClickListener(this);
         }
+
+        // app ops button can be handled the same
+        final boolean isSystem = ((mAppEntry.info.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
+        mAppOpsButton.setEnabled(enabled && !isSystem);
+        if (enabled && !isSystem) {
+            mAppOpsButton.setOnClickListener(this);
+        }
     }
 
     private void initNotificationButton() {
@@ -483,30 +491,31 @@ public class InstalledAppDetails extends Fragment
         mForceStopButton.setText(R.string.force_stop);
         mUninstallButton = (Button) btnPanel.findViewById(R.id.right_button);
         mForceStopButton.setEnabled(false);
-        
+
         // Get More Control button panel
         mMoreControlButtons = view.findViewById(R.id.more_control_buttons_panel);
         mMoreControlButtons.findViewById(R.id.left_button).setVisibility(View.INVISIBLE);
         mSpecialDisableButton = (Button) mMoreControlButtons.findViewById(R.id.right_button);
         mMoreControlButtons.setVisibility(View.GONE);
-        
+
         // Initialize clear data and move install location buttons
         View data_buttons_panel = view.findViewById(R.id.data_buttons_panel);
         mClearDataButton = (Button) data_buttons_panel.findViewById(R.id.right_button);
         mMoveAppButton = (Button) data_buttons_panel.findViewById(R.id.left_button);
-        
+
         // Cache section
         mCacheSize = (TextView) view.findViewById(R.id.cache_size_text);
         mClearCacheButton = (Button) view.findViewById(R.id.clear_cache_button);
 
         mActivitiesButton = (Button) view.findViewById(R.id.clear_activities_button);
-        
+
         // Screen compatibility control
         mScreenCompatSection = view.findViewById(R.id.screen_compatibility_section);
         mAskCompatibilityCB = (CheckBox) view.findViewById(R.id.ask_compatibility_cb);
         mEnableCompatibilityCB = (CheckBox) view.findViewById(R.id.enable_compatibility_cb);
-        
+
         mNotificationSwitch = (CompoundButton) view.findViewById(R.id.notification_switch);
+        mAppOpsButton = (Button) view.findViewById(R.id.app_ops_button);
 
         return view;
     }
@@ -581,6 +590,11 @@ public class InstalledAppDetails extends Fragment
         // Set application name.
         TextView label = (TextView) appSnippet.findViewById(R.id.app_name);
         label.setText(mAppEntry.label);
+        // Set application package name.
+        TextView packageName = (TextView) appSnippet.findViewById(R.id.app_pkgname);
+        packageName.setText(mAppEntry.info.packageName);
+        packageName.setVisibility(View.VISIBLE);
+
         // Version number of application
         mAppVersion = (TextView) appSnippet.findViewById(R.id.app_size);
 
@@ -1062,6 +1076,7 @@ public class InstalledAppDetails extends Fragment
             mMoveAppButton.setEnabled(false);
             mUninstallButton.setEnabled(false);
             mSpecialDisableButton.setEnabled(false);
+            mAppOpsButton.setEnabled(false);
         }
     }
 
@@ -1424,6 +1439,13 @@ public class InstalledAppDetails extends Fragment
             mMoveInProgress = true;
             refreshButtons();
             mPm.movePackage(mAppEntry.info.packageName, mPackageMoveObserver, moveFlags);
+        } else if (v == mAppOpsButton) {
+            Bundle args = new Bundle();
+            args.putString(AppOpsDetails.ARG_PACKAGE_NAME, mAppEntry.info.packageName);
+
+            SettingsActivity sa = (SettingsActivity) getActivity();
+            sa.startPreferencePanel(AppOpsDetails.class.getName(), args,
+                    R.string.application_info_label, null, InstalledAppDetails.this, 0);
         }
     }
 
