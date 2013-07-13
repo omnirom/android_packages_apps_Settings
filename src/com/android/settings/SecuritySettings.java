@@ -42,7 +42,9 @@ import android.security.KeyStore;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.android.internal.telephony.util.BlacklistUtils;
 import com.android.internal.widget.LockPatternUtils;
+import com.android.settings.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +84,10 @@ public class SecuritySettings extends SettingsPreferenceFragment
     private static final String KEY_NOTIFICATION_ACCESS = "manage_notification_access";
     private static final String PACKAGE_MIME_TYPE = "application/vnd.android.package-archive";
 
+    // CyanogenMod Additions
+    private static final String KEY_APP_SECURITY_CATEGORY = "app_security";
+    private static final String KEY_BLACKLIST = "blacklist";
+
     private PackageManager mPM;
     DevicePolicyManager mDPM;
 
@@ -106,6 +112,9 @@ public class SecuritySettings extends SettingsPreferenceFragment
 
     private boolean mIsPrimary;
 
+    // CyanogenMod Additions
+    private PreferenceScreen mBlacklist;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +134,9 @@ public class SecuritySettings extends SettingsPreferenceFragment
         }
         addPreferencesFromResource(R.xml.security_settings);
         root = getPreferenceScreen();
+        
+        // Add package manager to check if features are available
+        PackageManager pm = getPackageManager();
 
         // Add options for lock/unlock screen
         int resid = 0;
@@ -180,14 +192,14 @@ public class SecuritySettings extends SettingsPreferenceFragment
 
         if (mIsPrimary) {
             switch (dpm.getStorageEncryptionStatus()) {
-            case DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE:
-                // The device is currently encrypted.
-                addPreferencesFromResource(R.xml.security_settings_encrypted);
-                break;
-            case DevicePolicyManager.ENCRYPTION_STATUS_INACTIVE:
-                // This device supports encryption but isn't encrypted.
-                addPreferencesFromResource(R.xml.security_settings_unencrypted);
-                break;
+                case DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE:
+                    // The device is currently encrypted.
+                    addPreferencesFromResource(R.xml.security_settings_encrypted);
+                    break;
+                case DevicePolicyManager.ENCRYPTION_STATUS_INACTIVE:
+                    // This device supports encryption but isn't encrypted.
+                    addPreferencesFromResource(R.xml.security_settings_unencrypted);
+                    break;
             }
         }
 
@@ -212,7 +224,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
         // don't display visible pattern if biometric and backup is not pattern
         if (resid == R.xml.security_settings_biometric_weak &&
                 mLockPatternUtils.getKeyguardStoredPasswordQuality() !=
-                DevicePolicyManager.PASSWORD_QUALITY_SOMETHING) {
+                        DevicePolicyManager.PASSWORD_QUALITY_SOMETHING) {
             PreferenceGroup securityCategory = (PreferenceGroup)
                     root.findPreference(KEY_SECURITY_CATEGORY);
             if (securityCategory != null && mVisiblePattern != null) {
@@ -230,9 +242,9 @@ public class SecuritySettings extends SettingsPreferenceFragment
         } else {
             // Disable SIM lock if sim card is missing or unknown
             if ((TelephonyManager.getDefault().getSimState() ==
-                                 TelephonyManager.SIM_STATE_ABSENT) ||
-                (TelephonyManager.getDefault().getSimState() ==
-                                 TelephonyManager.SIM_STATE_UNKNOWN)) {
+                    TelephonyManager.SIM_STATE_ABSENT) ||
+                    (TelephonyManager.getDefault().getSimState() ==
+                            TelephonyManager.SIM_STATE_UNKNOWN)) {
                 root.findPreference(KEY_SIM_LOCK).setEnabled(false);
             }
         }
@@ -247,8 +259,8 @@ public class SecuritySettings extends SettingsPreferenceFragment
             Preference credentialStorageType = root.findPreference(KEY_CREDENTIAL_STORAGE_TYPE);
 
             final int storageSummaryRes =
-                mKeyStore.isHardwareBacked() ? R.string.credential_storage_type_hardware
-                        : R.string.credential_storage_type_software;
+                    mKeyStore.isHardwareBacked() ? R.string.credential_storage_type_hardware
+                            : R.string.credential_storage_type_software;
             credentialStorageType.setSummary(storageSummaryRes);
 
             mResetCredentials = root.findPreference(KEY_RESET_CREDENTIALS);
@@ -280,31 +292,44 @@ public class SecuritySettings extends SettingsPreferenceFragment
                 deviceAdminCategory.removePreference(mToggleVerifyApps);
             } else {
                 mToggleVerifyApps.setEnabled(false);
-            }
-        }
 
-        mNotificationAccess = findPreference(KEY_NOTIFICATION_ACCESS);
-        if (mNotificationAccess != null) {
-            final int total = NotificationAccessSettings.getListenersCount(mPM);
-            if (total == 0) {
-                if (deviceAdminCategory != null) {
-                    deviceAdminCategory.removePreference(mNotificationAccess);
-                }
-            } else {
-                final int n = getNumEnabledNotificationListeners();
-                if (n == 0) {
-                    mNotificationAccess.setSummary(getResources().getString(
-                            R.string.manage_notification_access_summary_zero));
+                // App security settings
+                addPreferencesFromResource(R.xml.security_settings_app_custom);
+                mBlacklist = (PreferenceScreen) root.findPreference(KEY_BLACKLIST);
+
+                // Determine options based on device telephony support
+                if (pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
                 } else {
-                    mNotificationAccess.setSummary(String.format(getResources().getQuantityString(
-                            R.plurals.manage_notification_access_summary_nonzero,
-                            n, n)));
+                    // No telephony, remove dependent options
+                    PreferenceGroup appCategory = (PreferenceGroup)
+                            root.findPreference(KEY_APP_SECURITY_CATEGORY);
+                    appCategory.removePreference(mBlacklist);
+                }
+            }
+
+            mNotificationAccess = findPreference(KEY_NOTIFICATION_ACCESS);
+            if (mNotificationAccess != null) {
+                final int total = NotificationAccessSettings.getListenersCount(mPM);
+                if (total == 0) {
+                    if (deviceAdminCategory != null) {
+                        deviceAdminCategory.removePreference(mNotificationAccess);
+                    }
+                } else {
+                    final int n = getNumEnabledNotificationListeners();
+                    if (n == 0) {
+                        mNotificationAccess.setSummary(getResources().getString(
+                                R.string.manage_notification_access_summary_zero));
+                    } else {
+                        mNotificationAccess.setSummary(String.format(getResources().getQuantityString(
+                                R.plurals.manage_notification_access_summary_nonzero,
+                                n, n)));
+                    }
                 }
             }
         }
 
-        return root;
-    }
+            return root;
+        }
 
     private int getNumEnabledNotificationListeners() {
         final String flat = Settings.Secure.getString(getContentResolver(),
@@ -316,7 +341,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
 
     private boolean isNonMarketAppsAllowed() {
         return Settings.Global.getInt(getContentResolver(),
-                                      Settings.Global.INSTALL_NON_MARKET_APPS, 0) > 0;
+                Settings.Global.INSTALL_NON_MARKET_APPS, 0) > 0;
     }
 
     private void setNonMarketAppsAllowed(boolean enabled) {
@@ -326,12 +351,12 @@ public class SecuritySettings extends SettingsPreferenceFragment
         }
         // Change the system setting
         Settings.Global.putInt(getContentResolver(), Settings.Global.INSTALL_NON_MARKET_APPS,
-                                enabled ? 1 : 0);
+                enabled ? 1 : 0);
     }
 
     private boolean isVerifyAppsEnabled() {
         return Settings.Global.getInt(getContentResolver(),
-                                      Settings.Global.PACKAGE_VERIFIER_ENABLE, 1) > 0;
+                Settings.Global.PACKAGE_VERIFIER_ENABLE, 1) > 0;
     }
 
     private boolean isVerifierInstalled() {
@@ -345,7 +370,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
 
     private boolean showVerifierSetting() {
         return Settings.Global.getInt(getContentResolver(),
-                                      Settings.Global.PACKAGE_VERIFIER_SETTING_VISIBLE, 1) > 0;
+                Settings.Global.PACKAGE_VERIFIER_SETTING_VISIBLE, 1) > 0;
     }
 
     private void warnAppInstallation() {
@@ -467,6 +492,9 @@ public class SecuritySettings extends SettingsPreferenceFragment
         if (mResetCredentials != null) {
             mResetCredentials.setEnabled(!mKeyStore.isEmpty());
         }
+
+        // Blacklist
+        updateBlacklistSummary();
     }
 
     @Override
@@ -499,7 +527,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
                 ChooseLockSettingsHelper helper =
                         new ChooseLockSettingsHelper(this.getActivity(), this);
                 if (!helper.launchConfirmationActivity(
-                                CONFIRM_EXISTING_FOR_BIOMETRIC_WEAK_LIVELINESS_OFF, null, null)) {
+                        CONFIRM_EXISTING_FOR_BIOMETRIC_WEAK_LIVELINESS_OFF, null, null)) {
                     // If this returns false, it means no password confirmation is required, so
                     // go ahead and uncheck it here.
                     // Note: currently a backup is required for biometric_weak so this code path
@@ -585,5 +613,15 @@ public class SecuritySettings extends SettingsPreferenceFragment
         Intent intent = new Intent();
         intent.setClassName("com.android.facelock", "com.android.facelock.AddToSetup");
         startActivity(intent);
+    }
+
+    private void updateBlacklistSummary() {
+        if (mBlacklist != null) {
+            if (BlacklistUtils.isBlacklistEnabled(getActivity())) {
+                mBlacklist.setSummary(R.string.blacklist_summary);
+            } else {
+                mBlacklist.setSummary(R.string.blacklist_summary_disabled);
+            }
+        }
     }
 }
