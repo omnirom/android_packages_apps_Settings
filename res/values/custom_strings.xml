@@ -88,4 +88,8 @@
     <string name="interface_menus_title">Menus</string>
     <string name="interface_notification_panel_title">Notification Drawer</string>
 
+    <!-- Turn on display when power connected; turn off display when power disconnected -->
+    <string name="wake_when_plugged_or_unplugged_title">Wake on plug</string>
+    <string name="wake_when_plugged_or_unplugged_summary">Turn the screen on when connecting or disconnecting the charger</string>
+
 </resources>
