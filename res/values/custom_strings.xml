@@ -47,4 +47,13 @@
     <string name="remove_blacklist_entry">Do you want to remove this blacklist entry?</string>
     <string name="select_contact">Select contact</string>
 
+    <!--  Title for PreferenceScreen to change encryption password [CHAR LIMIT=22]  -->
+    <string name="change_crypt_password_title">Change password</string>
+
+    <!--  Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45]  -->
+    <string name="change_crypt_password_summary">Change the password used for device encryption</string>
+
+    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
+    <string name="encryptionpassword_choose_your_password_header">Set encryption password</string>
+
 </resources>
