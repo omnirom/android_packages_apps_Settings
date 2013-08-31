@@ -92,4 +92,6 @@
     <string name="slide_lock_delay_10m">10 minutes</string>
     <string name="slide_lock_delay_30m">30 minutes</string>
 
+    <!-- Main list strings -->
+    <string name="header_category_interface">Interface</string>
 </resources>
