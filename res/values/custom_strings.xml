@@ -19,8 +19,13 @@
     <string name="mod_version">Omni version</string>
     <string name="mod_version_default">Unknown</string>
 
+    <!-- Main list strings -->
+    <string name="header_category_interface">Interface</string>
+
+    <!-- Volume panel tweaks -->
     <string name="volume_adjust_sounds_enable_title">Volume adjust sound</string>
     <string name="volume_adjust_sounds_enable_summary">Play sound when adjusting volume with hard keys</string>
     <string name="link_volume_ringtones">Link ringtone &amp; notifications volumes</string>
     <string name="volume_ring_only_description">Ringtone</string>
+
 </resources>
