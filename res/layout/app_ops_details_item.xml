@@ -40,7 +40,7 @@
         android:id="@+id/op_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/switchWidget"
+        android:layout_toLeftOf="@+id/spinnerWidget"
         android:layout_toRightOf="@+id/op_icon"
         android:layout_marginTop="2dip"
         android:ellipsize="marquee"
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/op_name"
         android:layout_toRightOf="@+id/op_icon"
-        android:layout_toStartOf="@+id/switchWidget"
+        android:layout_toStartOf="@+id/spinnerWidget"
         android:textAlignment="viewStart"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -68,7 +68,8 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textAlignment="viewStart" />
 
-    <Switch android:id="@+id/switchWidget"
+    <Spinner
+        android:id="@+id/spinnerWidget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -78,6 +79,7 @@
         android:layout_marginStart="8dip"
         android:clickable="true"
         android:focusable="false"
-        android:padding="8dip" />
+        android:padding="8dip"
+        android:entries="@array/app_ops_permissions" />
 
 </RelativeLayout>
