@@ -31,6 +31,7 @@
         android:layout_width="@android:dimen/app_icon_size"
         android:layout_height="@android:dimen/app_icon_size"
         android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
         android:layout_marginEnd="8dip"
         android:contentDescription="@null"
         android:scaleType="centerInside" />
@@ -53,6 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/op_name"
         android:layout_toRightOf="@+id/op_icon"
+        android:layout_toStartOf="@+id/switchWidget"
         android:textAlignment="viewStart"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -62,6 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="8dip"
         android:clickable="true"
