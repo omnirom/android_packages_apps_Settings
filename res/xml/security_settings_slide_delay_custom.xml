@@ -16,6 +16,16 @@
 
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="lockscreen_shortcuts_header"
+        android:title="@string/lockscreen_shortcuts_settings">
+
+        <PreferenceScreen
+            android:key="lockscreen_shortcuts"
+            android:title="@string/lockscreen_shortcuts_settings"
+            android:fragment="org.omnirom.omnigears.LockscreenTargets"/>
+
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:key="delay_and_timeout"
