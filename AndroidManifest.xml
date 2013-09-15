@@ -577,6 +577,8 @@
                 android:resource="@id/sound_settings" />
         </activity>
 
+        <activity android:name=".paranoid.Halo" />
+
         <activity android:name="Settings$BarsAndMenusSettingsActivity"
                 android:label="@string/sound_settings"
                 android:taskAffinity=""
