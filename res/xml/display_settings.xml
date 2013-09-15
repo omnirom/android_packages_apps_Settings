@@ -66,4 +66,18 @@
                 android:title="@string/wifi_display_settings_title"
                 android:fragment="com.android.settings.wfd.WifiDisplaySettings" />
 
+        <PreferenceCategory
+        android:title="@string/advanced_settings">
+
+
+    <PreferenceScreen
+        android:key="halo_settings"
+        android:fragment="com.android.settings.paranoid.Halo"
+        android:title="@string/halo_settings_title"
+        android:icon="@drawable/ic_rom_control_halo"
+        android:summary="@string/header_summary_halo" />
+
+        </PreferenceCategory>
+
+
 </PreferenceScreen>
