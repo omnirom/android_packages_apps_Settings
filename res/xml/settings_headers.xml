@@ -69,6 +69,13 @@
         android:fragment="org.omnirom.omnigears.BarsAndMenusSettings"
         android:icon="@drawable/ic_menu_add" />
 
+    <header
+        android:id="@+id/active_display"
+        android:title="@string/active_display_settings"
+        android:breadCrumbTitle="@string/active_display_settings"
+        android:fragment="org.omnirom.omnigears.chameleonos.ActiveDisplaySettings"
+        android:icon="@drawable/empty_icon" />
+
     <!-- DEVICE -->
     <header android:id="@+id/device_section"
         android:title="@string/header_category_device" />
