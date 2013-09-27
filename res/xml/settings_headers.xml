@@ -69,6 +69,13 @@
         android:fragment="org.omnirom.omnigears.BarsAndMenusSettings"
         android:icon="@drawable/empty_icon" />
 
+    <header
+        android:id="@+id/bars_and_menus"
+        android:title="@string/bars_and_menus_settings"
+        android:breadCrumbTitle="@string/bars_and_menus_settings"
+        android:fragment="org.omnirom.omnigears.notificationlight.NotificationLightSettings"
+        android:icon="@drawable/empty_icon" />
+
     <!-- DEVICE -->
     <header android:id="@+id/device_section"
         android:title="@string/header_category_device" />
