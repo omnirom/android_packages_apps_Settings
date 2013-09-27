@@ -458,6 +458,11 @@ public class Settings extends PreferenceActivity
                 if (um.hasUserRestriction(UserManager.DISALLOW_MODIFY_ACCOUNTS)) {
                     target.remove(i);
                 }
+            } else if (id == R.id.notification_light) {
+                if (!getResources().getBoolean(
+                        com.android.internal.R.bool.config_intrusiveNotificationLed)) {
+                    target.remove(i);
+                }
             }
 
             if (i < target.size() && target.get(i) == header

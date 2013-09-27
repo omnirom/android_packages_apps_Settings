@@ -87,6 +87,14 @@
         android:fragment="com.android.settings.DisplaySettings"
         android:title="@string/display_settings" />
 
+    <!-- Notification light -->
+    <header
+        android:id="@+id/notification_light"
+        android:title="@string/notification_light_settings"
+        android:breadCrumbTitle="@string/notification_light_settings"
+        android:fragment="org.omnirom.omnigears.notificationlight.NotificationLightSettings"
+        android:icon="@drawable/empty_icon" />
+
     <!-- Storage -->
     <header
         android:id="@+id/storage_settings"
