@@ -18,9 +18,13 @@
         android:title="@string/display_settings"
         xmlns:settings="http://schemas.android.com/apk/res/com.android.settings">
 
-        <com.android.settings.BrightnessPreference
+        <!--<com.android.settings.BrightnessPreference
                 android:title="@string/brightness"
-                android:persistent="false"/>
+                android:persistent="false"/>-->
+
+        <PreferenceScreen
+                android:title="@string/brightness"
+                android:fragment="org.omnirom.omnigears.brightness.BrightnessSettings" />
 
         <PreferenceScreen
                 android:key="wallpaper"
