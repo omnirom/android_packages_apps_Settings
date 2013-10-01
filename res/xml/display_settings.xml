@@ -23,6 +23,10 @@
                 android:persistent="false"/>
 
         <PreferenceScreen
+                android:title="@string/brightness_settings_title"
+                android:fragment="org.omnirom.omnigears.brightness.BrightnessSettings" />
+
+        <PreferenceScreen
                 android:key="wallpaper"
                 android:title="@string/wallpaper_settings_title"
                 android:fragment="com.android.settings.WallpaperTypeSettings" />
