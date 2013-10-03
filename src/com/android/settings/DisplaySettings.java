@@ -58,7 +58,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private static final String KEY_SCREEN_TIMEOUT = "screen_timeout";
     private static final String KEY_ACCELEROMETER = "accelerometer";
     private static final String KEY_FONT_SIZE = "font_size";
-    private static final String KEY_NOTIFICATION_PULSE = "notification_pulse";
+    //private static final String KEY_NOTIFICATION_PULSE = "notification_pulse";
     private static final String KEY_SCREEN_SAVER = "screensaver";
     private static final String KEY_WIFI_DISPLAY = "wifi_display";
 
@@ -68,7 +68,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
 
     private CheckBoxPreference mAccelerometer;
     private WarnedListPreference mFontSizePref;
-    private CheckBoxPreference mNotificationPulse;
+    //private CheckBoxPreference mNotificationPulse;
 
     private final Configuration mCurConfig = new Configuration();
     
@@ -121,7 +121,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         mFontSizePref = (WarnedListPreference) findPreference(KEY_FONT_SIZE);
         mFontSizePref.setOnPreferenceChangeListener(this);
         mFontSizePref.setOnPreferenceClickListener(this);
-        mNotificationPulse = (CheckBoxPreference) findPreference(KEY_NOTIFICATION_PULSE);
+        /*mNotificationPulse = (CheckBoxPreference) findPreference(KEY_NOTIFICATION_PULSE);
         if (mNotificationPulse != null
                 && getResources().getBoolean(
                         com.android.internal.R.bool.config_intrusiveNotificationLed) == false) {
@@ -134,7 +134,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             } catch (SettingNotFoundException snfe) {
                 Log.e(TAG, Settings.System.NOTIFICATION_LIGHT_PULSE + " not found");
             }
-        }
+        }*/
 
         mDisplayManager = (DisplayManager)getActivity().getSystemService(
                 Context.DISPLAY_SERVICE);
@@ -338,12 +338,12 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         if (preference == mAccelerometer) {
             RotationPolicy.setRotationLockForAccessibility(
                     getActivity(), !mAccelerometer.isChecked());
-        } else if (preference == mNotificationPulse) {
+        } /*else if (preference == mNotificationPulse) {
             boolean value = mNotificationPulse.isChecked();
             Settings.System.putInt(getContentResolver(), Settings.System.NOTIFICATION_LIGHT_PULSE,
                     value ? 1 : 0);
             return true;
-        }
+        }*/
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 
