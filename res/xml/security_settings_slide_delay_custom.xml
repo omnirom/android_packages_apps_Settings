@@ -25,6 +25,11 @@
             android:title="@string/lockscreen_shortcuts_settings"
             android:fragment="org.omnirom.omnigears.LockscreenTargets"/>
 
+        <CheckBoxPreference
+            android:key="battery_around_lockscreen_ring"
+            android:title="@string/battery_around_lockscreen_ring"
+            android:defaultValue="true" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
