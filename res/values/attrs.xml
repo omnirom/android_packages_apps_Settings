@@ -81,4 +81,12 @@
         <attr name="fillColor" format="color" />
         <attr name="fillColorSecondary" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="IntervalSeekBar">
+        <attr name="minf" format="float" />
+        <attr name="maxf" format="float" />
+        <attr name="defaultValue" format="float" />
+        <attr name="digits" format="integer" />
+    </declare-styleable>
+
 </resources>
