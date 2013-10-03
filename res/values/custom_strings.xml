@@ -23,6 +23,7 @@
     <string name="header_category_interface">Interface</string>
     <string name="performance_settings">Performance</string>
     <string name="notification_light_settings">Notification light</string>
+    <string name="header_button_settings">Buttons</string>
 
     <!-- Volume panel tweaks -->
     <string name="volume_adjust_sounds_enable_title">Volume adjust sound</string>
