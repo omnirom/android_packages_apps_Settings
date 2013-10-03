@@ -193,6 +193,13 @@
         android:icon="@drawable/ic_settings_development"
         android:title="@string/development_settings_title" />
 
+    <!-- Performance Controls -->
+    <header
+        android:id="@+id/performance_controls"
+        android:fragment="com.brewcrewfoo.performance.activities.MainActivity"
+        android:icon="@drawable/ic_settings_about"
+        android:title="@string/performance_settings" />
+
     <!-- About Device -->
     <header
         android:id="@+id/about_settings"
