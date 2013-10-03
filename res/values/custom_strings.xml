@@ -21,6 +21,7 @@
 
     <!-- Main list strings -->
     <string name="header_category_interface">Interface</string>
+    <string name="performance_settings">Performance</string>
 
     <!-- Volume panel tweaks -->
     <string name="volume_adjust_sounds_enable_title">Volume adjust sound</string>
