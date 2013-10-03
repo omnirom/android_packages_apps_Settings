@@ -73,4 +73,5 @@
 
     <!-- Main list strings -->
     <string name="header_category_interface">Interface</string>
+    <string name="performance_settings">Performance</string>
 </resources>
