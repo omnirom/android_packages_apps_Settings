@@ -186,52 +186,6 @@ public class RingerVolumePreference extends VolumePreference {
             mCheckBoxes[i] = checkbox;
         }
 
-        final CheckBox linkCheckBox = (CheckBox) view.findViewById(R.id.link_ring_and_volume);
-
-        final View ringerSection = view.findViewById(R.id.ringer_section);
-        final View notificationSection = view.findViewById(R.id.notification_section);
-        final View linkVolumesSection = view.findViewById(R.id.link_volumes_section);
-        final TextView ringerDesc = (TextView) ringerSection
-                .findViewById(R.id.ringer_description_text);
-
-        if (Utils.isVoiceCapable(getContext())) {
-            if (System.getInt(getContext().getContentResolver(),
-                    System.VOLUME_LINK_NOTIFICATION, 1) == 1) {
-                linkCheckBox.setChecked(true);
-                notificationSection.setVisibility(View.GONE);
-                ringerDesc.setText(R.string.volume_ring_description);
-            } else {
-                linkCheckBox.setChecked(false);
-                notificationSection.setVisibility(View.VISIBLE);
-                ringerDesc.setText(R.string.volume_ring_only_description);
-            }
-
-            linkCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        notificationSection.setVisibility(View.GONE);
-                        ringerDesc.setText(R.string.volume_ring_description);
-                        final int volume = mAudioManager.getStreamVolume(AudioSystem.STREAM_RING);
-                        mAudioManager.setStreamVolume(AudioSystem.STREAM_NOTIFICATION, volume, 0);
-                        Settings.System.putInt(buttonView.getContext().getContentResolver(),
-                                Settings.System.VOLUME_LINK_NOTIFICATION, 1);
-                    } else {
-                        notificationSection.setVisibility(View.VISIBLE);
-                        ringerDesc.setText(R.string.volume_ring_only_description);
-                        Settings.System.putInt(buttonView.getContext().getContentResolver(),
-                                Settings.System.VOLUME_LINK_NOTIFICATION, 0);
-                    }
-                    updateSlidersAndMutedStates();
-                }
-
-            });
-        } else {
-            ringerSection.setVisibility(View.GONE);
-            linkVolumesSection.setVisibility(View.GONE);
-        }
-
         // Load initial states from AudioManager
         updateSlidersAndMutedStates();
 
@@ -268,18 +222,15 @@ public class RingerVolumePreference extends VolumePreference {
                 }
             }
         } else {
-            // Disable ringer or notifications if required
-            int id = -1;
+            // Disable either ringer+notifications or notifications
+            int id;
             if (!Utils.isVoiceCapable(getContext())) {
                 id = R.id.ringer_section;
-            } else if (System.getInt(getContext().getContentResolver(),
-                    System.VOLUME_LINK_NOTIFICATION, 1) == 1) {
+            } else {
                 id = R.id.notification_section;
             }
-            if (id != -1){
-                View hideSection = view.findViewById(id);
-                hideSection.setVisibility(View.GONE);
-            }
+            View hideSection = view.findViewById(id);
+            hideSection.setVisibility(View.GONE);
         }
     }
 
