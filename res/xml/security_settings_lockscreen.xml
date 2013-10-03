@@ -35,6 +35,7 @@
             android:key="owner_info_settings"
             android:title="@string/owner_info_settings_title"
             android:summary="@string/owner_info_settings_summary"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

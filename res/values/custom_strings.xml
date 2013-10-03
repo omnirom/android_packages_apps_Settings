@@ -69,6 +69,8 @@
     <string name="advanced_reboot_title">Advanced reboot</string>
     <string name="advanced_reboot_summary">When unlocked, include options in the power menu for rebooting into recovery or bootloader</string>
 
+    <string name="battery_around_lockscreen_ring">Battery around unlock ring</string>
+
     <!-- Main list strings -->
     <string name="header_category_interface">Interface</string>
 </resources>
