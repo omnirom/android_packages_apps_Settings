@@ -75,6 +75,7 @@
     <string name="header_category_interface">Interface</string>
     <string name="notification_light_settings">Notification light</string>
     <string name="performance_settings">Performance</string>
+    <string name="header_button_settings">Buttons</string>
 
     <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
     <string name="show_cpu_info">Show CPU info</string>
