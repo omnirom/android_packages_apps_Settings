@@ -52,10 +52,14 @@
                 android:entryValues="@array/entryvalues_font_size"
                 android:dialogTitle="@string/dialog_title_font_size" />
 
-        <CheckBoxPreference
+        <!--<CheckBoxPreference
             android:key="notification_pulse"
             android:title="@string/notification_pulse_title"
-            android:persistent="false" />
+            android:persistent="false" />-->
+
+        <PreferenceScreen
+                android:title="@string/notification_light_settings"
+                android:fragment="org.omnirom.omnigears.notificationlight.NotificationLightSettings" />
 
         <PreferenceScreen
                 android:key="wifi_display"
