@@ -94,6 +94,14 @@
         android:fragment="com.android.settings.DisplaySettings"
         android:title="@string/display_settings" />
 
+    <!-- buttons -->
+    <header
+        android:id="@+id/button_settings"
+        android:title="@string/header_button_settings"
+        android:breadCrumbTitle="@string/header_button_settings"
+        android:fragment="org.omnirom.omnigears.ButtonSettings"
+        android:icon="@drawable/ic_settings_buttons" />
+
     <!-- Storage -->
     <header
         android:id="@+id/storage_settings"
