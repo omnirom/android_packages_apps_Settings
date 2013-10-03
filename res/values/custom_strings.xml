@@ -95,5 +95,6 @@
 
     <!-- Main list strings -->
     <string name="header_category_interface">Interface</string>
+    <string name="notification_light_settings">Notification light</string>
     <string name="performance_settings">Performance</string>
 </resources>
