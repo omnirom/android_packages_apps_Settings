@@ -38,6 +38,12 @@
     <!-- Lockscreen battery ring -->
     <string name="battery_around_lockscreen_ring">Battery around unlock ring</string>
 
+    <!-- Android debugging over WiFi -->
+    <string name="adb_over_network">ADB over network</string>
+    <string name="adb_over_network_summary">Enable TCP/IP debugging over network interfaces (Wi-Fi, USB networks). This setting is reset on reboot</string>
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">WARNING: When ADB over network is enabled, your phone is open for intrusions on all connected networks, including GSM data network!\n\nOnly use this feature when you are connected on trusted networks.\n\nDo you really want to enable this function?</string>
+
     <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
     <string name="show_cpu_info">Show CPU info</string>
     <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
