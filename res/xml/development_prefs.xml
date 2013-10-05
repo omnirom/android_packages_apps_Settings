@@ -118,6 +118,12 @@
             android:title="@string/enable_terminal_title"
             android:summary="@string/enable_terminal_summary" />
 
+        <SwitchPreference
+            android:key="adb_over_network"
+            android:title="@string/adb_over_network"
+            android:summary="@string/adb_over_network_summary"
+            android:dependency="enable_adb"/>
+
         <Preference android:key="mock_location_app"
             android:title="@string/mock_location_app" />
 
