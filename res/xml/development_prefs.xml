@@ -116,6 +116,12 @@
             android:title="@string/enable_terminal_title"
             android:summary="@string/enable_terminal_summary" />
 
+        <CheckBoxPreference
+            android:key="adb_over_network"
+            android:title="@string/adb_over_network"
+            android:summary="@string/adb_over_network_summary"
+            android:dependency="enable_adb"/>
+
         <SwitchPreference
             android:key="bugreport_in_power"
             android:title="@string/bugreport_in_power"
