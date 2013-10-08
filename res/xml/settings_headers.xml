@@ -101,6 +101,13 @@
         android:icon="@drawable/ic_settings_battery"
         android:title="@string/power_usage_summary_title" />
 
+    <!-- Roadrunner -->
+    <header
+        android:id="@+id/roadrunner_settings"
+        android:fragment="org.omnirom.omnigears.roadrunner.RoadrunnerSettings"
+        android:icon="@drawable/ic_settings_battery"
+        android:title="Roadrunner" />
+
     <!-- Application Settings -->
     <header
         android:fragment="com.android.settings.applications.ManageApplications"
