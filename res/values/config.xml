@@ -29,4 +29,5 @@
          very long strings too. -->
     <integer name="maximum_user_dictionary_word_length" translatable="false">48</integer>
 
+    <bool name="has_advanced_settings" translatable="false">false</bool>
 </resources>
