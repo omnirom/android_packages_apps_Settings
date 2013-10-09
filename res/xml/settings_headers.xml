@@ -122,6 +122,15 @@
         <intent android:action="com.android.settings.MANUFACTURER_APPLICATION_SETTING" />
     </header>
 
+    <!-- advanced settings -->
+    <header android:id="@+id/advanced_settings"
+            android:title="@string/header_advanced_settings"
+            android:icon="@drawable/ic_settings_advanced">
+        <intent
+                android:action="android.intent.action.MAIN"
+                android:targetPackage="org.omnirom.omnigears.device"
+                android:targetClass="org.omnirom.omnigears.device.DeviceSettings" />
+    </header>
 
     <!-- PERSONAL -->
     <header android:id="@+id/personal_section"
