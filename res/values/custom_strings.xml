@@ -75,4 +75,9 @@
     <string name="header_category_interface">Interface</string>
     <string name="notification_light_settings">Notification light</string>
     <string name="performance_settings">Performance</string>
+
+    <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+    <string name="show_cpu_info">Show CPU info</string>
+    <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+    <string name="show_cpu_info_summary">Screen overlay showing current CPU info</string>
 </resources>
