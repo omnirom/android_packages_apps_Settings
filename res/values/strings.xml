@@ -4538,4 +4538,13 @@
 
     <!-- Text to display in regulatory info screen (from device overlay). -->
     <string name="regulatory_info_text"></string>
-</resources>
+<!-- Xperience Klozz TeamMEX @XDA-Developers -->
+    <string name="cat_status_bar">Status bar</string>
+    <string name="header_category_xperience">XPerience™</string>
+    <string name="xpe_settings_title">XPerience™ Settings Ops</string>
+    <string name="pref_center_clock_status_bar_title">Center clock</string>
+    <string name="pref_center_clock_status_bar_summary">On the status bar aligns the clock to center (Wait for restarting SystemUI)</string> 
+<string name="app_ops_title">App Ops </string>
+    <string name="app_ops_summary">Fine-grained permission controls</string>
+    <string name="builder_info_title"> Developer XPerience™ </string>
+     </resources>
