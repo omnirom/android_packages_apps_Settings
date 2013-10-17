@@ -4538,4 +4538,11 @@
 
     <!-- Text to display in regulatory info screen (from device overlay). -->
     <string name="regulatory_info_text"></string>
+
+   <!-- Share OMNI ROM -->
+   <string name="share_omnirom">Share Omni ROM</string>
+   <string name="share_omnirom_summary">Let people know you use Omni ROM</string>
+   <string name="share_message">Try Omani ROM! \nWebsite : http://omnirom.org/ \nIRC : #omnirom \nDownload : NULL FOR NOW</string>
+   <string name="share_chooser_title">Via..</string>
+
 </resources>

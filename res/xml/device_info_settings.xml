@@ -41,6 +41,12 @@
                     android:targetClass="com.android.settings.deviceinfo.Status" />
         </PreferenceScreen>
 
+        <!-- Share OMNI ROM -->
+        <Preference
+            android:key="share"
+            android:title="@string/share_omnirom"
+            android:summary="@string/share_omnirom_summary" />
+
         <!-- Legal Information -->
         <PreferenceScreen
                 android:key="container"
