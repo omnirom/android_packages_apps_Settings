@@ -255,6 +255,13 @@ public class SecuritySettings extends SettingsPreferenceFragment
             mSlideLockScreenOffDelay.setValue(String.valueOf(slideScreenOffDelay));
             updateSlideAfterScreenOffSummary();
             mSlideLockScreenOffDelay.setOnPreferenceChangeListener(this);
+
+            // Add the additional Omni settings
+            mLockRingBattery = (CheckBoxPreference) root
+                    .findPreference(BATTERY_AROUND_LOCKSCREEN_RING);
+            mLockRingBattery.setChecked(Settings.System.getInt(resolver,
+                    Settings.System.BATTERY_AROUND_LOCKSCREEN_RING, 0) == 1);
+
         }
 
             // visible pattern
@@ -288,14 +295,6 @@ public class SecuritySettings extends SettingsPreferenceFragment
             mVibratePref = (CheckBoxPreference) findPreference(KEY_VIBRATE_PREF);
             mVibratePref.setChecked(Settings.System.getInt(resolver,
                     Settings.System.LOCKSCREEN_VIBRATE_ENABLED, 1) == 1);
-
-            // Add the additional Omni settings
-            mLockRingBattery = (CheckBoxPreference) root
-                    .findPreference(BATTERY_AROUND_LOCKSCREEN_RING);
-            if (mLockRingBattery != null) {
-                mLockRingBattery.setChecked(Settings.System.getInt(resolver,
-                        Settings.System.BATTERY_AROUND_LOCKSCREEN_RING, 0) == 1);
-            }
 
             // disable lock options if lock screen set to NONE
             // or if using pattern as a primary lock screen or
