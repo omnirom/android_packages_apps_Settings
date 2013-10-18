@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a23299d_d68544ae",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000117
+      },
+      "writtenOn": "2013-10-18T14:15:55Z",
+      "side": 1,
+      "message": "line 104-131 aren\u0027t required",
+      "revId": "ba0be362e06bcf8446550692677d0cf9c2ae5e04",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a23299d_b692c8f4",
+        "filename": "res/xml/halo_settings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000117
+      },
+      "writtenOn": "2013-10-18T14:15:55Z",
+      "side": 1,
+      "message": "whitespace",
+      "revId": "ba0be362e06bcf8446550692677d0cf9c2ae5e04",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a23299d_968fcccc",
+        "filename": "res/xml/halo_settings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000117
+      },
+      "writtenOn": "2013-10-18T14:15:55Z",
+      "side": 1,
+      "message": "yet again",
+      "revId": "ba0be362e06bcf8446550692677d0cf9c2ae5e04",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
