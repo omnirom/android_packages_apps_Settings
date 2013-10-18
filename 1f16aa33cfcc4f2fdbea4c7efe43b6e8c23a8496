@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a23299d_f63960d9",
+        "filename": "src/com/android/settings/DevelopmentSettings.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 1286,
+      "author": {
+        "id": 1000023
+      },
+      "writtenOn": "2013-10-18T08:38:44Z",
+      "side": 1,
+      "message": "indents derp",
+      "revId": "1f16aa33cfcc4f2fdbea4c7efe43b6e8c23a8496",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
