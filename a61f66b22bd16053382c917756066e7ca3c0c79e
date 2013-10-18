@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a23299d_b6f1a897",
+        "filename": "res/values/arrays.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 1000060
+      },
+      "writtenOn": "2013-10-18T10:32:08Z",
+      "side": 1,
+      "message": "these need to go in custom_arrays.xml",
+      "revId": "a61f66b22bd16053382c917756066e7ca3c0c79e",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
