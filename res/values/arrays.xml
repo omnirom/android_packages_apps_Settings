@@ -703,9 +703,7 @@
     <!-- Titles for window animation scale preference. [CHAR LIMIT=35] -->
     <string-array name="window_animation_scale_entries">
         <item>Animation off</item>
-        <item>Animation scale .25x</item>
         <item>Animation scale .5x</item>
-        <item>Animation scale .75x</item>
         <item>Animation scale 1x</item>
         <item>Animation scale 1.5x</item>
         <item>Animation scale 2x</item>
@@ -716,9 +714,7 @@
     <!-- Values for window animation scale preference. -->
     <string-array name="window_animation_scale_values" translatable="false" >
         <item>0</item>
-        <item>.25</item>
         <item>.5</item>
-        <item>.75</item>
         <item>1</item>
         <item>1.5</item>
         <item>2</item>
@@ -729,9 +725,7 @@
     <!-- Titles for transition animation scale preference. [CHAR LIMIT=35] -->
     <string-array name="transition_animation_scale_entries">
         <item>Animation off</item>
-        <item>Animation scale .25x</item>
         <item>Animation scale .5x</item>
-        <item>Animation scale .75x</item>
         <item>Animation scale 1x</item>
         <item>Animation scale 1.5x</item>
         <item>Animation scale 2x</item>
@@ -742,9 +736,7 @@
     <!-- Values for transition animation scale preference. -->
     <string-array name="transition_animation_scale_values" translatable="false" >
         <item>0</item>
-        <item>.25</item>
         <item>.5</item>
-        <item>.75</item>
         <item>1</item>
         <item>1.5</item>
         <item>2</item>
@@ -755,9 +747,7 @@
     <!-- Titles for animator duration scale preference. [CHAR LIMIT=35] -->
     <string-array name="animator_duration_scale_entries">
         <item>Animation off</item>
-        <item>Animation scale .25x</item>
         <item>Animation scale .5x</item>
-        <item>Animation scale .75x</item>
         <item>Animation scale 1x</item>
         <item>Animation scale 1.5x</item>
         <item>Animation scale 2x</item>
@@ -768,9 +758,7 @@
     <!-- Values for animator duration scale preference. -->
     <string-array name="animator_duration_scale_values" translatable="false" >
         <item>0</item>
-        <item>.25</item>
         <item>.5</item>
-        <item>.75</item>
         <item>1</item>
         <item>1.5</item>
         <item>2</item>
