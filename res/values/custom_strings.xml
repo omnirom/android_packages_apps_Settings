@@ -103,6 +103,7 @@
     <string name="header_category_interface">Interface</string>
     <string name="notification_light_settings">Notification light</string>
     <string name="performance_settings">Performance</string>
+    <string name="header_button_settings">Buttons</string>
 
     <!-- About phone screen,  setting option name-->
     <string name="mod_version">Omni version</string>
