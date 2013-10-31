@@ -264,70 +264,68 @@ public class SecuritySettings extends SettingsPreferenceFragment
 
         }
 
-            // visible pattern
-            mVisiblePattern = (CheckBoxPreference) root.findPreference(KEY_VISIBLE_PATTERN);
+        // visible pattern
+        mVisiblePattern = (CheckBoxPreference) root.findPreference(KEY_VISIBLE_PATTERN);
 
-            // lock instantly on power key press
-            mPowerButtonInstantlyLocks = (CheckBoxPreference) root.findPreference(
-                    KEY_POWER_INSTANTLY_LOCKS);
-            checkPowerInstantLockDependency();
+        // lock instantly on power key press
+        mPowerButtonInstantlyLocks = (CheckBoxPreference) root.findPreference(
+        		KEY_POWER_INSTANTLY_LOCKS);
+        checkPowerInstantLockDependency();
 
-            // Add the additional CyanogenMod settings
-            addPreferencesFromResource(R.xml.security_settings_custom);
+        // Add the additional CyanogenMod settings
+        addPreferencesFromResource(R.xml.security_settings_custom);
 
-            // Quick Unlock Screen Control
-            mQuickUnlockScreen = (CheckBoxPreference) root
-                    .findPreference(LOCKSCREEN_QUICK_UNLOCK_CONTROL);
-            mQuickUnlockScreen.setChecked(Settings.System.getInt(resolver,
-                    Settings.System.LOCKSCREEN_QUICK_UNLOCK_CONTROL, 0) == 1);
+        // Quick Unlock Screen Control
+        mQuickUnlockScreen = (CheckBoxPreference) root
+        		.findPreference(LOCKSCREEN_QUICK_UNLOCK_CONTROL);
+        mQuickUnlockScreen.setChecked(Settings.System.getInt(resolver,
+        		Settings.System.LOCKSCREEN_QUICK_UNLOCK_CONTROL, 0) == 1);
 
-            // Menu Unlock
-            mMenuUnlock = (CheckBoxPreference) root.findPreference(MENU_UNLOCK_PREF);
-            mMenuUnlock.setChecked(Settings.System.getInt(resolver,
-                    Settings.System.MENU_UNLOCK_SCREEN, 0) == 1);
+        // Menu Unlock
+        mMenuUnlock = (CheckBoxPreference) root.findPreference(MENU_UNLOCK_PREF);
+        mMenuUnlock.setChecked(Settings.System.getInt(resolver,
+        		Settings.System.MENU_UNLOCK_SCREEN, 0) == 1);
 
-            // Home Unlock
-            mHomeUnlock = (CheckBoxPreference) root.findPreference(HOME_UNLOCK_PREF);
-            mHomeUnlock.setChecked(Settings.System.getInt(resolver,
-                    Settings.System.HOME_UNLOCK_SCREEN, 0) == 1);
+        // Home Unlock
+        mHomeUnlock = (CheckBoxPreference) root.findPreference(HOME_UNLOCK_PREF);
+        mHomeUnlock.setChecked(Settings.System.getInt(resolver,
+        		Settings.System.HOME_UNLOCK_SCREEN, 0) == 1);
 
-            // Vibrate on unlock
-            mVibratePref = (CheckBoxPreference) findPreference(KEY_VIBRATE_PREF);
-            mVibratePref.setChecked(Settings.System.getInt(resolver,
-                    Settings.System.LOCKSCREEN_VIBRATE_ENABLED, 1) == 1);
+        // Vibrate on unlock
+        mVibratePref = (CheckBoxPreference) findPreference(KEY_VIBRATE_PREF);
+        mVibratePref.setChecked(Settings.System.getInt(resolver,
+        		Settings.System.LOCKSCREEN_VIBRATE_ENABLED, 1) == 1);
 
-            // disable lock options if lock screen set to NONE
-            // or if using pattern as a primary lock screen or
-            // as a backup to biometric
-            if ((!mLockPatternUtils.isSecure() && mLockPatternUtils.isLockScreenDisabled())
-                || (mLockPatternUtils.isLockPatternEnabled())) {
-                mQuickUnlockScreen.setEnabled(false);
-                mMenuUnlock.setEnabled(false);
-                mHomeUnlock.setEnabled(false);
-                mVibratePref.setEnabled(false);
-            // disable menu unlock and vibrate on unlock options if
-            // using PIN/password as primary lock screen or as
-            // backup to biometric
-            } else if (mLockPatternUtils.isLockPasswordEnabled()) {
-                mQuickUnlockScreen.setEnabled(true);
-                mMenuUnlock.setEnabled(false);
-                mHomeUnlock.setEnabled(false);
-                mVibratePref.setEnabled(false);
-            // Disable the quick unlock if its not using PIN/password
-            // as a primary lock screen or as a backup to biometric
-            } else {
-                mQuickUnlockScreen.setEnabled(false);            }
+        // disable lock options if lock screen set to NONE
+        // or if using pattern as a primary lock screen or
+        // as a backup to biometric
+        if ((!mLockPatternUtils.isSecure() && mLockPatternUtils.isLockScreenDisabled())
+        		|| (mLockPatternUtils.isLockPatternEnabled())) {
+        	mQuickUnlockScreen.setEnabled(false);
+        	mMenuUnlock.setEnabled(false);
+        	mHomeUnlock.setEnabled(false);
+        	mVibratePref.setEnabled(false);
+        	// disable menu unlock and vibrate on unlock options if
+        	// using PIN/password as primary lock screen or as
+        	// backup to biometric
+        } else if (mLockPatternUtils.isLockPasswordEnabled()) {
+        	mQuickUnlockScreen.setEnabled(true);
+        	mMenuUnlock.setEnabled(false);
+        	mHomeUnlock.setEnabled(false);
+        	mVibratePref.setEnabled(false);
+        	// Disable the quick unlock if its not using PIN/password
+        	// as a primary lock screen or as a backup to biometric
+        } else {
+        	mQuickUnlockScreen.setEnabled(false);
+        }
 
-            // Disable the MenuUnlock setting if no menu button is available
-            if (getActivity().getApplicationContext().getResources()
-                    .getBoolean(com.android.internal.R.bool.config_showNavigationBar)) {
-                mMenuUnlock.setEnabled(false);	
-            }
-            // Disable the HomeUnlock setting if no home button is available
-            if (getActivity().getApplicationContext().getResources()
-                    .getBoolean(com.android.internal.R.bool.config_disableHomeUnlockSetting)) {
-                mHomeUnlock.setEnabled(false);
-            }
+        // Disable the MenuUnlock setting if no menu button is available
+        // Disable the HomeUnlock setting if no home button is available
+        if (getActivity().getApplicationContext().getResources()
+        		.getBoolean(com.android.internal.R.bool.config_showNavigationBar)) {
+        	mMenuUnlock.setEnabled(false);
+        	mHomeUnlock.setEnabled(false);
+        }
 
         // biometric weak liveliness
         mBiometricWeakLiveliness =
