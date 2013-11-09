@@ -61,6 +61,19 @@
                 android:title="@string/notification_light_settings"
                 android:fragment="org.omnirom.omnigears.notificationlight.NotificationLightSettings" />
 
+        <PreferenceCategory
+                android:key="category_animation_options"
+                android:title="@string/display_category_animation_options_title" >
+
+                <ListPreference
+                    android:key="system_power_crt_mode"
+                    android:dialogTitle="@string/system_power_crt_mode_dialog_title"
+                    android:title="@string/system_power_crt_mode_title"
+                    android:entries="@array/entries_system_power_crt_mode"
+                    android:entryValues="@array/values_system_power_crt_mode" />
+
+        </PreferenceCategory>
+
         <PreferenceScreen
                 android:key="wifi_display"
                 android:title="@string/wifi_display_settings_title"
