@@ -304,7 +304,10 @@ public class SecuritySettings extends RestrictedSettingsFragment
                 mToggleVerifyApps.setChecked(false);
                 mToggleVerifyApps.setEnabled(false);
             }
-        } else {
+            // App security settings
+            addPreferencesFromResource(R.xml.security_settings_app_omni);
+ 
+       } else {
             if (deviceAdminCategory != null) {
                 deviceAdminCategory.removePreference(mToggleVerifyApps);
             } else {
