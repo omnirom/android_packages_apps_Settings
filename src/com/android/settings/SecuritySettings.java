@@ -87,6 +87,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
 
     // Omni Additions
     private static final String BATTERY_AROUND_LOCKSCREEN_RING = "battery_around_lockscreen_ring";
+    private static final String LOCKSCREEN_MAXIMIZE_WIDGETS = "lockscreen_maximize_widgets";
 
     private PackageManager mPM;
     private DevicePolicyManager mDPM;
@@ -119,6 +120,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
 
     // Omni Additions
     private CheckBoxPreference mLockRingBattery;
+    private CheckBoxPreference mMaximizeKeyguardWidgets;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -217,6 +219,12 @@ public class SecuritySettings extends RestrictedSettingsFragment
                     Settings.System.BATTERY_AROUND_LOCKSCREEN_RING, 0) == 1);
         }
 
+        mMaximizeKeyguardWidgets = (CheckBoxPreference) root.findPreference(LOCKSCREEN_MAXIMIZE_WIDGETS);
+        if (mMaximizeKeyguardWidgets != null) {
+            mMaximizeKeyguardWidgets.setChecked(Settings.System.getInt(getContentResolver(),
+                    Settings.System.LOCKSCREEN_MAXIMIZE_WIDGETS, 0) == 1);
+        }
+
         // biometric weak liveliness
         mBiometricWeakLiveliness =
                 (CheckBoxPreference) root.findPreference(KEY_BIOMETRIC_WEAK_LIVELINESS);
@@ -279,6 +287,8 @@ public class SecuritySettings extends RestrictedSettingsFragment
                 mEnableKeyguardWidgets.setEnabled(!disabled);
             }
         }
+
+
 
         // Show password
         mShowPassword = (CheckBoxPreference) root.findPreference(KEY_SHOW_PASSWORD);
@@ -573,8 +583,13 @@ public class SecuritySettings extends RestrictedSettingsFragment
         } else if (KEY_ENABLE_WIDGETS.equals(key)) {
             lockPatternUtils.setWidgetsEnabled(mEnableKeyguardWidgets.isChecked());
         } else if (preference == mLockRingBattery) {
+                Log.e("SecuritySettings", "RING");
             Settings.System.putInt(getActivity().getApplicationContext().getContentResolver(),
                     Settings.System.BATTERY_AROUND_LOCKSCREEN_RING, isToggled(preference) ? 1 : 0);
+        } else if (preference == mMaximizeKeyguardWidgets) {
+                Log.e("SecuritySettings", "MAX");
+            Settings.System.putInt(getActivity().getApplicationContext().getContentResolver(),
+                    Settings.System.LOCKSCREEN_MAXIMIZE_WIDGETS, isToggled(preference) ? 1 : 0);
         } else if (preference == mShowPassword) {
             Settings.System.putInt(getContentResolver(), Settings.System.TEXT_SHOW_PASSWORD,
                     mShowPassword.isChecked() ? 1 : 0);
