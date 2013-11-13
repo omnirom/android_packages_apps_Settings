@@ -273,6 +273,11 @@
             android:title="@string/show_all_anrs"
             android:summary="@string/show_all_anrs_summary"/>
 
+        <CheckBoxPreference
+            android:key="classic_webview"
+            android:title="@string/classic_webview"
+            android:summary="@string/classic_webview_summary"/>
+
      </PreferenceCategory>
 
 </PreferenceScreen>
