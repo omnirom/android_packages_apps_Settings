@@ -591,9 +591,12 @@ public class Settings extends PreferenceActivity
                 } else {
                     // Only show if NFC is on and we have the HCE feature
                     NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
-                    if (!adapter.isEnabled() || !getPackageManager().hasSystemFeature(
-                            PackageManager.FEATURE_NFC_HOST_CARD_EMULATION)) {
-                        target.remove(i);
+                    if (adapter == null || !adapter.isEnabled() || !getPackageManager().hasSystemFeature(
+                           PackageManager.FEATURE_NFC_HOST_CARD_EMULATION)) {
+                       target.remove(i);
+                       if (adapter == null) {
+                           Log.e(LOG_TAG, "NFC feature advertised but the default adapter is NULL!");
+                       }
                     }
                 }
             } else if (id == R.id.development_settings) {
