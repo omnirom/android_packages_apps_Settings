@@ -56,6 +56,7 @@
     <!-- Screen off animation -->
     <string name="screen_off_animation">Screen-off animation</string>
 
+<<<<<<< HEAD
     <!-- AppOps additions -->
     <string name="appops_settings">Apps permissions</string>
     <string name="appops_sysapp_beware">Beware!</string>
@@ -71,5 +72,11 @@
     <string name="low_battery_warning_policy_sound">Sound only</string>
     <string name="battery_prefs_title">Options</string>
     <string name="battery_stats_title">Statistics</string>
+=======
+    <!--Lockscreen See Through-->
+    <string name="see_through_title">See through</string>
+    <string name="see_through_summary">Shows the content behind your lockscreen, your data may be visible to those around you</string>
+
+>>>>>>> 924ddb4... Lockscreen: See through (2/2)
 
 </resources>
