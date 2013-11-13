@@ -66,4 +66,10 @@
                 android:title="@string/wifi_display_settings_title"
                 android:fragment="com.android.settings.wfd.WifiDisplaySettings" />
 
+        <ListPreference
+                android:key="screen_off_animation"
+                android:title="@string/screen_off_animation"
+                android:entries="@array/screen_off_animation_entries"
+                android:entryValues="@array/screen_off_animation_values" />
+
 </PreferenceScreen>
