@@ -20,7 +20,7 @@
     <string name="mod_version_default">Unbekannt</string>
 
     <!-- Main list strings -->
-    <string name="header_category_interface">Interface</string>
+    <string name="header_category_interface">Oberfläche</string>
     <string name="performance_settings">Leistung</string>
     <string name="notification_light_settings">LED Benachrichtigung</string>
     <string name="header_button_settings">Buttons</string>
@@ -28,7 +28,7 @@
     <!-- Volume panel tweaks -->
     <string name="volume_adjust_sounds_enable_title">Änderungston</string>
     <string name="volume_adjust_sounds_enable_summary">Ton bei Lautstärkeänderung</string>
-    <string name="link_volume_ringtones">Link ringtone &amp; notifications volumes</string>
+    <string name="link_volume_ringtones">Gleiche Lautstärke für Klingelton &amp; Benachrichtigungen</string>
     <string name="volume_ring_only_description">Klingelton</string>
 
     <!-- Advanced reboot options -->
@@ -41,6 +41,6 @@
     <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
     <string name="show_cpu_info">Zeige CPU Informationen</string>
     <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
-    <string name="show_cpu_info_summary">Screen overlay showing current CPU info</string>
+    <string name="show_cpu_info_summary">Bildschirm-Overlay mit aktueller CPU Information</string>
 
 </resources>
