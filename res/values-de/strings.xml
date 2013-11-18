@@ -570,6 +570,8 @@
     <string name="wifi_scan_notify_remember_choice" msgid="5340097010842405981">"Nicht erneut anzeigen"</string>
     <string name="wifi_setting_sleep_policy_title" msgid="5149574280392680092">"WLAN im Ruhemodus aktiviert lassen"</string>
     <string name="wifi_setting_sleep_policy_error" msgid="8174902072673071961">"Beim Ändern der Einstellung ist ein Problem aufgetreten."</string>
+    <string name="wifi_setting_countrycode_title">WLAN Regionalcode</string>
+    <string name="wifi_setting_countrycode_summary">Festlegen des WLAN Regionalcodes</string>
     <string name="wifi_suspend_optimizations" msgid="1220174276403689487">"WLAN-Optimierung"</string>
     <string name="wifi_suspend_optimizations_summary" msgid="4151428966089116856">"Akkuverbrauch bei aktiviertem WLAN minimieren"</string>
     <string name="wifi_add_network" msgid="6234851776910938957">"Netzwerk hinzufügen"</string>
