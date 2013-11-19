@@ -40,7 +40,7 @@
             android:title="@string/battery_around_lockscreen_ring"
             android:defaultValue="true" />
 
-        <ListPreference
+       <ListPreference
             android:key="lock_after_timeout"
             android:title="@string/lock_after_timeout"
             android:summary="@string/lock_after_timeout_summary"
