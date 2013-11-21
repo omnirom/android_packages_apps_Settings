@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab89d9a9_94c6e89c",
+        "filename": "AndroidManifest.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 1000226
+      },
+      "writtenOn": "2013-11-21T21:34:22Z",
+      "side": 1,
+      "message": "another Derp :P",
+      "revId": "9c34b1249187d54d844d5e248fb4e35fc57c0a1f",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab89d9a9_d4c07082",
+        "filename": "AndroidManifest.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 1000226
+      },
+      "writtenOn": "2013-11-21T21:34:22Z",
+      "side": 1,
+      "message": "and we don\u0027t need this, right?",
+      "revId": "9c34b1249187d54d844d5e248fb4e35fc57c0a1f",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab89d9a9_b4c3ec8c",
+        "filename": "AndroidManifest.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 1000226
+      },
+      "writtenOn": "2013-11-21T21:34:22Z",
+      "side": 1,
+      "message": "here the same",
+      "revId": "9c34b1249187d54d844d5e248fb4e35fc57c0a1f",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
