@@ -83,4 +83,11 @@
     <string name="lock_numpad_random_always">Always</string>
     <string name="lock_numpad_random_on_request">On request</string>
 
+     <!--Battery Icon selection-->
+     <string name="battery_status_icon_title">Status icon</string>
+     <string name="battery_bar">Battery bar</string>
+     <string name="battery_bar_percent">Battery bar &amp; percent</string>
+     <string name="battery_circle">Battery circle</string>
+     <string name="battery_circle_percent">Battery circle &amp; percent</string>
+
 </resources>
