@@ -39,6 +39,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 
 import com.android.internal.os.PowerProfile;
 import com.android.settings.HelpUtils;
@@ -60,23 +61,30 @@ public class PowerUsageSummary extends PreferenceFragment implements
     private static final String KEY_APP_LIST = "app_list";
     private static final String KEY_BATTERY_STATUS = "battery_status";
     private static final String KEY_LOW_BATTERY_WARNING_POLICY = "pref_low_battery_warning_policy";
+    private static final String KEY_BATTERY_INDICATOR = "pref_battery_indicator";
     private static final String KEY_BATTERY_PREFS_CATEGORY = "battery_prefs";
     private static final String KEY_BATTERY_STATS_CATEGORY = "battery_stats";
 
-    private static final int MENU_STATS_TYPE = Menu.FIRST;
-    private static final int MENU_STATS_REFRESH = Menu.FIRST + 1;
-    private static final int MENU_HELP = Menu.FIRST + 2;
+    private static final int MENU_STATS_TYPE                = Menu.FIRST;
+    private static final int MENU_STATS_REFRESH             = Menu.FIRST + 1;
+    private static final int MENU_BATTERY_STYLE             = Menu.FIRST + 2;
+    private static final int SUBMENU_BATTERY_BAR            = Menu.FIRST + 3;
+    private static final int SUBMENU_BATTERY_BAR_PERCENT    = Menu.FIRST + 4;
+    private static final int SUBMENU_BATTERY_CIRCLE         = Menu.FIRST + 5;
+    private static final int SUBMENU_BATTERY_CIRCLE_PERCENT = Menu.FIRST + 6;
+    private static final int MENU_HELP                      = Menu.FIRST + 7;
 
     private PreferenceGroup mAppListGroup;
     private Preference mBatteryStatusPref;
     private ListPreference mLowBatteryWarning;
+    private ListPreference mBatteryIndicator;
     private PreferenceCategory mBatteryPrefsCat;
     private PreferenceCategory mBatteryStatsCat;
 
     private int mStatsType = BatteryStats.STATS_SINCE_CHARGED;
 
     private static final int MIN_POWER_THRESHOLD = 5;
-    private static final int MAX_ITEMS_TO_LIST = 10;
+    private static final int MAX_ITEMS_TO_LIST   = 10;
 
     private BatteryStatsHelper mStatsHelper;
 
@@ -125,6 +133,14 @@ public class PowerUsageSummary extends PreferenceFragment implements
         mLowBatteryWarning.setValue(String.valueOf(lowBatteryWarning));
         mLowBatteryWarning.setSummary(mLowBatteryWarning.getEntry());
         mLowBatteryWarning.setOnPreferenceChangeListener(this);
+
+        mBatteryIndicator =
+            (ListPreference) mAppListGroup.findPreference(KEY_BATTERY_INDICATOR);
+        int batteryIndicator = Settings.System.getInt(getActivity().getContentResolver(),
+                                    Settings.System.STATUS_BAR_BATTERY_STYLE, 0);
+        mBatteryIndicator.setValue(String.valueOf(batteryIndicator));
+        mBatteryIndicator.setSummary(mBatteryIndicator.getEntry());
+        mBatteryIndicator.setOnPreferenceChangeListener(this);
 
         setHasOptionsMenu(true);
     }
@@ -182,6 +198,14 @@ public class PowerUsageSummary extends PreferenceFragment implements
                     lowBatteryWarning);
             mLowBatteryWarning.setSummary(mLowBatteryWarning.getEntries()[index]);
             return true;
+        } else if (preference == mBatteryIndicator) {
+            int batteryIndicator = Integer.valueOf((String) newValue);
+            int index = mBatteryIndicator.findIndexOfValue((String) newValue);
+            Settings.System.putInt(getActivity().getContentResolver(),
+                    Settings.System.STATUS_BAR_BATTERY_STYLE,
+                     batteryIndicator);
+            mBatteryIndicator.setSummary(mBatteryIndicator.getEntries()[index]);
+            return true;
         }
         return false;
     }
@@ -196,8 +220,7 @@ public class PowerUsageSummary extends PreferenceFragment implements
         MenuItem refresh = menu.add(0, MENU_STATS_REFRESH, 0, R.string.menu_stats_refresh)
                 .setIcon(R.drawable.ic_menu_refresh_holo_dark)
                 .setAlphabeticShortcut('r');
-        refresh.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM |
-                MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        refresh.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
         String helpUrl;
         if (!TextUtils.isEmpty(helpUrl = getResources().getString(R.string.help_url_battery))) {
@@ -236,10 +259,12 @@ public class PowerUsageSummary extends PreferenceFragment implements
         mAppListGroup.removeAll();
         mAppListGroup.setOrderingAsAdded(false);
 
-        mBatteryPrefsCat.setOrder(-5);
+        mBatteryPrefsCat.setOrder(-6);
         mAppListGroup.addPreference(mBatteryPrefsCat);
-        mLowBatteryWarning.setOrder(-4);
+        mLowBatteryWarning.setOrder(-5);
         mAppListGroup.addPreference(mLowBatteryWarning);
+        mBatteryIndicator.setOrder(-4);
+        mAppListGroup.addPreference(mBatteryIndicator);
         mBatteryStatsCat.setOrder(-3);
         mAppListGroup.addPreference(mBatteryStatsCat);
 

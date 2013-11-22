@@ -88,4 +88,12 @@
     <string name="interface_menus_title">Menus</string>
     <string name="interface_notification_panel_title">Notification Drawer</string>
 
+     <!-- Battery Icon selection -->
+     <string name="pref_battery_indicator_title">Battery indicator</string>
+     <string name="battery_status_icon_title">Status icon</string>
+     <string name="battery_bar">Battery bar</string>
+     <string name="battery_bar_percent">Battery bar &amp; percent</string>
+     <string name="battery_circle">Battery circle</string>
+     <string name="battery_circle_percent">Battery circle &amp; percent</string>
+
 </resources>
