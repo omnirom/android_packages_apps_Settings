@@ -30,6 +30,14 @@
         android:entryValues="@array/pref_low_battery_warning_policy_values"
         android:defaultValue="0" />
 
+    <ListPreference
+        android:key="pref_battery_indicator"
+        android:title="@string/pref_battery_indicator_title"
+        android:dialogTitle="@string/pref_battery_indicator_title"
+        android:entries="@array/pref_battery_indicator_entries"
+        android:entryValues="@array/pref_battery_indicator_values"
+        android:defaultValue="0" />
+
     <PreferenceCategory
         android:key="battery_stats"
         android:title="@string/battery_stats_title" />
