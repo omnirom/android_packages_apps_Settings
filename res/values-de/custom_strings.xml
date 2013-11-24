@@ -38,9 +38,20 @@
     <!-- Lockscreen battery ring -->
     <string name="battery_around_lockscreen_ring">Batteriestatus um Entsperrsysmbol</string>
 
+	<!-- Android debugging over WiFi -->
+    <string name="adb_over_network">ADB über Netzwerk</string>
+    <string name="adb_over_network_summary">Aktiviert TCP/IP Debugging über Netzwerk (Wi-Fi, USB). Diese Einstellung wird bei einem Neustart zurückgesetzt.</string>
+
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">WARNUNG: Wenn ADB über Netzwerk aktiviert ist, ist dein Telefon anfällig für Angriffe über alle verbundenen Netzwerke, einschließlich GSM. Benutze diese Funktion nur, wenn du eine Verbindung zu vertrauenswürdigen Netzwerken hast. Möchtest du diese Funktion wirklich aktivieren ?</string>
+    <string name="lockscreen_quick_unlock_control_title">Schnellentsperrung</string>
+    <string name="lockscreen_quick_unlock_control_summary">Entsperrt das Telefon automatisch, sobald die richtige PIN bzw. Passwort eingegeben wird.</string>
+
     <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
     <string name="show_cpu_info">Zeige CPU Informationen</string>
     <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
     <string name="show_cpu_info_summary">Bildschirm-Overlay mit aktueller CPU Information</string>
 
+	<!-- Screen off animation -->
+    <string name="screen_off_animation">Bildschirm Abschaltanimation</string>
 </resources>
