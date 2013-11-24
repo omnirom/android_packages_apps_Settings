@@ -310,7 +310,8 @@
     <string name="show_owner_info_on_lockscreen_label" msgid="5074906168357568434">"Infos zum Eigentümer auf Sperrbildschirm anzeigen"</string>
     <string name="owner_info_settings_title" msgid="2723190010708381889">"Info zum Eigentümer"</string>
     <string name="security_enable_widgets_title" msgid="2754833397070967846">"Widgets aktivieren"</string>
-    <string name="security_enable_widgets_disabled_summary" msgid="1557090442377855233">"Vom Administrator deaktiviert"</string>
+    <string name="security_maximize_widgets_title">Sperrbildschirm Widgets maximieren</string>
+	<string name="security_enable_widgets_disabled_summary" msgid="1557090442377855233">"Vom Administrator deaktiviert"</string>
     <string name="owner_info_settings_summary" msgid="3800834657847339570"></string>
     <string name="owner_info_settings_edit_text_hint" msgid="4608681417960923911">"Text für Sperrbildschirm eingeben"</string>
     <string name="show_user_info_on_lockscreen_label" msgid="8408914624925608365">"Nutzerinformationen bei Bildschirmsperre anzeigen"</string>
