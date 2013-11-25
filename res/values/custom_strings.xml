@@ -335,6 +335,7 @@
 
     <!-- Lockscreen rotation -->
     <string name="display_lockscreen_rotation_title">Lockscreen</string>
+
     <string name="bluetooth_accept_all_files">Accept all file types</string>
 
     <!-- Increasing ringtone volume -->
@@ -356,4 +357,15 @@
     <string name="headset_plug_positive_title">None</string>
     <string name="headset_plug_neutral_title">Default</string>
     <string name="headset_plug_neutral_summary">System default music app</string>
+
+    <!-- Theme chooser -->
+    <string name="themes_settings_title">Themes</string>
+    <string name="themepacks_settings_title">Theme Packs</string>
+    <string name="styles_settings_title">Styles</string>
+    <string name="icons_settings_title">Icons</string>
+    <string name="fonts_settings_title">Fonts</string>
+    <string name="wallpaper_settings_title">Wallpapers</string>
+    <string name="lockscreen_wallpaper_settings_title">Lockscreen Wallpapers</string>
+    <string name="bootanim_settings_title">Boot Animations</string>
+    <string name="soundpack_settings_title">Sound Packs</string>
 </resources>
