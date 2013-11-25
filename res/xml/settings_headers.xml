@@ -76,6 +76,14 @@
         android:fragment="org.omnirom.omnigears.chameleonos.ActiveDisplaySettings"
         android:icon="@drawable/ic_settings_actived" />
 
+    <!-- Theme chooser -->
+    <header android:icon="@drawable/ic_settings_themes"
+            android:title="@string/themes_title">
+        <intent
+                android:action="android.intent.action.MAIN"
+                android:targetPackage="com.tmobile.themechooser"
+                android:targetClass="com.tmobile.themechooser.ThemeChooser" />
+
     <!-- DEVICE -->
     <header android:id="@+id/device_section"
         android:title="@string/header_category_device" />
