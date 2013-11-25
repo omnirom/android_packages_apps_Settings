@@ -97,6 +97,14 @@
         android:fragment="org.omnirom.omnigears.interfacesettings.MoreInterfaceSettings"
         android:icon="@drawable/empty_icon" />
 
+    <!-- Theme chooser -->
+    <header
+        android:id="@+id/theme_settings"
+        android:title="@string/themes_settings_title"
+        android:breadCrumbTitle="@string/themes_settings_title"
+        android:fragment="com.android.settings.ThemeSettings"
+        android:icon="@drawable/prd_ic_themepacks" />
+
     <!-- DEVICE -->
     <header android:id="@+id/device_section"
         android:title="@string/header_category_device" />
