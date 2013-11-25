@@ -318,4 +318,8 @@
 
     <!-- Lockscreen rotation -->
     <string name="display_lockscreen_rotation_title">Lockscreen</string>
+
+    <!-- Theme chooser -->
+    <string name="themes_settings_title">Themes</string>
+
 </resources>
