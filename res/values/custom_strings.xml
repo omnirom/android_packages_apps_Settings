@@ -292,4 +292,8 @@
     <string name="weekday_thursday">Thursday</string>
     <string name="weekday_friday">Friday</string>
     <string name="weekday_saturday">Saturday</string>
+
+    <!-- Theme chooser -->
+    <string name="themes_title">Themes</string>
+
 </resources>
