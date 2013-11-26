@@ -62,6 +62,11 @@
                 android:fragment="org.omnirom.omnigears.notificationlight.NotificationLightSettings" />
 
         <PreferenceScreen
+                android:key="battery_light"
+                android:title="@string/battery_light_settings"
+                android:fragment="org.omnirom.omnigears.batterylight.BatteryLightSettings" />
+
+        <PreferenceScreen
                 android:key="wifi_display"
                 android:title="@string/wifi_display_settings_title"
                 android:fragment="com.android.settings.wfd.WifiDisplaySettings" />

@@ -60,6 +60,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private static final String KEY_ACCELEROMETER = "accelerometer";
     private static final String KEY_FONT_SIZE = "font_size";
     private static final String KEY_NOTIFICATION_LIGHT = "notification_light";
+    private static final String KEY_CHARGING_LIGHT = "charging_light";
     private static final String KEY_SCREEN_SAVER = "screensaver";
     private static final String KEY_WIFI_DISPLAY = "wifi_display";
     private static final String KEY_SCREEN_OFF_ANIMATION = "screen_off_animation";
@@ -71,6 +72,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private CheckBoxPreference mAccelerometer;
     private WarnedListPreference mFontSizePref;
     private Preference mNotificationLight;
+    private Preference mChargingLight;
 
     private final Configuration mCurConfig = new Configuration();
     
@@ -137,6 +139,13 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
                 && getResources().getBoolean(
                         com.android.internal.R.bool.config_intrusiveNotificationLed) == false) {
             getPreferenceScreen().removePreference(mNotificationLight);
+        }
+
+        mChargingLight = (Preference) findPreference(KEY_CHARGING_LIGHT);
+        if (mChargingLight != null
+                && getResources().getBoolean(
+                        com.android.internal.R.bool.config_intrusiveBatteryLed) == false) {
+            getPreferenceScreen().removePreference(mChargingLight);
         }
 
         mDisplayManager = (DisplayManager)getActivity().getSystemService(
