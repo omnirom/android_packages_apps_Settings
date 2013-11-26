@@ -55,4 +55,9 @@
     <!-- Screen off animation -->
     <string name="screen_off_animation">Screen-off animation</string>
 
+    <!-- AppOps additions -->
+    <string name="appops_settings">Apps permissions</string>
+    <string name="appops_sysapp_beware">Beware!</string>
+    <string name="appops_sysapp_warning">"Changing permissions of core Android components might lead to undesired behavior. Change settings here at your own risk!</string>
+
 </resources>
