@@ -55,4 +55,7 @@
     <!-- Screen off animation -->
     <string name="screen_off_animation">Screen-off animation</string>
 
+    <!-- Font size sample text -->
+    <string name="font_size_sample">Sample</string>
+
 </resources>
