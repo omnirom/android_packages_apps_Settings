@@ -60,4 +60,7 @@
     <string name="appops_sysapp_beware">Beware!</string>
     <string name="appops_sysapp_warning">"Changing permissions of core Android components might lead to undesired behavior. Change settings here at your own risk!</string>
 
+    <!-- Font size sample text -->
+    <string name="font_size_sample">Sample</string>
+
 </resources>
