@@ -63,4 +63,13 @@
     <!-- Font size sample text -->
     <string name="font_size_sample">Sample</string>
 
+    <!--  About device screen Hardware info -->
+    <string name="hardware_info">Hardware info</string>
+    <string name="device_rear_camera">Rear camera</string>
+    <string name="device_front_camera">Front facing camera</string>
+    <string name="device_screen_resolution">Screen resolution</string>
+    <string name="gpu_info">GPU</string>
+    <string name="cpu_info">CPU</string>
+    <string name="mem_info">Memory</string>
+
 </resources>
