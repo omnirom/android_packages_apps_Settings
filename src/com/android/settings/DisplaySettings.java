@@ -60,7 +60,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private static final String KEY_ACCELEROMETER = "accelerometer";
     private static final String KEY_FONT_SIZE = "font_size";
     private static final String KEY_NOTIFICATION_LIGHT = "notification_light";
-    private static final String KEY_CHARGING_LIGHT = "charging_light";
+    private static final String KEY_BATTERY_LIGHT = "battery_light";
     private static final String KEY_SCREEN_SAVER = "screensaver";
     private static final String KEY_WIFI_DISPLAY = "wifi_display";
     private static final String KEY_SCREEN_OFF_ANIMATION = "screen_off_animation";
@@ -141,7 +141,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             getPreferenceScreen().removePreference(mNotificationLight);
         }
 
-        mChargingLight = (Preference) findPreference(KEY_CHARGING_LIGHT);
+        mChargingLight = (Preference) findPreference(KEY_BATTERY_LIGHT);
         if (mChargingLight != null
                 && getResources().getBoolean(
                         com.android.internal.R.bool.config_intrusiveBatteryLed) == false) {
