@@ -23,6 +23,7 @@
     <string name="header_category_interface">Oberfläche</string>
     <string name="performance_settings">Leistung</string>
     <string name="notification_light_settings">LED Benachrichtigung</string>
+    <string name="battery_light_settings">Akku LED</string>
     <string name="header_button_settings">Buttons</string>
 
     <!-- Volume panel tweaks -->
@@ -38,7 +39,7 @@
     <!-- Lockscreen battery ring -->
     <string name="battery_around_lockscreen_ring">Batteriestatus um Entsperrsysmbol</string>
 
-	<!-- Android debugging over WiFi -->
+    <!-- Android debugging over WiFi -->
     <string name="adb_over_network">ADB über Netzwerk</string>
     <string name="adb_over_network_summary">Aktiviert TCP/IP Debugging über Netzwerk (Wi-Fi, USB). Diese Einstellung wird bei einem Neustart zurückgesetzt.</string>
 
@@ -52,6 +53,23 @@
     <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
     <string name="show_cpu_info_summary">Bildschirm-Overlay mit aktueller CPU Information</string>
 
-	<!-- Screen off animation -->
+    <!-- Screen off animation -->
     <string name="screen_off_animation">Bildschirm Abschaltanimation</string>
+
+    <!-- AppOps additions -->
+    <string name="appops_settings">Apps Berechtigungen</string>
+    <string name="appops_sysapp_beware">Achtung!</string>
+    <string name="appops_sysapp_warning">"Ändern von Berechtigungen der Android Hauptanwendungen kann zu unerwünschtem Verhalten führen. Ändere diese Einstellungen auf eigenes Risiko!</string>
+
+    <!-- Low battery warning policy -->
+    <string name="pref_low_battery_warning_policy_title">Warnung bei schwachem Akku</string>
+    <string name="pref_low_battery_warning_policy_dialog_title">Signalisiere schwachen Akku durch</string>
+    <string name="low_battery_warning_policy_popup_sound">Pop-up und Ton</string>
+    <string name="low_battery_warning_policy_notif_sound">Benachrichtigung und Ton</string>
+    <string name="low_battery_warning_policy_popup">Nur Pop-up</string>
+    <string name="low_battery_warning_policy_notif">Nur Benachrichtigung</string>
+    <string name="low_battery_warning_policy_sound">Nur Ton</string>
+    <string name="battery_prefs_title">Optionen</string>
+    <string name="battery_stats_title">Statistiken</string>
+
 </resources>
