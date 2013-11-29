@@ -75,6 +75,13 @@
             android:title="@string/enable_adb"
             android:summary="@string/enable_adb_summary"/>
 
+	    <ListPreference
+            android:key="root_access"
+            android:title="@string/root_access"
+            android:persistent="false"
+            android:entries="@array/root_access_entries"
+            android:entryValues="@array/root_access_values" />
+
         <Preference android:key="clear_adb_keys"
                 android:title="@string/clear_adb_keys" />
 
