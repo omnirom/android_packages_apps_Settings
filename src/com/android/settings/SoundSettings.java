@@ -173,7 +173,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
         mLockSounds = (CheckBoxPreference) findPreference(KEY_LOCK_SOUNDS);
         mLockSounds.setPersistent(false);
         mLockSounds.setChecked(Settings.System.getInt(resolver,
-                Settings.System.LOCKSCREEN_SOUNDS_ENABLED, 1) != 0);
+                Settings.System.LOCKSCREEN_SOUNDS_ENABLED, 0) != 0);
 
         mRingtonePreference = findPreference(KEY_RINGTONE);
         mNotificationPreference = findPreference(KEY_NOTIFICATION_SOUND);
