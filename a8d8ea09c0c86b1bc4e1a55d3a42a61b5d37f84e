@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b8ed5af_fe6ab6af",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2013-11-29T18:46:50Z",
+      "side": 1,
+      "message": "LED--Benachrichtigungen",
+      "revId": "a8d8ea09c0c86b1bc4e1a55d3a42a61b5d37f84e",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b8ed5af_be702ea6",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2013-11-29T18:46:50Z",
+      "side": 1,
+      "message": "Schreibt man im Deutschen mit Bindestrich:\nhttp://de.wikipedia.org/wiki/Leerzeichen_in_Komposita",
+      "revId": "a8d8ea09c0c86b1bc4e1a55d3a42a61b5d37f84e",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b8ed5af_de75fa94",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2013-11-29T18:46:50Z",
+      "side": 1,
+      "message": "App-Berechtigungen",
+      "revId": "a8d8ea09c0c86b1bc4e1a55d3a42a61b5d37f84e",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
