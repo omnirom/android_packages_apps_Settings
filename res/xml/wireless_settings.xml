@@ -59,6 +59,10 @@
             android:targetClass="com.android.phone.MobileNetworkSettings" />
     </PreferenceScreen>
 
+    <PreferenceScreen
+        android:fragment="org.omnirom.omnigears.netmon.NetworkMonitorSettings"
+        android:title="@string/network_monitor_title" />
+
     <Preference
         android:key="manage_mobile_plan"
         android:title="@string/manage_mobile_plan_title"
