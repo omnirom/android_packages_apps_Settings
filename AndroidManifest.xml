@@ -617,6 +617,13 @@
                 android:resource="@id/active_display" />
         </activity>
 
+        <activity android:name=".aokp.romcontrol.fragments.Installer"
+            android:label="@string/installer">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+        </activity>
+
         <!-- Keep compatibility with old shortcuts. -->
         <activity-alias android:name="SoundSettings"
                 android:label="@string/sound_settings"
