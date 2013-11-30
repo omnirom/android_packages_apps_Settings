@@ -76,6 +76,13 @@
         android:fragment="org.omnirom.omnigears.chameleonos.ActiveDisplaySettings"
         android:icon="@drawable/ic_settings_actived" />
 
+    <header
+        android:id="@+id/installer"
+        android:title="@string/installer"
+        android:summary="@string/header_summary_installer"
+        android:icon="@drawable/ic_rom_control_installer"
+        android:fragment="com.android.settings.aokp.fragments.Installer" />
+
     <!-- DEVICE -->
     <header android:id="@+id/device_section"
         android:title="@string/header_category_device" />
