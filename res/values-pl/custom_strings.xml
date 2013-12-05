@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2012-2013 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- About phone screen,  setting option name-->
+    <string name="mod_version">Wersja Omni</string>
+    <string name="mod_version_default">Nieznana</string>
+
+    <!-- Main list strings -->
+    <string name="header_category_interface">Interfejs</string>
+    <string name="performance_settings">Wydajność</string>
+    <string name="notification_light_settings">Dioda powiadomień</string>
+    <string name="battery_light_settings">Dioda baterii</string>
+    <string name="header_button_settings">Przyciski</string>
+
+    <!-- Volume panel tweaks -->
+    <string name="volume_adjust_sounds_enable_title">Dźwięk regulacji głośności</string>
+    <string name="volume_adjust_sounds_enable_summary">Odtwarzaj dźwięk podczas regulacji głośności za pomocą przycisków</string>
+    <string name="link_volume_ringtones">Połącz głośność dzwonka &amp; powiadomień</string>
+    <string name="volume_ring_only_description">Dzwonek</string>
+
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">Zaawansowany restart</string>
+    <string name="advanced_reboot_summary">Umożliwia ponowne uruchomienie urządzenia w trybie recovery lub bootloadera</string>
+
+    <!-- Lockscreen battery ring -->
+    <string name="battery_around_lockscreen_ring">Stan baterii wokół pierścienia odblokowania</string>
+
+    <!-- Android debugging over WiFi -->
+    <string name="adb_over_network">ADB przez sieć</string>
+    <string name="adb_over_network_summary">Aktywuj debugowanie TCP/IP przez interfejs sieciowy (Wi-Fi, sieci USB). Ustawienie zostanie zresetowane po ponownym uruchomieniu</string>
+    <string name="adb_over_network_warning">UWAGA: Kiedy ADB przez sieć jest aktywne, telefon jest otwarty na instrukcje w każdej połączonej sieci, w tym GSM!\n\nUżywaj tej funkcji tylko, gdy jesteś połączony z zaufanymi sieciami.\n\nCzy na pewno chcesz aktywować?</string>
+
+    <!-- Lockscreen quick unlock -->
+    <string name="lockscreen_quick_unlock_control_title">Szybkie odblokowanie</string>
+    <string name="lockscreen_quick_unlock_control_summary">Odblokuj automatycznie po wpisaniu prawidłowego hasła/PIN-u</string>
+
+    <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+    <string name="show_cpu_info">Pokaż informacje o CPU</string>
+    <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+    <string name="show_cpu_info_summary">Nakładka ekranowa pokazująca informacje o CPU</string>
+
+    <!-- Screen off animation -->
+    <string name="screen_off_animation_title">Animacja wygaszania ekranu</string>
+    <string name="screen_off_fadeout">Zanikanie</string>
+    <string name="screen_off_electronbeam">Strumień elektronów</string>
+    <string name="screen_off_scaledown">Pomniejszanie</string>
+
+    <!-- AppOps additions -->
+    <string name="appops_settings">Uprawnienia aplikacji</string>
+    <string name="appops_sysapp_beware">Uwaga!</string>
+    <string name="appops_sysapp_warning">"Zmiana uprawnień bazowych elementów systemu android może prowadzić do niechcianych zachowań. Zmieniasz te uprawnienia na własne ryzyko!</string>
+
+    <!-- Low battery warning policy -->
+    <string name="pref_low_battery_warning_policy_title">Ostrzeżenie o niskim poziomie baterii</string>
+    <string name="pref_low_battery_warning_policy_dialog_title">Ostrzegaj poprzez</string>
+    <string name="low_battery_warning_policy_popup_sound">Pop-up i dźwięk</string>
+    <string name="low_battery_warning_policy_notif_sound">Powiadomienie i dźwięk</string>
+    <string name="low_battery_warning_policy_popup">Tylko komunikat pop-up</string>
+    <string name="low_battery_warning_policy_notif">Tylko powiadomienie</string>
+    <string name="low_battery_warning_policy_sound">Tylko dźwięk</string>
+    <string name="battery_prefs_title">Opcje</string>
+    <string name="battery_stats_title">Statystyki</string>
+
+    <!-- Setting checkbox summary for displaying USB debugging notification -->
+    <string name="adb_notify">Powiadomienie trybu debugowania</string>
+    <string name="adb_notify_summary">Wyświetla powiadomienie, gdy debugowanie USB jest podłączone</string>
+
+    <!-- Lockscreen pin shuffle -->
+    <string name="lock_numpad_random_title">Zmiana kolejności przycisków klawiatury PIN</string>
+    <string name="lock_numpad_random_dialog_title">Losowy układ klawiatury PIN</string>
+    <string name="lock_numpad_random_off">Wyłączony</string>
+    <string name="lock_numpad_random_always">Zawsze</string>
+    <string name="lock_numpad_random_on_request">Na żądanie</string>
+
+    <string name="interface_more_title">Więcej\u2026</string>
+    <string name="interface_bars_title">Paski</string>
+    <string name="interface_menus_title">Menu</string>
+    <string name="interface_notification_panel_title">Panel powiadomień</string>
+
+</resources>
