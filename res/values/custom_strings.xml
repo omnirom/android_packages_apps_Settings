@@ -83,4 +83,9 @@
     <string name="lock_numpad_random_always">Always</string>
     <string name="lock_numpad_random_on_request">On request</string>
 
+    <string name="interface_more_title">More\u2026</string>
+    <string name="interface_bars_title">Bars</string>
+    <string name="interface_menus_title">Menus</string>
+    <string name="interface_notification_panel_title">Notification Drawer</string>
+       
 </resources>
