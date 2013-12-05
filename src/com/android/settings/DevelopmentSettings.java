@@ -526,18 +526,18 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
 
     private void resetAdvancedRebootOptions() {
         Settings.Secure.putInt(getActivity().getContentResolver(),
-                Settings.Global.ADVANCED_REBOOT, 0);
+                Settings.Secure.ADVANCED_REBOOT, 0);
     }
 
     private void writeAdvancedRebootOptions() {
         Settings.Secure.putInt(getActivity().getContentResolver(),
-                Settings.Global.ADVANCED_REBOOT,
+                Settings.Secure.ADVANCED_REBOOT,
                 mAdvancedReboot.isChecked() ? 1 : 0);
     }
 
     private void updateAdvancedRebootOptions() {
         mAdvancedReboot.setChecked(Settings.Secure.getInt(getActivity().getContentResolver(),
-                Settings.Global.ADVANCED_REBOOT, 1) != 0);
+                Settings.Secure.ADVANCED_REBOOT, 1) != 0);
      }
 
     private void resetDangerousOptions() {
