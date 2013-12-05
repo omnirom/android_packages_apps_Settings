@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_c6bd3864",
+        "filename": "AndroidManifest.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2013-12-05T00:47:16Z",
+      "side": 1,
+      "message": "another one :P",
+      "revId": "f49450dedfc1a4c47c3e625290f0393bc99f40fe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_a6b82c75",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2013-12-05T00:47:16Z",
+      "side": 1,
+      "message": "white :D",
+      "revId": "f49450dedfc1a4c47c3e625290f0393bc99f40fe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_668e24d6",
+        "filename": "res/xml/settings_headers.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2013-12-05T00:47:16Z",
+      "side": 1,
+      "message": "whity :D",
+      "revId": "f49450dedfc1a4c47c3e625290f0393bc99f40fe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_868b30c3",
+        "filename": "res/xml/settings_headers.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2013-12-05T00:47:16Z",
+      "side": 1,
+      "message": "another one :)",
+      "revId": "f49450dedfc1a4c47c3e625290f0393bc99f40fe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
