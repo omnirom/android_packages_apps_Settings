@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_11575c07",
+        "filename": "src/com/android/settings/DisplaySettings.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2013-12-05T11:07:11Z",
+      "side": 1,
+      "message": "Why do this on onResume? Should be in onCreate like for all other settings since this doesnt need to be reevaluated",
+      "revId": "2e789cc47babdc7101d821402189bae4667a136c",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
