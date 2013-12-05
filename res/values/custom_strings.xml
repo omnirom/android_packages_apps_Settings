@@ -55,6 +55,9 @@
 
     <!-- Screen off animation -->
     <string name="screen_off_animation">Screen-off animation</string>
+    <string name="screen_off_fadeout">Fade out</string>
+    <string name="screen_off_electronbeam">Electron beam</string>
+    <string name="screen_off_scaledown">Scale down</string>
 
     <!-- AppOps additions -->
     <string name="appops_settings">Apps permissions</string>
