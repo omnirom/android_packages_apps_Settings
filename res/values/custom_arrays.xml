@@ -21,9 +21,9 @@
 
     <!-- Screen-off animations -->
     <string-array name="screen_off_animation_entries">
-        <item>Fade-out</item>
-        <item>Electron beam</item>
-        <item>Scale down</item>
+        <item>@string/screen_off_fadeout</item>
+        <item>@string/screen_off_electronbeam</item>
+        <item>@string/screen_off_scaledown</item>
     </string-array>
 
     <string-array name="screen_off_animation_values">
