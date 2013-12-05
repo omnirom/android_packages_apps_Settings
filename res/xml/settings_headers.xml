@@ -63,11 +63,25 @@
         android:title="@string/header_category_interface" />
 
     <header
-        android:id="@+id/bars_and_menus"
-        android:title="@string/bars_and_menus_settings"
-        android:breadCrumbTitle="@string/bars_and_menus_settings"
-        android:fragment="org.omnirom.omnigears.BarsAndMenusSettings"
-        android:icon="@drawable/ic_menu_add" />
+        android:id="@+id/interface_bars"
+        android:title="@string/interface_bars_title"
+        android:breadCrumbTitle="@string/interface_bars_title"
+        android:fragment="org.omnirom.omnigears.interfacesettings.BarsSettings"
+        android:icon="@drawable/ic_bars" />
+
+    <header
+        android:id="@+id/interface_menus"
+        android:title="@string/interface_menus_title"
+        android:breadCrumbTitle="@string/interface_menus_title"
+        android:fragment="org.omnirom.omnigears.interfacesettings.MenusSettings"
+        android:icon="@drawable/ic_menus" />
+
+    <header
+        android:id="@+id/interface_notification_panel"
+        android:title="@string/interface_notification_panel_title"
+        android:breadCrumbTitle="@string/interface_notification_panel_title"
+        android:fragment="org.omnirom.omnigears.interfacesettings.NotificationPanelSettings"
+        android:icon="@drawable/ic_notifications" />
 
     <header
         android:id="@+id/active_display"
@@ -75,6 +89,13 @@
         android:breadCrumbTitle="@string/active_display_settings"
         android:fragment="org.omnirom.omnigears.chameleonos.ActiveDisplaySettings"
         android:icon="@drawable/ic_settings_actived" />
+
+    <header
+        android:id="@+id/interface_more"
+        android:title="@string/interface_more_title"
+        android:breadCrumbTitle="@string/interface_more_title"
+        android:fragment="org.omnirom.omnigears.interfacesettings.MoreInterfaceSettings"
+        android:icon="@drawable/empty_icon" />
 
     <!-- DEVICE -->
     <header android:id="@+id/device_section"
