@@ -16,6 +16,24 @@
       "revId": "10bbe8b781874f8cc79e6627a58dcf343251ad91",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_2c7a3bb9",
+        "filename": "res/values-es/custom_arrays.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2013-12-06T19:40:57Z",
+      "side": 1,
+      "message": "Pues entonces esta mal este patch: https://gerrit.omnirom.org/#/c/3262/2/res/values/custom_arrays.xml  . Lo he copiado tal cual está ahi",
+      "parentUuid": "6b8b61a3_6c8e03d6",
+      "revId": "10bbe8b781874f8cc79e6627a58dcf343251ad91",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
