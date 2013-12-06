@@ -23,6 +23,7 @@
     <string name="header_category_interface">Interfaz</string>
     <string name="performance_settings">Rendimiento</string>
     <string name="notification_light_settings">LED de notificaciones</string>
+    <string name="battery_light_settings">LED de la batería</string>
     <string name="header_button_settings">Botones</string>
 
     <!-- Volume panel tweaks -->
@@ -38,6 +39,15 @@
     <!-- Lockscreen battery ring -->
     <string name="battery_around_lockscreen_ring">Indicador de la batería alrededor del anillo de desbloqueo</string>
 
+    <!-- Android debugging over WiFi -->
+    <string name="adb_over_network">ADB sobre la red</string>
+    <string name="adb_over_network_summary">Habilitar la depuración TCP / IP a través de interfaces de red (Wi-Fi, redes USB). Este ajuste se restablece al reiniciar</string>
+
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">¡ADVERTENCIA: Cuando ADB sobre la red está activado, el teléfono está abierto para las intrusiones en todas las redes conectadas, incluyendo la red de datos GSM!\n\nSólo utilizar esta función cuando esté conectado en redes de confianza.\n\n¿Realmente desea activar esta función?</string>
+    <string name="lockscreen_quick_unlock_control_title">Desbloqueo rápido</string>
+    <string name="lockscreen_quick_unlock_control_summary">Desbloquear automáticamente cuando se introduzca el PIN/la contraseña correcta</string>
+
     <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
     <string name="show_cpu_info">Mostrar información de la CPU</string>
     <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
@@ -45,5 +55,52 @@
 
     <!-- Screen off animation -->
     <string name="screen_off_animation">Animación al apagar la pantalla</string>
+    <string name="screen_off_fadeout">Desvanecer</string>
+    <string name="screen_off_electronbeam">Haz de electrones</string>
+    <string name="screen_off_scaledown">Reducir proporcionalmente</string>
+
+    <!-- AppOps additions -->
+    <string name="appops_settings">Permisos de las aplicaciones</string>
+    <string name="appops_sysapp_beware">Cuidado!</string>
+    <string name="appops_sysapp_warning">"Cambiar los permisos de los componentes básicos de Android podría llevar a un comportamiento no deseado. ¡Cambie la configuración de aquí a su propio riesgo!</string>
+
+    <!-- Low battery warning policy -->
+    <string name="pref_low_battery_warning_policy_title">Aviso de batería baja</string>
+    <string name="pref_low_battery_warning_policy_dialog_title">Indicar la batería baja con</string>
+    <string name="low_battery_warning_policy_popup_sound">Un pop-up y sonido</string>
+    <string name="low_battery_warning_policy_notif_sound">Notificación y sonido</string>
+    <string name="low_battery_warning_policy_popup">Solo un pop-up</string>
+    <string name="low_battery_warning_policy_notif">Solo notificación</string>
+    <string name="low_battery_warning_policy_sound">Solo sonido</string>
+    <string name="battery_prefs_title">Opciones</string>
+    <string name="battery_stats_title">Estadísticas</string>
+
+    <!-- Setting checkbox summary for displaying USB debugging notification -->
+    <string name="adb_notify">Notificar depuración USB</string>
+    <string name="adb_notify_summary">Mostrar una notificación cuando se conecte la depuración USB</string>
+
+    <!-- Lockscreen pin shuffle -->
+    <string name="lock_numpad_random_title">Cambiar el orden de los números del teclado PIN</string>
+    <string name="lock_numpad_random_dialog_title">Orden aleatorio del teclado PIN</string>
+    <string name="lock_numpad_random_off">Desactivado</string>
+    <string name="lock_numpad_random_always">Siempre</string>
+    <string name="lock_numpad_random_on_request">Bajo demanda</string>
+
+    <string name="interface_more_title">Más\u2026</string>
+    <string name="interface_bars_title">Barras</string>
+    <string name="interface_menus_title">Menús</string>
+    <string name="interface_notification_panel_title">Panel de Notificaciones</string>
+
+    <!-- Battery Icon selection -->
+    <string name="pref_battery_indicator_title">Indicador de la batería</string>
+    <string name="battery_status_icon_title">Estado del icono</string>
+    <string name="battery_bar">Indicador de barra</string>
+    <string name="battery_bar_percent">Indicador de barra con porcentaje</string>
+    <string name="battery_circle">Indicadir circular</string>
+    <string name="battery_circle_percent">Indicador circular con porcentaje</string>
+
+    <!-- Turn on display when power connected; turn off display when power disconnected -->
+    <string name="wake_when_plugged_or_unplugged_title">Despertar al conectar</string>
+    <string name="wake_when_plugged_or_unplugged_summary">Encender la pantalla al conectar o desconectar el cargador</string>
 
 </resources>
