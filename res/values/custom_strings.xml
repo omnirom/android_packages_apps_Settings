@@ -95,6 +95,7 @@
     <string name="pref_battery_indicator_title">Battery indicator</string>
     <string name="battery_status_icon_title">Status icon</string>
     <string name="battery_bar">Battery bar</string>
+
     <string name="battery_bar_percent">Battery bar &amp; percent</string>
     <string name="battery_circle">Battery circle</string>
     <string name="battery_circle_percent">Battery circle &amp; percent</string>
@@ -102,5 +103,9 @@
     <!-- Turn on display when power connected; turn off display when power disconnected -->
     <string name="wake_when_plugged_or_unplugged_title">Wake on plug</string>
     <string name="wake_when_plugged_or_unplugged_summary">Turn the screen on when connecting or disconnecting the charger</string>
+
+    <!-- security settings menu unlock -->
+    <string name="unlock_menu_unlock_title">Menu unlock</string>
+    <string name="unlock_menu_unlock_summary">Pressing the menu button unlocks the device</string>
 
 </resources>
