@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_6c8e03d6",
+        "filename": "res/values-es/custom_arrays.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000174
+      },
+      "writtenOn": "2013-12-06T18:42:56Z",
+      "side": 1,
+      "message": "Es \"electrobeam\" , te sobra la n",
+      "revId": "10bbe8b781874f8cc79e6627a58dcf343251ad91",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
