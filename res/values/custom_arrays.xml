@@ -20,20 +20,20 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- Screen-off animations -->
-    <string-array name="screen_off_animation_entries">
+    <string-array name="screen_off_animation_entries" translatable="false">
         <item>@string/screen_off_fadeout</item>
         <item>@string/screen_off_electronbeam</item>
         <item>@string/screen_off_scaledown</item>
     </string-array>
 
-    <string-array name="screen_off_animation_values">
+    <string-array name="screen_off_animation_values" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
     </string-array>
 
     <!-- Low battery warning policy -->
-    <string-array name="pref_low_battery_warning_policy_entries">
+    <string-array name="pref_low_battery_warning_policy_entries" translatable="false">
         <item>@string/low_battery_warning_policy_popup_sound</item>
         <item>@string/low_battery_warning_policy_notif_sound</item>
         <item>@string/low_battery_warning_policy_popup</item>
@@ -52,7 +52,7 @@
     </string-array>
 
     <!-- Random PIN lock view -->
-    <string-array name="lock_numpad_random_entries">
+    <string-array name="lock_numpad_random_entries" translatable="false">
         <item>@string/lock_numpad_random_off</item>
         <item>@string/lock_numpad_random_always</item>
         <item>@string/lock_numpad_random_on_request</item>
