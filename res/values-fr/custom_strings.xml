@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2013 The OmniROM Project
+
+     Parts Copyright (C) 2012-2013 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="mod_version">Version d\'Omni</string>
+    <string name="mod_version_default">Inconnu</string>
+    <string name="header_category_interface">Interface</string>
+    <string name="performance_settings">Performance</string>
+    <string name="notification_light_settings">LED de notification</string>
+    <string name="battery_light_settings">Voyant de la batterie</string>
+    <string name="header_button_settings">Boutons</string>
+    <string name="volume_adjust_sounds_enable_title">Son au réglage du volume</string>
+    <string name="volume_adjust_sounds_enable_summary">Émettre un son lors du réglage du volume avec les touches</string>
+    <string name="link_volume_ringtones">Lier le volume des notifications et de la sonnerie</string>
+    <string name="volume_ring_only_description">Sonnerie</string>
+    <string name="advanced_reboot_title">Redémarrage avancé</string>
+    <string name="advanced_reboot_summary">Inclure les options de redémarrage en mode recovery et bootloader dans le menu marche/arrêt lorsque l\'appareil est déverrouillé</string>
+    <string name="battery_around_lockscreen_ring">Niveau de batterie autour du rond de déverrouillage</string>
+    <string name="adb_over_network">ADB par réseau</string>
+    <string name="adb_over_network_summary">Activer le débogage TCP/IP sur toutes les interfaces réseaux (réseaux USB, Wi-Fi et Bluetooth). Ce paramètre est réinitialisé au redémarrage</string>
+    <string name="adb_over_network_warning">ATTENTION : Lorsque cette fonction est activée, votre appareil est ouvert aux intrusions sur tous les réseaux connectés, y compris via le réseau mobile\u00A0!\n\nN\'utilisez cette fonctionnalité que sur des réseaux de confiance.\n\nContinuer\u00A0?</string>
+    <string name="lockscreen_quick_unlock_control_title">Déverrouillage rapide</string>
+    <string name="lockscreen_quick_unlock_control_summary">Déverrouiller automatiquement l\'appareil lors que le bon code PIN est rentré</string>
+    <string name="show_cpu_info">Affichage infos CPU</string>
+    <string name="show_cpu_info_summary">Afficher les informations du CPU sur l\'écran</string>
+    <string name="screen_off_animation">Animation à l\'extinction</string>
+    <string name="screen_off_fadeout">Fondu</string>
+    <string name="screen_off_electronbeam">Faisceau d\'électrons</string>
+    <string name="screen_off_scaledown">Réduction</string>
+    <string name="appops_settings">Sécurité des applications</string>
+    <string name="appops_sysapp_beware">Attention\u00A0!</string>
+    <string name="appops_sysapp_warning">La modification des autorisations des composants de base d\'Android pourrait conduire à un comportement indésirable. Modifiez ces paramètres à vos risques et périls\u00A0!</string>
+    <string name="pref_low_battery_warning_policy_title">Avertissement de batterie faible</string>
+    <string name="pref_low_battery_warning_policy_dialog_title">Indication de batterie faible</string>
+    <string name="low_battery_warning_policy_popup_sound">Fenêtre de dialogue et son</string>
+    <string name="low_battery_warning_policy_notif_sound">Son et notification</string>
+    <string name="low_battery_warning_policy_popup">Fenêtre de dialogue uniquement</string>
+    <string name="low_battery_warning_policy_notif">Notification uniquement</string>
+    <string name="low_battery_warning_policy_sound">Son uniquement</string>
+    <string name="battery_prefs_title">Options</string>
+    <string name="battery_stats_title">Statistiques</string>
+    <string name="adb_notify">Notification de débogage USB</string>
+    <string name="adb_notify_summary">Afficher une notification lorsque le débogage USB est actif</string>
+    <string name="lock_numpad_random_title">Changer l\'ordre des numéros du pavé numérique</string>
+    <string name="lock_numpad_random_dialog_title">Ordre des numéros aléatoire</string>
+    <string name="lock_numpad_random_off">Désactivé</string>
+    <string name="lock_numpad_random_always">Toujours</string>
+    <string name="lock_numpad_random_on_request">Sur demande</string>
+    <string name="interface_more_title">Plus\u2026</string>
+    <string name="interface_bars_title">Barre</string>
+    <string name="interface_menus_title">Menu</string>
+    <string name="interface_notification_panel_title">Panneau des notifications</string>
+    <string name="pref_battery_indicator_title">Indicateur de batterie</string>
+    <string name="battery_status_icon_title">Icône de statut</string>
+    <string name="battery_bar">Barre</string>
+    <string name="battery_bar_percent">Barre et pourcentage</string>
+    <string name="battery_circle">Cercle</string>
+    <string name="battery_circle_percent">Cercle et pourcentage</string>
+    <string name="wake_when_plugged_or_unplugged_title">Réveiller au branchement</string>
+    <string name="wake_when_plugged_or_unplugged_summary">Allumer l\'écran lorsque le chargeur est connecté ou déconnecté</string>
+    <string name="unlock_menu_unlock_title">Déverrouillage par bouton Menu</string>
+    <string name="unlock_menu_unlock_summary">Déverrouiller l\'écran en appuyant sur le bouton Menu</string>
+    <string name="stylus_icon_enabled_title">Afficher l\'icône quand un stylet est utilisé</string>
+    <string name="stylus_icon_enabled_summary">Afficher le pointeur du stylet quand celui-ci est utilisé</string>
+</resources>
