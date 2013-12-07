@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_d275f294",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2013-12-07T18:04:19Z",
+      "side": 1,
+      "message": "Sonido al ajustar el volumen? igual queda mejor no?",
+      "revId": "c8b6a2e6ab2e90946e9325b326b41f9c999d8be4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
