@@ -1,0 +1,259 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_1764ac42",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2013-12-07T16:13:02Z",
+      "side": 1,
+      "message": "\"Sonido al ajustar el volumen\" sounds much less forced.",
+      "revId": "2d2ebb3e3c8fb32a5a4a8df9d278cd02cc5bd3c3",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_77533070",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2013-12-07T16:13:02Z",
+      "side": 1,
+      "message": "\"Reproducir un sonido al ajustar el volumen con las teclas\"\nJust simplified.",
+      "revId": "2d2ebb3e3c8fb32a5a4a8df9d278cd02cc5bd3c3",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_9750bc63",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2013-12-07T16:13:02Z",
+      "side": 1,
+      "message": "\"Juntar\" sounds so far too much rusty.\nI suggest:\n\"Usar el mismo volumen para llamadas y notificaciones\"",
+      "revId": "2d2ebb3e3c8fb32a5a4a8df9d278cd02cc5bd3c3",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_b7c13805",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2013-12-07T16:13:02Z",
+      "side": 1,
+      "message": "\"Llamadas\"\nSimplified.",
+      "revId": "2d2ebb3e3c8fb32a5a4a8df9d278cd02cc5bd3c3",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_17d10cd2",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2013-12-07T16:13:02Z",
+      "side": 1,
+      "message": "\"Añadir opciones de reinicio al modo recovery, bootloader o download en el menú de encendido si el dispositivo está desbloqueado\"\nSince \"download\" might be another mode.",
+      "revId": "2d2ebb3e3c8fb32a5a4a8df9d278cd02cc5bd3c3",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_37d608ca",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2013-12-07T16:13:02Z",
+      "side": 1,
+      "message": "\"Indicar la batería en el anillo de desbloqueo\" or\n\"Indicar estado de la batería en el anillo de desbloqueo\"\nSimplified",
+      "revId": "2d2ebb3e3c8fb32a5a4a8df9d278cd02cc5bd3c3",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_57d394d8",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2013-12-07T16:13:02Z",
+      "side": 1,
+      "message": "The starting exclamation sign is missing, anyway I thing \"¡Precaución!\" might be better.",
+      "revId": "2d2ebb3e3c8fb32a5a4a8df9d278cd02cc5bd3c3",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_77e09095",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2013-12-07T16:13:02Z",
+      "side": 1,
+      "message": "\"Cambiar permisos en los servicios de Android puede tener repercusiones indeseadas. ¡Cámbialos sólo bajo tu propio riesgo!\"\nSimplified.",
+      "revId": "2d2ebb3e3c8fb32a5a4a8df9d278cd02cc5bd3c3",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_b7ea1871",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2013-12-07T16:13:02Z",
+      "side": 1,
+      "message": "\"Mostrar una notificación cuando la depuración USB esté activada\"\nNo tiene sentido, pues la depuración USB se activa, no se enchufa, eso es el cable xD",
+      "revId": "2d2ebb3e3c8fb32a5a4a8df9d278cd02cc5bd3c3",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_d7efa47f",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2013-12-07T16:13:02Z",
+      "side": 1,
+      "message": "Even if english says deactivated, we expect the options to be \"Nunca\", \"Siempre\" and \"Preguntar\". An example is the programmed behaviour on SuperSu when asking for granting superuser permissions.",
+      "revId": "2d2ebb3e3c8fb32a5a4a8df9d278cd02cc5bd3c3",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_17eaec6f",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2013-12-07T16:13:02Z",
+      "side": 1,
+      "message": "There\u0027re many bars in the hole system, so let\u0027s gonna be specific:\n\"Barra de estado\"",
+      "revId": "2d2ebb3e3c8fb32a5a4a8df9d278cd02cc5bd3c3",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_37ffe831",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2013-12-07T16:13:02Z",
+      "side": 1,
+      "message": "I guess one capital letter is enough:\n\"Panel de notificaciones\"",
+      "revId": "2d2ebb3e3c8fb32a5a4a8df9d278cd02cc5bd3c3",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_57fc743a",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2013-12-07T16:13:02Z",
+      "side": 1,
+      "message": "\"Original\"\n\"Original con porcentaje\"\n\"Circular\"\n\"Circular con porcentaje\"\nThis way the looks much more easier to understand for user.",
+      "revId": "2d2ebb3e3c8fb32a5a4a8df9d278cd02cc5bd3c3",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_77f97049",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2013-12-07T16:13:02Z",
+      "side": 1,
+      "message": "This should not be a literal translation, might be something like \"Encender pantallar al cargar\"",
+      "revId": "2d2ebb3e3c8fb32a5a4a8df9d278cd02cc5bd3c3",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_97f6fc58",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2013-12-07T16:13:02Z",
+      "side": 1,
+      "message": "Aren\u0027t some strings still missing?\n\n    \u003c!-- security settings menu unlock --\u003e\n    \u003cstring name\u003d\"unlock_menu_unlock_title\"\u003eBotón Menú\u003c/string\u003e\n    \u003cstring name\u003d\"unlock_menu_unlock_summary\"\u003ePresionar el botón Menú desbloquea el dispositivo\u003c/string\u003e",
+      "revId": "2d2ebb3e3c8fb32a5a4a8df9d278cd02cc5bd3c3",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
