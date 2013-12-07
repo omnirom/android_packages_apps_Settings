@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_3770c808",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2013-12-07T15:45:49Z",
+      "side": 1,
+      "message": "Can\u0027t found this on the app (blind me probably), so no idea of the programmed behaviour and ofc not to translate also.",
+      "revId": "878cd20edb6436ac6433ba2bb2188e1afc0e3839",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
