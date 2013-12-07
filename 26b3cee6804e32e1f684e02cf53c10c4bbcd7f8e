@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_5239e2c9",
+        "filename": "src/com/android/settings/ChooseLockPatternSize.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000193
+      },
+      "writtenOn": "2013-12-07T18:02:22Z",
+      "side": 1,
+      "message": "new API19 stuff forces us to return back if this fragment is valid or not to do not run into a securtiy exception....do\n\n@Override\nprotected boolean isValidFragment (String fragmentName) {\n     if (ChooseLockPatternSizeFragment.class.getName().equals(fragmentName)) {\n          return true;\n      }\n      return false;\n }\n\nand it works",
+      "revId": "26b3cee6804e32e1f684e02cf53c10c4bbcd7f8e",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
