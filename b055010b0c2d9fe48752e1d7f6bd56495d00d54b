@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_06cc7b36",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2013-12-08T21:25:23Z",
+      "side": 1,
+      "message": "App-Berechtigungen klingt richtiger für mich, was meinst du?",
+      "revId": "b055010b0c2d9fe48752e1d7f6bd56495d00d54b",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_26d177d2",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2013-12-08T21:25:23Z",
+      "side": 1,
+      "message": "Ändern der Berechtigungen von Systemanwendungen kann ... ?",
+      "revId": "b055010b0c2d9fe48752e1d7f6bd56495d00d54b",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_46d683ca",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2013-12-08T21:25:23Z",
+      "side": 1,
+      "message": "... oder getrennt wird",
+      "revId": "b055010b0c2d9fe48752e1d7f6bd56495d00d54b",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
