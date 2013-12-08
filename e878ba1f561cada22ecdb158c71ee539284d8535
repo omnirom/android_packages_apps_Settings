@@ -16,6 +16,24 @@
       "revId": "e878ba1f561cada22ecdb158c71ee539284d8535",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_c62293a3",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000098
+      },
+      "writtenOn": "2013-12-08T11:28:17Z",
+      "side": 1,
+      "message": "J\u0027ai hésité, je corrige.",
+      "parentUuid": "6b8b61a3_1243da69",
+      "revId": "e878ba1f561cada22ecdb158c71ee539284d8535",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
