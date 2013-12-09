@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_69951043",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000084
+      },
+      "writtenOn": "2013-12-09T17:08:41Z",
+      "side": 1,
+      "message": "\"Use sólo esta función en redes de confianza.\" sounds more consistent to me...",
+      "revId": "491eb1f746321d91bd71fdd9de5e980768a416fb",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_89a25ca4",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000084
+      },
+      "writtenOn": "2013-12-09T17:08:41Z",
+      "side": 1,
+      "message": "\"el PIN o la contraseña correcta\"",
+      "revId": "491eb1f746321d91bd71fdd9de5e980768a416fb",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_c98c643c",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000084
+      },
+      "writtenOn": "2013-12-09T17:08:41Z",
+      "side": 1,
+      "message": "\"bajo su propio\" We should use a formal way as AOSP does",
+      "revId": "491eb1f746321d91bd71fdd9de5e980768a416fb",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_09872c16",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000084
+      },
+      "writtenOn": "2013-12-09T17:08:41Z",
+      "side": 1,
+      "message": "\"Cambiar el orden\"",
+      "revId": "491eb1f746321d91bd71fdd9de5e980768a416fb",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
