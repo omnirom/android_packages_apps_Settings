@@ -39,7 +39,8 @@
             android:entries="@array/lock_numpad_random_entries"
             android:entryValues="@array/lock_numpad_random_values"
             android:title="@string/lock_numpad_random_title"
-            android:dialogTitle="@string/lock_numpad_random_dialog_title" />
+            android:dialogTitle="@string/lock_numpad_random_dialog_title" 
+            android:persistent="false"/>
 
         <CheckBoxPreference
             android:key="power_button_instantly_locks"
@@ -58,7 +59,8 @@
         <CheckBoxPreference
             android:key="lockscreen_quick_unlock_control"
             android:title="@string/lockscreen_quick_unlock_control_title"
-            android:summary="@string/lockscreen_quick_unlock_control_summary" />
+            android:summary="@string/lockscreen_quick_unlock_control_summary" 
+            android:persistent="false"/>
 
     </PreferenceCategory>
 
