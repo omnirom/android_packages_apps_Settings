@@ -60,6 +60,11 @@
             android:title="@string/lockscreen_quick_unlock_control_title"
             android:summary="@string/lockscreen_quick_unlock_control_summary" />
 
+        <CheckBoxPreference
+            android:key="lockscreen_power_menu"
+            android:title="@string/lockscreen_power_menu_title"
+            android:summary="@string/lockscreen_power_menu_summary" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
