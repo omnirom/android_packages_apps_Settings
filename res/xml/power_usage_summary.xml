@@ -28,7 +28,7 @@
         android:dialogTitle="@string/pref_low_battery_warning_policy_dialog_title"
         android:entries="@array/pref_low_battery_warning_policy_entries"
         android:entryValues="@array/pref_low_battery_warning_policy_values"
-        android:defaultValue="0" />
+        android:persistent="false"/>
 
     <ListPreference
         android:key="pref_battery_indicator"
@@ -36,7 +36,7 @@
         android:dialogTitle="@string/pref_battery_indicator_title"
         android:entries="@array/pref_battery_indicator_entries"
         android:entryValues="@array/pref_battery_indicator_values"
-        android:defaultValue="0" />
+        android:persistent="false"/>
 
     <PreferenceCategory
         android:key="battery_stats"
