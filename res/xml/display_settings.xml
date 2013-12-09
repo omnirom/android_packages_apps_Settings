@@ -32,8 +32,8 @@
                 android:fragment="com.android.settings.WallpaperTypeSettings" />
 
         <CheckBoxPreference
-            android:key="accelerometer"
-            android:title="@string/accelerometer_title"/>
+                android:key="accelerometer"
+                android:title="@string/accelerometer_title"/>
 
         <ListPreference
                 android:key="screen_timeout"
@@ -67,10 +67,11 @@
                 android:fragment="org.omnirom.omnigears.batterylight.BatteryLightSettings" />
 
         <CheckBoxPreference
-            android:key="wake_when_plugged_or_unplugged"
-            android:title="@string/wake_when_plugged_or_unplugged_title"
-            android:summary="@string/wake_when_plugged_or_unplugged_summary"
-            android:defaultValue="false" />
+                android:key="wake_when_plugged_or_unplugged"
+                android:title="@string/wake_when_plugged_or_unplugged_title"
+                android:summary="@string/wake_when_plugged_or_unplugged_summary"
+                android:persistent="false"
+                android:defaultValue="false" />
 
         <PreferenceScreen
                 android:key="wifi_display"
@@ -80,6 +81,7 @@
         <ListPreference
                 android:key="screen_off_animation"
                 android:title="@string/screen_off_animation"
+                android:persistent="false"
                 android:entries="@array/screen_off_animation_entries"
                 android:entryValues="@array/screen_off_animation_values" />
 
