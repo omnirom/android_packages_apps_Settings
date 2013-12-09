@@ -50,6 +50,11 @@
             android:key="keyguard_enable_widgets"
             android:title="@string/security_enable_widgets_title"/>
 
+        <CheckBoxPreference
+            android:key="lockscreen_maximize_widgets"
+            android:title="@string/security_maximize_widgets_title"
+            android:dependency="keyguard_enable_widgets"/>
+
         <PreferenceScreen
             android:fragment="com.android.settings.OwnerInfoSettings"
             android:key="owner_info_settings"
