@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="button_timeout_time">
+        <item quantity="other">%d secondi</item>
+        <item quantity="one">%d secondo</item>
+    </plurals>
+</resources>
