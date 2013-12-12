@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_badd98e2",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 9
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2013-12-12T21:47:20Z",
+      "side": 1,
+      "message": "Einmal LED vorne einmal hinten - ich wuerde beide nach dem gleichen Schema machen",
+      "revId": "f124950613e237e899ccaebb0886b12b165d06ae",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
