@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2012-2013 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- About phone screen,  setting option name-->
+    <string name="mod_version">Versione Omni</string>
+    <string name="mod_version_default">Sconosciuto</string>
+    <!-- Main list strings -->
+    <string name="header_category_interface">Interaccia</string>
+    <string name="performance_settings">Prestazioni</string>
+    <string name="notification_light_settings">Led di notifica</string>
+    <string name="battery_light_settings">Led batteria</string>
+    <string name="header_button_settings">Pulsanti</string>
+
+    <!-- Volume panel tweaks -->
+    <string name="volume_adjust_sounds_enable_title">Volume regola audio</string>
+    <string name="volume_adjust_sounds_enable_summary">Riproduci suono quando si regola il volume con i tasti</string>
+    <string name="link_volume_ringtones">Link suoneria &amp; volume notifiche</string>
+    <string name="volume_ring_only_description">Suoneria</string>
+
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">Riavvio avanzato</string>
+    <string name="advanced_reboot_summary">Quando è sbloccato, include maggiori impostazioni nel menu di spegnimento per riavviare in modalità recovery o bootloader</string>
+
+    <!-- Lockscreen battery ring -->
+    <string name="battery_around_lockscreen_ring">Visualizza la batteria intorno all\'anello di sblocco</string>
+
+    <!-- Android debugging over WiFi -->
+    <string name="adb_over_network">ADB via rete</string>
+    <string name="adb_over_network_summary">Abilita TCP/IP debugging su interfaccia di rete (Wi-Fi, rete USB). Questa impostazione viene resettata al riavvio</string>
+
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">Avvertenza: Quando l\'ADB di rete è attivato,il telefono è aperto a intrusioni su tutte le reti a cui è connesso, incluso i dati reti GSM!\n\nUtilizzare questa funzione solo quando si è connessi a una grande rete.\n\nVuoi davvero attivare questa funzione?</string>
+    <string name="lockscreen_quick_unlock_control_title">Sblocco rapido</string>
+    <string name="lockscreen_quick_unlock_control_summary">Sblocca automaticamente quando  hai inserito il PIN/password corretto</string>
+
+    <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+    <string name="show_cpu_info">Mostra informazioni CPU</string>
+    <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+    <string name="show_cpu_info_summary">Mostra overlay nelle informazioni attuali della CPU</string>
+
+    <!-- Screen off animation -->
+    <string name="screen_off_animation">Animazioni di spegnimento</string>
+    <string name="screen_off_fadeout">Fade out</string>
+    <string name="screen_off_electronbeam">Electron beam</string>
+    <string name="screen_off_scaledown">Scale down</string>
+
+    <!-- AppOps additions -->
+    <string name="appops_settings">Permessi apps.</string>
+    <string name="appops_sysapp_beware">Diffidare!</string>
+    <string name="appops_sysapp_warning">"Modificando le autorizzazioni principali di Android potresti causare comportamenti indesiderati. Modificare le autorizzazioni è a vostro rischio e pericolo!</string>
+
+    <!-- Low battery warning policy -->
+    <string name="pref_low_battery_warning_policy_title">Avviso di batteria scarica</string>
+    <string name="pref_low_battery_warning_policy_dialog_title">Indicare l\'avviso di batteria scarica con</string>
+    <string name="low_battery_warning_policy_popup_sound">Suoni e Pop-up</string>
+    <string name="low_battery_warning_policy_notif_sound">Notifiche e suoni</string>
+    <string name="low_battery_warning_policy_popup">Solo finestre Pop-up</string>
+    <string name="low_battery_warning_policy_notif">Solo notifiche</string>
+    <string name="low_battery_warning_policy_sound">Solo suoni</string>
+    <string name="battery_prefs_title">Opzioni</string>
+    <string name="battery_stats_title">Statistiche</string>
+
+    <!-- Setting checkbox summary for displaying USB debugging notification -->
+    <string name="adb_notify">USB debugging notify</string>
+    <string name="adb_notify_summary">Display a notification when USB debugging is connected</string>
+
+    <!-- Lockscreen pin shuffle -->
+    <string name="lock_numpad_random_title">Change the order of PIN pad numbers</string>
+    <string name="lock_numpad_random_dialog_title">PIN pad random order</string>
+    <string name="lock_numpad_random_off">Disabled</string>
+    <string name="lock_numpad_random_always">Always</string>
+    <string name="lock_numpad_random_on_request">On request</string>
+
+    <string name="interface_more_title">Altro\u2026</string>
+    <string name="interface_bars_title">Barra di stato</string>
+    <string name="interface_menus_title">Menu</string>
+    <string name="interface_notification_panel_title">Area notifiche</string>
+
+    <!-- Battery Icon selection -->
+    <string name="pref_battery_indicator_title">Indicatore batteria</string>
+    <string name="battery_status_icon_title">Icona di stato</string>
+    <string name="battery_bar">Icona</string>
+    <string name="battery_bar_percent">Icona &amp; percentuale</string>
+    <string name="battery_circle">Cerchio</string>
+    <string name="battery_circle_percent">Cerchio &amp; percentuale</string>
+
+    <!-- Turn on display when power connected; turn off display when power disconnected -->
+    <string name="wake_when_plugged_or_unplugged_title">Wake on plug</string>
+    <string name="wake_when_plugged_or_unplugged_summary">Turn the screen on when connecting or disconnecting the charger</string>
+
+    <!-- security settings menu unlock -->
+    <string name="unlock_menu_unlock_title">Menu unlock</string>
+    <string name="unlock_menu_unlock_summary">Pressing the menu button unlocks the device</string>
+
+    <!-- Stylus Icon -->
+    <string name="stylus_icon_enabled_title">Show icon when using stylus</string>
+    <string name="stylus_icon_enabled_summary">Show the pointer icon while using stylus</string>
+
+</resources>
