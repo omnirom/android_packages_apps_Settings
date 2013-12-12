@@ -22,8 +22,9 @@
     <!-- Main list strings -->
     <string name="header_category_interface">Oberfläche</string>
     <string name="performance_settings">Leistung</string>
-    <string name="notification_light_settings">LED Benachrichtigung</string>
-    <string name="header_button_settings">Buttons</string>
+    <string name="notification_light_settings">Benachrichtigungs-LED</string>
+    <string name="battery_light_settings">Akku-LED</string>
+    <string name="header_button_settings">Tasten</string>
 
     <!-- Volume panel tweaks -->
     <string name="volume_adjust_sounds_enable_title">Änderungston</string>
@@ -38,13 +39,13 @@
     <!-- Lockscreen battery ring -->
     <string name="battery_around_lockscreen_ring">Batteriestatus um Entsperrsysmbol</string>
 
-	<!-- Android debugging over WiFi -->
+    <!-- Android debugging over WiFi -->
     <string name="adb_over_network">ADB über Netzwerk</string>
     <string name="adb_over_network_summary">Aktiviert TCP/IP Debugging über Netzwerk (Wi-Fi, USB). Diese Einstellung wird bei einem Neustart zurückgesetzt.</string>
 
     <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">WARNUNG: Wenn ADB über Netzwerk aktiviert ist, ist dein Telefon anfällig für Angriffe über alle verbundenen Netzwerke, einschließlich GSM. Benutze diese Funktion nur, wenn du eine Verbindung zu vertrauenswürdigen Netzwerken hast. Möchtest du diese Funktion wirklich aktivieren ?</string>
-    <string name="lockscreen_quick_unlock_control_title">Schnellentsperrung</string>
+    <string name="lockscreen_quick_unlock_control_title">Schnelles Entsperren</string>
     <string name="lockscreen_quick_unlock_control_summary">Entsperrt das Telefon automatisch, sobald die richtige PIN bzw. Passwort eingegeben wird.</string>
 
     <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
@@ -52,6 +53,61 @@
     <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
     <string name="show_cpu_info_summary">Bildschirm-Overlay mit aktueller CPU Information</string>
 
-	<!-- Screen off animation -->
+    <!-- Screen off animation -->
     <string name="screen_off_animation">Bildschirm Abschaltanimation</string>
+    <string name="screen_off_fadeout">Ausblenden</string>
+    <string name="screen_off_electronbeam">Elektronenstrahl</string>
+    <string name="screen_off_scaledown">Verkleinern</string>
+
+    <!-- AppOps additions -->
+    <string name="appops_settings">App-Berechtigungen</string>
+    <string name="appops_sysapp_beware">Achtung!</string>
+    <string name="appops_sysapp_warning">"Ändern von Berechtigungen der Android Hauptanwendungen führt zu unerwünschtem Verhalten. Ändere diese Einstellungen auf eigenes Risiko!</string>
+
+    <!-- Low battery warning policy -->
+    <string name="pref_low_battery_warning_policy_title">Warnung bei schwachem Akku</string>
+    <string name="pref_low_battery_warning_policy_dialog_title">Signalisiere schwachen Akku durch</string>
+    <string name="low_battery_warning_policy_popup_sound">Pop-up und Ton</string>
+    <string name="low_battery_warning_policy_notif_sound">Benachrichtigung und Ton</string>
+    <string name="low_battery_warning_policy_popup">Nur Pop-up</string>
+    <string name="low_battery_warning_policy_notif">Nur Benachrichtigung</string>
+    <string name="low_battery_warning_policy_sound">Nur Ton</string>
+    <string name="battery_prefs_title">Optionen</string>
+    <string name="battery_stats_title">Statistiken</string>
+
+    <!-- Setting checkbox summary for displaying USB debugging notification -->
+    <string name="adb_notify">USB Debugging Benachrichtigung</string>
+    <string name="adb_notify_summary">Zeigt eine Benachrichtigung wenn USB Debugging verbunden ist</string>
+
+    <!-- Lockscreen pin shuffle -->
+    <string name="lock_numpad_random_title">Ändert die Reihenfolge der Nummern im PIN Eingabedialog</string>
+    <string name="lock_numpad_random_dialog_title">Zufällige Reihenfolge der Nummern</string>
+    <string name="lock_numpad_random_off">Deaktiviert</string>
+    <string name="lock_numpad_random_always">Immer</string>
+    <string name="lock_numpad_random_on_request">Auf Anfrage</string>
+
+    <string name="interface_more_title">Mehr\u2026</string>
+    <string name="interface_bars_title">Leisten</string>
+    <string name="interface_menus_title">Menüs</string>
+    <string name="interface_notification_panel_title">Benachrichtigungsleiste</string>
+
+    <!-- Battery Icon selection -->
+    <string name="pref_battery_indicator_title">Akkuanzeige</string>
+    <string name="battery_status_icon_title">Status Icon</string>
+    <string name="battery_bar">Balken</string>
+    <string name="battery_bar_percent">Balken &amp; Prozent</string>
+    <string name="battery_circle">Kreis</string>
+    <string name="battery_circle_percent">Kreis &amp; Prozent</string>
+
+    <!-- Turn on display when power connected; turn off display when power disconnected -->
+    <string name="wake_when_plugged_or_unplugged_title">Aufwachen durch Ladegerät</string>
+    <string name="wake_when_plugged_or_unplugged_summary">Schaltet den Bildschirm an wenn das Ladegerät eingesteckt oder getrennt wird</string>
+
+    <!-- security settings menu unlock -->
+    <string name="unlock_menu_unlock_title">Mit Menü entsperren</string>
+    <string name="unlock_menu_unlock_summary">Das Drücken der Menütaste entsperrt das Telefon</string>
+
+    <!-- default alarm tone -->
+    <string name="alarm_sound_title">Standard-Weckton</string>
+    <string name="alarm_sound_dialog_title">Standard-Weckton</string>
 </resources>
