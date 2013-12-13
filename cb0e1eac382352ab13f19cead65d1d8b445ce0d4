@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_3500bb6b",
+        "filename": "res/values-it/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2013-12-13T22:50:47Z",
+      "side": 1,
+      "message": "doesnt sound like italian to me :)",
+      "revId": "cb0e1eac382352ab13f19cead65d1d8b445ce0d4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
