@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_b02e9985",
+        "filename": "res/values-it/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2013-12-14T12:42:03Z",
+      "side": 1,
+      "message": "please remove whitespaces",
+      "revId": "715a6c354f95ec80358d1ff3f85f9f33463c97c9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
