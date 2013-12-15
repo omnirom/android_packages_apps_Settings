@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "6b8b61a3_0b239c56",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2013-12-15T20:43:34Z",
+      "side": 1,
+      "message": "Staat zeker beter omdat android-versie ook zo wordt beschreven",
+      "parentUuid": "6b8b61a3_0b555cc6",
+      "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b8b61a3_2b5a18f6",
         "filename": "res/values-nl/custom_strings.xml",
         "patchSetId": 1
@@ -53,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "6b8b61a3_8bfecca8",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2013-12-15T20:43:34Z",
+      "side": 1,
+      "message": "Mee eens. LED is duidelijker",
+      "parentUuid": "6b8b61a3_4b6f648e",
+      "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b8b61a3_6b6c2099",
         "filename": "res/values-nl/custom_strings.xml",
         "patchSetId": 1
@@ -64,6 +100,24 @@
       "writtenOn": "2013-12-15T19:15:39Z",
       "side": 1,
       "message": "Batterijled?",
+      "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_abfb88b8",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2013-12-15T20:43:34Z",
+      "side": 1,
+      "message": "Mee eens. LED is duidelijker",
+      "parentUuid": "6b8b61a3_6b6c2099",
       "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
@@ -183,6 +237,23 @@
       "writtenOn": "2013-12-15T19:15:39Z",
       "side": 1,
       "message": "Automatisch ongrendelen als juiste PIN/wachtwoord is ingevoerd",
+      "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_cb28d434",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2013-12-15T20:43:34Z",
+      "side": 1,
+      "message": "al een \u003d alleen",
       "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
