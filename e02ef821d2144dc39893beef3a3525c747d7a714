@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_0b555cc6",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-15T19:15:39Z",
+      "side": 1,
+      "message": "Ik zou zeggen \"Omni-versie\" met koppelteken",
+      "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_2b5a18f6",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-15T19:15:39Z",
+      "side": 1,
+      "message": "Uiterlijk?",
+      "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_4b6f648e",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-15T19:15:39Z",
+      "side": 1,
+      "message": "Meldingsled? Notificatie-led?\n\nIk vind licht niet zo\u0027n mooie vertaling.",
+      "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_6b6c2099",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-15T19:15:39Z",
+      "side": 1,
+      "message": "Batterijled?",
+      "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_8b696c8a",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-15T19:15:39Z",
+      "side": 1,
+      "message": "Geluid bij aanpassen volume? Aanpassingsgeluid volume?",
+      "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_ab6628b6",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-15T19:15:39Z",
+      "side": 1,
+      "message": "knoppen -\u003e volumeknoppen?",
+      "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_cbfff4aa",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-15T19:15:39Z",
+      "side": 1,
+      "message": "Beltoon is voor mij niet hetzelfde als het volume. \"Volume beltoon en notificatie linken\"?",
+      "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_eb04b0cb",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-15T19:15:39Z",
+      "side": 1,
+      "message": "Alleen beltoon",
+      "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_0b0abcd4",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-15T19:15:39Z",
+      "side": 1,
+      "message": "Ontgrendelingsring (1 woord)",
+      "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_2b0f78e4",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-15T19:15:39Z",
+      "side": 1,
+      "message": "gereset -\u003e hersteld",
+      "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_4bf4c4cc",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-15T19:15:39Z",
+      "side": 1,
+      "message": "Automatisch ongrendelen als juiste PIN/wachtwoord is ingevoerd",
+      "revId": "e02ef821d2144dc39893beef3a3525c747d7a714",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
