@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2012-2013 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- About phone screen,  setting option name-->
+    <string name="mod_version">Omni-versie</string>
+    <string name="mod_version_default">Onbekend</string>
+
+    <!-- Main list strings -->
+    <string name="header_category_interface">Uiterlijk</string>
+    <string name="performance_settings">Prestaties</string>
+    <string name="notification_light_settings">Notificatie-led</string>
+    <string name="battery_light_settings">Batterij-led</string>
+    <string name="header_button_settings">Knoppen</string>
+
+    <!-- Volume panel tweaks -->
+    <string name="volume_adjust_sounds_enable_title">Geluid bij aanpassen volume</string>
+    <string name="volume_adjust_sounds_enable_summary">Geluid afspelen bij het veranderen van volume met volumeknoppen</string>
+    <string name="link_volume_ringtones">Volume beltoon &amp; notificatie linken</string>
+    <string name="volume_ring_only_description">Alleen beltoon</string>
+
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">Geavanceerd herstarten</string>
+    <string name="advanced_reboot_summary">Indien ontgrendeld, opties om te herstarten naar recovery of bootloader laten zien.</string>
+
+    <!-- Lockscreen battery ring -->
+    <string name="battery_around_lockscreen_ring">Batterij-niveau om ontgrendelingsring</string>
+
+    <!-- Android debugging over WiFi -->
+    <string name="adb_over_network">ADB over het netwerk</string>
+    <string name="adb_over_network_summary">TCP/IP debuggen inschakelen over netwerk interfaces (Wi-Fi, USB netwerken). Deze instelling wordt hersteld bij een herstart</string>
+
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">WAARSCHUWING: Als ADB over het netwerk is ingeschakeld, staat je telefoon open voor alle inbraken op alle verbonden netwerken, ook het GSM data netwerk!\n\n Gebruik dit alleen als je bent verbonden met vertrouwde netwerken.\n\nWeet je zeker dat je deze functie wilt inschakelen?</string>
+    <string name="lockscreen_quick_unlock_control_title">Snel ontgrendelen</string>
+    <string name="lockscreen_quick_unlock_control_summary">Automatisch ontgrendelen als juiste PIN/wachtwoord is ingevoerd</string>
+
+    <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+    <string name="show_cpu_info">CPU info laten zien</string>
+    <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+    <string name="show_cpu_info_summary">Scherm-overlay met huidige CPU gebruik</string>
+
+    <!-- Screen off animation -->
+    <string name="screen_off_animation">Scherm-uit animatie</string>
+    <string name="screen_off_fadeout">Uitfaden</string>
+    <string name="screen_off_electronbeam">Electronen straal</string>
+    <string name="screen_off_scaledown">Verkleinen</string>
+
+    <!-- AppOps additions -->
+    <string name="appops_settings">Apps permissies</string>
+    <string name="appops_sysapp_beware">Pas op!</string>
+    <string name="appops_sysapp_warning">"Het veranderen van belangrijke Android permissies kan ongewenst gedrag opleveren. Verander deze instellingen op eigen risico!</string>
+
+    <!-- Low battery warning policy -->
+    <string name="pref_low_battery_warning_policy_title">Batterij bijna leeg waarschuwing</string>
+    <string name="pref_low_battery_warning_policy_dialog_title">Bijna lege batterij waarschuwing tonen met</string>
+    <string name="low_battery_warning_policy_popup_sound">Pop-up en geluid</string>
+    <string name="low_battery_warning_policy_notif_sound">Notificatie en geluid</string>
+    <string name="low_battery_warning_policy_popup">Alleen pop-up dialoog</string>
+    <string name="low_battery_warning_policy_notif">Alleen notificatie</string>
+    <string name="low_battery_warning_policy_sound">Alleen geluid</string>
+    <string name="battery_prefs_title">Opties</string>
+    <string name="battery_stats_title">Statistieken</string>
+
+    <!-- Setting checkbox summary for displaying USB debugging notification -->
+    <string name="adb_notify">USB debugging notificatie</string>
+    <string name="adb_notify_summary">Toon een notificatie als USB debugging is aangesloten</string>
+
+    <!-- Lockscreen pin shuffle -->
+    <string name="lock_numpad_random_title">Change the order of PIN pad numbers</string>
+    <string name="lock_numpad_random_dialog_title">PIN pad random order</string>
+    <string name="lock_numpad_random_off">Disabled</string>
+    <string name="lock_numpad_random_always">Always</string>
+    <string name="lock_numpad_random_on_request">On request</string>
+
+    <string name="interface_more_title">Meer\u2026</string>
+    <string name="interface_bars_title">Balken</string>
+    <string name="interface_menus_title">Menu\'s</string>
+    <string name="interface_notification_panel_title">Notificatie Scherm</string>
+
+    <!-- Battery Icon selection -->
+    <string name="pref_battery_indicator_title">Batterij indicator</string>
+    <string name="battery_status_icon_title">Status pictogram</string>
+    <string name="battery_bar">Batterij balk</string>
+    <string name="battery_bar_percent">Battery balk &amp; percentage</string>
+    <string name="battery_circle">Battery cirkel</string>
+    <string name="battery_circle_percent">Battery cirkel &amp; percentage</string>
+
+    <!-- Turn on display when power connected; turn off display when power disconnected -->
+    <string name="wake_when_plugged_or_unplugged_title">Ontwaak bij koppelen</string>
+    <string name="wake_when_plugged_or_unplugged_summary">Zet het scherm aan wanneer er verbinding met de oplader wordt gemaakt of verbroken</string>
+
+    <!-- security settings menu unlock -->
+    <string name="unlock_menu_unlock_title">Menu ontgrendelen</string>
+    <string name="unlock_menu_unlock_summary">Ontgrendel het apparaat door op de menu knop te drukken</string>
+
+    <!-- Stylus Icon -->
+    <string name="stylus_icon_enabled_title">Toon pictogram bij stylus gebruik</string>
+    <string name="stylus_icon_enabled_summary">Toon het aanwijs pictogram bij het gebruik van een stylus</string>
+
+    <!-- Stylus Gestures -->
+    <string name="gestures_settings_title">Stylus gebaren</string>
+    <string name="category_spen_title">Stylus gebaren</string>
+    <string name="enable_subcat_title">Stylus</string>
+    <string name="enable_spen_title_head">Stylus gebaren inschakelen</string>
+    <string name="enable_spen_summary_head">Aangepaste handelingen starten met de stylus knop veeg gebaren. Waarschuwing: apps krijgen geen input door de stylus knop in te houden</string>
+    <string name="gestures_subcat_title">Gebaren</string>
+    <string name="gestures_left_spen_title_head">Links vegen</string>
+    <string name="gestures_left_spen_summary_head">Aangepaste handeling starten bij links vegen</string>
+    <string name="gestures_right_spen_title_head">Rechts vegen</string>
+    <string name="gestures_right_spen_summary_head">Aangepaste handeling starten bij rechts vegen</string>
+    <string name="gestures_up_spen_title_head">Omhoog vegen</string>
+    <string name="gestures_up_spen_summary_head">Aangepaste handeling starten bij omhoog vegen</string>
+    <string name="gestures_down_spen_title_head">Naar beneden vegen</string>
+    <string name="gestures_down_spen_summary_head">Aangepaste handeling starten bij naar beneden vegen</string>
+    <string name="gestures_long_spen_title_head">Lang indrukken</string>
+    <string name="gestures_long_spen_summary_head">Aangepaste handeling starten bij lang indrukken</string>
+    <string name="gestures_double_spen_title_head">Dubbel tikken</string>
+    <string name="gestures_double_spen_summary_head">Aangepaste handeling starten bij dubbel tikken</string>
+
+    <!-- Gestures Options -->
+    <string name="gestures_action_empty">Geen handeling</string>
+    <string name="gestures_action_home">Home knop emuleren</string>
+    <string name="gestures_action_back">Terug knop emuleren</string>
+    <string name="gestures_action_menu">Menu knop emuleren</string>
+    <string name="gestures_action_search">Zoeken aanroepen</string>
+    <string name="gestures_action_recent">Recent apps</string>
+
+    <!-- stylus gestures support -->
+    <string name="stylus_app_not_installed">%s is niet geïnstalleerd</string>
+
+    <!-- default alarm tone -->
+    <string name="alarm_sound_title">Standaard alarm geluid</string>
+    <string name="alarm_sound_dialog_title">Standaard alarm geluid</string>
+
+    <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
+    <string name="custom_runtime_warning_title">Waarschuwing</string>
+    <string name="custom_runtime_warning_message">ART wordt niet ondersteund door OmniROM. Deze instelling is er alleen om expirementele redenen en er bestaat een mogelijkheid dat je systeem hierdoor instabiel wordt, crasht, data verliest of dat het apparaat niet goed opstart. Bezoek &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;ART Introductie&lt;/a&gt; voor meer informatie.&lt;br/&gt;&lt;br/&gt;Stuur geen bug reports in als je gebruikt maakt van de ART runtime.&lt;br/&gt;&lt;br/&gt;Weet je zeker dat je wilt herstarten om de runtime te veranderen van <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> naar <xliff:g id="new" example="libart.so">%2$s</xliff:g>?</string>
+
+</resources>
