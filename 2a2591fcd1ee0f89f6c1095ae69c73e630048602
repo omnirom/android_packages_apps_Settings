@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_cb81b395",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2013-12-16T17:20:16Z",
+      "side": 1,
+      "message": "ik had hier *pad* gedaan omdat ik niet wist wat de correcte vorm is in nederlands. Moet dus nog worden aangepast",
+      "revId": "2a2591fcd1ee0f89f6c1095ae69c73e630048602",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_eb4e6f99",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2013-12-16T17:20:16Z",
+      "side": 1,
+      "message": "ik had hier *pad* gedaan omdat ik niet wist wat de correcte vorm is in nederlands.",
+      "revId": "2a2591fcd1ee0f89f6c1095ae69c73e630048602",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
