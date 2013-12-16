@@ -19,6 +19,108 @@
     },
     {
       "key": {
+        "uuid": "6b8b61a3_6b1dff12",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-16T09:57:50Z",
+      "side": 1,
+      "message": "Google gebruik zelf \"App-machtigingen\"",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_cb1453f0",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-16T09:57:50Z",
+      "side": 1,
+      "message": "Je veranderd machtigingen van individuele apps, niet van Android als geheel. Ik zou dus zeggen \"Het veranderen van belangrijke app-machtigingen...\"",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_ebd58f21",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-16T09:57:50Z",
+      "side": 1,
+      "message": "Waarschuwing lege batterij",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_0bdb9b54",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-16T09:57:50Z",
+      "side": 1,
+      "message": "Waarschuwing tonen bij bijna lege batterij met",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_2be057f8",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-16T09:57:50Z",
+      "side": 1,
+      "message": "Alleen pop-up (dialoog vind ik in het Nederlands overbodig)",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_6bea5fd8",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-16T09:57:50Z",
+      "side": 1,
+      "message": "is aangesloten -\u003e actief is?",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b8b61a3_0b055bc5",
         "filename": "res/values-nl/custom_strings.xml",
         "patchSetId": 2
@@ -87,6 +189,57 @@
     },
     {
       "key": {
+        "uuid": "6b8b61a3_8be7ab0d",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-16T09:57:50Z",
+      "side": 1,
+      "message": "Batterij-indicator",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_abf467bb",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-16T09:57:50Z",
+      "side": 1,
+      "message": "Statuspictogram",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_ebbe6fcf",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-16T09:57:50Z",
+      "side": 1,
+      "message": "Batterijbalk",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b8b61a3_6b6fbf8e",
         "filename": "res/values-nl/custom_strings.xml",
         "patchSetId": 2
@@ -121,6 +274,24 @@
     },
     {
       "key": {
+        "uuid": "6b8b61a3_2bb937e6",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-16T09:57:50Z",
+      "side": 1,
+      "message": "Batterijcirkel\nAlternatief is het woord batterij helemaal weglaten. Je zit in de batterij-indicator instellingen, dus je zou ook gewoon \"balk\" \"cirkel\" kunnen gebruiken",
+      "parentUuid": "6b8b61a3_8b6c0b9a",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b8b61a3_ab69c789",
         "filename": "res/values-nl/custom_strings.xml",
         "patchSetId": 2
@@ -138,6 +309,40 @@
     },
     {
       "key": {
+        "uuid": "6b8b61a3_8bd08b25",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-16T09:57:50Z",
+      "side": 1,
+      "message": "Alternatief: Activeer het scherm bij het maken en verbreken van de verbinding met de oplader",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_cbca936f",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-16T09:57:50Z",
+      "side": 1,
+      "message": "aanwijspictogram",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b8b61a3_8bf16bde",
         "filename": "res/values-nl/custom_strings.xml",
         "patchSetId": 2
@@ -149,6 +354,23 @@
       "writtenOn": "2013-12-16T09:37:45Z",
       "side": 1,
       "message": "Recente apps?",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_eba3cfad",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000123
+      },
+      "writtenOn": "2013-12-16T09:57:50Z",
+      "side": 1,
+      "message": "Alarmgeluid (2x)",
       "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
