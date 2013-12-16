@@ -2,6 +2,91 @@
   "comments": [
     {
       "key": {
+        "uuid": "6b8b61a3_ebff4faa",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2013-12-16T09:37:45Z",
+      "side": 1,
+      "message": "Elektronen*",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_0b055bc5",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2013-12-16T09:37:45Z",
+      "side": 1,
+      "message": "Verander de volgorde van de PIN *pad* nummers",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_2b0a17d5",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2013-12-16T09:37:45Z",
+      "side": 1,
+      "message": "Uitgeschakeld",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_4b0f63e3",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2013-12-16T09:37:45Z",
+      "side": 1,
+      "message": "Altijd",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_6bf41fcd",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2013-12-16T09:37:45Z",
+      "side": 1,
+      "message": "Op aanvraag",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b8b61a3_6b6fbf8e",
         "filename": "res/values-nl/custom_strings.xml",
         "patchSetId": 2
@@ -47,6 +132,40 @@
       "writtenOn": "2013-12-16T09:26:15Z",
       "side": 1,
       "message": "Batterij*",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_8bf16bde",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2013-12-16T09:37:45Z",
+      "side": 1,
+      "message": "Recente apps?",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_abfe27a8",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2013-12-16T09:37:45Z",
+      "side": 1,
+      "message": "Experimentele*",
       "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
