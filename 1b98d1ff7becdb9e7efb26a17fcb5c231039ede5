@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_2b4e9897",
+        "filename": "res/xml/security_settings_biometric_weak.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2013-12-16T00:56:55Z",
+      "side": 1,
+      "message": "Please add android:persistent\u003d\"false\" in all xml files for this \nThe value of this is stored in Settings so there is no need to store it again in the\nsettings store",
+      "revId": "1b98d1ff7becdb9e7efb26a17fcb5c231039ede5",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
