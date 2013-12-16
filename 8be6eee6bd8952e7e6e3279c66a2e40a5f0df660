@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_6b6fbf8e",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2013-12-16T09:26:15Z",
+      "side": 1,
+      "message": "Batterij*",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_8b6c0b9a",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2013-12-16T09:26:15Z",
+      "side": 1,
+      "message": "Batterij*",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_ab69c789",
+        "filename": "res/values-nl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2013-12-16T09:26:15Z",
+      "side": 1,
+      "message": "Batterij*",
+      "revId": "8be6eee6bd8952e7e6e3279c66a2e40a5f0df660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
