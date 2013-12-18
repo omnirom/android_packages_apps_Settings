@@ -19,7 +19,7 @@
     <string name="mod_version">Versione Omni</string>
     <string name="mod_version_default">Sconosciuto</string>
     <!-- Main list strings -->
-    <string name="header_category_interface">Interaccia</string>
+    <string name="header_category_interface">Interfaccia</string>
     <string name="performance_settings">Prestazioni</string>
     <string name="notification_light_settings">Led di notifica</string>
     <string name="battery_light_settings">Led batteria</string>
@@ -59,14 +59,14 @@
     <string name="screen_off_scaledown">Scale down</string>
 
     <!-- AppOps additions -->
-    <string name="appops_settings">Permessi apps.</string>
+    <string name="appops_settings">Permessi applicazioni</string>
     <string name="appops_sysapp_beware">Diffidare!</string>
-    <string name="appops_sysapp_warning">"Modificando le autorizzazioni principali di Android potresti causare comportamenti indesiderati. Modificare le autorizzazioni è a vostro rischio e pericolo!</string>
+    <string name="appops_sysapp_warning">"Modificando le autorizzazioni principali di Android potresti causare dei comportamenti indesiderati. Modificare le autorizzazioni è a vostro rischio e pericolo!</string>
 
     <!-- Low battery warning policy -->
     <string name="pref_low_battery_warning_policy_title">Avviso di batteria scarica</string>
     <string name="pref_low_battery_warning_policy_dialog_title">Indicare l\'avviso di batteria scarica con</string>
-    <string name="low_battery_warning_policy_popup_sound">Suoni e Pop-up</string>
+    <string name="low_battery_warning_policy_popup_sound">Pop-up e suoni</string>
     <string name="low_battery_warning_policy_notif_sound">Notifiche e suoni</string>
     <string name="low_battery_warning_policy_popup">Solo finestre Pop-up</string>
     <string name="low_battery_warning_policy_notif">Solo notifiche</string>
@@ -109,8 +109,7 @@
     <!-- Stylus Icon -->
     <string name="stylus_icon_enabled_title">Mostra icona quando si utilizzano gli stili</string>
     <string name="stylus_icon_enabled_summary">Mostra l\'icona del puntatore quando si utilizzano gli stili</string>
-
-    <!-- Stylus Gestures -->
+	<!-- Stylus Gestures -->
     <string name="gestures_settings_title">Stili gesti</string>
     <string name="category_spen_title">Stili gesti</string>
     <string name="enable_subcat_title">Gesti</string>
@@ -144,5 +143,14 @@
     <!-- default alarm tone -->
     <string name="alarm_sound_title">Suoneria della sveglia di default</string>
     <string name="alarm_sound_dialog_title">Suoneria della sveglia di default</string>
+
+    <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
+    <string name="custom_runtime_warning_title">Attenzione</string>
+    <string name="custom_runtime_warning_message">ART non è supportato dalla OmniROM.Questa impostazione è solo sperimentale e ha il potenziale di causare instabilità, crash, perdita di dati o impedire il corretto avvio del dispositivo. Visita &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introduzione ART&lt;/a&gt; per maggiori informazioni.&lt;br/&gt;&lt;br/&gt;Chiediamo di non segnalare i bug, se hai attivato il runtime ART.&lt;br/&gt;&lt;br/&gt;Sei sicuro di voler riavviare per cambiare il runtime da<xliff:g id="old" example="libdvm.so">%1$s</xliff:g> a <xliff:g id="new" example="libart.so">%2$s</xliff:g>?</string>
+
+    <string name="security_maximize_widgets_title">Massimizza widget lockscreen</string>
+    <string name="wifi_setting_countrycode_title">Codice regione Wi-Fi</string>
+    <string name="wifi_setting_countrycode_summary">Specifica il codice regione per il Wi-Fi</string>
+    <string name="wifi_setting_countrycode_error">C\'è un problema nell\'impostare il codice regione del Wi-Fi</string>
 
 </resources>
