@@ -311,6 +311,7 @@
     <string name="show_owner_info_on_lockscreen_label" msgid="5074906168357568434">"Mostra info proprietario su blocco schermo"</string>
     <string name="owner_info_settings_title" msgid="2723190010708381889">"Info proprietario"</string>
     <string name="security_enable_widgets_title" msgid="2754833397070967846">"Abilita widget"</string>
+	<string name="security_maximize_widgets_title">Massimizza widget lockscreen</string>
     <string name="security_enable_widgets_disabled_summary" msgid="1557090442377855233">"Disattivati dall\'amministratore"</string>
     <string name="owner_info_settings_summary" msgid="3800834657847339570"></string>
     <string name="owner_info_settings_edit_text_hint" msgid="4608681417960923911">"Digita testo da visualizzare su blocco schermo"</string>
@@ -643,7 +644,10 @@
     <string name="wifi_setting_frequency_band_title" msgid="3655327399028584656">"Banda di frequenza Wi‑Fi"</string>
     <string name="wifi_setting_frequency_band_summary" msgid="3250740757118009784">"Specifica campo di frequenza di funzionamento"</string>
     <string name="wifi_setting_frequency_band_error" msgid="837281974489794378">"Errore di impostazione della banda di frequenza."</string>
-    <string name="wifi_advanced_mac_address_title" msgid="6571335466330978393">"Indirizzo MAC"</string>
+    <string name="wifi_setting_countrycode_title">Codice regione Wi-Fi</string>
+    <string name="wifi_setting_countrycode_summary">Specifica il codice regione per il Wi-Fi</string>
+    <string name="wifi_setting_countrycode_error">C\'è un problema nell\'impostare il codice regione del Wi-Fi</string>
+	<string name="wifi_advanced_mac_address_title" msgid="6571335466330978393">"Indirizzo MAC"</string>
     <string name="wifi_advanced_ip_address_title" msgid="6215297094363164846">"Indirizzo IP"</string>
     <string name="wifi_advanced_settings_label" msgid="3654366894867838338">"Impostazioni IP"</string>
     <string name="wifi_ip_settings_menu_save" msgid="7296724066102908366">"Salva"</string>
