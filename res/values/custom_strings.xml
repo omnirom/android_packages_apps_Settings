@@ -149,5 +149,23 @@
     <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
     <string name="custom_runtime_warning_title">Warning</string>
     <string name="custom_runtime_warning_message">ART is not supported by OmniROM. This setting is included for experimentation only and has the potential to cause instability, crashes, data loss or prevent the proper boot of your device. Visit &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introducing ART&lt;/a&gt; for more information.&lt;br/&gt;&lt;br/&gt;We request you do not file bug reports if you have enabled ART as your runtime.&lt;br/&gt;&lt;br/&gt;Are you sure you want to reboot to change runtime from <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> to <xliff:g id="new" example="libart.so">%2$s</xliff:g>?</string>
+	
+    <!-- Animation Controls -->  
+    <string name="title_animation_controls">Custom System Animations</string>  
+    <string name="activity_open_title">Activity Open Animation</string>  
+    <string name="activity_close_title">Activity Close Animation</string>  
+    <string name="task_open_title">Task Open Animation</string>  
+    <string name="task_close_title">Task Close Animation</string>  
+    <string name="task_move_to_front_title">Move To Front Animation</string>  
+    <string name="task_move_to_back_title">Move To Back Animation</string>  
+    <string name="wallpaper_open_title">Wallpaper Open Animation</string>  
+    <string name="wallpaper_close_title">Wallpaper Close Animation</string>  
+    <string name="wallpaper_intra_open_title">Wallpaper Intra Open Animation</string>  
+    <string name="wallpaper_intra_close_title">Wallpaper Intra Close Animation</string>  
+    <string name="animation_duration_title">Animation Duration</string>  
+    <string name="title_animation_no_override">Prevent App Overrides</string>  
+    <string name="summary_animation_no_override">Prevent apps from overriding transitions.</string>  
+    <string name="animation_duration_default">Default</string>
+    <string name="header_summary_animation">@null</string>
 
 </resources>

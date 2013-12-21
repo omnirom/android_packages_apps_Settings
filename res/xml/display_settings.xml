@@ -84,4 +84,10 @@
                 android:entries="@array/screen_off_animation_entries"
                 android:entryValues="@array/screen_off_animation_values" />
 
+        <PreferenceScreen
+                android:id="@+id/animations"  
+                android:title="@string/title_animation_controls"  
+                android:summary="@string/header_summary_animation"  
+                android:fragment="com.android.settings.fragments.AnimationControls" />
+
 </PreferenceScreen>
