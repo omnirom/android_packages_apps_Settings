@@ -248,4 +248,12 @@
     <style name="ApnPreference">
         <item name="android:layout">@layout/apn_preference_layout</item>
     </style>
+
+    <style name="TextAppearance.QuickSettings">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>
