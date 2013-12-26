@@ -182,8 +182,12 @@ public class InputMethodAndLanguageSettings extends SettingsPreferenceFragment
         if (!getResources().getBoolean(com.android.internal.R.bool.config_stylusGestures)) {
             PreferenceGroup pointerSettingsCategory = (PreferenceGroup)
                     findPreference(KEY_POINTER_SETTINGS_CATEGORY);
-            pointerSettingsCategory.removePreference(mStylusGestures);
-            pointerSettingsCategory.removePreference(mStylusIconEnabled);
+            if (mStylusGestures != null) {
+                pointerSettingsCategory.removePreference(mStylusGestures);
+            }
+            if (mStylusIconEnabled != null) {
+                pointerSettingsCategory.removePreference(mStylusIconEnabled);
+            }
         }
 
         // Spell Checker
