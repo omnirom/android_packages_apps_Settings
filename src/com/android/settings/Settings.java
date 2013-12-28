@@ -101,6 +101,7 @@ import org.omnirom.omnigears.ButtonSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.interfacesettings.MenusSettings;
 import org.omnirom.omnigears.interfacesettings.NotificationPanelSettings;
+import org.omnirom.omnigears.interfacesettings.AnimationInterfaceSettings;
 import org.omnirom.omnigears.chameleonos.ActiveDisplaySettings;
 import org.omnirom.omnigears.interfacesettings.MoreInterfaceSettings;
 import com.brewcrewfoo.performance.activities.MainActivity;
@@ -382,6 +383,7 @@ public class Settings extends PreferenceActivity
         BarsSettings.class.getName(),
         MenusSettings.class.getName(),
         NotificationPanelSettings.class.getName(),
+        AnimationInterfaceSettings.class.getName(),
         ActiveDisplaySettings.class.getName(),
         MoreInterfaceSettings.class.getName(),
         AppOpsSummary.class.getName(),
@@ -1156,6 +1158,7 @@ public class Settings extends PreferenceActivity
     public static class BarsSettingsActivity extends Settings { /* empty */ }
     public static class MenusSettingsActivity extends Settings { /* empty */ }
     public static class NotificationPanelSettingsActivity extends Settings { /* empty */ }
+    public static class AnimationInterfaceSettingsActivity extends Settings { /* empty */ }
     public static class MoreInterfaceSettingsActivity extends Settings { /* empty */ }
     public static class ActiveDisplaySettingsActivity extends Settings { /* empty */ }
     public static class DisplaySettingsActivity extends Settings { /* empty */ }
