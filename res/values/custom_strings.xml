@@ -98,6 +98,7 @@
     <string name="interface_bars_title">Bars</string>
     <string name="interface_menus_title">Menus</string>
     <string name="interface_notification_panel_title">Notification Drawer</string>
+    <string name="interface_animation_title">Animation Control</string>
 
     <!-- Battery Icon selection -->
     <string name="pref_battery_indicator_title">Battery indicator</string>
