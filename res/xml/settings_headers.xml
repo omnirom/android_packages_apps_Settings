@@ -91,6 +91,13 @@
         android:icon="@drawable/ic_settings_actived" />
 
     <header
+        android:id="@+id/interface_animation"
+        android:title="@string/interface_animation_title"
+        android:breadCrumbTitle="@string/interface_animation_title"
+        android:fragment="org.omnirom.omnigears.interfacesettings.AnimationInterfaceSettings"
+        android:icon="@drawable/ic_rom_control_animations" />
+
+    <header
         android:id="@+id/interface_more"
         android:title="@string/interface_more_title"
         android:breadCrumbTitle="@string/interface_more_title"
