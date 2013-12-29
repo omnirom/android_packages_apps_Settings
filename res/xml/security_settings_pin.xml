@@ -62,6 +62,10 @@
             android:summary="@string/lockscreen_quick_unlock_control_summary" 
             android:persistent="false"/>
 
+        <PreferenceScreen
+            android:title="@string/lockscreen_notifications"
+            android:fragment="com.android.settings.LockscreenNotifications" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
