@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2012-2013 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- About phone screen,  setting option name-->
+    <string name="mod_version">Verze Omni</string>
+    <string name="mod_version_default">Neznámá</string>
+
+    <!-- Main list strings -->
+    <string name="header_category_interface">Rozhraní</string>
+    <string name="performance_settings">Výkon</string>
+    <string name="notification_light_settings">Světlo oznámení</string>
+    <string name="battery_light_settings">Světlo baterie</string>
+    <string name="header_button_settings">Tlačítka</string>
+
+    <!-- Volume panel tweaks -->
+    <string name="volume_adjust_sounds_enable_title">Zvuk při změně hlasitosti</string>
+    <string name="volume_adjust_sounds_enable_summary">Přehrát zvuk při změně hlasitosti pomocí tlačítka</string>
+    <string name="link_volume_ringtones">Hlasitost vyzvánění a oznamování</string>
+    <string name="volume_ring_only_description">Vyzvánění</string>
+
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">Rozšířený restart</string>
+    <string name="advanced_reboot_summary">Pokud povoleno, v nabídce vypnutí jsou také možnosti restartovat zařízení do recovery nebo bootloaderu</string>
+
+    <!-- Lockscreen battery ring -->
+    <string name="battery_around_lockscreen_ring">Baterie kolem odemykacího kruhu</string>
+
+    <!-- Android debugging over WiFi -->
+    <string name="adb_over_network">ADB přes síť</string>
+    <string name="adb_over_network_summary">Povolit ladění přes síťové připojení (např. Wi-Fi nebo síť USB). Toto nastavení bude obnoveno po restartu.</string>
+
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">UPOZORNĚNÍ: Pokud je povoleno ADB přes síťové připojení, zařízení je otevřené pro pokusy o průniky na všech připojených sítích, včetně GSM datové sítě!\n\nPoužijte tuto vlastnost pouze pokud jste připojeni k důvěryhodné síti.\n\nOpravdu chcete povolit tuto funkci?</string>
+    <string name="lockscreen_quick_unlock_control_title">Rychlé odemknutí</string>
+    <string name="lockscreen_quick_unlock_control_summary">Automatické odemknutí pokud je zadán správný PIN/heslo</string>
+
+    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
+    <string name="change_crypt_password_title">Změna hesla</string>
+    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
+    <string name="change_crypt_password_summary">Změnit heslo pro šifrování zařízení</string>
+
+    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
+    <string name="encryptionpassword_choose_your_password_header">Nastavit šifrovací heslo</string>
+
+    <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+    <string name="show_cpu_info">Zobrazit informace o CPU</string>
+    <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+    <string name="show_cpu_info_summary">Překrytí displeje zobrazující aktuální informace CPU</string>
+
+    <!-- Screen off animation -->
+    <string name="screen_off_animation">Animace vypnutí obrazovky</string>
+    <string name="screen_off_fadeout">Zmizení</string>
+    <string name="screen_off_electronbeam">Proud elektronů</string>
+    <string name="screen_off_scaledown">Minimalizovat</string>
+
+    <!-- AppOps additions -->
+    <string name="appops_settings">Oprávnění aplikací</string>
+    <string name="appops_sysapp_beware">Upozornění!</string>
+    <string name="appops_sysapp_warning">"Změna povolení Android součástí základního systému může vést k nežádoucím chování. Můžete změnit tato oprávnění na vlastní nebezpečí!</string>
+
+    <!-- Low battery warning policy -->
+    <string name="pref_low_battery_warning_policy_title">Upozornění na vybití baterie</string>
+    <string name="pref_low_battery_warning_policy_dialog_title">Upozornit přes</string>
+    <string name="low_battery_warning_policy_popup_sound">Pop-up a zvuk</string>
+    <string name="low_battery_warning_policy_notif_sound">Oznámení a zvuk</string>
+    <string name="low_battery_warning_policy_popup">Pouze zprávy pop-up</string>
+    <string name="low_battery_warning_policy_notif">Pouze oznámení</string>
+    <string name="low_battery_warning_policy_sound">Pouze zvuk</string>
+    <string name="battery_prefs_title">Volby</string>
+    <string name="battery_stats_title">Statistiky</string>
+
+    <!-- Setting checkbox summary for displaying USB debugging notification -->
+    <string name="adb_notify">Upozornění na ladění USB</string>
+    <string name="adb_notify_summary">Zobrazit upozornění při připojení k USB v režimu ladění</string>
+
+    <!-- Lockscreen pin shuffle -->
+    <string name="lock_numpad_random_title">Změna pořadí kláves tlačítek PIN</string>
+    <string name="lock_numpad_random_dialog_title">Náhodné rozložení klávesnice PIN</string>
+    <string name="lock_numpad_random_off">Zakázáno</string>
+    <string name="lock_numpad_random_always">Vždy</string>
+    <string name="lock_numpad_random_on_request">Na vyžádání</string>
+
+    <string name="interface_more_title">Další\u2026</string>
+    <string name="interface_bars_title">Lišty</string>
+    <string name="interface_menus_title">Menu</string>
+    <string name="interface_notification_panel_title">Panel oznámení</string>
+
+    <!-- Battery Icon selection -->
+    <string name="pref_battery_indicator_title">Indikátor stavu baterie</string>
+    <string name="battery_status_icon_title">Ikona stavu</string>
+    <string name="battery_bar">Ikona</string>
+    <string name="battery_bar_percent">Procenta</string>
+    <string name="battery_circle">Kruh</string>
+    <string name="battery_circle_percent">Kruh s procenty</string>
+
+    <!-- Turn on display when power connected; turn off display when power disconnected -->
+    <string name="wake_when_plugged_or_unplugged_title">Probudit při nabíjení</string>
+    <string name="wake_when_plugged_or_unplugged_summary">Zapnout obrazovku při připojení nebo odpojení od nabíječky</string>
+
+    <!-- security settings menu unlock -->
+    <string name="unlock_menu_unlock_title">Odemknout tlačítkem Nabídka</string>
+    <string name="unlock_menu_unlock_summary">Po stisknutí tlačítka Nabídka se zařízení odemkne</string>
+
+    <!-- Stylus Icon -->
+    <string name="stylus_icon_enabled_title">Zobrazit ikonu, když je použitý stylus</string>
+    <string name="stylus_icon_enabled_summary">Zobrazit ikonu při najetí kurzoru nebo kreslení pomocí tužky</string>
+
+    <!-- Stylus Gestures -->
+    <string name="gestures_settings_title">Gesta stylusem</string>
+    <string name="category_spen_title">Gesta stylusem</string>
+    <string name="enable_subcat_title">Stylus</string>
+    <string name="enable_spen_title_head">Povolit gesta</string>
+    <string name="enable_spen_summary_head">Spustit vlastní akci pomocí gesta a podržením tlačítka na stylusu. Warning: apps will not be able to receive input fired by holding the stylus button</string>
+    <string name="gestures_subcat_title">Gesta</string>
+    <string name="gestures_left_spen_title_head">Levé posunutí</string>
+    <string name="gestures_left_spen_summary_head">Spuštění vlastní akce při levém posunutí</string>
+    <string name="gestures_right_spen_title_head">Pravé posunutí</string>
+    <string name="gestures_right_spen_summary_head">Spuštění vlastní akce při pravém posunutí</string>
+    <string name="gestures_up_spen_title_head">Horní posunutí</string>
+    <string name="gestures_up_spen_summary_head">Spuštění vlastní akce při horním posunutí</string>
+    <string name="gestures_down_spen_title_head">Dolní posunutí</string>
+    <string name="gestures_down_spen_summary_head">Spuštění vlastní akce při dolním posunutí</string>
+    <string name="gestures_long_spen_title_head">Dlouhý dotyk</string>
+    <string name="gestures_long_spen_summary_head">Spuštění vlastní akce při dlouhém dotyku</string>
+    <string name="gestures_double_spen_title_head">Dvojklik</string>
+    <string name="gestures_double_spen_summary_head">Spuštění vlastní akce při dvojkliku</string>
+
+    <!-- Gestures Options -->
+    <string name="gestures_action_empty">Bez akce</string>
+    <string name="gestures_action_home">Domů</string>
+    <string name="gestures_action_back">Zpět</string>
+    <string name="gestures_action_menu">Nabídka</string>
+    <string name="gestures_action_search">Spustit vyhledávání</string>
+    <string name="gestures_action_recent">Nedávné aplikace</string>
+
+    <!-- stylus gestures support -->
+    <string name="stylus_app_not_installed">%s není nainstalován</string>
+
+    <!-- default alarm tone -->
+    <string name="alarm_sound_title">Vychozí upozornění alarmu</string>
+    <string name="alarm_sound_dialog_title">Vychozí upozornění alarmu</string>
+
+    <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
+    <string name="custom_runtime_warning_title">Varování</string>
+    <string name="custom_runtime_warning_message">OmniROM nepodporuje ART. Toto nastavení je zahrnuto pouze pro experimentování a má potenciál způsobit nestabilitu, pády, ztráty dat nebo nesprávné nabootování Vašeho zařízení. Navštivte &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Představujeme ART&lt;/a&gt; pro více informací.&lt;br/&gt;&lt;br/&gt;Žádáme Vás, nehlašte chyby pokud jste zvolili ART jako Váš systém.&lt;br/&gt;&lt;br/&gt;Jste si jisti, že chcete restartovat Vaše zařízení pro změnu systému z <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> na <xliff:g id="new" example="libart.so">%2$s</xliff:g>?</string>
+
+</resources>
