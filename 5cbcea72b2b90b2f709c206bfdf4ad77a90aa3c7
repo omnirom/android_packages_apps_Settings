@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "6b8b61a3_889b24c0",
+        "filename": "res/values-fr/custom_arrays.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000098
+      },
+      "writtenOn": "2013-12-29T18:59:02Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "6b8b61a3_08871468",
+      "revId": "5cbcea72b2b90b2f709c206bfdf4ad77a90aa3c7",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b8b61a3_48811c50",
         "filename": "res/values-fr/custom_strings.xml",
         "patchSetId": 5
@@ -48,6 +66,24 @@
       "writtenOn": "2013-12-29T18:48:50Z",
       "side": 1,
       "message": "lorsque le bon code PIN est saisi\u003c/string\u003e",
+      "revId": "5cbcea72b2b90b2f709c206bfdf4ad77a90aa3c7",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_a898e0c3",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000098
+      },
+      "writtenOn": "2013-12-29T18:59:02Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "6b8b61a3_48811c50",
       "revId": "5cbcea72b2b90b2f709c206bfdf4ad77a90aa3c7",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
@@ -83,6 +119,24 @@
       "side": 1,
       "message": "Yes\n\u003cstring name\u003d\"change_crypt_password_summary\"\u003eDéfinir le mot de passe pour le chiffrement\u003c/string\u003e",
       "parentUuid": "6b8b61a3_a8af00dc",
+      "revId": "5cbcea72b2b90b2f709c206bfdf4ad77a90aa3c7",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_e892e8a1",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000098
+      },
+      "writtenOn": "2013-12-29T18:59:02Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "6b8b61a3_288cd087",
       "revId": "5cbcea72b2b90b2f709c206bfdf4ad77a90aa3c7",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
