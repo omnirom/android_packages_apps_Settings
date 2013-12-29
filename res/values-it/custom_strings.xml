@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (C) 2012-2013 The CyanogenMod Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,8 +26,8 @@
     <string name="header_button_settings">Pulsanti</string>
 
     <!-- Volume panel tweaks -->
-    <string name="volume_adjust_sounds_enable_title">Volume regola audio</string>
-    <string name="volume_adjust_sounds_enable_summary">Riproduci suono quando si regola il volume con i tasti</string>
+    <string name="volume_adjust_sounds_enable_title">Suono regola audio</string>
+    <string name="volume_adjust_sounds_enable_summary">Riproduci un suono quando si regola il volume con i tasti</string>
     <string name="link_volume_ringtones">Link suoneria &amp; volume notifiche</string>
     <string name="volume_ring_only_description">Suoneria</string>
 
@@ -36,7 +36,7 @@
     <string name="advanced_reboot_summary">Quando è sbloccato, include maggiori impostazioni nel menu di spegnimento per riavviare in modalità recovery o bootloader</string>
 
     <!-- Lockscreen battery ring -->
-    <string name="battery_around_lockscreen_ring">Visualizza la batteria intorno all\'anello di sblocco</string>
+    <string name="battery_around_lockscreen_ring">Batteria anello di sblocco</string>
 
     <!-- Android debugging over WiFi -->
     <string name="adb_over_network">ADB via rete</string>
@@ -109,7 +109,8 @@
     <!-- Stylus Icon -->
     <string name="stylus_icon_enabled_title">Mostra icona quando si utilizzano gli stili</string>
     <string name="stylus_icon_enabled_summary">Mostra l\'icona del puntatore quando si utilizzano gli stili</string>
-    <!-- Stylus Gestures -->
+	
+	<!-- Stylus Gestures -->
     <string name="gestures_settings_title">Stili gesti</string>
     <string name="category_spen_title">Stili gesti</string>
     <string name="enable_subcat_title">Gesti</string>
@@ -143,14 +144,14 @@
     <!-- default alarm tone -->
     <string name="alarm_sound_title">Suoneria della sveglia di default</string>
     <string name="alarm_sound_dialog_title">Suoneria della sveglia di default</string>
-
-    <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
+	
+	<!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
     <string name="custom_runtime_warning_title">Attenzione</string>
     <string name="custom_runtime_warning_message">ART non è supportato dalla OmniROM.Questa impostazione è solo sperimentale e ha il potenziale di causare instabilità, crash, perdita di dati o impedire il corretto avvio del dispositivo. Visita &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introduzione ART&lt;/a&gt; per maggiori informazioni.&lt;br/&gt;&lt;br/&gt;Chiediamo di non segnalare i bug, se hai attivato il runtime ART.&lt;br/&gt;&lt;br/&gt;Sei sicuro di voler riavviare per cambiare il runtime da<xliff:g id="old" example="libdvm.so">%1$s</xliff:g> a <xliff:g id="new" example="libart.so">%2$s</xliff:g>?</string>
 
-    <string name="security_maximize_widgets_title">Massimizza widget lockscreen</string>
-    <string name="wifi_setting_countrycode_title">Codice regione Wi-Fi</string>
+	<string name="security_maximize_widgets_title">Massimizza widget lockscreen</string>
+	<string name="wifi_setting_countrycode_title">Codice regione Wi-Fi</string>
     <string name="wifi_setting_countrycode_summary">Specifica il codice regione per il Wi-Fi</string>
     <string name="wifi_setting_countrycode_error">C\'è un problema nell\'impostare il codice regione del Wi-Fi</string>
-
+	
 </resources>
