@@ -1683,7 +1683,10 @@
             android:theme="@style/CryptKeeperBlankTheme"
         />
 
-        <activity android:name=".LockscreenTargets" />
+        <activity
+            android:name=".LockscreenNotifications"
+            android:label="@string/Lockscreen_notifications_header" >
+        </activity>
 
         <!-- Pseudo-activity used to provide an intent-filter entry point to quite hours settings -->
         <activity android:name="Settings$QuietHoursSettingsActivity"
