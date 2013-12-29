@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_8df416ce",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2013-12-29T05:22:31Z",
+      "side": 1,
+      "message": "Lier les volumes des notifications et de la sonnerie",
+      "revId": "bb48d2c3d7e4038ff0a54d5869999818d1d86e38",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_adf1d2dd",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2013-12-29T05:22:31Z",
+      "side": 1,
+      "message": "Niveau de batterie autour de l\u0027anneau de déverrouillage",
+      "revId": "bb48d2c3d7e4038ff0a54d5869999818d1d86e38",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_cdfe1eaa",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2013-12-29T05:22:31Z",
+      "side": 1,
+      "message": "Déverrouiller automatiquement l\\\u0027appareil lorsque le bon code PIN est saisi",
+      "revId": "bb48d2c3d7e4038ff0a54d5869999818d1d86e38",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_edfbdab7",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2013-12-29T05:22:31Z",
+      "side": 1,
+      "message": "Je traduirais bien par \"Accueil\", plutôt que \"Home\".\nCe n\u0027est pas du développement (genre recovery/bootloader), non ?",
+      "revId": "bb48d2c3d7e4038ff0a54d5869999818d1d86e38",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
