@@ -248,4 +248,8 @@
     <string name="ime_switcher_notify">Selector notification</string>
     <string name="ime_switcher_notify_summary">Display input method selector notification</string>
 
+    <!--Double tap to sleep-->
+    <string name="double_tap_to_sleep_title">Double tap to sleep</string>
+    <string name="double_tap_to_sleep_summary">Double tap statusbar to lock device</string>
+
 </resources>
