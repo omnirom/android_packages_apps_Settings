@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_e35ccb1e",
+        "filename": "res/values/custom_arrays.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2013-12-30T16:06:37Z",
+      "side": 1,
+      "message": "This should be in the buttons settings in the volume key category\nall other fatures that are done using the volume keys are there too",
+      "revId": "65275474673eeb0a173a593950efa89d30d150b9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_a362c3d4",
+        "filename": "res/xml/input_methods_settings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2013-12-30T16:06:37Z",
+      "side": 1,
+      "message": "missing android:persistent\u003dfalse",
+      "revId": "65275474673eeb0a173a593950efa89d30d150b9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
