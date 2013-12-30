@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_a3dd6374",
+        "filename": "res/xml/lockscreen_notification_settings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000117
+      },
+      "writtenOn": "2013-12-30T16:31:09Z",
+      "side": 1,
+      "message": "remove \".omnikang\"",
+      "revId": "e0cba44ddfc4e9cbc24f0d7612e74cb74745e977",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
