@@ -57,6 +57,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private static final String KEY_SCREEN_SAVER = "screensaver";
     private static final String KEY_SCREEN_OFF_ANIMATION = "screen_off_animation";
     private static final String KEY_WAKE_WHEN_PLUGGED_OR_UNPLUGGED = "wake_when_plugged_or_unplugged";
+    private static final String KEY_DOUBLE_TAP_SLEEP_GESTURE = "double_tap_sleep_gesture";
 
     private static final int DLG_GLOBAL_CHANGE_WARNING = 1;
 
@@ -65,6 +66,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private Preference mNotificationLight;
     private Preference mChargingLight;
     private CheckBoxPreference mWakeWhenPluggedOrUnplugged;
+    private CheckBoxPreference mDTS;
 
     private final Configuration mCurConfig = new Configuration();
     
@@ -146,6 +148,10 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         mWakeWhenPluggedOrUnplugged.setChecked(Settings.Global.getInt(resolver,
                 Settings.Global.WAKE_WHEN_PLUGGED_OR_UNPLUGGED,
                 (wakeUpWhenPluggedOrUnpluggedConfig ? 1 : 0)) == 1);
+
+        mDTS = (CheckBoxPreference) findPreference(KEY_DOUBLE_TAP_SLEEP_GESTURE);
+        mDTS.setChecked(Settings.System.getInt(getContentResolver(),
+                              Settings.System.DOUBLE_TAP_SLEEP_GESTURE, 0) == 1);
     }
 
     private void updateScreenOffAnimationPreferenceDescription(int currentAnim) {
@@ -334,6 +340,10 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
                     Settings.Global.WAKE_WHEN_PLUGGED_OR_UNPLUGGED,
                     mWakeWhenPluggedOrUnplugged.isChecked() ? 1 : 0);
             return true;
+        } else if (preference == mDTS) {
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.DOUBLE_TAP_SLEEP_GESTURE,
+                    mDTS.isChecked() ? 1 : 0);
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
