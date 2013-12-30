@@ -358,6 +358,9 @@ public class SoundSettings extends SettingsPreferenceFragment implements
         } else if (preference == mVolumeAdustSound) {
             Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_ADJUST_SOUNDS_ENABLED,
                     mVolumeAdustSound.isChecked() ? 1 : 0);
+        } else {
+            // If we didn't handle it, let preferences handle it.
+            return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
         return true;
     }
