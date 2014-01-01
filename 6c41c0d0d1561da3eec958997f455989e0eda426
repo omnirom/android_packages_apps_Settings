@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_1905a8c5",
+        "filename": "src/com/android/settings/gnome/LockscreenNotifications.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000538
+      },
+      "writtenOn": "2014-01-01T21:57:51Z",
+      "side": 1,
+      "message": "Build will fail here - change to lockscreen_notifications",
+      "revId": "6c41c0d0d1561da3eec958997f455989e0eda426",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
