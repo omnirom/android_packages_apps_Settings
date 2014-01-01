@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_3e9a4a17",
+        "filename": "res/values-it/custom_arrays.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-01T10:11:02Z",
+      "side": 1,
+      "message": "45s has been removed completely here https://github.com/omnirom/android_packages_apps_Settings/commit/19a14b1f0dd95b6cdbb34cda5525c7c66d4e8a49",
+      "revId": "51457514883d80c7ed555a9d5366edb80a70586e",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
