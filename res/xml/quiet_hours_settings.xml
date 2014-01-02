@@ -64,6 +64,13 @@
         android:summaryOn="@string/quiet_hours_dim_on"
         android:summaryOff="@string/quiet_hours_dim_off"
         android:dependency="quiet_hours_enabled" />
+        
+    <CheckBoxPreference
+        android:key="quiet_hours_battery"
+        android:title="@string/quiet_hours_battery"
+        android:summaryOn="@string/quiet_hours_battery_on"
+        android:summaryOff="@string/quiet_hours_battery_off"
+        android:dependency="quiet_hours_enabled" />
 
     <PreferenceCategory
         android:key="sms_respond"

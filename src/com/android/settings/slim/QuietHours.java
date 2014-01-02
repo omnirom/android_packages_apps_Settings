@@ -57,6 +57,7 @@ public class QuietHours extends SettingsPreferenceFragment implements
     private static final String KEY_QUIET_HOURS_STILL = "quiet_hours_still";
     private static final String KEY_QUIET_HOURS_DIM = "quiet_hours_dim";
     private static final String KEY_QUIET_HOURS_HAPTIC = "quiet_hours_haptic";
+    private static final String KEY_QUIET_HOURS_BATTERY = "quiet_hours_battery";
     private static final String KEY_QUIET_HOURS_NOTE = "quiet_hours_note";
     private static final String KEY_QUIET_HOURS_TIMERANGE = "quiet_hours_timerange";
     private static final String KEY_LOOP_BYPASS_RINGTONE = "loop_bypass_ringtone";
@@ -79,6 +80,7 @@ public class QuietHours extends SettingsPreferenceFragment implements
     private CheckBoxPreference mQuietHoursStill;
     private CheckBoxPreference mQuietHoursDim;
     private CheckBoxPreference mQuietHoursHaptic;
+    private CheckBoxPreference mQuietHoursBattery;
     private CheckBoxPreference mRingtoneLoop;
     private ListPreference mAutoSms;
     private ListPreference mAutoSmsCall;
@@ -129,6 +131,8 @@ public class QuietHours extends SettingsPreferenceFragment implements
                 (CheckBoxPreference) prefSet.findPreference(KEY_QUIET_HOURS_STILL);
             mQuietHoursHaptic =
                 (CheckBoxPreference) prefSet.findPreference(KEY_QUIET_HOURS_HAPTIC);
+            mQuietHoursBattery =
+                (CheckBoxPreference) prefSet.findPreference(KEY_QUIET_HOURS_BATTERY);
             mQuietHoursDim =
                 (CheckBoxPreference) findPreference(KEY_QUIET_HOURS_DIM);
             mRingtoneLoop =
@@ -177,6 +181,9 @@ public class QuietHours extends SettingsPreferenceFragment implements
             mQuietHoursHaptic.setChecked(
                     Settings.System.getInt(resolver, Settings.System.QUIET_HOURS_HAPTIC, 0) == 1);
             mQuietHoursHaptic.setOnPreferenceChangeListener(this);
+            mQuietHoursBattery.setChecked(
+                    Settings.System.getInt(resolver, Settings.System.QUIET_HOURS_BATTERY, 0) == 1);
+            mQuietHoursBattery.setOnPreferenceChangeListener(this);
             mRingtoneLoop.setOnPreferenceChangeListener(this);
             mAutoSms.setValue(mPrefs.getString(KEY_AUTO_SMS, "0"));
             mAutoSms.setOnPreferenceChangeListener(this);
@@ -231,6 +238,16 @@ public class QuietHours extends SettingsPreferenceFragment implements
                 mQuietHoursDim.setChecked(Settings.System.getInt(
                         resolver, Settings.System.QUIET_HOURS_DIM, 0) == 1);
                 mQuietHoursDim.setOnPreferenceChangeListener(this);
+            }
+            
+            // Remove the battery warning light setting if the device does not support it
+            if (mQuietHoursBattery != null && getResources().getBoolean(
+                        com.android.internal.R.bool.config_intrusiveBatteryLed) == false) {
+                getPreferenceScreen().removePreference(mQuietHoursBattery);
+            } else {
+                mQuietHoursBattery.setChecked(Settings.System.getInt(
+                        resolver, Settings.System.QUIET_HOURS_BATTERY, 0) == 1);
+                mQuietHoursBattery.setOnPreferenceChangeListener(this);
             }
 
             mPreferencesChangeListener = new OnSharedPreferenceChangeListener() {
@@ -306,6 +323,10 @@ public class QuietHours extends SettingsPreferenceFragment implements
             return true;
         } else if (preference == mQuietHoursHaptic) {
             Settings.System.putInt(resolver, Settings.System.QUIET_HOURS_HAPTIC,
+                    (Boolean) newValue ? 1 : 0);
+            return true;
+        } else if (preference == mQuietHoursBattery) {
+            Settings.System.putInt(resolver, Settings.System.QUIET_HOURS_BATTERY,
                     (Boolean) newValue ? 1 : 0);
             return true;
         } else if (preference == mRingtoneLoop) {
