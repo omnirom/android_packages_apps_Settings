@@ -192,6 +192,9 @@
     <string name="quiet_hours_haptic">Disable haptic feedback</string>
     <string name="quiet_hours_haptic_on">Haptic feedback will be disabled</string>
     <string name="quiet_hours_haptic_off">Haptic feedback will function as normal</string>
+    <string name="quiet_hours_battery">Disable battery warning</string>
+    <string name="quiet_hours_battery_on">Battery warning will be disabled</string>
+    <string name="quiet_hours_battery_off">Battery warning will function as normal</string>
     <string name="quiet_hours_active_from">Active from</string>
     <string name="quiet_hours_active_to">to</string>
     <string name="quiet_hours_auto_sms_group">Automatic response</string>
