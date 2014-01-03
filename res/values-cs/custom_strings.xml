@@ -158,4 +158,92 @@
     <string name="custom_runtime_warning_title">Varování</string>
     <string name="custom_runtime_warning_message">OmniROM nepodporuje ART. Toto nastavení je zahrnuto pouze pro experimentování a má potenciál způsobit nestabilitu, pády, ztráty dat nebo nesprávné nabootování Vašeho zařízení. Navštivte &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Představujeme ART&lt;/a&gt; pro více informací.&lt;br/&gt;&lt;br/&gt;Žádáme Vás, nehlašte chyby pokud jste zvolili ART jako Váš systém.&lt;br/&gt;&lt;br/&gt;Jste si jisti, že chcete restartovat Vaše zařízení pro změnu systému z <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> na <xliff:g id="new" example="libart.so">%2$s</xliff:g>?</string>
 
+    <!-- Basic Numbers -->
+    <string name="two">Dva</string>
+    <string name="three">Tři</string>
+    <string name="four">Čtyři</string>
+    <string name="five">Pět</string>
+    <string name="six">Šest</string>
+
+    <!-- Quiet hours -->
+    <string name="quiet_hours_title">Klidný mód</string>
+    <string name="quiet_hours_summary">Nastavení hodin, kdy má být zařízení v tichém režimu</string>
+    <string name="quiet_hours_note_title">Poznámka</string>
+    <string name="quiet_hours_note_summary">Příchozí hovory nebudou ovlivněny nastavením klidu a vyzvánění bude normální</string>
+    <string name="quiet_hours_enabled">Povolit tiché hodiny</string>
+    <string name="quiet_hours_enabled_on">Tiché hodiny budou vynuceny</string>
+    <string name="quiet_hours_enabled_off">Notifikace budou fungovat normálně</string>
+    <string name="quiet_hours_start">Začátek klidného módu</string>
+    <string name="quiet_hours_start_summary">Kdy začít prosazovat tiché hodiny</string>
+    <string name="quiet_hours_end">Konec klidného módu</string>
+    <string name="quiet_hours_end_summary">Kdy zastavit prosazování tichých hodin</string>
+    <string name="quiet_hours_ringer_title">Ztlumit vyzvánění</string>
+    <string name="quiet_hours_ringer_on">Vyzvánění nebude přehráváno.</string>
+    <string name="quiet_hours_ringer_off">Vyzvánění bude přehráváno normálně.</string>
+    <string name="quiet_hours_mute">Ztišit upozornění</string>
+    <string name="quiet_hours_mute_on">Nebudou přehrány žádné zvuky.</string>
+    <string name="quiet_hours_mute_off">Zvuky budou přehrány normálně.</string>
+    <string name="quiet_hours_still">Vypnout vibrace</string>
+    <string name="quiet_hours_still_on">Zařízení nebude vibrovat.</string>
+    <string name="quiet_hours_still_off">Zařízení bude vibrovat normálně.</string>
+    <string name="quiet_hours_dim">Ztlumit LED</string>
+    <string name="quiet_hours_dim_on">LED notifikace bude vypnuta.</string>
+    <string name="quiet_hours_dim_off">LED notifikace bude fungovat normálně.</string>
+    <string name="quiet_hours_haptic">Vypnout hmatovou odezvu</string>
+    <string name="quiet_hours_haptic_on">Hmatová odezva bude vypnuta.</string>
+    <string name="quiet_hours_haptic_off">Hmatová odezva bude fungovat normálně.</string>
+    <string name="quiet_hours_active_from">Aktivovat od</string>
+    <string name="quiet_hours_active_to">do</string>
+    <string name="quiet_hours_auto_sms_group">Automatická odpověď</string>
+    <string name="quiet_hours_auto_sms_title">Příchozí textové zprávy</string>
+    <string name="quiet_hours_auto_sms_call_title">Příchozí hovory</string>
+    <string name="quiet_hours_auto_string_title">Odeslat odpověď</string>
+    <string name="quiet_hours_auto_string_explain">Tato zpráva bude odeslána všem co Vás pokusí kontaktovat zatím co budou aktivní Tiché hodiny.</string>
+    <string name="quiet_hours_auto_sms_null">[Automatická zpráva] Ozvu se Vám jakmile budu moci.</string>
+    <string name="quiet_hours_auto_disabled">Zakázáno</string>
+    <string name="quiet_hours_auto_enabled">Všechny čísla</string>
+    <string name="quiet_hours_auto_contacts">Pouze kontakty</string>
+    <string name="quiet_hours_bypass_group">Vynechat klidný mód</string>
+    <string name="quiet_hours_sms_code_null">[Alarm]</string>
+    <string name="quiet_hours_sms_bypass_title">Vynechat textové zprávy</string>
+    <string name="quiet_hours_sms_code_title">Klíčová textová zpráva</string>
+    <string name="quiet_hours_sms_code_explain">Pokud příchozí zpráva obsahuje tento text, Vaše zařízení jí ohlasí alarmem.</string>
+    <string name="quiet_hours_call_bypass_title">Vynechat příchozí hovor</string>
+    <string name="quiet_hours_calls_required_title">Počet hovorů za 30 minut</string>
+    <string name="quiet_hours_calls_required_summary">" hovorů pro vynechání klidného módu"</string>
+    <string name="quiet_hours_bypass_ringtone_title">Přehrát vyzvánění</string>
+    <string name="quiet_hours_bypass_ringtone_loop_title">Vyzváněcí smyčka</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_on">Vyzvánění bude přehráváno dokud nebude zrušeno.</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_off">Vyzvánění bude přehráno pouze jednou</string>
+    <string name="quiet_hours_alarm_dismiss">Zrušit Alarm</string>
+    <string name="quiet_hours_alarm_and">" a "</string>
+    <string name="quiet_hours_alarm_dialog_title">KLIDNÝ MÓD VYNECHÁN</string>
+    <string name="quiet_hours_alarm_message">" splnilo požadavky pro vynechání klidného módu!"</string>
+
+    <!-- time range preference -->
+    <string name="start_time_title">Začátek</string>
+    <string name="end_time_title">Konec</string>
+
+    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
+    <string name="change_crypt_password_title">Změnit heslo</string>
+    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
+    <string name="change_crypt_password_summary">Změnit heslo pro šifrování zařízení</string>
+
+    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
+    <string name="encryptionpassword_choose_your_password_header">Nastavit šifrovací heslo</string>
+
+    <!-- Keyboard and Input ASS methods  -->
+    <string name="title_keyboard_input">Pokročilé možnosti</string>
+    <string name="disable_fullscreen_keyboard_title">Zakázat klávesnici přes celou obrazovku</string>
+    <string name="disable_fullscreen_keyboard_summary">Klávesnice na šířku nikdy nezabere celou obrazovku.</string>
+    <string name="keyboard_rotation_toggle_title">Automatické otáčení klávesnice</string>
+    <string name="keyboard_rotation_toggle_summary">Vynutit automatického otočení v případě zobrazené klávesnice</string>
+    <string name="keyboard_rotation_timeout_title">Časový limit automatického otočení</string>
+    <string name="keyboard_rotation_timeout_summary">Vypne senzor automatického otáčení <xliff:g id="rotate_timeout">%1$s</xliff:g> sekund po skrytí klávesnice</string>
+    <string name="keyboard_rotation_dialog">Poznámka: Tato funkce vynutí automatické otáčení dočasně, pouze pokud je na obrazovce klávesnice.  Toto nemá žádný vliv pokud je povoleno automatické otočení.</string>
+    <string name="show_enter_key_title">Zobrazit klávesu Enter</string>
+    <string name="show_enter_key_summary">Vynutit zobrazení klávesy Enter místo emotikon</string>
+    <string name="ime_switcher_notify">Výběr oznámení</string>
+    <string name="ime_switcher_notify_summary">Zobrazit vstupní metody výběru oznámení</string>
+
 </resources>
