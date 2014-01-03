@@ -149,8 +149,8 @@
     <string name="stylus_app_not_installed">%s non è stato installato!</string>
 
     <!-- default alarm tone -->
-    <string name="alarm_sound_title">Suoneria della sveglia di default</string>
-    <string name="alarm_sound_dialog_title">Suoneria della sveglia di default</string>
+    <string name="alarm_sound_title">Suoneria sveglia predefinita</string>
+    <string name="alarm_sound_dialog_title">Suoneria sveglia predefinita</string>
     <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
     <string name="custom_runtime_warning_title">Attenzione</string>
     <string name="custom_runtime_warning_message">ART non è supportato dalla OmniROM.Questa impostazione è solo sperimentale e ha il potenziale di causare instabilità, crash, perdita di dati o impedire il corretto avvio del dispositivo. Visita &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introduzione ART&lt;/a&gt; per maggiori informazioni.&lt;br/&gt;&lt;br/&gt;Chiediamo di non segnalare i bug, se hai attivato il runtime ART.&lt;br/&gt;&lt;br/&gt;Sei sicuro di voler riavviare per cambiare il runtime da<xliff:g id="old" example="libdvm.so">%1$s</xliff:g> a <xliff:g id="new" example="libart.so">%2$s</xliff:g>?</string>
