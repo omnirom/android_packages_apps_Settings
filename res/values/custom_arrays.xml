@@ -126,6 +126,18 @@
         <item>6</item>
     </string-array>
 
+    <!-- Nfc Polling Mode -->
+    <string-array name="nfc_polling_entries" translatable="false">
+        <item>@string/nfc_polling_always</item>
+        <item>@string/nfc_polling_screenon_lock</item>
+        <item>@string/nfc_polling_screenon_unlock</item>
+    </string-array>
+    <string-array name="nfc_polling_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
     <!-- Auto keyboard rotation -->
     <string-array name="keyboard_rotation_timeout_entries" translatable="false">
         <item>2s</item>
