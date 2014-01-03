@@ -124,4 +124,16 @@
         <item>5</item>
         <item>6</item>
     </string-array>
+
+    <!-- Nfc Polling Mode -->
+    <string-array name="nfc_polling_mode_entries" translatable="false">
+        <item>@string/nfc_polling_always</item>
+        <item>@string/nfc_polling_screenon_lock</item>
+        <item>@string/nfc_polling_screenon_unlock</item>
+    </string-array>
+    <string-array name="nfc_polling_mode_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>
