@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
+import android.preference.ListPreference;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
@@ -38,6 +39,7 @@ public class NfcEnabler implements Preference.OnPreferenceChangeListener {
     private final PreferenceScreen mAndroidBeam;
     private final NfcAdapter mNfcAdapter;
     private final IntentFilter mIntentFilter;
+    private final ListPreference mPolling;
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -51,16 +53,18 @@ public class NfcEnabler implements Preference.OnPreferenceChangeListener {
     };
 
     public NfcEnabler(Context context, CheckBoxPreference checkBoxPreference,
-            PreferenceScreen androidBeam) {
+            PreferenceScreen androidBeam, ListPreference polling) {
         mContext = context;
         mCheckbox = checkBoxPreference;
         mAndroidBeam = androidBeam;
         mNfcAdapter = NfcAdapter.getDefaultAdapter(context);
+        mPolling = polling;
 
         if (mNfcAdapter == null) {
             // NFC is not supported
             mCheckbox.setEnabled(false);
             mAndroidBeam.setEnabled(false);
+            mPolling.setEnabled(false);
             mIntentFilter = null;
             return;
         }
@@ -74,6 +78,7 @@ public class NfcEnabler implements Preference.OnPreferenceChangeListener {
         handleNfcStateChanged(mNfcAdapter.getAdapterState());
         mContext.registerReceiver(mReceiver, mIntentFilter);
         mCheckbox.setOnPreferenceChangeListener(this);
+        mPolling.setOnPreferenceChangeListener(this);
     }
 
     public void pause() {
@@ -82,20 +87,26 @@ public class NfcEnabler implements Preference.OnPreferenceChangeListener {
         }
         mContext.unregisterReceiver(mReceiver);
         mCheckbox.setOnPreferenceChangeListener(null);
+        mPolling.setOnPreferenceChangeListener(null);
     }
 
     public boolean onPreferenceChange(Preference preference, Object value) {
-        // Turn NFC on/off
+        if (preference == mCheckBox) {
+            // Turn NFC on/off
 
-        final boolean desiredState = (Boolean) value;
-        mCheckbox.setEnabled(false);
+            final boolean desiredState = (Boolean) value;
+            mCheckbox.setEnabled(false);
 
-        if (desiredState) {
-            mNfcAdapter.enable();
-        } else {
-            mNfcAdapter.disable();
+            if (desiredState) {
+                mNfcAdapter.enable();
+            } else {
+                mNfcAdapter.disable();
+            }
+        } else if (preference == mPolling) {
+            final int desiredPolling = (Int) value;
+            Settings.System.putInt(resolver, Settings.System.RADIO_NFC_POLLING,
+                    desiredPolling);
         }
-
         return false;
     }
 

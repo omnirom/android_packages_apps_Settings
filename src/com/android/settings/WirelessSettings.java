@@ -58,6 +58,7 @@ public class WirelessSettings extends RestrictedSettingsFragment
 
     private static final String KEY_TOGGLE_AIRPLANE = "toggle_airplane";
     private static final String KEY_TOGGLE_NFC = "toggle_nfc";
+    private static final String KEY_NFC_POLLING = "nfc_polling";
     private static final String KEY_WIMAX_SETTINGS = "wimax_settings";
     private static final String KEY_ANDROID_BEAM_SETTINGS = "android_beam_settings";
     private static final String KEY_VPN_SETTINGS = "vpn_settings";
@@ -268,11 +269,12 @@ public class WirelessSettings extends RestrictedSettingsFragment
         final Activity activity = getActivity();
         mAirplaneModePreference = (CheckBoxPreference) findPreference(KEY_TOGGLE_AIRPLANE);
         CheckBoxPreference nfc = (CheckBoxPreference) findPreference(KEY_TOGGLE_NFC);
+        ListPreference polling = (ListPreference) findPreference(KEY_NFC_POLLING);
         PreferenceScreen androidBeam = (PreferenceScreen) findPreference(KEY_ANDROID_BEAM_SETTINGS);
         CheckBoxPreference nsd = (CheckBoxPreference) findPreference(KEY_TOGGLE_NSD);
 
         mAirplaneModeEnabler = new AirplaneModeEnabler(activity, mAirplaneModePreference);
-        mNfcEnabler = new NfcEnabler(activity, nfc, androidBeam);
+        mNfcEnabler = new NfcEnabler(activity, nfc, androidBeam, polling);
 
         mSmsApplicationPreference = (SmsListPreference) findPreference(KEY_SMS_APPLICATION);
         mSmsApplicationPreference.setOnPreferenceChangeListener(this);
@@ -324,6 +326,7 @@ public class WirelessSettings extends RestrictedSettingsFragment
         mNfcAdapter = NfcAdapter.getDefaultAdapter(activity);
         if (mNfcAdapter == null) {
             getPreferenceScreen().removePreference(nfc);
+            getPreferenceScreen().removePreference(polling);
             getPreferenceScreen().removePreference(androidBeam);
             mNfcEnabler = null;
         }
