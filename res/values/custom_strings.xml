@@ -226,6 +226,13 @@
     <string name="start_time_title">Start</string>
     <string name="end_time_title">End</string>
 
+    <!-- Nfc Polling Mode -->
+    <string name="nfc_polling_title">NFC Polling Mode</string>
+    <string name="nfc_polling_summary">Define when NFC polling is activated</string>
+    <string name="nfc_polling_always">Always</string>
+    <string name="nfc_polling_screenon_lock">Screen On Locked</string>
+    <string name="nfc_polling_screenon_unlock">Screen On Unlocked</string>
+
     <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
     <string name="change_crypt_password_title">Change password</string>
     <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
