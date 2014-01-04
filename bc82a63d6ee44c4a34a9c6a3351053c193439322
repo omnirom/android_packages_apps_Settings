@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_670522c5",
+        "filename": "res/values/custom_arrays.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2014-01-04T17:52:52Z",
+      "side": 1,
+      "message": "wireless_settings.xml calls this nfc_polling_entries",
+      "revId": "bc82a63d6ee44c4a34a9c6a3351053c193439322",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_870a2ed3",
+        "filename": "res/values/custom_arrays.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2014-01-04T17:52:52Z",
+      "side": 1,
+      "message": "wireless_settings.xml calls this nfc_polling_values",
+      "revId": "bc82a63d6ee44c4a34a9c6a3351053c193439322",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
