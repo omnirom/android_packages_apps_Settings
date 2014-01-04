@@ -69,6 +69,7 @@
     <uses-permission android:name="android.permission.MANAGE_DEVICE_ADMINS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application android:label="@string/settings_label"
             android:icon="@mipmap/ic_launcher_settings"
@@ -1879,6 +1880,17 @@
                 <action android:name="android.provider.Contacts.PROFILE_CHANGED" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".tts.IntentReceiver">
+            <intent-filter>
+                 <action android:name="android.intent.action.PHONE_STATE" />
+                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".tts.NotifyService" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
