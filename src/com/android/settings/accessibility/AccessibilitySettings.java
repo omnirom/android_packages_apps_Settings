@@ -343,7 +343,11 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
         // Lock screen rotation.
         mToggleLockScreenRotationPreference =
                 (CheckBoxPreference) findPreference(TOGGLE_LOCK_SCREEN_ROTATION_PREFERENCE);
-        if (!RotationPolicy.isRotationSupported(getActivity())) {
+        if (!RotationPolicy.isRotationSupported(getActivity())
+                || RotationPolicy.isRotationLockToggleSupported(getActivity())) {
+            // If rotation lock is supported, then we do not provide this option in
+            // Display settings.  However, is still available in Accessibility settings,
+            // if the device supports rotation.
             mSystemsCategory.removePreference(mToggleLockScreenRotationPreference);
         }
 
