@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_07961e97",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000516
+      },
+      "writtenOn": "2014-01-04T16:45:53Z",
+      "side": 1,
+      "message": "It\u0027s not just about notifications.\nSo maybe just \u0027Heures silencieuses desactivées\u0027",
+      "revId": "baca6b2f91b6e17495d630c3be3cb2d50321e67b",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_47eca625",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000516
+      },
+      "writtenOn": "2014-01-04T16:45:53Z",
+      "side": 1,
+      "message": "Contacts",
+      "revId": "baca6b2f91b6e17495d630c3be3cb2d50321e67b",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
