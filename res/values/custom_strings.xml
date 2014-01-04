@@ -234,6 +234,10 @@
     <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
     <string name="encryptionpassword_choose_your_password_header">Set encryption password</string>
 
+    <!-- TTS driving mode  -->
+    <string name="voice_tts_notification_title">TTS Notifications</string>
+    <string name="voice_tts_notification_summary">Enable/disable TTS speak for Incoming calls &amp; Messages</string>
+
     <!-- Keyboard and Input ASS methods  -->
     <string name="title_keyboard_input">Advanced options</string>
     <string name="disable_fullscreen_keyboard_title">Disable fullscreen keyboard</string>

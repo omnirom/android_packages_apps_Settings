@@ -33,6 +33,13 @@
             android:entryValues="@array/tts_rate_values" />
     </PreferenceCategory>
 
+    <CheckBoxPreference
+            android:key="voice_tts"
+            android:title="@string/voice_tts_notification_title"
+            android:summary="@string/voice_tts_notification_summary"
+            android:persistent="false"
+            android:defaultValue="false" />
+
     <Preference android:key="tts_play_example"
          android:persistent="false"
          android:title="@string/tts_play_example_title"
