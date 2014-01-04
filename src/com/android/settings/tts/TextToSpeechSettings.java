@@ -25,13 +25,16 @@ import com.android.settings.tts.TtsEnginePreference.RadioButtonGroupState;
 
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.speech.tts.TextToSpeech;
@@ -80,7 +83,7 @@ public class TextToSpeechSettings extends SettingsPreferenceFragment implements
     private ListPreference mDefaultRatePref;
     private Preference mPlayExample;
     private Preference mEngineStatus;
-
+    private SharedPreferences mShareprefs;
     private int mDefaultRate = TextToSpeech.Engine.DEFAULT_RATE;
 
     /**
@@ -147,6 +150,8 @@ public class TextToSpeechSettings extends SettingsPreferenceFragment implements
         addPreferencesFromResource(R.xml.tts_settings);
 
         getActivity().setVolumeControlStream(TextToSpeech.Engine.DEFAULT_STREAM);
+
+        mShareprefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
 
         mPlayExample = findPreference(KEY_PLAY_EXAMPLE);
         mPlayExample.setOnPreferenceClickListener(this);
@@ -451,6 +456,7 @@ public class TextToSpeechSettings extends SettingsPreferenceFragment implements
     }
 
     private void updateWidgetState(boolean enable) {
+        mShareprefs.edit().putBoolean(IntentReceiver.ENGINE_READY, enable ? true : false).commit();
         mPlayExample.setEnabled(enable);
         mDefaultRatePref.setEnabled(enable);
         mEngineStatus.setEnabled(enable);
