@@ -16,34 +16,56 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- About phone screen,  setting option name-->
     <string name="mod_version">Version d\'Omni</string>
     <string name="mod_version_default">Inconnu</string>
+
+    <!-- Main list strings -->
     <string name="header_category_interface">Interface</string>
     <string name="performance_settings">Performance</string>
     <string name="notification_light_settings">LED de notification</string>
     <string name="battery_light_settings">Voyant de la batterie</string>
     <string name="header_button_settings">Boutons</string>
+
+    <!-- Volume panel tweaks -->
     <string name="volume_adjust_sounds_enable_title">Son au réglage du volume</string>
     <string name="volume_adjust_sounds_enable_summary">Émettre un son lors du réglage du volume avec les touches</string>
     <string name="link_volume_ringtones">Lier le volume des notifications et de la sonnerie</string>
     <string name="volume_ring_only_description">Sonnerie</string>
+
+    <!-- Advanced reboot options -->
     <string name="advanced_reboot_title">Redémarrage avancé</string>
     <string name="advanced_reboot_summary">Inclure les options de redémarrage en mode recovery et bootloader dans le menu marche/arrêt lorsque l\'appareil est déverrouillé</string>
+
+    <!-- Lockscreen battery ring -->
     <string name="battery_around_lockscreen_ring">Niveau de batterie autour du rond de déverrouillage</string>
+
+    <!-- Android debugging over WiFi -->
     <string name="adb_over_network">ADB par réseau</string>
     <string name="adb_over_network_summary">Activer le débogage TCP/IP sur toutes les interfaces réseaux (réseaux USB, Wi-Fi et Bluetooth). Ce paramètre est réinitialisé au redémarrage</string>
+
+    <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">ATTENTION : Lorsque cette fonction est activée, votre appareil est ouvert aux intrusions sur tous les réseaux connectés, y compris via le réseau mobile\u00A0!\n\nN\'utilisez cette fonctionnalité que sur des réseaux de confiance.\n\nContinuer\u00A0?</string>
     <string name="lockscreen_quick_unlock_control_title">Déverrouillage rapide</string>
     <string name="lockscreen_quick_unlock_control_summary">Déverrouiller automatiquement l\'appareil lors que le bon code PIN est rentré</string>
+
+    <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
     <string name="show_cpu_info">Affichage infos CPU</string>
+    <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
     <string name="show_cpu_info_summary">Afficher les informations du CPU sur l\'écran</string>
+
+    <!-- Screen off animation -->
     <string name="screen_off_animation">Animation à l\'extinction</string>
     <string name="screen_off_fadeout">Fondu</string>
     <string name="screen_off_electronbeam">Faisceau d\'électrons</string>
     <string name="screen_off_scaledown">Réduction</string>
+
+    <!-- AppOps additions -->
     <string name="appops_settings">Sécurité des applications</string>
     <string name="appops_sysapp_beware">Attention\u00A0!</string>
     <string name="appops_sysapp_warning">La modification des autorisations des composants de base d\'Android pourrait conduire à un comportement indésirable. Modifiez ces paramètres à vos risques et périls\u00A0!</string>
+
+    <!-- Low battery warning policy -->
     <string name="pref_low_battery_warning_policy_title">Avertissement de batterie faible</string>
     <string name="pref_low_battery_warning_policy_dialog_title">Indication de batterie faible</string>
     <string name="low_battery_warning_policy_popup_sound">Fenêtre de dialogue et son</string>
@@ -53,27 +75,168 @@
     <string name="low_battery_warning_policy_sound">Son uniquement</string>
     <string name="battery_prefs_title">Options</string>
     <string name="battery_stats_title">Statistiques</string>
+
+    <!-- Setting checkbox summary for displaying USB debugging notification -->
     <string name="adb_notify">Notification de débogage USB</string>
     <string name="adb_notify_summary">Afficher une notification lorsque le débogage USB est actif</string>
+
+    <!-- Lockscreen pin shuffle -->
     <string name="lock_numpad_random_title">Changer l\'ordre des numéros du pavé numérique</string>
     <string name="lock_numpad_random_dialog_title">Ordre des numéros aléatoire</string>
     <string name="lock_numpad_random_off">Désactivé</string>
     <string name="lock_numpad_random_always">Toujours</string>
     <string name="lock_numpad_random_on_request">Sur demande</string>
+
     <string name="interface_more_title">Plus\u2026</string>
     <string name="interface_bars_title">Barre</string>
     <string name="interface_menus_title">Menu</string>
     <string name="interface_notification_panel_title">Panneau des notifications</string>
+
+    <!-- Battery Icon selection -->
     <string name="pref_battery_indicator_title">Indicateur de batterie</string>
     <string name="battery_status_icon_title">Icône de statut</string>
     <string name="battery_bar">Barre</string>
     <string name="battery_bar_percent">Barre et pourcentage</string>
     <string name="battery_circle">Cercle</string>
     <string name="battery_circle_percent">Cercle et pourcentage</string>
+
+    <!-- Turn on display when power connected; turn off display when power disconnected -->
     <string name="wake_when_plugged_or_unplugged_title">Réveiller au branchement</string>
     <string name="wake_when_plugged_or_unplugged_summary">Allumer l\'écran lorsque le chargeur est connecté ou déconnecté</string>
+
+    <!-- security settings menu unlock -->
     <string name="unlock_menu_unlock_title">Déverrouillage par bouton Menu</string>
     <string name="unlock_menu_unlock_summary">Déverrouiller l\'écran en appuyant sur le bouton Menu</string>
+
+    <!-- Stylus Icon -->
     <string name="stylus_icon_enabled_title">Afficher l\'icône quand un stylet est utilisé</string>
     <string name="stylus_icon_enabled_summary">Afficher le pointeur du stylet quand celui-ci est utilisé</string>
+
+    <!-- Stylus Gestures -->
+    <string name="gestures_settings_title">Gestes du stylet</string>
+    <string name="category_spen_title">Gestes du stylet</string>
+    <string name="enable_subcat_title">Stylet</string>
+    <string name="enable_spen_title_head">Activer les gestes du stylet</string>
+    <string name="enable_spen_summary_head">Lancer une action lors d\'un geste sur un bouton. Attention : les applications ne recevront plus d\'information sur le maintien du bouton du stylet</string>
+    <string name="gestures_subcat_title">Gestes</string>
+    <string name="gestures_left_spen_title_head">Balayage à gauche</string>
+    <string name="gestures_left_spen_summary_head">Lancer une action lors d\'un balayage à gauche</string>
+    <string name="gestures_right_spen_title_head">Balayage à droite</string>
+    <string name="gestures_right_spen_summary_head">Lancer une action lors d\'un balayage à droite</string>
+    <string name="gestures_up_spen_title_head">Balayage en haut</string>
+    <string name="gestures_up_spen_summary_head">Lancer une action lors d\'un balayage en haut</string>
+    <string name="gestures_down_spen_title_head">Balayage en bas</string>
+    <string name="gestures_down_spen_summary_head">Lancer une action lors d\'un balayage en bas</string>
+    <string name="gestures_long_spen_title_head">Appui long</string>
+    <string name="gestures_long_spen_summary_head">Lancer une action lors d\'un appui long</string>
+    <string name="gestures_double_spen_title_head">Double tap</string>
+    <string name="gestures_double_spen_summary_head">Lancer une action lors d\'un double tapotement</string>
+
+    <!-- Gestures Options -->
+    <string name="gestures_action_empty">Pas d\'action</string>
+    <string name="gestures_action_home">Emuler le bouton d\'accueil</string>
+    <string name="gestures_action_back">Emuler le bouton retour</string>
+    <string name="gestures_action_menu">Emuler le bouton menu</string>
+    <string name="gestures_action_search">Lancer une recherche</string>
+    <string name="gestures_action_recent">Applications récentes</string>
+
+    <!-- stylus gestures support -->
+    <string name="stylus_app_not_installed">%s n\'est pas installé</string>
+
+    <!-- default alarm tone -->
+    <string name="alarm_sound_title">Son d\'alarme par défaut</string>
+    <string name="alarm_sound_dialog_title">Son d\'alarme par défaut/</string>
+
+    <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
+    <string name="custom_runtime_warning_title">Attention</string>
+    <string name="custom_runtime_warning_message">ART n\'est pas supporté par OmniROM. Ce paramètre est inclu pour expérimentations uniquement et peut causer des instabilités, des crashes, des pertes de données ou empêcher votre appareil de démarrer. Visitez &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introducing ART&lt;/a&gt; pour plus d\'informations.&lt;br/&gt;&lt;br/&gt;N\'envoyez pas de rapport de bug si vous avez activé ART.&lt;br/&gt;&lt;br/&gt;Êtes vous sur de vouloir rebooter pour changer votre runtime de <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> à <xliff:g id="new" example="libart.so">%2$s</xliff:g> ?</string>
+
+    <!-- Basic Numbers -->
+    <string name="two">Deux</string>
+    <string name="three">Trois</string>
+    <string name="four">Quatre</string>
+    <string name="five">Cinq</string>
+    <string name="six">Six</string>
+
+    <!-- Quiet hours -->
+    <string name="quiet_hours_title">Heures silencieuses</string>
+    <string name="quiet_hours_summary">Configurer les heures où l\'appareil doit être silencieux</string>
+    <string name="quiet_hours_note_title">Note</string>
+    <string name="quiet_hours_note_summary">Les appels entrants se comporteront comme d\'habitude pendant les heures silencieuses</string>
+    <string name="quiet_hours_enabled">Activer les heures silencieuses</string>
+    <string name="quiet_hours_enabled_on">Heures silencieuses activées</string>
+    <string name="quiet_hours_enabled_off">Heures silencieuses désactivées</string>
+    <string name="quiet_hours_start">Début des heures silencieuses</string>
+    <string name="quiet_hours_start_summary">Quand activer le silence</string>
+    <string name="quiet_hours_end">Fin des heures silencieuses</string>
+    <string name="quiet_hours_end_summary">Quand revenir à la normale</string>
+    <string name="quiet_hours_ringer_title">Couper les sonneries</string>
+    <string name="quiet_hours_ringer_on">Aucune sonnerie ne sera jouée</string>
+    <string name="quiet_hours_ringer_off">Les sonneries se comporteront normalement</string>
+    <string name="quiet_hours_mute">Couper les sons</string>
+    <string name="quiet_hours_mute_on">Aucun son ne sera joué</string>
+    <string name="quiet_hours_mute_off">Les sons se comporteront normalement</string>
+    <string name="quiet_hours_still">Vibreur</string>
+    <string name="quiet_hours_still_on">L\'appareil ne vibrera pas</string>
+    <string name="quiet_hours_still_off">L\'appareil vibrera normalement</string>
+    <string name="quiet_hours_dim">Désactiver la lumière de notifications</string>
+    <string name="quiet_hours_dim_on">La lumière de notifications sera éteinte</string>
+    <string name="quiet_hours_dim_off">La lumière de notifications marchera normalement</string>
+    <string name="quiet_hours_haptic">Désactiver le retour haptique</string>
+    <string name="quiet_hours_haptic_on">Le retour haptique sera désactivé</string>
+    <string name="quiet_hours_haptic_off">Le retour haptique fonctionnera normalement</string>
+    <string name="quiet_hours_active_from">Actif de</string>
+    <string name="quiet_hours_active_to">à</string>
+    <string name="quiet_hours_auto_sms_group">Réponse automatique</string>
+    <string name="quiet_hours_auto_sms_title">SMS entrant</string>
+    <string name="quiet_hours_auto_sms_call_title">Appel entrant</string>
+    <string name="quiet_hours_auto_string_title">Réponse à envoyer</string>
+    <string name="quiet_hours_auto_string_explain">Ce message sera envoyé à quiconque vous contactera pendant les heures silencieuses</string>
+    <string name="quiet_hours_auto_sms_null">[Message automatique] Je vous re-contacterai dès que possible.</string>
+    <string name="quiet_hours_auto_disabled">Désactivé</string>
+    <string name="quiet_hours_auto_enabled">Tous les numéros</string>
+    <string name="quiet_hours_auto_contacts">Contacts uniquement</string>
+    <string name="quiet_hours_bypass_group">Outrepasser les heures silencieuses</string>
+    <string name="quiet_hours_sms_code_null">[Alarme]</string>
+    <string name="quiet_hours_sms_bypass_title">Outrepasser pour les SMS</string>
+    <string name="quiet_hours_sms_code_title">Mot clef sms</string>
+    <string name="quiet_hours_sms_code_explain">Si un message entrant contient ce mot clef, votre téléphone sonnera</string>
+    <string name="quiet_hours_call_bypass_title">Outrepasser pour les appels entrants</string>
+    <string name="quiet_hours_calls_required_title">Nombre d\'appels en 30 minutes</string>
+    <string name="quiet_hours_calls_required_summary">" appels pour outrepasser le silence"</string>
+    <string name="quiet_hours_bypass_ringtone_title">Sonnerie</string>
+    <string name="quiet_hours_bypass_ringtone_loop_title">Sonnerie en boucle</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_on">La sonnerie bouclera jusqu\'à ce qu\'elle soit coupée</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_off">La sonnerie ne sera jouée qu\'une fois</string>
+    <string name="quiet_hours_alarm_dismiss">Arrêter l\'alarme</string>
+    <string name="quiet_hours_alarm_and">" et "</string>
+    <string name="quiet_hours_alarm_dialog_title">QUIETHOURS BYPASSED</string>
+    <string name="quiet_hours_alarm_message">" a rempli les conditions pour outrepasser les heures silencieuses !"</string>
+
+    <!-- time range preference -->
+    <string name="start_time_title">Début</string>
+    <string name="end_time_title">Fin</string>
+
+    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
+    <string name="change_crypt_password_title">Changer le mot de passe</string>
+    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
+    <string name="change_crypt_password_summary">Changer le mot de passe pour le chiffrement de l\'appareil</string>
+
+    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
+    <string name="encryptionpassword_choose_your_password_header">Définir le mot de passe de chiffrement</string>
+
+    <!-- Keyboard and Input ASS methods  -->
+    <string name="title_keyboard_input">Options avancées</string>
+    <string name="disable_fullscreen_keyboard_title">Désactiver le clavier plein-écran</string>
+    <string name="disable_fullscreen_keyboard_summary">Le clavier en mode paysage ne prendra jamais l\'écran entier</string>
+    <string name="keyboard_rotation_toggle_title">Rotation automatique du clavier</string>
+    <string name="keyboard_rotation_toggle_summary">Forcer la rotation automatique quand le clavier est affiché</string>
+    <string name="keyboard_rotation_timeout_title">Expiration de la rotation automatique</string>
+    <string name="keyboard_rotation_timeout_summary">Désactiver la rotation automatique pendant <xliff:g id="rotate_timeout">%1$s</xliff:g> secondes après la disparition du clavier</string>
+    <string name="keyboard_rotation_dialog">Note: Cette fonction force la rotation automatique à s\'activer temporairement quand le clavier est visible. Cela n\'a aucun effet si la rotation automatique est déjà activée.</string>
+    <string name="show_enter_key_title">Afficher la touche Entrée</string>
+    <string name="show_enter_key_summary">Forcer le clavier à afficher Entrée plutôt que la touche des frimousses</string>
+    <string name="ime_switcher_notify">Notification de choix</string>
+    <string name="ime_switcher_notify_summary">Affiche une notification permettant de changer de clavier</string>
+
 </resources>
