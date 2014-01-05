@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "6b8b61a3_6aa9678c",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000098
+      },
+      "writtenOn": "2014-01-05T11:14:23Z",
+      "side": 1,
+      "message": "LED est un terme qui est entré dans la langue courante même si elle n\u0027est pas reconnu. Faut voir ce que les autres en pense.",
+      "parentUuid": "6b8b61a3_aa57ef04",
+      "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b8b61a3_6a4de773",
         "filename": "res/values-fr/custom_strings.xml",
         "patchSetId": 7
@@ -53,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "6b8b61a3_2acbdf74",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000098
+      },
+      "writtenOn": "2014-01-05T11:14:23Z",
+      "side": 1,
+      "message": "C\u0027est mieux formulé.",
+      "parentUuid": "6b8b61a3_ca3c3bbe",
+      "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b8b61a3_ea39f7cb",
         "filename": "res/values-fr/custom_strings.xml",
         "patchSetId": 7
@@ -64,6 +100,24 @@
       "writtenOn": "2014-01-05T06:59:08Z",
       "side": 1,
       "message": "\"appels",
+      "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_0ace2384",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000098
+      },
+      "writtenOn": "2014-01-05T11:14:23Z",
+      "side": 1,
+      "message": "String mal implanté voir commentaire ci dessous.\n\nIl faut comprend:\n\n12345 appels pour outrepasser le silence",
+      "parentUuid": "6b8b61a3_ea39f7cb",
       "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
@@ -87,6 +141,24 @@
     },
     {
       "key": {
+        "uuid": "6b8b61a3_ead01726",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000098
+      },
+      "writtenOn": "2014-01-05T11:14:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b8b61a3_0a470352",
+      "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b8b61a3_2a44bf4a",
         "filename": "res/values-fr/custom_strings.xml",
         "patchSetId": 7
@@ -104,6 +176,24 @@
     },
     {
       "key": {
+        "uuid": "6b8b61a3_4aa4abb6",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000098
+      },
+      "writtenOn": "2014-01-05T11:14:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b8b61a3_2a44bf4a",
+      "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b8b61a3_4a710ba8",
         "filename": "res/values-fr/custom_strings.xml",
         "patchSetId": 7
@@ -115,6 +205,24 @@
       "writtenOn": "2014-01-05T06:59:08Z",
       "side": 1,
       "message": "\"a",
+      "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_cad35b30",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000098
+      },
+      "writtenOn": "2014-01-05T11:14:23Z",
+      "side": 1,
+      "message": "La string est mal implanté, il faut comprendre \"BIDULE a rempli les conditions pour ...\", c\u0027est pour ça qu\u0027il y a un espace et les apostrophe pour bien que l\u0027espace soit pris en compte. Théoriquement on aurai du avoir une variable dans la phrase.",
+      "parentUuid": "6b8b61a3_4a710ba8",
       "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
