@@ -42,11 +42,19 @@
     <!-- Android debugging over WiFi -->
     <string name="adb_over_network">ADB przez sieć</string>
     <string name="adb_over_network_summary">Aktywuj debugowanie TCP/IP przez interfejs sieciowy (Wi-Fi, sieci USB). Ustawienie zostanie zresetowane po ponownym uruchomieniu</string>
-    <string name="adb_over_network_warning">UWAGA: Kiedy ADB przez sieć jest aktywne, telefon jest otwarty na instrukcje w każdej połączonej sieci, w tym GSM!\n\nUżywaj tej funkcji tylko, gdy jesteś połączony z zaufanymi sieciami.\n\nCzy na pewno chcesz aktywować?</string>
 
-    <!-- Lockscreen quick unlock -->
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">UWAGA: Kiedy ADB przez sieć jest aktywne, telefon jest otwarty na instrukcje w każdej połączonej sieci, w tym GSM!\n\nUżywaj tej funkcji tylko, gdy jesteś połączony z zaufanymi sieciami.\n\nCzy na pewno chcesz aktywować?</string>
     <string name="lockscreen_quick_unlock_control_title">Szybkie odblokowanie</string>
     <string name="lockscreen_quick_unlock_control_summary">Odblokuj automatycznie po wpisaniu prawidłowego hasła/PIN-u</string>
+
+    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
+    <string name="change_crypt_password_title">Zmień hasło</string>
+    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
+    <string name="change_crypt_password_summary">Zmień hasło użyte do odblokowania urządzenia</string>
+
+    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
+    <string name="encryptionpassword_choose_your_password_header">Ustaw hasło odblokowania</string>
 
     <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
     <string name="show_cpu_info">Pokaż informacje o CPU</string>
@@ -145,5 +153,89 @@
     <!-- default alarm tone -->
     <string name="alarm_sound_title">Dźwięk domyślny alarmu</string>
     <string name="alarm_sound_dialog_title">Dźwięk domyślny alarmu</string>
+
+    <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
+    <string name="custom_runtime_warning_title">Ostrzeżenie</string>
+    <string name="custom_runtime_warning_message">ART nie jest wspierany przez OmniROM. To ustawienie zostało włączone do systemu tylko w celach eksperymentalnych i może powodować nieoczekiwane efekty, crashe, utratę danych lub uniemożliwić włączenie urządzenia. Odwiedź &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introducing ART&lt;/a&gt; w celu uzyskania dodatkowych informacji.&lt;br/&gt;&lt;br/&gt;Prosimy o zaniechanie zgłaszania błędów gdy używasz ART.&lt;br/&gt;&lt;br/&gt;Czy chcesz zrestartować urządzenie by zmienić czas wykonywania z<xliff:g id="old" example="libdvm.so">%1$s</xliff:g> na <xliff:g id="new" example="libart.so">%2$s</xliff:g>?</string>
+
+    <!-- Basic Numbers -->
+    <string name="two">Dwa</string>
+    <string name="three">Trzy</string>
+    <string name="four">Cztery</string>
+    <string name="five">Pięć</string>
+    <string name="six">Sześć</string>
+
+    <!-- Quiet hours -->
+    <string name="quiet_hours_title">Godziny ciszy</string>
+    <string name="quiet_hours_summary">Skonfiguruj godziny, w których wszystkie dźwięki są wyciszone</string>
+    <string name="quiet_hours_note_title">Informacja</string>
+    <string name="quiet_hours_note_summary">Przychodzące połączenia będą działały standardowo w trakcie godzin ciszy</string>
+    <string name="quiet_hours_enabled">Aktywuj godziny ciszy</string>
+    <string name="quiet_hours_enabled_on">Godziny ciszy włączone</string>
+    <string name="quiet_hours_enabled_off">Godziny ciszy wyłączone</string>
+    <string name="quiet_hours_start">Początek cichych godzin</string>
+    <string name="quiet_hours_start_summary">Kiedy rozpocząć obowiązywanie cichych godzin</string>
+    <string name="quiet_hours_end">Koniec cichych godzin</string>
+    <string name="quiet_hours_end_summary">Kiedy zakończyć obowiązywanie cichych godzin</string>
+    <string name="quiet_hours_ringer_title">Wycisz dzwonek urządzenia</string>
+    <string name="quiet_hours_ringer_on">Dzownek nie będzie odtwarzany</string>
+    <string name="quiet_hours_ringer_off">Dzwonek będzie odtwarzany</string>
+    <string name="quiet_hours_mute">Wycisz powiadomienia</string>
+    <string name="quiet_hours_mute_on">Powiadomienia zostały wyłączone</string>
+    <string name="quiet_hours_mute_off">Powiadomienia zostały włączone</string>
+    <string name="quiet_hours_still">Wyłącz wibracje</string>
+    <string name="quiet_hours_still_on">Wibracje wyłączone</string>
+    <string name="quiet_hours_still_off">Wibracje włączone</string>
+    <string name="quiet_hours_dim">Wyłącz diodę powiadomień</string>
+    <string name="quiet_hours_dim_on">Powiadomienia diodą LED zostały wyłączone</string>
+    <string name="quiet_hours_dim_off">Powiadomienia diodą LED zostały włączone</string>
+    <string name="quiet_hours_haptic">Wyłącz wibracje przy dotknięciu</string>
+    <string name="quiet_hours_haptic_on">Wibracje przy dotknięciu wyłączone</string>
+    <string name="quiet_hours_haptic_off">Wibracje przy dotknięciu włączone</string>
+    <string name="quiet_hours_active_from">Aktywne od</string>
+    <string name="quiet_hours_active_to">do</string>
+    <string name="quiet_hours_auto_sms_group">Automatyczna odpowiedź</string>
+    <string name="quiet_hours_auto_sms_title">Przychodzące wiadomości tekstowe</string>
+    <string name="quiet_hours_auto_sms_call_title">Przychodzące połączenia</string>
+    <string name="quiet_hours_auto_string_title">Wiadomość do wysłania</string>
+    <string name="quiet_hours_auto_string_explain">Ta wiadomość zostanie wysłana do każdej osoby próbującej się z tobą skontaktować</string>
+    <string name="quiet_hours_auto_sms_null">[Automated Message] Odezwę się wkrótce.</string>
+    <string name="quiet_hours_auto_disabled">Wyłącznone</string>
+    <string name="quiet_hours_auto_enabled">Wszystkie numery</string>
+    <string name="quiet_hours_auto_contacts">Tylko kontakty</string>
+    <string name="quiet_hours_bypass_group">Obejdź ciche godziny</string>
+    <string name="quiet_hours_sms_code_null">[Alarm]</string>
+    <string name="quiet_hours_sms_bypass_title">Obejście godzin ciszy przez wiadomości tekstowe</string>
+    <string name="quiet_hours_sms_code_title">Słowa kluczowe</string>
+    <string name="quiet_hours_sms_code_explain">Gdy wiadomość będzie zawierać następujące słowa obejdź godziny ciszy</string>
+    <string name="quiet_hours_call_bypass_title">Obejście godzin ciszy przez połączenia</string>
+    <string name="quiet_hours_calls_required_title">Liczba połączeń w ciągu 30 minut</string>
+    <string name="quiet_hours_calls_required_summary">" połączeń by obejść godziny ciszy"</string>
+    <string name="quiet_hours_bypass_ringtone_title">Odtwarzany dzwonek</string>
+    <string name="quiet_hours_bypass_ringtone_loop_title">Zapętlenie dzwonka</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_on">Dzwonek będzie zapętlony aż do przerwania</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_off">Dzwonek będzie odtwarzany tylko raz</string>
+    <string name="quiet_hours_alarm_dismiss">Wyłącz alarm</string>
+    <string name="quiet_hours_alarm_and">" i "</string>
+    <string name="quiet_hours_alarm_dialog_title">QUIETHOURS BYPASSED</string>
+    <string name="quiet_hours_alarm_message">" spełniły kryteria by obejść godziny ciszy!"</string>
+
+    <!-- time range preference -->
+    <string name="start_time_title">Początek</string>
+    <string name="end_time_title">Koniec</string>
+
+    <!-- Keyboard and Input ASS methods  -->
+    <string name="title_keyboard_input">Opcje zaawansowane</string>
+    <string name="disable_fullscreen_keyboard_title">Wyłącz klawiaturę pełnoeekranową</string>
+    <string name="disable_fullscreen_keyboard_summary">Klawiatura w trybie poziomym nigdy nie zajmie całego ekranu</string>
+    <string name="keyboard_rotation_toggle_title">Automatyczna rotacja klawiatury</string>
+    <string name="keyboard_rotation_toggle_summary">Wymuść aitomatyczną rotacj gdy klawiatura jest pokazana</string>
+    <string name="keyboard_rotation_timeout_title">Opóźnienie automatycznej rotacji</string>
+    <string name="keyboard_rotation_timeout_summary">Wyłącza sensor rotacji po upływie <xliff:g id="rotate_timeout">%1$s</xliff:g> sekund od ukrycia klawiatury</string>
+    <string name="keyboard_rotation_dialog">Ważne: Ta funkcja wymusza automatyczną rotację w przypadku pojawienia się klawiatury. Funkcja ta nie pozostawia efektu gdy automatyczna rotacja jest już aktywowana.</string>
+    <string name="show_enter_key_title">Pokaż klawisz enter</string>
+    <string name="show_enter_key_summary">Pokazuje klawisz enter zamiast emotikonów</string>
+    <string name="ime_switcher_notify">Powiadomienie o metodzie wprowadzania tekstu</string>
+    <string name="ime_switcher_notify_summary">Wyświetla powiadomienie o metodzie wprowadzania tekstu</string>
 
 </resources>
