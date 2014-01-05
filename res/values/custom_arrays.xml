@@ -145,4 +145,17 @@
         <item>60000</item>
     </string-array>
 
+    <!-- Volume panel style -->
+    <string-array name="volume_panel_style_entries" translatable="false">
+        <item>Single</item>
+        <item>Expandable</item>
+        <item>Expanded</item>
+    </string-array>
+
+    <string-array name="volume_panel_style_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
 </resources>
