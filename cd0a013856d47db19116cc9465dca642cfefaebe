@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_aa57ef04",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2014-01-05T06:59:08Z",
+      "side": 1,
+      "message": "LED ? Même si c\u0027est un terme anglais ?",
+      "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_6a4de773",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2014-01-05T06:59:08Z",
+      "side": 1,
+      "message": "La lumière (LED ?) de notifications fonctionnera normalement",
+      "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_ca3c3bbe",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2014-01-05T06:59:08Z",
+      "side": 1,
+      "message": "Ce message sera envoyé à toute personne essayant de vous contacter \npendant les heures silencieuses",
+      "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_ea39f7cb",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2014-01-05T06:59:08Z",
+      "side": 1,
+      "message": "\"appels",
+      "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_0a470352",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2014-01-05T06:59:08Z",
+      "side": 1,
+      "message": "jouée",
+      "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_2a44bf4a",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2014-01-05T06:59:08Z",
+      "side": 1,
+      "message": "OUTREPASSÉES",
+      "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_4a710ba8",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2014-01-05T06:59:08Z",
+      "side": 1,
+      "message": "\"a",
+      "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
