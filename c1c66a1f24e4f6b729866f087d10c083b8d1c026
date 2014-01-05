@@ -1,0 +1,208 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_75ff8cfb",
+        "filename": "res/values-pl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000395
+      },
+      "writtenOn": "2014-01-05T19:16:26Z",
+      "side": 1,
+      "message": "Missing space after \u0027wykonywania z\u0027",
+      "revId": "c1c66a1f24e4f6b729866f087d10c083b8d1c026",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_9504181a",
+        "filename": "res/values-pl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000395
+      },
+      "writtenOn": "2014-01-05T19:16:26Z",
+      "side": 1,
+      "message": "I would use \u0027będą\u0027 instead of \u0027są\u0027",
+      "revId": "c1c66a1f24e4f6b729866f087d10c083b8d1c026",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_1519e87d",
+        "filename": "res/values-pl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000395
+      },
+      "writtenOn": "2014-01-05T19:16:26Z",
+      "side": 1,
+      "message": "Not translated message in brackets",
+      "revId": "c1c66a1f24e4f6b729866f087d10c083b8d1c026",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_3516e44e",
+        "filename": "res/values-pl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000395
+      },
+      "writtenOn": "2014-01-05T19:16:26Z",
+      "side": 1,
+      "message": "I would use \u0027Ignoruj\u0027 instead of \u0027Obejdź\u0027",
+      "revId": "c1c66a1f24e4f6b729866f087d10c083b8d1c026",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_552370a7",
+        "filename": "res/values-pl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000395
+      },
+      "writtenOn": "2014-01-05T19:16:26Z",
+      "side": 1,
+      "message": "I would use \u0027Ignorowanie\u0027 instead of \u0027Obejście\u0027",
+      "revId": "c1c66a1f24e4f6b729866f087d10c083b8d1c026",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_951df867",
+        "filename": "res/values-pl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000395
+      },
+      "writtenOn": "2014-01-05T19:16:26Z",
+      "side": 1,
+      "message": "Same as above",
+      "revId": "c1c66a1f24e4f6b729866f087d10c083b8d1c026",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_75286c81",
+        "filename": "res/values-pl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000395
+      },
+      "writtenOn": "2014-01-05T19:16:26Z",
+      "side": 1,
+      "message": "Same as above",
+      "revId": "c1c66a1f24e4f6b729866f087d10c083b8d1c026",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_b522f49e",
+        "filename": "res/values-pl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000395
+      },
+      "writtenOn": "2014-01-05T19:16:26Z",
+      "side": 1,
+      "message": "Same as above",
+      "revId": "c1c66a1f24e4f6b729866f087d10c083b8d1c026",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_d53780df",
+        "filename": "res/values-pl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1000395
+      },
+      "writtenOn": "2014-01-05T19:16:26Z",
+      "side": 1,
+      "message": "Not translated!!??",
+      "revId": "c1c66a1f24e4f6b729866f087d10c083b8d1c026",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_f5347cdd",
+        "filename": "res/values-pl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000395
+      },
+      "writtenOn": "2014-01-05T19:16:26Z",
+      "side": 1,
+      "message": "\u0027ignorować\u0027 instead of \u0027obejść\u0027",
+      "revId": "c1c66a1f24e4f6b729866f087d10c083b8d1c026",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_352fc484",
+        "filename": "res/values-pl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000395
+      },
+      "writtenOn": "2014-01-05T19:16:26Z",
+      "side": 1,
+      "message": "typo",
+      "revId": "c1c66a1f24e4f6b729866f087d10c083b8d1c026",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_5548d065",
+        "filename": "res/values-pl/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000395
+      },
+      "writtenOn": "2014-01-05T19:16:26Z",
+      "side": 1,
+      "message": "\u0027Funkcja ta nie wywołuje efektu\u0027",
+      "revId": "c1c66a1f24e4f6b729866f087d10c083b8d1c026",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
