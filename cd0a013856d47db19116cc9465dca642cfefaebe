@@ -54,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "6b8b61a3_8a94f33b",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2014-01-05T12:03:36Z",
+      "side": 1,
+      "message": "fonctionnera",
+      "parentUuid": "6b8b61a3_6a4de773",
+      "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b8b61a3_ca3c3bbe",
         "filename": "res/values-fr/custom_strings.xml",
         "patchSetId": 7
@@ -223,6 +241,24 @@
       "side": 1,
       "message": "La string est mal implanté, il faut comprendre \"BIDULE a rempli les conditions pour ...\", c\u0027est pour ça qu\u0027il y a un espace et les apostrophe pour bien que l\u0027espace soit pris en compte. Théoriquement on aurai du avoir une variable dans la phrase.",
       "parentUuid": "6b8b61a3_4a710ba8",
+      "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_aa99af72",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2014-01-05T12:03:36Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "6b8b61a3_cad35b30",
       "revId": "cd0a013856d47db19116cc9465dca642cfefaebe",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
