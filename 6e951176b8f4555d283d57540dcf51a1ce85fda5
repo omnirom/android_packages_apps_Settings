@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_1bebd709",
+        "filename": "res/values-pt/custom_strings.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-07T21:11:48Z",
+      "side": 1,
+      "message": "there must be no empty strings",
+      "revId": "6e951176b8f4555d283d57540dcf51a1ce85fda5",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_5bd55f47",
+        "filename": "res/values-pt/custom_strings.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-07T21:11:48Z",
+      "side": 1,
+      "message": "color_custom has translatable\u003d\"false\" so you must not provide a translation for it",
+      "revId": "6e951176b8f4555d283d57540dcf51a1ce85fda5",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_3be8930a",
+        "filename": "res/values-pt/custom_strings.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-07T21:11:48Z",
+      "side": 1,
+      "message": "you cannot use @string here",
+      "revId": "6e951176b8f4555d283d57540dcf51a1ce85fda5",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
