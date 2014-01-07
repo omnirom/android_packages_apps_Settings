@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_d0594e91",
+        "filename": "res/xml/security_settings_chooser.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-07T14:31:00Z",
+      "side": 1,
+      "message": "this is correct",
+      "revId": "6ec28cb848b384759a20c8ac9dab6fae91fec7e0",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
