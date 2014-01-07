@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_107bb6eb",
+        "filename": "res/values-pt/custom_strings.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000186
+      },
+      "writtenOn": "2014-01-07T14:13:18Z",
+      "side": 1,
+      "message": "Mistyped \"ade\". It should be \"de\".",
+      "revId": "2892a8a7f2a4f4128d9472007bb6547e42926da7",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8b61a3_50653e41",
+        "filename": "res/values-pt/custom_strings.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000186
+      },
+      "writtenOn": "2014-01-07T14:13:18Z",
+      "side": 1,
+      "message": "Mistyped \"velodicade\". It should be \"velocidade\".",
+      "revId": "2892a8a7f2a4f4128d9472007bb6547e42926da7",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
