@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_508a9e17",
+        "filename": "res/values-pt/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-07T10:28:02Z",
+      "side": 1,
+      "message": "please change to omni GPL header",
+      "revId": "b69574bb33582d91122d87f035ad5856f9245508",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
