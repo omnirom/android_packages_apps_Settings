@@ -58,7 +58,7 @@
     <string name="radioInfo_data_connected" msgid="7074301157399238697">"已连接"</string>
     <string name="radioInfo_data_suspended" msgid="5315325487890334196">"已暂停"</string>
     <string name="radioInfo_unknown" msgid="737385314432468266">"未知"</string>
-    <string name="radioInfo_display_packets" msgid="8654359809877290639">"pkts"</string>
+    <string name="radioInfo_display_packets" msgid="8654359809877290639">"个包"</string>
     <string name="radioInfo_display_bytes" msgid="4018206969492931883">"字节"</string>
     <string name="radioInfo_display_dbm" msgid="3621221793699882781">"dBm"</string>
     <string name="radioInfo_display_asu" msgid="1422248392727818082">"asu"</string>
@@ -75,7 +75,7 @@
     <string name="sdcard_setting" product="nosdcard" msgid="8281011784066476192">"USB 存储设备"</string>
     <string name="sdcard_setting" product="default" msgid="5922637503871474866">"SD 卡"</string>
     <string name="battery_info_status_label" msgid="8109155295509700309">"电池状态："</string>
-    <string name="battery_info_power_label" msgid="7465140230991349382">"是否已插电："</string>
+    <string name="battery_info_power_label" msgid="7465140230991349382">"是否已插入电源："</string>
     <string name="battery_info_scale_label" msgid="3649763192389778437">"电池电量："</string>
     <string name="battery_info_level_label" msgid="8706526709307788737">"电池电量："</string>
     <string name="battery_info_health_label" msgid="6416051542741886958">"电池运行状况："</string>
@@ -105,7 +105,7 @@
     <string name="battery_info_health_unknown" msgid="5664295556921944255">"未知"</string>
     <string name="battery_info_health_good" msgid="8070356565806711806">"正常"</string>
     <string name="battery_info_health_overheat" msgid="8442959549291368806">"过热"</string>
-    <string name="battery_info_health_dead" msgid="1725917445762829059">"没电"</string>
+    <string name="battery_info_health_dead" msgid="1725917445762829059">"已耗尽"</string>
     <string name="battery_info_health_over_voltage" msgid="2420269351664490121">"过电压"</string>
     <string name="battery_info_health_unspecified_failure" msgid="6347021103185471590">"未知错误"</string>
     <string name="battery_info_health_cold" msgid="3835692786176707318">"电量低"</string>

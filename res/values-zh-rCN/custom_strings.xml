@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2012-2013 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- About phone screen,  setting option name-->
+    <string name="mod_version">Omni 版本</string>
+    <string name="mod_version_default">未知</string>
+
+    <!-- Main list strings -->
+    <string name="header_category_interface">界面</string>
+    <string name="performance_settings">性能</string>
+    <string name="notification_light_settings">通知指示灯</string>
+    <string name="battery_light_settings">电池指示灯</string>
+    <string name="header_button_settings">按钮</string>
+
+    <!-- Volume panel tweaks -->
+    <string name="volume_adjust_sounds_enable_title">调整音量时播放声音</string>
+    <string name="volume_adjust_sounds_enable_summary">当使用实体按键调整音量时播放声音</string>
+    <string name="link_volume_ringtones">关联铃声和通知音量</string>
+    <string name="volume_ring_only_description">铃声</string>
+
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">高级重启</string>
+    <string name="advanced_reboot_summary">设备解锁后，在电源菜单中添加重启到恢复模式和引导模式的选项</string>
+
+    <!-- Lockscreen battery ring -->
+    <string name="battery_around_lockscreen_ring">在解锁圆环周围显示电池电量</string>
+
+    <!-- Android debugging over WiFi -->
+    <string name="adb_over_network">通过网络使用ADB</string>
+    <string name="adb_over_network_summary">启用通过网络接口的TCP/IP调试功能（Wi-Fi，USB 网络）。这项设置将在重启后复原。</string>
+
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">警告：当通过网络使用ADB启用时，您的手机将暴露在所有连接的网络中，包括GSM移动数据网络！\n\n请只在连接到您信任的网络时启用此功能。\n\n您真的要启用此功能吗？</string>
+    <string name="lockscreen_quick_unlock_control_title">快速解锁</string>
+    <string name="lockscreen_quick_unlock_control_summary">当输入正确的PIN或密码后自动解锁</string>
+
+    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
+    <string name="change_crypt_password_title">更改密码</string>
+    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
+    <string name="change_crypt_password_summary">更改用于设备加密的密码</string>
+
+    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
+    <string name="encryptionpassword_choose_your_password_header">设置加密密码</string>
+
+    <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+    <string name="show_cpu_info">显示CPU信息</string>
+    <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+    <string name="show_cpu_info_summary">在叠加层显示当前CPU频率与调速器信息</string>
+
+    <!-- Screen off animation -->
+    <string name="screen_off_animation">屏幕关闭动画</string>
+    <string name="screen_off_fadeout">淡出</string>
+    <string name="screen_off_electronbeam">电子波束</string>
+    <string name="screen_off_scaledown">缩小</string>
+
+    <!-- AppOps additions -->
+    <string name="appops_settings">应用权限</string>
+    <string name="appops_sysapp_beware">小心！</string>
+    <string name="appops_sysapp_warning">"更改核心Android组件的权限可能导致不可预料的结果。如果更改这里的设置，后果自负！</string>
+
+    <!-- Low battery warning policy -->
+    <string name="pref_low_battery_warning_policy_title">低电量警告</string>
+    <string name="pref_low_battery_warning_policy_dialog_title">使用如下方式警告低电量</string>
+    <string name="low_battery_warning_policy_popup_sound">弹出对话框并播放声音</string>
+    <string name="low_battery_warning_policy_notif_sound">显示通知并播放声音</string>
+    <string name="low_battery_warning_policy_popup">只弹出对话框</string>
+    <string name="low_battery_warning_policy_notif">只显示通知</string>
+    <string name="low_battery_warning_policy_sound">只播放声音</string>
+    <string name="battery_prefs_title">选项</string>
+    <string name="battery_stats_title">统计</string>
+
+    <!-- Setting checkbox summary for displaying USB debugging notification -->
+    <string name="adb_notify">USB调试通知/string>
+    <string name="adb_notify_summary">当USB调试已连接时显示通知</string>
+
+    <!-- Lockscreen pin shuffle -->
+    <string name="lock_numpad_random_title">打乱PIN码输入界面的数字按键排列顺序</string>
+    <string name="lock_numpad_random_dialog_title">PIN码输入界面数字乱序</string>
+    <string name="lock_numpad_random_off">禁用</string>
+    <string name="lock_numpad_random_always">总是</string>
+    <string name="lock_numpad_random_on_request">当请求执行乱序时</string>
+
+    <string name="interface_more_title">更多\u2026</string>
+    <string name="interface_bars_title">通知栏与导航栏</string>
+    <string name="interface_menus_title">菜单</string>
+    <string name="interface_notification_panel_title">通知抽屉</string>
+
+    <!-- Battery Icon selection -->
+    <string name="pref_battery_indicator_title">电量指示图标</string>
+    <string name="battery_status_icon_title">状态图标</string>
+    <string name="battery_bar">电池图标</string>
+    <string name="battery_bar_percent">电池图标及百分比</string>
+    <string name="battery_circle">电量环</string>
+    <string name="battery_circle_percent">电量环与百分比</string>
+
+    <!-- Turn on display when power connected; turn off display when power disconnected -->
+    <string name="wake_when_plugged_or_unplugged_title">插入或拔出充电器时唤醒</string>
+    <string name="wake_when_plugged_or_unplugged_summary">当插入或拔出充电器时点亮屏幕</string>
+
+    <!-- security settings menu unlock -->
+    <string name="unlock_menu_unlock_title">菜单键解锁</string>
+    <string name="unlock_menu_unlock_summary">按菜单键来解锁设备</string>
+
+    <!-- Stylus Icon -->
+    <string name="stylus_icon_enabled_title">使用手写笔时显示图标</string>
+    <string name="stylus_icon_enabled_summary">使用手写笔时显示一个指针图标</string>
+
+    <!-- Stylus Gestures -->
+    <string name="gestures_settings_title">手写笔手势</string>
+    <string name="category_spen_title">手写笔手势</string>
+    <string name="enable_subcat_title">手写笔</string>
+    <string name="enable_spen_title_head">启用手写笔手势</string>
+    <string name="enable_spen_summary_head">Launch custom actions with stylus button swipe gestures. Warning: apps will not be able to receive input fired by holding the stylus button</string>
+    <string name="gestures_subcat_title">手势</string>
+    <string name="gestures_left_spen_title_head">向左滑动</string>
+    <string name="gestures_left_spen_summary_head">向左滑动时启动自定义功能</string>
+    <string name="gestures_right_spen_title_head">向右滑动</string>
+    <string name="gestures_right_spen_summary_head">向右滑动时启动自定义功能</string>
+    <string name="gestures_up_spen_title_head">向上滑动</string>
+    <string name="gestures_up_spen_summary_head">向上滑动时启动自定义功能</string>
+    <string name="gestures_down_spen_title_head">向下滑动</string>
+    <string name="gestures_down_spen_summary_head">向下滑动时启动自定义功能</string>
+    <string name="gestures_long_spen_title_head">长按</string>
+    <string name="gestures_long_spen_summary_head">长按时启动自定义功能s</string>
+    <string name="gestures_double_spen_title_head">双击</string>
+    <string name="gestures_double_spen_summary_head">双击时启动自定义功能</string>
+
+    <!-- Gestures Options -->
+    <string name="gestures_action_empty">无操作</string>
+    <string name="gestures_action_home">虚拟Home键</string>
+    <string name="gestures_action_back">虚拟返回键</string>
+    <string name="gestures_action_menu">虚拟菜单键</string>
+    <string name="gestures_action_search">调用搜索</string>
+    <string name="gestures_action_recent">打开最近运行的应用列表</string>
+
+    <!-- stylus gestures support -->
+    <string name="stylus_app_not_installed">%s 尚未安装</string>
+
+    <!-- default alarm tone -->
+    <string name="alarm_sound_title">默认闹钟铃声</string>
+    <string name="alarm_sound_dialog_title">默认闹钟铃声</string>
+
+    <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
+    <string name="custom_runtime_warning_title">警告</string>
+    <string name="custom_runtime_warning_message">ART并不被OmniROM所支持。这只是一项实验性设置，并且可能导致不稳定、崩溃、数据丢失或使得设备无法正常启动。 前往&lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introducing ART&lt;/a&gt;以获得更多信息。&lt;br/&gt;&lt;br/&gt;如果您选择ART作为运行时库，我们希望您不要提交错误报告。&lt;br/&gt;&lt;br/&gt;您想要重启以将运行时库从<xliff:g id="old" example="libdvm.so">%1$s</xliff:g>更换为<xliff:g id="new" example="libart.so">%2$s</xliff:g>吗？</string>
+
+    <!-- Basic Numbers -->
+    <string name="two">二</string>
+    <string name="three">三</string>
+    <string name="four">四</string>
+    <string name="five">五</string>
+    <string name="six">六</string>
+
+    <!-- Quiet hours -->
+    <string name="quiet_hours_title">Quiet hours</string>
+    <string name="quiet_hours_summary">Configure the hours the device should be quiet</string>
+    <string name="quiet_hours_note_title">Note</string>
+    <string name="quiet_hours_note_summary">Incoming calls will behave like usual during quiet hours</string>
+    <string name="quiet_hours_enabled">Enable quiet hours</string>
+    <string name="quiet_hours_enabled_on">Quiet hours will be enforced</string>
+    <string name="quiet_hours_enabled_off">Notifications will function as normal</string>
+    <string name="quiet_hours_start">Start of quiet hours</string>
+    <string name="quiet_hours_start_summary">When to start enforcing quiet hours</string>
+    <string name="quiet_hours_end">End of quiet hours</string>
+    <string name="quiet_hours_end_summary">When to stop enforcing quiet hours</string>
+    <string name="quiet_hours_ringer_title">Mute phone ringer</string>
+    <string name="quiet_hours_ringer_on">No ringer will be played</string>
+    <string name="quiet_hours_ringer_off">Ringer will play like normal</string>
+    <string name="quiet_hours_mute">Mute notifications</string>
+    <string name="quiet_hours_mute_on">No sounds will be played</string>
+    <string name="quiet_hours_mute_off">Sounds will play like normal</string>
+    <string name="quiet_hours_still">Disable vibrations</string>
+    <string name="quiet_hours_still_on">Device will not vibrate</string>
+    <string name="quiet_hours_still_off">Device will vibrate normally</string>
+    <string name="quiet_hours_dim">Disable notification light</string>
+    <string name="quiet_hours_dim_on">Notification light will be disabled</string>
+    <string name="quiet_hours_dim_off">Notification light will function as normal</string>
+    <string name="quiet_hours_haptic">Disable haptic feedback</string>
+    <string name="quiet_hours_haptic_on">Haptic feedback will be disabled</string>
+    <string name="quiet_hours_haptic_off">Haptic feedback will function as normal</string>
+    <string name="quiet_hours_active_from">Active from</string>
+    <string name="quiet_hours_active_to">to</string>
+    <string name="quiet_hours_auto_sms_group">Automatic response</string>
+    <string name="quiet_hours_auto_sms_title">Incoming text messages</string>
+    <string name="quiet_hours_auto_sms_call_title">Incoming phone calls</string>
+    <string name="quiet_hours_auto_string_title">Response to send</string>
+    <string name="quiet_hours_auto_string_explain">This message will be sent to anyone who contacts you while
+            quiet hours are active</string>
+    <string name="quiet_hours_auto_sms_null">[Automated Message] I\'ll get back to you when I can.</string>
+    <string name="quiet_hours_auto_disabled">Disabled</string>
+    <string name="quiet_hours_auto_enabled">All numbers</string>
+    <string name="quiet_hours_auto_contacts">Contacts only</string>
+    <string name="quiet_hours_bypass_group">Bypass quiet hours</string>
+    <string name="quiet_hours_sms_code_null">[Alarm]</string>
+    <string name="quiet_hours_sms_bypass_title">Text message bypass</string>
+    <string name="quiet_hours_sms_code_title">Text message key</string>
+    <string name="quiet_hours_sms_code_explain">If an incoming message contains this text your phone will
+            sound an alarm</string>
+    <string name="quiet_hours_call_bypass_title">Incoming call bypass</string>
+    <string name="quiet_hours_calls_required_title">Number of calls in 30 minutes</string>
+    <string name="quiet_hours_calls_required_summary">" calls to bypass quiet hours"</string>
+    <string name="quiet_hours_bypass_ringtone_title">Ringtone to play</string>
+    <string name="quiet_hours_bypass_ringtone_loop_title">Ringtone loop</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_on">Ringtone will loop until dismissed</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_off">Ringtone will play only once</string>
+    <string name="quiet_hours_alarm_dismiss">Dismiss Alarm</string>
+    <string name="quiet_hours_alarm_and">" and "</string>
+    <string name="quiet_hours_alarm_dialog_title">QUIETHOURS BYPASSED</string>
+    <string name="quiet_hours_alarm_message">" met the requirements to bypass Quiet Hours!"</string>
+
+    <!-- time range preference -->
+    <string name="start_time_title">开始</string>
+    <string name="end_time_title">结束</string>
+
+    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
+    <string name="change_crypt_password_title">更改密码</string>
+    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
+    <string name="change_crypt_password_summary">更改加密密码</string>
+
+    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
+    <string name="encryptionpassword_choose_your_password_header">设置加密密码</string>
+
+    <!-- Keyboard and Input ASS methods  -->
+    <string name="title_keyboard_input">高级选项</string>
+    <string name="disable_fullscreen_keyboard_title">禁用全屏键盘</string>
+    <string name="disable_fullscreen_keyboard_summary">横屏时键盘不会占用整个屏幕</string>
+    <string name="keyboard_rotation_toggle_title">键盘开启时自动旋转</string>
+    <string name="keyboard_rotation_toggle_summary">显示虚拟键盘时开启屏幕自动旋转</string>
+    <string name="keyboard_rotation_timeout_title">自动旋转延时</string>
+    <string name="keyboard_rotation_timeout_summary">在键盘隐藏<xliff:g id="rotate_timeout">%1$s</xliff:g>秒后禁用自动旋转</string>
+    <string name="keyboard_rotation_dialog">注意：这项功能会在虚拟键盘消失后保持一段时间自动旋转开启。如果自动旋转本来已经开启，这项功能将没有作用。</string>
+    <string name="show_enter_key_title">显示回车键</string>
+    <string name="show_enter_key_summary">强制输入法显示回车键而不是表情键</string>
+    <string name="ime_switcher_notify">输入法选择通知</string>
+    <string name="ime_switcher_notify_summary">显示输入法选择通知</string>
+
+</resources>
