@@ -84,6 +84,13 @@
         android:icon="@drawable/ic_notifications" />
 
     <header
+        android:id="@+id/lockscreen"
+        android:title="@string/lockscreen_settings"
+        android:breadCrumbTitle="@string/lockscreen_settings"
+        android:fragment="org.omnirom.omnigears.interfacesettings.LockscreenSettings"
+        android:icon="@drawable/ic_settings_lockscreen" />
+
+    <header
         android:id="@+id/active_display"
         android:title="@string/active_display_settings"
         android:breadCrumbTitle="@string/active_display_settings"
