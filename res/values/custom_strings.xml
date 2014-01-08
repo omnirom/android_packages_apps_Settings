@@ -254,4 +254,16 @@
     <string name="expandable">Expandable</string>
     <string name="expanded">Expanded</string>
 
+    <!-- Enable camera -->
+    <string name="lockscreen_enable_camera_title">Camera widget</string>
+    <string name="lockscreen_enable_camera_summary">Swipe right to enable camera widget</string>
+
+    <!-- Enable power menu -->
+    <string name="lockscreen_enable_power_menu_title">Enable power menu</string>
+    <string name="lockscreen_enable_power_menu_summary">Show power menu when screen is locked</string>
+
+    <!-- Lockscreen see through -->
+    <string name="lockscreen_see_through_title">See through</string>
+    <string name="lockscreen_see_through_summary">Shows the content behind your lockscreen, your data may be visible to those around you</string>
+
 </resources>
