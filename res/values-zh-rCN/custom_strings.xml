@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2012-2013 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- About phone screen,  setting option name-->
+    <string name="mod_version">Omni  版本</string>
+    <string name="mod_version_default">未知</string>
+
+    <!-- Main list strings -->
+    <string name="header_category_interface">界面</string>
+    <string name="performance_settings">性能调整</string>
+    <string name="notification_light_settings">通知呼吸灯</string>
+    <string name="battery_light_settings">电池呼吸灯</string>
+    <string name="header_button_settings">按键设置</string>
+
+    <!-- Volume panel tweaks -->
+    <string name="volume_adjust_sounds_enable_title">音量调整声</string>
+    <string name="volume_adjust_sounds_enable_summary">当使用音量键调整音量时播放声音</string>
+    <string name="link_volume_ringtones">与铃声与通知音量同步</string>
+    <string name="volume_ring_only_description">铃声</string>
+
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">高级重启选项</string>
+    <string name="advanced_reboot_summary">解锁后, 在电源菜单内包含重启至 recovery 或 bootloader 选项</string>
+
+    <!-- Lockscreen battery ring -->
+    <string name="battery_around_lockscreen_ring">在解锁环周围显示电量</string>
+
+    <!-- Android debugging over WiFi -->
+    <string name="adb_over_network">网络 ADB</string>
+    <string name="adb_over_network_summary">启用通过网络 (Wi-Fi, USB 网络) 方法进行 TCP/IP 调试. 此选项在重启后会被重置</string>
+
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">警告: 当启用网络 ADB 后, 您的电话可能遭受来自于所有其连接网络的入侵, 包括 GSM 网络!\n\n请您在确认只连接于受信任网络的情况下使用此特性.\n\n是否确认开启此特性?</string>
+    <string name="lockscreen_quick_unlock_control_title">快速解锁</string>
+    <string name="lockscreen_quick_unlock_control_summary">当输入正确 PIN / 密码 后自动解锁</string>
+
+    <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+    <string name="show_cpu_info">显示 CPU 信息</string>
+    <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+    <string name="show_cpu_info_summary">屏幕上方显示当前 CPU 信息</string>
+
+    <!-- Screen off animation -->
+    <string name="screen_off_animation">关屏动画</string>
+    <string name="screen_off_fadeout">淡出</string>
+    <string name="screen_off_electronbeam">电视关屏</string>
+    <string name="screen_off_scaledown">缩小</string>
+
+    <!-- AppOps additions -->
+    <string name="appops_settings">Apps 权限</string>
+    <string name="appops_sysapp_beware">注意!</string>
+    <string name="appops_sysapp_warning">"修改安卓核心组件的权限可能引起不可预料的行为. 请自行承担此处修改设置的风险!</string>
+
+    <!-- Low battery warning policy -->
+    <string name="pref_low_battery_warning_policy_title">低电量提醒</string>
+    <string name="pref_low_battery_warning_policy_dialog_title">低电量下提醒方式</string>
+    <string name="low_battery_warning_policy_popup_sound">弹窗和声音</string>
+    <string name="low_battery_warning_policy_notif_sound">提醒和声音</string>
+    <string name="low_battery_warning_policy_popup">只出现弹窗</string>
+    <string name="low_battery_warning_policy_notif">只出现提醒</string>
+    <string name="low_battery_warning_policy_sound">只播放声音</string>
+    <string name="battery_prefs_title">选项</string>
+    <string name="battery_stats_title">统计</string>
+
+    <!-- Setting checkbox summary for displaying USB debugging notification -->
+    <string name="adb_notify">USB 调试提醒</string>
+    <string name="adb_notify_summary">当 USB 调试接入时显示通知图标</string>
+
+    <!-- Lockscreen pin shuffle -->
+    <string name="lock_numpad_random_title">改变 PIN 输入面板上数字的位置</string>
+    <string name="lock_numpad_random_dialog_title">随机排列 PIN 输入面板上的按键位置</string>
+    <string name="lock_numpad_random_off">禁用</string>
+    <string name="lock_numpad_random_always">总是</string>
+    <string name="lock_numpad_random_on_request">请求时</string>
+
+    <string name="interface_more_title">更多\u2026</string>
+    <string name="interface_bars_title">状态栏</string>
+    <string name="interface_menus_title">菜单</string>
+    <string name="interface_notification_panel_title">通知抽屉</string>
+
+    <!-- Battery Icon selection -->
+    <string name="pref_battery_indicator_title">电量指示器</string>
+    <string name="battery_status_icon_title">状态图标</string>
+    <string name="battery_bar">柱状</string>
+    <string name="battery_bar_percent">含百分比的柱状</string>
+    <string name="battery_circle">环状</string>
+    <string name="battery_circle_percent">含百分比的柱状</string>
+
+    <!-- Turn on display when power connected; turn off display when power disconnected -->
+    <string name="wake_when_plugged_or_unplugged_title">接入电源时唤醒</string>
+    <string name="wake_when_plugged_or_unplugged_summary">当接入充电器或者拔出充电器时打开屏幕</string>
+
+    <!-- security settings menu unlock -->
+    <string name="unlock_menu_unlock_title">菜单解锁</string>
+    <string name="unlock_menu_unlock_summary">按菜单键解锁设备</string>
+
+    <!-- Stylus Icon -->
+    <string name="stylus_icon_enabled_title">使用触控笔时显示图标</string>
+    <string name="stylus_icon_enabled_summary">使用触控笔时显示指针</string>
+
+</resources>
