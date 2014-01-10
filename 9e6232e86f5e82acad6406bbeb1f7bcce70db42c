@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b8b61a3_f67722ce",
+        "filename": "res/values-it/custom_strings.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-10T14:46:25Z",
+      "side": 1,
+      "message": "Dont put such things into the file but into the commit message",
+      "revId": "9e6232e86f5e82acad6406bbeb1f7bcce70db42c",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
