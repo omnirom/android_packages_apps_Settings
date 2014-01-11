@@ -31,6 +31,14 @@
             android:persistent="false"
             android:streamType="ring" />
 
+    <ListPreference
+            android:key="volume_panel_style"
+            android:title="@string/volume_panel_style"
+            android:persistent="false"
+            android:defaultValue="1"
+            android:entries="@array/volume_panel_style_entries"
+            android:entryValues="@array/volume_panel_style_values" />
+
     <Preference
             android:key="musicfx"
             android:title="@string/musicfx_title">
