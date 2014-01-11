@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0b64a5c6_3aafe1de",
+        "filename": "res/values/custom_arrays.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-11T13:30:43Z",
+      "side": 1,
+      "message": "Please use @string here and add the values to custom_strings.xml",
+      "revId": "9c36b0c9109e9f62ee644a0720a1e6aab5f06568",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
