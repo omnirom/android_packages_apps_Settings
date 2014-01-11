@@ -2042,4 +2042,5 @@
     <string name="user_image_take_photo" msgid="1280274310152803669">"Ta foto"</string>
     <string name="user_image_choose_photo" msgid="7940990613897477057">"Välj ett foto från galleriet"</string>
     <string name="regulatory_info_text" msgid="5623087902354026557"></string>
+    <string name="security_maximize_widgets_title">Maximera låsskärmswidgetar</string>
 </resources>
