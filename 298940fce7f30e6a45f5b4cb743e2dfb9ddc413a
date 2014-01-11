@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0b64a5c6_3af1a1dc",
+        "filename": "src/com/android/settings/SoundSettings.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-11T15:02:09Z",
+      "side": 1,
+      "message": "sorry - missed that before. Use local variable resolver instead of getContentResolver()",
+      "revId": "298940fce7f30e6a45f5b4cb743e2dfb9ddc413a",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
