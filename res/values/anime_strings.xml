@@ -1,92 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- Shockgensmod strings -->
-    <!-- SWAP -->
-    <string name="swap_settings_title">Swap</string>
-    <string name="swap_title">Swap settings</string>
-    <string name="swap_summary">Swap to SD card settings</string>
-    <string name="swap_mode_summary">%S</string>
-    <string name="swap_modes_title">Swap to SD card</string>
-    <string name="swap_sizes_title">Swap size</string>
-    <string name="swap_sizes_summary">%S MB</string>
-    <string name="swap_toast_swap_removed">Previous swap removed</string>
-    <string name="swap_toast_swap_created">Swap created</string>
-    <string name="swap_toast_swap_enabled">Swap enabled</string>
-    <string name="swap_toast_swap_disabled">Swap disabled</string>
-    <string name="swap_toast_wait">Please wait...</string>
-    <string name="swap_info_title">Swap Information</string>
-    <string name="swap_dialog">Swap Information</string>
-    <string name="swap_loading">Loading Swap information\u2026</string>
-    <string name="swap_error">Error loading Swap information\u2026</string> 
-    <string name="statusbar_color">Error loading Swap information\u2026</string>
-    <string name="memory_management_settings_title_head">AnimeROM extra memory</string>
-    <string name="memory_management_settings_title_subhead">Memory settings</string>
-    <string name="memory_management_settings_summary_head">Memory management, Compcache, KSM</string>
-    <string name="pref_use_bravia_summary">Improve graphic effects but no guarrantee (requires reboot)</string>
-    <string name="pref_ksm_sleep_title">KSM Sleep time</string>
-    <string name="pref_ksm_sleep_summary">KSM Sleep time option (improves performance)</string>
-    <string name="pref_ksm_scan_title">KSM Page scan</string>
-    <string name="pref_ksm_scan_summary">KSM Page scan option (improves performance)</string>
-    <string name="pref_lowmemkill_title">Low Memory Killer</string>
-    <string name="pref_lowmemkill_summary">Custom Values Low Mem Killer</string>
-    <string name="display_lockscreen_rotation_title">Lock Screen rotation settings</string>
-    <string name="pref_adj_title">Android memory management</string>
-    <string name="pref_adj_summary">Custom Values O0M ADJ</string>
-    <string name="pref_vsync_title">Android VSYNC management</string>
-    <string name="pref_vsync_summary">Enable/Dusable</string>
-    <string name="shockgensmod_management_title">The real Hack</string>
-
-    <!-- Performance Hack info -->
-    <string name="shockgens_title">THE REAL HACK</string>
-    <string name="shockgens_dialog">Special information</string>
-    <string name="shockgens_loading">Loading information...</string>
-    <string name="shockgens_error">Unable to load information</string>
-    <string name="shockgens_unknown">Unknown</string>
-    <string name="shockgesn_version">Version</string>
-
-    <!-- Memory management Settings : Compcache -->
-    <string name="pref_compcache_title">Compcache RAM Usage</string>
-    <string name="pref_compcache_summary">Compress memory for increased virtual capacity (requires reboot)</string>
 
     <!-- Memory management Settings : GMAPS hack -->
     <string name="pref_gmaps_hack_title">Google Maps Hack</string>
     <string name="pref_gmaps_hack_summary">Make NetworkLocationService killable. Frees some RAM, but Latitude isn\'t reporting location any more (requires restart of Maps)</string>
-
-     <!-- Performance Settings : Performance profile settings -->
-    <string name="perf_profile_title">Perfomance auto-mode</string>
-    <string name="perf_profile_summary" translatable="false">%s</string>
-
-    <!-- Performance Settings : Performance profile modes -->
-    <string name="perf_profile_pwrsv">Power save</string>
-    <string name="perf_profile_bal">Balanced</string>
-    <string name="perf_profile_perf">Performance</string>
-
-    <!-- Navbar -->
-    <string name="show_navbar">Show navigation bar</string>
-    <string name="show_navbar_reboot">Requires reboot</string>
-
-    <!-- Power-Off Menu Settings -->
-    <string name="power_off_menu_title">Power-off menu</string>
-    <string name="pom_screenshot_title">Screenshot</string>
-    <string name="pom_screenshot_sound_title">Screenshot sound</string>
-    <string name="pom_screenshot_sound_summary">Plays sound effect when screenshot is taken</string>
-    <string name="pom_screenshot_delay_title">Screenshot delay</string>
-    <string name="pom_screenshot_delay_summary">Delays shot by number of seconds specified</string>
-
-    <!--- Status bar transparency -->
-    <string name="statusbar_transparency">Status bar transparency</string>
-    <string name="statusbar_transparency_summary">Warning: turning on status bar transparency might affect performance and battery life</string>
-    <string name="statusbar_transparency_no">Stock</string>
-    <string name="statusbar_transparency_25">25%</string>
-    <string name="statusbar_transparency_50">50%</string>
-    <string name="statusbar_transparency_75">75%</string>
-    <string name="statusbar_transparency_full">100%</string>
-
-    <!-- Center clock -->
-    <string name="status_bar_show_centerclock_title">Center clock</string>
-    <string name="status_bar_show_centerclock_summary">Show clock in the center of the status bar</string>
-
-    <string name="perfomance_management_title">Performance Hack</string>
 
     <string name="nones"></string>
     <string name="device_cpu">CPU:</string>
@@ -97,29 +14,6 @@
     <string name="model_numbers">ROM:</string>
     <string name="about_misc_settings">AnimeROM</string>
     <string name="about_misc_settings_summary">About version</string>
-    <!-- Partition info -->
-    <string name="partition_info_title">Partition info</string>
-    <string name="partition_info_system">System</string>
-    <string name="partition_info_data">Data</string>
-    <string name="partition_info_cache">Cache</string>
-    <string name="partition_info_sdcard">SDcard (FAT)</string>
-    <string name="partition_info_sdext">EXT partition</string>
-
-    <string name="pref_restart_status_bar_value">Click To Restart Status Bar</string>
-    <string name="pref_restart_status_bar_summary">If the status bar fails to restart,\nyou may have to reboot your device.</string>
-    <string name="pref_restart_status_bar_toast">Restarting status bar\nin 10-30 seconds</string>
-    <string name="pref_stopping_status_bar_summary">Stopping the status bar service\u2026</string>
-    <string name="pref_restarting_status_bar_summary">Restarting the status bar service\u2026</string>
-
-    <string name="ui_status_bar_color_title">Status bar background color</string>
-    <string name="ui_status_bar_color_summary">Status bar restart required</string>
-    <string name="pref_transparent_status_bar_title">Status bar appearance</string>
-    <string name="pref_transparent_status_bar_summary">Theme, transparent,\nor user defined color.\nStatus bar restart required.</string>
-
-    <!-- Color Picker -->
-    <!--  Color Picker  -->
-    <string name="title_color_picker">Pick a color</string>
-    <string name="msg_color_picker">Tap on center color to confirm.\nPress back to cancel</string>
 
     <string name="general_title">VM Settings</string>
     <string name="performance_settings_title_subhead">AnimeROM</string>
