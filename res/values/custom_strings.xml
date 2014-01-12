@@ -269,4 +269,10 @@
     <!-- Safe headset volume warning -->
     <string name="safe_headset_volume_warning_title">Volume warning</string>
     <string name="safe_headset_volume_warning_summary">Show safe headset volume warning</string>
+
+    <!-- Captive portal toggle -->
+    <string name="captive_toggle">Captive portal detection</string>
+    <string name="captive_toggle_summary">Toggle captive portal detection</string>
+    <string name="captive_server">Server for captive portal detection</string>
+    <string name="captive_server_summary">Server used to detect captive portal. Leave empty for default.</string>
 </resources>
