@@ -23,6 +23,18 @@
         android:persistent="false"
         android:disableDependentsState="true" />
 
+    <CheckBoxPreference
+        android:key="toggle_captive"
+        android:title="@string/captive_toggle"
+        android:persistent="false"
+        android:summary="@string/captive_toggle_summary" />
+
+    <EditTextPreference
+        android:key="server_captive"
+        android:title="@string/captive_server"
+        android:persistent="false"
+        android:summary="@string/captive_server_summary" />
+
     <com.android.settings.SmsListPreference
         android:key="sms_application"
         android:title="@string/sms_application_title"
