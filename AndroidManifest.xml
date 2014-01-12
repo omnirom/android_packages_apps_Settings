@@ -1826,31 +1826,31 @@
             </intent-filter>
         </activity>
         
-        activity android:name=".shockgensmod.SWAPActivity"
+        activity android:name=".SWAPActivity"
                 android:label="@string/swap_settings_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
         </activity>
-        <activity android:name=".shockgensmod.SWAPInfo"
+        <activity android:name=".SWAPInfo"
                  android:label="@string/swap_info_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
         </activity>
-        <activity android:name=".shockgensmod.PerfomanceHack"
+        <activity android:name=".PerfomanceHack"
                  android:label="@string/perfomance_management_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
         </activity>
         
-        <activity android:name=".shockgensmod.therealperfomancehack" android:label="@string/shockgens_title">
+        <activity android:name=".therealperfomancehack" android:label="@string/shockgens_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
         </activity>
-         <activity android:name=".shockgensmod.DeviceInfoMisc" android:label="@string/about_misc_settings">
+         <activity android:name=".DeviceInfoMisc" android:label="@string/about_misc_settings">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
