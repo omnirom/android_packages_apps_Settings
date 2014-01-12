@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- Shockgensmod strings -->
-    <!-- SELINUX -->
-    <string name="selinux_settings_title">SELinux status</string>
-    <string name="selinux_settings_summary">Permissive</string>
     <!-- SWAP -->
     <string name="swap_settings_title">Swap</string>
     <string name="swap_title">Swap settings</string>
@@ -22,7 +19,7 @@
     <string name="swap_loading">Loading Swap information\u2026</string>
     <string name="swap_error">Error loading Swap information\u2026</string> 
     <string name="statusbar_color">Error loading Swap information\u2026</string>
-    <string name="memory_management_settings_title_head">ShockGensMOD extra memory</string>
+    <string name="memory_management_settings_title_head">AnimeROM extra memory</string>
     <string name="memory_management_settings_title_subhead">Memory settings</string>
     <string name="memory_management_settings_summary_head">Memory management, Compcache, KSM</string>
     <string name="pref_use_bravia_summary">Improve graphic effects but no guarrantee (requires reboot)</string>
@@ -98,7 +95,7 @@
     <string name="kernel_versions">KERNEL:</string>
     <string name="firmware_versions">VERSION:</string>
     <string name="model_numbers">ROM:</string>
-    <string name="about_misc_settings">ShockgensMOD</string>
+    <string name="about_misc_settings">AnimeROM</string>
     <string name="about_misc_settings_summary">About version</string>
     <!-- Partition info -->
     <string name="partition_info_title">Partition info</string>
@@ -125,7 +122,7 @@
     <string name="msg_color_picker">Tap on center color to confirm.\nPress back to cancel</string>
 
     <string name="general_title">VM Settings</string>
-    <string name="performance_settings_title_subhead">ShockGensMOD</string>
+    <string name="performance_settings_title_subhead">AnimeROM</string>
     <string name="perfomance_management_2_title">Other Settings</string>
 
     <!-- Performance Settings : JIT Mode -->
