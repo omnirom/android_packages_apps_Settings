@@ -246,5 +246,10 @@
     <string name="wifi_setting_countrycode_title">Codice regione Wi-Fi</string>
     <string name="wifi_setting_countrycode_summary">Specifica il codice regione per il Wi-Fi</string>
     <string name="wifi_setting_countrycode_error">C\'è un problema nell\'impostare il codice regione del Wi-Fi</string>
-
+	
+	<!-- Volume panel style -->
+    <string name="volume_panel_style">Stile pannello volume</string>
+    <string name="single">Singolo</string>
+    <string name="expandable">Espandibile</string>
+    <string name="expanded">Ingrandito</string>
 </resources>
