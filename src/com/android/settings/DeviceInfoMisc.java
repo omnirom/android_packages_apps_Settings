@@ -27,7 +27,7 @@ import android.os.Bundle;
 import android.os.SystemProperties;
 
 import java.io.*;
-import  java.util.*;
+import java.util.*;
 
 public class DeviceInfoMisc extends Activity {
 
