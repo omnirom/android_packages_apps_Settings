@@ -20,23 +20,7 @@
        <item>7000</item>
    </string-array>
 
-   <string-array name="statusbar_transparency_entries">
-        <item>@string/statusbar_transparency_no</item>
-        <item>@string/statusbar_transparency_25</item>
-        <item>@string/statusbar_transparency_50</item>
-        <item>@string/statusbar_transparency_75</item>
-        <item>@string/statusbar_transparency_full</item>
-    </string-array>
-
-    <string-array name="statusbar_transparency_values">
-        <item>100</item>
-        <item>75</item>
-        <item>50</item>
-        <item>25</item>
-        <item>0</item>
-    </string-array>
-
-    <string-array name="swap_sizes_values" translatable="false">
+   <string-array name="swap_sizes_values" translatable="false">
         <item>32</item>
         <item>64</item>
         <item>128</item>
@@ -44,116 +28,6 @@
         <item>512</item>
         <item>1024</item>
         <item>2048</item>
-    </string-array>
-
-    <string-array name="pref_compcache_size_entries">
-        <item>Disabled</item>
-        <item>10%</item>
-        <item>18%</item>
-        <item>26%</item>
-        <item>32%</item>
-    </string-array>
-
-    <string-array name="pref_compcache_size_values" translatable="false">
-        <item>0</item>
-        <item>10</item>
-        <item>18</item>
-        <item>26</item>
-        <item>32</item>
-    </string-array>
-
-    <string-array name="entries_ksm_sleep">
-        <item>500</item>
-        <item>1000</item>
-        <item>1500</item>
-        <item>2000</item>
-        <item>2500</item>
-        <item>3000</item>
-        <item>3500</item>
-        <item>4000</item>
-    </string-array>
-
-    <string-array name="values_ksm_sleep">
-        <item>500</item>
-        <item>1000</item>
-        <item>1500</item>
-        <item>2000</item>
-        <item>2500</item>
-        <item>3000</item>
-        <item>3500</item>
-        <item>4000</item>
-    </string-array>
-
-    <string-array name="entries_ksm_scan">
-        <item>64</item>
-        <item>128</item>
-        <item>256</item>
-        <item>384</item>
-        <item>512</item>
-    </string-array>
-
-    <string-array name="values_ksm_scan">
-        <item>64</item>
-        <item>128</item>
-        <item>256</item>
-        <item>384</item>
-        <item>512</item>
-    </string-array>
-
-    <string-array name="entries_lowmemkill">
-        <item>Minimum</item>
-        <item>Every day use</item>
-        <item>System</item>
-        <item>Hard multitasking</item>
-        <item>Hard gaming</item>
-        <item>Stable</item>
-        <item>Ram free</item>
-        <item>Extreme Ram free</item>
-    </string-array>
-
-    <string-array name="values_lowmemkill">
-        <item>1536,2048,4096,5120,5632,6144</item>
-        <item>4560,4096,6144,7680,9704,10240</item>
-        <item>2560,3840,6400,7680,10240,12800</item>
-        <item>2560,4096,6144,10752,11264,13312</item>
-        <item>2560,3840,6400,12800,12800,25600</item>
-        <item>6400,8960,19200,23040,38400,64000</item>
-        <item>12800,179860,38200,43080,72800,88000</item>
-        <item>46800,549860,102200,106080,132800,108000</item>
-    </string-array>
-
-    <string-array name="entries_vsync">
-        <item>Enable</item>
-        <item>Disable</item>
-    </string-array>
-
-    <string-array name="values_vsync">
-        <item>1</item>
-        <item>0</item>
-    </string-array>
-
-    <string-array name="entries_adj">
-        <item>Default</item>
-        <item>Hight</item>
-        <item>Stable</item>
-    </string-array>
-
-    <string-array name="values_adj">
-        <item>0,3,5,7,14,15</item>
-        <item>0,1,2,4,6,15</item>
-        <item>0,2,5,7,14,15</item>
-    </string-array>
-
-    <string-array name="perf_profile_entries" translatable="false">
-        <item>@string/perf_profile_pwrsv</item>
-        <item>@string/perf_profile_bal</item>
-        <item>@string/perf_profile_perf</item>
-    </string-array>
-
-    <string-array name="perf_profile_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
     </string-array>
 
     <string-array name="entries_heapsize">
