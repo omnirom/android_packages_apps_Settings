@@ -83,7 +83,7 @@ public class PerfomanceHack extends SettingsPreferenceFragment implements
 
     private static final String LOWMEMKILL_PROP = "lowmemkill";
 
-    public static final String LOWMEMKILL_PREF_DEFAULT = "6400,8960,19200,23040,38400,64000";
+    public static final String LOWMEMKILL_PREF_DEFAULT = "6400,8960,19200,23040,38400,64000"; //TEST VALUES
 
     public static final String ADJ_RUN_FILE = "/sys/module/lowmemorykiller/parameters/adj";
 
@@ -91,7 +91,7 @@ public class PerfomanceHack extends SettingsPreferenceFragment implements
 
     private static final String ADJ_PROP = "adj";
 
-    public static final String ADJ_PREF_DEFAULT = "0,1,2,3,4,10";
+    public static final String ADJ_PREF_DEFAULT = "0,1,2,3,4,10"; // TEST VALUES
 
     public static final String VSYNC_RUN_FILE = "/d/clk/mdp_vsync_clk/enable";
 
