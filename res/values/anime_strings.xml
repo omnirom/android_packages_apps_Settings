@@ -253,5 +253,6 @@
     <string name="single">Single</string>
     <string name="expandable">Expandable</string>
     <string name="expanded">Expanded</string>
+    <string name="about_misc_settings">About misc settings</string>
 
 </resources>

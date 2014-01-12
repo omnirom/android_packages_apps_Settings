@@ -58,9 +58,13 @@
         android:fragment="com.android.settings.WirelessSettings"
         android:icon="@drawable/empty_icon" />
 
+<!-- xpe -->
+
     <!-- INTERFACE -->
-    <header android:id="@+id/interface_section"
-        android:title="@string/header_category_interface" />
+<!--    <header android:id="@+id/interface_section"
+        android:title="@string/header_category_interface" />-->
+    <header android:id="@+id/interface_section2"
+        android:title="@string/header_category_xperience" />
 
     <header
         android:id="@+id/interface_bars"
