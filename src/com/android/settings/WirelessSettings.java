@@ -58,6 +58,7 @@ public class WirelessSettings extends RestrictedSettingsFragment
 
     private static final String KEY_TOGGLE_AIRPLANE = "toggle_airplane";
     private static final String KEY_TOGGLE_NFC = "toggle_nfc";
+    private static final String KEY_TOGGLE_CAPTIVE = "toggle_captive";
     private static final String KEY_WIMAX_SETTINGS = "wimax_settings";
     private static final String KEY_ANDROID_BEAM_SETTINGS = "android_beam_settings";
     private static final String KEY_VPN_SETTINGS = "vpn_settings";
@@ -74,6 +75,7 @@ public class WirelessSettings extends RestrictedSettingsFragment
 
     private AirplaneModeEnabler mAirplaneModeEnabler;
     private CheckBoxPreference mAirplaneModePreference;
+    private CheckBoxPreference mCaptivePreference;
     private NfcEnabler mNfcEnabler;
     private NfcAdapter mNfcAdapter;
     private NsdEnabler mNsdEnabler;
@@ -267,6 +269,7 @@ public class WirelessSettings extends RestrictedSettingsFragment
 
         final Activity activity = getActivity();
         mAirplaneModePreference = (CheckBoxPreference) findPreference(KEY_TOGGLE_AIRPLANE);
+        mCaptivePreference = (CheckBoxPreference) findPreference(KEY_TOGGLE_CAPTIVE);
         CheckBoxPreference nfc = (CheckBoxPreference) findPreference(KEY_TOGGLE_NFC);
         PreferenceScreen androidBeam = (PreferenceScreen) findPreference(KEY_ANDROID_BEAM_SETTINGS);
         CheckBoxPreference nsd = (CheckBoxPreference) findPreference(KEY_TOGGLE_NSD);
@@ -277,6 +280,10 @@ public class WirelessSettings extends RestrictedSettingsFragment
         mSmsApplicationPreference = (SmsListPreference) findPreference(KEY_SMS_APPLICATION);
         mSmsApplicationPreference.setOnPreferenceChangeListener(this);
         initSmsApplicationSetting();
+
+        mCaptivePreference.setOnPreferenceChangeListener(this);
+        mCaptivePreference.setChecked(Settings.Global.getInt(getContentResolver(),
+                Settings.Global.CAPTIVE_PORTAL_DETECTION_ENABLED, 0) == 1);
 
         // Remove NSD checkbox by default
         getPreferenceScreen().removePreference(nsd);
@@ -461,6 +468,13 @@ public class WirelessSettings extends RestrictedSettingsFragment
             SmsApplication.setDefaultApplication(newValue.toString(), getActivity());
             updateSmsApplicationSetting();
             return true;
+        } else if (preference == mCaptivePreference && newValue != null) {
+            final Activity activity = getActivity();
+            final boolean desiredCaptive = (Boolean) newValue;
+            mCaptivePreference.setChecked(desiredCaptive);
+            Settings.Global.putInt(activity.getBaseContext().getContentResolver(),
+                    Settings.Global.CAPTIVE_PORTAL_DETECTION_ENABLED,
+                    (desiredCaptive) ? 1 : 0);
         }
         return false;
     }

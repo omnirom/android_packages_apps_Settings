@@ -254,4 +254,7 @@
     <string name="expandable">Expandable</string>
     <string name="expanded">Expanded</string>
 
+    <!-- Captive portal toggle -->
+    <string name="captive_toggle">Captive portal detection</string>
+    <string name="captive_toggle_summary">Toggle captive portal detection</string>
 </resources>
