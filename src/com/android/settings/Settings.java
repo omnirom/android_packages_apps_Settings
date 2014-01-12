@@ -34,6 +34,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
@@ -69,6 +70,7 @@ import com.android.settings.accounts.ManageAccountsSettings;
 import com.android.settings.applications.AppOpsSummary;
 import com.android.settings.applications.ManageApplications;
 import com.android.settings.applications.ProcessStatsUi;
+import com.android.settings.blacklist.BlacklistSettings;
 import com.android.settings.bluetooth.BluetoothEnabler;
 import com.android.settings.bluetooth.BluetoothSettings;
 import com.android.settings.deviceinfo.Memory;
@@ -352,7 +354,8 @@ public class Settings extends PreferenceActivity
         TrustedCredentialsSettings.class.getName(),
         PaymentSettings.class.getName(),
         KeyboardLayoutPickerFragment.class.getName(),
-        QuietHours.class.getName()
+        QuietHours.class.getName(),
+        BlacklistSettings.class.getName()
     };
 
     @Override
@@ -507,6 +510,7 @@ public class Settings extends PreferenceActivity
         // uiOptions for fragments also defined as activities in manifest.
         if (WifiSettings.class.getName().equals(fragmentName) ||
                 WifiP2pSettings.class.getName().equals(fragmentName) ||
+                BlacklistSettings.class.getName().equals(fragmentName) ||
                 BluetoothSettings.class.getName().equals(fragmentName) ||
                 DreamSettings.class.getName().equals(fragmentName) ||
                 LocationSettings.class.getName().equals(fragmentName) ||
@@ -1137,5 +1141,6 @@ public class Settings extends PreferenceActivity
     public static class PaymentSettingsActivity extends Settings { /* empty */ }
     public static class PrintSettingsActivity extends Settings { /* empty */ }
     public static class PrintJobSettingsActivity extends Settings { /* empty */ }
+    public static class BlacklistSettingsActivity extends Settings { /* empty */ }
     public static class PerformanceSettingsActivity extends Settings { /* empty */ }
 }
