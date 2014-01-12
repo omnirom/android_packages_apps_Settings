@@ -12,6 +12,7 @@
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
      limitations under the License.
+	 07/01/2014 Thanks Fabrizio DP
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
@@ -159,8 +160,8 @@
     <string name="three">Tre</string>
     <string name="four">Quattro</string>
     <string name="five">Cinque</string>
-    <string name="six">Sei</string>
-
+    <string name="six">Sei</string> 
+	
     <!-- Quiet hours -->
     <string name="quiet_hours_title">Ore silenziose</string>
     <string name="quiet_hours_summary">Configura le ore in cui il dispositivo dovrebbe essere silenzioso</string>
@@ -246,5 +247,10 @@
     <string name="wifi_setting_countrycode_title">Codice regione Wi-Fi</string>
     <string name="wifi_setting_countrycode_summary">Specifica il codice regione per il Wi-Fi</string>
     <string name="wifi_setting_countrycode_error">C\'è un problema nell\'impostare il codice regione del Wi-Fi</string>
-
+	
+	<!-- Volume panel style -->
+    <string name="volume_panel_style">Stile pannello volume</string>
+    <string name="single">Singolo</string>
+    <string name="expandable">Espandibile</string>
+    <string name="expanded">Ingrandito</string>
 </resources>
