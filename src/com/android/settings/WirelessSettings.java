@@ -36,6 +36,7 @@ import android.os.Bundle;
 import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceScreen;
@@ -58,6 +59,8 @@ public class WirelessSettings extends RestrictedSettingsFragment
 
     private static final String KEY_TOGGLE_AIRPLANE = "toggle_airplane";
     private static final String KEY_TOGGLE_NFC = "toggle_nfc";
+    private static final String KEY_TOGGLE_CAPTIVE = "toggle_captive";
+    private static final String KEY_SERVER_CAPTIVE = "server_captive";
     private static final String KEY_WIMAX_SETTINGS = "wimax_settings";
     private static final String KEY_ANDROID_BEAM_SETTINGS = "android_beam_settings";
     private static final String KEY_VPN_SETTINGS = "vpn_settings";
@@ -74,6 +77,8 @@ public class WirelessSettings extends RestrictedSettingsFragment
 
     private AirplaneModeEnabler mAirplaneModeEnabler;
     private CheckBoxPreference mAirplaneModePreference;
+    private CheckBoxPreference mCaptivePreference;
+    private EditTextPreference mCaptiveServerPreference;
     private NfcEnabler mNfcEnabler;
     private NfcAdapter mNfcAdapter;
     private NsdEnabler mNsdEnabler;
@@ -267,6 +272,8 @@ public class WirelessSettings extends RestrictedSettingsFragment
 
         final Activity activity = getActivity();
         mAirplaneModePreference = (CheckBoxPreference) findPreference(KEY_TOGGLE_AIRPLANE);
+        mCaptivePreference = (CheckBoxPreference) findPreference(KEY_TOGGLE_CAPTIVE);
+        mCaptiveServerPreference = (EditTextPreference) findPreference(KEY_SERVER_CAPTIVE);
         CheckBoxPreference nfc = (CheckBoxPreference) findPreference(KEY_TOGGLE_NFC);
         PreferenceScreen androidBeam = (PreferenceScreen) findPreference(KEY_ANDROID_BEAM_SETTINGS);
         CheckBoxPreference nsd = (CheckBoxPreference) findPreference(KEY_TOGGLE_NSD);
@@ -277,6 +284,14 @@ public class WirelessSettings extends RestrictedSettingsFragment
         mSmsApplicationPreference = (SmsListPreference) findPreference(KEY_SMS_APPLICATION);
         mSmsApplicationPreference.setOnPreferenceChangeListener(this);
         initSmsApplicationSetting();
+
+        mCaptivePreference.setOnPreferenceChangeListener(this);
+        mCaptivePreference.setChecked(Settings.Global.getInt(getContentResolver(),
+                Settings.Global.CAPTIVE_PORTAL_DETECTION_ENABLED, 0) == 1);
+        mCaptiveServerPreference.setOnPreferenceChangeListener(this);
+        mCaptiveServerPreference.setText(Settings.Global.getString(getContentResolver(),
+                Settings.Global.CAPTIVE_PORTAL_SERVER));
+
 
         // Remove NSD checkbox by default
         getPreferenceScreen().removePreference(nsd);
@@ -461,6 +476,18 @@ public class WirelessSettings extends RestrictedSettingsFragment
             SmsApplication.setDefaultApplication(newValue.toString(), getActivity());
             updateSmsApplicationSetting();
             return true;
+        } else if (preference == mCaptivePreference && newValue != null) {
+            final Activity activity = getActivity();
+            final boolean desiredCaptive = (Boolean) newValue;
+            mCaptivePreference.setChecked(desiredCaptive);
+            Settings.Global.putInt(activity.getBaseContext().getContentResolver(),
+                    Settings.Global.CAPTIVE_PORTAL_DETECTION_ENABLED,
+                    (desiredCaptive) ? 1 : 0);
+        } else if (preference == mCaptiveServerPreference && newValue != null) {
+            final Activity activity = getActivity();
+            final String desiredCaptiveServer = newValue.toString();
+            Settings.Global.putString(activity.getBaseContext().getContentResolver(),
+                    Settings.Global.CAPTIVE_PORTAL_SERVER, desiredCaptiveServer);
         }
         return false;
     }
