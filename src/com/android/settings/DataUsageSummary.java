@@ -139,6 +139,7 @@ import com.android.settings.net.UidDetailProvider;
 import com.android.settings.widget.ChartDataUsageView;
 import com.android.settings.widget.ChartDataUsageView.DataUsageChartListener;
 import com.android.settings.widget.PieChartView;
+import org.omnirom.omnigears.smartradio.SmartRadioHelper;
 import com.google.android.collect.Lists;
 
 import libcore.util.Objects;
@@ -212,6 +213,8 @@ public class DataUsageSummary extends Fragment {
     private LinearLayout mNetworkSwitches;
     private Switch mDataEnabled;
     private View mDataEnabledView;
+    private Switch mSmartRadioEnabled;
+    private View mSmartRadioEnabledView;
     private CheckBox mDisableAtLimit;
     private View mDisableAtLimitView;
 
@@ -353,6 +356,11 @@ public class DataUsageSummary extends Fragment {
             mDataEnabledView = inflatePreference(inflater, mNetworkSwitches, mDataEnabled);
             mDataEnabled.setOnCheckedChangeListener(mDataEnabledListener);
             mNetworkSwitches.addView(mDataEnabledView);
+
+            mSmartRadioEnabled = new Switch(inflater.getContext());
+            mSmartRadioEnabledView = inflatePreference(inflater, mNetworkSwitches, mSmartRadioEnabled);
+            mSmartRadioEnabled.setOnCheckedChangeListener(mSmartRadioEnabledListener);
+            mNetworkSwitches.addView(mSmartRadioEnabledView);
 
             mDisableAtLimit = new CheckBox(inflater.getContext());
             mDisableAtLimit.setClickable(false);
@@ -568,6 +576,7 @@ public class DataUsageSummary extends Fragment {
     @Override
     public void onDestroy() {
         mDataEnabledView = null;
+        mSmartRadioEnabledView = null;
         mDisableAtLimitView = null;
 
         mUidDetailProvider.clearCache();
@@ -705,23 +714,27 @@ public class DataUsageSummary extends Fragment {
         if (LOGD) Log.d(TAG, "updateBody() with currentTab=" + currentTab);
 
         mDataEnabledView.setVisibility(isOwner ? View.VISIBLE : View.GONE);
+        mSmartRadioEnabledView.setVisibility(isOwner ? View.VISIBLE : View.GONE);
 
         // TODO: remove mobile tabs when SIM isn't ready
         final TelephonyManager tele = TelephonyManager.from(context);
 
         if (TAB_MOBILE.equals(currentTab)) {
             setPreferenceTitle(mDataEnabledView, R.string.data_usage_enable_mobile);
+            setPreferenceTitle(mSmartRadioEnabledView, R.string.data_usage_enable_smartradio);
             setPreferenceTitle(mDisableAtLimitView, R.string.data_usage_disable_mobile_limit);
             mTemplate = buildTemplateMobileAll(getActiveSubscriberId(context));
 
         } else if (TAB_3G.equals(currentTab)) {
             setPreferenceTitle(mDataEnabledView, R.string.data_usage_enable_3g);
+            mSmartRadioEnabledView.setVisibility(View.GONE);
             setPreferenceTitle(mDisableAtLimitView, R.string.data_usage_disable_3g_limit);
             // TODO: bind mDataEnabled to 3G radio state
             mTemplate = buildTemplateMobile3gLower(getActiveSubscriberId(context));
 
         } else if (TAB_4G.equals(currentTab)) {
             setPreferenceTitle(mDataEnabledView, R.string.data_usage_enable_4g);
+            mSmartRadioEnabledView.setVisibility(View.GONE);
             setPreferenceTitle(mDisableAtLimitView, R.string.data_usage_disable_4g_limit);
             // TODO: bind mDataEnabled to 4G radio state
             mTemplate = buildTemplateMobile4g(getActiveSubscriberId(context));
@@ -729,12 +742,14 @@ public class DataUsageSummary extends Fragment {
         } else if (TAB_WIFI.equals(currentTab)) {
             // wifi doesn't have any controls
             mDataEnabledView.setVisibility(View.GONE);
+            mSmartRadioEnabledView.setVisibility(View.GONE);
             mDisableAtLimitView.setVisibility(View.GONE);
             mTemplate = buildTemplateWifiWildcard();
 
         } else if (TAB_ETHERNET.equals(currentTab)) {
             // ethernet doesn't have any controls
             mDataEnabledView.setVisibility(View.GONE);
+            mSmartRadioEnabledView.setVisibility(View.GONE);
             mDisableAtLimitView.setVisibility(View.GONE);
             mTemplate = buildTemplateEthernet();
 
@@ -863,6 +878,11 @@ public class DataUsageSummary extends Fragment {
         }
     }
 
+    private boolean isSmartRadioEnabled() {
+        final ContentResolver resolver = getActivity().getContentResolver();
+        return Settings.Global.getInt(resolver, Settings.Global.SMART_RADIO_OPTION, 0) != 0;
+    }
+
     private void setMobileDataEnabled(boolean enabled) {
         if (LOGD) Log.d(TAG, "setMobileDataEnabled()");
         mConnService.setMobileDataEnabled(enabled);
@@ -931,6 +951,7 @@ public class DataUsageSummary extends Fragment {
         if (TAB_MOBILE.equals(mCurrentTab)) {
             mBinding = true;
             mDataEnabled.setChecked(isMobileDataEnabled());
+            mSmartRadioEnabled.setChecked(isSmartRadioEnabled());
             mBinding = false;
         }
 
@@ -1042,6 +1063,25 @@ public class DataUsageSummary extends Fragment {
                     // calls setMobileDataEnabled() once user confirms.
                     ConfirmDataDisableFragment.show(DataUsageSummary.this);
                 }
+            }
+
+            updatePolicy(false);
+        }
+    };
+
+    private OnCheckedChangeListener mSmartRadioEnabledListener = new OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (mBinding) return;
+
+            final ContentResolver resolver = getActivity().getContentResolver();
+            final Context context = getActivity();
+            final boolean smartRadioEnabled = isChecked;
+            final String currentTab = mCurrentTab;
+            if (TAB_MOBILE.equals(currentTab)) {
+                Settings.Global.putInt(resolver,
+                     Settings.Global.SMART_RADIO_OPTION, smartRadioEnabled ? 1 : 0);
+                SmartRadioHelper.scheduleService(context);
             }
 
             updatePolicy(false);
