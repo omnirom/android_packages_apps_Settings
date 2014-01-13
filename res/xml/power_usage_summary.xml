@@ -22,6 +22,11 @@
         android:key="battery_prefs"
         android:title="@string/battery_prefs_title" />
 
+    <PreferenceScreen
+        android:key="pref_battery_saver"
+        android:fragment="org.omnirom.omnigears.interfacesettings.BatterySaverSettings"
+        android:title="@string/battery_saver_title" />
+
     <ListPreference
         android:key="pref_low_battery_warning_policy"
         android:title="@string/pref_low_battery_warning_policy_title"
