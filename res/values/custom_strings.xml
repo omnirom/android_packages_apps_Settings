@@ -261,6 +261,15 @@
     <string name="ime_switcher_notify">Selector notification</string>
     <string name="ime_switcher_notify_summary">Display input method selector notification</string>
 
+    <!-- Toggle switch title for enabling battery saver connections. [CHAR LIMIT=32] -->
+    <string name="data_usage_enable_batterysaver">Battery saver</string>
+
+    <!-- Volume panel style -->
+    <string name="volume_panel_style">Volume panel style</string>
+    <string name="single">Single</string>
+    <string name="expandable">Expandable</string>
+    <string name="expanded">Expanded</string>
+
     <!-- Enable camera -->
     <string name="lockscreen_enable_camera_title">Camera widget</string>
     <string name="lockscreen_enable_camera_summary">Swipe right to enable camera widget</string>
