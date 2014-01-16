@@ -71,14 +71,14 @@
         android:title="@string/interface_bars_title"
         android:breadCrumbTitle="@string/interface_bars_title"
         android:fragment="org.omnirom.omnigears.interfacesettings.BarsSettings"
-        android:icon="@drawable/ic_bars" />
+        android:icon="@drawable/ic_settings_system" />
 
     <header
         android:id="@+id/interface_menus"
         android:title="@string/interface_menus_title"
         android:breadCrumbTitle="@string/interface_menus_title"
         android:fragment="org.omnirom.omnigears.interfacesettings.MenusSettings"
-        android:icon="@drawable/ic_menus" />
+        android:icon="@drawable/ic_settings_performance2" />
 
     <header
         android:id="@+id/interface_notification_panel"
