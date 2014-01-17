@@ -1,0 +1,49 @@
+?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:gummy="http://schemas.android.com/apk/res/com.android.settings">
+
+    <PreferenceScreen android:key="logo1"
+        android:layout="@layout/logo_row" />
+
+    <PreferenceCategory
+        android:key="source"
+        android:title="@string/sauce">
+
+        <Preference
+            android:key="anime_gerrit"
+            android:title="@string/anime_gerrit_title"
+            android:summary="@string/anime_gerrit_summary" />
+
+        <com.android.settings.DeveloperPreference
+            android:title="AnimeROM"
+            anime:nameDev="Team AnimeROM"
+            anime:twitterHandle="TeamAnimeRom"
+            anime:githubLink="@string/github_anime"
+            android:icon="@drawable/twitter_bird" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="primary_devs"
+        android:title="@string/primary_devs">
+
+        <Preference
+            android:key="xperiafan13"
+            android:title="@string/xperiafan13"
+            android:icon="@drawable/twitter_bird" />
+
+        <Preference
+            android:key="klozz"
+            android:title="@string/klozz"
+            android:icon="@drawable/twitter_bird" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="artwork"
+        android:title="@string/artwork">
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
