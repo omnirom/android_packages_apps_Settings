@@ -20,20 +20,29 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.AppOpsManager;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -52,6 +61,14 @@ public class AppOpsDetails extends Fragment {
 
     public static final String ARG_PACKAGE_NAME = "package";
 
+    private static final int MENU_RESET = Menu.FIRST;
+    private static final int MENU_ENABLE_PRIVACY_GUARD = Menu.FIRST + 1;
+
+    // Dialog identifiers used in showDialog
+    private static final int DLG_BASE = 0;
+    private static final int DLG_RESET = DLG_BASE + 1;
+    private static final int DLG_ENABLE_PRIVACY_GUARD = DLG_BASE + 2;
+
     private AppOpsState mState;
     private PackageManager mPm;
     private AppOpsManager mAppOps;
@@ -62,8 +79,19 @@ public class AppOpsDetails extends Fragment {
     private LinearLayout mOperationsSection;
 
     // Utility method to set application label and icon.
-    private void setAppLabelAndIcon(PackageInfo pkgInfo) {
+    private void setAppLabelAndIcon(final PackageInfo pkgInfo) {
         final View appSnippet = mRootView.findViewById(R.id.app_snippet);
+        appSnippet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.fromParts("package", pkgInfo.packageName, null)));
+                } catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "Couldn't open app details activity", e);
+                }
+            }
+        });
         appSnippet.setPaddingRelative(0, appSnippet.getPaddingTop(), 0, appSnippet.getPaddingBottom());
 
         ImageView icon = (ImageView) appSnippet.findViewById(R.id.app_icon);
@@ -129,10 +157,12 @@ public class AppOpsDetails extends Fragment {
 
         mOperationsSection.removeAllViews();
         String lastPermGroup = "";
+        boolean hasEntries = false;
         for (AppOpsState.OpsTemplate tpl : AppOpsState.ALL_TEMPLATES) {
             List<AppOpsState.AppOpEntry> entries = mState.buildState(tpl,
                     mPackageInfo.applicationInfo.uid, mPackageInfo.packageName);
             for (final AppOpsState.AppOpEntry entry : entries) {
+                hasEntries = true;
                 final AppOpsManager.OpEntry firstOp = entry.getOpEntry(0);
                 final View view = mInflater.inflate(R.layout.app_ops_details_item,
                         mOperationsSection, false);
@@ -171,6 +201,12 @@ public class AppOpsDetails extends Fragment {
             }
         }
 
+        if (!hasEntries) {
+            final View view = mInflater.inflate(R.layout.app_ops_no_item,
+                    mOperationsSection, false);
+            mOperationsSection.addView(view);
+        }
+
         return true;
     }
 
@@ -200,7 +236,7 @@ public class AppOpsDetails extends Fragment {
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.app_ops_details, container, false);
-        Utils.prepareCustomPreferencesList(container, view, view, false);
+        Utils.prepareCustomPreferencesList(container, view, view, true);
 
         mRootView = view;
         mOperationsSection = (LinearLayout)view.findViewById(R.id.operations_section);
@@ -214,4 +250,121 @@ public class AppOpsDetails extends Fragment {
             setIntentAndFinish(true, true);
         }
     }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.add(0, MENU_RESET, 0, R.string.reset)
+                .setIcon(R.drawable.ic_settings_backup)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        if (mAppOps.getPrivacyGuardOpsForPackage(mPackageInfo.packageName).size() > 0) {
+            menu.add(0, MENU_ENABLE_PRIVACY_GUARD, 0, R.string.privacy_guard_manager_title)
+                    .setIcon(R.drawable.ic_privacy_guard)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case MENU_RESET:
+                showDialogInner(DLG_RESET);
+                return true;
+            case MENU_ENABLE_PRIVACY_GUARD:
+                if (isPrivacyGuardActive()) {
+                    setPrivacyGuard(false, false);
+                } else {
+                    showDialogInner(DLG_ENABLE_PRIVACY_GUARD);
+                }
+                return true;
+             default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private void showDialogInner(int id) {
+        DialogFragment newFragment = MyAlertDialogFragment.newInstance(id);
+        newFragment.setTargetFragment(this, 0);
+        newFragment.show(getFragmentManager(), "dialog " + id);
+    }
+
+    public static class MyAlertDialogFragment extends DialogFragment {
+
+        public static MyAlertDialogFragment newInstance(int id) {
+            MyAlertDialogFragment frag = new MyAlertDialogFragment();
+            Bundle args = new Bundle();
+            args.putInt("id", id);
+            frag.setArguments(args);
+            return frag;
+        }
+
+        AppOpsDetails getOwner() {
+            return (AppOpsDetails) getTargetFragment();
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            int id = getArguments().getInt("id");
+            switch (id) {
+                case DLG_RESET:
+                    return new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.reset)
+                    .setMessage(R.string.privacy_guard_app_ops_detail_reset_dialog_text)
+                    .setPositiveButton(R.string.dlg_ok,
+                        new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            getOwner().setPrivacyGuard(false, true);
+                        }
+                    })
+                    .setNegativeButton(R.string.dlg_cancel,
+                        new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .create();
+                case DLG_ENABLE_PRIVACY_GUARD:
+                    final int messageResId;
+                    if ((getOwner().mPackageInfo.applicationInfo.flags
+                        & ApplicationInfo.FLAG_SYSTEM) != 0) {
+                        messageResId = R.string.privacy_guard_dlg_system_app_text;
+                    } else {
+                        messageResId = R.string.privacy_guard_dlg_text;
+                    }
+
+                    return new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.privacy_guard_dlg_title)
+                    .setMessage(messageResId)
+                    .setPositiveButton(R.string.dlg_ok,
+                        new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            getOwner().setPrivacyGuard(true, false);
+                        }
+                    })
+                    .setNegativeButton(R.string.dlg_cancel,
+                        new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .create();
+            }
+            throw new IllegalArgumentException("unknown id " + id);
+        }
+    }
+
+    private boolean isPrivacyGuardActive() {
+        int state = mAppOps.getPrivacyGuardSettingForPackage(
+            mPackageInfo.applicationInfo.uid, mPackageInfo.packageName);
+        if (state > AppOpsManager.PRIVACY_GUARD_DISABLED_PLUS) {
+            return true;
+        }
+        return false;
+    }
+
+    private void setPrivacyGuard(boolean enabled, boolean forceAll) {
+        mAppOps.setPrivacyGuardSettingForPackage(
+            mPackageInfo.applicationInfo.uid,
+            mPackageInfo.packageName, enabled, forceAll);
+        refreshUi();
+    }
+
 }
