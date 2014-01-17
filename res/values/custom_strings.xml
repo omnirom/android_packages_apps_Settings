@@ -33,6 +33,8 @@
     <string name="omni_battery_light_settings">Battery charging</string>
     <string name="omni_notification_light_settings">Applications LED notifications</string>
     <string name="omni_leds">LED Lights</string>
+    <string name="supersu_title">SuperSU</string>
+
 
     <!-- Setting checkbox summary for displaying USB debugging notification -->
     <string name="adb_notify">USB debugging notify</string>
