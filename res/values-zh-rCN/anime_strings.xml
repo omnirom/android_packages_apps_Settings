@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2014 The AnimeROM Project
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+
+    <!-- Halo -->
+    <string name="halo_title">HALO</string>
+    <string name="halo_behavior_title">HALO行为</string>
+    <string name="app_halo_label_black">HALO黑名单</string>
+    <string name="app_halo_label_white">HALO白名单</string>
+    <string name="halo_enabled_title">启用HALO</string>
+    <string name="halo_enabled_summary">启用HALO悬浮窗口(最近的应用程序将不会受到影响)</string>
+    <string name="halo_hide_title">活动后隐藏HALO</string>
+    <string name="halo_hide_summary">HALO将出现传入的任务和滚动出视线一段时间后</string>
+    <string name="halo_reversed_title">交换HALO</string>
+    <string name="halo_reversed_summary">交换任务切换和移动的触发手势</string>
+    <string name="halo_state_title">HALO策略</string>
+    <string name="halo_state_summary">启用黑/白名单列表通知</string>
+    <string name="halo_state_black">黑名单</string>
+    <string name="halo_state_white">白名单</string>
+    <string name="halo_pause_title">暂停活动应用</string>
+    <string name="halo_pause_summary">当通过HALO打开一个应用时，相关应用将处于暂停状态。</string>
+    <string name="halo_ninja_title">隐身模式</string>
+    <string name="halo_ninja_summary">当没有任务时HALO将完全消失</string>
+    <string name="halo_notification_msgbox_title">启用消息弹出窗口</string>
+    <string name="halo_notification_msgbox_summary">有新通知时显示消息弹出窗口</string>
+    <string name="halo_unlock_ping_title">ping解锁</string>
+    <string name="halo_unlock_ping_summary">如果收到新的通知，设备将解锁HALO</string>
+    <string name="halo_size_title">HALO大小</string>
+    <string name="halo_size_summary">设置HALO的显示大小</string>
+    <string name="halo_size_miniscule">迷你</string>
+    <string name="halo_size_small">小</string>
+    <string name="halo_size_default">正常 (默认)</string>
+    <string name="halo_size_large">大</string>
+    <string name="halo_size_gigantic">巨大</string>
+    <string name="halo_size_monster">庞大</string>
+    <string name="halo_notification_count_title">消息数量</string>
+    <string name="halo_notification_count_summary">在HALO上显示消息数量</string>
+    <string name="halo_notification_count_none">无</string>
+    <string name="halo_notification_count_total">总数</string>
+    <string name="halo_notification_count_individual">每个应用程序</string>
+    <string name="halo_notification_count_both">两者都显示</string>
+    <string name="halo_msgbox_animation_title">消息框动画</string>
+    <string name="halo_msgbox_animation_summary">新通知HALO消息框动画</string>
+    <string name="halo_msgbox_animation_none">无</string>
+    <string name="halo_msgbox_animation_flip">翻转</string>
+
+
+</resources>

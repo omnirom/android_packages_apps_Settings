@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2014 The AnimeROM Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- Halo -->
+    <string name="halo_title">HALO</string>
+    <string name="halo_behavior_title">Comportamiento de HALO</string>
+    <string name="app_halo_label_black">Lista negra de HALO</string>
+    <string name="app_halo_label_white">Lista blanca de HALO</string>
+    <string name="halo_enabled_title">Habilitar HALO</string>
+    <string name="halo_enabled_summary">Si se marca activar la función de HALO (La ventana flotante en aplicaciones recientes no se vería afectada)</string>
+    <string name="halo_hide_title">Ocultar HALO después de la actividad</string>
+    <string name="halo_hide_summary">HALO aparecerá para las tareas de entrada y desplazarse fuera de la vista después de un tiempo</string>
+    <string name="halo_reversed_title">HALO inverso</string>
+    <string name="halo_reversed_summary">Aplica para cambiar de tareas y mover gestos</string>
+    <string name="halo_state_title">Política HALO</string>
+    <string name="halo_state_summary">Habilita las notificaciones de listas negras/blancas</string>
+    <string name="halo_state_black">Lista negra</string>
+    <string name="halo_state_white">Lista blanca</string>
+    <string name="halo_pause_title">Pausar aplicación activa</string>
+    <string name="halo_pause_summary">Al abrir una aplicación con HALO la aplicación de base se pondrá en pausa</string>
+    <string name="halo_ninja_title">Modo ninja</string>
+    <string name="halo_ninja_summary">HALO desaparecerá por completo cuando están vacíos</string>
+    <string name="halo_notification_msgbox_title">Habilitar mensaje emergente</string>
+    <string name="halo_notification_msgbox_summary">Mostrar cuadro de mensaje para las notificaciones entrantes</string>
+    <string name="halo_unlock_ping_title">Ping on unlock</string>
+    <string name="halo_unlock_ping_summary">HALO hará ping cuando el dispositivo está desbloqueado si se han recibido nuevas notificaciones</string>
+    <string name="halo_size_title">Tamaño de HALO</string>
+    <string name="halo_size_summary">Define lo grande que va a ser HALO</string>
+    <string name="halo_size_miniscule">Minúsculo</string>
+    <string name="halo_size_small">Pequeño</string>
+    <string name="halo_size_default">Normal (predeterminado)</string>
+    <string name="halo_size_large">Grande</string>
+    <string name="halo_size_gigantic">Gigantesco</string>
+    <string name="halo_size_monster">Monstruoso</string>
+    <string name="halo_notification_count_title">Conteo notificación</string>
+    <string name="halo_notification_count_summary">Mostrar conteo de notificación en HALO</string>
+    <string name="halo_notification_count_none">No mostrar nada</string>
+    <string name="halo_notification_count_total">Total</string>
+    <string name="halo_notification_count_individual">Por applicación</string>
+    <string name="halo_notification_count_both">Ambos</string>
+    <string name="halo_msgbox_animation_title">Animación de cuadro Mensaje</string>
+    <string name="halo_msgbox_animation_summary">Animación de cuadro de mensaje de Halo para las notificaciones entrantes</string>
+    <string name="halo_msgbox_animation_none">Ninguna</string>
+    <string name="halo_msgbox_animation_flip">Flip</string>
+
+</resources>

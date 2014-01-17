@@ -1703,6 +1703,18 @@
                 android:value="com.android.settings.Settings$SoundSettingsActivity" />
         </activity>
 
+<!--AnimeROM Activities-->
+<activity
+            android:name=".klzz.Halo"
+            android:label="@string/halo_title" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.SHORTCUT" />
+              </intent-filter>
+        </activity>
+        <!-- AnimeROM ACTIVITIES END -->
+
+
         <!-- Pseudo-activity used to provide an intent-filter entry point to encryption settings -->
         <activity android:name="Settings$CryptKeeperSettingsActivity"
                 android:label="@string/crypt_keeper_encrypt_title">

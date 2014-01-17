@@ -94,6 +94,14 @@
         android:fragment="org.omnirom.omnigears.chameleonos.ActiveDisplaySettings"
         android:icon="@drawable/ic_settings_actived" />
 
+<!--HALO-->
+
+     <header 
+            android:id="@+id/halo_anim"
+            android:fragment="com.android.settings.klzz.Halo"
+            android:key="halo_settings"
+            android:title="@string/halo_title" />
+
     <header
         android:id="@+id/interface_more"
         android:title="@string/interface_more_title"
