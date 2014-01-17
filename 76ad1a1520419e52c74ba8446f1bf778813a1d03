@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb5d2d02_f8b2c692",
+        "filename": "res/values/strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 4915,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-17T10:21:19Z",
+      "side": 1,
+      "message": "Should be in custom_strings since this is an omni extension",
+      "revId": "76ad1a1520419e52c74ba8446f1bf778813a1d03",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
