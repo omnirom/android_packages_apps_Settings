@@ -1,18 +1,18 @@
 /**
- * Copyright (C) 2007 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy
- * of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations
- * under the License.
- */
+* Copyright (C) 2007 The Android Open Source Project
+*
+* Licensed under the Apache License, Version 2.0 (the "License"); you may not
+* use this file except in compliance with the License. You may obtain a copy
+* of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+* WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+* License for the specific language governing permissions and limitations
+* under the License.
+*/
 
 package com.android.settings.applications;
 
@@ -86,14 +86,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
- * Activity to display application information from Settings. This activity presents
- * extended information associated with a package like code, data, total size, permissions
- * used by the application and also the set of default launchable activities.
- * For system applications, an option to clear user data is displayed only if data size is > 0.
- * System applications that do not want clear user data do not have this option.
- * For non-system applications, there is no option to clear data. Instead there is an option to
- * uninstall the application.
- */
+* Activity to display application information from Settings. This activity presents
+* extended information associated with a package like code, data, total size, permissions
+* used by the application and also the set of default launchable activities.
+* For system applications, an option to clear user data is displayed only if data size is > 0.
+* System applications that do not want clear user data do not have this option.
+* For non-system applications, there is no option to clear data. Instead there is an option to
+* uninstall the application.
+*/
 public class InstalledAppDetails extends Fragment
         implements View.OnClickListener, CompoundButton.OnCheckedChangeListener,
         ApplicationsState.Callbacks {
@@ -108,13 +108,11 @@ public class InstalledAppDetails extends Fragment
     private AppWidgetManager mAppWidgetManager;
     private DevicePolicyManager mDpm;
     private ISms mSmsManager;
-    private INotificationManager mNotificationManager;
     private ApplicationsState mState;
     private ApplicationsState.Session mSession;
     private ApplicationsState.AppEntry mAppEntry;
     private boolean mInitialized;
     private boolean mShowUninstalled;
-    private boolean mHaloPolicyIsBlack = true;
     private PackageInfo mPackageInfo;
     private CanBeOnSdCardChecker mCanBeOnSdCardChecker;
     private View mRootView;
@@ -142,7 +140,7 @@ public class InstalledAppDetails extends Fragment
     private Button mForceStopButton;
     private Button mClearDataButton;
     private Button mMoveAppButton;
-    private CompoundButton mNotificationSwitch, mHaloState;
+    private CompoundButton mNotificationSwitch;
 
     private PackageMoveObserver mPackageMoveObserver;
 
@@ -381,18 +379,16 @@ public class InstalledAppDetails extends Fragment
     }
 
     private void initNotificationButton() {
+        INotificationManager nm = INotificationManager.Stub.asInterface(
+                ServiceManager.getService(Context.NOTIFICATION_SERVICE));
         boolean enabled = true; // default on
-        boolean allowedForHalo = true; // default on
         try {
-            enabled = mNotificationManager.areNotificationsEnabledForPackage(mAppEntry.info.packageName,
+            enabled = nm.areNotificationsEnabledForPackage(mAppEntry.info.packageName,
                     mAppEntry.info.uid);
-            allowedForHalo = mNotificationManager.isPackageAllowedForHalo(mAppEntry.info.packageName);
         } catch (android.os.RemoteException ex) {
             // this does not bode well
         }
         mNotificationSwitch.setChecked(enabled);
-        mHaloState.setChecked((mHaloPolicyIsBlack ? !allowedForHalo : allowedForHalo));
-        mHaloState.setOnCheckedChangeListener(this);
         if (isThisASystemPackage()) {
             mNotificationSwitch.setEnabled(false);
         } else {
@@ -415,15 +411,8 @@ public class InstalledAppDetails extends Fragment
         mAppWidgetManager = AppWidgetManager.getInstance(getActivity());
         mDpm = (DevicePolicyManager)getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
         mSmsManager = ISms.Stub.asInterface(ServiceManager.getService("isms"));
-        mNotificationManager = INotificationManager.Stub.asInterface(
-        ServiceManager.getService(Context.NOTIFICATION_SERVICE));
-        mCanBeOnSdCardChecker = new CanBeOnSdCardChecker();
 
-        try {
-            mHaloPolicyIsBlack = mNotificationManager.isHaloPolicyBlack();
-        } catch (android.os.RemoteException ex) {
-            // System dead
-        }
+        mCanBeOnSdCardChecker = new CanBeOnSdCardChecker();
 
         // Need to make sure we have loaded applications at this point.
         mSession.resume();
@@ -484,9 +473,6 @@ public class InstalledAppDetails extends Fragment
         mEnableCompatibilityCB = (CheckBox)view.findViewById(R.id.enable_compatibility_cb);
         
         mNotificationSwitch = (CompoundButton) view.findViewById(R.id.notification_switch);
-
-        mHaloState = (CompoundButton) view.findViewById(R.id.halo_state);
-        mHaloState.setText((mHaloPolicyIsBlack ? R.string.app_halo_label_black : R.string.app_halo_label_white));
 
         return view;
     }
@@ -961,14 +947,14 @@ public class InstalledAppDetails extends Fragment
             long dataSize = mAppEntry.dataSize;
             if (Environment.isExternalStorageEmulated()) {
                 codeSize += mAppEntry.externalCodeSize;
-                dataSize +=  mAppEntry.externalDataSize;
+                dataSize += mAppEntry.externalDataSize;
             } else {
                 if (mLastExternalCodeSize != mAppEntry.externalCodeSize) {
                     mLastExternalCodeSize = mAppEntry.externalCodeSize;
                     mExternalCodeSize.setText(getSizeStr(mAppEntry.externalCodeSize));
                 }
-                if (mLastExternalDataSize !=  mAppEntry.externalDataSize) {
-                    mLastExternalDataSize =  mAppEntry.externalDataSize;
+                if (mLastExternalDataSize != mAppEntry.externalDataSize) {
+                    mLastExternalDataSize = mAppEntry.externalDataSize;
                     mExternalDataSize.setText(getSizeStr( mAppEntry.externalDataSize));
                 }
             }
@@ -1006,9 +992,9 @@ public class InstalledAppDetails extends Fragment
     }
     
     /*
-     * Private method to handle clear message notification from observer when
-     * the async operation from PackageManager is complete
-     */
+* Private method to handle clear message notification from observer when
+* the async operation from PackageManager is complete
+*/
     private void processClearMsg(Message msg) {
         int result = msg.arg1;
         String packageName = mAppEntry.info.packageName;
@@ -1052,10 +1038,10 @@ public class InstalledAppDetails extends Fragment
     }
 
     /*
-     * Private method to initiate clearing user data when the user clicks the clear data 
-     * button for a system package
-     */
-    private  void initiateClearUserData() {
+* Private method to initiate clearing user data when the user clicks the clear data
+* button for a system package
+*/
+    private void initiateClearUserData() {
         mClearDataButton.setEnabled(false);
         // Invoke uninstall or clear user data based on sysPackage
         String packageName = mAppEntry.info.packageName;
@@ -1188,8 +1174,6 @@ public class InstalledAppDetails extends Fragment
                     .setPositiveButton(R.string.dlg_ok,
                         new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // Force stop
-                            getOwner().forceStopPackage(getOwner().mAppEntry.info.packageName);
                             // Disable the app
                             new DisableChanger(getOwner(), getOwner().mAppEntry.info,
                                     PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER)
@@ -1311,19 +1295,14 @@ public class InstalledAppDetails extends Fragment
     }
 
     private void setNotificationsEnabled(boolean enabled) {
+        String packageName = mAppEntry.info.packageName;
+        INotificationManager nm = INotificationManager.Stub.asInterface(
+                ServiceManager.getService(Context.NOTIFICATION_SERVICE));
         try {
             final boolean enable = mNotificationSwitch.isChecked();
-            mNotificationManager.setNotificationsEnabledForPackage(mAppEntry.info.packageName, mAppEntry.info.uid, enabled);
+            nm.setNotificationsEnabledForPackage(packageName, mAppEntry.info.uid, enabled);
         } catch (android.os.RemoteException ex) {
             mNotificationSwitch.setChecked(!enabled); // revert
-        }
-    }
-
-    private void setHaloState(boolean state) {
-        try {
-            mNotificationManager.setHaloStatus(mAppEntry.info.packageName, state);
-       } catch (android.os.RemoteException ex) {
-            mHaloState.setChecked(!state); // revert
         }
     }
 
@@ -1339,9 +1318,9 @@ public class InstalledAppDetails extends Fragment
     }
 
     /*
-     * Method implementing functionality of buttons clicked
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
+* Method implementing functionality of buttons clicked
+* @see android.view.View.OnClickListener#onClick(android.view.View)
+*/
     public void onClick(View v) {
         String packageName = mAppEntry.info.packageName;
         if(v == mUninstallButton) {
@@ -1424,8 +1403,6 @@ public class InstalledAppDetails extends Fragment
             } else {
                 setNotificationsEnabled(true);
             }
-        } else if (buttonView == mHaloState) {
-            setHaloState(isChecked);
         }
     }
 }

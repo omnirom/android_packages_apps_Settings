@@ -1703,7 +1703,7 @@
                 android:value="com.android.settings.Settings$SoundSettingsActivity" />
         </activity>
 
-<!--AnimeROM Activities-->
+<!--AnimeROM Activities
 <activity
             android:name=".klzz.Halo"
             android:label="@string/halo_title" >
