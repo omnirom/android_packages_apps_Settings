@@ -1712,7 +1712,7 @@
                 <category android:name="android.intent.category.SHORTCUT" />
               </intent-filter>
         </activity>
-        <!-- AnimeROM ACTIVITIES END -->
+        AnimeROM ACTIVITIES END -->
 
 
         <!-- Pseudo-activity used to provide an intent-filter entry point to encryption settings -->
