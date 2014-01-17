@@ -47,7 +47,7 @@ public class About extends SettingsPreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(R.string.about_Gummy);
+        setTitle(R.string.about_anime);
         addPreferencesFromResource(R.xml.prefs_about);
 
         mReviewUrl = findPreference("anime_gerrit");
@@ -62,10 +62,10 @@ public class About extends SettingsPreferenceFragment {
             launchUrl(ANIME_REVIEW);
             return true;
         } else if (preference == mxperiafan13) {
-            launchUrl(CPHELPS76);
+            launchUrl(XPERIAFAN13);
             return true;
         } else if (preference == mklozz) {
-            launchUrl(KEJAR31);
+            launchUrl(KLOZZ);
             return true;
         } else if (preference == mtdm) {
             launchUrl(ANIME_TWITTER);
