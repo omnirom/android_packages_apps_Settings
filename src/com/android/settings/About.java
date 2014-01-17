@@ -50,7 +50,7 @@ public class About extends SettingsPreferenceFragment {
         setTitle(R.string.about_Gummy);
         addPreferencesFromResource(R.xml.prefs_about);
 
-        mReviewUrl = findPreference("gummy_gerrit");
+        mReviewUrl = findPreference("anime_gerrit");
         mxperiafan13 = findPreference("xperiafan13");
         mklozz = findPreference("klozz");
 
