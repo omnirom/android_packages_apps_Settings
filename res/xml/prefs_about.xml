@@ -43,6 +43,11 @@
     <PreferenceCategory
         android:key="artwork"
         android:title="@string/artwork">
+        
+        <Preference
+            android:key="Mack"
+            android:title="@string/Mack"
+            android:icon="@drawable/twitter_bird" />
 
     </PreferenceCategory>
 
