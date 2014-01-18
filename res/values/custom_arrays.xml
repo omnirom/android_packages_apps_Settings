@@ -158,4 +158,22 @@
         <item>2</item>
     </string-array>
 
+    <!-- Data usage settings. Entries for cycle length. -->
+    <string-array name="data_usage_cycle_length" translatable="false">
+        <item>@string/daily_cycle_lenght</item>
+        <item>@string/weekly_cycle_length</item>
+        <item>@string/monthly_cycle_length</item>
+    </string-array>
+
+    <!-- Data usage settings. Weekdays -->
+    <string-array name="data_usage_cycle_weekdays" translatable="false">
+        <item>@string/weekday_sunday</item>
+        <item>@string/weekday_monday</item>
+        <item>@string/weekday_tuesday</item>
+        <item>@string/weekday_wednesday</item>
+        <item>@string/weekday_thursday</item>
+        <item>@string/weekday_friday</item>
+        <item>@string/weekday_saturday</item>
+    </string-array>
+
 </resources>
