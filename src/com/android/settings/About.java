@@ -35,15 +35,17 @@ public class About extends SettingsPreferenceFragment {
 
     public static final String TAG = "About";
 
-    private static final String ANIME_REVIEW = ""; //Github of AnimeROM PUT HERE
-    private static final String ANIME_TWITTER = "https://twitter.com/AnimeRom"; // twiter ??
-    private static final String XPERIAFAN13 = ""; //here your direction
-    private static final String KLOZZ = ""; // here your direction
+    private static final String ANIME_REVIEW = "https://github.com/AnimeROM"; //Github of AnimeROM PUT HERE
+    private static final String ANIME_TWITTER = "https://github.com/AnimeROM"; // twiter or any ??
+    private static final String XPERIAFAN13 = "https://www.facebook.com/miguelangel.sanchezbravo"; 
+    private static final String KLOZZ = "https://twitter.com/klozz_"; 
+    private static final String MACK = ""; // Any???
 
     Preference mReviewUrl;
     Preference mxperiafan13;
     Preference mklozz;
     Preference mtdm;
+    Preference mMack;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class About extends SettingsPreferenceFragment {
         mReviewUrl = findPreference("anime_gerrit");
         mxperiafan13 = findPreference("xperiafan13");
         mklozz = findPreference("klozz");
+        mMack = findPreference("Mack");
 
     }
 
@@ -71,6 +74,9 @@ public class About extends SettingsPreferenceFragment {
         } else if (preference == mtdm) {
             launchUrl(ANIME_TWITTER);
             return true;
+        } else if (preference == mMack) {
+            launchUrl(ANIME_TWITTER);
+            return true;    
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
