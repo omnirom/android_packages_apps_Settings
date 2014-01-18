@@ -1912,7 +1912,7 @@
         
         <activity
             android:name=".About"
-            android:label="@string/about_Anime" >
+            android:label="@string/about_anime" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
