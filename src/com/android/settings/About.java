@@ -36,7 +36,7 @@ public class About extends SettingsPreferenceFragment {
     public static final String TAG = "About";
 
     private static final String ANIME_REVIEW = "https://github.com/AnimeROM"; //Github of AnimeROM PUT HERE
-    private static final String ANIME_TWITTER = ""; // twiter or any ??
+    private static final String ANIME_TWITTER = "https://github.com/AnimeROM"; // twiter or any ??
     private static final String XPERIAFAN13 = "https://www.facebook.com/miguelangel.sanchezbravo"; //here your direction
     private static final String KLOZZ = ""; // here your direction
 
