@@ -299,10 +299,10 @@
     
     <!-- About AnimeROM -->
 
-    <string name="about_anime">About Team AnimeROM</string>
+    <string name="about_anime">About AnimeROM</string>
     <string name="devs">Mexican Developers</string>
     <string name="primary_devs">Developers</string>
-    <string name="artwork">Artwork Development</string>
+    <string name="artwork">Graphic Designer</string>
     <string name="anime_gerrit_title">Gerrit Code Review</string>
     <string name="anime_gerrit_summary">Help us make Anime a better ROM</string>
     <string name="anime_source_title">AnimeROM Source</string>
@@ -310,7 +310,8 @@
     <string name="sauce">The Secret Sauce</string>
     <string name="github_anime">https://github.com/AnimeROM</string>
     <string name="xperiafan13">xperiafan13</string>
-    <string name="klozz">klozz jesus  TeamMEX in XDA-Developers</string>
+    <string name="klozz">Klozz Jesus</string>
+    <string name="Mack">Mack Ankh</string>
 
     <!--Configs new-->
     <string name="special_features_category">Special features category</string>
