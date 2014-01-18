@@ -311,6 +311,8 @@
     <string name="github_anime">https://github.com/AnimeROM</string>
     <string name="xperiafan13">xperiafan13</string>
     <string name="klozz">klozz jesus</string>
+    <string name="ani">(C) 2014 The AnimeROM Project.</string>
+    <string name="powered">Powered by:\nXPerience and gingerxperia.</string>
 
     <!--Configs new-->
     <string name="special_features_category">Special features category</string>

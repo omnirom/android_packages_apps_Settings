@@ -46,4 +46,13 @@
 
     </PreferenceCategory>
 
+
+        <Preference
+            android:key="klozz"
+            android:title="@string/powered"
+ />
+
+
+
+
 </PreferenceScreen>
