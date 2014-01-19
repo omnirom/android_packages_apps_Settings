@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4b985df5_3c435118",
+        "filename": "res/values-zh-rCN/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000032
+      },
+      "writtenOn": "2014-01-19T21:50:38Z",
+      "side": 1,
+      "message": "空格多了个",
+      "revId": "99280206bcf148d1ae7b59a676c8e83cd7401d23",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4b985df5_5c501ddb",
+        "filename": "res/values-zh-rCN/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000032
+      },
+      "writtenOn": "2014-01-19T21:50:38Z",
+      "side": 1,
+      "message": "链接铃声与通知音量",
+      "revId": "99280206bcf148d1ae7b59a676c8e83cd7401d23",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4b985df5_9c5aa5f7",
+        "filename": "res/values-zh-rCN/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000032
+      },
+      "writtenOn": "2014-01-19T21:50:38Z",
+      "side": 1,
+      "message": "恢复模式或引导模式",
+      "revId": "99280206bcf148d1ae7b59a676c8e83cd7401d23",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb5d2d02_fe9467ed",
+        "filename": "res/values-zh-rCN/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000032
+      },
+      "writtenOn": "2014-01-19T21:50:38Z",
+      "side": 1,
+      "message": "https://github.com/CyanogenMod/android_packages_apps_Settings/blob/cm-10.2/res/values-zh-rCN/cm_strings.xml#L428-L430",
+      "revId": "99280206bcf148d1ae7b59a676c8e83cd7401d23",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb5d2d02_1e9afb16",
+        "filename": "res/values-zh-rCN/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000032
+      },
+      "writtenOn": "2014-01-19T21:50:38Z",
+      "side": 1,
+      "message": "密码后多了个空格",
+      "revId": "99280206bcf148d1ae7b59a676c8e83cd7401d23",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb5d2d02_3e9fbf06",
+        "filename": "res/values-zh-rCN/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000032
+      },
+      "writtenOn": "2014-01-19T21:50:38Z",
+      "side": 1,
+      "message": "应用权限",
+      "revId": "99280206bcf148d1ae7b59a676c8e83cd7401d23",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb5d2d02_9e8e0bd3",
+        "filename": "res/values-zh-rCN/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000032
+      },
+      "writtenOn": "2014-01-19T21:50:38Z",
+      "side": 1,
+      "message": "数据统计",
+      "revId": "99280206bcf148d1ae7b59a676c8e83cd7401d23",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb5d2d02_febd4763",
+        "filename": "res/values-zh-rCN/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000032
+      },
+      "writtenOn": "2014-01-19T21:50:38Z",
+      "side": 1,
+      "message": "含百分比的环状",
+      "revId": "99280206bcf148d1ae7b59a676c8e83cd7401d23",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb5d2d02_1eb3db98",
+        "filename": "res/values-zh-rCN/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000032
+      },
+      "writtenOn": "2014-01-19T21:50:38Z",
+      "side": 1,
+      "message": "开启屏幕",
+      "revId": "99280206bcf148d1ae7b59a676c8e83cd7401d23",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb5d2d02_3eb89f70",
+        "filename": "res/values-zh-rCN/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000032
+      },
+      "writtenOn": "2014-01-19T21:50:38Z",
+      "side": 1,
+      "message": "https://github.com/omnirom/android_packages_apps_Settings/blob/android-4.4/res/values/custom_strings.xml#L122-L256\n\n这后面又多了一大截要翻译。",
+      "revId": "99280206bcf148d1ae7b59a676c8e83cd7401d23",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
