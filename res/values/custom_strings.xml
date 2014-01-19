@@ -28,7 +28,7 @@
 
     <!-- Volume panel tweaks -->
     <string name="volume_adjust_sounds_enable_title">Volume adjust sound</string>
-    <string name="volume_adjust_sounds_enable_summary">Play sound when adjusting volume with hard keys</string>
+    <string name="volume_adjust_sounds_enable_summary">Play sound when changing ringer volume</string>
     <string name="link_volume_ringtones">Link ringtone &amp; notifications volumes</string>
     <string name="volume_ring_only_description">Ringtone</string>
 
@@ -254,4 +254,19 @@
     <string name="expandable">Expandable</string>
     <string name="expanded">Expanded</string>
 
+    <!-- Enable camera -->
+    <string name="lockscreen_enable_camera_title">Camera widget</string>
+    <string name="lockscreen_enable_camera_summary">Swipe right to enable camera widget</string>
+
+    <!-- Enable power menu -->
+    <string name="lockscreen_enable_power_menu_title">Enable power menu</string>
+    <string name="lockscreen_enable_power_menu_summary">Show power menu when screen is locked</string>
+
+    <!-- Lockscreen see through -->
+    <string name="lockscreen_see_through_title">See through</string>
+    <string name="lockscreen_see_through_summary">Shows the content behind your lockscreen, your data may be visible to those around you</string>
+
+    <!-- Safe headset volume warning -->
+    <string name="safe_headset_volume_warning_title">Volume warning</string>
+    <string name="safe_headset_volume_warning_summary">Show safe headset volume warning</string>
 </resources>

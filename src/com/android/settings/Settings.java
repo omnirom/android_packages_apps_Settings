@@ -293,7 +293,11 @@ public class Settings extends PreferenceActivity
     public void onPause() {
         super.onPause();
 
-        unregisterReceiver(mBatteryInfoReceiver);
+        try {
+            unregisterReceiver(mBatteryInfoReceiver);
+        } catch (IllegalArgumentException e) {
+            // Ignore (receiver didn't have time to register)
+        }
 
         ListAdapter listAdapter = getListAdapter();
         if (listAdapter instanceof HeaderAdapter) {
@@ -547,7 +551,7 @@ public class Settings extends PreferenceActivity
         }
 
         intent.setClass(this, SubSettings.class);
-
+        return intent;
     }
 
     /**

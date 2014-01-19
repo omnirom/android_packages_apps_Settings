@@ -39,6 +39,12 @@
             android:entries="@array/volume_panel_style_entries"
             android:entryValues="@array/volume_panel_style_values" />
 
+    <CheckBoxPreference
+            android:key="safe_headset_volume_warning"
+            android:title="@string/safe_headset_volume_warning_title"
+            android:summary="@string/safe_headset_volume_warning_summary"
+            android:persistent="false" />
+
     <Preference
             android:key="musicfx"
             android:title="@string/musicfx_title">
@@ -81,6 +87,11 @@
             android:dialogTitle="@string/alarm_sound_dialog_title"
             android:persistent="false"
             android:ringtoneType="alarm" />
+
+    <PreferenceScreen
+            android:key="sound_packages"
+            android:fragment="org.omnirom.omnigears.sounds.SoundPackageSettings"
+            android:title="@string/sound_packages_title" />
 
     <CheckBoxPreference
             android:key="dtmf_tone"
