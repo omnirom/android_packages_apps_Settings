@@ -33,8 +33,7 @@
         <CheckBoxPreference
             android:key="lockscreen_maximize_widgets"
             android:title="@string/security_maximize_widgets_title"
-            android:persistent="false"
-            android:dependency="keyguard_enable_widgets"/>
+            android:persistent="false"/>
 
         <CheckBoxPreference
             android:key="battery_around_lockscreen_ring"
