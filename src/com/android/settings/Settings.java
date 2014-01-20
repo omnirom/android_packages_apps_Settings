@@ -935,7 +935,7 @@ public class Settings extends PreferenceActivity
                     // Would need a different treatment if the main menu had more switches
                     if (header.id == R.id.wifi_settings) {
                         mWifiEnabler.setSwitch(holder.switch_);
-                    } else {
+                    } else if (header.id == R.id.bluetooth_settings) {
                         mBluetoothEnabler.setSwitch(holder.switch_);
                      } else if (header.id == R.id.theme_settings) {
                        mThemeEnabler.setSwitch(holder.switch_);
@@ -1012,13 +1012,13 @@ public class Settings extends PreferenceActivity
         public void resume() {
             mWifiEnabler.resume();
             mBluetoothEnabler.resume();
-            mThemeEnabler.resume()
+            mThemeEnabler.resume();
         }
 
         public void pause() {
             mWifiEnabler.pause();
             mBluetoothEnabler.pause();
-            mThemeEnabler.resume()
+            mThemeEnabler.resume();
         }
     }
 
