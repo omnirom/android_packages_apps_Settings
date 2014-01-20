@@ -316,7 +316,7 @@
     <string name="klozz">Klozz Jesus TeamMEX in XDA-Developers</string>
     <string name="Mack">Mack Ankh</string>
     
-    string name="general_title">VM Settings</string>
+    <string name="general_title">VM Settings</string>
     <string name="performance_settings_title_subhead">AnimeROM</string>
     <string name="perfomance_management_2_title">Other Settings</string>
 
@@ -341,5 +341,13 @@
 
     <!--Configs new-->
     <string name="special_features_category">Special features category</string>
+
+       <!-- Themes -->
+    <string name="theme_settings_title">The Real Darkness AnimeROM</string>
+    <string name="theme_auto_mode_title">Switch theme</string>
+    <string name="theme_auto_mode_off">Manual</string>
+    <string name="theme_auto_mode_lightsensor">On light condition change</string>
+    <string name="theme_auto_mode_twilight">On daytime</string>
+    <string name="theme_auto_switch_mode_error">Automatic light condition change mode is enabled. Manual switching is not possible.</string>
 
 </resources>

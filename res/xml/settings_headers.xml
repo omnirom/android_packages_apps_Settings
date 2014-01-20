@@ -66,6 +66,12 @@
     <header android:id="@+id/interface_section2"
         android:title="@string/header_category_xperience" />
 
+     <header
+	android:id="@+id/theme_settings"
+	android:fragment="com.android.settings.slim.themes.ThemeSettings"
+	android:icon="@drawable/ic_settings_themes"
+	android:title="@string/theme_settings_title" />
+
     <header
         android:id="@+id/interface_bars"
         android:title="@string/interface_bars_title"

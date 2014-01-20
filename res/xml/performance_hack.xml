@@ -41,7 +41,7 @@
         android:dialogTitle="@string/pref_heapsize_title"
         android:title="@string/pref_heapsize_title"
         android:summary="@string/pref_heapsize_summary"
-        android:entries="@array/entries_heapsize"
+        android:entries="@array/values_heapsize"
         android:entryValues="@array/values_heapsize" />
     
      <ListPreference
