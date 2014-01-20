@@ -210,5 +210,24 @@
         <item>1</item>
         <item>2</item>
    </string-array>
+   
+   <string-array name="values_heapsize" translatable="false">
+        <item>12m</item>
+        <item>16m</item>
+        <item>24m</item>
+        <item>32m</item>
+        <item>36m</item>
+        <item>40m</item>
+        <item>44m</item>
+        <item>48m</item>
+    </string-array>
+    
+    <string-array name="entries_sdcardcachesize">
+        <item>128KB</item>
+        <item>1024KB</item>
+        <item>2048KB</item>
+        <item>3072KB</item>
+        <item>4096KB</item>
+    </string-array>
 
 </resources>
