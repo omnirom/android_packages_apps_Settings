@@ -121,7 +121,7 @@ public class PerformanceHack extends SettingsPreferenceFragment implements
 
     private static final String HEAPSIZE_PERSIST_PROP = "persist.sys.vm.heapsize";
 
-    private static final String HEAPSIZE_DEFAULT = "48m";
+    private static final String HEAPSIZE_DEFAULT = "48m"; // Experimental values (Check ypur device config)
 
     private static final String SDCARDCACHESIZE_PREF = "pref_sdcardcachesize";
 
@@ -129,7 +129,7 @@ public class PerformanceHack extends SettingsPreferenceFragment implements
 
     private static final String SDCARDCACHESIZE_PERSIST_PROP = "persist.sys.sdcardcachereadsize";
 
-    private static final String SDCARDCACHESIZE_DEFAULT = "2048KB";
+    private static final String SDCARDCACHESIZE_DEFAULT = "2048KB"; // Experimental value
 
     private static final String DISABLE_BOOTANIMATION_PREF = "pref_disable_bootanimation";
 
