@@ -312,9 +312,32 @@
     <string name="xperiafan13">xperiafan13</string>
     <string name="ani">(C) 2014 The AnimeROM Project.</string>
     <string name="powered">Powered by:</string>
-    <string name="powered2">\nXPerience and gingerxperia.</string>
+    <string name="powered2">\nXPerience and GingerXperia.</string>
     <string name="klozz">Klozz Jesus TeamMEX in XDA-Developers</string>
     <string name="Mack">Mack Ankh</string>
+    
+    string name="general_title">VM Settings</string>
+    <string name="performance_settings_title_subhead">AnimeROM</string>
+    <string name="perfomance_management_2_title">Other Settings</string>
+
+    <string name="pref_gmaps_hack_title">GMaps Hack</string>
+    <string name="memory_management_title">Performance Hack</string>
+
+    <!-- Performance Settings : JIT Mode -->
+    <string name="pref_jit_mode_title">Use JIT</string>
+    <string name="pref_jit_mode_summary">Use the Dalvik just-in-time compiler (requires reboot)</string>
+
+    <!-- Performance Settings : VM Heap Size -->
+    <string name="pref_heapsize_title">VM heap size</string>
+    <string name="pref_heapsize_summary">Maximum amount of memory per VM heap (requires reboot)</string>
+
+    <!-- Performance Settings : SDCard Cache Size -->
+    <string name="pref_sdcardcachesize_title">SD Card Cache size</string>
+    <string name="pref_sdcardcachesize_summary">Amount of Cache memory for SD Card reads (requires reboot)</string>
+
+    <!-- Performance : Disable bootanimation -->
+    <string name="pref_disable_bootanimation_title">Disable boot animation</string>
+    <string name="pref_disable_bootanimation_summary">Don\'t show the boot animation for faster boot</string>
 
     <!--Configs new-->
     <string name="special_features_category">Special features category</string>
