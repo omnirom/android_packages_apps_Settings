@@ -1837,6 +1837,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".animerom.PerformanceHack"
+            android:label="@string/memory_management_title">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+        </activity>
         
          <activity android:name=".DeviceInfoMisc" android:label="@string/about_misc_settings">
             <intent-filter>
