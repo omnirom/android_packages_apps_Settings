@@ -246,4 +246,10 @@
     <string name="ime_switcher_notify">Výběr oznámení</string>
     <string name="ime_switcher_notify_summary">Zobrazit vstupní metody výběru oznámení</string>
 
+    <!-- Volume panel style -->
+    <string name="volume_panel_style">Vzhled panelu hlasitosti</string>
+    <string name="single">Jednoduchý</string>
+    <string name="expandable">Rozšířitelný</string>
+    <string name="expanded">Rozšířený</string>
+
 </resources>
