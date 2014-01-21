@@ -44,7 +44,7 @@
     <string name="screen_off_fadeout">Fondu</string>
     <string name="screen_off_electronbeam">Faisceau d\'électrons</string>
     <string name="screen_off_scaledown">Réduction</string>
-    <string name="appops_settings">Sécurité des applications</string>
+    <string name="appops_settings">Autorisations des applications</string>
     <string name="appops_sysapp_beware">Attention\u00A0!</string>
     <string name="appops_sysapp_warning">La modification des autorisations des composants de base d\'Android pourrait conduire à un comportement indésirable. Modifiez ces paramètres à vos risques et périls\u00A0!</string>
     <string name="pref_low_battery_warning_policy_title">Avertissement de batterie faible</string>
