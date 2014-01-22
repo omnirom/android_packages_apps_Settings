@@ -225,10 +225,22 @@ public class SecuritySettings extends RestrictedSettingsFragment
                     Settings.System.BATTERY_AROUND_LOCKSCREEN_RING, 0) == 1);
         }
 
+        // Maximize Widgets
         mMaximizeKeyguardWidgets = (CheckBoxPreference) root.findPreference(LOCKSCREEN_MAXIMIZE_WIDGETS);
         if (mMaximizeKeyguardWidgets != null) {
-            mMaximizeKeyguardWidgets.setChecked(Settings.System.getInt(getContentResolver(),
+            if (ActivityManager.isLowRamDeviceStatic()
+                    || mLockPatternUtils.isLockScreenDisabled()) {
+                // Widgets take a lot of RAM, so disable them on low-memory devices
+                PreferenceGroup securityCategory
+                        = (PreferenceGroup) root.findPreference(KEY_SECURITY_CATEGORY);
+                if (securityCategory != null) {
+                    securityCategory.removePreference(root.findPreference(LOCKSCREEN_MAXIMIZE_WIDGETS));
+                    mMaximizeKeyguardWidgets = null;
+                }
+            } else {
+                mMaximizeKeyguardWidgets.setChecked(Settings.System.getInt(getContentResolver(),
                     Settings.System.LOCKSCREEN_MAXIMIZE_WIDGETS, 0) == 1);
+            }
         }
 
         // Menu Unlock
@@ -292,28 +304,17 @@ public class SecuritySettings extends RestrictedSettingsFragment
         // Enable or disable keyguard widget checkbox based on DPM state
         mEnableKeyguardWidgets = (CheckBoxPreference) root.findPreference(KEY_ENABLE_WIDGETS);
         if (mEnableKeyguardWidgets != null) {
-            if (ActivityManager.isLowRamDeviceStatic()
-                    || mLockPatternUtils.isLockScreenDisabled()) {
-                // Widgets take a lot of RAM, so disable them on low-memory devices
-                PreferenceGroup securityCategory
-                        = (PreferenceGroup) root.findPreference(KEY_SECURITY_CATEGORY);
-                if (securityCategory != null) {
-                    securityCategory.removePreference(root.findPreference(KEY_ENABLE_WIDGETS));
-                    mEnableKeyguardWidgets = null;
-                }
-            } else {
-                final boolean disabled = (0 != (mDPM.getKeyguardDisabledFeatures(null)
-                        & DevicePolicyManager.KEYGUARD_DISABLE_WIDGETS_ALL));
-                if (disabled) {
-                    mEnableKeyguardWidgets.setSummary(
-                            R.string.security_enable_widgets_disabled_summary);
-                } else {
-                    mEnableKeyguardWidgets.setSummary("");
-                }
-                mEnableKeyguardWidgets.setEnabled(!disabled);
-            }
-        }
 
+            final boolean disabled = (0 != (mDPM.getKeyguardDisabledFeatures(null)
+                    & DevicePolicyManager.KEYGUARD_DISABLE_WIDGETS_ALL));
+            if (disabled) {
+                mEnableKeyguardWidgets.setSummary(
+                        R.string.security_enable_widgets_disabled_summary);
+            } else {
+                mEnableKeyguardWidgets.setSummary("");
+            }
+            mEnableKeyguardWidgets.setEnabled(!disabled);
+        }
 
         mQuickUnlockScreen = (CheckBoxPreference) root.findPreference(LOCKSCREEN_QUICK_UNLOCK_CONTROL);
         if (mQuickUnlockScreen  != null) {
