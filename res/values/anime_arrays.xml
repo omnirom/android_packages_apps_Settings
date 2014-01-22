@@ -240,17 +240,98 @@
 
 
      <!-- Themes -->
-	<string-array name="theme_auto_mode_entries">
+     <string-array name="theme_auto_mode_entries">
 	<item>@string/theme_auto_mode_off</item>	
         <item>@string/theme_auto_mode_lightsensor</item>
 	<item>@string/theme_auto_mode_twilight</item>	
-	</string-array>	
+     </string-array>	
 	
-	<string-array name="theme_auto_mode_values" translatable="false">
+     <string-array name="theme_auto_mode_values" translatable="false">
 	<item>0</item>	
 	<item>1</item>	
 	<item>2</item>	
-	</string-array>	
-			
+     </string-array>
+	
+     <string-array name="entries_ksm_sleep">
+        <item>500</item>
+        <item>1000</item>
+        <item>1500</item>
+        <item>2000</item>
+        <item>2500</item>
+        <item>3000</item>
+        <item>3500</item>
+        <item>4000</item>
+    </string-array>
+
+    <string-array name="values_ksm_sleep">
+        <item>500</item>
+        <item>1000</item>
+        <item>1500</item>
+        <item>2000</item>
+        <item>2500</item>
+        <item>3000</item>
+        <item>3500</item>
+        <item>4000</item>
+    </string-array>
+
+    <string-array name="entries_ksm_scan">
+        <item>64</item>
+        <item>128</item>
+        <item>256</item>
+        <item>384</item>
+        <item>512</item>
+    </string-array>
+
+    <string-array name="values_ksm_scan">
+        <item>64</item>
+        <item>128</item>
+        <item>256</item>
+        <item>384</item>
+        <item>512</item>
+    </string-array>
+
+    <string-array name="entries_lowmemkill">
+        <item>Default</item>
+        <item>Minimum</item>
+        <item>Maximum</item>
+        <item>Every day use</item>
+        <item>System</item>
+        <item>Multitasking</item>
+        <item>Soft multitasking</item>
+        <item>Hard multitasking</item>
+        <item>Gaming</item>
+        <item>Soft gaming</item>
+        <item>Hard gaming</item>
+    </string-array>
+
+    <string-array name="values_lowmemkill">
+        <item>2560,4096,6144,10240,11264,12288</item>
+        <item>1536,2048,4096,5120,5632,6144</item>
+        <item>2048,3072,6144,15360,17920,20480</item>
+        <item>2560,4096,6144,7680,8704,10240</item>
+        <item>2560,3840,6400,7680,10240,12800</item>
+        <item>2560,4096,6144,11264,11776,14336</item>
+        <item>2560,4096,6144,11776,12288,16384</item>
+        <item>2560,4096,6144,10752,11264,13312</item>
+        <item>2560,3840,6400,10240,12800,19200</item>
+        <item>2560,4096,6144,18944,22016,23552</item>
+        <item>2560,3840,6400,12800,12800,25600</item>
+    </string-array>
+
+    <string-array name="pref_compcache_size_entries">
+        <item>Disabled</item>
+        <item>10%</item>
+        <item>18%</item>
+        <item>26%</item>
+        <item>32%</item>
+    </string-array>
+
+    <string-array name="pref_compcache_size_values" translatable="false">
+        <item>0</item>
+        <item>10</item>
+        <item>18</item>
+        <item>26</item>
+        <item>32</item>
+    </string-array> 
 
 </resources>
