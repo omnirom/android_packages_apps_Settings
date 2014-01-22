@@ -4911,6 +4911,7 @@
     <!-- Text to display in regulatory info screen (from device overlay). -->
     <string name="regulatory_info_text"></string>
 
+
 <!-- Xperience Klozz TeamMEX @XDA-Developers -->
     <string name="cat_status_bar">Status bar</string>
     <string name="header_category_xperience">AnimeROM™ interface</string>
@@ -4921,4 +4922,8 @@
     <string name="app_ops_summary">Fine-grained permission controls</string>
     <string name="builder_info_title"> Developer XPerience™ </string>
 <string name="themes_settings_title"> XPerience™ Themes </string>
+
+    <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
+    <string name="supersu_title">SuperSU</string>
+
 </resources>
