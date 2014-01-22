@@ -92,6 +92,13 @@
         android:breadCrumbTitle="@string/interface_notification_panel_title"
         android:fragment="org.omnirom.omnigears.interfacesettings.NotificationPanelSettings"
         android:icon="@drawable/ic_notifications" />
+        
+    <header
+        android:id="@+id/performance_hack"
+        android:title="@string/memory_management_settings_title_head"
+        android:breadCrumbTitle="@string/memory_management_settings_summary_head"
+        android:fragment="com.android.settings.animerom.PerformanceHack"
+        android:icon="@drawable/ic_notifications" />
 
     <header
         android:id="@+id/active_display"
