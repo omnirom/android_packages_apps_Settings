@@ -338,6 +338,43 @@
     <!-- Performance : Disable bootanimation -->
     <string name="pref_disable_bootanimation_title">Disable boot animation</string>
     <string name="pref_disable_bootanimation_summary">Don\'t show the boot animation for faster boot</string>
+    
+    <!-- Performance Hack -->
+    <string name="memory_management_title">Performance Hack</string>
+    <string name="memory_management_summary">Customize the usage of memory to alter system performance</string>
+
+    <!-- Memory management Settings : Compcache -->
+    <string name="pref_compcache_title">Compcache RAM Usage</string>
+    <string name="pref_compcache_summary">Compress memory for increased virtual capacity (requires reboot)</string>
+
+    <!-- Memory management Settings : Purgeable Assets -->
+    <string name="pref_purgeable_assets_title">Allow purging of assets</string>
+    <string name="pref_purgeable_assets_summary">System can free more RAM when needed if asset bitmap memory can be reclaimed (requires reboot)</string>
+
+    <!-- Memory management Settings : GMAPS hack -->
+    <string name="pref_gmaps_hack_title">GMAPS hack</string>
+    <string name="pref_gmaps_hack_summary">Make NetworkLocationService killable. Frees some RAM, but Latitude isn\'t reporting location any more (requires restart of Maps)</string>
+
+    <!-- Memory management Settings : KSM -->
+    <string name="pref_ksm_title">Kernel samepage merging</string>
+    <string name="pref_ksm_summary">KSM reduces physical memory requirements and improves performance</string>
+    <string name="pref_ksm_sleep_title">KSM Sleep time</string>
+    <string name="pref_ksm_sleep_summary">KSM Sleep time option (improves performance)</string>
+    <string name="pref_ksm_scan_title">KSM Page scan</string>
+    <string name="pref_ksm_scan_summary">KSM Page scan option (improves performance)</string>
+
+    <!-- Memory management Settings : Low Mem Killer -->
+    <string name="pref_lowmemkill_title">Low Mem Killer</string>
+    <string name="pref_lowmemkill_summary">Option for Low Mem Killer</string>
+
+    <!-- PerforManceHack -->
+    <string name="general_title">VM Settings</string>
+    <string name="performance_settings_title_subhead">AnimeROM</string>
+    <string name="perfomance_management_2_title">Other Settings</string>
+
+    <string name="memory_management_settings_title_head">PerformanceHack</string>
+    <string name="memory_management_settings_title_subhead">Memory settings</string>
+    <string name="memory_management_settings_summary_head">Memory management, Compcache, KSM</string>
 
     <!--Configs new-->
     <string name="special_features_category">Special features category</string>
