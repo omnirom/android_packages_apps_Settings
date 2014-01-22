@@ -1,7 +1,6 @@
 /*
- * Copyright (C) 2014 ShockGensMOD initial MOD
- * AnimeROM 2014
- * Miguel Angel Sánchez Bravo xperiafan13@xda
+ * Copyright (C) 2014 AnimeROM
+ * Miguel Angel Sánchez Bravo
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,36 +17,36 @@
 
 package com.android.settings.animerom;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.io.IOException;
-import java.io.DataOutputStream;
-import java.io.DataInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import com.android.settings.R;
 
+import java.io.File;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemProperties;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.PreferenceScreen;
-
-import android.content.Context;
-import com.android.settings.R;
-import com.android.settings.SettingsPreferenceFragment;
-import com.android.settings.Utils;
-
-import android.content.SharedPreferences;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
 
-public class PerformanceHack extends SettingsPreferenceFragment implements
-        Preference.OnPreferenceChangeListener {
+public class PerformanceHack extends PreferenceActivity implements
+        OnPreferenceChangeListener {
+
+    private static final String COMPCACHE_PREF = "pref_compcache_size";
+
+    private static final String COMPCACHE_PERSIST_PROP = "persist.service.compcache";
+
+    private static final String COMPCACHE_DEFAULT = SystemProperties.get("ro.compcache.default");
+
+    private static final String PURGEABLE_ASSETS_PREF = "pref_purgeable_assets";
+
+    private static final String PURGEABLE_ASSETS_PERSIST_PROP = "persist.sys.purgeable_assets";
+
+    private static final String PURGEABLE_ASSETS_DEFAULT = "0";
 
     private static final String GMAPS_HACK_PREF = "pref_gmaps_hack";
 
@@ -85,57 +84,11 @@ public class PerformanceHack extends SettingsPreferenceFragment implements
 
     private static final String LOWMEMKILL_PROP = "lowmemkill";
 
-    public static final String LOWMEMKILL_PREF_DEFAULT = "6400,8960,19200,23040,38400,64000";
+    public static final String LOWMEMKILL_PREF_DEFAULT = "2560,4096,6144,11264,11776,14336";
 
-    public static final String ADJ_RUN_FILE = "/sys/module/lowmemorykiller/parameters/adj";
+    private ListPreference mCompcachePref;
 
-    public static final String ADJ_PREF = "pref_adj";
-
-    private static final String ADJ_PROP = "adj";
-
-    public static final String ADJ_PREF_DEFAULT = "0,1,2,3,4,10";
-
-    public static final String VSYNC_RUN_FILE = "/d/clk/mdp_vsync_clk/enable";
-
-    public static final String VSYNC_PREF = "pref_vsync";
-
-    private static final String VSYNC_PROP = "vsync";
-
-    public static final String VSYNC_PREF_DEFAULT = "1";
-
-    private static final String GENERAL_CATEGORY = "general_category";
-
-    private static final String JIT_PREF = "pref_jit_mode";
-
-    private static final String JIT_ENABLED = "int:jit";
-
-    private static final String JIT_DISABLED = "int:fast";
-
-    private static final String JIT_PERSIST_PROP = "persist.sys.jit-mode";
-
-    private static final String JIT_PROP = "dalvik.vm.execution-mode";
-
-    private static final String HEAPSIZE_PREF = "pref_heapsize";
-
-    private static final String HEAPSIZE_PROP = "dalvik.vm.heapsize";
-
-    private static final String HEAPSIZE_PERSIST_PROP = "persist.sys.vm.heapsize";
-
-    private static final String HEAPSIZE_DEFAULT = "48m"; // Experimental values (Check ypur device config)
-
-    private static final String SDCARDCACHESIZE_PREF = "pref_sdcardcachesize";
-
-    private static final String SDCARDCACHESIZE_PROP = "sys.sdcardcache.readsize";
-
-    private static final String SDCARDCACHESIZE_PERSIST_PROP = "persist.sys.sdcardcachereadsize";
-
-    private static final String SDCARDCACHESIZE_DEFAULT = "2048KB"; // Experimental value
-
-    private static final String DISABLE_BOOTANIMATION_PREF = "pref_disable_bootanimation";
-
-    private static final String DISABLE_BOOTANIMATION_PERSIST_PROP = "persist.sys.nobootanimation";
-
-    private static final String DISABLE_BOOTANIMATION_DEFAULT = "0";
+    private CheckBoxPreference mPurgeableAssetsPref;
 
     private CheckBoxPreference mGmapsHackPref;
 
@@ -147,19 +100,7 @@ public class PerformanceHack extends SettingsPreferenceFragment implements
 
     private ListPreference mLowMemKillPref;
 
-    private ListPreference mADJKillPref;
-
-    private ListPreference mVSYNCPref;
-
-    private CheckBoxPreference mJitPref;
-
-    private CheckBoxPreference mDisableBootanimPref;
-
-    private ListPreference mHeapsizePref;
-
-    private ListPreference mSdcardcachesizePref;
-
-    private int swapAvailable = 1;
+    private int swapAvailable = -1;
 
     private int ksmAvailable = -1;
 
@@ -175,38 +116,38 @@ public class PerformanceHack extends SettingsPreferenceFragment implements
 
             String temp;
 
+            mCompcachePref = (ListPreference) prefSet.findPreference(COMPCACHE_PREF);
+            mPurgeableAssetsPref = (CheckBoxPreference) prefSet.findPreference(PURGEABLE_ASSETS_PREF);
             mGmapsHackPref = (CheckBoxPreference) prefSet.findPreference(GMAPS_HACK_PREF);
             mKSMPref = (CheckBoxPreference) prefSet.findPreference(KSM_PREF);
             mKSMSleepPref = (ListPreference) prefSet.findPreference(KSM_SLEEP_PREF);
             mKSMScanPref = (ListPreference) prefSet.findPreference(KSM_SCAN_PREF);
             mLowMemKillPref = (ListPreference) prefSet.findPreference(LOWMEMKILL_PREF);
-            mADJKillPref = (ListPreference) prefSet.findPreference(ADJ_PREF);
-            mVSYNCPref = (ListPreference) prefSet.findPreference(VSYNC_PREF);
 
-            mJitPref = (CheckBoxPreference) prefSet.findPreference(JIT_PREF);
-            String jitMode = SystemProperties.get(JIT_PERSIST_PROP,
-                    SystemProperties.get(JIT_PROP, JIT_ENABLED));
-            mJitPref.setChecked(JIT_ENABLED.equals(jitMode));
+            if (isSwapAvailable()) {
+                if (SystemProperties.get(COMPCACHE_PERSIST_PROP) == "1")
+                    SystemProperties.set(COMPCACHE_PERSIST_PROP, COMPCACHE_DEFAULT);
+                mCompcachePref.setValue(SystemProperties.get(COMPCACHE_PERSIST_PROP, COMPCACHE_DEFAULT));
+                mCompcachePref.setOnPreferenceChangeListener(this);
+            } else {
+                prefSet.removePreference(mCompcachePref);
+            }
 
-            mHeapsizePref = (ListPreference) prefSet.findPreference(HEAPSIZE_PREF);
-            mHeapsizePref.setValue(SystemProperties.get(HEAPSIZE_PERSIST_PROP,
-                    SystemProperties.get(HEAPSIZE_PROP, HEAPSIZE_DEFAULT)));
-            mHeapsizePref.setOnPreferenceChangeListener(this);
-
-	    mSdcardcachesizePref = (ListPreference) prefSet.findPreference(SDCARDCACHESIZE_PREF);
-	    mSdcardcachesizePref.setValue(SystemProperties.get(SDCARDCACHESIZE_PERSIST_PROP,
-                    SystemProperties.get(SDCARDCACHESIZE_PROP, SDCARDCACHESIZE_DEFAULT)));
-            mSdcardcachesizePref.setOnPreferenceChangeListener(this);
-
-            mDisableBootanimPref = (CheckBoxPreference) prefSet.findPreference(DISABLE_BOOTANIMATION_PREF);
-            String disableBootanimation = SystemProperties.get(DISABLE_BOOTANIMATION_PERSIST_PROP, DISABLE_BOOTANIMATION_DEFAULT);
-            mDisableBootanimPref.setChecked("1".equals(disableBootanimation));
+            String purgeableAssets = SystemProperties.get(PURGEABLE_ASSETS_PERSIST_PROP,
+                    PURGEABLE_ASSETS_DEFAULT);
+            mPurgeableAssetsPref.setChecked("1".equals(purgeableAssets));
 
             String gmapshack = SystemProperties.get(GMAPS_HACK_PERSIST_PROP, GMAPS_HACK_DEFAULT);
             mGmapsHackPref.setChecked("1".equals(gmapshack));
 
             if (isKsmAvailable()) {
-                temp = null;
+                mKSMPref.setChecked(KSM_PREF_ENABLED.equals(CPUActivity.readOneLine(KSM_RUN_FILE)));
+            } else {
+                prefSet.removePreference(mKSMPref);
+            }
+
+            if (isKsmAvailable()) {
+                temp = CPUActivity.readOneLine(KSM_SLEEP_RUN_FILE);
                 mKSMSleepPref.setValue(temp);
                 mKSMSleepPref.setOnPreferenceChangeListener(this);
             } else {
@@ -214,14 +155,14 @@ public class PerformanceHack extends SettingsPreferenceFragment implements
             }
 
             if (isKsmAvailable()) {
-                temp = null;
+                temp = CPUActivity.readOneLine(KSM_SCAN_RUN_FILE);
                 mKSMScanPref.setValue(temp);
                 mKSMScanPref.setOnPreferenceChangeListener(this);
             } else {
                 prefSet.removePreference(mKSMScanPref);
             }
 
-            temp = null;
+            temp = CPUActivity.readOneLine(LOWMEMKILL_RUN_FILE);
 
             mLowMemKillPref.setValue(temp);
             mLowMemKillPref.setOnPreferenceChangeListener(this);
@@ -229,29 +170,47 @@ public class PerformanceHack extends SettingsPreferenceFragment implements
             if (temp == null) {
                 prefSet.removePreference(mLowMemKillPref);
             }
+        }
+    }
 
-            temp = null;
+    @Override
+    public void onResume() {
+        String temp;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-            mADJKillPref.setValue(temp);
-            mADJKillPref.setOnPreferenceChangeListener(this);
+        super.onResume();
 
-            if (temp == null) {
-                prefSet.removePreference(mADJKillPref);
-            }
-
-            mVSYNCPref = (ListPreference) prefSet.findPreference(VSYNC_PREF);
-
-            mVSYNCPref.setValue(temp);
-            mVSYNCPref.setOnPreferenceChangeListener(this);
+        if (isKsmAvailable()) {
+            temp = prefs.getString(KSM_SCAN_PREF, null);
 
             if (temp == null) {
-                prefSet.removePreference(mVSYNCPref);
+                temp = CPUActivity.readOneLine(KSM_SCAN_RUN_FILE);
+                mKSMScanPref.setValue(temp);
             }
+
+            temp = prefs.getString(KSM_SLEEP_PREF, null);
+
+            if (temp == null) {
+                temp = CPUActivity.readOneLine(KSM_SLEEP_RUN_FILE);
+                mKSMSleepPref.setValue(temp);
+            }
+        }
+
+        temp = prefs.getString(LOWMEMKILL_PREF, null);
+        if (temp == null) {
+            temp = CPUActivity.readOneLine(LOWMEMKILL_RUN_FILE);
+            mLowMemKillPref.setValue(temp);
         }
     }
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+
+        if (preference == mPurgeableAssetsPref) {
+            SystemProperties.set(PURGEABLE_ASSETS_PERSIST_PROP,
+                    mPurgeableAssetsPref.isChecked() ? "1" : "0");
+            return true;
+        }
 
         if (preference == mGmapsHackPref) {
             SystemProperties.set(GMAPS_HACK_PERSIST_PROP,
@@ -260,18 +219,7 @@ public class PerformanceHack extends SettingsPreferenceFragment implements
         }
 
         if (preference == mKSMPref) {
-            return true;
-        }
-
-        if (preference == mJitPref) {
-            SystemProperties.set(JIT_PERSIST_PROP,
-                    mJitPref.isChecked() ? JIT_ENABLED : JIT_DISABLED);
-            return true;
-        }
-
-        if (preference == mDisableBootanimPref) {
-            SystemProperties.set(DISABLE_BOOTANIMATION_PERSIST_PROP,
-                    mDisableBootanimPref.isChecked() ? "1" : "0");
+            CPUActivity.writeOneLine(KSM_RUN_FILE, mKSMPref.isChecked() ? "1" : "0");
             return true;
         }
 
@@ -279,9 +227,17 @@ public class PerformanceHack extends SettingsPreferenceFragment implements
     }
 
     public boolean onPreferenceChange(Preference preference, Object newValue) {
+        if (preference == mCompcachePref) {
+            if (newValue != null) {
+                SystemProperties.set(COMPCACHE_PERSIST_PROP, (String) newValue);
+                return true;
+            }
+        }
+
         if (preference == mKSMSleepPref) {
             if (newValue != null) {
                 SystemProperties.set(KSM_SLEEP_PROP, (String)newValue);
+                CPUActivity.writeOneLine(KSM_SLEEP_RUN_FILE, (String)newValue);
                 return true;
             }
         }
@@ -289,6 +245,7 @@ public class PerformanceHack extends SettingsPreferenceFragment implements
         if (preference == mKSMScanPref) {
             if (newValue != null) {
                 SystemProperties.set(KSM_SCAN_PROP, (String)newValue);
+                CPUActivity.writeOneLine(KSM_SCAN_RUN_FILE, (String)newValue);
                 return true;
             }
         }
@@ -296,34 +253,7 @@ public class PerformanceHack extends SettingsPreferenceFragment implements
         if (preference == mLowMemKillPref) {
             if (newValue != null) {
                 SystemProperties.set(LOWMEMKILL_PROP, (String)newValue);
-                return true;
-            }
-        }
-
-        if (preference == mADJKillPref) {
-            if (newValue != null) {
-                SystemProperties.set(ADJ_PROP, (String)newValue);
-                return true;
-            }
-        }
-
-        if (preference == mVSYNCPref) {
-            if (newValue != null) {
-                SystemProperties.set(VSYNC_PROP, (String)newValue);
-                return true;
-            }
-        }
-
-        if (preference == mHeapsizePref) {
-            if (newValue != null) {
-                SystemProperties.set(HEAPSIZE_PERSIST_PROP, (String)newValue);
-                return true;
-            }
-        }
-
-        if (preference == mSdcardcachesizePref) {
-            if (newValue != null) {
-                SystemProperties.set(SDCARDCACHESIZE_PERSIST_PROP, (String)newValue);
+                CPUActivity.writeOneLine(LOWMEMKILL_RUN_FILE, (String)newValue);
                 return true;
             }
         }
@@ -331,6 +261,19 @@ public class PerformanceHack extends SettingsPreferenceFragment implements
         return false;
     }
 
+    /**
+     * Check if swap support is available on the system
+     */
+    private boolean isSwapAvailable() {
+        if (swapAvailable < 0) {
+            swapAvailable = new File("/proc/swaps").exists() ? 1 : 0;
+        }
+        return swapAvailable > 0;
+    }
+
+    /**
+     * Check if KSM support is available on the system
+     */
     private boolean isKsmAvailable() {
         if (ksmAvailable < 0) {
             ksmAvailable = new File(KSM_RUN_FILE).exists() ? 1 : 0;
