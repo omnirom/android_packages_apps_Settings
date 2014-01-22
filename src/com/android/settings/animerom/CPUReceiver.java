@@ -27,6 +27,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.settings.animerom.PerformanceHack;
+import com.android.settings.animerom.CPUActivity;
 
 import java.util.Arrays;
 import java.util.List;
