@@ -1,55 +1,55 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (C) 2014 AnimeROM
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-          http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
--->
+<?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/memory_management_title"
-    xmlns:settings="http://schemas.android.com/apk/res/com.android.settings">
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="pref_compcache_size"
+        android:dialogTitle="@string/pref_compcache_title"
+        android:title="@string/pref_compcache_title"
+        android:summary="@string/pref_compcache_summary"
+        android:entries="@array/pref_compcache_size_entries"
+        android:entryValues="@array/pref_compcache_size_values" />
+
+    <CheckBoxPreference
+        android:key="pref_purgeable_assets"
+        android:title="@string/pref_purgeable_assets_title"
+        android:summary="@string/pref_purgeable_assets_summary" />
 
     <CheckBoxPreference
         android:key="pref_gmaps_hack"
         android:dialogTitle="@string/pref_gmaps_hack_title"
         android:title="@string/pref_gmaps_hack_title"
-        android:summary="@string/pref_gmaps_hack_title" />
+        android:summary="@string/pref_gmaps_hack_summary" />
 
     <CheckBoxPreference
-        android:key="pref_jit_mode"
-        android:dialogTitle="@string/pref_jit_mode_title"
-        android:title="@string/pref_jit_mode_title"
-        android:summary="@string/pref_jit_mode_summary" />
+        android:key="pref_ksm"
+        android:title="@string/pref_ksm_title"
+        android:summary="@string/pref_ksm_summary" />
 
-     <CheckBoxPreference
-        android:key="pref_disable_bootanimation"
-        android:dialogTitle="@string/pref_disable_bootanimation_title"
-        android:title="@string/pref_disable_bootanimation_title"
-        android:summary="@string/pref_disable_bootanimation_summary" />
+    <ListPreference
+        android:key="pref_ksm_sleep"
+        android:dependency="pref_ksm"
+        android:dialogTitle="@string/pref_ksm_sleep_title"
+        android:title="@string/pref_ksm_sleep_title"
+        android:summary="@string/pref_ksm_sleep_summary"
+        android:entries="@array/entries_ksm_sleep"
+        android:entryValues="@array/values_ksm_sleep" />
 
-     <ListPreference 
-        android:key="pref_heapsize"
-        android:dialogTitle="@string/pref_heapsize_title"
-        android:title="@string/pref_heapsize_title"
-        android:summary="@string/pref_heapsize_summary"
-        android:entries="@array/values_heapsize"
-        android:entryValues="@array/values_heapsize" />
-    
-     <ListPreference
-        android:key="pref_sdcardcachesize"
-        android:dialogTitle="@string/pref_sdcardcachesize_title"
-        android:title="@string/pref_sdcardcachesize_title"
-        android:summary="@string/pref_sdcardcachesize_summary"
-        android:entries="@array/entries_sdcardcachesize"
-        android:entryValues="@array/entries_sdcardcachesize" />
+    <ListPreference
+        android:key="pref_ksm_scan"
+        android:dependency="pref_ksm"
+        android:dialogTitle="@string/pref_ksm_scan_title"
+        android:title="@string/pref_ksm_scan_title"
+        android:summary="@string/pref_ksm_scan_summary"
+        android:entries="@array/entries_ksm_scan"
+        android:entryValues="@array/values_ksm_scan" />
+
+    <ListPreference
+        android:key="pref_lowmemkill"
+        android:dialogTitle="@string/pref_lowmemkill_title"
+        android:title="@string/pref_lowmemkill_title"
+        android:summary="@string/pref_lowmemkill_summary"
+        android:entries="@array/entries_lowmemkill"
+        android:entryValues="@array/values_lowmemkill" />
 
 </PreferenceScreen>
