@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb5d2d02_d6fbffb7",
+        "filename": "src/com/android/settings/WirelessSettings.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-23T15:34:12Z",
+      "side": 1,
+      "message": "missing return true for both",
+      "revId": "b7e15cdb9159f2b026f868757641f39a9c5644e0",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
