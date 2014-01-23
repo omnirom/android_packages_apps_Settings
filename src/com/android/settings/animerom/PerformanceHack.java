@@ -1,4 +1,4 @@
-//*
+/*
  * Copyright (C) 2014 AnimeROM
  * Miguel Angel Sánchez Bravo
  *
