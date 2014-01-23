@@ -37,6 +37,12 @@
         android:title="@string/advanced_reboot_title"
         android:summary="@string/advanced_reboot_summary" 
         android:persistent="false"/>
+        
+    <PreferenceScreen
+        android:key="perfomance_hack"
+        android:title="@string/memory_management_settings_title_head"
+        android:summary="@string/memory_management_settings_title_head"
+        android:fragment="com.android.settings.animerom.PerformanceHack" />
 
     <CheckBoxPreference 
         android:key="keep_screen_on" 
