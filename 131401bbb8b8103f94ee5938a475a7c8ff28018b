@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb5d2d02_76ea33d8",
+        "filename": "src/com/android/settings/SecuritySettings.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-23T16:00:42Z",
+      "side": 1,
+      "message": "But now KEY_ENABLE_WIDGETS will no longer be removed for \"low ram devices\" since you have \"killed\"\n \nsecurityCategory.removePreference(root.findPreference(KEY_ENABLE_WIDGETS));",
+      "revId": "131401bbb8b8103f94ee5938a475a7c8ff28018b",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb5d2d02_96e7c70d",
+        "filename": "src/com/android/settings/SecuritySettings.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-23T16:00:42Z",
+      "side": 1,
+      "message": "why have you removed the code to remove the widgets checkbox from here?",
+      "revId": "131401bbb8b8103f94ee5938a475a7c8ff28018b",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
