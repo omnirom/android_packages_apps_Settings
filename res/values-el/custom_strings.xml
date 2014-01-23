@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2012-2013 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- About phone screen,  setting option name-->
+    <string name="mod_version">Έκδοση Omni</string>
+    <string name="mod_version_default">Άγνωστο</string>
+
+    <!-- Main list strings -->
+    <string name="header_category_interface">Διεπαφή</string>
+    <string name="performance_settings">Επιδόσεις</string>
+    <string name="notification_light_settings">Φως ειδοποιήσεων</string>
+    <string name="battery_light_settings">Φως μπαταρίας</string>
+    <string name="header_button_settings">Πλήκτρα</string>
+
+    <!-- Volume panel tweaks -->
+    <string name="volume_adjust_sounds_enable_title">Ήχος ρύθμισης έντασης</string>
+    <string name="volume_adjust_sounds_enable_summary">Παίξιμο ήχου κατά τη ρύθμιση με τα φυσικά πλήκτρα</string>
+    <string name="link_volume_ringtones">Σύνδεση έντασης ήχου κλήσης &amp; ειδοποιήσεων</string>
+    <string name="volume_ring_only_description">Ήχος κλήσης</string>
+
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">Προηγμένη επανεκκίνηση</string>
+    <string name="advanced_reboot_summary">Όταν είναι ξεκλέιδωτη, να περιλαμβάνονται επιλογές για επανεκκίνηση σε κατάσταση ανάκτησης ή εκκινητή στο μενού ενεργειών</string>
+
+    <!-- Lockscreen battery ring -->
+    <string name="battery_around_lockscreen_ring">Μπαταρία γύρω από δακτύλιο ξεκλειδώματος</string>
+
+    <!-- Android debugging over WiFi -->
+    <string name="adb_over_network">ADB μέσω δικτύου</string>
+    <string name="adb_over_network_summary">Ενεργοποίηση αποσφαλμάτωσης TCP/IP μέσω διεπαφών δικτύου (δίκτυα Wi-Fi, USB). Η ρύθμιση επαναφέρεται με την επανεκκίνηση</string>
+
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Όταν είναι ενεργό το ADB μέσω δικτύου, το τηλέφωνό σας είναι ανοικτό σε εισβολές από ολά τα συνδεδεμένα δίκτυα, περιλαμβανομένου του δικτύου δεδομένων GSM!\n\nΧρησιμοποιείτε αυτή την επιλογή μόνο όταν συνδέεστε σε έμπιστα δίκτυα.\n\nΘέλετε πραγματικά να ενεργοποιήσετε τη ρύθμιση αυτή;</string>
+    <string name="lockscreen_quick_unlock_control_title">Γρήγορο ξεκλείδωμα</string>
+    <string name="lockscreen_quick_unlock_control_summary">Αυτόματο ξεκλείδωμα όταν εισαχθεί το σωστό PIN/κωδικός</string>
+
+    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
+    <string name="change_crypt_password_title">Αλλαγή κωδικού</string>
+    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
+    <string name="change_crypt_password_summary">Αλλαγγη κωδικού που χρησιμοποιείται για κρυπτογράφηση της συσκευής</string>
+
+    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
+    <string name="encryptionpassword_choose_your_password_header">Ορισμός κωδικού κρυπτογράφησης</string>
+
+    <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+    <string name="show_cpu_info">Εμφάνιση πληροφοριών CPU</string>
+    <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+    <string name="show_cpu_info_summary">Επίθεμα οθόνης με ένδειξη τρέχουσες πληροφορίες της CPU</string>
+
+    <!-- Screen off animation -->
+    <string name="screen_off_animation">Εφέ σβησίματος οθόνης</string>
+    <string name="screen_off_fadeout">Ξεθώριασμα</string>
+    <string name="screen_off_electronbeam">Δέσμη ηλεκτρονίου</string>
+    <string name="screen_off_scaledown">Αποκλιμάκωση</string>
+
+    <!-- AppOps additions -->
+    <string name="appops_settings">Δικαιώματα εφαρμογών</string>
+    <string name="appops_sysapp_beware">Προσοχή!</string>
+    <string name="appops_sysapp_warning">"Η αλλαγή δικαιωμάτων στα κύρια συστατικά του Android μπορεί να οδηγήσει σε ανεπιθύμητη συμπεριφορά. Αλλάξτε τις ρυθμίσεις με δική σας ευθύνη!</string>
+
+    <!-- Low battery warning policy -->
+    <string name="pref_low_battery_warning_policy_title">Ειδοποίηση χαμηλής μπαταρίας</string>
+    <string name="pref_low_battery_warning_policy_dialog_title">Ένδειξη χαμηλής στάθμης μπαταρίας με Indicate low battery warning with</string>
+    <string name="low_battery_warning_policy_popup_sound">Αναδυόμενο μήνυμα και ήχος</string>
+    <string name="low_battery_warning_policy_notif_sound">Ειδοποίηση και ήχος</string>
+    <string name="low_battery_warning_policy_popup">Αναδυόμενο μήνυμα μόνο</string>
+    <string name="low_battery_warning_policy_notif">Ειδοποίηση μόνο</string>
+    <string name="low_battery_warning_policy_sound">Ήχος μόνο</string>
+    <string name="battery_prefs_title">Επιλογές</string>
+    <string name="battery_stats_title">Στατιστικά</string>
+
+    <!-- Setting checkbox summary for displaying USB debugging notification -->
+    <string name="adb_notify">Ειδοποίηση αποσφαλμάτωσης USB</string>
+    <string name="adb_notify_summary">Εμφάνιση ειδοποίησης κατά τη σύνδεση αποσφαλμάτωσης USB</string>
+
+    <!-- Lockscreen pin shuffle -->
+    <string name="lock_numpad_random_title">Αλλαγή σειράς των αριθμών στο μπλοκ του PIN</string>
+    <string name="lock_numpad_random_dialog_title">Τυχαία σειρά στο μπλοκ του PIN</string>
+    <string name="lock_numpad_random_off">Ανενεργό</string>
+    <string name="lock_numpad_random_always">Πάντα</string>
+    <string name="lock_numpad_random_on_request">Κατ' απαίτηση</string>
+
+    <string name="interface_more_title">Περισσότερα\u2026</string>
+    <string name="interface_bars_title">Γραμμές</string>
+    <string name="interface_menus_title">Μενού</string>
+    <string name="interface_notification_panel_title">Συρτάρι ειδοποιήσεων</string>
+
+    <!-- Battery Icon selection -->
+    <string name="pref_battery_indicator_title">Ένδειξη μπαταρίας</string>
+    <string name="battery_status_icon_title">Εικονίδιο κατάστασης</string>
+    <string name="battery_bar">Ράβδος </string>
+    <string name="battery_bar_percent">Ράβδος &amp; ποσοστό</string>
+    <string name="battery_circle">Κύκλος </string>
+    <string name="battery_circle_percent">Κύκλος &amp; ποσοστό</string>
+
+    <!-- Turn on display when power connected; turn off display when power disconnected -->
+    <string name="wake_when_plugged_or_unplugged_title">Αφύπνιση κατά τη φόρτιση</string>
+    <string name="wake_when_plugged_or_unplugged_summary">Αφύπνιση της οθόνης κατά τη σύνδση ή αποσύνδεση του φορτιστή</string>
+
+    <!-- security settings menu unlock -->
+    <string name="unlock_menu_unlock_title">Ξεκλείδωμα μενού</string>
+    <string name="unlock_menu_unlock_summary">Το πάτημα του κουμπιού μενού ξεκλειδώνει τη συσκευή</string>
+
+    <!-- Stylus Icon -->
+    <string name="stylus_icon_enabled_title">Εμφάνιση εικονιδίου με χρήση γραφίδας</string>
+    <string name="stylus_icon_enabled_summary">Εμφάνιση εικονιδίου δείκτη κατά τη χρήση γραφίδας</string>
+
+    <!-- Stylus Gestures -->
+    <string name="gestures_settings_title">Χειρονομίες γραφίδας</string>
+    <string name="category_spen_title">Χειρονομίες γραφίδας</string>
+    <string name="enable_subcat_title">Γραφίδα</string>
+    <string name="enable_spen_title_head">Ενεργοποίηση χειρονομιών γραφίδας</string>
+    <string name="enable_spen_summary_head">Χρήση διαφορετικών ενεργειών με χειρονομίες συρσίματος κουμπιού γραφίδας. Προσοχή: οι εφαρμογές δεν θα μπορούν να λαμβάνουν εντολές που ενεργοποιούνται από το πάτημα του κουμπιού της γραφίδας.</string>
+    <string name="gestures_subcat_title">Χειρονομίε</string>
+    <string name="gestures_left_spen_title_head">Αριστερό σύρσιμο</string>
+    <string name="gestures_left_spen_summary_head">Χρήση άλλης ενέργειας κατά το σύρσιμο αριστερά</string>
+    <string name="gestures_right_spen_title_head">Δεξί σύρσιμο</string>
+    <string name="gestures_right_spen_summary_head">Χρήση άλλης ενέργειας κατά το σύρσιμο δεξιά</string>
+    <string name="gestures_up_spen_title_head">Επάνω σύρσιμο</string>
+    <string name="gestures_up_spen_summary_head">Χρήση άλλης ενέργειας κατά το σύρσιμο επάνω</string>
+    <string name="gestures_down_spen_title_head">Κάτω σύρσιμο</string>
+    <string name="gestures_down_spen_summary_head">Χρήση άλλης ενέργειας κατά το σύρσιμο κάτω</string>
+    <string name="gestures_long_spen_title_head">Παρατεταμένο πάτημα</string>
+    <string name="gestures_long_spen_summary_head">Χρήση άλλης ενέργειας με παρατεταμένο πάτημα</string>
+    <string name="gestures_double_spen_title_head">Διπλό κτύπημα</string>
+    <string name="gestures_double_spen_summary_head">Χρήση άλλης ενέργειας με διπλό κτύπημα</string>
+
+    <!-- Gestures Options -->
+    <string name="gestures_action_empty">Καμμία ενέργεια</string>
+    <string name="gestures_action_home">Προσομείωση κουμπιού Αρχική</string>
+    <string name="gestures_action_back">Προσομείωση κουμπιού πίσω</string>
+    <string name="gestures_action_menu">Προσομείωση κουμπιού μενού</string>
+    <string name="gestures_action_search">Αναζήτηση</string>
+    <string name="gestures_action_recent">Πρόσφατες εφαρμογές</string>
+
+    <!-- stylus gestures support -->
+    <string name="stylus_app_not_installed">%s δεν είναι εγκατεστημένο</string>
+
+    <!-- default alarm tone -->
+    <string name="alarm_sound_title">Προκαθορισμένος ήχος ξυπνητηριού</string>
+    <string name="alarm_sound_dialog_title">Προκαθορισμένος ήχος ξυπνητηριού</string>
+
+    <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
+    <string name="custom_runtime_warning_title">Προειδοποίηση</string>
+    <string name="custom_runtime_warning_message">Το ART δεν υποστηρίζεται απο την OmniROM. Η ρύθμιση αυτή περιλαμβάνεται μόνο για πειραματισμό και υπάρχει πιθανότητα να προκαλέσει αστάθεια, καταρεύσεις, απώλεια δεδομένων ή να αποτρέψει την εκκίνηση της συσκευής. Επισκεφθείτε &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introducing ART&lt;/a&gt; για περσσότερες πληροφορίες.&lt;br/&gt;&lt;br/&gt;Ζητάμε να μην υποβάλλετε αιτήματα υποστήριξης εφόσον έχετε ενεργοποιήσει το ART ως runtime.&lt;br/&gt;&lt;br/&gt;Είστε σίγουροι οτι θέλετε να επανεκκινήσετε για να αλλάξετε runtime από <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> σε <xliff:g id="new" example="libart.so">%2$s</xliff:g>;</string>
+
+    <!-- Basic Numbers -->
+    <string name="two">Δύο</string>
+    <string name="three">Τρία</string>
+    <string name="four">Τέσσερα</string>
+    <string name="five">Πέντε</string>
+    <string name="six">Έξι</string>
+
+    <!-- Quiet hours -->
+    <string name="quiet_hours_title">Ώρες ησυχίας</string>
+    <string name="quiet_hours_summary">Διαμόρφωση ωρών κατά τις οποίες το τηλέφωνο θα είναι αθόρυβο</string>
+    <string name="quiet_hours_note_title">Σημείωση</string>
+    <string name="quiet_hours_note_summary">Οι εισερχόμενες κλήσεις θα συμπεριφέρονται ως συνήθως κατά τη διάρκεια των ωρών ησυχίας</string>
+    <string name="quiet_hours_enabled">Ενεργοποίηση ωρών ησυχίας</string>
+    <string name="quiet_hours_enabled_on">Θα εφαρμοστούν οι ώρες ησυχίας</string>
+    <string name="quiet_hours_enabled_off">Οι ειδοποιήσεις θα συμπεριφέρονται ως συνήθως</string>
+    <string name="quiet_hours_start">Έναρξη ωρών ησυχίας</string>
+    <string name="quiet_hours_start_summary">Πότε αρχίζει η εφαρμογή των ωρών ησυχίας</string>
+    <string name="quiet_hours_end">Λήξη ωρών ησυχίας</string>
+    <string name="quiet_hours_end_summary">Πότε λήγει η εφαρμογή των ωρών ησυχίας</string>
+    <string name="quiet_hours_ringer_title">Σίγαση ήχου κλήσης</string>
+    <string name="quiet_hours_ringer_on">Δεν θα ακούγεται κανείς ήχος</string>
+    <string name="quiet_hours_ringer_off">Ο ήχος θα ακούγεται κανονικά</string>
+    <string name="quiet_hours_mute">Σίγαση ειδοποιήσεων</string>
+    <string name="quiet_hours_mute_on">Δεν θα ακούγεται κανείς ήχος</string>
+    <string name="quiet_hours_mute_off">Οι ήχοι θα ακούγονται κανονικά</string>
+    <string name="quiet_hours_still">Δόνηση ανενεργή</string>
+    <string name="quiet_hours_still_on">Η συσκευή δεν θα δονείται</string>
+    <string name="quiet_hours_still_off">Η συσκευή θα δονείται κανονικά</string>
+    <string name="quiet_hours_dim">Απενεργ. φωτός ειδοποίησης</string>
+    <string name="quiet_hours_dim_on">Η φωτεινή ειδοποίηση θα απενεργοποιηθεί</string>
+    <string name="quiet_hours_dim_off">Η φωτεινή ειδοποίηση θα λειτουργεί κανονικά</string>
+    <string name="quiet_hours_haptic">Απενεργ. απτικής ανάδρασης</string>
+    <string name="quiet_hours_haptic_on">Η απτική ανάδραση θα απενεργοποιηθεί</string>
+    <string name="quiet_hours_haptic_off">Η απτική ανάδραση θα λειτουργεί κανονικά</string>
+    <string name="quiet_hours_active_from">Ενεργό από</string>
+    <string name="quiet_hours_active_to">έως</string>
+    <string name="quiet_hours_auto_sms_group">Αυτόματη απάντηση</string>
+    <string name="quiet_hours_auto_sms_title">Εισερχόμενα μηνύματα κειμένου</string>
+    <string name="quiet_hours_auto_sms_call_title">Εισερχόμενες κλήσεις</string>
+    <string name="quiet_hours_auto_string_title">Απάντηση για αποστολή</string>
+    <string name="quiet_hours_auto_string_explain">Αυτό το μήνυμα θα σταλεί σε όποιον επικοινωνήσει με σας κατά τη διάρκεια των ωρών ησυχίας</string>
+    <string name="quiet_hours_auto_sms_null">[Αυτόματο μήνυμα] Θα επικονωνήσω μαζί σας μόλις μπορέσω.</string>
+    <string name="quiet_hours_auto_disabled">Ανενεργό</string>
+    <string name="quiet_hours_auto_enabled">Όλοι οι αριθμοί</string>
+    <string name="quiet_hours_auto_contacts">Μόνο επαφές</string>
+    <string name="quiet_hours_bypass_group">Παράβλεψη ωρών ησυχίας</string>
+    <string name="quiet_hours_sms_code_null">[Ξυπνητήρι]</string>
+    <string name="quiet_hours_sms_bypass_title">Παράκαμψη SMS</string>
+    <string name="quiet_hours_sms_code_title">Λέξη-κλειδί μηνύματος κειμένου</string>
+    <string name="quiet_hours_sms_code_explain">Εαν ένα εισερχόμενο μήνυμα περιέχει αυτό το κείμενο, θα ακουστεί ειδοποίηση</string>
+    <string name="quiet_hours_call_bypass_title">Παράκαμψη εισερχομένων κλήσεων</string>
+    <string name="quiet_hours_calls_required_title">Πλήθος κλήσεων σε 30 λεπτά</string>
+    <string name="quiet_hours_calls_required_summary">" κλήσεις για παράκαμψη ήσυχων ωρών"</string>
+    <string name="quiet_hours_bypass_ringtone_title">Ήχος που θα ακουστεί</string>
+    <string name="quiet_hours_bypass_ringtone_loop_title">Επανάληψη ήχου κλήσης</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_on">Ο ήχος κλήσης θα επαναλαμβάνεται μέχρι να απενεργοποιηθεί</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_off">Ο ήχος κλήσης θα ακουστεί μία φορά</string>
+    <string name="quiet_hours_alarm_dismiss">Απενεργοποίηση ξυπνητηριού</string>
+    <string name="quiet_hours_alarm_and">" και "</string>
+    <string name="quiet_hours_alarm_dialog_title">ΩΡΕΣ ΗΣΥΧΙΑΣ ΠΑΡΑΚΑΜΦΘΗΚΑΝ</string>
+    <string name="quiet_hours_alarm_message">" καλύφθηκαν οι απαιτήσεις για παράκαμψη των Ωρών Ησυχίας!"</string>
+
+    <!-- time range preference -->
+    <string name="start_time_title">Έναρξη</string>
+    <string name="end_time_title">Λήξη</string>
+
+    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
+    <string name="change_crypt_password_title">Αλλαγή κωδικού</string>
+    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
+    <string name="change_crypt_password_summary">Αλλάξτε τον κωδικό που χρησιμοποιείται για τη κρυπτογράφηση της συσκευής</string>
+
+    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
+    <string name="encryptionpassword_choose_your_password_header">Ορισμός κωδικού κρυπτογράφησης</string>
+
+    <!-- Keyboard and Input ASS methods  -->
+    <string name="title_keyboard_input">Προχωρημένες ρυθμίσεις</string>
+    <string name="disable_fullscreen_keyboard_title">Πληκτρολόγιο πλήρους οθόνης ανενεργό</string>
+    <string name="disable_fullscreen_keyboard_summary">Το πληκτρολόγιο τοπίου δεν θα καταλαμβάνει ποτέ ολη την οθόνη</string>
+    <string name="keyboard_rotation_toggle_title">Αυτόματη περιστροφή πληκτρολογίου</string>
+    <string name="keyboard_rotation_toggle_summary">Εξαναγκασμός αυτόματης περιστροφής όταν εμφανίζεται το πληκτρολόγιο</string>
+    <string name="keyboard_rotation_timeout_title">Διακοπή αυτόματης περιστροφής</string>
+    <string name="keyboard_rotation_timeout_summary">Απενεργοποίηση αιθητήρα αυτόματης περιστροφής <xliff:g id="rotate_timeout">%1$s</xliff:g> δευτερ. μετά την απόκρυψη του πληκτρολογίου</string>
+    <string name="keyboard_rotation_dialog">Σημείωση: Αυτή η επιλογή εξαναγκάζει τη προσωρινή ενεργοποίησης της αυτόματης περιστροφής. Δεν έχει καμία επίδραση όταν η αυτόματη περιστροφή είναι ήδη ενεργή.</string>
+    <string name="show_enter_key_title">Εμφάνιση πλήκτρου enter</string>
+    <string name="show_enter_key_summary">Εξαναγκασμός πληκτρολογίου για εμφάνιση πλήκτρου enter αντί για πλήκτρο emoticon</string>
+    <string name="ime_switcher_notify">Ειδοποίηση επιλογέα</string>
+    <string name="ime_switcher_notify_summary">Εμφανίζεται ειδοποίηση για την επιλογή μεθόδου εισαγωγής</string>
+
+    <!-- Volume panel style -->
+    <string name="volume_panel_style">Μορφή πάνελ ήχου</string>
+    <string name="single">Απλό</string>
+    <string name="expandable">Εκτεινόμενο</string>
+    <string name="expanded">Εκτεταμένο</string>
+
+</resources>
