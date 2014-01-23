@@ -1,4 +1,4 @@
-/*
+//*
  * Copyright (C) 2014 AnimeROM
  * Miguel Angel Sánchez Bravo
  *
@@ -29,12 +29,14 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
+import com.android.settings.SettingsPreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
 
-public class PerformanceHack extends PreferenceActivity implements
-        OnPreferenceChangeListener {
+
+public class PerformanceHack extends SettingsPreferenceFragment implements
+        Preference.OnPreferenceChangeListener {
 
     private static final String COMPCACHE_PREF = "pref_compcache_size";
 
@@ -170,36 +172,6 @@ public class PerformanceHack extends PreferenceActivity implements
             if (temp == null) {
                 prefSet.removePreference(mLowMemKillPref);
             }
-        }
-    }
-
-    @Override
-    public void onResume() {
-        String temp;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        super.onResume();
-
-        if (isKsmAvailable()) {
-            temp = prefs.getString(KSM_SCAN_PREF, null);
-
-            if (temp == null) {
-                temp = CPUActivity.readOneLine(KSM_SCAN_RUN_FILE);
-                mKSMScanPref.setValue(temp);
-            }
-
-            temp = prefs.getString(KSM_SLEEP_PREF, null);
-
-            if (temp == null) {
-                temp = CPUActivity.readOneLine(KSM_SLEEP_RUN_FILE);
-                mKSMSleepPref.setValue(temp);
-            }
-        }
-
-        temp = prefs.getString(LOWMEMKILL_PREF, null);
-        if (temp == null) {
-            temp = CPUActivity.readOneLine(LOWMEMKILL_RUN_FILE);
-            mLowMemKillPref.setValue(temp);
         }
     }
 
