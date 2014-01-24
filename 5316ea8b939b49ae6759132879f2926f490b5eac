@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb5d2d02_178c92d9",
+        "filename": "src/com/android/settings/SecuritySettings.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-24T13:29:04Z",
+      "side": 1,
+      "message": "why dont use mEnableKeyguardWidgets?",
+      "revId": "5316ea8b939b49ae6759132879f2926f490b5eac",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb5d2d02_37b99678",
+        "filename": "src/com/android/settings/SecuritySettings.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-24T13:29:04Z",
+      "side": 1,
+      "message": "same for mEnableKeyguardWidgets",
+      "revId": "5316ea8b939b49ae6759132879f2926f490b5eac",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb5d2d02_77b30e98",
+        "filename": "src/com/android/settings/SecuritySettings.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-24T13:29:04Z",
+      "side": 1,
+      "message": "also set mMaximizeKeyguardWidgets  to null",
+      "revId": "5316ea8b939b49ae6759132879f2926f490b5eac",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
