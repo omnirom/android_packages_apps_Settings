@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb5d2d02_686a4f13",
+        "filename": "res/xml/display_rotation.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-25T14:24:08Z",
+      "side": 1,
+      "message": "this is missing android:persistent\u003dfalse for all CheckBoxPreferences\n\nat some point you should understand how this is working :)\nit makes no sense to store (persist) the value of this checkbox since its \"state\" is calculated from a value stored in settings",
+      "revId": "250dbdad0a30c475477f310164c7d792b58180bb",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
