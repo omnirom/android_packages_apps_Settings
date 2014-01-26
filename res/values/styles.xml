@@ -57,7 +57,7 @@
     </style>
 
 
-    <style name="TextAppearance" parent="android:TextAppearance">
+    <style name="TextAppearance" parent="android:TextAppearance.Inverse">
     </style>
 
     <style name="TextAppearance.info_label">
@@ -229,7 +229,7 @@
         <item name="android:widgetLayout">@layout/preference_inputmethod_widget</item>
     </style>
 
-    <style name="TextAppearance.Switch" parent="@*android:style/TextAppearance.Holo.Widget.Switch">
+    <style name="TextAppearance.Switch" parent="@*android:style/TextAppearance.Holo.Light.Widget.Switch">
         <item name="android:textAllCaps">true</item>
     </style>
 
@@ -248,4 +248,19 @@
     <style name="ApnPreference">
         <item name="android:layout">@layout/apn_preference_layout</item>
     </style>
+
+    <style name="ProfilesPreferenceStyle">
+        <item name="android:layout">@layout/preference_profiles</item>
+        <item name="android:widgetLayout">@layout/preference_profiles_widget</item>
+    </style>
+
+    <style name="Widget.Settings.ListSeparator" parent="@*android:style/Widget.Holo.Light.TextView.ListSeparator">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">8dip</item>
+    </style>
+
 </resources>

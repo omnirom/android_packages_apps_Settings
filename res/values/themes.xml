@@ -21,15 +21,15 @@
     <attr name="setup_divider_color" format="reference" />
     <attr name="wifi_signal" format="reference" />
 
-    <style name="SetupWizardWifiTheme" parent="android:Theme.Holo.NoActionBar">
+    <style name="SetupWizardWifiTheme" parent="android:Theme.Holo.Light.NoActionBar">
         <item name="android:windowSoftInputMode">adjustPan</item>
         <item name="@*android:preferencePanelStyle">@*android:style/PreferencePanel.Dialog</item>
-        <item name="android:alertDialogTheme">@style/Theme.WifiDialog</item>
-        <item name="ic_menu_add">@drawable/ic_menu_add_dark</item>
-        <item name="ic_menu_moreoverflow">@*android:drawable/ic_menu_moreoverflow_holo_dark</item>
-        <item name="ic_wps">@drawable/ic_wps_dark</item>
-        <item name="setup_divider_color">@color/setup_divider_color_dark</item>
-        <item name="wifi_signal">@drawable/wifi_signal_dark</item>
+        <item name="android:alertDialogTheme">@style/Theme.Light.WifiDialog</item>
+        <item name="ic_menu_add">@drawable/ic_menu_add_light</item>
+        <item name="ic_menu_moreoverflow">@*android:drawable/ic_menu_moreoverflow_holo_light</item>
+        <item name="ic_wps">@drawable/ic_wps_light</item>
+        <item name="setup_divider_color">@color/setup_divider_color_light</item>
+        <item name="wifi_signal">@drawable/wifi_signal_light</item>
     </style>
 
     <style name="SetupWizardWifiTheme.Light" parent="android:Theme.Holo.Light.NoActionBar">
@@ -43,12 +43,12 @@
         <item name="wifi_signal">@drawable/wifi_signal_light</item>
     </style>
 
-    <style name="Theme.WifiDialog" parent="@*android:style/Theme.Holo.Dialog.Alert">
+    <style name="Theme.WifiDialog" parent="@*android:style/Theme.Holo.Light.Dialog.Alert">
         <item name="android:windowSoftInputMode">adjustResize</item>
-        <item name="ic_menu_add">@drawable/ic_menu_add_dark</item>
-        <item name="ic_menu_moreoverflow">@*android:drawable/ic_menu_moreoverflow_holo_dark</item>
-        <item name="ic_wps">@drawable/ic_wps_dark</item>
-        <item name="wifi_signal">@drawable/wifi_signal_dark</item>
+        <item name="ic_menu_add">@drawable/ic_menu_add_light</item>
+        <item name="ic_menu_moreoverflow">@*android:drawable/ic_menu_moreoverflow_holo_light</item>
+        <item name="ic_wps">@drawable/ic_wps_light</item>
+        <item name="wifi_signal">@drawable/wifi_signal_light</item>
     </style>
 
     <style name="Theme.Light.WifiDialog" parent="@*android:style/Theme.Holo.Light.Dialog.Alert">
@@ -59,26 +59,37 @@
         <item name="wifi_signal">@drawable/wifi_signal_light</item>
     </style>
 
-    <style name="Theme.Settings" parent="@android:style/Theme.Holo">
-        <item name="@*android:preferenceHeaderPanelStyle">@style/PreferenceHeaderPanelSinglePane</item>
-        <item name="@*android:preferencePanelStyle">@style/PreferencePanelSinglePane</item>
-        <item name="@*android:preferenceListStyle">@style/PreferenceHeaderListSinglePane</item>
-        <item name="@*android:preferenceFragmentListStyle">@style/PreferenceFragmentListSinglePane</item>
-        <item name="@*android:preferenceFragmentPaddingSide">@dimen/settings_side_margin</item>
-        <item name="apnPreferenceStyle">@style/ApnPreference</item>
-        <item name="ic_menu_add">@drawable/ic_menu_add_dark</item>
-        <item name="ic_menu_moreoverflow">@*android:drawable/ic_menu_moreoverflow_holo_dark</item>
-        <item name="ic_wps">@drawable/ic_wps_dark</item>
-        <item name="wifi_signal">@drawable/wifi_signal_dark</item>
-        <item name="android:actionBarStyle">@android:style/Widget.Holo.ActionBar.Solid</item>
+    <style name="ActionBar" parent="@*android:style/Widget.Holo.Light.ActionBar">
+        <item name="@*android:titleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Title</item>
+        <item name="@*android:subtitleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle</item>
+        <item name="android:background">@drawable/ab_transparent_light_holo</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_transparent_light_holo</item>
     </style>
 
-    <style name="Theme.Settings.DialogWhenLarge" parent="@android:style/Theme.Holo.DialogWhenLarge">
+    <style name="Theme.Settings" parent="@*android:style/Theme.Holo.Light">
         <item name="@*android:preferenceHeaderPanelStyle">@style/PreferenceHeaderPanelSinglePane</item>
         <item name="@*android:preferencePanelStyle">@style/PreferencePanelSinglePane</item>
         <item name="@*android:preferenceListStyle">@style/PreferenceHeaderListSinglePane</item>
         <item name="@*android:preferenceFragmentListStyle">@style/PreferenceFragmentListSinglePane</item>
         <item name="@*android:preferenceFragmentPaddingSide">@dimen/settings_side_margin</item>
-        <item name="android:actionBarStyle">@android:style/Widget.Holo.ActionBar.Solid</item>
+        <item name="@*android:windowTranslucentStatus">true</item>
+        <item name="@*android:windowTranslucentNavigation">true</item>
+        <item name="@*android:fitsSystemWindows">true</item>
+        <item name="apnPreferenceStyle">@style/ApnPreference</item>
+        <item name="ic_menu_add">@drawable/ic_menu_add_light</item>
+        <item name="ic_menu_moreoverflow">@*android:drawable/ic_menu_moreoverflow_holo_light</item>
+        <item name="ic_wps">@drawable/ic_wps_light</item>
+        <item name="wifi_signal">@drawable/wifi_signal_light</item>
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+        <item name="@*android:listSeparatorTextViewStyle">@style/Widget.Settings.ListSeparator</item>
+    </style>
+
+    <style name="Theme.Settings.DialogWhenLarge" parent="@android:style/Theme.Holo.Light.DialogWhenLarge">
+        <item name="@*android:preferenceHeaderPanelStyle">@style/PreferenceHeaderPanelSinglePane</item>
+        <item name="@*android:preferencePanelStyle">@style/PreferencePanelSinglePane</item>
+        <item name="@*android:preferenceListStyle">@style/PreferenceHeaderListSinglePane</item>
+        <item name="@*android:preferenceFragmentListStyle">@style/PreferenceFragmentListSinglePane</item>
+        <item name="@*android:preferenceFragmentPaddingSide">@dimen/settings_side_margin</item>
+        <item name="android:actionBarStyle">@style/ActionBar</item>
     </style>
 </resources>
