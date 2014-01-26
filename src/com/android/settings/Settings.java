@@ -920,7 +920,7 @@ public class Settings extends PreferenceActivity
                 switch (headerType) {
                     case HEADER_TYPE_CATEGORY:
                         view = new TextView(getContext(), null,
-                                android.R.attr.listSeparatorTextViewStyle);
+                                android.R.attr.listSeparatorTextViewStyle); 
                         holder.title = (TextView) view;
                         break;
 

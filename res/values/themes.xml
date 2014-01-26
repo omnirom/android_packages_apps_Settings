@@ -59,18 +59,29 @@
         <item name="wifi_signal">@drawable/wifi_signal_light</item>
     </style>
 
-    <style name="Theme.Settings" parent="@android:style/Theme.Holo.Light">
+    <style name="ActionBar" parent="@*android:style/Widget.Holo.Light.ActionBar">
+        <item name="@*android:titleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Title</item>
+        <item name="@*android:subtitleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle</item>
+        <item name="android:background">@drawable/ab_transparent_light_holo</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_transparent_light_holo</item>
+    </style>
+
+    <style name="Theme.Settings" parent="@*android:style/Theme.Holo.Light">
         <item name="@*android:preferenceHeaderPanelStyle">@style/PreferenceHeaderPanelSinglePane</item>
         <item name="@*android:preferencePanelStyle">@style/PreferencePanelSinglePane</item>
         <item name="@*android:preferenceListStyle">@style/PreferenceHeaderListSinglePane</item>
         <item name="@*android:preferenceFragmentListStyle">@style/PreferenceFragmentListSinglePane</item>
         <item name="@*android:preferenceFragmentPaddingSide">@dimen/settings_side_margin</item>
+        <item name="@*android:windowTranslucentStatus">true</item>
+        <item name="@*android:windowTranslucentNavigation">true</item>
+        <item name="@*android:fitsSystemWindows">true</item>
         <item name="apnPreferenceStyle">@style/ApnPreference</item>
         <item name="ic_menu_add">@drawable/ic_menu_add_light</item>
         <item name="ic_menu_moreoverflow">@*android:drawable/ic_menu_moreoverflow_holo_light</item>
         <item name="ic_wps">@drawable/ic_wps_light</item>
         <item name="wifi_signal">@drawable/wifi_signal_light</item>
-        <item name="android:actionBarStyle">@android:style/Widget.Holo.Light.ActionBar.Solid</item>
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+        <item name="@*android:listSeparatorTextViewStyle">@style/Widget.Settings.ListSeparator</item>
     </style>
 
     <style name="Theme.Settings.DialogWhenLarge" parent="@android:style/Theme.Holo.Light.DialogWhenLarge">
@@ -79,6 +90,6 @@
         <item name="@*android:preferenceListStyle">@style/PreferenceHeaderListSinglePane</item>
         <item name="@*android:preferenceFragmentListStyle">@style/PreferenceFragmentListSinglePane</item>
         <item name="@*android:preferenceFragmentPaddingSide">@dimen/settings_side_margin</item>
-        <item name="android:actionBarStyle">@android:style/Widget.Holo.Light.ActionBar.Solid</item>
+        <item name="android:actionBarStyle">@style/ActionBar</item>
     </style>
 </resources>
