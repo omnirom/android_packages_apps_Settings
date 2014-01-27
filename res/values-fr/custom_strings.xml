@@ -193,4 +193,20 @@
     <string name="expandable">Extensible</string>
     <string name="expanded">Étendu</string>
     <string name="supersu_title">SuperSU</string>
+    <string name="lockscreen_enable_camera_title">Widget Appareil photo</string>
+    <string name="lockscreen_enable_camera_summary">Glisser sur la droite pour activer le widget de l\'appareil photo</string>
+    <string name="lockscreen_enable_power_menu_title">Activer le menu Marche/Arrêt</string>
+    <string name="lockscreen_enable_power_menu_summary">Afficher le menu Marche/Arrêt lorsque l\'écran est verrouillé</string>
+    <string name="lockscreen_see_through_title">Affichage transparent</string>
+    <string name="lockscreen_see_through_summary">Afficher le contenu derrière votre écran de verrouillage, vos données peuvent être visibles à ceux autour de vous</string>
+    <string name="safe_headset_volume_warning_title">Volume sécurisé du casque</string>
+    <string name="safe_headset_volume_warning_summary">Afficher un avertissement de sécurité avec les casques audio</string>
+    <string name="display_rotation_title">Rotation</string>
+    <string name="display_rotation_disabled">Désactivé</string>
+    <string name="display_rotation_unit">dégrées</string>
+    <string name="display_rotation_category_title">Modes de rotation</string>
+    <string name="display_rotation_0_title">0 dégrée</string>
+    <string name="display_rotation_90_title">90 dégrées</string>
+    <string name="display_rotation_180_title">180 dégrées</string>
+    <string name="display_rotation_270_title">270 dégrées</string>
 </resources>
