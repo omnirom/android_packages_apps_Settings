@@ -281,6 +281,7 @@ public class PowerUsageSummary extends PreferenceFragment implements
             return;
         }
         mStatsHelper.refreshStats(false);
+        int sipperCount = 0;
         List<BatterySipper> usageList = mStatsHelper.getUsageList();
         for (BatterySipper sipper : usageList) {
             if (sipper.getSortValue() < MIN_POWER_THRESHOLD) continue;
@@ -299,7 +300,8 @@ public class PowerUsageSummary extends PreferenceFragment implements
                 pref.setKey(Integer.toString(sipper.uidObj.getUid()));
             }
             mAppListGroup.addPreference(pref);
-            if (mAppListGroup.getPreferenceCount() > (MAX_ITEMS_TO_LIST+1)) break;
+            sipperCount++;
+            if (sipperCount > (MAX_ITEMS_TO_LIST+1)) break;
         }
     }
 
