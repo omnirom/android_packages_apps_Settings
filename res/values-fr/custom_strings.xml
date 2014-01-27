@@ -193,4 +193,10 @@
     <string name="expandable">Extensible</string>
     <string name="expanded">Étendu</string>
     <string name="supersu_title">SuperSU</string>
+    <string name="lockscreen_enable_camera_title">Widget Appareil photo</string>
+    <string name="lockscreen_enable_camera_summary">Glisser sur la droite pour activer le widget de l\'appareil photo</string>
+    <string name="lockscreen_enable_power_menu_title">Activer le menu Marche/Arrêt</string>
+    <string name="lockscreen_enable_power_menu_summary">Afficher le menu Marche/Arrêt lorsque l\'écran est verrouillé</string>
+    <string name="lockscreen_see_through_title">Affichage transparent</string>
+    <string name="lockscreen_see_through_summary">Afficher le contenu derrière votre écran est verrouillage, vos données peuvent être visibles à ceux autour de vous</string>
 </resources>
