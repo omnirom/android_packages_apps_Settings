@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab62b9bd_067564c9",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000516
+      },
+      "writtenOn": "2014-01-27T17:26:47Z",
+      "side": 1,
+      "message": "écran de verrouillage ?",
+      "revId": "d7749f723e2a4e5aafcc2d56ed9a4f1389113a65",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
