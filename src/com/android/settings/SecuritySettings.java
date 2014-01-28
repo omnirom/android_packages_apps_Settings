@@ -347,7 +347,6 @@ public class SecuritySettings extends RestrictedSettingsFragment
         // Enable or disable keyguard widget checkbox based on DPM state
         mEnableKeyguardWidgets = (CheckBoxPreference) root.findPreference(KEY_ENABLE_WIDGETS);
         mMaximizeKeyguardWidgets = (CheckBoxPreference) root.findPreference(LOCKSCREEN_MAXIMIZE_WIDGETS);
-
         if (mEnableKeyguardWidgets != null && mMaximizeKeyguardWidgets != null) {
             if (ActivityManager.isLowRamDeviceStatic()
                     || mLockPatternUtils.isLockScreenDisabled()) {
@@ -371,7 +370,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
                 }
                 mEnableKeyguardWidgets.setEnabled(!disabled);
                 mMaximizeKeyguardWidgets.setChecked(Settings.System.getInt(getContentResolver(),
-                        Settings.System.LOCKSCREEN_MAXIMIZE_WIDGETS, 0) == 1);
+                      Settings.System.LOCKSCREEN_MAXIMIZE_WIDGETS, 0) == 1);
             }
         }
 
