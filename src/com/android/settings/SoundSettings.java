@@ -78,6 +78,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
     private static final String KEY_DOCK_SOUNDS = "dock_sounds";
     private static final String KEY_DOCK_AUDIO_MEDIA_ENABLED = "dock_audio_media_enabled";
     private static final String KEY_VOLUME_PANEL_STYLE = "volume_panel_style";
+    private static final String KEY_SAFE_HEADSET_VOLUME_WARNING = "safe_headset_volume_warning";
 
     private static final String[] NEED_VOICE_CAPABILITY = {
             KEY_RINGTONE, KEY_DTMF_TONE, KEY_CATEGORY_CALLS,
@@ -89,6 +90,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
     private static final int MSG_UPDATE_ALARM_SUMMARY = 3;
 
     private ListPreference mVolumePanelStyle;
+    private CheckBoxPreference mVolumeWarning;
     private CheckBoxPreference mVibrateWhenRinging;
     private CheckBoxPreference mDtmfTone;
     private CheckBoxPreference mSoundEffects;
@@ -157,16 +159,22 @@ public class SoundSettings extends SettingsPreferenceFragment implements
         }
 
         mVolumePanelStyle = (ListPreference) findPreference(KEY_VOLUME_PANEL_STYLE);
+        mVolumeWarning = (CheckBoxPreference) findPreference(KEY_SAFE_HEADSET_VOLUME_WARNING);
 
         if (getResources().getBoolean(com.android.internal.R.bool.config_useFixedVolume)) {
             // device with fixed volume policy, do not display volumes submenu
             getPreferenceScreen().removePreference(findPreference(KEY_RING_VOLUME));
             getPreferenceScreen().removePreference(findPreference(KEY_VOLUME_PANEL_STYLE));
+            getPreferenceScreen().removePreference(findPreference(KEY_SAFE_HEADSET_VOLUME_WARNING));
         } else {
             int statusVolumePanelStyle = Settings.System.getInt(resolver,
                     Settings.System.MODE_VOLUME_OVERLAY, 1);
             mVolumePanelStyle.setValue(String.valueOf(statusVolumePanelStyle));
             mVolumePanelStyle.setOnPreferenceChangeListener(this);
+
+            mVolumeWarning.setChecked(Settings.System.getInt(resolver,
+                    Settings.System.MANUAL_SAFE_MEDIA_VOLUME, 1) == 1);
+            mVolumeWarning.setOnPreferenceChangeListener(this);
         }
 
         mVibrateWhenRinging = (CheckBoxPreference) findPreference(KEY_VIBRATE);
@@ -389,6 +397,10 @@ public class SoundSettings extends SettingsPreferenceFragment implements
             int volumePanelStyle = Integer.valueOf((String) objValue);
             Settings.System.putInt(getContentResolver(),
                     Settings.System.MODE_VOLUME_OVERLAY, volumePanelStyle);
+        } else if (preference == mVolumeWarning) {
+            int volumeWarning = (Boolean) objValue ? 1 : 0;
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.MANUAL_SAFE_MEDIA_VOLUME, volumeWarning);
         }
 
         return true;
