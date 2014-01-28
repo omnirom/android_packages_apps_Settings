@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab62b9bd_6c327f09",
+        "filename": "src/com/android/settings/SecuritySettings.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-28T15:41:26Z",
+      "side": 1,
+      "message": "add if (mEnableCameraWidget !\u003d null) { here",
+      "revId": "b14978362a805b2f1557acfed3c795706ef249c2",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_2c288795",
+        "filename": "src/com/android/settings/SecuritySettings.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-28T15:41:26Z",
+      "side": 1,
+      "message": "check once for mEnableCameraWidget !\u003dnull around then you dont need to do it x-times inside. And you can use securityCategory.removePreference(mEnableCameraWidget);",
+      "revId": "b14978362a805b2f1557acfed3c795706ef249c2",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
