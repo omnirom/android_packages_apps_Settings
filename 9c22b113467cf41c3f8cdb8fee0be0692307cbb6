@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab62b9bd_ccbd4b64",
+        "filename": "res/xml/security_settings_chooser.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-28T13:05:43Z",
+      "side": 1,
+      "message": "same as my other comment about format changes.\nthose are just obfuscating the \"real\" change. Feel free to do a format\ncleanup as a separate change but done mix them together",
+      "revId": "9c22b113467cf41c3f8cdb8fee0be0692307cbb6",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_ecb20f93",
+        "filename": "res/xml/security_settings_password.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-28T13:05:43Z",
+      "side": 1,
+      "message": "in general - please dont do format changes as \"side-effect\" of other fixes",
+      "revId": "9c22b113467cf41c3f8cdb8fee0be0692307cbb6",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
