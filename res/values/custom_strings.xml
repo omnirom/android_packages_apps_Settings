@@ -266,4 +266,7 @@
     <string name="lockscreen_see_through_title">See through</string>
     <string name="lockscreen_see_through_summary">Shows the content behind your lockscreen, your data may be visible to those around you</string>
 
+    <!-- Safe headset volume warning -->
+    <string name="safe_headset_volume_warning_title">Safe headset volume warning</string>
+    <string name="safe_headset_volume_warning_summary">Whether safe headset volume warning is shown</string>
 </resources>
