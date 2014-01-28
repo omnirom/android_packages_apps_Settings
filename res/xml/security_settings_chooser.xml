@@ -28,19 +28,20 @@
 
         <CheckBoxPreference
             android:key="keyguard_enable_widgets"
-            android:title="@string/security_enable_widgets_title"/>
+            android:title="@string/security_enable_widgets_title"
+            android:persistent="false" />
 
         <CheckBoxPreference
             android:key="lockscreen_maximize_widgets"
             android:title="@string/security_maximize_widgets_title"
             android:persistent="false"
-            android:dependency="keyguard_enable_widgets"/>
+            android:dependency="keyguard_enable_widgets" />
 
         <CheckBoxPreference
             android:key="battery_around_lockscreen_ring"
             android:title="@string/battery_around_lockscreen_ring"
-            android:defaultValue="true" 
-            android:persistent="false"/>
+            android:persistent="false"
+            android:defaultValue="true" />
 
         <Preference
             android:fragment="org.omnirom.omnigears.interfacesettings.LockscreenTargets"
@@ -58,12 +59,13 @@
 
         <CheckBoxPreference
             android:key="power_button_instantly_locks"
-            android:title="@string/lockpattern_settings_enable_power_button_instantly_locks"/>
+            android:title="@string/lockpattern_settings_enable_power_button_instantly_locks"
+            android:persistent="false" />
 
         <CheckBoxPreference
             android:key="menu_unlock"
             android:title="@string/unlock_menu_unlock_title"
-            android:summary="@string/unlock_menu_unlock_summary" 
+            android:summary="@string/unlock_menu_unlock_summary"
             android:persistent="false"/>
 
         <CheckBoxPreference
