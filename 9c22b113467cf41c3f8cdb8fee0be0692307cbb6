@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "ab62b9bd_6c843fa5",
+        "filename": "res/xml/security_settings_chooser.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-28T13:47:06Z",
+      "side": 1,
+      "message": "But this is wrong if you dont add it to all the other occurences of power_button_instantly_locks in all the other xml files",
+      "parentUuid": "ab62b9bd_ec6f6ff6",
+      "revId": "9c22b113467cf41c3f8cdb8fee0be0692307cbb6",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ab62b9bd_ecb20f93",
         "filename": "res/xml/security_settings_password.xml",
         "patchSetId": 1
