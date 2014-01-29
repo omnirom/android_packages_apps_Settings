@@ -643,6 +643,10 @@
     <string name="wifi_setting_frequency_band_title" msgid="3655327399028584656">"Ζώνη συχνοτήτων Wi-Fi"</string>
     <string name="wifi_setting_frequency_band_summary" msgid="3250740757118009784">"Προσδιορίστε το εύρος συχνότητας της λειτουργίας"</string>
     <string name="wifi_setting_frequency_band_error" msgid="837281974489794378">"Πρόβλημα κατά τη ρύθμιση της ζώνης συχνότητας."</string>
+    <string name="wifi_setting_countrycode_title">Κωδικός περιοχής Wi-Fi</string>
+    <string name="wifi_setting_countrycode_summary">Προσδιορίστε τον κωδικό περιοχής για το Wi-Fi</string>
+    <string name="wifi_setting_countrycode_error">Υπήρξε πρόβλημα κατά τη ρύθμιση του κωδικού περιοχής.</string>
+
     <string name="wifi_advanced_mac_address_title" msgid="6571335466330978393">"Διεύθυνση MAC"</string>
     <string name="wifi_advanced_ip_address_title" msgid="6215297094363164846">"Διεύθυνση IP"</string>
     <string name="wifi_advanced_settings_label" msgid="3654366894867838338">"Ρυθμίσεις IP"</string>

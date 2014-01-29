@@ -160,8 +160,8 @@
 
     <!-- Basic Numbers -->
     <string name="two">Δύο</string>
-    <string name="three">Τρία</string>
-    <string name="four">Τέσσερα</string>
+    <string name="three">Τρεις</string>
+    <string name="four">Τέσσερις</string>
     <string name="five">Πέντε</string>
     <string name="six">Έξι</string>
 
@@ -251,5 +251,17 @@
     <string name="single">Απλό</string>
     <string name="expandable">Εκτεινόμενο</string>
     <string name="expanded">Εκτεταμένο</string>
+
+    <!-- Enable camera -->
+    <string name="lockscreen_enable_camera_title">Widget φωτ.μηχανής</string>
+    <string name="lockscreen_enable_camera_summary">Σύρτε δεξιά για ενεργοποίηση του widget φωτ.μηχανής</string>
+
+    <!-- Enable power menu -->
+    <string name="lockscreen_enable_power_menu_title">Ενεργοποίηση μενού ενέργειας</string>
+    <string name="lockscreen_enable_power_menu_summary">Εμφάνιση μενού ενέργειας όταν η οθόνη είναι κλειδωμένη</string>
+
+    <!-- Lockscreen see through -->
+    <string name="lockscreen_see_through_title">Διαφάνεια</string>
+    <string name="lockscreen_see_through_summary">Εμφανίζει το περιεχόμενο πίσω από την οθόνη κλειδώματος, τα δεδομένα σας μπορεί να είναι ορατά στους γρρω σας</string>
 
 </resources>
