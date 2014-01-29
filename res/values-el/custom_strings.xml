@@ -34,14 +34,14 @@
 
     <!-- Advanced reboot options -->
     <string name="advanced_reboot_title">Προηγμένη επανεκκίνηση</string>
-    <string name="advanced_reboot_summary">Όταν είναι ξεκλέιδωτη, να περιλαμβάνονται επιλογές για επανεκκίνηση σε κατάσταση ανάκτησης ή εκκινητή στο μενού ενεργειών</string>
+    <string name="advanced_reboot_summary">Όταν είναι ξεκλείδωτη, να περιλαμβάνονται στο μενού ενεργειών επιλογές για επανεκκίνηση σε κατάσταση ανάκτησης ή εκκινητή </string>
 
     <!-- Lockscreen battery ring -->
     <string name="battery_around_lockscreen_ring">Μπαταρία γύρω από δακτύλιο ξεκλειδώματος</string>
 
     <!-- Android debugging over WiFi -->
     <string name="adb_over_network">ADB μέσω δικτύου</string>
-    <string name="adb_over_network_summary">Ενεργοποίηση αποσφαλμάτωσης TCP/IP μέσω διεπαφών δικτύου (δίκτυα Wi-Fi, USB). Η ρύθμιση επαναφέρεται με την επανεκκίνηση</string>
+    <string name="adb_over_network_summary">Ενεργοποίηση εντοπισμού σφαλμάτων TCP/IP μέσω διεπαφών δικτύου (δίκτυα Wi-Fi, USB). Η ρύθμιση επαναφέρεται με την επανεκκίνηση</string>
 
     <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Όταν είναι ενεργό το ADB μέσω δικτύου, το τηλέφωνό σας είναι ανοικτό σε εισβολές από ολά τα συνδεδεμένα δίκτυα, περιλαμβανομένου του δικτύου δεδομένων GSM!\n\nΧρησιμοποιείτε αυτή την επιλογή μόνο όταν συνδέεστε σε έμπιστα δίκτυα.\n\nΘέλετε πραγματικά να ενεργοποιήσετε τη ρύθμιση αυτή;</string>
@@ -74,12 +74,12 @@
 
     <!-- Low battery warning policy -->
     <string name="pref_low_battery_warning_policy_title">Ειδοποίηση χαμηλής μπαταρίας</string>
-    <string name="pref_low_battery_warning_policy_dialog_title">Ένδειξη χαμηλής στάθμης μπαταρίας με Indicate low battery warning with</string>
-    <string name="low_battery_warning_policy_popup_sound">Αναδυόμενο μήνυμα και ήχος</string>
+    <string name="pref_low_battery_warning_policy_dialog_title">Ένδειξη χαμηλής στάθμης μπαταρίας με</string>
+    <string name="low_battery_warning_policy_popup_sound">Αναδυόμενο μήνυμα και ήχο</string>
     <string name="low_battery_warning_policy_notif_sound">Ειδοποίηση και ήχος</string>
     <string name="low_battery_warning_policy_popup">Αναδυόμενο μήνυμα μόνο</string>
     <string name="low_battery_warning_policy_notif">Ειδοποίηση μόνο</string>
-    <string name="low_battery_warning_policy_sound">Ήχος μόνο</string>
+    <string name="low_battery_warning_policy_sound">Ήχο μόνο</string>
     <string name="battery_prefs_title">Επιλογές</string>
     <string name="battery_stats_title">Στατιστικά</string>
 
@@ -160,8 +160,8 @@
 
     <!-- Basic Numbers -->
     <string name="two">Δύο</string>
-    <string name="three">Τρία</string>
-    <string name="four">Τέσσερα</string>
+    <string name="three">Τρεις</string>
+    <string name="four">Τέσσερις</string>
     <string name="five">Πέντε</string>
     <string name="six">Έξι</string>
 
@@ -189,9 +189,9 @@
     <string name="quiet_hours_dim">Απενεργ. φωτός ειδοποίησης</string>
     <string name="quiet_hours_dim_on">Η φωτεινή ειδοποίηση θα απενεργοποιηθεί</string>
     <string name="quiet_hours_dim_off">Η φωτεινή ειδοποίηση θα λειτουργεί κανονικά</string>
-    <string name="quiet_hours_haptic">Απενεργ. απτικής ανάδρασης</string>
-    <string name="quiet_hours_haptic_on">Η απτική ανάδραση θα απενεργοποιηθεί</string>
-    <string name="quiet_hours_haptic_off">Η απτική ανάδραση θα λειτουργεί κανονικά</string>
+    <string name="quiet_hours_haptic">Απενεργ. ανάδρασης αφής</string>
+    <string name="quiet_hours_haptic_on">Η ανάδραση αφής θα απενεργοποιηθεί</string>
+    <string name="quiet_hours_haptic_off">Η ανάδραση αφής θα λειτουργεί κανονικά</string>
     <string name="quiet_hours_active_from">Ενεργό από</string>
     <string name="quiet_hours_active_to">έως</string>
     <string name="quiet_hours_auto_sms_group">Αυτόματη απάντηση</string>
@@ -251,5 +251,17 @@
     <string name="single">Απλό</string>
     <string name="expandable">Εκτεινόμενο</string>
     <string name="expanded">Εκτεταμένο</string>
+
+    <!-- Enable camera -->
+    <string name="lockscreen_enable_camera_title">Widget φωτ.μηχανής</string>
+    <string name="lockscreen_enable_camera_summary">Σύρτε δεξιά για ενεργοποίηση του widget φωτ.μηχανής</string>
+
+    <!-- Enable power menu -->
+    <string name="lockscreen_enable_power_menu_title">Ενεργοποίηση μενού ενέργειας</string>
+    <string name="lockscreen_enable_power_menu_summary">Εμφάνιση μενού ενέργειας όταν η οθόνη είναι κλειδωμένη</string>
+
+    <!-- Lockscreen see through -->
+    <string name="lockscreen_see_through_title">Διαφάνεια</string>
+    <string name="lockscreen_see_through_summary">Εμφανίζει το περιεχόμενο πίσω από την οθόνη κλειδώματος, τα δεδομένα σας μπορεί να είναι ορατά στους γρρω σας</string>
 
 </resources>
