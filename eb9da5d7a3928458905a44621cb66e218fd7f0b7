@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab62b9bd_235a55f6",
+        "filename": "src/com/android/settings/slim/DisplayRotation.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-30T14:41:33Z",
+      "side": 1,
+      "message": "this is not matching the default in base which is created like this\n\n                    mAllowAllRotations \u003d mContext.getResources().getBoolean(\n                            com.android.internal.R.bool.config_allowAllRotations) ? 1 : 0;\n                \n                     mUserRotationAngles \u003d mAllowAllRotations \u003d\u003d 1 ?\n                            (1 | 2 | 4 | 8) : // All angles\n                                (1 | 2 | 8); // All except 180\n\nhere it is using hardcoded only the second case without checking\nthe config value",
+      "revId": "eb9da5d7a3928458905a44621cb66e218fd7f0b7",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
