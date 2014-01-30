@@ -16,6 +16,24 @@
       "revId": "47d0d90f22a612f40e13ee9fd7e2a2fa45013660",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_a3502563",
+        "filename": "src/com/android/settings/SoundSettings.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-01-30T22:19:44Z",
+      "side": 1,
+      "message": "The default value must be 1 - checked means - show volume warning\nSee also my  comment to the base change. MANUAL_SAFE_MEDIA_VOLUME is a little bit confusing. I woulld assue something named \"manual\" to overrule the defaut if it is true",
+      "parentUuid": "ab62b9bd_0070e7d9",
+      "revId": "47d0d90f22a612f40e13ee9fd7e2a2fa45013660",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
