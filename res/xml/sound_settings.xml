@@ -82,6 +82,11 @@
             android:persistent="false"
             android:ringtoneType="alarm" />
 
+    <PreferenceScreen
+            android:key="sound_packages"
+            android:fragment="org.omnirom.omnigears.sounds.SoundPackageSettings"
+            android:title="@string/sound_packages_title" />
+
     <CheckBoxPreference
             android:key="dtmf_tone"
             android:title="@string/dtmf_tone_enable_title"
