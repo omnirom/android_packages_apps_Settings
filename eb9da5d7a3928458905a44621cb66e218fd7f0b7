@@ -16,6 +16,24 @@
       "revId": "eb9da5d7a3928458905a44621cb66e218fd7f0b7",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_c3ffd9aa",
+        "filename": "src/com/android/settings/slim/DisplayRotation.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000117
+      },
+      "writtenOn": "2014-01-30T14:59:21Z",
+      "side": 1,
+      "message": "That code is executed if (mUserRotationAngles \u003c 0) {\nDefault value is -1. If user has changed rotation settings, then it won\u0027t be -1 \u0026 this code won\u0027t be executed. It is not ignoring config value. \nYes, I need to update default value.",
+      "parentUuid": "ab62b9bd_235a55f6",
+      "revId": "eb9da5d7a3928458905a44621cb66e218fd7f0b7",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
