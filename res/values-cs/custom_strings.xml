@@ -252,4 +252,16 @@
     <string name="expandable">Rozšířitelný</string>
     <string name="expanded">Rozšířený</string>
 
+    <!-- Enable camera -->
+    <string name="lockscreen_enable_camera_title">Widget fotoaparátu</string>
+    <string name="lockscreen_enable_camera_summary">Zobrazit widget fotoaparátu vpravo od obrazovky odmeknutí</string>
+
+    <!-- Enable power menu -->
+    <string name="lockscreen_enable_power_menu_title">Povolit nabídku Vypnout</string>
+    <string name="lockscreen_enable_power_menu_summary">Zobrazit nabídku Vypnout při zamčené obrazovce</string>
+
+    <!-- Lockscreen see through -->
+    <string name="lockscreen_see_through_title">Průhlednost</string>
+    <string name="lockscreen_see_through_summary">Zobrazuje obsah v pozadí Vaší uzamčené obrazovky, Vaše data budou viditelné všem okolo Vás</string>
+
 </resources>
