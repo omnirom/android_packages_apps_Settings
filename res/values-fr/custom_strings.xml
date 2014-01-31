@@ -44,7 +44,7 @@
     <string name="screen_off_fadeout">Fondu</string>
     <string name="screen_off_electronbeam">Faisceau d\'électrons</string>
     <string name="screen_off_scaledown">Réduction</string>
-    <string name="appops_settings">Sécurité des applications</string>
+    <string name="appops_settings">Autorisations des applications</string>
     <string name="appops_sysapp_beware">Attention\u00A0!</string>
     <string name="appops_sysapp_warning">La modification des autorisations des composants de base d\'Android pourrait conduire à un comportement indésirable. Modifiez ces paramètres à vos risques et périls\u00A0!</string>
     <string name="pref_low_battery_warning_policy_title">Avertissement de batterie faible</string>
@@ -193,4 +193,10 @@
     <string name="expandable">Extensible</string>
     <string name="expanded">Étendu</string>
     <string name="supersu_title">SuperSU</string>
+    <string name="lockscreen_enable_camera_summary">Glissez vers la droite pour activer le widget Appareil photo</string>
+    <string name="lockscreen_enable_camera_title">Widget Appareil photo</string>
+    <string name="lockscreen_see_through_summary">Affiche le contenu derrière l\'écran de verrouillage, vos données pourraient être visibles à ceux qui sont autour de vous</string>
+    <string name="lockscreen_see_through_title">Voir à travers</string>
+    <string name="lockscreen_enable_power_menu_title">Activer le menu marche/arrêt</string>
+    <string name="lockscreen_enable_power_menu_summary">Afficher le menu marche/arrêt lorsque l\'écran est verrouillé</string>
 </resources>
