@@ -269,4 +269,8 @@
     <!-- Safe headset volume warning -->
     <string name="safe_headset_volume_warning_title">Volume warning</string>
     <string name="safe_headset_volume_warning_summary">Show safe headset volume warning</string>
+
+    <!-- ADB Paranoia settings -->
+    <string name="adb_paranoid">ADB paranoia mode</string>
+    <string name="adb_paranoid_summary">Immediately reboot if an unknown computer is connected while device is locked</string>
 </resources>
