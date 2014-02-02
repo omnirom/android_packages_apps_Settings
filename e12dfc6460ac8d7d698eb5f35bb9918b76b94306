@@ -1,0 +1,259 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab62b9bd_99d38e06",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-02T20:15:02Z",
+      "side": 1,
+      "message": "zu senden und neu starten . Sonst passt das",
+      "revId": "e12dfc6460ac8d7d698eb5f35bb9918b76b94306",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_19005e6b",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-02T20:15:02Z",
+      "side": 1,
+      "message": "Vielleicht Hinweis aber Anmerkung geht auch.",
+      "revId": "e12dfc6460ac8d7d698eb5f35bb9918b76b94306",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_39f52281",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-02T20:15:02Z",
+      "side": 1,
+      "message": "wie gewohnt verhalten ? Was ist schon normal :-)",
+      "revId": "e12dfc6460ac8d7d698eb5f35bb9918b76b94306",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_59f2d699",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-02T20:15:02Z",
+      "side": 1,
+      "message": "Ruhemodus erzwingen",
+      "revId": "e12dfc6460ac8d7d698eb5f35bb9918b76b94306",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_99ec6eb8",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-02T20:15:02Z",
+      "side": 1,
+      "message": "verhalten sich wie gewohnt",
+      "revId": "e12dfc6460ac8d7d698eb5f35bb9918b76b94306",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_b92db2fb",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-02T20:15:02Z",
+      "side": 1,
+      "message": "Beginn ?",
+      "revId": "e12dfc6460ac8d7d698eb5f35bb9918b76b94306",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_f9372a49",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-02T20:15:02Z",
+      "side": 1,
+      "message": "Wann soll der Ruhemodus beginnen",
+      "revId": "e12dfc6460ac8d7d698eb5f35bb9918b76b94306",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_193dbe28",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-02T20:15:02Z",
+      "side": 1,
+      "message": "Wann soll der Ruhemodus enden",
+      "revId": "e12dfc6460ac8d7d698eb5f35bb9918b76b94306",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_394282b4",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-02T20:15:02Z",
+      "side": 1,
+      "message": "wie gewohnt",
+      "revId": "e12dfc6460ac8d7d698eb5f35bb9918b76b94306",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_794cfae3",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-02T20:15:02Z",
+      "side": 1,
+      "message": "wie gewohnt",
+      "revId": "e12dfc6460ac8d7d698eb5f35bb9918b76b94306",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_9949ced5",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-02T20:15:02Z",
+      "side": 1,
+      "message": "wiederholt sich",
+      "revId": "e12dfc6460ac8d7d698eb5f35bb9918b76b94306",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_b91692ab",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-02T20:15:02Z",
+      "side": 1,
+      "message": "bedeckt nicht",
+      "revId": "e12dfc6460ac8d7d698eb5f35bb9918b76b94306",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_d91b46d2",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-02T20:15:02Z",
+      "side": 1,
+      "message": "Vielleicht umdrehen",
+      "revId": "e12dfc6460ac8d7d698eb5f35bb9918b76b94306",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_f9100ab1",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-02T20:15:02Z",
+      "side": 1,
+      "message": "wischen ?",
+      "revId": "e12dfc6460ac8d7d698eb5f35bb9918b76b94306",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_19169eaa",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-02T20:15:02Z",
+      "side": 1,
+      "message": "Punkt satt Komma ?",
+      "revId": "e12dfc6460ac8d7d698eb5f35bb9918b76b94306",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
