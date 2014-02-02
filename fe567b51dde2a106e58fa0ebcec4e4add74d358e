@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab62b9bd_79febaab",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-02-02T14:17:59Z",
+      "side": 1,
+      "message": "Should this relly have  uppercase beginning?",
+      "revId": "fe567b51dde2a106e58fa0ebcec4e4add74d358e",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
