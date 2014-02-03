@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab62b9bd_74c6c19f",
+        "filename": "src/com/android/settings/slim/DisplayRotation.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-02-03T15:28:50Z",
+      "side": 1,
+      "message": "Just use same as in base  \nmode \u003d Settings.System.getInt(getContentResolver(), Settings.System.ACCELEROMETER_ROTATION_ANGLES, -1)\nif(mode \u003d\u003d -1){\n                   boolean allRotationAllowed \u003d getResources().getBoolean(\n                            com.android.internal.R.bool.config_allowAllRotations) ? 1 : 0;\n                \n                    mode \u003d allRotationAllowed \u003d\u003d 1 ?\n                            (1 | 2 | 4 | 8) : // or use ROTATION_XX_MODE\n                                (1 | 2 | 8); \n}",
+      "revId": "83432f3ccb3e37af9d65b5694fac656ebeea469a",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
