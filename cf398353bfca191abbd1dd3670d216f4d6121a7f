@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab62b9bd_cfd4584f",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-05T17:21:08Z",
+      "side": 1,
+      "message": "verhalten sich wie gewohnt",
+      "revId": "cf398353bfca191abbd1dd3670d216f4d6121a7f",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_afe7243b",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-05T17:21:08Z",
+      "side": 1,
+      "message": "verhalten sich wie gewohnt.",
+      "revId": "cf398353bfca191abbd1dd3670d216f4d6121a7f",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab62b9bd_efd91c84",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2014-02-05T17:21:08Z",
+      "side": 1,
+      "message": "das erste Komma ist falsch",
+      "revId": "cf398353bfca191abbd1dd3670d216f4d6121a7f",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
