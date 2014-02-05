@@ -111,4 +111,154 @@
     <string name="stylus_icon_enabled_title">Cursor del stylus</string>
     <string name="stylus_icon_enabled_summary">Mostrar un cursor mientras se usa el stylus</string>
 
+    <!-- Stylus Gestures -->
+    <string name="gestures_settings_title">Stylus</string>
+    <string name="category_spen_title">Geston con Stylus</string>
+    <string name="enable_subcat_title">Stylus</string>
+    <string name="enable_spen_title_head">Habilitar gestos Stylus</string>
+    <string name="enable_spen_summary_head">Ejecutar acciones personalizadas, asociadas a gestos, con el botón del Stylus pulsado</string>
+    <string name="gestures_subcat_title">Gestos</string>
+    <string name="gestures_left_spen_title_head">Deslizar a la izquierda</string>
+    <string name="gestures_left_spen_summary_head">Ejecutar acción personalizada al deslizar a la izquierda</string>
+    <string name="gestures_right_spen_title_head">Deslizar a la derecha</string>
+    <string name="gestures_right_spen_summary_head">Ejecutar acción personalizada al deslizar a la derecha</string>
+    <string name="gestures_up_spen_title_head">Deslizar hacia arriba</string>
+    <string name="gestures_up_spen_summary_head">Ejecutar acción personalizada al deslizar hacia arriba</string>
+    <string name="gestures_down_spen_title_head">Deslizar hacia abajo</string>
+    <string name="gestures_down_spen_summary_head">Ejecutar acción personalizada al deslizar hacia abajo</string>
+    <string name="gestures_long_spen_title_head">Pulsación larga</string>
+    <string name="gestures_long_spen_summary_head">Iniciar acción personalizada con una pulsación larga</string>
+    <string name="gestures_double_spen_title_head">Doble toque</string>
+    <string name="gestures_double_spen_summary_head">Ejecutar acción personalizada al pulsar dos veces</string>
+
+    <!-- Gestures Options -->
+    <string name="gestures_action_empty">Sin acción</string>
+    <string name="gestures_action_home">Emular botón Inicio</string>
+    <string name="gestures_action_back">Emular botón Atrás</string>
+    <string name="gestures_action_menu">Emular botón Menú</string>
+    <string name="gestures_action_search">Iniciar búsqueda</string>
+    <string name="gestures_action_recent">Aplicaciones recientes</string>
+
+    <!-- stylus gestures support -->
+    <string name="stylus_app_not_installed">%s no está instalada</string>
+
+    <!-- default alarm tone -->
+    <string name="alarm_sound_title">Tono de la alarma</string>
+    <string name="alarm_sound_dialog_title">Tono de la alarma</string>
+
+    <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
+    <string name="custom_runtime_warning_title">Aviso</string>
+    <string name="custom_runtime_warning_message">ART no está soportado por OmniROM. Este ajuste ha sido incluido solamente para fines experimentales y puede causar inestabilidad, bloqueos, pérdida de datos e incluso impedir el correcto inicio del dispositivo. Para más información visita &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introducción a ART&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;No aceptaremos archivos de informe de errores si has habilitado ART.&lt;br/&gt;&lt;br/&gt;¿Estás seguro de que quieres reiniciar para cambiar el tiempo de ejecución de <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> a <xliff:g id="new" example="libart.so">%2$s</xliff:g>?</string>
+
+
+    <!-- Basic Numbers -->
+    <string name="two">Dos</string>
+    <string name="three">Tres</string>
+    <string name="four">Cuatro</string>
+    <string name="five">Cinco</string>
+    <string name="six">Seis</string>
+
+    <!-- Quiet hours -->
+    <string name="quiet_hours_title">Modo descanso</string>
+    <string name="quiet_hours_summary">Silenciar o desactivar sonidos y notificaciones durante un período de tiempo específico</string>
+    <string name="quiet_hours_note_title">Nota</string>
+    <string name="quiet_hours_note_summary">Las llamadas entrantes se comportarán como es habitual durante el modo descanso</string>
+    <string name="quiet_hours_enabled">Habilitar</string>
+    <string name="quiet_hours_enabled_on">Modo descanso activado</string>
+    <string name="quiet_hours_enabled_off">Modo descanso desactivado</string>
+    <string name="quiet_hours_start">Inicio</string>
+    <string name="quiet_hours_start_summary">Cuándo iniciar el Modo descanso</string>
+    <string name="quiet_hours_end">Fin</string>
+    <string name="quiet_hours_end_summary">Cuándo finalizar el Modo descanso</string>
+    <string name="quiet_hours_ringer_title">Tono de llamada</string>
+    <string name="quiet_hours_ringer_on">No se reproducirá el tono de llamada</string>
+    <string name="quiet_hours_ringer_off">Se reproducirá el tono de llamada</string>
+    <string name="quiet_hours_mute">Notificaciones</string>
+    <string name="quiet_hours_mute_on">No se reproducirá ningún sonido</string>
+    <string name="quiet_hours_mute_off">Se reproducirán todos los sonidos</string>
+    <string name="quiet_hours_still">Vibración</string>
+    <string name="quiet_hours_still_on">El dispositivo no vibrará</string>
+    <string name="quiet_hours_still_off">El dispositivo vibrará</string>
+    <string name="quiet_hours_dim">Luz de notificación</string>
+    <string name="quiet_hours_dim_on">La luz de notifación se deshabilitará</string>
+    <string name="quiet_hours_dim_off">La luz de notifación se habilitará</string>
+    <string name="quiet_hours_haptic">Respuesta háptica</string>
+    <string name="quiet_hours_haptic_on">La respuesta háptica se deshabilitará</string>
+    <string name="quiet_hours_haptic_off">La respuesta háptica se habilitará</string>
+    <string name="quiet_hours_active_from">Activo desde</string>
+    <string name="quiet_hours_active_to">hasta</string>
+    <string name="quiet_hours_auto_sms_group">Respuesta automática</string>
+    <string name="quiet_hours_auto_sms_title">Mensajes de texto</string>
+    <string name="quiet_hours_auto_sms_call_title">Llamadas</string>
+    <string name="quiet_hours_auto_string_title">Respuesta a enviar</string>
+    <string name="quiet_hours_auto_string_explain">Este mensaje será enviado a cualquier persona que se comunique contigo mientras el modo descanso está activo</string>
+    <string name="quiet_hours_auto_sms_null">[Mensaje automático] Me pondré en contacto contigo cuando pueda.</string>
+    <string name="quiet_hours_auto_disabled">Deshabilitado</string>
+    <string name="quiet_hours_auto_enabled">Todos los números</string>
+    <string name="quiet_hours_auto_contacts">Solo contactos</string>
+    <string name="quiet_hours_bypass_group">Filtros</string>
+    <string name="quiet_hours_sms_code_null">[Alarma]</string>
+    <string name="quiet_hours_sms_bypass_title">Mensajes de texto</string>
+    <string name="quiet_hours_sms_code_title">Palabra clave</string>
+    <string name="quiet_hours_sms_code_explain">Si un mensaje entrante contiene este texto sonará una alarma</string>
+    <string name="quiet_hours_call_bypass_title">Llamadas</string>
+    <string name="quiet_hours_calls_required_title">Número de llamadas en 30 min.</string>
+    <string name="quiet_hours_calls_required_summary">" llamadas para desactivar el Modo descanso"</string>
+    <string name="quiet_hours_bypass_ringtone_title">Tono de la alarma</string>
+    <string name="quiet_hours_bypass_ringtone_loop_title">Repetir alarma</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_on">La alarma sonará hasta ser cancelada</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_off">La alarma sonará una única vez</string>
+    <string name="quiet_hours_alarm_dismiss">Descartar alarma</string>
+    <string name="quiet_hours_alarm_and">" y "</string>
+    <string name="quiet_hours_alarm_dialog_title">Modo descanso filtrado</string>
+    <string name="quiet_hours_alarm_message">" cumplido con los requisitos para omitir el Modo descanso"</string>
+
+    <!-- time range preference -->
+    <string name="start_time_title">Inicio</string>
+    <string name="end_time_title">Fin</string>
+
+    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
+    <string name="change_crypt_password_title">Cambiar contrasña</string>
+    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
+    <string name="change_crypt_password_summary">Cambiar contraseña de cifrado</string>
+
+    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
+    <string name="encryptionpassword_choose_your_password_header">Configurar contraseña de cifrado</string>
+
+    <!-- Keyboard and Input ASS methods  -->
+    <string name="title_keyboard_input">Opciones avanzadas</string>
+    <string name="disable_fullscreen_keyboard_title">Deshabilitar pantalla completa</string>
+    <string name="disable_fullscreen_keyboard_summary">El teclado nunca ocupará toda la pantalla en apaisado</string>
+    <string name="keyboard_rotation_toggle_title">Rotación automática</string>
+    <string name="keyboard_rotation_toggle_summary">Forzar la rotación automática del teclado</string>
+    <string name="keyboard_rotation_timeout_title">Tiempo de espera</string>
+    <string name="keyboard_rotation_timeout_summary">Deshabilitar el sensor <xliff:g id="rotate_timeout">%1$s</xliff:g> segudnos después de haberse ocultado el teclado</string>
+    <string name="keyboard_rotation_dialog">Nota: Esta característica fuerza la rotación del teclado temporalmente. No tiene ningún efecto si la rotación automática ya está habilitada.</string>
+    <string name="show_enter_key_title">Mostar Enter</string>
+    <string name="show_enter_key_summary">El teclado mostrará la tecla Enter en lugar de la de emoticonos</string>
+    <string name="ime_switcher_notify">Selector en notificaciones</string>
+    <string name="ime_switcher_notify_summary">Muestra el selector de método de entrada de texto en la barra de notificaciones</string>
+
+
+    <!-- Volume panel style -->
+    <string name="volume_panel_style">Estilo del panel</string>
+    <string name="single">Simple</string>
+    <string name="expandable">Expandible</string>
+    <string name="expanded">Expandido</string>
+
+    <!-- Enable camera -->
+    <string name="lockscreen_enable_camera_title">Acceso a cámara</string>
+    <string name="lockscreen_enable_camera_summary">Deslizar a la derecha para acceder a la cámara</string>
+
+    <!-- Enable power menu -->
+    <string name="lockscreen_enable_power_menu_title">Habilitar menú de encendido</string>
+    <string name="lockscreen_enable_power_menu_summary">Mostrar el menú de encendido en la pantalla de bloqueo</string>
+
+    <!-- Lockscreen see through -->
+    <string name="lockscreen_see_through_title">Ver a través</string>
+    <string name="lockscreen_see_through_summary">Muestra el contenido detrás de la pantalla de bloqueo. Sus datos pueden ser visibles.</string>
+
+    <!-- Safe headset volume warning -->
+    <string name="safe_headset_volume_warning_title">Volumen seguro</string>
+    <string name="safe_headset_volume_warning_summary">Mostrar aviso de volumen seguro</string>
 </resources>
