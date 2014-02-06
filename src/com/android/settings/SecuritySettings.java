@@ -274,10 +274,14 @@ public class SecuritySettings extends RestrictedSettingsFragment
 
         // Lockscreen Blur
         mSeeThrough = (CheckBoxPreference) findPreference(KEY_SEE_THROUGH);
-        if (mSeeThrough != null) {
-            mSeeThrough.setChecked(Settings.System.getInt(getContentResolver(),
-                  Settings.System.LOCKSCREEN_SEE_THROUGH, 0) == 1);
-            mSeeThrough.setOnPreferenceChangeListener(this);
+        if (getResources().getBoolean(R.bool.config_show_lockscreen_blur)) {
+            if (mSeeThrough != null) {
+                mSeeThrough.setChecked(Settings.System.getInt(getContentResolver(),
+                      Settings.System.LOCKSCREEN_SEE_THROUGH, 0) == 1);
+                mSeeThrough.setOnPreferenceChangeListener(this);
+            }
+        } else {
+            root.removepreference(mSeeThrough);
         }
 
         // biometric weak liveliness
