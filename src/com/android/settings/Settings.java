@@ -532,7 +532,7 @@ public class Settings extends PreferenceActivity
         return intent;
     }
 
-    private void onBuildStartFragmentIntentHelper(String fragmentName, Intent intent) {
+    private Intent onBuildStartFragmentIntentHelper(String fragmentName, Intent intent) {
         // Some fragments want split ActionBar; these should stay in sync with
         // uiOptions for fragments also defined as activities in manifest.
         if (WifiSettings.class.getName().equals(fragmentName) ||

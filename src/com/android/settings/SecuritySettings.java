@@ -124,9 +124,6 @@ public class SecuritySettings extends RestrictedSettingsFragment
     private CheckBoxPreference mToggleVerifyApps;
     private CheckBoxPreference mPowerButtonInstantlyLocks;
     private CheckBoxPreference mEnableKeyguardWidgets;
-    private CheckBoxPreference mEnableCameraWidget;
-    private CheckBoxPreference mEnablePowerMenu;
-    private CheckBoxPreference mSeeThrough;
 
     private Preference mNotificationAccess;
 
