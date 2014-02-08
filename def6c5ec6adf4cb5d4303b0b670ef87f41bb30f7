@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab62b9bd_053c718c",
+        "filename": "src/com/android/settings/Settings.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 1000650
+      },
+      "writtenOn": "2014-02-08T09:14:28Z",
+      "side": 1,
+      "message": "// Check if the package \"org.omnirom.device\" exists.\n\ntry{getPackageManager().getPackageInfo(\"org.omnirom.device\", PackageManager.GET_META_DATA);}\n\ncatch (NameNotFoundException e){return false;}\n\nreturn true;",
+      "revId": "def6c5ec6adf4cb5d4303b0b670ef87f41bb30f7",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
