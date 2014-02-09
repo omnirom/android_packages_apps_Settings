@@ -26,6 +26,9 @@
     <string name="battery_light_settings">Battery light</string>
     <string name="header_button_settings">Buttons</string>
 
+    <!-- Delete apn confirmation dialog message -->
+    <string name="confirm_delete_apn">The APN will be deleted.</string>
+
     <!-- Volume panel tweaks -->
     <string name="volume_adjust_sounds_enable_title">Volume adjust sound</string>
     <string name="volume_adjust_sounds_enable_summary">Play sound when changing ringer volume</string>
