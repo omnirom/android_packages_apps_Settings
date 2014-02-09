@@ -42,6 +42,17 @@
         android:title="@string/data_usage_summary_title"
         android:icon="@drawable/ic_settings_data_usage" /> 
 
+    <!-- Auto Toggle 4g -->
+    <header
+        android:id="@+id/amra_toggle"
+        android:title="@string/auto_toggle"
+        android:icon="@drawable/ic_settings_autotoggle">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.android.amratoggle"
+            android:targetClass="com.android.amratoggle.AmraToggle" />
+    </header>
+
     <!-- Operator hook -->
     <header
         android:fragment="com.android.settings.WirelessSettings"
