@@ -45,6 +45,16 @@
             android:summary="@string/safe_headset_volume_warning_summary"
             android:persistent="false" />
 
+    <org.omnirom.omnigears.chameleonos.SeekBarPreference
+            android:key="volume_overlay_timeout"
+            android:title="@string/volume_overlay_timeout_title"
+            android:summary="@string/volume_overlay_timeout_summary"
+            android:max="10"
+            settings:min="1"
+            settings:unitsLeft=""
+            settings:unitsRight="sec"
+            android:persistent="false" />
+
     <Preference
             android:key="musicfx"
             android:title="@string/musicfx_title">
