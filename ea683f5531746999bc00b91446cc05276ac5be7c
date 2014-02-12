@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab62b9bd_582ba7da",
+        "filename": "src/com/android/settings/SoundSettings.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-02-12T22:29:16Z",
+      "side": 1,
+      "message": "actually its not a good idea to directly reference a class from omnigears  here\njust the other way round - but moving this class into the Settings package just for is a little bit of an overkill. But in general this should be avoided",
+      "revId": "ea683f5531746999bc00b91446cc05276ac5be7c",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
