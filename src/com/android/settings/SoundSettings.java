@@ -50,6 +50,8 @@ import android.util.Log;
 
 import java.util.List;
 
+import org.omnirom.omnigears.chameleonos.SeekBarPreference;
+
 public class SoundSettings extends SettingsPreferenceFragment implements
         Preference.OnPreferenceChangeListener {
     private static final String TAG = "SoundSettings";
@@ -79,6 +81,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
     private static final String KEY_DOCK_AUDIO_MEDIA_ENABLED = "dock_audio_media_enabled";
     private static final String KEY_VOLUME_PANEL_STYLE = "volume_panel_style";
     private static final String KEY_SAFE_HEADSET_VOLUME_WARNING = "safe_headset_volume_warning";
+    private static final String KEY_VOLUME_PANEL_TIMEOUT = "volume_panel_timeout";
 
     private static final String[] NEED_VOICE_CAPABILITY = {
             KEY_RINGTONE, KEY_DTMF_TONE, KEY_CATEGORY_CALLS,
@@ -100,6 +103,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
     private Preference mRingtonePreference;
     private Preference mNotificationPreference;
     private Preference mAlarmPreference;
+    private SeekBarPreference mVolumePanelTimeout;
 
     private Runnable mRingtoneLookupRunnable;
 
@@ -166,6 +170,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
             getPreferenceScreen().removePreference(findPreference(KEY_RING_VOLUME));
             getPreferenceScreen().removePreference(findPreference(KEY_VOLUME_PANEL_STYLE));
             getPreferenceScreen().removePreference(findPreference(KEY_SAFE_HEADSET_VOLUME_WARNING));
+            getPreferenceScreen().removePreference(findPreference(KEY_VOLUME_PANEL_TIMEOUT));
         } else {
             int statusVolumePanelStyle = Settings.System.getInt(resolver,
                     Settings.System.MODE_VOLUME_OVERLAY, 1);
@@ -175,6 +180,11 @@ public class SoundSettings extends SettingsPreferenceFragment implements
             mVolumeWarning.setChecked(Settings.System.getInt(resolver,
                     Settings.System.MANUAL_SAFE_MEDIA_VOLUME, 1) == 1);
             mVolumeWarning.setOnPreferenceChangeListener(this);
+
+            int statusVolumePanelTimeout = Settings.System.getInt(resolver,
+                    Settings.System.VOLUME_PANEL_TIMEOUT, 3000);
+            mVolumePanelTimeout.setValue(statusVolumePanelTimeout / 1000);
+            mVolumePanelTimeout.setOnPreferenceChangeListener(this);
         }
 
         mVibrateWhenRinging = (CheckBoxPreference) findPreference(KEY_VIBRATE);
@@ -401,6 +411,10 @@ public class SoundSettings extends SettingsPreferenceFragment implements
             int volumeWarning = (Boolean) objValue ? 1 : 0;
             Settings.System.putInt(getContentResolver(),
                     Settings.System.MANUAL_SAFE_MEDIA_VOLUME, volumeWarning);
+        } else if (preference == mVolumePanelTimeout) {
+            int volumePanelTimeout = (Integer) objValue;
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.VOLUME_PANEL_TIMEOUT, volumePanelTimeout * 1000);
         }
 
         return true;
