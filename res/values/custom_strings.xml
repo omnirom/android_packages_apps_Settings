@@ -279,4 +279,5 @@
     <string name="adb_paranoid">ADB paranoia mode</string>
     <string name="adb_paranoid_summary">Immediately reboot if an unknown computer is connected while device is locked</string>
 
+    <string name="unit_sec">sec</string>
 </resources>
