@@ -50,7 +50,7 @@
             android:max="10"
             settings:min="1"
             settings:unitsLeft=""
-            settings:unitsRight="sec"
+            settings:unitsRight="@string/unit_secs"
             android:persistent="false" />
 
     <CheckBoxPreference
