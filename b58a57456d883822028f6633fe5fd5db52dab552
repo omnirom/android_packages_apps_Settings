@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_7c2eb188",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-02-16T21:44:04Z",
+      "side": 1,
+      "message": "Please also use the omni copyright header - see other translation files how it is looking. After that we can merge this",
+      "revId": "b58a57456d883822028f6633fe5fd5db52dab552",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
