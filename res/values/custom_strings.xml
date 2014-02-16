@@ -239,14 +239,6 @@
     <string name="start_time_title">Start</string>
     <string name="end_time_title">End</string>
 
-    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
-    <string name="change_crypt_password_title">Change password</string>
-    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
-    <string name="change_crypt_password_summary">Change the password used for device encryption</string>
-
-    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
-    <string name="encryptionpassword_choose_your_password_header">Set encryption password</string>
-
     <!-- Keyboard and Input ASS methods  -->
     <string name="title_keyboard_input">Advanced options</string>
     <string name="disable_fullscreen_keyboard_title">Disable fullscreen keyboard</string>
