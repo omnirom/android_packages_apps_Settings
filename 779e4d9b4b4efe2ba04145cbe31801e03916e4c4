@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_39f28b99",
+        "filename": "src/com/android/settings/slim/service/SmsCallHelper.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 1000313
+      },
+      "writtenOn": "2014-02-16T13:02:19Z",
+      "side": 1,
+      "message": "this code will prevent alarm manager to call stop services too many times",
+      "revId": "779e4d9b4b4efe2ba04145cbe31801e03916e4c4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
