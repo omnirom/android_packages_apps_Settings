@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_59c3c78d",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000551
+      },
+      "writtenOn": "2014-02-16T01:24:52Z",
+      "side": 1,
+      "message": "Lautstärke-Dialog",
+      "revId": "0b97861087a72bb5c089f8880e694b0e625b194d",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_79c08380",
+        "filename": "res/values-de/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000551
+      },
+      "writtenOn": "2014-02-16T01:24:52Z",
+      "side": 1,
+      "message": "Lautstärke-Dialog / Dialog anstatt Panel",
+      "revId": "0b97861087a72bb5c089f8880e694b0e625b194d",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
