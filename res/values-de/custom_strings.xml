@@ -278,4 +278,16 @@
     <string name="adb_paranoid">ADB Paranoia-Modus</string>
     <string name="adb_paranoid_summary">Sofort neustarten, wenn ein neuer unbekannter Computer angeschlossen wird, während das Gerät gesperrt ist</string>
 
+    <!-- custom data usage period -->
+    <string name="daily_cycle_lenght">Täglich</string>
+    <string name="weekly_cycle_length">Wöchentlich</string>
+    <string name="monthly_cycle_length">Monatlich</string>
+    <string name="weekday_sunday">Sonntag</string>
+    <string name="weekday_monday">Montag</string>
+    <string name="weekday_tuesday">Dienstag</string>
+    <string name="weekday_wednesday">Mittwoch</string>
+    <string name="weekday_thursday">Donnerstag</string>
+    <string name="weekday_friday">Freitag</string>
+    <string name="weekday_saturday">Samstag</string>
+
 </resources>
