@@ -284,8 +284,7 @@ public class QuietHours extends SettingsPreferenceFragment implements
             SmsCallHelper.scheduleService(mContext);
             return true;
         } else if (preference == mQuietHoursEnabled) {
-            Settings.System.putInt(resolver, Settings.System.QUIET_HOURS_ENABLED,
-                    (Boolean) newValue ? 1 : 0);
+            SmsCallHelper.setQuietHoursActive(mContext, (Boolean) newValue ? 1 : 0);
             SmsCallHelper.scheduleService(mContext);
             return true;
         } else if (preference == mQuietHoursRing) {
