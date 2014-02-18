@@ -107,6 +107,13 @@
         android:fragment="org.omnirom.omnigears.interfacesettings.MoreInterfaceSettings"
         android:icon="@drawable/empty_icon" />
 
+    <!-- Navigation -->
+    <header
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/ic_settings_navigation"
+        android:fragment="com.android.settings.slim.NavigationSettings"
+        android:title="@string/navigation_settings_title" />
+
     <!-- DEVICE -->
     <header android:id="@+id/device_section"
         android:title="@string/header_category_device" />

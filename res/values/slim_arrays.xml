@@ -634,6 +634,7 @@
     <string-array name="shortcut_action_navring_entries">
         <item>@string/shortcut_action_app</item>
         <item>@string/shortcut_action_expanded_desktop</item>
+        <item>@string/shortcut_action_app</item>
         <item>@string/shortcut_action_kill</item>
         <item>@string/shortcut_action_lastapp</item>
         <item>@string/shortcut_action_notifications</item>
