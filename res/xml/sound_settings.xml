@@ -31,6 +31,10 @@
             android:persistent="false"
             android:streamType="ring" />
 
+    <PreferenceCategory
+            android:key="category_volume_panel"
+            android:title="@string/category_volume_panel_title"/>
+
     <ListPreference
             android:key="volume_panel_style"
             android:title="@string/volume_panel_style"
@@ -38,6 +42,16 @@
             android:defaultValue="1"
             android:entries="@array/volume_panel_style_entries"
             android:entryValues="@array/volume_panel_style_values" />
+
+    <org.omnirom.omnigears.chameleonos.SeekBarPreference
+            android:key="volume_panel_timeout"
+            android:title="@string/volume_panel_timeout_title"
+            android:summary="@string/volume_panel_timeout_summary"
+            android:max="10"
+            settings:min="1"
+            settings:unitsLeft=""
+            settings:unitsRight="@string/unit_sec"
+            android:persistent="false" />
 
     <CheckBoxPreference
             android:key="safe_headset_volume_warning"
