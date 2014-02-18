@@ -67,6 +67,11 @@
             android:summary="@string/lockscreen_quick_unlock_control_summary" 
             android:persistent="false"/>
 
+        <PreferenceScreen
+            android:key="blacklist"
+            android:title="@string/blacklist_title"
+            android:fragment="com.android.settings.blacklist.BlacklistSettings" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
