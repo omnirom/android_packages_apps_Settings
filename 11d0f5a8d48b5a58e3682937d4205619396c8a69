@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_aad55722",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-02-19T13:01:09Z",
+      "side": 1,
+      "message": "whats the point in showing this? Will it not ascend at all then or what?",
+      "revId": "11d0f5a8d48b5a58e3682937d4205619396c8a69",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
