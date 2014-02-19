@@ -68,11 +68,7 @@ public class PowerUsageSummary extends PreferenceFragment implements
     private static final int MENU_STATS_TYPE                = Menu.FIRST;
     private static final int MENU_STATS_REFRESH             = Menu.FIRST + 1;
     private static final int MENU_BATTERY_STYLE             = Menu.FIRST + 2;
-    private static final int SUBMENU_BATTERY_BAR            = Menu.FIRST + 3;
-    private static final int SUBMENU_BATTERY_BAR_PERCENT    = Menu.FIRST + 4;
-    private static final int SUBMENU_BATTERY_CIRCLE         = Menu.FIRST + 5;
-    private static final int SUBMENU_BATTERY_CIRCLE_PERCENT = Menu.FIRST + 6;
-    private static final int MENU_HELP                      = Menu.FIRST + 7;
+    private static final int MENU_HELP                      = Menu.FIRST + 9;
 
     private PreferenceGroup mAppListGroup;
     private Preference mBatteryStatusPref;
