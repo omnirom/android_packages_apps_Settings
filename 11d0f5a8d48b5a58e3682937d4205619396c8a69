@@ -141,6 +141,24 @@
       "revId": "11d0f5a8d48b5a58e3682937d4205619396c8a69",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_0a99eb70",
+        "filename": "src/com/android/settings/IncreasingRingPreference.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-02-19T16:03:28Z",
+      "side": 1,
+      "message": "sounds better - Will there be a toast for the other way round too? So if I increase above the starting volume again :) but still for me the question stays valid. Why should ascending ringtones be disabled/enabled when I reduce/increase  the ringer volume? I still cant image a logical explanation for it",
+      "parentUuid": "8b77b57d_8a789b26",
+      "revId": "11d0f5a8d48b5a58e3682937d4205619396c8a69",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
