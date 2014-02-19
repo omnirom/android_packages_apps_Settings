@@ -119,6 +119,9 @@
     <string name="battery_bar_percent">Battery bar &amp; percent</string>
     <string name="battery_circle">Battery circle</string>
     <string name="battery_circle_percent">Battery circle &amp; percent</string>
+    <string name="battery_percent_only">Percent only</string>
+    <string name="battery_percent_left_of_bar">Percent next to battery bar</string>
+    <string name="battery_none">None</string>
 
     <!-- Turn on display when power connected; turn off display when power disconnected -->
     <string name="wake_when_plugged_or_unplugged_title">Wake on plug</string>
