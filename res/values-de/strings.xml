@@ -1873,7 +1873,7 @@
     <string name="data_usage_auto_sync_off_dialog_title" msgid="9013139130490125793">"Autom. Synchronisierung deaktivieren?"</string>
     <string name="data_usage_auto_sync_off_dialog" msgid="4744145757533455623">"So reduzieren Sie den Datenverbrauch und schonen den Akku, müssen jedoch jedes einzelne Konto manuell synchronisieren, um neue Informationen abzurufen. Außerdem erhalten Sie keine Benachrichtigungen, wenn Aktualisierungen erfolgen."</string>
     <string name="data_usage_cycle_editor_title" msgid="1373797281540188533">"Datum für Zurücksetzung der Nutzungszyklen"</string>
-    <string name="data_usage_cycle_editor_subtitle" msgid="5512903797979928416">"Datum (monatlich):"</string>
+    <string name="data_usage_cycle_editor_subtitle" msgid="5512903797979928416">"Datum jedes Zyklus:"</string>
     <string name="data_usage_cycle_editor_positive" msgid="8821760330497941117">"Übernehmen"</string>
     <string name="data_usage_warning_editor_title" msgid="3704136912240060339">"Warnung für Datenverbrauch festlegen"</string>
     <string name="data_usage_limit_editor_title" msgid="9153595142385030015">"Limit festlegen"</string>
