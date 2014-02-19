@@ -105,6 +105,24 @@
       "revId": "11d0f5a8d48b5a58e3682937d4205619396c8a69",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_4a7e8314",
+        "filename": "src/com/android/settings/IncreasingRingPreference.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-02-19T15:52:28Z",
+      "side": 1,
+      "message": "Ugh - dont know if I wanted to hear that :) That doesnt sound right to me. I dont want to get weired alerts when changing volumes. We disabled the safe headset volume alert just lately because of that :) So if it should be possible to disable the alert then. Allthough I would prefer that the starting volume will dynamically be adapted to the ringer volume (min of both) instead - and that all of this becomes obsolete. Sounds much simplier and more logically to me. If you enabled ascending ringtone then you want that - independent of volume changes",
+      "parentUuid": "8b77b57d_ca91b355",
+      "revId": "11d0f5a8d48b5a58e3682937d4205619396c8a69",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
