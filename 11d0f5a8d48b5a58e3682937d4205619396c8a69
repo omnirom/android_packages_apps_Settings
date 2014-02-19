@@ -52,6 +52,23 @@
       "revId": "11d0f5a8d48b5a58e3682937d4205619396c8a69",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_2a98677b",
+        "filename": "src/com/android/settings/IncreasingRingPreference.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000117
+      },
+      "writtenOn": "2014-02-19T15:19:57Z",
+      "side": 1,
+      "message": "This is where this comes in max. The empty boolean in VolumePreference.java is used for this. What happens is that after volume is changed, it will ask for a boolean onVolumeChange but since we override the method for that boolean here, if ringtone value is set less than starting volume, it will notify the user with a dialogue.",
+      "revId": "11d0f5a8d48b5a58e3682937d4205619396c8a69",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
