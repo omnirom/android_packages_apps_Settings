@@ -69,6 +69,24 @@
       "revId": "11d0f5a8d48b5a58e3682937d4205619396c8a69",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_8a9fbb60",
+        "filename": "src/com/android/settings/IncreasingRingPreference.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-02-19T15:36:37Z",
+      "side": 1,
+      "message": "I mean what happens if I change ringer volume using volume up and down and not here in the settings?",
+      "parentUuid": "8b77b57d_2a98677b",
+      "revId": "11d0f5a8d48b5a58e3682937d4205619396c8a69",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
