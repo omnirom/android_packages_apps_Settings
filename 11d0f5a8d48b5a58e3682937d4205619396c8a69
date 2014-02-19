@@ -16,6 +16,24 @@
       "revId": "11d0f5a8d48b5a58e3682937d4205619396c8a69",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_4ad04324",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000117
+      },
+      "writtenOn": "2014-02-19T14:42:16Z",
+      "side": 1,
+      "message": "Yep, it will use the normal volume if ringtone volume is less than start volume.",
+      "parentUuid": "8b77b57d_aad55722",
+      "revId": "11d0f5a8d48b5a58e3682937d4205619396c8a69",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
