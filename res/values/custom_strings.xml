@@ -292,4 +292,15 @@
     <string name="weekday_thursday">Thursday</string>
     <string name="weekday_friday">Friday</string>
     <string name="weekday_saturday">Saturday</string>
+
+    <!-- Lockscreen background -->
+    <string name="lockscreen_background">Background</string>
+    <string name="lockscreen_background_style_title">Lockscreen background style</string>
+    <string name="background_color_fill_title">Background color</string>
+    <string name="background_default">Default style background</string>
+    <string name="background_color_fill">Color fill</string>
+    <string name="background_wallpaper">Custom wallpaper</string>
+    <string name="transparency">Background transparency</string>
+    <string name="background_result_successful">Background changed</string>
+    <string name="background_result_not_successful">Background not changed</string>
 </resources>
