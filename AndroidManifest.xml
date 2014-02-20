@@ -632,21 +632,6 @@
                 android:resource="@id/interface_bars" />
         </activity>
 
-        <activity android:name="Settings$MenusSettingsActivity"
-                android:label="@string/interface_menus_title"
-                android:taskAffinity=""
-                android:excludeFromRecents="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.android.settings.SHORTCUT" />
-            </intent-filter>
-            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="org.omnirom.omnigears.interfacesettings.MenusSettings" />
-            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
-                android:resource="@id/interface_menus" />
-        </activity>
-
         <activity android:name="Settings$NotificationPanelSettingsActivity"
                 android:label="@string/interface_notification_panel_title"
                 android:taskAffinity=""

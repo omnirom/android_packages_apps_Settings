@@ -20,8 +20,26 @@
     xmlns:settings="http://schemas.android.com/apk/res/com.android.settings">
 
     <PreferenceScreen
+        android:key="navbar_targets_settings"
+        android:fragment="com.android.settings.slim.dslv.ButtonsListViewSettings"
+        android:title="@string/power_menu_title">
+            <extra android:name="buttonMode" android:value="6" />
+            <extra android:name="maxAllowedButtons" android:value="8" />
+            <extra android:name="disableLongpress" android:value="true" />
+            <extra android:name="disableDeleteLastEntry" android:value="true" />
+            <extra android:name="actionValues" android:value="shortcut_action_power_menu_values" />
+            <extra android:name="actionEntries" android:value="shortcut_action_power_menu_entries" />
+            <extra android:name="fragment" android:value="com.android.settings.slim.fragments.PowerMenuFragment" />
+    </PreferenceScreen>
+
+    <PreferenceScreen
         android:key="navbar_settings"
         android:fragment="com.android.settings.slim.NavbarSettings"
         android:title="@string/navigation_bar" />
+
+    <PreferenceScreen
+        android:key="pie_settings"
+        android:fragment="com.android.settings.slim.PieControl"
+        android:title="@string/pie_control_title" />
 
 </PreferenceScreen>

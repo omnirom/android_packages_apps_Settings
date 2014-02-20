@@ -80,13 +80,6 @@
         android:icon="@drawable/ic_bars" />
 
     <header
-        android:id="@+id/interface_menus"
-        android:title="@string/interface_menus_title"
-        android:breadCrumbTitle="@string/interface_menus_title"
-        android:fragment="org.omnirom.omnigears.interfacesettings.MenusSettings"
-        android:icon="@drawable/ic_menus" />
-
-    <header
         android:id="@+id/interface_notification_panel"
         android:title="@string/interface_notification_panel_title"
         android:breadCrumbTitle="@string/interface_notification_panel_title"
@@ -99,6 +92,13 @@
         android:breadCrumbTitle="@string/active_display_settings"
         android:fragment="org.omnirom.omnigears.chameleonos.ActiveDisplaySettings"
         android:icon="@drawable/ic_settings_actived" />
+    
+    <!-- Navigation -->
+    <header
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/ic_settings_navigation"
+        android:fragment="com.android.settings.slim.NavigationSettings"
+        android:title="@string/navigation_settings_title" />
 
     <header
         android:id="@+id/interface_more"
@@ -106,13 +106,6 @@
         android:breadCrumbTitle="@string/interface_more_title"
         android:fragment="org.omnirom.omnigears.interfacesettings.MoreInterfaceSettings"
         android:icon="@drawable/empty_icon" />
-
-    <!-- Navigation -->
-    <header
-        android:id="@+id/navigation_settings"
-        android:icon="@drawable/ic_settings_navigation"
-        android:fragment="com.android.settings.slim.NavigationSettings"
-        android:title="@string/navigation_settings_title" />
 
     <!-- DEVICE -->
     <header android:id="@+id/device_section"
