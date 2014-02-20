@@ -189,6 +189,13 @@
         <intent android:action="com.android.settings.MANUFACTURER_APPLICATION_SETTING" />
     </header>
 
+    <!-- Amra Settings -->
+    <header
+        android:id="@+id/amra_settings"
+        android:fragment="com.android.settings.AmraSettings"
+        android:icon="@drawable/ic_settings_amra"
+        android:title="@string/amra_settings" />
+
     <!-- PERSONAL -->
     <header android:id="@+id/personal_section"
         android:title="@string/header_category_personal" />
