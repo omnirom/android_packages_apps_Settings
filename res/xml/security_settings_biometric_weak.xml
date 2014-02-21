@@ -79,6 +79,20 @@
             android:summary="@string/lockscreen_see_through_summary"
             android:persistent="false" />
 
+        <CheckBoxPreference
+            android:key="lockscreen_blur_behind"
+            android:title="@string/blur_behind_title"
+            android:summary="@string/blur_behind_summary"
+            android:persistent="false" />
+
+        <SeekBarPreference
+            android:key="lockscreen_blur_radius"
+            android:title="@string/blur_radius_title"
+            android:summary="@string/blur_radius_summary"
+            android:max="25"
+            android:defaultValue="12"
+            android:persistent="false" />
+
         <PreferenceScreen
             android:fragment="com.android.settings.OwnerInfoSettings"
             android:key="owner_info_settings"

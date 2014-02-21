@@ -51,6 +51,8 @@ import com.android.internal.widget.LockPatternUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.omnirom.omnigears.chameleonos.SeekBarPreference;
+
 /**
  * Gesture lock pattern settings.
  */
@@ -97,6 +99,8 @@ public class SecuritySettings extends RestrictedSettingsFragment
     private static final String KEY_ENABLE_CAMERA = "lockscreen_enable_camera";
     private static final String KEY_ENABLE_POWER_MENU = "lockscreen_enable_power_menu";
     private static final String KEY_SEE_THROUGH = "lockscreen_see_through";
+    private static final String KEY_BLUR_BEHIND = "lockscreen_blur_behind";
+    private static final String KEY_BLUR_RADIUS = "lockscreen_blur_radius";
 
     private PackageManager mPM;
     private DevicePolicyManager mDPM;
@@ -134,6 +138,8 @@ public class SecuritySettings extends RestrictedSettingsFragment
     private CheckBoxPreference mEnableCameraWidget;
     private CheckBoxPreference mEnablePowerMenu;
     private CheckBoxPreference mSeeThrough;
+    private CheckBoxPreference mBlurBehind;
+    private SeekBarPreference mBlurRadius;
     private ListPreference mLockNumpadRandom;
     private CheckBoxPreference mMenuUnlock;
 
@@ -274,10 +280,25 @@ public class SecuritySettings extends RestrictedSettingsFragment
 
         // Lockscreen Blur
         mSeeThrough = (CheckBoxPreference) findPreference(KEY_SEE_THROUGH);
+        mBlurBehind = (CheckBoxPreference) findPreference(KEY_BLUR_BEHIND);
+        mBlurRadius = (SeekBarPreference) findPreference(KEY_BLUR_RADIUS);
+
         if (mSeeThrough != null) {
             mSeeThrough.setChecked(Settings.System.getInt(getContentResolver(),
                   Settings.System.LOCKSCREEN_SEE_THROUGH, 0) == 1);
             mSeeThrough.setOnPreferenceChangeListener(this);
+        }
+
+        if (mBlurBehind != null) {
+            mBlurBehind.setChecked(Settings.System.getInt(getContentResolver(),
+                Settings.System.LOCKSCREEN_BLUR_BEHIND, 0) == 1);
+            mBlurBehind.setOnPreferenceChangeListener(this);
+        }
+
+        if (mBlurRadius != null) {
+            mBlurRadius.setValue(Settings.System.getInt(getContentResolver(),
+                Settings.System.LOCKSCREEN_BLUR_RADIUS, 12));
+            mBlurRadius.setOnPreferenceChangeListener(this);
         }
 
         // biometric weak liveliness
@@ -747,6 +768,13 @@ public class SecuritySettings extends RestrictedSettingsFragment
             boolean newValue = (Boolean) value;
             Settings.System.putInt(getContentResolver(),
                     Settings.System.LOCKSCREEN_SEE_THROUGH, newValue ? 1 : 0);
+        } else if (preference == mBlurBehind) {
+            boolean newValue = (Boolean) value;
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.LOCKSCREEN_BLUR_BEHIND, newValue ? 1 : 0);
+        } else if (preference == mBlurRadius) {
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.LOCKSCREEN_BLUR_RADIUS, (Integer)value);
         }
         return true;
     }
