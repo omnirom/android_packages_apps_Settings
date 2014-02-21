@@ -100,6 +100,15 @@
         android:fragment="com.android.settings.slim.NavigationSettings"
         android:title="@string/navigation_settings_title" />
 
+    <!-- Animation Control -->
+    <header
+        android:id="@+id/interface_animation"
+        android:title="@string/interface_animation_title"
+        android:breadCrumbTitle="@string/interface_animation_title"
+        android:fragment="com.android.settings.nameless.interfacesettings.AnimationInterfaceSettings"
+        android:icon="@drawable/ic_rom_control_animations" />
+
+    <!-- Other interface controls -->
     <header
         android:id="@+id/interface_more"
         android:title="@string/interface_more_title"

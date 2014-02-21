@@ -17,6 +17,8 @@
 -keep class org.**
 -keep class com.android.settings.privacyguard.*
 -keep class com.android.settings.slim.**
+-keep class com.android.settings.nameless.**
+-keep class com.android.settings.nameless.interfacesettings.**
 
 # Keep click responders
 -keepclassmembers class com.android.settings.inputmethod.UserDictionaryAddWordActivity {
