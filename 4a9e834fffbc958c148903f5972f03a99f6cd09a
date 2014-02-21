@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_65a8d074",
+        "filename": "src/com/android/settings/SecuritySettings.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1000313
+      },
+      "writtenOn": "2014-02-21T13:49:55Z",
+      "side": 1,
+      "message": "same comment like in base parts :)",
+      "revId": "4a9e834fffbc958c148903f5972f03a99f6cd09a",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
