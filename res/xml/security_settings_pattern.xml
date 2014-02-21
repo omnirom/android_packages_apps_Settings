@@ -14,7 +14,8 @@
      limitations under the License.
 -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:settings="http://schemas.android.com/apk/res/com.android.settings">
 
     <PreferenceCategory
         android:key="security_category"
@@ -68,6 +69,17 @@
             android:key="lockscreen_see_through"
             android:title="@string/lockscreen_see_through_title"
             android:summary="@string/lockscreen_see_through_summary"
+            android:persistent="false" />
+
+        <org.omnirom.omnigears.chameleonos.SeekBarPreference
+            android:key="lockscreen_blur_radius"
+            android:title="@string/blur_radius_title"
+            android:summary="@string/blur_radius_summary"
+            android:max="25"
+            settings:min="0"
+            settings:unitsLeft=""
+            settings:unitsRight=""
+            android:dependency="lockscreen_see_through"
             android:persistent="false" />
 
         <PreferenceScreen
