@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_b0286833",
+        "filename": "src/com/android/settings/slim/QuietHours.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000313
+      },
+      "writtenOn": "2014-02-22T14:28:39Z",
+      "side": 1,
+      "message": "Need someone to change all \"\u003d\u003d 1\" into \"!\u003d 0\"",
+      "revId": "8abac987a4a183d8b2b2a567a6ba4060125ce4f8",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
