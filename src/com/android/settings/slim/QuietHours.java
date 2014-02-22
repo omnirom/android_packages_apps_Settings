@@ -159,7 +159,7 @@ public class QuietHours extends SettingsPreferenceFragment implements
 
             // Set the preference state and listeners where applicable
             mQuietHoursEnabled.setChecked(
-                    Settings.System.getInt(resolver, Settings.System.QUIET_HOURS_ENABLED, 0) == 1);
+                    Settings.System.getInt(resolver, Settings.System.QUIET_HOURS_ENABLED, 0) != 0);
             mQuietHoursEnabled.setOnPreferenceChangeListener(this);
             mQuietHoursTimeRange.setTimeRange(
                     Settings.System.getInt(resolver, Settings.System.QUIET_HOURS_START, 0),
