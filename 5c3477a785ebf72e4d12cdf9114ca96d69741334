@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_7046d056",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000682
+      },
+      "writtenOn": "2014-02-22T11:13:21Z",
+      "side": 1,
+      "message": "Should it be \"panneau volume\" or \"panneau de volume\"? You have used both in the translation.",
+      "revId": "5c3477a785ebf72e4d12cdf9114ca96d69741334",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
