@@ -27,6 +27,9 @@
     <string name="volume_adjust_sounds_enable_summary">Émettre un son lors du réglage du volume avec les touches</string>
     <string name="link_volume_ringtones">Lier les volumes des notifications et de la sonnerie</string>
     <string name="volume_ring_only_description">Sonnerie</string>
+    <string name="category_volume_panel_title">Panneau volume</string>
+    <string name="volume_panel_timeout_title">Délai</string>
+    <string name="volume_panel_timeout_summary">Définir le délai avant que le panneau de volume soit masqué</string>
     <string name="advanced_reboot_title">Redémarrage avancé</string>
     <string name="advanced_reboot_summary">Inclure les options de redémarrage en mode recovery et bootloader dans le menu marche/arrêt lorsque l\'appareil est déverrouillé</string>
     <string name="battery_around_lockscreen_ring">Niveau de batterie autour de l\'anneau de déverrouillage</string>
@@ -209,4 +212,18 @@
     <string name="display_rotation_90_title">90 dégrées</string>
     <string name="display_rotation_180_title">180 dégrées</string>
     <string name="display_rotation_270_title">270 dégrées</string>
+    <string name="adb_paranoid">ADB mode paranoïaque</string>
+    <string name="adb_paranoid_summary">Redémarrer immédiatement si l\'appareil est verrouillé et qu\'il est connecté à un ordinateur inconnu</string>
+    <string name="unit_sec">s</string>
+    <string name="daily_cycle_lenght">Journalier</string>
+    <string name="weekly_cycle_length">Hebdomadaire</string>
+    <string name="monthly_cycle_length">Mensuel</string>
+    <string name="weekday_sunday">Dimanche</string>
+    <string name="weekday_monday">Lundi</string>
+    <string name="weekday_tuesday">Mardi</string>
+    <string name="weekday_wednesday">Mercredi</string>
+    <string name="weekday_thursday">Jeudi</string>
+    <string name="weekday_friday">Vendredi</string>
+    <string name="weekday_saturday">Samedi</string>
+    <string name="data_usage_lengths_spinner_subtitle">Temps de cycle\u00A0:</string>
 </resources>
