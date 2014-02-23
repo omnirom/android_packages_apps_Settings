@@ -292,4 +292,7 @@
     <string name="weekday_thursday">Thursday</string>
     <string name="weekday_friday">Friday</string>
     <string name="weekday_saturday">Saturday</string>
+    
+    <string name="wifi_countrycode_default">Default</string>
+    <string name="wifi_setting_countrycode_reboot">Reboot to reset default region code</string>    
 </resources>

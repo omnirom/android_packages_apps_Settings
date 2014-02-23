@@ -167,6 +167,7 @@
     <item msgid="2715516524973207876">"Nur 2,4 GHz"</item>
   </string-array>
   <string-array name="wifi_countrycode_entries">
+    <item>@string/wifi_countrycode_default</item>
     <item>USA</item>
     <item>Kanada, Taiwan</item>
     <item>Deutschland</item>
