@@ -32,6 +32,13 @@
                     android:targetClass="@string/additional_system_update_menu" />
         </PreferenceScreen>
 
+        <!-- Changelog -->
+        <PreferenceScreen android:key="changelog"
+                android:title="Changelog"
+                android:summary="Changes since build"
+                android:fragment="com.android.settings.deviceinfo.ChangesFragment" />
+
+
         <!-- Device status - launches activity -->
         <PreferenceScreen android:key="status_info"
                 android:title="@string/device_status" 
