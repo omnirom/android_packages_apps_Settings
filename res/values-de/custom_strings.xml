@@ -291,4 +291,14 @@
     <string name="weekday_saturday">Samstag</string>
     <!-- Subtitle of dialog for editing data usage cycle length. [CHAR LIMIT=32] -->
     <string name="data_usage_lengths_spinner_subtitle">Häufigkeit:</string>
+
+
+    <!-- Changelog -->
+    <string name="changelog">Kürzliche Änderungen</string>
+    <string name="changelog_title">Änderungen seit Build</string>
+    <string name="changelog_no_changes">Keine Änderungen</string>
+    <string name="changelog_commit_message">Änderungsnachricht</string>
+    <string name="changelog_parse_error">Syntaxfehler</string>
+    <string name="changelog_network_error">Netzwerkfehler</string>
+
 </resources>
