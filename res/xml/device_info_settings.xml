@@ -32,6 +32,13 @@
                     android:targetClass="@string/additional_system_update_menu" />
         </PreferenceScreen>
 
+        <!-- Changelog -->
+        <PreferenceScreen android:key="changelog"
+                android:title="@string/changelog"
+                android:summary="@string/changelog_title"
+                android:fragment="org.omnirom.omnigears.changelog.ChangesFragment" />
+
+
         <!-- Device status - launches activity -->
         <PreferenceScreen android:key="status_info"
                 android:title="@string/device_status" 
