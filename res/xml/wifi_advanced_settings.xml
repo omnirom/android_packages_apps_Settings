@@ -56,7 +56,6 @@
     <ListPreference
             android:key="wifi_countrycode"
             android:title="@string/wifi_setting_countrycode_title"
-            android:summary="@string/wifi_setting_countrycode_summary"
             android:persistent="false"
             android:entries="@array/wifi_countrycode_entries"
             android:entryValues="@array/wifi_countrycode_values"

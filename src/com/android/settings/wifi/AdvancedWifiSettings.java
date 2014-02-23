@@ -131,11 +131,24 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
         ListPreference ccodePref = (ListPreference) findPreference(KEY_COUNTRY_CODE);
         if (ccodePref != null) {
             ccodePref.setOnPreferenceChangeListener(this);
-            String value = mWifiManager.getCountryCode();
-            if (value != null) {
-                ccodePref.setValue(value);
+
+            String settingValue =  Settings.Global.getString(getContentResolver(),
+                    Settings.Global.WIFI_COUNTRY_CODE);
+            // reset to default and not been set again so far
+            if (settingValue == null || settingValue.isEmpty()){
+                ccodePref.setValue("");
+                updateCountryCodeSummary(ccodePref, "");
             } else {
-                Log.e(TAG, "Failed to fetch country code");
+                String value = mWifiManager.getCountryCode();
+                if (value != null) {
+                    if(ccodePref.findIndexOfValue(value)==-1){
+                        value = "";
+                    }
+                    ccodePref.setValue(value);
+                    updateCountryCodeSummary(ccodePref, value);
+                } else {
+                    Log.e(TAG, "Failed to fetch country code");
+                }
             }
         }
 
@@ -177,6 +190,11 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
     private void updateFrequencyBandSummary(Preference frequencyBandPref, int index) {
         String[] summaries = getResources().getStringArray(R.array.wifi_frequency_band_entries);
         frequencyBandPref.setSummary(summaries[index]);
+    }
+
+    private void updateCountryCodeSummary(ListPreference ccodePref, String value) {
+        int idx = ccodePref.findIndexOfValue(value);
+        ccodePref.setSummary(ccodePref.getEntries()[idx]);
     }
 
     @Override
@@ -223,7 +241,15 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
 
         if (KEY_COUNTRY_CODE.equals(key)) {
             try {
-                mWifiManager.setCountryCode((String) newValue, true);
+                if(((String)newValue).length()==0){
+                    Settings.Global.putString(getContentResolver(),
+                            Settings.Global.WIFI_COUNTRY_CODE, null);
+                    Toast.makeText(getActivity(), R.string.wifi_setting_countrycode_reboot,
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    mWifiManager.setCountryCode((String) newValue, true);
+                }
+                updateCountryCodeSummary((ListPreference)preference, (String)newValue);
             } catch (IllegalArgumentException e) {
                 Toast.makeText(getActivity(), R.string.wifi_setting_countrycode_error,
                         Toast.LENGTH_SHORT).show();

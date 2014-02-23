@@ -17,6 +17,7 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string-array name="wifi_countrycode_entries">
+        <item>@string/wifi_countrycode_default</item>
         <item>États-Unis</item>
         <item>Canada, Taiwan</item>
         <item>Allemagne</item>
