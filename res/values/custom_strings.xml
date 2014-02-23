@@ -292,4 +292,12 @@
     <string name="weekday_thursday">Thursday</string>
     <string name="weekday_friday">Friday</string>
     <string name="weekday_saturday">Saturday</string>
+
+    <!-- Changelog -->
+    <string name="changelog_title">Changes since build</string>
+    <string name="changelog_no_changes">No changes</string>
+    <string name="changelog_commit_message">Commit message</string>
+    <string name="changelog_parse_error">Parse error</string>
+    <string name="changelog_network_error">Network error</string>
+
 </resources>
