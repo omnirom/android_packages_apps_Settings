@@ -242,7 +242,6 @@
     <string name="ime_switcher_notify">Selettore notifica</string>
     <string name="ime_switcher_notify_summary">Visualizza il metodo di inserimento del selettore notifica</string>
 
-    <string name="security_maximize_widgets_title">Massimizza widget lockscreen</string>
     <string name="wifi_setting_countrycode_title">Codice regione Wi-Fi</string>
     <string name="wifi_setting_countrycode_summary">Specifica il codice regione per il Wi-Fi</string>
     <string name="wifi_setting_countrycode_error">C\'è un problema nell\'impostare il codice regione del Wi-Fi</string>

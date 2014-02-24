@@ -306,12 +306,8 @@
     <string name="biometric_weak_improve_matching_title" msgid="8754080894393195194">"Enza kangcono ukufana kobuso"</string>
     <string name="biometric_weak_liveliness_title" msgid="2661613702124561096">"Ukuhlola ukuphila"</string>
     <string name="biometric_weak_liveliness_summary" msgid="4199587000948042325">"Idinga ukucwabiza kweso ngenkathi ivula"</string>
-    <string name="lock_after_timeout" msgid="4590337686681194648">"Ivalwe ngokuzenzakalelayo"</string>
-    <string name="lock_after_timeout_summary" msgid="6128431871360905631">"<xliff:g id="TIMEOUT_STRING">%1$s</xliff:g> ngemuva kokulala"</string>
     <string name="show_owner_info_on_lockscreen_label" msgid="5074906168357568434">"Bonisa ulwazi lomnikazi ekuvaleni isikrini"</string>
     <string name="owner_info_settings_title" msgid="2723190010708381889">"Imininingwane yomnikazi"</string>
-    <string name="security_enable_widgets_title" msgid="2754833397070967846">"Nika amandla amawijethi"</string>
-    <string name="security_enable_widgets_disabled_summary" msgid="1557090442377855233">"Ikhutshazwe ngumlawuli"</string>
     <string name="owner_info_settings_summary" msgid="3800834657847339570"></string>
     <string name="owner_info_settings_edit_text_hint" msgid="4608681417960923911">"Faka umbhalo wokubonisa kwisikrini sokuvala"</string>
     <string name="show_user_info_on_lockscreen_label" msgid="8408914624925608365">"Bonisa ulwazi lomsebenzisi esikrinini sokukhiya"</string>
@@ -1075,7 +1071,6 @@
     <string name="lockpattern_settings_enable_summary" msgid="1165707416664252167">"Kumelwe udwebe iphathini ukuze uvule isikrini"</string>
     <string name="lockpattern_settings_enable_visible_pattern_title" msgid="2615606088906120711">"Yenza iphethini ibonakale"</string>
     <string name="lockpattern_settings_enable_tactile_feedback_title" msgid="8898518337442601027">"Dlidliza lapho uthinta"</string>
-    <string name="lockpattern_settings_enable_power_button_instantly_locks" msgid="5735444062633666327">"Inkinobho yamandla iyakhiyeka ngokushesha"</string>
     <string name="lockpattern_settings_choose_lock_pattern" msgid="1652352830005653447">"Setha iphathini yokuvula"</string>
     <string name="lockpattern_settings_change_lock_pattern" msgid="1123908306116495545">"Shintsha iphathini yokuvula"</string>
     <string name="lockpattern_settings_help_how_to_record" msgid="2614673439060830433">"Udweba kanjani phathini yokuvula"</string>

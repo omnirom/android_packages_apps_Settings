@@ -306,12 +306,8 @@
     <string name="biometric_weak_improve_matching_title" msgid="8754080894393195194">"Förbättra ansiktsmatchningen"</string>
     <string name="biometric_weak_liveliness_title" msgid="2661613702124561096">"Liveness-kontroll"</string>
     <string name="biometric_weak_liveliness_summary" msgid="4199587000948042325">"Blinkning krävs vid upplåsning"</string>
-    <string name="lock_after_timeout" msgid="4590337686681194648">"Lås automatiskt"</string>
-    <string name="lock_after_timeout_summary" msgid="6128431871360905631">"<xliff:g id="TIMEOUT_STRING">%1$s</xliff:g> efter viloläge"</string>
     <string name="show_owner_info_on_lockscreen_label" msgid="5074906168357568434">"Visa ägaruppgifter på den låsta skärmen"</string>
     <string name="owner_info_settings_title" msgid="2723190010708381889">"Ägaruppgifter"</string>
-    <string name="security_enable_widgets_title" msgid="2754833397070967846">"Aktivera widgetar"</string>
-    <string name="security_enable_widgets_disabled_summary" msgid="1557090442377855233">"Har inaktiverats av administratören"</string>
     <string name="owner_info_settings_summary" msgid="3800834657847339570"></string>
     <string name="owner_info_settings_edit_text_hint" msgid="4608681417960923911">"Ange text som ska visas på den låsta skärmen"</string>
     <string name="show_user_info_on_lockscreen_label" msgid="8408914624925608365">"Visa användarinfo på den låsta skärmen"</string>
@@ -1074,7 +1070,6 @@
     <string name="lockpattern_settings_enable_summary" msgid="1165707416664252167">"Måste rita grafiskt lösenord för att låsa upp skärmen"</string>
     <string name="lockpattern_settings_enable_visible_pattern_title" msgid="2615606088906120711">"Gör mönster synligt"</string>
     <string name="lockpattern_settings_enable_tactile_feedback_title" msgid="8898518337442601027">"Vibrera vid tryck"</string>
-    <string name="lockpattern_settings_enable_power_button_instantly_locks" msgid="5735444062633666327">"Avstängningsknappen låser direkt"</string>
     <string name="lockpattern_settings_choose_lock_pattern" msgid="1652352830005653447">"Ange grafiskt lösenord"</string>
     <string name="lockpattern_settings_change_lock_pattern" msgid="1123908306116495545">"Byt grafiskt lösenord"</string>
     <string name="lockpattern_settings_help_how_to_record" msgid="2614673439060830433">"Så här ritar du ett grafiskt lösenord"</string>

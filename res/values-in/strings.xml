@@ -306,12 +306,8 @@
     <string name="biometric_weak_improve_matching_title" msgid="8754080894393195194">"Menyempurnakan pencocokan wajah"</string>
     <string name="biometric_weak_liveliness_title" msgid="2661613702124561096">"Pemeriksaan keaktifan"</string>
     <string name="biometric_weak_liveliness_summary" msgid="4199587000948042325">"Memerlukan kedipan mata saat membuka kunci"</string>
-    <string name="lock_after_timeout" msgid="4590337686681194648">"Menggembok secara otomatis"</string>
-    <string name="lock_after_timeout_summary" msgid="6128431871360905631">"<xliff:g id="TIMEOUT_STRING">%1$s</xliff:g> setelah tidur"</string>
     <string name="show_owner_info_on_lockscreen_label" msgid="5074906168357568434">"Tampilkan info pemilik pada layar pengunci"</string>
     <string name="owner_info_settings_title" msgid="2723190010708381889">"Info pemilik"</string>
-    <string name="security_enable_widgets_title" msgid="2754833397070967846">"Aktifkan widget"</string>
-    <string name="security_enable_widgets_disabled_summary" msgid="1557090442377855233">"Dinonaktifkan oleh administrator"</string>
     <string name="owner_info_settings_summary" msgid="3800834657847339570"></string>
     <string name="owner_info_settings_edit_text_hint" msgid="4608681417960923911">"Ketikkan teks untuk ditampilkan pada layar kunci"</string>
     <string name="show_user_info_on_lockscreen_label" msgid="8408914624925608365">"Tampilkan info pengguna pada layar pengunci"</string>
@@ -1074,7 +1070,6 @@
     <string name="lockpattern_settings_enable_summary" msgid="1165707416664252167">"Harus membuat pola untuk membuka layar"</string>
     <string name="lockpattern_settings_enable_visible_pattern_title" msgid="2615606088906120711">"Perlihatkan pola"</string>
     <string name="lockpattern_settings_enable_tactile_feedback_title" msgid="8898518337442601027">"Bergetar saat disentuh"</string>
-    <string name="lockpattern_settings_enable_power_button_instantly_locks" msgid="5735444062633666327">"Tombol daya langsung kunci"</string>
     <string name="lockpattern_settings_choose_lock_pattern" msgid="1652352830005653447">"Setel pola pembuka kunci"</string>
     <string name="lockpattern_settings_change_lock_pattern" msgid="1123908306116495545">"Ubah pola pembuka kunci"</string>
     <string name="lockpattern_settings_help_how_to_record" msgid="2614673439060830433">"Cara membuat pola pembuka kunci"</string>

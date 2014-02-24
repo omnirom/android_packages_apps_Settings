@@ -48,17 +48,6 @@
     <item msgid="1903860996174927898">"۱۰ دقیقه"</item>
     <item msgid="6415509612413178727">"۳۰ دقیقه"</item>
   </string-array>
-  <string-array name="lock_after_timeout_entries">
-    <item msgid="8929270399652145290">"فوری"</item>
-    <item msgid="6736512735606834431">"۵ ثانیه"</item>
-    <item msgid="8044619388267891375">"۱۵ ثانیه"</item>
-    <item msgid="1822002388249545488">"۳۰ ثانیه"</item>
-    <item msgid="8538071621211916519">"۱ دقیقه"</item>
-    <item msgid="5663439580228932882">"۲ دقیقه"</item>
-    <item msgid="49888496216106852">"۵ دقیقه"</item>
-    <item msgid="9002737361305019353">"۱۰ دقیقه"</item>
-    <item msgid="4322676235684793329">"۳۰ دقیقه"</item>
-  </string-array>
   <string-array name="entries_font_size">
     <item msgid="8166647333858618801">"کوچک"</item>
     <item msgid="1932071435506638315">"عادی"</item>
