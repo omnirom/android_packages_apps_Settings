@@ -109,7 +109,6 @@
     <string name="custom_runtime_warning_title">Attention</string>
     <string name="custom_runtime_warning_message">ART n\'est pas supporté par OmniROM. Cette fonctionnalité est disponible seulement pour expérimentation et elle peut potentiellement causer des instabilités, des bogues, des pertes de données ou empêcher le démarrage de votre appareil. Visitez &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introduction à ART&lt;/a&gt; pour plus d\'information.&lt;br/&gt;&lt;br/&gt;Nous vous demandons de ne pas rapporter de bogues si vous avez activé le système d\'exécution ART.&lt;br/&gt;&lt;br/&gt;Êtes-vous sûr de vouloir redémarrer pour passer le système d\'exécution de <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> à <xliff:g id="new" example="libart.so">%2$s</xliff:g>\u00A0?</string>
     <string name="intent_sender_data_label"><xliff:g id="data">Données\u00A0:</xliff:g></string>
-    <string name="security_maximize_widgets_title">Maximiser les widgets</string>
     <string name="wifi_setting_countrycode_title">Code région du Wi-Fi</string>
     <string name="wifi_setting_countrycode_summary">Spécifier le code Wi-Fi de la région</string>
     <string name="wifi_setting_countrycode_error">Un problème a été rencontré avec le paramétrage du code de région.</string>
@@ -193,12 +192,6 @@
     <string name="expandable">Extensible</string>
     <string name="expanded">Étendu</string>
     <string name="supersu_title">SuperSU</string>
-    <string name="lockscreen_enable_camera_title">Widget Appareil photo</string>
-    <string name="lockscreen_enable_camera_summary">Glisser sur la droite pour activer le widget de l\'appareil photo</string>
-    <string name="lockscreen_enable_power_menu_title">Activer le menu Marche/Arrêt</string>
-    <string name="lockscreen_enable_power_menu_summary">Afficher le menu Marche/Arrêt lorsque l\'écran est verrouillé</string>
-    <string name="lockscreen_see_through_title">Affichage transparent</string>
-    <string name="lockscreen_see_through_summary">Afficher le contenu derrière votre écran de verrouillage, vos données peuvent être visibles à ceux autour de vous</string>
     <string name="safe_headset_volume_warning_title">Volume sécurisé du casque</string>
     <string name="safe_headset_volume_warning_summary">Afficher un avertissement de sécurité avec les casques audio</string>
     <string name="display_rotation_title">Rotation</string>

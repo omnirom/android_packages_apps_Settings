@@ -306,12 +306,8 @@
     <string name="biometric_weak_improve_matching_title" msgid="8754080894393195194">"चेहरे का मिलान बेहतर बनाएं"</string>
     <string name="biometric_weak_liveliness_title" msgid="2661613702124561096">"जीवंतता जांच"</string>
     <string name="biometric_weak_liveliness_summary" msgid="4199587000948042325">"अनलॉक करते समय आंख झपकाने की आवश्‍यकता है"</string>
-    <string name="lock_after_timeout" msgid="4590337686681194648">"अपने आप लॉक करें"</string>
-    <string name="lock_after_timeout_summary" msgid="6128431871360905631">"<xliff:g id="TIMEOUT_STRING">%1$s</xliff:g> निष्क्रियता के बाद"</string>
     <string name="show_owner_info_on_lockscreen_label" msgid="5074906168357568434">"लॉक स्‍क्रीन पर अपनी जानकारी दिखाएं"</string>
     <string name="owner_info_settings_title" msgid="2723190010708381889">"अपनी जानकारी"</string>
-    <string name="security_enable_widgets_title" msgid="2754833397070967846">"विजेट सक्षम करें"</string>
-    <string name="security_enable_widgets_disabled_summary" msgid="1557090442377855233">"व्यवस्थापक के द्वारा अक्षम किया गया"</string>
     <string name="owner_info_settings_summary" msgid="3800834657847339570"></string>
     <string name="owner_info_settings_edit_text_hint" msgid="4608681417960923911">"लॉक स्‍क्रीन पर दिखाई देने के लिए पाठ लिखें"</string>
     <string name="show_user_info_on_lockscreen_label" msgid="8408914624925608365">"लॉक स्क्रीन पर उपयोगकर्ता जानकारी दिखाएं"</string>
@@ -1074,7 +1070,6 @@
     <string name="lockpattern_settings_enable_summary" msgid="1165707416664252167">"अनलॉक करने के लिए आकार आरेखित करना होगा"</string>
     <string name="lockpattern_settings_enable_visible_pattern_title" msgid="2615606088906120711">"पैटर्न दिखाई दे"</string>
     <string name="lockpattern_settings_enable_tactile_feedback_title" msgid="8898518337442601027">"स्‍पर्श पर कंपन करें"</string>
-    <string name="lockpattern_settings_enable_power_button_instantly_locks" msgid="5735444062633666327">"पॉवर बटन तुरंत लॉक होता है"</string>
     <string name="lockpattern_settings_choose_lock_pattern" msgid="1652352830005653447">"अनलॉक आकार सेट करें"</string>
     <string name="lockpattern_settings_change_lock_pattern" msgid="1123908306116495545">"अनलॉक आकार बदलें"</string>
     <string name="lockpattern_settings_help_how_to_record" msgid="2614673439060830433">"अनलॉक आकार कैसे आरेखित करें"</string>

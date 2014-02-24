@@ -304,8 +304,6 @@
     <string name="biometric_weak_improve_matching_title" msgid="8754080894393195194">"Царайгаар таниулахыг сайжруулах"</string>
     <string name="biometric_weak_liveliness_title" msgid="2661613702124561096">"Амьд эсэхийг шалгах"</string>
     <string name="biometric_weak_liveliness_summary" msgid="4199587000948042325">"Нээх үед нүдний анивчилтыг шаардана"</string>
-    <string name="lock_after_timeout" msgid="4590337686681194648">"Автоматаар түгжих"</string>
-    <string name="lock_after_timeout_summary" msgid="6128431871360905631">"Идэвхгүй болсны дараа <xliff:g id="TIMEOUT_STRING">%1$s</xliff:g>"</string>
     <string name="show_owner_info_on_lockscreen_label" msgid="5074906168357568434">"Дэлгэц түгжигдэхэд эзэмшигчийн мэдээллийг харуулах"</string>
     <string name="owner_info_settings_title" msgid="2723190010708381889">"Эзэмшигчийн мэдээлэл"</string>
     <!-- no translation found for security_enable_widgets_title (2754833397070967846) -->
@@ -1086,7 +1084,6 @@
     <string name="lockpattern_settings_enable_summary" msgid="1165707416664252167">"Дэлгэцийг тайлахын тулд хээгээ зурна уу"</string>
     <string name="lockpattern_settings_enable_visible_pattern_title" msgid="2615606088906120711">"Загварыг харуулах"</string>
     <string name="lockpattern_settings_enable_tactile_feedback_title" msgid="8898518337442601027">"Хүрэлтэнд чичрэх"</string>
-    <string name="lockpattern_settings_enable_power_button_instantly_locks" msgid="5735444062633666327">"Асаах товч шууд түгжигдэнэ"</string>
     <string name="lockpattern_settings_choose_lock_pattern" msgid="1652352830005653447">"Тайлах хээ тохируулах"</string>
     <string name="lockpattern_settings_change_lock_pattern" msgid="1123908306116495545">"Тайлах хээг өөрчлөх"</string>
     <string name="lockpattern_settings_help_how_to_record" msgid="2614673439060830433">"Тайлах загварыг хэрхэн зурах вэ"</string>

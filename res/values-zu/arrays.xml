@@ -48,17 +48,6 @@
     <item msgid="1903860996174927898">"10 amaminithi"</item>
     <item msgid="6415509612413178727">"30 amaminithi"</item>
   </string-array>
-  <string-array name="lock_after_timeout_entries">
-    <item msgid="8929270399652145290">"Ngokushesha"</item>
-    <item msgid="6736512735606834431">"5 amasekhondi"</item>
-    <item msgid="8044619388267891375">"15 amasekhondi"</item>
-    <item msgid="1822002388249545488">"30 amasekhondi"</item>
-    <item msgid="8538071621211916519">"1 iminithi"</item>
-    <item msgid="5663439580228932882">"2 amaminithi"</item>
-    <item msgid="49888496216106852">"5 amaminithi"</item>
-    <item msgid="9002737361305019353">"10 amaminithi"</item>
-    <item msgid="4322676235684793329">"30 amaminithi"</item>
-  </string-array>
   <string-array name="entries_font_size">
     <item msgid="8166647333858618801">"Ncane"</item>
     <item msgid="1932071435506638315">"Jwayelekile"</item>
