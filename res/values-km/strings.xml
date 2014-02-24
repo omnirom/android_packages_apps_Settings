@@ -304,8 +304,6 @@
     <string name="biometric_weak_improve_matching_title" msgid="8754080894393195194">"កែ​លម្អ​ការ​ផ្គូផ្គង​ទម្រង់​មុខ"</string>
     <string name="biometric_weak_liveliness_title" msgid="2661613702124561096">"ពិនិត្យ​ភាព​រស់រវើក"</string>
     <string name="biometric_weak_liveliness_summary" msgid="4199587000948042325">"តម្រូវ​ឲ្យ​ប្រិច​ភ្នែក​ពេល​ដោះ​សោ"</string>
-    <string name="lock_after_timeout" msgid="4590337686681194648">"ចាក់សោ​ស្វ័យ​ប្រវត្តិ"</string>
-    <string name="lock_after_timeout_summary" msgid="6128431871360905631">"<xliff:g id="TIMEOUT_STRING">%1$s</xliff:g> បន្ទាប់​ពី​ដេក"</string>
     <string name="show_owner_info_on_lockscreen_label" msgid="5074906168357568434">"បង្ហាញ​ព័ត៌មាន​អំពី​ម្ចាស់​លើ​អេក្រង់​ចាក់​សោ"</string>
     <string name="owner_info_settings_title" msgid="2723190010708381889">"ព័ត៌មាន​អំពី​ម្ចាស់"</string>
     <string name="owner_info_settings_summary" msgid="3800834657847339570"></string>
@@ -1067,7 +1065,6 @@
     <string name="lockpattern_settings_enable_summary" msgid="1165707416664252167">"ត្រូវ​តែ​គូរ​លំនាំ​ ដើម្បី​ដោះ​សោ​អេក្រង់"</string>
     <string name="lockpattern_settings_enable_visible_pattern_title" msgid="2615606088906120711">"ធ្វើ​ឲ្យ​លំនាំ​មើល​ឃើញ"</string>
     <string name="lockpattern_settings_enable_tactile_feedback_title" msgid="8898518337442601027">"ញ័រ​ពេល​ប៉ះ"</string>
-    <string name="lockpattern_settings_enable_power_button_instantly_locks" msgid="5735444062633666327">"ប៊ូតុង​បិទ/បើក​ចាក់សោ​ភ្លាមៗ"</string>
     <string name="lockpattern_settings_choose_lock_pattern" msgid="1652352830005653447">"កំណត់​លំនាំ​ចាក់សោ"</string>
     <string name="lockpattern_settings_change_lock_pattern" msgid="1123908306116495545">"ប្ដូរ​លំនាំ​ដោះ​សោ"</string>
     <string name="lockpattern_settings_help_how_to_record" msgid="2614673439060830433">"វិធី​គូរ​លំនាំ​ដោះ​សោ"</string>

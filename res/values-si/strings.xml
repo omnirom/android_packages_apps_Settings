@@ -304,8 +304,6 @@
     <string name="biometric_weak_improve_matching_title" msgid="8754080894393195194">"මුහුණු ගැළපුම දියුණු කරන්න"</string>
     <string name="biometric_weak_liveliness_title" msgid="2661613702124561096">"පණ ඇති බව පරික්ෂාව"</string>
     <string name="biometric_weak_liveliness_summary" msgid="4199587000948042325">"අගුළු අරින විට ඇසිපිය ගැසීම අවශ්‍යයි"</string>
-    <string name="lock_after_timeout" msgid="4590337686681194648">"ස්වයංක්‍රියව අගුලු දමන්න"</string>
-    <string name="lock_after_timeout_summary" msgid="6128431871360905631">"<xliff:g id="TIMEOUT_STRING">%1$s</xliff:g> පසු නිදන්න"</string>
     <string name="show_owner_info_on_lockscreen_label" msgid="5074906168357568434">"අගුළු තිරයෙහි හිමිකරුගේ තොරතුරු පෙන්වන්න"</string>
     <string name="owner_info_settings_title" msgid="2723190010708381889">"හිමිකරුගේ තොරතුරු"</string>
     <string name="owner_info_settings_summary" msgid="3800834657847339570"></string>
@@ -1069,7 +1067,6 @@
     <string name="lockpattern_settings_enable_summary" msgid="1165707416664252167">"තිරයේ අගුලු හැරීමට රටාව ඇඳිය යුතුය"</string>
     <string name="lockpattern_settings_enable_visible_pattern_title" msgid="2615606088906120711">"රටාව දෘශ්‍ය කරන්න"</string>
     <string name="lockpattern_settings_enable_tactile_feedback_title" msgid="8898518337442601027">"ස්පර්ශ කරන විට කම්පනය කරන්න"</string>
-    <string name="lockpattern_settings_enable_power_button_instantly_locks" msgid="5735444062633666327">"බල බොත්තම ක්ෂණිකව අගුලු වැටේ"</string>
     <string name="lockpattern_settings_choose_lock_pattern" msgid="1652352830005653447">"අගුළු ඇරීමේ රටාව සකසන්න"</string>
     <string name="lockpattern_settings_change_lock_pattern" msgid="1123908306116495545">"අගුළු ඇරීමේ රටාව වෙනස් කරන්න"</string>
     <string name="lockpattern_settings_help_how_to_record" msgid="2614673439060830433">"අඟුළු හැරීමේ රටාවක් අඳින්නේ කෙසේද"</string>
