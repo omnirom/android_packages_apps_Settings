@@ -679,20 +679,10 @@
     <!-- On the security settings screen when using face unlock.  The summary of the liveliness checkbox -->
     <string name="biometric_weak_liveliness_summary" msgid="7980026533493781616">Require eye blink while unlocking</string>
 
-    <!-- Security settings screen, setting option name to change screen timeout -->
-    <string name="lock_after_timeout">Automatically lock</string>
-    <!-- Security settings screen, setting option summary to change screen timeout -->
-    <string name="lock_after_timeout_summary"><xliff:g id="timeout_string">%1$s</xliff:g> after sleep</string>
     <!-- Text shown next to checkbox for showing owner info on LockScreen [CHAR LIMIT=50]-->
     <string name="show_owner_info_on_lockscreen_label">Show owner info on lock screen</string>
     <!-- Text shown for title of owner info setting [CHAR LIMIT=20]-->
     <string name="owner_info_settings_title">Owner info</string>
-    <!-- Text shown for title of settings checkbox to enable widgets [CHAR LIMIT=20]-->
-    <string name="security_enable_widgets_title">Enable widgets</string>
-    <!-- Text shown for title of settings checkbox to maximize widgets [CHAR LIMIT=20]-->
-    <string name="security_maximize_widgets_title">Maximize lockscreen widgets</string>
-    <!-- Summary for settings checkbox to disable widgets when the setting has been disabled by an installed device admin [CHAR LIMIT=50] -->
-    <string name="security_enable_widgets_disabled_summary">Disabled by administrator</string>
     <!-- Text shown for summary of owner info setting [CHAR LIMIT=40]-->
     <string name="owner_info_settings_summary"></string>
     <!-- Hint text shown in owner info edit text [CHAR LIMIT=50] -->
@@ -2578,8 +2568,6 @@
     <string name="lockpattern_settings_enable_visible_pattern_title">Make pattern visible</string>
     <!-- Security & location settings screen, setting check box title. This setting controls whether tactile feedback will be produced when the user draws the pattern.-->
     <string name="lockpattern_settings_enable_tactile_feedback_title">Vibrate on touch</string>
-    <!-- Security & location settings screen, setting check box title. This controls whether the device locks immediately when the power button is pressed. [CHAR LIMIT=28]-->
-    <string name="lockpattern_settings_enable_power_button_instantly_locks">Power button instantly locks</string>
     <!-- Security & location settings screen, setting option name when user has never set an unlock pattern -->
     <string name="lockpattern_settings_choose_lock_pattern">Set unlock pattern</string>
     <!-- Security & location settings screen, setting option name when user has previously set an unlock pattern and wants to change to a new pattern -->

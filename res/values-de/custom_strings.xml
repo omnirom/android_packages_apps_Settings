@@ -252,17 +252,8 @@
     <string name="ime_switcher_notify">Benachrichtigung für Eingabemethoden-Wechsler</string>
     <string name="ime_switcher_notify_summary">Eingabemethoden-Wechsler anzeigen</string>
 
-    <!-- Enable camera -->
-    <string name="lockscreen_enable_camera_title">Kamera-Widget</string>
-    <string name="lockscreen_enable_camera_summary">Nach rechts wischen, um Kamera-Widget zu zeigen</string>
 
-    <!-- Enable power menu -->
-    <string name="lockscreen_enable_power_menu_title">Ausschalt-Menü aktivieren</string>
-    <string name="lockscreen_enable_power_menu_summary">Ausschalt-Menü anzeigen, wenn der Bildschirm gesperrt ist</string>
 
-    <!-- Lockscreen see through -->
-    <string name="lockscreen_see_through_title">Durchsichtig</string>
-    <string name="lockscreen_see_through_summary">Zeigt den Inhalt hinter dem Sperrbildschirm. Daten könnten für umstehende sichtbar sein.</string>
 
     <!-- Display : Rotation -->
     <string name="display_rotation_title">Rotation</string>
