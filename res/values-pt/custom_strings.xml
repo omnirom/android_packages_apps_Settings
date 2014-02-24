@@ -40,9 +40,6 @@
     <string name="advanced_reboot_title">Reinicialização avançada</string>
     <string name="advanced_reboot_summary">Quando desbloqueado, incluir opções do menu de energia para reiniciar em modo recovery ou bootloader</string>
 
-    <!-- Lockscreen battery ring -->
-    <string name="battery_around_lockscreen_ring">Bateria ao redor do anel de desbloqueio</string>
-
     <!-- Android debugging over WiFi -->
     <string name="adb_over_network">ADB via rede</string>
     <string name="adb_over_network_summary">Habilitar depuração TCP/IP via interfaces de rede (Wi-Fi, redes USB). Essa configuração é redefinida ao reiniciar</string>

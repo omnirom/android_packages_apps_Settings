@@ -36,9 +36,6 @@
     <string name="advanced_reboot_title">Zaawansowany restart</string>
     <string name="advanced_reboot_summary">Umożliwia ponowne uruchomienie urządzenia w trybie recovery lub bootloadera</string>
 
-    <!-- Lockscreen battery ring -->
-    <string name="battery_around_lockscreen_ring">Stan baterii wokół pierścienia odblokowania</string>
-
     <!-- Android debugging over WiFi -->
     <string name="adb_over_network">ADB przez sieć</string>
     <string name="adb_over_network_summary">Aktywuj debugowanie TCP/IP przez interfejs sieciowy (Wi-Fi, sieci USB). Ustawienie zostanie zresetowane po ponownym uruchomieniu</string>

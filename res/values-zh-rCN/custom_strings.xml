@@ -44,9 +44,6 @@
     <string name="advanced_reboot_title">高级重启选项</string>
     <string name="advanced_reboot_summary">解锁后，在电源菜单内包含重启至恢复模式或引导模式选项</string>
 
-    <!-- Lockscreen battery ring -->
-    <string name="battery_around_lockscreen_ring">在解锁环周围显示电量圈</string>
-
     <!-- Android debugging over WiFi -->
     <string name="adb_over_network">网络 ADB 调试</string>
     <string name="adb_over_network_summary">通过网络接口 (WLAN, USB 网络) 启用 TCP/IP 调试。 该设置重启后失效</string>
@@ -237,17 +234,8 @@
     <string name="ime_switcher_notify">输入法选择通知</string>
     <string name="ime_switcher_notify_summary">显示输入法选择通知</string>
 
-    <!-- Enable camera -->
-    <string name="lockscreen_enable_camera_title">相机小部件</string>
-    <string name="lockscreen_enable_camera_summary">向左滑动以启动相机</string>
 
-    <!-- Enable power menu -->
-    <string name="lockscreen_enable_power_menu_title">启用电源菜单</string>
-    <string name="lockscreen_enable_power_menu_summary">屏幕锁定时显示电源菜单</string>
 
-    <!-- Lockscreen see through -->
-    <string name="lockscreen_see_through_title">透明锁屏</string>
-    <string name="lockscreen_see_through_summary">显示锁屏后的内容。您的个人信息可被您周围的人看见</string>
 
     <!-- Display : Rotation -->
     <string name="display_rotation_title">自动旋转</string>
