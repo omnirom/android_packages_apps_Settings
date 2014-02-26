@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_0b43ad69",
+        "filename": "res/values/arrays.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-02-26T19:46:57Z",
+      "side": 1,
+      "message": "what about other languages? If we move the array to omnigears we must move all the existing translations also. If there are any?",
+      "revId": "cef658860642b4ad43a2496519affae53e7aaefe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_606d1b2c",
+        "filename": "res/xml/security_settings_biometric_weak.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-02-26T19:46:57Z",
+      "side": 1,
+      "message": "you know that you must move this string from OmniGears to Settings- right? :)",
+      "revId": "cef658860642b4ad43a2496519affae53e7aaefe",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
