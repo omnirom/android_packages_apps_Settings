@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_2028832e",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000070
+      },
+      "writtenOn": "2014-02-26T09:12:49Z",
+      "side": 1,
+      "message": "degré : nom masculin, valable pour les trad en dessous aussi. enlever le \u0027e\u0027 en trop",
+      "revId": "cd0b8b38b92706fa6b0c6db21ff4b0c34db071f9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
