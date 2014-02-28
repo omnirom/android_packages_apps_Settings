@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_339e1f59",
+        "filename": "res/values/custom_arrays.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-02-28T11:35:27Z",
+      "side": 1,
+      "message": "since this is related the \"bar style\" I would place it after those",
+      "revId": "0d2500c58891faccbd3e4132d2df6a4165a81039",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_13992371",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-02-28T11:35:27Z",
+      "side": 1,
+      "message": "maybe we can find a better \"name\" for this",
+      "revId": "0d2500c58891faccbd3e4132d2df6a4165a81039",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_539b9b67",
+        "filename": "src/com/android/settings/fuelgauge/PowerUsageSummary.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-02-28T11:35:27Z",
+      "side": 1,
+      "message": "Sure you want the same value for two? :)\nallthough this is not used at all and could be removed completely",
+      "revId": "0d2500c58891faccbd3e4132d2df6a4165a81039",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
