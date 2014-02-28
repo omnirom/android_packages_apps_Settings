@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "8b77b57d_f3374749",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-02-28T15:34:55Z",
+      "side": 1,
+      "message": "Don\u0027t mean the tag but the human readable string. Although I don\u0027t have a much better idea at the moment :)",
+      "parentUuid": "8b77b57d_33f53f81",
+      "revId": "0d2500c58891faccbd3e4132d2df6a4165a81039",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8b77b57d_539b9b67",
         "filename": "src/com/android/settings/fuelgauge/PowerUsageSummary.java",
         "patchSetId": 3
@@ -101,6 +119,24 @@
       "side": 1,
       "message": "Nice catch, I\u0027ll remove these.\nDone",
       "parentUuid": "8b77b57d_539b9b67",
+      "revId": "0d2500c58891faccbd3e4132d2df6a4165a81039",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_133da328",
+        "filename": "src/com/android/settings/fuelgauge/PowerUsageSummary.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-02-28T15:34:55Z",
+      "side": 1,
+      "message": "Actually don\u0027t know what added this stuff in the first place",
+      "parentUuid": "8b77b57d_1300436b",
       "revId": "0d2500c58891faccbd3e4132d2df6a4165a81039",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
