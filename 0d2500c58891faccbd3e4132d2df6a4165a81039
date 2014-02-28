@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "8b77b57d_53f2bb99",
+        "filename": "res/values/custom_arrays.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000694
+      },
+      "writtenOn": "2014-02-28T14:42:09Z",
+      "side": 1,
+      "message": "Yes, that would make more sense. On it.",
+      "parentUuid": "8b77b57d_339e1f59",
+      "revId": "0d2500c58891faccbd3e4132d2df6a4165a81039",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8b77b57d_13992371",
         "filename": "res/values/custom_strings.xml",
         "patchSetId": 3
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "8b77b57d_33f53f81",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000694
+      },
+      "writtenOn": "2014-02-28T14:42:09Z",
+      "side": 1,
+      "message": "Agreed, so long. \"battery_percent_bar\" could get confusing :) Maybe \"battery_percent_w_bar\" or something along those lines.",
+      "parentUuid": "8b77b57d_13992371",
+      "revId": "0d2500c58891faccbd3e4132d2df6a4165a81039",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8b77b57d_539b9b67",
         "filename": "src/com/android/settings/fuelgauge/PowerUsageSummary.java",
         "patchSetId": 3
@@ -47,6 +83,24 @@
       "writtenOn": "2014-02-28T11:35:27Z",
       "side": 1,
       "message": "Sure you want the same value for two? :)\nallthough this is not used at all and could be removed completely",
+      "revId": "0d2500c58891faccbd3e4132d2df6a4165a81039",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_1300436b",
+        "filename": "src/com/android/settings/fuelgauge/PowerUsageSummary.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000694
+      },
+      "writtenOn": "2014-02-28T14:42:09Z",
+      "side": 1,
+      "message": "Nice catch, I\u0027ll remove these.\nDone",
+      "parentUuid": "8b77b57d_539b9b67",
       "revId": "0d2500c58891faccbd3e4132d2df6a4165a81039",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
