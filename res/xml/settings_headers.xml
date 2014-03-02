@@ -205,6 +205,17 @@
         android:icon="@drawable/ic_settings_amra"
         android:title="@string/amra_settings" />
 
+    <!-- Advanced Settings -->
+    <header
+        android:id="@+id/advanced_settings"
+        android:title=""
+        android:icon="@drawable/ic_settings_advanced">
+        <intent
+                android:action="android.intent.action.MAIN"
+                android:targetClass="org.omnirom.device.DeviceSettings"
+                android:targetPackage="org.omnirom.device" />
+    </header>
+
     <!-- PERSONAL -->
     <header android:id="@+id/personal_section"
         android:title="@string/header_category_personal" />
