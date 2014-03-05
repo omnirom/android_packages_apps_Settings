@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_ccd4684f",
+        "filename": "src/com/android/settings/applications/InstalledAppDetails.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000117
+      },
+      "writtenOn": "2014-03-05T15:46:08Z",
+      "side": 1,
+      "message": "This class is in the same package so this shouldn\u0027t be required.",
+      "revId": "d88ebbc57a6e38350ede8fd37dae15b3ef10d301",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
