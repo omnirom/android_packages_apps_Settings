@@ -285,4 +285,7 @@
     <string name="device_hostname">Device hostname</string>
 
     <string name="lockscreen_settings_title">Lockscreen</string>
+
+    <!-- tap-to-wake -->
+    <string name="double_tap_to_wake_title">Double-tap to wake</string>
 </resources>
