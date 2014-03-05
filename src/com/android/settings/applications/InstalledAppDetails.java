@@ -140,6 +140,7 @@ public class InstalledAppDetails extends Fragment
     private Button mForceStopButton;
     private Button mClearDataButton;
     private Button mMoveAppButton;
+    private Button mAppOpsButton;
     private CompoundButton mNotificationSwitch;
 
     private PackageMoveObserver mPackageMoveObserver;
@@ -473,6 +474,7 @@ public class InstalledAppDetails extends Fragment
         mEnableCompatibilityCB = (CheckBox)view.findViewById(R.id.enable_compatibility_cb);
         
         mNotificationSwitch = (CompoundButton) view.findViewById(R.id.notification_switch);
+        mAppOpsButton = (Button) view.findViewById(R.id.app_ops_button);
 
         return view;
     }
@@ -551,6 +553,21 @@ public class InstalledAppDetails extends Fragment
         TextView packageName = (TextView) appSnippet.findViewById(R.id.app_pkgname);
         packageName.setText(mAppEntry.info.packageName);
         packageName.setVisibility(View.VISIBLE);
+        // Go to AppOps button
+        mAppOpsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+                args.putString(AppOpsDetails.ARG_PACKAGE_NAME, mAppEntry.info.packageName);
+
+                AppOpsDetails appOps = new AppOpsDetails();
+                appOps.setArguments(args);
+                getFragmentManager().beginTransaction()
+                .add(android.R.id.content, appOps)
+                .addToBackStack(null)
+                .commit();
+            }
+        });
         // Version number of application
         mAppVersion = (TextView) appSnippet.findViewById(R.id.app_size);
 
