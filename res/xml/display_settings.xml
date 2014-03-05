@@ -85,4 +85,9 @@
                 android:entries="@array/screen_off_animation_entries"
                 android:entryValues="@array/screen_off_animation_values" />
 
+        <CheckBoxPreference
+                android:key="double_tap_wake_gesture"
+                android:title="@string/double_tap_to_wake_title"
+                android:defaultValue="false" />
+
 </PreferenceScreen>
