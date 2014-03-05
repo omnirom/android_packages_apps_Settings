@@ -26,6 +26,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,6 +43,8 @@ import android.util.Log;
 import com.android.internal.view.RotationPolicy;
 import com.android.settings.DreamSettings;
 import com.android.settings.slim.DisplayRotation;
+
+import org.cyanogenmod.hardware.TapToWake;
 
 import java.util.ArrayList;
 
@@ -60,6 +63,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private static final String KEY_SCREEN_SAVER = "screensaver";
     private static final String KEY_SCREEN_OFF_ANIMATION = "screen_off_animation";
     private static final String KEY_WAKE_WHEN_PLUGGED_OR_UNPLUGGED = "wake_when_plugged_or_unplugged";
+    private static final String KEY_TAP_TO_WAKE = "double_tap_wake_gesture";
 
     private static final int DLG_GLOBAL_CHANGE_WARNING = 1;
 
@@ -72,6 +76,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private WarnedListPreference mFontSizePref;
     private Preference mNotificationLight;
     private Preference mChargingLight;
+    private CheckBoxPreference mTapToWake;
     private CheckBoxPreference mWakeWhenPluggedOrUnplugged;
 
     private final Configuration mCurConfig = new Configuration();
@@ -143,6 +148,12 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         // Default value for wake-on-plug behavior from config.xml
         boolean wakeUpWhenPluggedOrUnpluggedConfig = getResources().getBoolean(
                 com.android.internal.R.bool.config_unplugTurnsOnScreen);
+
+        mTapToWake = (CheckBoxPreference) findPreference(KEY_TAP_TO_WAKE);
+        if (!isTapToWakeSupported()) {
+            getPreferenceScreen().removePreference(mTapToWake);
+            mTapToWake = null;
+        }
 
         mWakeWhenPluggedOrUnplugged =
                 (CheckBoxPreference) findPreference(KEY_WAKE_WHEN_PLUGGED_OR_UNPLUGGED);
@@ -275,6 +286,10 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
                 mAccelerometerRotationObserver);
         updateDisplayRotationPreferenceDescription();
         updateState();
+
+        if (mTapToWake != null) {
+            mTapToWake.setChecked(TapToWake.isEnabled());
+        }
     }
 
     @Override
@@ -378,6 +393,8 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
                     Settings.Global.WAKE_WHEN_PLUGGED_OR_UNPLUGGED,
                     mWakeWhenPluggedOrUnplugged.isChecked() ? 1 : 0);
             return true;
+        } else if (preference == mTapToWake) {
+            return TapToWake.setEnabled(mTapToWake.isChecked());
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
@@ -421,5 +438,26 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             }
         }
         return false;
+    }
+
+    public static void restore(Context ctx) {
+        if (isTapToWakeSupported()) {
+            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+            final boolean enabled = prefs.getBoolean(KEY_TAP_TO_WAKE, true);
+            if (!TapToWake.setEnabled(enabled)) {
+                Log.e(TAG, "Failed to restore tap-to-wake settings.");
+            } else {
+                Log.d(TAG, "Tap-to-wake settings restored.");
+            }
+        }
+    }
+
+    private static boolean isTapToWakeSupported() {
+        try {
+             return TapToWake.isSupported();
+        } catch (NoClassDefFoundError e) {
+            // Hardware abstraction framework not installed
+            return false;
+        }
     }
 }
