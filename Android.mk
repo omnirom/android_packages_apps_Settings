@@ -29,6 +29,8 @@ LOCAL_PROGUARD_FLAG_FILES := proguard.flags
 
 LOCAL_AAPT_FLAGS += -c zz_ZZ
 
+LOCAL_JAVA_LIBRARIES += org.omnirom.hardware
+
 include $(BUILD_PACKAGE)
 
 # Use the folloing include to make our test apk.
