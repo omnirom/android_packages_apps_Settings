@@ -17,56 +17,58 @@
 */
 -->
 
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
-    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:paddingTop="8dip"
     android:paddingBottom="8dip"
-    android:columnCount="3">
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:paddingTop="8dip" >
 
     <ImageView
         android:id="@+id/op_icon"
         android:layout_width="@android:dimen/app_icon_size"
         android:layout_height="@android:dimen/app_icon_size"
-        android:layout_column="0"
-        android:layout_row="0"
-        android:layout_rowSpan="2"
+        android:layout_alignParentLeft="true"
         android:layout_marginEnd="8dip"
+        android:contentDescription="@null"
         android:scaleType="centerInside"
-        android:contentDescription="@null" />
+        android:src="@drawable/ic_launcher" />
 
     <TextView
         android:id="@+id/op_name"
-        android:layout_column="1"
-        android:layout_row="0"
-        android:layout_gravity="fill_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/switchWidget"
+        android:layout_toRightOf="@+id/op_icon"
         android:layout_marginTop="2dip"
+        android:ellipsize="end"
         android:singleLine="true"
-        android:ellipsize="marquee"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textAlignment="viewStart" />
+        android:text="Vibration Vibration Vibration Vibration"
+        android:textAlignment="viewStart"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/op_time"
-        android:layout_column="1"
-        android:layout_row="1"
-        android:layout_gravity="fill_horizontal|top"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textAlignment="viewStart" />
-
-    <Switch android:id="@+id/switchWidget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/op_name"
+        android:layout_toRightOf="@+id/op_icon"
+        android:text="14. Februar"
+        android:textAlignment="viewStart"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <Switch
+        android:id="@+id/switchWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="8dip"
-        android:layout_column="2"
-        android:layout_row="0"
-        android:layout_rowSpan="2"
-        android:padding="8dip"
+        android:clickable="true"
         android:focusable="false"
-        android:clickable="true" />
+        android:padding="8dip" />
 
-</GridLayout>
+</RelativeLayout>
