@@ -18,6 +18,7 @@
     <!-- About phone screen,  setting option name-->
     <string name="mod_version">Versione Omni</string>
     <string name="mod_version_default">Sconosciuto</string>
+
     <!-- Main list strings -->
     <string name="header_category_interface">Interfaccia</string>
     <string name="performance_settings">Prestazioni</string>
@@ -30,6 +31,17 @@
     <string name="volume_adjust_sounds_enable_summary">Riproduci un suono quando si regola il volume con i tasti</string>
     <string name="link_volume_ringtones">Link suoneria &amp; volume notifiche</string>
     <string name="volume_ring_only_description">Suoneria</string>
+    <string name="category_volume_panel_title">Pannello volume</string>
+    <string name="volume_panel_timeout_title">Timeout</string>
+    <string name="volume_panel_timeout_summary">Tempo prima che il pannello venga nascosto</string>
+    <string name="volume_panel_style">Stile</string>
+    <string name="single">Singolo</string>
+    <string name="expandable">Espandibile</string>
+    <string name="expanded">Espanso</string>
+
+    <!-- Safe headset volume warning -->
+    <string name="safe_headset_volume_warning_title">Avviso volume</string>
+    <string name="safe_headset_volume_warning_summary">Mostra avviso volume cuffie</string>
 
     <!-- Advanced reboot options -->
     <string name="advanced_reboot_title">Riavvio avanzato</string>
@@ -44,7 +56,7 @@
     <string name="lockscreen_quick_unlock_control_title">Sblocco rapido</string>
     <string name="lockscreen_quick_unlock_control_summary">Sblocca automaticamente quando  hai inserito il PIN/password corretto</string>
 
-<!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
+    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
     <string name="change_crypt_password_title">Cambia password</string>
     <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
     <string name="change_crypt_password_summary">Cambiare la password di crittografia del dispositivo</string>
@@ -148,9 +160,11 @@
     <!-- default alarm tone -->
     <string name="alarm_sound_title">Suoneria sveglia predefinita</string>
     <string name="alarm_sound_dialog_title">Suoneria sveglia predefinita</string>
+
     <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
     <string name="custom_runtime_warning_title">Attenzione</string>
     <string name="custom_runtime_warning_message">ART non è supportato dalla OmniROM.Questa impostazione è solo sperimentale e ha il potenziale di causare instabilità, crash, perdita di dati o impedire il corretto avvio del dispositivo. Visita &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introduzione ART&lt;/a&gt; per maggiori informazioni.&lt;br/&gt;&lt;br/&gt;Chiediamo di non segnalare i bug, se hai attivato il runtime ART.&lt;br/&gt;&lt;br/&gt;Sei sicuro di voler riavviare per cambiare il runtime da<xliff:g id="old" example="libdvm.so">%1$s</xliff:g> a <xliff:g id="new" example="libart.so">%2$s</xliff:g>?</string>
+
     <!-- Basic Numbers -->
     <string name="two">Due</string>
     <string name="three">Tre</string>
@@ -217,14 +231,6 @@
     <string name="start_time_title">Inizio</string>
     <string name="end_time_title">Fine</string>
 
-    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
-    <string name="change_crypt_password_title">Cambia password di crittografia</string>
-    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
-    <string name="change_crypt_password_summary">Cambiare la password utilizzata per la crittografia del dispositivo</string>
-
-    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
-    <string name="encryptionpassword_choose_your_password_header">Imposta password di crittografia</string>
-
     <!-- Keyboard and Input ASS methods  -->
     <string name="title_keyboard_input">Opzioni avanzate</string>
     <string name="disable_fullscreen_keyboard_title">Disabilita la tastiera a schermo intero</string>
@@ -243,9 +249,35 @@
     <string name="wifi_setting_countrycode_summary">Specifica il codice regione per il Wi-Fi</string>
     <string name="wifi_setting_countrycode_error">C\'è un problema nell\'impostare il codice regione del Wi-Fi</string>
 
-    <!-- Volume panel style -->
-    <string name="volume_panel_style">Stile pannello volume</string>
-    <string name="single">Singolo</string>
-    <string name="expandable">Espandibile</string>
-    <string name="expanded">Ingrandito</string>
+    <!-- Display : Rotation -->
+    <string name="display_rotation_title">Rotazione</string>
+    <string name="display_rotation_disabled">Disabilita</string>
+    <string name="display_rotation_unit">gradi</string>
+    <string name="display_rotation_category_title">Tipi di rotazione</string>
+    <string name="display_rotation_0_title">0 gradi</string>
+    <string name="display_rotation_90_title">90 gradi</string>
+    <string name="display_rotation_180_title">180 gradi</string>
+    <string name="display_rotation_270_title">270 gradi</string>
+
+    <!-- ADB Paranoia settings -->
+    <string name="adb_paranoid">ADB paranoia mode</string>
+    <string name="adb_paranoid_summary">Riavvia immediatamente quando un computer sconosciuto è connesso mentre il dispositivo è bloccato</string>
+    <string name="unit_sec">sec</string>
+
+    <!-- custom data usage period -->
+    <string name="daily_cycle_lenght">Giornaliero</string>
+    <string name="weekly_cycle_length">Settimanale</string>
+    <string name="monthly_cycle_length">Mensile</string>
+    <string name="weekday_sunday">Domenica</string>
+    <string name="weekday_monday">Lunedì</string>
+    <string name="weekday_tuesday">Martedì</string>
+    <string name="weekday_wednesday">Mercoledì</string>
+    <string name="weekday_thursday">Giovedì</string>
+    <string name="weekday_friday">Venerdì</string>
+    <string name="weekday_saturday">Sabato</string>
+
+    <!-- Hostname setting -->
+    <string name="device_hostname">Hostname dispositivo</string>
+   <string name="lockscreen_settings_title">Blocco schermo</string>
+
 </resources>
