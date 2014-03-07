@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
 import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -341,8 +343,14 @@ public class AppOpsCategory extends ListFragment implements
     @Override public void onListItemClick(ListView l, View v, int position, long id) {
         AppOpEntry entry = mAdapter.getItem(position);
         if (entry != null) {
-            mCurrentPkgName = entry.getAppEntry().getApplicationInfo().packageName;
-            startApplicationDetailsActivity();
+            ApplicationInfo ai = entry.getAppEntry().getApplicationInfo();
+            mCurrentPkgName = ai.packageName;
+            boolean isSystem = ((ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
+            if (!isSystem) {
+                startApplicationDetailsActivity();
+            } else {
+                Toast.makeText(getActivity(), getString(R.string.appops_sys_app), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
