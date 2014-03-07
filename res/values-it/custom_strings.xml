@@ -35,9 +35,6 @@
     <string name="advanced_reboot_title">Riavvio avanzato</string>
     <string name="advanced_reboot_summary">Quando è sbloccato, include maggiori impostazioni nel menu di spegnimento per riavviare in modalità recovery o bootloader</string>
 
-    <!-- Lockscreen battery ring -->
-    <string name="battery_around_lockscreen_ring">Batteria anello di sblocco</string>
-
     <!-- Android debugging over WiFi -->
     <string name="adb_over_network">ADB via rete</string>
     <string name="adb_over_network_summary">Abilita TCP/IP debugging su interfaccia di rete (Wi-Fi, rete USB). Questa impostazione viene resettata al riavvio</string>
@@ -242,7 +239,6 @@
     <string name="ime_switcher_notify">Selettore notifica</string>
     <string name="ime_switcher_notify_summary">Visualizza il metodo di inserimento del selettore notifica</string>
 
-    <string name="security_maximize_widgets_title">Massimizza widget lockscreen</string>
     <string name="wifi_setting_countrycode_title">Codice regione Wi-Fi</string>
     <string name="wifi_setting_countrycode_summary">Specifica il codice regione per il Wi-Fi</string>
     <string name="wifi_setting_countrycode_error">C\'è un problema nell\'impostare il codice regione del Wi-Fi</string>
