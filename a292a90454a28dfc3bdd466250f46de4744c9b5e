@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_02a8e7d6",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 14
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-03-08T11:20:53Z",
+      "side": 1,
+      "message": "no uppercase starting - \"NFC polling mode\"",
+      "revId": "a292a90454a28dfc3bdd466250f46de4744c9b5e",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_e2a20bfa",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 14
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-03-08T11:20:53Z",
+      "side": 1,
+      "message": "Actually \"Screen on\" is obsolete here cause locked and unlocked implies that the screen is on - right?",
+      "revId": "a292a90454a28dfc3bdd466250f46de4744c9b5e",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_22ade3e6",
+        "filename": "res/xml/wireless_settings.xml",
+        "patchSetId": 14
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-03-08T11:20:53Z",
+      "side": 1,
+      "message": "missing persistent\u003dfalse",
+      "revId": "a292a90454a28dfc3bdd466250f46de4744c9b5e",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
