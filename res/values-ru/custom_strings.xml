@@ -208,8 +208,7 @@
     <string name="quiet_hours_auto_sms_title">Входящие текстовые сообщения</string>
     <string name="quiet_hours_auto_sms_call_title">Входящие телефонные звонкиs</string>
     <string name="quiet_hours_auto_string_title">Ответ для отправки</string>
-    <string name="quiet_hours_auto_string_explain">Это сообщение будет отправлено тем, кто у вас в контактах, пока 
-             тихие часы активны</string>
+    <string name="quiet_hours_auto_string_explain">Это сообщение будет отправлено тем, кто у вас в контактах, пока тихие часы активны</string>
     <string name="quiet_hours_auto_sms_null">[Автоматическое сообщение] Я перезвоню вам, как только смогу.</string>
     <string name="quiet_hours_auto_disabled">Отключено</string>
     <string name="quiet_hours_auto_enabled">Все номера</string>
@@ -218,8 +217,7 @@
     <string name="quiet_hours_sms_code_null">[Сигнал]</string>
     <string name="quiet_hours_sms_bypass_title">Обходное текстовое сообщение</string>
     <string name="quiet_hours_sms_code_title">Ключ текстового сообщения</string>
-    <string name="quiet_hours_sms_code_explain">Если входящее сообщение содержит этот текст ваш телефон издаст 
-             звуковой сигнал</string>
+    <string name="quiet_hours_sms_code_explain">Если входящее сообщение содержит этот текст ваш телефон издаст звуковой сигнал</string>
     <string name="quiet_hours_call_bypass_title">Обходный вызов</string>
     <string name="quiet_hours_calls_required_title">Количество звонков в 30 минутах</string>
     <string name="quiet_hours_calls_required_summary">" вызывает в обход тихих часов"</string>
