@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2012-2013 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- About phone screen,  setting option name-->
+    <string name="mod_version">Версия Omni</string>
+    <string name="mod_version_default">Неизвестно</string>
+
+    <!-- Main list strings -->
+    <string name="header_category_interface">Интерфейс</string>
+    <string name="performance_settings">Производительность</string>
+    <string name="notification_light_settings">Индикатор уведомлений</string>
+    <string name="battery_light_settings">Индикатор батареи</string>
+    <string name="header_button_settings">Кнопки</string>
+
+    <!-- Volume panel tweaks -->
+    <string name="volume_adjust_sounds_enable_title">Регулировка громкости</string>
+    <string name="volume_adjust_sounds_enable_summary">Звук при регулировке громкости</string>
+    <string name="link_volume_ringtones">Громкость звонка &amp; громкость уведомлений</string>
+    <string name="volume_ring_only_description">Рингтон</string>
+    <string name="category_volume_panel_title">Панель громкости</string>
+
+    <string name="volume_panel_timeout_title">Таймаут</string>
+    <string name="volume_panel_timeout_summary">Время до скрытия панели</string>
+
+    <string name="volume_panel_style">Панель громкости</string>
+    <string name="single">Обычная</string>
+    <string name="expandable">Расширяемая</string>
+    <string name="expanded">Hасширенная</string>
+
+    <!-- Safe headset volume warning -->
+    <string name="safe_headset_volume_warning_title">Громкость предупреждений</string>
+    <string name="safe_headset_volume_warning_summary">Безопасная громкость</string>
+
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">Расширенная перезагрузка</string>
+    <string name="advanced_reboot_summary">Если разблокирован, включает опции в power-меню для перезагрузки в recovery или в bootloader</string>
+
+    <!-- Android debugging over WiFi -->
+    <string name="adb_over_network">ADB через сеть</string>
+    <string name="adb_over_network_summary">Включить отладку TCP/IP через сетевые интерфейсы (Wi-Fi,USB сети). Эта установка сбрасывается при перезагрузке</string>
+
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">ВНИМАНИЕ: когда включён ADB по сети, телефон открыт для доступа из всех подключённых сетей, включая передачу данных GSM!\n\nИспользуйте эту функцию только тогда, когда Вы подключены к доверенным сетям.\n\nВы действительно хотите включить эту функцию?</string>
+    <string name="lockscreen_quick_unlock_control_title">Быстрая разблокировка</string>
+    <string name="lockscreen_quick_unlock_control_summary">Разблокировать автоматически, когда вводится правильный PIN код/пароль</string>
+
+    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
+    <string name="change_crypt_password_title">Изменить пароль</string>
+    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
+    <string name="change_crypt_password_summary">Изменить пароль, используемый для шифрования устройства</string>
+
+    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
+    <string name="encryptionpassword_choose_your_password_header">Установить пароль шифрования</string>
+
+    <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+    <string name="show_cpu_info">Показать информацию процессора</string>
+    <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+    <string name="show_cpu_info_summary">Экран наложения показывает текущую информацию процессора</string>
+
+    <!-- Screen off animation -->
+    <string name="screen_off_animation">Анимация выключения</string>
+    <string name="screen_off_fadeout">Затухание</string>
+    <string name="screen_off_electronbeam">CRT-анимация</string>
+    <string name="screen_off_scaledown">Уменьшение масштаба</string>
+
+    <!-- AppOps additions -->
+    <string name="appops_settings">Разрешения приложений</string>
+    <string name="appops_sysapp_beware">Берегись!</string>
+    <string name="appops_sysapp_warning">"Изменение разрешения основных компонентов Android может привести к нежелательному поведению. Изменяйте настроеки здесь на свой страх и риск!</string>
+
+    <!-- Low battery warning policy -->
+    <string name="pref_low_battery_warning_policy_title">Низкий заряд батарей</string>
+    <string name="pref_low_battery_warning_policy_dialog_title">Предупреждать о низком заряде батареи как</string>
+    <string name="low_battery_warning_policy_popup_sound">Сообщение и звук</string>
+    <string name="low_battery_warning_policy_notif_sound">Уведомление и звук</string>
+    <string name="low_battery_warning_policy_popup">Только сообщение</string>
+    <string name="low_battery_warning_policy_notif">Только уведомление</string>
+    <string name="low_battery_warning_policy_sound">Только звук</string>
+    <string name="battery_prefs_title">Настройки</string>
+    <string name="battery_stats_title">Статистика</string>
+
+    <!-- Setting checkbox summary for displaying USB debugging notification -->
+    <string name="adb_notify">Уведомление об Отладке USB</string>
+    <string name="adb_notify_summary">Отображать уведомление когда Отладка USB подключена</string>
+
+    <!-- Lockscreen pin shuffle -->
+    <string name="lock_numpad_random_title">Изменять порядок кнопок при вводе PIN</string>
+    <string name="lock_numpad_random_dialog_title">Произвольный порядок цифр PIN</string>
+    <string name="lock_numpad_random_off">Отключено</string>
+    <string name="lock_numpad_random_always">Всегда</string>
+    <string name="lock_numpad_random_on_request">По запросу</string>
+
+    <string name="interface_more_title">Ещё\u2026</string>
+    <string name="interface_bars_title">Бары</string>
+    <string name="interface_menus_title">Меню</string>
+    <string name="interface_notification_panel_title">Уведомления</string>
+
+    <!-- Battery Icon selection -->
+    <string name="pref_battery_indicator_title">Индикатор батареи</string>
+    <string name="battery_status_icon_title">Иконка</string>
+    <string name="battery_bar">Бар батареи</string>
+    <string name="battery_bar_percent">Бар батареи с процентами</string>
+    <string name="battery_circle">Круг</string>
+    <string name="battery_circle_percent">Круг с процентами</string>
+
+    <!-- Turn on display when power connected; turn off display when power disconnected -->
+    <string name="wake_when_plugged_or_unplugged_title">Пробуждать при подключении</string>
+    <string name="wake_when_plugged_or_unplugged_summary">Пробуждать при зарядке</string>
+
+    <!-- security settings menu unlock -->
+    <string name="unlock_menu_unlock_title">Разблокировка кнопкой меню</string>
+    <string name="unlock_menu_unlock_summary">Нажание кнопки меню разбудит устройство</string>
+
+    <!-- Stylus Icon -->
+    <string name="stylus_icon_enabled_title">Показывать иконку при использовании стилуса</string>
+    <string name="stylus_icon_enabled_summary">Показать значок указателя при использовании стилуса</string>
+
+    <!-- Stylus Gestures -->
+    <string name="gestures_settings_title">Жесты пера</string>
+    <string name="category_spen_title">Жесты пера</string>
+    <string name="enable_subcat_title">Перо</string>
+    <string name="enable_spen_title_head">Включить жесты пера</string>
+    <string name="enable_spen_summary_head">Позволяет рисовать пером с нажатыми кнопками жесты для выбранных действий. Внимание: Приложения не смогут принимать ввод, запущенный кнопкой удержания пера.</string>
+    <string name="gestures_subcat_title">Жесты</string>
+    <string name="gestures_left_spen_title_head">Свайп влево</string>
+    <string name="gestures_left_spen_summary_head">Пользовательское действие при свайпе влево</string>
+    <string name="gestures_right_spen_title_head">Свайп вправо</string>
+    <string name="gestures_right_spen_summary_head">Пользовательское действие при свайпе вправо</string>
+    <string name="gestures_up_spen_title_head">Свайп вверх</string>
+    <string name="gestures_up_spen_summary_head">Пользовательское действие при свайпе вверх</string>
+    <string name="gestures_down_spen_title_head">Свайп вниз</string>
+    <string name="gestures_down_spen_summary_head">Пользовательское действие при свайпе вниз</string>
+    <string name="gestures_long_spen_title_head">Удержание</string>
+    <string name="gestures_long_spen_summary_head">Пользовательское действие при удержании</string>
+    <string name="gestures_double_spen_title_head">Двойное нажатие</string>
+    <string name="gestures_double_spen_summary_head">Пользовательское действие при двойном нажатии</string>
+
+    <!-- Gestures Options -->
+    <string name="gestures_action_empty">Нет действия</string>
+    <string name="gestures_action_home">Эмуляция кнопки домой</string>
+    <string name="gestures_action_back">Эмуляция кнопки назад</string>
+    <string name="gestures_action_menu">Эмуляция кнопки меню</string>
+    <string name="gestures_action_search">Вызвать поиск</string>
+    <string name="gestures_action_recent">Недавние приложения</string>
+
+    <!-- stylus gestures support -->
+    <string name="stylus_app_not_installed">%s Не установлено</string>
+
+    <!-- default alarm tone -->
+    <string name="alarm_sound_title">Сигнал будильника по умолчанию</string>
+    <string name="alarm_sound_dialog_title">Сигнал будильника по умолчанию</string>
+
+    <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
+    <string name="custom_runtime_warning_title">Внимание</string>
+    <string name="custom_runtime_warning_message">АРТ не поддерживается OmniROM. Этот параметр включен только для экспериментов и может вызвать нестабильность, сбои, потерю данных или препятствовать надлежащего загрузке вашего устройства. Посетите &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introducing ART&lt;/a&gt; for more information.&lt;br/&gt;&lt;br/&gt;Мы просим Вас не отправлять сообщения об ошибках, если у вас включен АРТ качестве среды выполнения.&lt;br/&gt;&lt;br/&gt;Вы уверены, что хотите перезагрузиться,для изменения среды выполнения с <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> на <xliff:g id="new" example="libart.so">%2$s</xliff:g>?</string>
+
+    <!-- Basic Numbers -->
+    <string name="two">Два</string>
+    <string name="three">Три</string>
+    <string name="four">Четыре</string>
+    <string name="five">Пять</string>
+    <string name="six">Шесть</string>
+
+    <!-- Quiet hours -->
+    <string name="quiet_hours_title">Тихие часы</string>
+    <string name="quiet_hours_summary">Настроить часы, когда устройство должно быть тихим</string>
+    <string name="quiet_hours_note_title">Gримечание</string>
+    <string name="quiet_hours_note_summary">Входящие звонки будут вести себя как обычно во время тихих часов</string>
+    <string name="quiet_hours_enabled">Включить тихие часы</string>
+    <string name="quiet_hours_enabled_on">Тихие часы будет применены</string>
+    <string name="quiet_hours_enabled_off">Уведомления будут работать в обычном режиме</string>
+    <string name="quiet_hours_start">Начало</string>
+    <string name="quiet_hours_start_summary">Когда начинать использование тихих часов</string>
+    <string name="quiet_hours_end">Конец</string>
+    <string name="quiet_hours_end_summary">Когда закончить использование тихих часов</string>
+    <string name="quiet_hours_ringer_title">Отключение звука телефонного звонка</string>
+    <string name="quiet_hours_ringer_on">Нет звонка не будет играть</string>
+    <string name="quiet_hours_ringer_off">Ни один звонок не будет играть</string>
+    <string name="quiet_hours_mute">Отключить звук уведомлений</string>
+    <string name="quiet_hours_mute_on">Ни один звук уведомления не будет играть</string>
+    <string name="quiet_hours_mute_off">Звуки будут играть как обычно</string>
+    <string name="quiet_hours_still">Отключить вибрацию</string>
+    <string name="quiet_hours_still_on">Устройство не будет вибрировать</string>
+    <string name="quiet_hours_still_off">Устройство будет вибрировать как обычно</string>
+    <string name="quiet_hours_dim">Отключить индикатор уведомлений</string>
+    <string name="quiet_hours_dim_on">Индикатор уведомлений будет выключен</string>
+    <string name="quiet_hours_dim_off">Нндикатор уведомлений будет работать как обычно</string>
+    <string name="quiet_hours_haptic">Отключение обратную связь</string>
+    <string name="quiet_hours_haptic_on">Обратная связь будет отключена</string>
+    <string name="quiet_hours_haptic_off">Обратная связь будет работать как обычно</string>
+    <string name="quiet_hours_active_from">Активно с</string>
+    <string name="quiet_hours_active_to">до</string>
+    <string name="quiet_hours_auto_sms_group">Автоматическая реакция</string>
+    <string name="quiet_hours_auto_sms_title">Входящие текстовые сообщения</string>
+    <string name="quiet_hours_auto_sms_call_title">Входящие телефонные звонкиs</string>
+    <string name="quiet_hours_auto_string_title">Ответ для отправки</string>
+    <string name="quiet_hours_auto_string_explain">Это сообщение будет отправлено тем, кто у вас в контактах, пока 
+             тихие часы активны</string>
+    <string name="quiet_hours_auto_sms_null">[Автоматическое сообщение] Я перезвоню вам, как только смогу.</string>
+    <string name="quiet_hours_auto_disabled">Отключено</string>
+    <string name="quiet_hours_auto_enabled">Все номера</string>
+    <string name="quiet_hours_auto_contacts">Только контакты</string>
+    <string name="quiet_hours_bypass_group">Обход тихих часов</string>
+    <string name="quiet_hours_sms_code_null">[Сигнал]</string>
+    <string name="quiet_hours_sms_bypass_title">Обходное текстовое сообщение</string>
+    <string name="quiet_hours_sms_code_title">Ключ текстового сообщения</string>
+    <string name="quiet_hours_sms_code_explain">Если входящее сообщение содержит этот текст ваш телефон издаст 
+             звуковой сигнал</string>
+    <string name="quiet_hours_call_bypass_title">Обходный вызов</string>
+    <string name="quiet_hours_calls_required_title">Количество звонков в 30 минутах</string>
+    <string name="quiet_hours_calls_required_summary">" вызывает в обход тихих часов"</string>
+    <string name="quiet_hours_bypass_ringtone_title">Рингтон играет</string>
+    <string name="quiet_hours_bypass_ringtone_loop_title">Рингтон зациклен</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_on">Рингтон будет повторяться до отмены</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_off">Рингтон будет играть один раз</string>
+    <string name="quiet_hours_alarm_dismiss">Отклонить Сигнал</string>
+    <string name="quiet_hours_alarm_and">" и "</string>
+    <string name="quiet_hours_alarm_dialog_title">ОБХОД ТИХИХ ЧАСОВ</string>
+    <string name="quiet_hours_alarm_message">" отвечает требованиям в обход тихих часов!"</string>
+
+    <!-- time range preference -->
+    <string name="start_time_title">Начало</string>
+    <string name="end_time_title">Конец</string>
+
+    <!-- Keyboard and Input ASS methods  -->
+    <string name="title_keyboard_input">Расширеные настройки</string>
+    <string name="disable_fullscreen_keyboard_title">Отключить полноэкранную клавиатуру</string>
+    <string name="disable_fullscreen_keyboard_summary">Клавиатура в ландшафтном режиме никогда не занимают весь экран</string>
+    <string name="keyboard_rotation_toggle_title">Автоматический поворот клавиатуры</string>
+    <string name="keyboard_rotation_toggle_summary">Автоматически переворачивать,когда клавиатура показывается</string>
+    <string name="keyboard_rotation_timeout_title">Таймаут автоматического поворота</string>
+    <string name="keyboard_rotation_timeout_summary">Отключение датчика автоматического поворота <xliff:g id="rotate_timeout">%1$с</xliff:g> секунды после до скрытия клавиатуры</string>
+    <string name="keyboard_rotation_dialog">Примечание: Эта функция принудительно перевернёт клавиатуру.  Она не имеет никакого эффекта, когда автоматический поворот уже включен.</string>
+    <string name="show_enter_key_title">Показать клавишу вводу</string>
+    <string name="show_enter_key_summary">Принудительно показывать клавишу вводу вместо клавиши смайликов</string>
+    <string name="ime_switcher_notify">Уведомление выбора</string>
+    <string name="ime_switcher_notify_summary">Отображать уведомление выбора метода ввода</string>
+
+    <!-- Display : Rotation -->
+    <string name="display_rotation_title">Поворот</string>
+    <string name="display_rotation_disabled">Отключен</string>
+    <string name="display_rotation_unit">градусы</string>
+    <string name="display_rotation_category_title">Режимы поворота</string>
+    <string name="display_rotation_0_title">0 градусов</string>
+    <string name="display_rotation_90_title">90 градусов</string>
+    <string name="display_rotation_180_title">180 градусов</string>
+    <string name="display_rotation_270_title">270 градусов</string>
+
+    <!-- ADB Paranoia settings -->
+    <string name="adb_paranoid">ADB режим паранойи</string>
+    <string name="adb_paranoid_summary">Сразу перезагрузить, если неизвестный компьютер подключен в то время как устройство заблокировано</string>
+
+    <string name="unit_sec">сек</string>
+
+    <!-- custom data usage period -->
+    <string name="daily_cycle_lenght">Ежедневно</string>
+    <string name="weekly_cycle_length">Еженедельно</string>
+    <string name="monthly_cycle_length">Ежемесячно</string>
+    <string name="weekday_sunday">Воскресенье</string>
+    <string name="weekday_monday">Понедельник</string>
+    <string name="weekday_tuesday">Вторник</string>
+    <string name="weekday_wednesday">Среда</string>
+    <string name="weekday_thursday">Четверг</string>
+    <string name="weekday_friday">Пятница</string>
+    <string name="weekday_saturday">Суббота</string>
+
+    <!-- Hostname setting -->
+    <string name="device_hostname">Имя хоста устройства</string>
+
+    <string name="lockscreen_settings_title">Экран блокировки</string>
+</resources>
