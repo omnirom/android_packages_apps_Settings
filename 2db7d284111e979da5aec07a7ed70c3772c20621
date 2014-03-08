@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_870b292c",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-03-08T00:51:30Z",
+      "side": 1,
+      "message": "What about \"Battery bar \u0026 percent left\"",
+      "revId": "2db7d284111e979da5aec07a7ed70c3772c20621",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
