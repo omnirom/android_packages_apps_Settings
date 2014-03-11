@@ -414,4 +414,5 @@
     <!-- Hostname setting -->
     <string name="device_hostname">Device hostname</string>
 
+    <string name="lockscreen_settings_title">Lockscreen</string>
 </resources>
