@@ -16,6 +16,9 @@
 
 package com.android.settings.slim.service;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -35,6 +38,8 @@ public class SmsCallService extends Service {
 
     private final static String TAG = "SmsCallService";
 
+    public static final int QUIETHOUR_NOTIFICATION_ID = 5253;
+
     private static TelephonyManager mTelephony;
 
     private boolean mIncomingCall = false;
@@ -52,6 +57,12 @@ public class SmsCallService extends Service {
     private int mMinutes;
 
     private int mDay;
+
+    private static boolean mIsRunning;
+
+    public static boolean isRunning() {
+        return mIsRunning;
+    }
 
     private PhoneStateListener mPhoneStateListener = new PhoneStateListener() {
 
@@ -194,6 +205,9 @@ public class SmsCallService extends Service {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intents.SMS_RECEIVED_ACTION);
         registerReceiver(smsReceiver, filter);
+
+        mIsRunning = true;
+        notifyQuietHour();
     }
 
     @Override
@@ -204,6 +218,8 @@ public class SmsCallService extends Service {
         mPhoneStateListener = null;
         unregisterReceiver(smsReceiver);
         super.onDestroy();
+
+        mIsRunning = false;
     }
 
     @Override
@@ -249,5 +265,28 @@ public class SmsCallService extends Service {
         alarmDialog.setClass(context, com.android.settings.slim.service.BypassAlarm.class);
         alarmDialog.putExtra("number", contactName);
         startActivity(alarmDialog);
+    }
+
+    private void notifyQuietHour() {
+        Resources r = getResources();
+
+        Intent qhIntent = new Intent();
+        qhIntent.setClass(this, DisableQuietHour.class);
+
+        NotificationManager notificationManager =
+                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        Notification.Builder b = new Notification.Builder(this)
+            .setTicker(r.getString(R.string.quiet_hours_enable_ticker))
+            .setContentTitle(r.getString(R.string.quiet_hours_enable_title))
+            .setContentText(r.getString(R.string.quiet_hours_notification))
+            .setSmallIcon(R.drawable.ic_qs_quiet_hours_on)
+            .setWhen(System.currentTimeMillis())
+            .setAutoCancel(true)
+            .addAction(R.drawable.ic_qs_quiet_hours_off,
+                     r.getString(R.string.quiet_hours_disable),
+                     PendingIntent.getBroadcast(this, 0, qhIntent,
+                        PendingIntent.FLAG_CANCEL_CURRENT));
+        notificationManager.notify(QUIETHOUR_NOTIFICATION_ID, b.build());
     }
 }
