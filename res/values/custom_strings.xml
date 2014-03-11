@@ -190,9 +190,11 @@
     <string name="quiet_hours_start_summary">When to start enforcing quiet hours</string>
     <string name="quiet_hours_end">End of quiet hours</string>
     <string name="quiet_hours_end_summary">When to stop enforcing quiet hours</string>
-    <string name="quiet_hours_ringer_title">Mute phone ringer</string>
-    <string name="quiet_hours_ringer_on">No ringer will be played</string>
-    <string name="quiet_hours_ringer_off">Ringer will play like normal</string>
+    <string name="quiet_hours_ringer">Phone ringer</string>
+    <string name="quiet_hours_ringer_allow_all">Ring for all callers</string>
+    <string name="quiet_hours_ringer_allow_contacts">Ring for all contacts</string>
+    <string name="quiet_hours_ringer_allow_starred">Ring for favorite contacts</string>
+    <string name="quiet_hours_ringer_mute_all">Mute ringer for all callers</string>
     <string name="quiet_hours_mute">Mute notifications</string>
     <string name="quiet_hours_mute_on">No sounds will be played</string>
     <string name="quiet_hours_mute_off">Sounds will play like normal</string>
@@ -217,6 +219,7 @@
     <string name="quiet_hours_auto_disabled">Disabled</string>
     <string name="quiet_hours_auto_enabled">All numbers</string>
     <string name="quiet_hours_auto_contacts">Contacts only</string>
+    <string name="quiet_hours_auto_starred">Starred contacts only</string>
     <string name="quiet_hours_bypass_group">Bypass quiet hours</string>
     <string name="quiet_hours_sms_code_null">[Alarm]</string>
     <string name="quiet_hours_sms_bypass_title">Text message bypass</string>
@@ -234,6 +237,11 @@
     <string name="quiet_hours_alarm_and">" and "</string>
     <string name="quiet_hours_alarm_dialog_title">QUIETHOURS BYPASSED</string>
     <string name="quiet_hours_alarm_message">" met the requirements to bypass Quiet Hours!"</string>
+    <string name="quiet_hours_enable_title">Quiet Hours running...</string>
+    <string name="quiet_hours_notification">Touch to disable.</string>
+    <string name="quiet_hours_enable_notification_title">Notification</string>
+    <string name="quiet_hours_enable_notification_summary_on">Quiet Hour notification enabled</string>
+    <string name="quiet_hours_enable_notification_summary_off">Quiet Hour notification disabled</string>
 
     <!-- time range preference -->
     <string name="start_time_title">Start</string>
