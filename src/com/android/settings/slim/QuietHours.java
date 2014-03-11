@@ -23,6 +23,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -37,6 +38,7 @@ import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
+import android.preference.SwitchPreference;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.InputFilter;
@@ -44,20 +46,17 @@ import android.text.TextUtils;
 import android.widget.EditText;
 
 import com.android.settings.R;
-import com.android.settings.slim.service.SmsCallHelper;
+import com.android.settings.slim.service.SmsCallController;
 import com.android.settings.SettingsPreferenceFragment;
+import org.omnirom.omnigears.preference.SystemCheckBoxPreference;
 
 public class QuietHours extends SettingsPreferenceFragment implements
         Preference.OnPreferenceChangeListener  {
 
     private static final String TAG = "QuietHours";
     private static final String KEY_QUIET_HOURS_ENABLED = "quiet_hours_enabled";
-    private static final String KEY_QUIET_HOURS_RING = "quiet_hours_ring";
-    private static final String KEY_QUIET_HOURS_MUTE = "quiet_hours_mute";
-    private static final String KEY_QUIET_HOURS_STILL = "quiet_hours_still";
+    private static final CharSequence KEY_QUIET_HOURS_RINGER = "quiet_hours_ringer";
     private static final String KEY_QUIET_HOURS_DIM = "quiet_hours_dim";
-    private static final String KEY_QUIET_HOURS_HAPTIC = "quiet_hours_haptic";
-    private static final String KEY_QUIET_HOURS_NOTE = "quiet_hours_note";
     private static final String KEY_QUIET_HOURS_TIMERANGE = "quiet_hours_timerange";
     private static final String KEY_LOOP_BYPASS_RINGTONE = "loop_bypass_ringtone";
     private static final String KEY_AUTO_SMS = "auto_sms";
@@ -68,18 +67,16 @@ public class QuietHours extends SettingsPreferenceFragment implements
     private static final String KEY_REQUIRED_CALLS = "required_calls";
     private static final String KEY_SMS_BYPASS_CODE = "sms_bypass_code";
     private static final String KEY_BYPASS_RINGTONE = "bypass_ringtone";
+    private static final String KEY_QUIET_HOURS_NOTIFICATION = "quiet_hours_enable_notification";
 
     private static final int DLG_AUTO_SMS_MESSAGE = 0;
     private static final int DLG_SMS_BYPASS_CODE = 1;
 
-    private CheckBoxPreference mQuietHoursEnabled;
-    private Preference mQuietHoursNote;
-    private CheckBoxPreference mQuietHoursRing;
-    private CheckBoxPreference mQuietHoursMute;
-    private CheckBoxPreference mQuietHoursStill;
-    private CheckBoxPreference mQuietHoursDim;
-    private CheckBoxPreference mQuietHoursHaptic;
+    private SwitchPreference mQuietHoursEnabled;
+    private ListPreference mQuietHoursRinger;
+    private SystemCheckBoxPreference mQuietHoursDim;
     private CheckBoxPreference mRingtoneLoop;
+    private CheckBoxPreference mQuietHoursNotification;
     private ListPreference mAutoSms;
     private ListPreference mAutoSmsCall;
     private ListPreference mSmsBypass;
@@ -90,7 +87,9 @@ public class QuietHours extends SettingsPreferenceFragment implements
     private RingtonePreference mBypassRingtone;
     private TimeRangePreference mQuietHoursTimeRange;
 
+    private ContentResolver mResolver;
     private Context mContext;
+    private Resources mResources;
 
     private int mSmsPref;
     private int mCallPref;
@@ -108,76 +107,58 @@ public class QuietHours extends SettingsPreferenceFragment implements
             addPreferencesFromResource(R.xml.quiet_hours_settings);
 
             mContext = getActivity().getApplicationContext();
-
-            ContentResolver resolver = mContext.getContentResolver();
-
+            mResolver = mContext.getContentResolver();
+            mResources = mContext.getResources();
             PreferenceScreen prefSet = getPreferenceScreen();
 
             mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+            SmsCallController.getInstance(mContext);
 
             // Load the preferences
-            mQuietHoursNote = prefSet.findPreference(KEY_QUIET_HOURS_NOTE);
             mQuietHoursEnabled =
-                (CheckBoxPreference) prefSet.findPreference(KEY_QUIET_HOURS_ENABLED);
+                (SwitchPreference) prefSet.findPreference(KEY_QUIET_HOURS_ENABLED);
             mQuietHoursTimeRange =
                 (TimeRangePreference) prefSet.findPreference(KEY_QUIET_HOURS_TIMERANGE);
-            mQuietHoursRing =
-                (CheckBoxPreference) prefSet.findPreference(KEY_QUIET_HOURS_RING);
-            mQuietHoursMute =
-                (CheckBoxPreference) prefSet.findPreference(KEY_QUIET_HOURS_MUTE);
-            mQuietHoursStill =
-                (CheckBoxPreference) prefSet.findPreference(KEY_QUIET_HOURS_STILL);
-            mQuietHoursHaptic =
-                (CheckBoxPreference) prefSet.findPreference(KEY_QUIET_HOURS_HAPTIC);
+            mQuietHoursRinger =
+                (ListPreference) prefSet.findPreference(KEY_QUIET_HOURS_RINGER);
             mQuietHoursDim =
-                (CheckBoxPreference) findPreference(KEY_QUIET_HOURS_DIM);
+                (SystemCheckBoxPreference) prefSet.findPreference(KEY_QUIET_HOURS_DIM);
             mRingtoneLoop =
-                (CheckBoxPreference) findPreference(KEY_LOOP_BYPASS_RINGTONE);
+                (CheckBoxPreference) prefSet.findPreference(KEY_LOOP_BYPASS_RINGTONE);
+            mQuietHoursNotification =
+                (CheckBoxPreference) prefSet.findPreference(KEY_QUIET_HOURS_NOTIFICATION);
             mAutoSms =
-                (ListPreference) findPreference(KEY_AUTO_SMS);
+                (ListPreference) prefSet.findPreference(KEY_AUTO_SMS);
             mAutoSmsCall =
-                (ListPreference) findPreference(KEY_AUTO_SMS_CALL);
+                (ListPreference) prefSet.findPreference(KEY_AUTO_SMS_CALL);
             mAutoSmsMessage =
-                (Preference) findPreference(KEY_AUTO_SMS_MESSAGE);
+                (Preference) prefSet.findPreference(KEY_AUTO_SMS_MESSAGE);
             mSmsBypass =
-                (ListPreference) findPreference(KEY_SMS_BYPASS);
+                (ListPreference) prefSet.findPreference(KEY_SMS_BYPASS);
             mCallBypass =
-                (ListPreference) findPreference(KEY_CALL_BYPASS);
+                (ListPreference) prefSet.findPreference(KEY_CALL_BYPASS);
             mCallBypassNumber =
-                (ListPreference) findPreference(KEY_REQUIRED_CALLS);
+                (ListPreference) prefSet.findPreference(KEY_REQUIRED_CALLS);
             mSmsBypassCode =
-                (Preference) findPreference(KEY_SMS_BYPASS_CODE);
+                (Preference) prefSet.findPreference(KEY_SMS_BYPASS_CODE);
             mBypassRingtone =
-                (RingtonePreference) findPreference(KEY_BYPASS_RINGTONE);
-
-
-            // Remove the "Incoming calls behaviour" note if the device does not support phone calls
-            if (mQuietHoursNote != null && getResources().getBoolean(
-                        com.android.internal.R.bool.config_voice_capable) == false) {
-                getPreferenceScreen().removePreference(mQuietHoursNote);
-            }
+                (RingtonePreference) prefSet.findPreference(KEY_BYPASS_RINGTONE);
 
             // Set the preference state and listeners where applicable
             mQuietHoursEnabled.setChecked(
-                    Settings.System.getInt(resolver, Settings.System.QUIET_HOURS_ENABLED, 0) != 0);
+                    Settings.System.getInt(mResolver, Settings.System.QUIET_HOURS_ENABLED, 0) != 0);
             mQuietHoursEnabled.setOnPreferenceChangeListener(this);
             mQuietHoursTimeRange.setTimeRange(
-                    Settings.System.getInt(resolver, Settings.System.QUIET_HOURS_START, 0),
-                    Settings.System.getInt(resolver, Settings.System.QUIET_HOURS_END, 0));
+                    Settings.System.getInt(mResolver, Settings.System.QUIET_HOURS_START, 0),
+                    Settings.System.getInt(mResolver, Settings.System.QUIET_HOURS_END, 0));
             mQuietHoursTimeRange.setOnPreferenceChangeListener(this);
-            mQuietHoursRing.setChecked(
-                    Settings.System.getInt(resolver, Settings.System.QUIET_HOURS_RINGER, 0) == 1);
-            mQuietHoursRing.setOnPreferenceChangeListener(this);
-            mQuietHoursMute.setChecked(
-                    Settings.System.getInt(resolver, Settings.System.QUIET_HOURS_MUTE, 0) == 1);
-            mQuietHoursMute.setOnPreferenceChangeListener(this);
-            mQuietHoursStill.setChecked(
-                    Settings.System.getInt(resolver, Settings.System.QUIET_HOURS_STILL, 0) == 1);
-            mQuietHoursStill.setOnPreferenceChangeListener(this);
-            mQuietHoursHaptic.setChecked(
-                    Settings.System.getInt(resolver, Settings.System.QUIET_HOURS_HAPTIC, 0) == 1);
-            mQuietHoursHaptic.setOnPreferenceChangeListener(this);
             mRingtoneLoop.setOnPreferenceChangeListener(this);
+            boolean notifEnabled = mPrefs.getBoolean(KEY_QUIET_HOURS_NOTIFICATION, true);
+            mQuietHoursNotification.setChecked(notifEnabled);
+            mQuietHoursNotification.setSummary(notifEnabled
+                        ? R.string.quiet_hours_enable_notification_summary_on
+                        : R.string.quiet_hours_enable_notification_summary_off);
+            mQuietHoursNotification.setOnPreferenceChangeListener(this);
             mAutoSms.setValue(mPrefs.getString(KEY_AUTO_SMS, "0"));
             mAutoSms.setOnPreferenceChangeListener(this);
             mAutoSmsCall.setValue(mPrefs.getString(KEY_AUTO_SMS_CALL, "0"));
@@ -193,17 +174,21 @@ public class QuietHours extends SettingsPreferenceFragment implements
             TelephonyManager telephonyManager =
                     (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
             if (telephonyManager.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE) {
-                prefSet.removePreference(mQuietHoursRing);
+                prefSet.removePreference(mQuietHoursRinger);
                 prefSet.removePreference((PreferenceGroup) findPreference("sms_respond"));
                 prefSet.removePreference((PreferenceGroup) findPreference("quiethours_bypass"));
             } else {
+                int muteType = Settings.System.getInt(mResolver, Settings.System.QUIET_HOURS_RINGER, 0);
+                mQuietHoursRinger.setValue(String.valueOf(muteType));
+                mQuietHoursRinger.setSummary(mQuietHoursRinger.getEntry());
+                mQuietHoursRinger.setOnPreferenceChangeListener(this);
                 int callBypassNumber = Integer.parseInt(mPrefs.getString(KEY_REQUIRED_CALLS, "2"));
                 boolean loopRingtone = mPrefs.getBoolean(KEY_LOOP_BYPASS_RINGTONE, true);
                 mSmsBypassPref = Integer.parseInt(mPrefs.getString(KEY_SMS_BYPASS, "0"));
                 mSmsPref = Integer.parseInt(mPrefs.getString(KEY_AUTO_SMS, "0"));
                 mCallPref = Integer.parseInt(mPrefs.getString(KEY_AUTO_SMS_CALL, "0"));
                 mCallBypassPref = Integer.parseInt(mPrefs.getString(KEY_CALL_BYPASS, "0"));
-                Uri alertSoundUri = SmsCallHelper.returnUserRingtone(mContext);
+                Uri alertSoundUri = SmsCallController.getInstance(mContext).returnUserRingtone();
                 Ringtone ringtoneAlarm = RingtoneManager.getRingtone(mContext, alertSoundUri);
                 mBypassRingtone.setSummary(ringtoneAlarm.getTitle(mContext));
                 mRingtoneLoop.setChecked(loopRingtone);
@@ -213,7 +198,7 @@ public class QuietHours extends SettingsPreferenceFragment implements
                 mSmsBypass.setSummary(mSmsBypass.getEntries()[mSmsBypassPref]);
                 mCallBypass.setSummary(mCallBypass.getEntries()[mCallBypassPref]);
                 mCallBypassNumber.setSummary(mCallBypassNumber.getEntries()[callBypassNumber-2]
-                        + getResources().getString(R.string.quiet_hours_calls_required_summary));
+                        + mResources.getString(R.string.quiet_hours_calls_required_summary));
                 mAutoSms.setSummary(mAutoSms.getEntries()[mSmsPref]);
                 mAutoSmsCall.setSummary(mAutoSmsCall.getEntries()[mCallPref]);
                 mCallBypassNumber.setEnabled(mCallBypassPref != 0);
@@ -224,23 +209,13 @@ public class QuietHours extends SettingsPreferenceFragment implements
             }
 
             // Remove the notification light setting if the device does not support it
-            if (mQuietHoursDim != null && getResources().getBoolean(
-                        com.android.internal.R.bool.config_intrusiveNotificationLed) == false) {
-                getPreferenceScreen().removePreference(mQuietHoursDim);
-            } else {
-                mQuietHoursDim.setChecked(Settings.System.getInt(
-                        resolver, Settings.System.QUIET_HOURS_DIM, 0) == 1);
-                mQuietHoursDim.setOnPreferenceChangeListener(this);
+            if (mQuietHoursDim != null && !mResources.getBoolean(
+                        com.android.internal.R.bool.config_intrusiveNotificationLed)) {
+                prefSet.removePreference(mQuietHoursDim);
             }
 
             mPreferencesChangeListener = new OnSharedPreferenceChangeListener() {
                 public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                    if (key.equals(KEY_AUTO_SMS_CALL)
-                            || key.equals(KEY_AUTO_SMS)
-                            || key.equals(KEY_CALL_BYPASS)
-                            || key.equals(KEY_SMS_BYPASS)) {
-                        SmsCallHelper.scheduleService(mContext);
-                    }
                     if (key.equals(KEY_SMS_BYPASS_CODE)) {
                         setSmsBypassCodeSummary();
                     }
@@ -263,7 +238,6 @@ public class QuietHours extends SettingsPreferenceFragment implements
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-        ContentResolver resolver = mContext.getContentResolver();
         if (preference == mAutoSmsMessage) {
             showDialogInner(DLG_AUTO_SMS_MESSAGE);
             return true;
@@ -274,43 +248,33 @@ public class QuietHours extends SettingsPreferenceFragment implements
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 
+    @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        ContentResolver resolver = mContext.getContentResolver();
         if (preference == mQuietHoursTimeRange) {
-            Settings.System.putInt(resolver, Settings.System.QUIET_HOURS_START,
+            Settings.System.putInt(mResolver, Settings.System.QUIET_HOURS_START,
                     mQuietHoursTimeRange.getStartTime());
-            Settings.System.putInt(resolver, Settings.System.QUIET_HOURS_END,
+            Settings.System.putInt(mResolver, Settings.System.QUIET_HOURS_END,
                     mQuietHoursTimeRange.getEndTime());
-            SmsCallHelper.scheduleService(mContext);
             return true;
         } else if (preference == mQuietHoursEnabled) {
-            SmsCallHelper.setQuietHoursActive(mContext, (Boolean) newValue ? 1 : 0);
-            SmsCallHelper.scheduleService(mContext);
-            return true;
-        } else if (preference == mQuietHoursRing) {
-            Settings.System.putInt(resolver, Settings.System.QUIET_HOURS_RINGER,
+            Settings.System.putInt(mResolver, Settings.System.QUIET_HOURS_ENABLED,
                     (Boolean) newValue ? 1 : 0);
             return true;
-        } else if (preference == mQuietHoursMute) {
-            Settings.System.putInt(resolver, Settings.System.QUIET_HOURS_MUTE,
-                    (Boolean) newValue ? 1 : 0);
-            return true;
-        } else if (preference == mQuietHoursStill) {
-            Settings.System.putInt(resolver, Settings.System.QUIET_HOURS_STILL,
-                    (Boolean) newValue ? 1 : 0);
-            return true;
-        } else if (preference == mQuietHoursDim) {
-            Settings.System.putInt(resolver, Settings.System.QUIET_HOURS_DIM,
-                    (Boolean) newValue ? 1 : 0);
-            return true;
-        } else if (preference == mQuietHoursHaptic) {
-            Settings.System.putInt(resolver, Settings.System.QUIET_HOURS_HAPTIC,
-                    (Boolean) newValue ? 1 : 0);
+        } else if (preference == mQuietHoursRinger) {
+            int ringerMuteType = Integer.valueOf((String) newValue);
+            int index = mQuietHoursRinger.findIndexOfValue((String) newValue);
+            Settings.System.putInt(mResolver, Settings.System.QUIET_HOURS_RINGER, ringerMuteType);
+            mQuietHoursRinger.setSummary(mQuietHoursRinger.getEntries()[index]);
             return true;
         } else if (preference == mRingtoneLoop) {
             mRingtoneLoop.setSummary((Boolean) newValue
                     ? R.string.quiet_hours_bypass_ringtone_loop_summary_on
                     : R.string.quiet_hours_bypass_ringtone_loop_summary_off);
+            return true;
+        } else if (preference == mQuietHoursNotification) {
+            mQuietHoursNotification.setSummary((Boolean) newValue
+                        ? R.string.quiet_hours_enable_notification_summary_on
+                        : R.string.quiet_hours_enable_notification_summary_off);
             return true;
         } else if (preference == mAutoSms) {
             mSmsPref = Integer.parseInt((String) newValue);
@@ -337,7 +301,7 @@ public class QuietHours extends SettingsPreferenceFragment implements
         } else if (preference == mCallBypassNumber) {
             int val = Integer.parseInt((String) newValue);
             mCallBypassNumber.setSummary(mCallBypassNumber.getEntries()[val-2]
-                    + getResources().getString(R.string.quiet_hours_calls_required_summary));
+                    + mResources.getString(R.string.quiet_hours_calls_required_summary));
             return true;
         } else if (preference == mBypassRingtone) {
             Uri val = Uri.parse((String) newValue);
@@ -365,7 +329,7 @@ public class QuietHours extends SettingsPreferenceFragment implements
     }
 
     private void setSmsBypassCodeSummary() {
-        final String defaultCode = getResources().getString(R.string.quiet_hours_sms_code_null);
+        final String defaultCode = mResources.getString(R.string.quiet_hours_sms_code_null);
         final String code = mPrefs.getString(KEY_SMS_BYPASS_CODE, defaultCode);
         mSmsBypassCode.setSummary(code);
     }
@@ -396,7 +360,7 @@ public class QuietHours extends SettingsPreferenceFragment implements
             switch (id) {
                 case DLG_AUTO_SMS_MESSAGE:
                     final String defaultText =
-                        getResources().getString(R.string.quiet_hours_auto_sms_null);
+                        getActivity().getResources().getString(R.string.quiet_hours_auto_sms_null);
                     final String autoText =
                         getOwner().mPrefs.getString(KEY_AUTO_SMS_MESSAGE, defaultText);
 
@@ -426,7 +390,7 @@ public class QuietHours extends SettingsPreferenceFragment implements
                     .create();
                 case DLG_SMS_BYPASS_CODE:
                     final String defaultCode =
-                        getResources().getString(R.string.quiet_hours_sms_code_null);
+                        getActivity().getResources().getString(R.string.quiet_hours_sms_code_null);
                     final String code =
                         getOwner().mPrefs.getString(KEY_SMS_BYPASS_CODE, defaultCode);
 
