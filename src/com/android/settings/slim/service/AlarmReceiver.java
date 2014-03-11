@@ -20,13 +20,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-public class AlarmReceiver extends BroadcastReceiver {
+import com.android.internal.util.slim.QuietHoursHelper;
 
-    private final static String TAG = "AlarmReceiver";
+public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        SmsCallHelper.scheduleService(context);
+        String action = intent.getAction();
+        if (action.equals(SmsCallController.SCHEDULE_SMSCALL_SERVICE_COMMAND)){
+            SmsCallController.getInstance(context).stopSmsCallService();
+        } else if (action.equals(SmsCallController.SCHEDULE_NOTIFICATION_SERVICE_COMMAND)){
+            SmsCallController.getInstance(context).stopNotificationService();
+        } else if (action.equals(QuietHoursHelper.SCHEDULE_SERVICE_COMMAND)){
+            SmsCallController.getInstance(context).scheduleService();
+        }
     }
-
 }

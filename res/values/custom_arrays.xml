@@ -108,11 +108,13 @@
         <item>@string/quiet_hours_auto_disabled</item>
         <item>@string/quiet_hours_auto_enabled</item>
         <item>@string/quiet_hours_auto_contacts</item>
+        <item>@string/quiet_hours_auto_starred</item>
     </string-array>
     <string-array name="incoming_contact_values" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
+        <item>3</item>
     </string-array>
 
     <!-- QuietHours Calls Required -->
@@ -130,6 +132,20 @@
         <item>4</item>
         <item>5</item>
         <item>6</item>
+    </string-array>
+
+    <string-array name="quiet_hours_ringer_entries" translatable="false">
+        <item>@string/quiet_hours_ringer_allow_all</item>
+        <item>@string/quiet_hours_ringer_allow_contacts</item>
+        <item>@string/quiet_hours_ringer_allow_starred</item>
+        <item>@string/quiet_hours_ringer_mute_all</item>
+    </string-array>
+
+    <string-array name="quiet_hours_ringer_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
 
     <!-- Auto keyboard rotation -->
@@ -221,4 +237,21 @@
         <item>5000</item>
         <item>10000</item>
     </integer-array>
+
+    <!-- Auto keyboard rotation -->
+    <string-array name="quiet_hours_snooze_time_entries">
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>60 minutes</item>
+    </string-array>
+
+    <string-array name="quiet_hours_snooze_time_values" translatable="false">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+    </string-array>
 </resources>
