@@ -31,24 +31,13 @@
     <string name="volume_adjust_sounds_enable_summary">Ton bei Lautstärkeänderung</string>
     <string name="link_volume_ringtones">Gleiche Lautstärke für Klingelton &amp; Benachrichtigungen</string>
     <string name="volume_ring_only_description">Klingelton</string>
-    <string name="category_volume_panel_title">Lautstärke-Dialog</string>
-
-    <string name="volume_panel_timeout_title">Timeout</string>
-    <string name="volume_panel_timeout_summary">Zeit bis der Dialog ausgeblendet wird</string>
-
-    <!-- Volume panel style -->
-    <string name="volume_panel_style">Anzeige des Lautstärke-Dialogs</string>
-    <string name="single">Einzeln</string>
-    <string name="expandable">Erweiterbar</string>
-    <string name="expanded">Erweitert</string>
-
-    <!-- Safe headset volume warning -->
-    <string name="safe_headset_volume_warning_title">Lautstärkewarnung</string>
-    <string name="safe_headset_volume_warning_summary">Zeige Headset-Lautstärkewarnung</string>
 
     <!-- Advanced reboot options -->
-    <string name="advanced_reboot_title">Erweitertes Neustartmenü</string>
+    <string name="advanced_reboot_title">Neustartmenü erweitert</string>
     <string name="advanced_reboot_summary">Bei entsperrtem Bildschirm Neustartmenu mit Optionen für Recovery und Bootloader</string>
+
+    <!-- Lockscreen battery ring -->
+    <string name="battery_around_lockscreen_ring">Batteriestatus um Entsperrsysmbol</string>
 
     <!-- Android debugging over WiFi -->
     <string name="adb_over_network">ADB über Netzwerk</string>
@@ -118,165 +107,7 @@
     <string name="unlock_menu_unlock_title">Mit Menü entsperren</string>
     <string name="unlock_menu_unlock_summary">Das Drücken der Menütaste entsperrt das Telefon</string>
 
-    <!-- Stylus Icon -->
-    <string name="stylus_icon_enabled_title">Stift-Symbol</string>
-    <string name="stylus_icon_enabled_summary">Zeiger einblenden, wenn ein Stift verwendet wird</string>
-
-    <!-- Stylus Gestures -->
-    <string name="gestures_settings_title">Stiftbewegungen</string>
-    <string name="category_spen_title">Stiftbewegungen</string>
-    <string name="enable_subcat_title">Stylus</string>
-    <string name="enable_spen_title_head">Aktiviere Stiftgesten</string>
-    <string name="enable_spen_summary_head">Erlaubt die Ausführung eigener Aktionen mit Stiftgesten. Warnung: Apps können nicht das gedrückt Halten des Stifts erfassen.</string>
-    <string name="gestures_subcat_title">Gesten</string>
-    <string name="gestures_left_spen_title_head">Nach Links wischen</string>
-    <string name="gestures_left_spen_summary_head">Erlaubt eine benutzerdefinierte Aktion beim nachlinks wischen</string>
-    <string name="gestures_right_spen_title_head">Nach Rechts wischen</string>
-    <string name="gestures_right_spen_summary_head">Erlaubt eine benutzerdefinierte Aktion beim nachRechts wischen</string>
-    <string name="gestures_up_spen_title_head">Hoch wischen</string>
-    <string name="gestures_up_spen_summary_head">Erlaubt eine benutzerdefinierte Aktion beim Hochwischen</string>
-    <string name="gestures_down_spen_title_head">Runter wischen</string>
-    <string name="gestures_down_spen_summary_head">Erlaubt eine benutzerdefinierte Aktion beim Runterwischen</string>
-    <string name="gestures_long_spen_title_head">Gedrückt halten</string>
-    <string name="gestures_long_spen_summary_head">Erlaubt eine benutzerdefinierte Aktion beim Gedrückt halten</string>
-    <string name="gestures_double_spen_title_head">Doppelklick</string>
-    <string name="gestures_double_spen_summary_head">Erlaubt eine benutzerdefinierte Aktion bei Doppelklick</string>
-
-    <!-- Gestures Options -->
-    <string name="gestures_action_empty">Keine Aktion</string>
-    <string name="gestures_action_home">Zurück zu Home</string>
-    <string name="gestures_action_back">Zurück Taste emulieren</string>
-    <string name="gestures_action_menu">Menü Taste emulieren</string>
-    <string name="gestures_action_search">Suche aufrufen</string>
-    <string name="gestures_action_recent">Kürzliche Apps</string>
-
-    <!-- stylus gestures support -->
-    <string name="stylus_app_not_installed">%s ist nicht installiert</string>
-
     <!-- default alarm tone -->
     <string name="alarm_sound_title">Standard-Weckton</string>
     <string name="alarm_sound_dialog_title">Standard-Weckton</string>
-
-<!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
-    <string name="custom_runtime_warning_title">Warnung</string>
-    <string name="custom_runtime_warning_message">ART wird von OmniROM nicht unterstützt. Diese Einstellung ist nur für experimentelle Zwecke enthalten und birgt das Risiko, Instabilität, Abstürze und Datenverlust auszulösen oder das korrekte Starten des Geräts zu verhindern. Besuchen Sie &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introducing ART&lt;/a&gt; für weitere Informationen.&lt;br/&gt;&lt;br/&gt;Wir bitten Sie, keine Fehlerberichte zu senden, wenn Sie ART aktiviert haben. &lt;br/&gt;&lt;br/&gt;Sind Sie sicher, dass Sie die Laufzeitumgebung von <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> zu <xliff:g id="new" example="libart.so">%2$s</xliff:g> ändern und neu starten möchten?</string>
-
-    <!-- Basic Numbers -->
-    <string name="two">Zwei</string>
-    <string name="three">Drei</string>
-    <string name="four">Vier</string>
-    <string name="five">Fünf</string>
-    <string name="six">Sechs</string>
-
-    <!-- Quiet hours -->
-    <string name="quiet_hours_title">Ruhemodus</string>
-    <string name="quiet_hours_summary">Stunden konfigurieren, in denen das Telefon stumm bleibt</string>
-    <string name="quiet_hours_note_title">Hinweis</string>
-    <string name="quiet_hours_note_summary">Ankommende Anrufe verhalten sich bei aktiviertem Ruhemodus wie gewohnt</string>
-    <string name="quiet_hours_enabled">Ruhemodus aktivieren</string>
-    <string name="quiet_hours_enabled_on">Ruhemodus wird erzwungen</string>
-    <string name="quiet_hours_enabled_off">Benachrichtigungen verhalten sich wie gewohnt</string>
-    <string name="quiet_hours_start">Beginn des Ruhemodus</string>
-    <string name="quiet_hours_start_summary">Wann soll der Ruhemodus beginnen</string>
-    <string name="quiet_hours_end">Ende des Ruhemodus</string>
-    <string name="quiet_hours_end_summary">Wann soll der Ruhemodus enden</string>
-    <string name="quiet_hours_ringer_title">Klingelton stumm schalten</string>
-    <string name="quiet_hours_ringer_on">Es wird kein Klingelton abgespielt</string>
-    <string name="quiet_hours_ringer_off">Klingelton verhält sich wie gewohnt</string>
-    <string name="quiet_hours_mute">Benachrichtigungen stumm schalten</string>
-    <string name="quiet_hours_mute_on">Es werden keine Benachrichtigungstöne abgespielt</string>
-    <string name="quiet_hours_mute_off">Benachrichtigungstöne verhalten sich wie gewohnt</string>
-    <string name="quiet_hours_still">Vibration deaktivieren</string>
-    <string name="quiet_hours_still_on">Gerät vibriert nicht</string>
-    <string name="quiet_hours_still_off">Gerät vibriert wie gewohnt </string>
-    <string name="quiet_hours_dim">LED deaktivieren</string>
-    <string name="quiet_hours_dim_on">Benachrichtigungs-LED wird deaktiviert</string>
-    <string name="quiet_hours_dim_off">Benachrichtigungs-LED verhält sich wie gewohnt</string>
-    <string name="quiet_hours_haptic">Haptisches Feedback deaktivieren</string>
-    <string name="quiet_hours_haptic_on">Haptisches Feedback wird deaktiviert</string>
-    <string name="quiet_hours_haptic_off">Haptisches Feedback verhält sich wie gewohnt</string>
-    <string name="quiet_hours_active_from">Aktiv von</string>
-    <string name="quiet_hours_active_to">bis</string>
-    <string name="quiet_hours_auto_sms_group">Automatische Antwort</string>
-    <string name="quiet_hours_auto_sms_title">Ankommende Textnachrichten</string>
-    <string name="quiet_hours_auto_sms_call_title">Ankommende Anrufe</string>
-    <string name="quiet_hours_auto_string_title">Zu sendende Antwort</string>
-    <string name="quiet_hours_auto_string_explain">Nachricht wird an jeden gesendet, der versucht, Sie bei aktiviertem Ruhemodus zu erreichen</string>
-    <string name="quiet_hours_auto_sms_null">[Automatische Nachricht] Ich werde so bald wie möglich zurückrufen.</string>
-    <string name="quiet_hours_auto_disabled">Deaktiviert</string>
-    <string name="quiet_hours_auto_enabled">Alle Nummern</string>
-    <string name="quiet_hours_auto_contacts">Nur Kontakte</string>
-    <string name="quiet_hours_bypass_group">Ruhemodus umgehen</string>
-    <string name="quiet_hours_sms_code_null">[Alarm]</string>
-    <string name="quiet_hours_sms_bypass_title">Textnachrichten umgehen</string>
-    <string name="quiet_hours_sms_code_title">Textnachrichten-Schlüsselwort</string>
-    <string name="quiet_hours_sms_code_explain">Wenn eine ankommende Nachricht diesen Text enthält, wird ein Alarm ausgegeben</string>
-    <string name="quiet_hours_call_bypass_title">Ankommende Anrufe umgehen</string>
-    <string name="quiet_hours_calls_required_title">Anrufe in 30 Minuten</string>
-    <string name="quiet_hours_calls_required_summary">" Anrufe, um den Ruhemodus zu umgehen"</string>
-    <string name="quiet_hours_bypass_ringtone_title">Abzuspielender Klingelton</string>
-    <string name="quiet_hours_bypass_ringtone_loop_title">Klingelton wiederholen</string>
-    <string name="quiet_hours_bypass_ringtone_loop_summary_on">Klingelton wiederholt sich, bis er abgebrochen wird</string>
-    <string name="quiet_hours_bypass_ringtone_loop_summary_off">Klingelton wird nur einmal abgespielt</string>
-    <string name="quiet_hours_alarm_dismiss">Alarm abbrechen</string>
-    <string name="quiet_hours_alarm_and">" und "</string>
-    <string name="quiet_hours_alarm_dialog_title">RUHEMODUS UMGANGEN</string>
-    <string name="quiet_hours_alarm_message">" hat die Anforderungen erfüllt, um den Ruhemodus zu umgehen!"</string>
-
-    <!-- time range preference -->
-    <string name="start_time_title">Anfang</string>
-    <string name="end_time_title">Ende</string>
-
-    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
-    <string name="change_crypt_password_title">Passwort ändern</string>
-    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
-    <string name="change_crypt_password_summary">Passwort für die Geräte-Verschlüsselung ändern</string>
-
-    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
-    <string name="encryptionpassword_choose_your_password_header">Verschlüsselungs-Passwort setzen</string>
-
-    <!-- Keyboard and Input ASS methods  -->
-    <string name="title_keyboard_input">Erweiterte Einstellungen</string>
-    <string name="disable_fullscreen_keyboard_title">Vollbild-Tastatur deaktivieren</string>
-    <string name="disable_fullscreen_keyboard_summary">Tastatur im Breitformat bedeckt nicht ganzen Bildschirm</string>
-    <string name="keyboard_rotation_toggle_title">Automatische Tastatur-Drehung</string>
-    <string name="keyboard_rotation_toggle_summary">Automatische Drehung aktivieren, wenn Tastatur gezeigt wird</string>
-    <string name="keyboard_rotation_timeout_title">Drehungs-Verzögerung</string>
-    <string name="keyboard_rotation_timeout_summary">Der Bewegungssensor wird <xliff:g id="rotate_timeout">%1$s</xliff:g> Sekunden, nachdem die Tastatur geschlossen wurde, deaktiviert</string>
-    <string name="keyboard_rotation_dialog">Anmerkung: Diese Funktion erzwingt die automatische Drehung temporär zu aktivieren, während die Tastatur geöffnet ist. Es hat keinen Effekt, wenn die automatische Drehung bereits aktiviert ist.</string>
-    <string name="show_enter_key_title">Enter-Taste zeigen</string>
-    <string name="show_enter_key_summary">Tastatur zwingen, Enter-Taste statt Smiley-Taste anzuzeigen</string>
-    <string name="ime_switcher_notify">Benachrichtigung für Eingabemethoden-Wechsler</string>
-    <string name="ime_switcher_notify_summary">Eingabemethoden-Wechsler anzeigen</string>
-
-
-
-
-    <!-- Display : Rotation -->
-    <string name="display_rotation_title">Rotation</string>
-    <string name="display_rotation_disabled">Deaktiviert</string>
-    <string name="display_rotation_unit">Grad</string>
-    <string name="display_rotation_category_title">Rotations-Modi</string>
-    <string name="display_rotation_0_title">0 Grad</string>
-    <string name="display_rotation_90_title">90 Grad</string>
-    <string name="display_rotation_180_title">180 Grad</string>
-    <string name="display_rotation_270_title">270 Grad</string>
-
-    <!-- ADB Paranoia settings -->
-    <string name="adb_paranoid">ADB Paranoia-Modus</string>
-    <string name="adb_paranoid_summary">Sofort neustarten, wenn ein neuer unbekannter Computer angeschlossen wird, während das Gerät gesperrt ist</string>
-
-    <!-- custom data usage period -->
-    <string name="daily_cycle_lenght">Täglich</string>
-    <string name="weekly_cycle_length">Wöchentlich</string>
-    <string name="monthly_cycle_length">Monatlich</string>
-    <string name="weekday_sunday">Sonntag</string>
-    <string name="weekday_monday">Montag</string>
-    <string name="weekday_tuesday">Dienstag</string>
-    <string name="weekday_wednesday">Mittwoch</string>
-    <string name="weekday_thursday">Donnerstag</string>
-    <string name="weekday_friday">Freitag</string>
-    <string name="weekday_saturday">Samstag</string>
-    <!-- Subtitle of dialog for editing data usage cycle length. [CHAR LIMIT=32] -->
-    <string name="data_usage_lengths_spinner_subtitle">Häufigkeit:</string>
 </resources>

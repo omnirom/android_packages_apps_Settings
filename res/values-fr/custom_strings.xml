@@ -29,6 +29,7 @@
     <string name="volume_ring_only_description">Sonnerie</string>
     <string name="advanced_reboot_title">Redémarrage avancé</string>
     <string name="advanced_reboot_summary">Inclure les options de redémarrage en mode recovery et bootloader dans le menu marche/arrêt lorsque l\'appareil est déverrouillé</string>
+    <string name="battery_around_lockscreen_ring">Niveau de batterie autour de l\'anneau de déverrouillage</string>
     <string name="adb_over_network">ADB par réseau</string>
     <string name="adb_over_network_summary">Activer le débogage TCP/IP sur toutes les interfaces réseaux (réseaux USB, Wi-Fi et Bluetooth). Ce paramètre est réinitialisé au redémarrage</string>
     <string name="adb_over_network_warning">ATTENTION : Lorsque cette fonction est activée, votre appareil est ouvert aux intrusions sur tous les réseaux connectés, y compris via le réseau mobile\u00A0!\n\nN\'utilisez cette fonctionnalité que sur des réseaux de confiance.\n\nContinuer\u00A0?</string>
@@ -108,6 +109,7 @@
     <string name="custom_runtime_warning_title">Attention</string>
     <string name="custom_runtime_warning_message">ART n\'est pas supporté par OmniROM. Cette fonctionnalité est disponible seulement pour expérimentation et elle peut potentiellement causer des instabilités, des bogues, des pertes de données ou empêcher le démarrage de votre appareil. Visitez &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introduction à ART&lt;/a&gt; pour plus d\'information.&lt;br/&gt;&lt;br/&gt;Nous vous demandons de ne pas rapporter de bogues si vous avez activé le système d\'exécution ART.&lt;br/&gt;&lt;br/&gt;Êtes-vous sûr de vouloir redémarrer pour passer le système d\'exécution de <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> à <xliff:g id="new" example="libart.so">%2$s</xliff:g>\u00A0?</string>
     <string name="intent_sender_data_label"><xliff:g id="data">Données\u00A0:</xliff:g></string>
+    <string name="security_maximize_widgets_title">Maximiser les widgets</string>
     <string name="wifi_setting_countrycode_title">Code région du Wi-Fi</string>
     <string name="wifi_setting_countrycode_summary">Spécifier le code Wi-Fi de la région</string>
     <string name="wifi_setting_countrycode_error">Un problème a été rencontré avec le paramétrage du code de région.</string>
@@ -191,14 +193,4 @@
     <string name="expandable">Extensible</string>
     <string name="expanded">Étendu</string>
     <string name="supersu_title">SuperSU</string>
-    <string name="safe_headset_volume_warning_title">Volume sécurisé du casque</string>
-    <string name="safe_headset_volume_warning_summary">Afficher un avertissement de sécurité avec les casques audio</string>
-    <string name="display_rotation_title">Rotation</string>
-    <string name="display_rotation_disabled">Désactivé</string>
-    <string name="display_rotation_unit">dégrées</string>
-    <string name="display_rotation_category_title">Modes de rotation</string>
-    <string name="display_rotation_0_title">0 dégrée</string>
-    <string name="display_rotation_90_title">90 dégrées</string>
-    <string name="display_rotation_180_title">180 dégrées</string>
-    <string name="display_rotation_270_title">270 dégrées</string>
 </resources>

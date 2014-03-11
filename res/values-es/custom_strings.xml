@@ -36,6 +36,9 @@
     <string name="advanced_reboot_title">Reinicio avanzado</string>
     <string name="advanced_reboot_summary">Añade opciones de reinicio al modo recovery, bootloader o download en el menú de encendido si el dispositivo está desbloqueado</string>
 
+    <!-- Lockscreen battery ring -->
+    <string name="battery_around_lockscreen_ring">Indicar batería en el anillo de desbloqueo</string>
+
     <!-- Android debugging over WiFi -->
     <string name="adb_over_network">ADB sobre la red</string>
     <string name="adb_over_network_summary">Habilitar la depuración TCP / IP a través de interfaces de red (Wi-Fi, redes USB). Este ajuste se restablece al reiniciar</string>

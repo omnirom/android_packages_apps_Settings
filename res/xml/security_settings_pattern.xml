@@ -46,10 +46,29 @@
             android:key="keyguard_enable_widgets"
             android:title="@string/security_enable_widgets_title"/>
 
-        <PreferenceScreen
-            android:key="lockscreen_link"
-            android:title="@string/lockscreen_settings_title"
-            android:fragment="org.omnirom.omnigears.interfacesettings.LockscreenSettings" />
+        <CheckBoxPreference
+            android:key="lockscreen_maximize_widgets"
+            android:title="@string/security_maximize_widgets_title"
+            android:persistent="false"
+            android:dependency="keyguard_enable_widgets"/>
+
+        <CheckBoxPreference
+            android:key="lockscreen_enable_camera"
+            android:title="@string/lockscreen_enable_camera_title"
+            android:summary="@string/lockscreen_enable_camera_summary"
+            android:persistent="false"/>
+
+        <CheckBoxPreference
+            android:key="lockscreen_enable_power_menu"
+            android:title="@string/lockscreen_enable_power_menu_title"
+            android:summary="@string/lockscreen_enable_power_menu_summary"
+            android:persistent="false" />
+
+        <CheckBoxPreference
+            android:key="lockscreen_see_through"
+            android:title="@string/lockscreen_see_through_title"
+            android:summary="@string/lockscreen_see_through_summary"
+            android:persistent="false" />
 
         <PreferenceScreen
             android:fragment="com.android.settings.OwnerInfoSettings"

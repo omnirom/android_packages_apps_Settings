@@ -27,6 +27,7 @@
     <string name="volume_ring_only_description">Ringsignal</string>
     <string name="advanced_reboot_title">Avancerad omstart</string>
     <string name="advanced_reboot_summary">Möjliggör omstart till recovery eller bootloader från avstängningsmenyn</string>
+    <string name="battery_around_lockscreen_ring">Batteri runt upplåsningsring</string>
     <string name="adb_over_network">ADB över nätverk</string>
     <string name="adb_over_network_summary">Aktivera TCP/IP-felsökning över nätverksgränssnitt (Wi-F, USB-nätverk). Denna inställning återställs efter omstart.</string>
     <string name="adb_over_network_warning">VARNING: När ADB över nätverk är aktiverat blir din telefon öppen för intrång genom alla uppkopplade nätverk, inklusive GSM-nätverk!\n\nAnvänd endast denna funktion när du är uppkopplad till betrodda nätverk.\n\nVill du verkligen aktivera denna funktion?</string>

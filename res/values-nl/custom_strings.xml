@@ -36,6 +36,9 @@
     <string name="advanced_reboot_title">Geavanceerd herstarten</string>
     <string name="advanced_reboot_summary">Indien ontgrendeld, opties om te herstarten naar recovery of bootloader laten zien.</string>
 
+    <!-- Lockscreen battery ring -->
+    <string name="battery_around_lockscreen_ring">Batterij-niveau om ontgrendelingsring</string>
+
     <!-- Android debugging over WiFi -->
     <string name="adb_over_network">ADB over het netwerk</string>
     <string name="adb_over_network_summary">TCP/IP debuggen inschakelen over netwerk interfaces (Wi-Fi, USB netwerken). Deze instelling wordt hersteld bij een herstart</string>

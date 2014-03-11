@@ -30,7 +30,25 @@
             android:key="keyguard_enable_widgets"
             android:title="@string/security_enable_widgets_title"/>
 
-        <ListPreference
+        <CheckBoxPreference
+            android:key="lockscreen_maximize_widgets"
+            android:title="@string/security_maximize_widgets_title"
+            android:persistent="false"
+            android:dependency="keyguard_enable_widgets"/>
+
+        <CheckBoxPreference
+            android:key="battery_around_lockscreen_ring"
+            android:title="@string/battery_around_lockscreen_ring"
+            android:defaultValue="true" 
+            android:persistent="false"/>
+
+        <Preference
+            android:fragment="org.omnirom.omnigears.interfacesettings.LockscreenTargets"
+            android:key="lockscreen_targets"
+            android:summary="@string/lockscreen_target_summary"
+            android:title="@string/lockscreen_target_title" />
+
+       <ListPreference
             android:key="lock_after_timeout"
             android:title="@string/lock_after_timeout"
             android:summary="@string/lock_after_timeout_summary"
@@ -48,10 +66,23 @@
             android:summary="@string/unlock_menu_unlock_summary" 
             android:persistent="false"/>
 
-        <PreferenceScreen
-            android:key="lockscreen_link"
-            android:title="@string/lockscreen_settings_title"
-            android:fragment="org.omnirom.omnigears.interfacesettings.LockscreenSettings" />
+        <CheckBoxPreference
+            android:key="lockscreen_enable_camera"
+            android:title="@string/lockscreen_enable_camera_title"
+            android:summary="@string/lockscreen_enable_camera_summary"
+            android:persistent="false"/>
+
+        <CheckBoxPreference
+            android:key="lockscreen_enable_power_menu"
+            android:title="@string/lockscreen_enable_power_menu_title"
+            android:summary="@string/lockscreen_enable_power_menu_summary"
+            android:persistent="false" />
+
+        <CheckBoxPreference
+            android:key="lockscreen_see_through"
+            android:title="@string/lockscreen_see_through_title"
+            android:summary="@string/lockscreen_see_through_summary"
+            android:persistent="false" />
 
         <PreferenceScreen
             android:fragment="com.android.settings.OwnerInfoSettings"
