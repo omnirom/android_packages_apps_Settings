@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2014 The OmniROM Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- About phone screen,  setting option name-->
+    <string name="mod_version">Omni 版本</string>
+    <string name="mod_version_default">未知</string>
+
+    <!-- Main list strings -->
+    <string name="header_category_interface">界面</string>
+    <string name="performance_settings">性能调整</string>
+    <string name="notification_light_settings">通知指示灯</string>
+    <string name="battery_light_settings">电池指示灯</string>
+    <string name="header_button_settings">按键</string>
+
+    <!-- Volume panel tweaks -->
+    <string name="volume_adjust_sounds_enable_title">音量调整声</string>
+    <string name="volume_adjust_sounds_enable_summary">当使用音量键调整音量时播放声音</string>
+    <string name="link_volume_ringtones">链接铃声与通知音量</string>
+    <string name="volume_ring_only_description">铃声</string>
+
+    <string name="volume_panel_timeout_title">面板超时</string>
+    <string name="volume_panel_timeout_summary">设定音量面板将在几秒后被隐藏</string>
+
+    <string name="volume_panel_style">音量面板风格</string>
+    <string name="single">单项</string>
+    <string name="expandable">可扩展</string>
+    <string name="expanded">完全扩展</string>
+
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">高级重启选项</string>
+    <string name="advanced_reboot_summary">解锁后，在电源菜单内包含重启至恢复模式或引导模式选项</string>
+
+    <!-- Android debugging over WiFi -->
+    <string name="adb_over_network">网络 ADB 调试</string>
+    <string name="adb_over_network_summary">通过网络接口 (WLAN, USB 网络) 启用 TCP/IP 调试。 该设置重启后失效</string>
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">警告：网络 ADB 调试启用后，您的设备将会在已连接的网络 (包括 GSM 数据网络) 上被视为是开放的，并有可能被侵入！\n\n请仅在您所信任的网络上使用此功能。\n\n您确实要启用该功能吗？</string>
+    <string name="lockscreen_quick_unlock_control_title">快速解锁</string>
+    <string name="lockscreen_quick_unlock_control_summary">当输入正确 PIN / 密码后自动解锁</string>
+
+    <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+    <string name="show_cpu_info">显示 CPU 信息</string>
+    <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+    <string name="show_cpu_info_summary">屏幕上方显示当前 CPU 信息</string>
+
+    <!-- Screen off animation -->
+    <string name="screen_off_animation">关屏动画</string>
+    <string name="screen_off_fadeout">淡出</string>
+    <string name="screen_off_electronbeam">电视关屏</string>
+    <string name="screen_off_scaledown">缩小</string>
+
+    <!-- AppOps additions -->
+    <string name="appops_settings">应用权限</string>
+    <string name="appops_sysapp_beware">注意！</string>
+    <string name="appops_sysapp_warning">修改安卓核心组件的权限可能引起不可预料的行为。请自行承担此处修改设置的风险！</string>
+
+    <!-- Low battery warning policy -->
+    <string name="pref_low_battery_warning_policy_title">低电量警告</string>
+    <string name="pref_low_battery_warning_policy_dialog_title">低电量提醒方式</string>
+    <string name="low_battery_warning_policy_popup_sound">弹窗与声音</string>
+    <string name="low_battery_warning_policy_notif_sound">提醒与声音</string>
+    <string name="low_battery_warning_policy_popup">只显示弹窗</string>
+    <string name="low_battery_warning_policy_notif">只显示提醒</string>
+    <string name="low_battery_warning_policy_sound">只播放声音</string>
+    <string name="battery_prefs_title">选项</string>
+    <string name="battery_stats_title">用量统计</string>
+
+    <!-- Setting checkbox summary for displaying USB debugging notification -->
+    <string name="adb_notify">USB 调试提醒</string>
+    <string name="adb_notify_summary">当 USB 调试接入时显示通知图标</string>
+
+    <!-- Lockscreen pin shuffle -->
+    <string name="lock_numpad_random_title">改变 PIN 输入面板上数字的位置</string>
+    <string name="lock_numpad_random_dialog_title">随机排列 PIN 输入面板上的按键位置</string>
+    <string name="lock_numpad_random_off">禁用</string>
+    <string name="lock_numpad_random_always">总是</string>
+    <string name="lock_numpad_random_on_request">请求时</string>
+
+    <string name="interface_more_title">更多\u2026</string>
+    <string name="interface_bars_title">状态栏</string>
+    <string name="interface_menus_title">菜单</string>
+    <string name="interface_notification_panel_title">通知抽屉</string>
+
+    <!-- Battery Icon selection -->
+    <string name="pref_battery_indicator_title">电量指示器</string>
+    <string name="battery_status_icon_title">状态图标</string>
+    <string name="battery_bar">柱状</string>
+    <string name="battery_bar_percent">含百分比的柱状</string>
+    <string name="battery_circle">环状</string>
+    <string name="battery_circle_percent">含百分比的环状</string>
+
+    <!-- Turn on display when power connected; turn off display when power disconnected -->
+    <string name="wake_when_plugged_or_unplugged_title">接入电源时唤醒</string>
+    <string name="wake_when_plugged_or_unplugged_summary">当接入充电器或者拔出充电器时开启屏幕</string>
+
+    <!-- security settings menu unlock -->
+    <string name="unlock_menu_unlock_title">菜单键解锁</string>
+    <string name="unlock_menu_unlock_summary">按菜单键以解锁设备</string>
+
+    <!-- Stylus Icon -->
+    <string name="stylus_icon_enabled_title">使用触控笔时显示图标</string>
+    <string name="stylus_icon_enabled_summary">使用触控笔时显示指针</string>
+    <!-- Stylus Gestures -->
+    <string name="gestures_settings_title">触控笔手势</string>
+    <string name="category_spen_title">触控笔手势</string>
+    <string name="enable_subcat_title">触控笔</string>
+    <string name="enable_spen_title_head">开启触控笔手势</string>
+    <string name="enable_spen_summary_head">按下触控笔按键时使用滑动手势启动自定义行为。警告：应用可能在按下触控笔按键时无法接收到输入内容</string>
+    <string name="gestures_subcat_title">手势</string>
+    <string name="gestures_left_spen_title_head">向左滑动</string>
+    <string name="gestures_left_spen_summary_head">通过向左滑动启动自定义行为</string>
+    <string name="gestures_right_spen_title_head">向右滑动</string>
+    <string name="gestures_right_spen_summary_head">通过向右滑动启动自定义行为</string>
+    <string name="gestures_up_spen_title_head">向上滑动</string>
+    <string name="gestures_up_spen_summary_head">通过向上滑动启动自定义行为</string>
+    <string name="gestures_down_spen_title_head">向下滑动</string>
+    <string name="gestures_down_spen_summary_head">通过向下滑动启动自定义行为</string>
+    <string name="gestures_long_spen_title_head">长按</string>
+    <string name="gestures_long_spen_summary_head">通过长按启动自定义行为</string>
+    <string name="gestures_double_spen_title_head">双击</string>
+    <string name="gestures_double_spen_summary_head">通过双击启动自定义行为</string>
+
+    <!-- Gestures Options -->
+    <string name="gestures_action_empty">无</string>
+    <string name="gestures_action_home">模拟 Home 键</string>
+    <string name="gestures_action_back">模拟后退键</string>
+    <string name="gestures_action_menu">模拟菜单键</string>
+    <string name="gestures_action_search">调用搜索</string>
+    <string name="gestures_action_recent">当前应用</string>
+
+    <!-- stylus gestures support -->
+    <string name="stylus_app_not_installed">%s 没有安装</string>
+
+    <!-- default alarm tone -->
+    <string name="alarm_sound_title">默认提醒铃声</string>
+    <string name="alarm_sound_dialog_title">默认提醒铃声</string>
+
+    <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
+    <string name="custom_runtime_warning_title">警告</string>
+    <string name="custom_runtime_warning_message">OmniROM 不正式支持 ART 模式。本设置仅用于测试与研究，并可能潜在不稳定的因素、导致奔溃, 数据丢失或设备无法启动。请查看 &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt; ART&lt;/a&gt; 相关介绍以获得更多相关信息。&lt;br/&gt;&lt;br/&gt; 我们希望当您开启 ART 模式作为运行时模式的时候不要发送 Bug 报告。&lt;br/&gt;&lt;br/&gt; 你确认你真的想要重启并将运行时模式从 <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> 切换至 <xliff:g id="new" example="libart.so">%2$s</xliff:g>？</string>
+
+    <!-- Quiet hours -->
+    <string name="quiet_hours_title">静默时段</string>
+    <string name="quiet_hours_summary">配置设备应该安静的时段</string>
+    <string name="quiet_hours_note_title">注意</string>
+    <string name="quiet_hours_note_summary">安静时段将不会影响来电的正常行为</string>
+    <string name="quiet_hours_enabled">启用静默时段</string>
+    <string name="quiet_hours_enabled_on">静默时段将被执行</string>
+    <string name="quiet_hours_enabled_off">静默时段将不影响正常通知行为</string>
+    <string name="quiet_hours_start">静默起始时间</string>
+    <string name="quiet_hours_start_summary">何时开始执行静默时段</string>
+    <string name="quiet_hours_end">静默结束时间</string>
+    <string name="quiet_hours_end_summary">何时结束执行静默时段</string>
+    <string name="quiet_hours_ringer_title">静音电话铃声</string>
+    <string name="quiet_hours_ringer_on">电话铃声将不被播放</string>
+    <string name="quiet_hours_ringer_off">电话铃声将正常播放</string>
+    <string name="quiet_hours_mute">静音通知</string>
+    <string name="quiet_hours_mute_on">将不播放任何声音</string>
+    <string name="quiet_hours_mute_off">所有声音将正常播放</string>
+    <string name="quiet_hours_still">禁用震动</string>
+    <string name="quiet_hours_still_on">设备将不会震动</string>
+    <string name="quiet_hours_still_off">设备将正常震动</string>
+    <string name="quiet_hours_dim">关闭通知灯</string>
+    <string name="quiet_hours_dim_on">通知灯将被禁用</string>
+    <string name="quiet_hours_dim_off">通知灯将正常生效</string>
+    <string name="quiet_hours_haptic">禁用震动反馈</string>
+    <string name="quiet_hours_haptic_on">震动反馈将被禁用</string>
+    <string name="quiet_hours_haptic_off">震动反馈将正常生效</string>
+    <string name="quiet_hours_active_from">从</string>
+    <string name="quiet_hours_active_to">生效到</string>
+    <string name="quiet_hours_auto_sms_group">自动回复</string>
+    <string name="quiet_hours_auto_sms_title">收到的短信</string>
+    <string name="quiet_hours_auto_sms_call_title">来电</string>
+    <string name="quiet_hours_auto_string_title">回复内容</string>
+    <string name="quiet_hours_auto_string_explain">此回复将自动发送给任何在静默时段激活时联系您的人</string>
+    <string name="quiet_hours_auto_sms_null">[自动回复信息] 稍后我会联系您。</string>
+    <string name="quiet_hours_auto_disabled">已禁用</string>
+    <string name="quiet_hours_auto_enabled">所有号码</string>
+    <string name="quiet_hours_auto_contacts">通讯录中的联系人</string>
+    <string name="quiet_hours_bypass_group">静默时段例外</string>
+    <string name="quiet_hours_sms_code_null">[闹铃]</string>
+    <string name="quiet_hours_sms_bypass_title">文本消息例外</string>
+    <string name="quiet_hours_sms_code_title">文本消息关键词</string>
+    <string name="quiet_hours_sms_code_explain">如果收到的消息包含以下的关键词，您的设备将会响起闹铃</string>
+    <string name="quiet_hours_call_bypass_title">新来电例外</string>
+    <string name="quiet_hours_calls_required_title">30 分钟内来电次数</string>
+    <string name="quiet_hours_calls_required_summary">" 静默时间下例外来电"</string>
+    <string name="quiet_hours_bypass_ringtone_title">播放铃声</string>
+    <string name="quiet_hours_bypass_ringtone_loop_title">铃声循环</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_on">铃声循环直到被解除</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_off">铃声仅会播放一次</string>
+    <string name="quiet_hours_alarm_dismiss">关闭闹铃</string>
+    <string name="quiet_hours_alarm_and">" 和 "</string>
+    <string name="quiet_hours_alarm_dialog_title">静默时段已被跳过</string>
+    <string name="quiet_hours_alarm_message">" 符合了跳过静默时段的需求！"</string>
+
+    <!-- time range preference -->
+    <string name="start_time_title">起始</string>
+    <string name="end_time_title">结束</string>
+
+    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
+    <string name="change_crypt_password_title">修改密码</string>
+    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
+    <string name="change_crypt_password_summary">修改用于设备加密的密码</string>
+
+    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
+    <string name="encryptionpassword_choose_your_password_header">设置加密密码</string>
+
+    <!-- Keyboard and Input ASS methods  -->
+    <string name="title_keyboard_input">高级选项</string>
+    <string name="disable_fullscreen_keyboard_title">禁用全屏键盘</string>
+    <string name="disable_fullscreen_keyboard_summary">横屏键盘将永远不会占用全部屏幕空间</string>
+    <string name="keyboard_rotation_toggle_title">自动键盘旋转</string>
+    <string name="keyboard_rotation_toggle_summary">当键盘显示时强制启用自动旋转</string>
+    <string name="keyboard_rotation_timeout_title">自动旋转超时时间</string>
+    <string name="keyboard_rotation_timeout_summary">在键盘隐藏之后, 经过 <xliff:g id="rotate_timeout">%1$s</xliff:g>后关闭自动旋转传感器</string>
+    <string name="keyboard_rotation_dialog">提示：此选项在键盘开启时将临时强制启用自动旋转。在自动旋转已经打开的情况下不会生效。</string>
+    <string name="show_enter_key_title">显示回车键</string>
+    <string name="show_enter_key_summary">强制键盘显示回车键而不是符号键</string>
+    <string name="ime_switcher_notify">输入法选择通知</string>
+    <string name="ime_switcher_notify_summary">显示输入法选择通知</string>
+
+
+
+
+    <!-- Display : Rotation -->
+    <string name="display_rotation_title">自动旋转</string>
+    <string name="display_rotation_disabled">已禁用</string>
+    <string name="display_rotation_unit">度</string>
+    <string name="display_rotation_category_title">旋转模式</string>
+    <string name="display_rotation_0_title">0 度</string>
+    <string name="display_rotation_90_title">90 度</string>
+    <string name="display_rotation_180_title">180 度</string>
+    <string name="display_rotation_270_title">270 度</string>
+
+    <!-- ADB Paranoia settings -->
+    <string name="adb_paranoid">ADB 偏执模式</string>
+    <string name="adb_paranoid_summary">当未信任的电脑尝试连接您被锁定的设备时，设备将自动重启</string>
+
+    <string name="unit_sec">秒</string>
+
+    <!-- custom data usage period -->
+    <string name="daily_cycle_lenght">每日</string>
+    <string name="weekly_cycle_length">每周</string>
+    <string name="monthly_cycle_length">每月</string>
+    <string name="weekday_sunday">星期日</string>
+    <string name="weekday_monday">星期一</string>
+    <string name="weekday_tuesday">星期二</string>
+    <string name="weekday_wednesday">星期三</string>
+    <string name="weekday_thursday">星期四</string>
+    <string name="weekday_friday">星期五</string>
+    <string name="weekday_saturday">星期六</string>
+</resources>
+
