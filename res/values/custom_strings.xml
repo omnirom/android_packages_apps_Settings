@@ -234,6 +234,10 @@
     <string name="quiet_hours_alarm_and">" and "</string>
     <string name="quiet_hours_alarm_dialog_title">QUIETHOURS BYPASSED</string>
     <string name="quiet_hours_alarm_message">" met the requirements to bypass Quiet Hours!"</string>
+    <string name="quiet_hours_enable_ticker">Quiet Hours running...</string>
+    <string name="quiet_hours_enable_title">Quiet Hours</string>
+    <string name="quiet_hours_notification">Enabled and running...</string>
+    <string name="quiet_hours_disable">Disable</string>
 
     <!-- time range preference -->
     <string name="start_time_title">Start</string>

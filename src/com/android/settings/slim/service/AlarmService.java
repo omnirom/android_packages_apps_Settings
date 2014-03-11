@@ -16,6 +16,7 @@
 
 package com.android.settings.slim.service;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -31,7 +32,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 
 import com.android.settings.R;
 
@@ -48,6 +48,7 @@ public class AlarmService extends Service {
 
     @Override
     public void onCreate() {
+        super.onCreate();
         mAudioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
         mManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -56,7 +57,9 @@ public class AlarmService extends Service {
     @Override
     public void onDestroy() {
         stopAlarm();
-        mManager.cancel(NOTI_ID);
+        if (mManager != null) {
+            mManager.cancel(NOTI_ID);
+        }
         super.onDestroy();
     }
 
@@ -74,7 +77,7 @@ public class AlarmService extends Service {
                 R.string.quiet_hours_alarm_dialog_title);
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_quiethours);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+        Notification.Builder builder = new Notification.Builder(this)
                 .setTicker(title)
                 .setContentTitle(title)
                 .setContentText(names)
@@ -82,7 +85,7 @@ public class AlarmService extends Service {
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_quiethours)
                 .setLargeIcon(bm)
-                .setStyle(new NotificationCompat.BigTextStyle()
+                .setStyle(new Notification.BigTextStyle()
                         .bigText(names + getResources().getString(
                                 R.string.quiet_hours_alarm_message)));
 
@@ -90,7 +93,7 @@ public class AlarmService extends Service {
         alarmDialog.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_SINGLE_TOP
                 | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        alarmDialog.setClass(this, com.android.settings.slim.service.BypassAlarm.class);
+        alarmDialog.setClass(this, BypassAlarm.class);
         alarmDialog.putExtra("number", names);
         alarmDialog.putExtra("norun", true);
 
