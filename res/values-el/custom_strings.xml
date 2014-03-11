@@ -36,9 +36,6 @@
     <string name="advanced_reboot_title">Προηγμένη επανεκκίνηση</string>
     <string name="advanced_reboot_summary">Όταν είναι ξεκλέιδωτη, να περιλαμβάνονται επιλογές για επανεκκίνηση σε κατάσταση ανάκτησης ή εκκινητή στο μενού ενεργειών</string>
 
-    <!-- Lockscreen battery ring -->
-    <string name="battery_around_lockscreen_ring">Μπαταρία γύρω από δακτύλιο ξεκλειδώματος</string>
-
     <!-- Android debugging over WiFi -->
     <string name="adb_over_network">ADB μέσω δικτύου</string>
     <string name="adb_over_network_summary">Ενεργοποίηση αποσφαλμάτωσης TCP/IP μέσω διεπαφών δικτύου (δίκτυα Wi-Fi, USB). Η ρύθμιση επαναφέρεται με την επανεκκίνηση</string>
