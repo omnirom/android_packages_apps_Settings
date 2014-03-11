@@ -120,6 +120,8 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".slim.service.DisableQuietHour" />
+
         <receiver
             android:name=".slim.service.BootReceiver">
             <intent-filter>

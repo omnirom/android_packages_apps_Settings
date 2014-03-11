@@ -315,10 +315,6 @@ public class SmsCallHelper {
         final int quietHoursEnd = Settings.System.getIntForUser(resolver,
                 Settings.System.QUIET_HOURS_END, 0,
                 UserHandle.USER_CURRENT_OR_SELF);
-        final int autoCall = returnUserAutoCall(context);
-        final int autoText = returnUserAutoText(context);
-        final int callBypass = returnUserCallBypass(context);
-        final int smsBypass = returnUserTextBypass(context);
         Intent serviceTriggerIntent = new Intent(context, SmsCallService.class);
         PendingIntent startIntent = makeServiceIntent(context, SCHEDULE_SERVICE_COMMAND, 1);
         PendingIntent stopIntent = makeServiceIntent(context, SCHEDULE_SERVICE_COMMAND, 2);
@@ -327,11 +323,7 @@ public class SmsCallHelper {
         am.cancel(startIntent);
         am.cancel(stopIntent);
 
-        if (!quietHoursEnabled
-                || (autoCall == DEFAULT_DISABLED
-                && autoText == DEFAULT_DISABLED
-                && callBypass == DEFAULT_DISABLED
-                && smsBypass == DEFAULT_DISABLED)) {
+        if (!quietHoursEnabled) {
             context.stopService(serviceTriggerIntent);
             return;
         }
@@ -344,7 +336,6 @@ public class SmsCallHelper {
             context.startService(serviceTriggerIntent);
             return;
         }
-
 
         Calendar calendar = Calendar.getInstance();
         int currentMinutes = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
@@ -396,8 +387,8 @@ public class SmsCallHelper {
             }
             context.startService(serviceTriggerIntent);
         } else if (!quietHoursStopped) {
-            setQuietHoursActive(context, 2);
             context.stopService(serviceTriggerIntent);
+            setQuietHoursActive(context, 2);
         }
 
         if (serviceStartMinutes >= 0) {
