@@ -891,6 +891,10 @@ two in order to insert additional control points. \'Remove\' deletes the selecte
     <string name="theme_auto_switch_mode_error">Automatic light condition change mode is enabled. Manual switching is not possible.</string>
     <string name="navbar_button_style_reset_message">Reset all style entries to default?</string>
 
+    <!-- Theme Chooser -->
+    <string name="theme_chooser_settings_title">Theme Chooser</string>
+
+
     <!-- Navigation bar button style -->
     <string name="nav_bar_button_style">Button style</string>
     <string name="nav_bar_button_style_summary">Change navigation bar button style</string>

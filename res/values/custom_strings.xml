@@ -314,20 +314,9 @@
     <string name="weekday_thursday">Thursday</string>
     <string name="weekday_friday">Friday</string>
     <string name="weekday_saturday">Saturday</string>
-
-    <!-- More app settings -->
-    <string name="more_app_settings">More app settings</string>
-
-    <!-- Wakelock blocker -->
-    <string name="wakelock_blocker">Wakelock Blocker</string>
-    <string name="wakelock_blocker_title">Enable</string>
-    <string name="wakelock_blocker_summary">Activate blocking for checked wakelocks</string>
-    <string name="wakelock_blocker_save">Save</string>
-    <string name="wakelock_list_header">Available Wakelocks</string>
-    <string name="wakelock_blocker_reload">Reload</string>
-    <string name="wakelock_blocker_warning_title">Proceed with Caution</string>
-    <string name="wakelock_blocker_warning">Blocking wakelocks have the potential to cause instability, crashes or data loss.</string>
     
+
+   
     <!-- ListView animation -->
     <string name="bars_and_menus_category_system_title">System</string>
     <string name="listview_title">ListView</string>

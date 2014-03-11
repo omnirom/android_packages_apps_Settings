@@ -50,5 +50,5 @@
     <color name="auto_brightness_preview_markers">#ff404040</color>
     <color name="auto_brightness_preview_grid">#44ffffff</color>
 
-    <color name="tab_selector">#FFFFFFFF</color>
+    <color name="tab_selector">#FFcccccc</color>
 </resources>
