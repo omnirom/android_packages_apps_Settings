@@ -50,7 +50,7 @@ public class BypassAlarm extends Activity {
                 | WindowManager.LayoutParams.FLAG_FULLSCREEN
                 | WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
 
-        if (SmsCallHelper.returnUserRingtoneLoop(this)) {
+        if (SmsCallController.getInstance(this).returnUserRingtoneLoop()) {
             win.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
@@ -121,11 +121,13 @@ public class BypassAlarm extends Activity {
     private void startService() {
         Intent serviceIntent = new Intent(this, AlarmService.class);
         serviceIntent.putExtra("number", mNumbers);
-        this.startService(serviceIntent);
+        this.startServiceAsUser(serviceIntent,
+                    android.os.Process.myUserHandle());
     }
 
     private void stopService() {
         Intent serviceIntent = new Intent(this, AlarmService.class);
-        this.stopService(serviceIntent);
+        this.stopServiceAsUser(serviceIntent,
+                    android.os.Process.myUserHandle());
     }
 }

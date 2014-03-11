@@ -22,11 +22,9 @@ import android.content.Intent;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    private final static String TAG = "AlarmReceiver";
-
     @Override
     public void onReceive(Context context, Intent intent) {
-        SmsCallHelper.scheduleService(context);
+        SmsCallController.getInstance(context).scheduleService();
     }
 
 }
