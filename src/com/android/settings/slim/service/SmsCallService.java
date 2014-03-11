@@ -53,6 +53,12 @@ public class SmsCallService extends Service {
 
     private int mDay;
 
+    private static boolean mIsRunning;
+
+    public static boolean isRunning() {
+        return mIsRunning;
+    }
+
     private PhoneStateListener mPhoneStateListener = new PhoneStateListener() {
 
         @Override
@@ -194,6 +200,8 @@ public class SmsCallService extends Service {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intents.SMS_RECEIVED_ACTION);
         registerReceiver(smsReceiver, filter);
+
+        mIsRunning = true;
     }
 
     @Override
@@ -204,6 +212,8 @@ public class SmsCallService extends Service {
         mPhoneStateListener = null;
         unregisterReceiver(smsReceiver);
         super.onDestroy();
+
+        mIsRunning = false;
     }
 
     @Override

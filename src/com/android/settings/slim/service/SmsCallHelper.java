@@ -332,7 +332,9 @@ public class SmsCallHelper {
                 && autoText == DEFAULT_DISABLED
                 && callBypass == DEFAULT_DISABLED
                 && smsBypass == DEFAULT_DISABLED)) {
-            context.stopService(serviceTriggerIntent);
+            if (SmsCallService.isRunning()) {
+                context.stopService(serviceTriggerIntent);
+            }
             return;
         }
 
@@ -344,7 +346,6 @@ public class SmsCallHelper {
             context.startService(serviceTriggerIntent);
             return;
         }
-
 
         Calendar calendar = Calendar.getInstance();
         int currentMinutes = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
@@ -396,8 +397,10 @@ public class SmsCallHelper {
             }
             context.startService(serviceTriggerIntent);
         } else if (!quietHoursStopped) {
+            if (SmsCallService.isRunning()) {
+                context.stopService(serviceTriggerIntent);
+            }
             setQuietHoursActive(context, 2);
-            context.stopService(serviceTriggerIntent);
         }
 
         if (serviceStartMinutes >= 0) {
