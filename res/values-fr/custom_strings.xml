@@ -186,7 +186,10 @@
     <string name="show_enter_key_summary">Forcer le clavier à afficher Entrée plutôt que la touche des frimousses</string>
     <string name="ime_switcher_notify">Notification de choix</string>
     <string name="ime_switcher_notify_summary">Affiche une notification permettant de changer de clavier</string>
+    <string name="category_volume_panel_title">Panneau volume</string>
     <string name="volume_panel_style">Style du panneau volume</string>
+    <string name="volume_panel_timeout_title">Délai</string>
+    <string name="volume_panel_timeout_summary">Délai avant que le panneau soit masqué</string>
     <string name="single">Simple</string>
     <string name="expandable">Extensible</string>
     <string name="expanded">Étendu</string>
