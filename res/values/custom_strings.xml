@@ -278,6 +278,14 @@
     <string name="weekday_friday">Friday</string>
     <string name="weekday_saturday">Saturday</string>
 
+    <!-- Alternative Recents -->
+    <string name="alternative_recents_title">Alternative Recents</string>
+    <string name="omniswitch_settings_title">OmniSwitch</string>
+    <string name="recents_use_omniswitch_title">OmniSwitch recents</string>
+    <string name="recents_use_omniswitch_summary">Make sure OmniSwitch is enabled prior to use</string>
+    <string name="custom_recent_title">Slim recents</string>
+    <string name="custom_recent_summary">Switch between slim style recents</string>
+
     <!-- Hostname setting -->
     <string name="device_hostname">Device hostname</string>
 
