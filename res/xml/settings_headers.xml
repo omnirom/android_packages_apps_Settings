@@ -96,9 +96,28 @@
         android:breadCrumbTitle="@string/interface_more_title"
         android:fragment="org.omnirom.omnigears.interfacesettings.MoreInterfaceSettings"
         android:icon="@drawable/empty_icon" />
-
+        
+    <!-- Profiles -->
+    <header
+        android:id="@+id/profiles_settings"
+        android:icon="@drawable/ic_settings_profiles"
+        android:fragment="com.android.settings.profiles.ProfilesSettings"
+        android:title="@string/profiles_settings_title" />
+       
+    <!-- Kernel Tweaker -->
+    <header
+        android:id="@+id/kernel_tweaker"
+        android:title="@string/kernel_tweaker_title"
+        android:icon="@drawable/ic_settings_performance" >
+    <intent
+        android:action="android.intent.action.MAIN"
+        android:targetClass="com.dsht.kerneltweaker.MainActivity"
+        android:targetPackage="com.dsht.kerneltweaker" />
+    </header>
+    
     <!-- DEVICE -->
-    <header android:id="@+id/device_section"
+    <header
+        android:id="@+id/device_section"
         android:title="@string/header_category_device" />
 
     <!-- Home -->
@@ -278,13 +297,6 @@
             android:targetPackage="eu.chainfire.supersu"
             android:targetClass="eu.chainfire.supersu.MainActivity" />
     </header>
-
-    <!-- Performance Controls -->
-    <header
-        android:id="@+id/performance_controls"
-        android:fragment="com.brewcrewfoo.performance.activities.MainActivity"
-        android:icon="@drawable/ic_settings_performance"
-        android:title="@string/performance_settings" />
 
     <!-- About Device -->
     <header

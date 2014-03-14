@@ -616,10 +616,6 @@ public class Settings extends PreferenceActivity
                 if (!showDev) {
                     target.remove(i);
                 }
-            } else if (id == R.id.performance_controls) {
-                if (!showDev) {
-                    target.remove(i);
-                }
             } else if (id == R.id.account_add) {
                 if (um.hasUserRestriction(UserManager.DISALLOW_MODIFY_ACCOUNTS)) {
                     target.remove(i);
@@ -639,6 +635,16 @@ public class Settings extends PreferenceActivity
                 if (!supported) {
                     target.remove(i);
                 }
+            } else if (id == R.id.kernel_tweaker) {
+                // Embedding into Settings only if app exists (user could manually remove it)
+                boolean supported = false;
+                try {
+                     supported = (getPackageManager().getPackageInfo("com.dsht.kerneltweaker", 0).versionCode >= 18);
+                 } catch (PackageManager.NameNotFoundException e) {
+                 }
+                 if (!supported) {
+                     target.remove(i);
+                 }
             }
 
             if (i < target.size() && target.get(i) == header
@@ -1160,5 +1166,5 @@ public class Settings extends PreferenceActivity
     public static class PaymentSettingsActivity extends Settings { /* empty */ }
     public static class PrintSettingsActivity extends Settings { /* empty */ }
     public static class PrintJobSettingsActivity extends Settings { /* empty */ }
-    public static class PerformanceSettingsActivity extends Settings { /* empty */ }
+    
 }
