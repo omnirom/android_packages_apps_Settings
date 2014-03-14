@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.settings.du;
+package com.android.settings.aoscp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
