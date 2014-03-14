@@ -285,4 +285,8 @@
     <string name="device_hostname">Device hostname</string>
 
     <string name="lockscreen_settings_title">Lockscreen</string>
+
+    <!-- Title for charging state simulation -->
+    <string name="charging_state_title">Charging state</string>
+    <string name="charging_state_dialog_title">Simulate a charging state</string>
 </resources>

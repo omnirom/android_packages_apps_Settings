@@ -182,4 +182,28 @@
         <item>@string/weekday_saturday</item>
     </string-array>
 
+    <!-- Titles for charging state preference. -->
+    <string-array name="charging_state_titles" >
+        <item>None</item>
+        <item>AC Charging</item>
+        <item>USB Charging</item>
+        <item>Wireless Charging</item>
+    </string-array>
+
+    <!-- Values for charging state preference. -->
+    <string-array name="charging_state_values" translatable="false" >
+        <item>none</item>
+        <item>ac</item>
+        <item>usb</item>
+        <item>wireless</item>
+    </string-array>
+
+    <!-- Summaries for charging state preference. -->
+    <string-array name="charging_state_summaries" >
+        <item>Don\'t simulate a charging state</item>
+        <item>Simulate AC charging</item>
+        <item>Simulate USB charging</item>
+        <item>Simulate wireless charging</item>
+    </string-array>
+
 </resources>

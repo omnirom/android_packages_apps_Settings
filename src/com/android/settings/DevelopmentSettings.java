@@ -107,6 +107,8 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     private static final String ALLOW_MOCK_LOCATION = "allow_mock_location";
     private static final String HDCP_CHECKING_KEY = "hdcp_checking";
     private static final String HDCP_CHECKING_PROPERTY = "persist.sys.hdcp_checking";
+    private static final String CHARGING_STATE_KEY = "charging_state";
+    private static final String CHARGING_STATE_PROPERTY = "persist.sys.charging_state";
     private static final String LOCAL_BACKUP_PASSWORD = "local_backup_password";
     private static final String HARDWARE_UI_PROPERTY = "persist.sys.ui.hw";
     private static final String MSAA_PROPERTY = "debug.egl.force_msaa";
@@ -346,6 +348,12 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             mAllPrefs.add(hdcpChecking);
             removePreferenceForProduction(hdcpChecking);
         }
+
+        Preference chargingState = findPreference(CHARGING_STATE_KEY);
+        if (chargingState != null) {
+            mAllPrefs.add(chargingState);
+            removePreferenceForProduction(chargingState);
+        }
     }
 
     private ListPreference addListPreference(String prefKey) {
@@ -504,6 +512,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
                 Settings.Secure.ALLOW_MOCK_LOCATION, 0) != 0);
         updateRuntimeValue();
         updateHdcpValues();
+        updateChargingState();
         updatePasswordSummary();
         updateDebuggerOptions();
         updateStrictModeVisualOptions();
@@ -634,6 +643,27 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             hdcpChecking.setValue(values[index]);
             hdcpChecking.setSummary(summaries[index]);
             hdcpChecking.setOnPreferenceChangeListener(this);
+        }
+    }
+
+    private void updateChargingState() {
+        ListPreference chargingState = (ListPreference) findPreference(CHARGING_STATE_KEY);
+        if (chargingState != null) {
+            String currentValue = SystemProperties.get(CHARGING_STATE_PROPERTY);
+            String[] values = getResources().getStringArray(R.array.charging_state_values);
+            String[] summaries = getResources().getStringArray(R.array.charging_state_summaries);
+            int index = 0; // Defaults to not set
+            for (int i = 0; i < values.length; i++) {
+                if (currentValue.equals(values[i])) {
+                    index = i;
+                    break;
+                }
+            }
+            Settings.System.putInt(getActivity().getContentResolver(),
+                    Settings.System.DEVEL_CHARGING_STATE, index);
+            chargingState.setValue(values[index]);
+            chargingState.setSummary(summaries[index]);
+            chargingState.setOnPreferenceChangeListener(this);
         }
     }
 
@@ -1394,6 +1424,11 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         } else if (HDCP_CHECKING_KEY.equals(preference.getKey())) {
             SystemProperties.set(HDCP_CHECKING_PROPERTY, newValue.toString());
             updateHdcpValues();
+            pokeSystemProperties();
+            return true;
+        } else if (CHARGING_STATE_KEY.equals(preference.getKey())) {
+            SystemProperties.set(CHARGING_STATE_PROPERTY, newValue.toString());
+            updateChargingState();
             pokeSystemProperties();
             return true;
         } else if (preference == mWindowAnimationScale) {
