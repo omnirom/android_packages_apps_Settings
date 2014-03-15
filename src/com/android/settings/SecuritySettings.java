@@ -45,6 +45,9 @@ import android.util.Log;
 
 import com.android.internal.widget.LockPatternUtils;
 
+import org.omnirom.omnigears.backup.BackupManager;
+import org.omnirom.omnigears.preference.NumberPickerPreference;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,6 +92,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
     private static final String LOCKSCREEN_QUICK_UNLOCK_CONTROL = "lockscreen_quick_unlock_control";
     private static final String LOCK_NUMPAD_RANDOM = "lock_numpad_random";
     private static final String MENU_UNLOCK_PREF = "menu_unlock";
+    private static final String KEY_BACKUP_HISTORY = "backup_history";
 
     private PackageManager mPM;
     private DevicePolicyManager mDPM;
@@ -123,6 +127,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
     private CheckBoxPreference mQuickUnlockScreen;
     private ListPreference mLockNumpadRandom;
     private CheckBoxPreference mMenuUnlock;
+    private NumberPickerPreference mBackupHistory;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -368,6 +373,10 @@ public class SecuritySettings extends RestrictedSettingsFragment
                 }
             }
         }
+        mBackupHistory = (NumberPickerPreference) findPreference(KEY_BACKUP_HISTORY);
+        mBackupHistory.setMinValue(1);
+        mBackupHistory.setMaxValue(Integer.MAX_VALUE);
+        mBackupHistory.setOnPreferenceChangeListener(this);
 
         if (shouldBePinProtected(RESTRICTIONS_PIN_SET)) {
             protectByRestrictions(mToggleAppInstallation);
@@ -665,6 +674,19 @@ public class SecuritySettings extends RestrictedSettingsFragment
                     Integer.valueOf((String) value));
             mLockNumpadRandom.setValue(String.valueOf(value));
             mLockNumpadRandom.setSummary(mLockNumpadRandom.getEntry());
+        } else if (preference == mBackupHistory && 
+				(Integer) value < ((NumberPickerPreference) preference).getValue()) {
+			new AlertDialog.Builder(getActivity())
+					.setTitle(R.string.backup_history_trim)
+					.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							Log.i(TAG, "Trimming backup history for all packages after preference change.");
+							BackupManager bm = new BackupManager(getActivity());
+							bm.listBackups(null, bm.new TrimBackupHistory());
+						}
+					})
+					.setNegativeButton(android.R.string.no, null)
+					.show();
         }
         return true;
     }
