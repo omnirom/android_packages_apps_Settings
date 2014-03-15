@@ -69,6 +69,7 @@
     <uses-permission android:name="android.permission.MANAGE_DEVICE_ADMINS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
 
     <application android:label="@string/settings_label"
             android:icon="@mipmap/ic_launcher_settings"
@@ -1907,5 +1908,22 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <service
+            android:name="org.omnirom.omnigears.backup.BackupService" />
+
+        <activity
+            android:name="org.omnirom.omnigears.backup.ManageBackupsActivity"
+            android:label="@string/manage_backups_activity_title"
+            android:taskAffinity="com.android.settings"
+            android:theme="@android:style/Theme.Holo.DialogWhenLarge"
+            android:launchMode="singleTask" />
+
+        <activity
+               android:name="org.omnirom.omnigears.backup.BackupSettings"
+               android:label="@string/backups_title"
+               android:taskAffinity="com.android.settings"
+               android:launchMode="singleTask" />
+
     </application>
 </manifest>
