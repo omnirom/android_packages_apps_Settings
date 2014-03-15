@@ -74,6 +74,7 @@ import com.android.settings.applications.ProcessStatsUi;
 import com.android.settings.blacklist.BlacklistSettings;
 import com.android.settings.bluetooth.BluetoothEnabler;
 import com.android.settings.bluetooth.BluetoothSettings;
+import com.android.settings.superuser.PolicyNativeFragment;
 import com.android.settings.deviceinfo.Memory;
 import com.android.settings.deviceinfo.UsbSettings;
 import com.android.settings.fuelgauge.PowerUsageSummary;
@@ -665,6 +666,16 @@ public class Settings extends PreferenceActivity
                 boolean supported = false;
                 try {
                     supported = (getPackageManager().getPackageInfo("eu.chainfire.supersu", 0).versionCode >= 185);
+                } catch (PackageManager.NameNotFoundException e) {
+                }
+                if (!supported) {
+                    target.remove(i);
+                }
+            } else if (id == R.id.superuser) {
+                // Embedding Superuser
+                boolean supported = false;
+                try {
+                    supported = (getPackageManager().getPackageInfo("com.koushikdutta.superuser", 0).versionCode >= 1030);
                 } catch (PackageManager.NameNotFoundException e) {
                 }
                 if (!supported) {

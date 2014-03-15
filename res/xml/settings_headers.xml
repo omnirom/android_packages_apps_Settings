@@ -120,6 +120,13 @@
     <header android:id="@+id/device_section"
         android:title="@string/header_category_device" />
 
+    <!-- Amra Settings -->
+    <header
+        android:id="@+id/amra_settings"
+        android:icon="@drawable/ic_settings_amra"
+        android:title="@string/amra_settings"
+        android:fragment="org.regulus.amrasettings.AmraSettings"/>
+
     <!-- Home -->
     <header
         android:id="@+id/home_settings"
@@ -147,17 +154,6 @@
         android:fragment="com.android.settings.slim.themes.ThemeSettings"
         android:icon="@drawable/ic_settings_theme"
         android:title="@string/theme_settings_title" />
-
-    <!-- Themes Chooser -->
-    <header
-        android:id="@+id/themes_settings"
-        android:icon="@drawable/ic_settings_themes"
-        android:title="@string/theme_chooser_settings_title">
-        <intent
-            android:action="android.intent.action.MAIN"
-            android:targetPackage="com.tmobile.themechooser"
-            android:targetClass="com.tmobile.themechooser.ThemeChooser" />
-    </header>
 
     <!-- buttons -->
     <header
@@ -208,14 +204,6 @@
         android:id="@+id/manufacturer_settings">
         <intent android:action="com.android.settings.MANUFACTURER_APPLICATION_SETTING" />
     </header>
-
-    <!-- Amra Settings -->
-    <header
-        android:id="@+id/amra_settings"
-        android:icon="@drawable/ic_settings_amra"
-        android:title="@string/amra_settings"
-        android:fragment="org.regulus.amrasettings.AmraSettings"/>
-
 
     <!-- Advanced Settings -->
     <header
@@ -330,6 +318,13 @@
             android:targetPackage="eu.chainfire.supersu"
             android:targetClass="eu.chainfire.supersu.MainActivity" />
     </header>
+
+    <!-- Superuser -->
+    <header
+        android:id="@+id/superuser"
+        android:fragment="com.android.settings.superuser.PolicyNativeFragment"
+        android:icon="@drawable/ic_action_permission"
+        android:title="@string/superuser" />
 
     <!-- Performance Controls -->
     <header
