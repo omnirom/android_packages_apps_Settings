@@ -2642,6 +2642,13 @@
     <string name="clear_cache_btn_text">Clear cache</string>
     <!-- Manage applications, label that appears next to the cache size -->
     <string name="cache_size_label">Cache</string>
+    <string name="cache_size_label">Cache</string>    
+    <!-- Manage applications, Header name used for backups list -->
+    <string name="backups_header_label">Backups</string>
+    <!-- Manage applications, label for perform backup button -->
+    <string name="restore_backup">Restore</string>
+	<!-- Manage applications, label for restore backup button -->
+	<string name="create_backup">Backup</string>
     <!-- Manage applications, Header name used for other controls -->
     <string name="controls_label">Controls</string>
     <!-- Manage applications, text label for button to kill / force stop an application -->
@@ -3945,6 +3952,19 @@
     <string name="credentials_enabled">Credential storage is enabled.</string>
     <!-- Description of dialog to explain that a lock screen password is required to use credential storage [CHAR LIMIT=NONE] -->
     <string name="credentials_configure_lock_screen_hint">You need to set a lock screen PIN or password before you can use credential storage.</string>
+	
+	<!-- Title of the preference select the backup folder -->
+	<string name="backup_location_title">Backup location</string>
+	<!-- Summary of the preference to select the backup folder -->
+	<string name="backup_location_summary">The folder where backups should be stored.</string>
+	<!-- Title of the preference to change maximum number of backups kept per package -->
+	<string name="backup_history_title">Backup history</string>
+	<!-- Summary of the preference to change maximum number of backups kept per package -->
+	<string name="backup_history_summary">Maximum number of backups to keep per package.</string>
+	<!-- Title if the dialog to move existing backups to the new location after a new backup location was selected. -->
+	<string name="backup_move_new_location">Move all existing backups to the new location?</string>
+	<!-- Title of the dialog to trim backup history after backup_history preference was changed -->
+	<string name="backup_history_trim">Trim backup history?</string>
 
     <!-- Sound settings screen, setting check box label -->
     <string name="emergency_tone_title">Emergency tone</string>
