@@ -98,4 +98,17 @@
                     android:targetClass="com.android.settings.CredentialStorage"/>
         </Preference>
     </PreferenceCategory>
+	
+	<PreferenceCategory
+			android:title="@string/backups_header_label" >
+		
+		<org.omnirom.omnigears.preference.NumberPickerPreference
+				android:title="@string/backup_history_title"
+				android:summary="@string/backup_history_summary"
+				android:key="backup_history"
+				android:persistent="true"
+				android:defaultValue="@integer/backup_history_default"/>
+		
+	</PreferenceCategory>
+		
 </PreferenceScreen>
