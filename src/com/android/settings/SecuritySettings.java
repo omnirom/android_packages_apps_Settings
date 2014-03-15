@@ -24,12 +24,17 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.Context;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.UserInfo;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.preference.CheckBoxPreference;
@@ -37,7 +42,9 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceGroup;
+import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.provider.DocumentsContract;
 import android.provider.Settings;
 import android.security.KeyStore;
 import android.telephony.TelephonyManager;
@@ -45,6 +52,14 @@ import android.util.Log;
 
 import com.android.internal.widget.LockPatternUtils;
 
+import org.omnirom.omnigears.backup.BackupService;
+import org.omnirom.omnigears.preference.NumberPickerPreference;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +86,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
     private static final int SET_OR_CHANGE_LOCK_METHOD_REQUEST = 123;
     private static final int CONFIRM_EXISTING_FOR_BIOMETRIC_WEAK_IMPROVE_REQUEST = 124;
     private static final int CONFIRM_EXISTING_FOR_BIOMETRIC_WEAK_LIVELINESS_OFF = 125;
+    private static final int SELECT_BACKUP_FOLDER_REQUEST_CODE = 126;
 
     // Misc Settings
     private static final String KEY_SIM_LOCK = "sim_lock";
@@ -89,6 +105,9 @@ public class SecuritySettings extends RestrictedSettingsFragment
     private static final String LOCKSCREEN_QUICK_UNLOCK_CONTROL = "lockscreen_quick_unlock_control";
     private static final String LOCK_NUMPAD_RANDOM = "lock_numpad_random";
     private static final String MENU_UNLOCK_PREF = "menu_unlock";
+    private static final String KEY_BACKUP_CATEGORY = "backup_category";
+    private static final String KEY_BACKUP_LOCATION = "backup_location";
+    private static final String KEY_BACKUP_HISTORY = "backup_history";
 
     private PackageManager mPM;
     private DevicePolicyManager mDPM;
@@ -123,6 +142,22 @@ public class SecuritySettings extends RestrictedSettingsFragment
     private CheckBoxPreference mQuickUnlockScreen;
     private ListPreference mLockNumpadRandom;
     private CheckBoxPreference mMenuUnlock;
+    private NumberPickerPreference mBackupHistory;
+    private BackupService mBackupService;
+    
+    private ServiceConnection mConnection = new ServiceConnection() {
+    
+        @Override
+        public void onServiceConnected(ComponentName className,
+                IBinder service) {
+            mBackupService = ((BackupService.BackupServiceBinder) service).getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+    };
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -134,6 +169,9 @@ public class SecuritySettings extends RestrictedSettingsFragment
         mDPM = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
 
         mChooseLockSettingsHelper = new ChooseLockSettingsHelper(getActivity());
+        
+        getActivity().bindService(new Intent(getActivity(), BackupService.class),
+				mConnection, Context.BIND_AUTO_CREATE);
     }
 
     private PreferenceScreen createPreferenceHierarchy() {
@@ -298,7 +336,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
 
         mQuickUnlockScreen = (CheckBoxPreference) root.findPreference(LOCKSCREEN_QUICK_UNLOCK_CONTROL);
         if (mQuickUnlockScreen  != null) {
-            mQuickUnlockScreen.setChecked(Settings.System.getInt(getContentResolver(), 
+            mQuickUnlockScreen.setChecked(Settings.System.getInt(getContentResolver(),
                     Settings.System.LOCKSCREEN_QUICK_UNLOCK_CONTROL, 0) == 1);
             mQuickUnlockScreen.setOnPreferenceChangeListener(this);
         }
@@ -367,6 +405,14 @@ public class SecuritySettings extends RestrictedSettingsFragment
                             n, n)));
                 }
             }
+        }
+        if (mIsPrimary) {
+			mBackupHistory = (NumberPickerPreference) findPreference(KEY_BACKUP_HISTORY);
+			mBackupHistory.setMinValue(1);
+			mBackupHistory.setMaxValue(Integer.MAX_VALUE);
+			mBackupHistory.setOnPreferenceChangeListener(this);
+        } else {
+            root.removePreference(root.findPreference(KEY_BACKUP_CATEGORY));
         }
 
         if (shouldBePinProtected(RESTRICTIONS_PIN_SET)) {
@@ -600,7 +646,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
                     Settings.System.LOCKSCREEN_QUICK_UNLOCK_CONTROL, isToggled(preference) ? 1 : 0);
         } else if (preference == mMenuUnlock) {
             Settings.System.putInt(getActivity().getApplicationContext().getContentResolver(),
-                    Settings.System.MENU_UNLOCK_SCREEN, isToggled(preference) ? 1 : 0);        
+                    Settings.System.MENU_UNLOCK_SCREEN, isToggled(preference) ? 1 : 0);
         } else if (preference == mShowPassword) {
             Settings.System.putInt(getContentResolver(), Settings.System.TEXT_SHOW_PASSWORD,
                     mShowPassword.isChecked() ? 1 : 0);
@@ -614,6 +660,11 @@ public class SecuritySettings extends RestrictedSettingsFragment
         } else if (KEY_TOGGLE_VERIFY_APPLICATIONS.equals(key)) {
             Settings.Global.putInt(getContentResolver(), Settings.Global.PACKAGE_VERIFIER_ENABLE,
                     mToggleVerifyApps.isChecked() ? 1 : 0);
+        } else if (KEY_BACKUP_LOCATION.equals(key)) {
+			Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                    .addCategory(Intent.CATEGORY_OPENABLE)
+					.setType(DocumentsContract.Document.MIME_TYPE_DIR);
+			startActivityForResult(intent, SELECT_BACKUP_FOLDER_REQUEST_CODE);
         } else {
             // If we didn't handle it, let preferences handle it.
             return super.onPreferenceTreeClick(preferenceScreen, preference);
@@ -645,6 +696,27 @@ public class SecuritySettings extends RestrictedSettingsFragment
             // because mBiometricWeakLiveliness could be null
             return;
         }
+        else if (requestCode == SELECT_BACKUP_FOLDER_REQUEST_CODE &&
+				resultCode == Activity.RESULT_OK && data != null) {
+			final Uri uriOld = mBackupService.getBackupLocation();
+			final Uri uriNew = data.getData();
+
+			Log.i(TAG, "Setting new backup location: " + uriNew.toString());
+			PreferenceManager.getDefaultSharedPreferences(getActivity())
+					.edit()
+					.putString("backup_location", uriNew.toString())
+					.apply();
+
+			new AlertDialog.Builder(getActivity())
+					.setTitle(R.string.backup_move_new_location)
+					.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							mBackupService.moveBackups(uriOld, uriNew);
+						}
+					})
+					.setNegativeButton(android.R.string.no, null)
+					.show();
+        }
         createPreferenceHierarchy();
     }
 
@@ -665,6 +737,18 @@ public class SecuritySettings extends RestrictedSettingsFragment
                     Integer.valueOf((String) value));
             mLockNumpadRandom.setValue(String.valueOf(value));
             mLockNumpadRandom.setSummary(mLockNumpadRandom.getEntry());
+        } else if (preference == mBackupHistory &&
+				(Integer) value < ((NumberPickerPreference) preference).getValue()) {
+			new AlertDialog.Builder(getActivity())
+					.setTitle(R.string.backup_history_trim)
+					.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							Log.i(TAG, "Trimming backup history for all packages after preference change.");
+							mBackupService.listBackups(null, mBackupService.new TrimBackupHistory());
+						}
+					})
+					.setNegativeButton(android.R.string.no, null)
+					.show();
         }
         return true;
     }
