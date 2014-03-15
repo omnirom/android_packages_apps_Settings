@@ -12,6 +12,20 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations
  * under the License.
+ *
+ * Per article 5 of the Apache 2.0 License, some modifications to this code
+ * were made by the OmniROM Project.
+ *
+ * Modifications Copyright (C) 2013 The OmniROM Project
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 package com.android.settings.applications;
@@ -34,6 +48,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -45,6 +60,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
+import android.content.ServiceConnection;
 import android.hardware.usb.IUsbManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -66,8 +82,10 @@ import android.util.Log;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -85,6 +103,10 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.omnirom.omnigears.backup.Backup;
+import org.omnirom.omnigears.backup.BackupView;
+import org.omnirom.omnigears.backup.BackupService;
+
 /**
  * Activity to display application information from Settings. This activity presents
  * extended information associated with a package like code, data, total size, permissions
@@ -93,6 +115,8 @@ import android.widget.TextView;
  * System applications that do not want clear user data do not have this option.
  * For non-system applications, there is no option to clear data. Instead there is an option to
  * uninstall the application.
+ * Additionally, backups for this application are listed, with options to restore or delete 
+ * existing backups or create new ones.
  */
 public class InstalledAppDetails extends Fragment
         implements View.OnClickListener, CompoundButton.OnCheckedChangeListener,
@@ -142,6 +166,13 @@ public class InstalledAppDetails extends Fragment
     private Button mMoveAppButton;
     private Button mAppOpsButton;
     private CompoundButton mNotificationSwitch;
+    private BackupService mBackupService;
+    private LinearLayout mBackupsList;
+    private Button mCreateBackup;
+    private ListBackupsObserver mListBackupsObserver;
+    private CreateBackupObserver mCreateBackupObserver;
+    private RestoreBackupObserver mRestoreBackupObserver;
+    private DeleteBackupObserver mDeleteBackupObserver;
 
     private PackageMoveObserver mPackageMoveObserver;
 
@@ -238,6 +269,56 @@ public class InstalledAppDetails extends Fragment
         }
     }
     
+    private ServiceConnection mBackupServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className,
+                IBinder service) {
+            mBackupService = ((BackupService.BackupServiceBinder) service).getService();
+            mBackupService.listBackups(Arrays.asList(mPackageInfo.packageName),
+                    mListBackupsObserver);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mBackupService = null;
+        }
+    };
+
+    class ListBackupsObserver implements BackupService.ListBackupsObserver {
+        @Override
+        public void onListBackupsCompleted(Map<String, List<Backup>> backups) {
+            mBackupsList.removeAllViews();
+            for (Backup b : backups.get(mPackageInfo.packageName)) {
+                BackupView bv = (BackupView) View.inflate(getActivity(), R.layout.backup_item, null);
+                bv.setBackup(b, getSizeStr(b.size), InstalledAppDetails.this);
+                mBackupsList.addView(bv);
+            }
+        }
+    }
+
+    class CreateBackupObserver implements BackupService.CreateBackupObserver {
+        @Override
+        public void onCreateBackupCompleted() {
+            mBackupService.listBackups(
+                    Arrays.asList(mPackageInfo.packageName), mListBackupsObserver);
+        }
+    }
+
+    class DeleteBackupObserver implements BackupService.DeleteBackupObserver {
+        @Override
+        public void onDeleteBackupCompleted() {
+            mBackupService.listBackups(
+                    Arrays.asList(mPackageInfo.packageName), mListBackupsObserver);
+        }
+    }
+
+    class RestoreBackupObserver implements BackupService.RestoreBackupObserver {
+        @Override
+        public void onRestoreBackupCompleted() {
+            refreshUi();
+        }
+    }
+
     private String getSizeStr(long size) {
         if (size == SIZE_INVALID) {
             return mInvalidSizeStr.toString();
@@ -413,6 +494,12 @@ public class InstalledAppDetails extends Fragment
         mDpm = (DevicePolicyManager)getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
         mSmsManager = ISms.Stub.asInterface(ServiceManager.getService("isms"));
 
+        if (UserHandle.myUserId() == UserHandle.USER_OWNER) {
+            getActivity().bindServiceAsUser(new Intent(getActivity(), BackupService.class),
+                    mBackupServiceConnection, Context.BIND_AUTO_CREATE,
+                    new UserHandle(UserHandle.myUserId()));
+        }
+
         mCanBeOnSdCardChecker = new CanBeOnSdCardChecker();
 
         // Need to make sure we have loaded applications at this point.
@@ -465,6 +552,14 @@ public class InstalledAppDetails extends Fragment
         // Cache section
         mCacheSize = (TextView) view.findViewById(R.id.cache_size_text);
         mClearCacheButton = (Button) view.findViewById(R.id.clear_cache_button);
+
+        // Backup section (show only to device admin)
+        if (UserHandle.myUserId() == UserHandle.USER_OWNER) {
+            mBackupsList = (LinearLayout) view.findViewById(R.id.backups_list);
+            mListBackupsObserver = new ListBackupsObserver();
+            mCreateBackup = (Button) view.findViewById(R.id.create_backup);
+            mCreateBackup.setOnClickListener(this);
+        }
 
         mActivitiesButton = (Button)view.findViewById(R.id.clear_activities_button);
         
@@ -594,6 +689,12 @@ public class InstalledAppDetails extends Fragment
     public void onPause() {
         super.onPause();
         mSession.pause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unbindService(mBackupServiceConnection);
     }
 
     @Override
@@ -1401,6 +1502,25 @@ public class InstalledAppDetails extends Fragment
             mMoveInProgress = true;
             refreshButtons();
             mPm.movePackage(mAppEntry.info.packageName, mPackageMoveObserver, moveFlags);
+        } else if (v == mCreateBackup) {
+            if (mCreateBackupObserver == null) {
+                mCreateBackupObserver = new CreateBackupObserver();
+            }
+            mBackupService.createBackup(packageName, mCreateBackupObserver);
+        } else if (v.getId() == R.id.restore) {
+            if (mRestoreBackupObserver == null) {
+                mRestoreBackupObserver = new RestoreBackupObserver();
+            }
+            View parent = (View) v.getParent();
+            BackupView bv = (BackupView) parent;
+            mBackupService.restoreBackup(bv.getBackup(), mRestoreBackupObserver);
+        } else if (v.getId() == R.id.delete) {
+            if (mDeleteBackupObserver == null) {
+                mDeleteBackupObserver = new DeleteBackupObserver();
+            }
+            View parent = (View) v.getParent();
+            BackupView bv = (BackupView) parent;
+            mBackupService.deleteBackup(bv.getBackup(), mDeleteBackupObserver);
         }
     }
 

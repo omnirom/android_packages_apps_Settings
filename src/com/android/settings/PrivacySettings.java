@@ -16,26 +16,44 @@
 
 package com.android.settings;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.backup.IBackupManager;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.UserHandle;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.provider.DocumentsContract;
 import android.provider.Settings;
+import android.util.Log;
+
+import com.android.settings.R;
+
+import org.omnirom.omnigears.backup.BackupService;
+import org.omnirom.omnigears.preference.NumberPickerPreference;
 
 /**
  * Gesture lock pattern settings.
  */
 public class PrivacySettings extends SettingsPreferenceFragment implements
-        DialogInterface.OnClickListener {
+        DialogInterface.OnClickListener, OnPreferenceChangeListener {
+
+    private static final String TAG = "PrivacySettings";
 
     // Vendor specific
     private static final String GSETTINGS_PROVIDER = "com.google.settings";
@@ -51,6 +69,31 @@ public class PrivacySettings extends SettingsPreferenceFragment implements
 
     private static final int DIALOG_ERASE_BACKUP = 2;
     private int mDialogType;
+
+    // Omnirom backup
+    private static final int SELECT_BACKUP_FOLDER_REQUEST_CODE = 126;
+    private static final String KEY_OMNIROM_BACKUP_CATEGORY = "omnirom_backup_category";
+    private static final String KEY_BACKUP_LOCATION = "backup_location";
+    private static final String KEY_BACKUP_HISTORY = "backup_history";
+
+    private Preference mBackupLocation;
+    private NumberPickerPreference mBackupHistory;
+    private BackupService mBackupService;
+
+    private ServiceConnection mBackupServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                IBinder service) {
+            mBackupService = ((BackupService.BackupServiceBinder) service).getService();
+            mBackupLocation.setSummary(getBackupLocationName());
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mBackupService = null;
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +112,20 @@ public class PrivacySettings extends SettingsPreferenceFragment implements
         if (getActivity().getPackageManager().
                 resolveContentProvider(GSETTINGS_PROVIDER, 0) == null) {
             screen.removePreference(findPreference(BACKUP_CATEGORY));
+        }
+
+        if (UserHandle.myUserId() == UserHandle.USER_OWNER) {
+            getActivity().bindServiceAsUser(new Intent(getActivity(), BackupService.class),
+                    mBackupServiceConnection, Context.BIND_AUTO_CREATE,
+                    new UserHandle(UserHandle.myUserId()));
+
+            mBackupHistory = (NumberPickerPreference) findPreference(KEY_BACKUP_HISTORY);
+            mBackupHistory.setMinValue(1);
+            mBackupHistory.setMaxValue(Integer.MAX_VALUE);
+            mBackupHistory.setOnPreferenceChangeListener(this);
+            mBackupLocation = findPreference(KEY_BACKUP_LOCATION);
+        } else {
+            screen.removePreference(screen.findPreference(KEY_OMNIROM_BACKUP_CATEGORY));
         }
         updateToggles();
     }
@@ -92,6 +149,12 @@ public class PrivacySettings extends SettingsPreferenceFragment implements
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unbindService(mBackupServiceConnection);
+    }
+
+    @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
             Preference preference) {
         if (preference == mBackup) {
@@ -107,8 +170,37 @@ public class PrivacySettings extends SettingsPreferenceFragment implements
             } catch (RemoteException e) {
                 mAutoRestore.setChecked(!curState);
             }
+        } else if (KEY_BACKUP_LOCATION.equals(preference.getKey())) {
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                    .addCategory(Intent.CATEGORY_OPENABLE)
+                    .setType(DocumentsContract.Document.MIME_TYPE_DIR);
+            startActivityForResult(intent, SELECT_BACKUP_FOLDER_REQUEST_CODE);
+            return true;
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
+    }
+
+    /**
+     * Trims backups after value was decremented.
+     */
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object value) {
+        if (preference == mBackupHistory &&
+                (Integer) value < ((NumberPickerPreference) preference).getValue()) {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.backup_history_trim)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Log.i(TAG, "Trimming backup history for all packages after " +
+                                    "preference change.");
+                            mBackupService.listBackups(null,
+                                    mBackupService.new TrimBackupHistory());
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .show();
+        }
+        return true;
     }
 
     private void showEraseBackupDialog() {
@@ -208,4 +300,62 @@ public class PrivacySettings extends SettingsPreferenceFragment implements
     protected int getHelpResource() {
         return R.string.help_url_backup_reset;
     }
+
+    /**
+     * Returns the backup location in the format 'rootname: path'.
+     */
+    private String getBackupLocationName() {
+        Uri folder = mBackupService.getBackupLocation();
+
+        Uri rootsUri = DocumentsContract.buildRootsUri(folder.getAuthority());
+        Cursor cursor = getContentResolver().query(rootsUri, null, null, null, null);
+        while (cursor.moveToNext()) {
+            // HACK: Extract the root ID from the folder Uri by dropping the path and
+            // taking the last segment. This might fail if a provider has a different Uri format.
+            // "%3A" is urlencode(':')
+            String[] split = folder.toString().split("%3A", 2)[0].split("/");
+            String rootId = split[split.length - 1];
+
+            String currentId = cursor.getString(cursor.getColumnIndex(
+                    DocumentsContract.Root.COLUMN_ROOT_ID));
+            if (rootId.equals(currentId)) {
+                return cursor.getString(
+                        cursor.getColumnIndex(DocumentsContract.Root.COLUMN_TITLE)) + ": " +
+                        folder.getPath().split(":")[1] + "/";
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Sets new backup location after user chose it in DocumentsUI.
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SELECT_BACKUP_FOLDER_REQUEST_CODE &&
+                resultCode == Activity.RESULT_OK && data != null) {
+            final Uri uriOld = mBackupService.getBackupLocation();
+            final Uri uriNew = data.getData();
+
+            Log.i(TAG, "Setting new backup location: " + uriNew.toString());
+            PreferenceManager.getDefaultSharedPreferences(getActivity())
+                    .edit()
+                    .putString("backup_location", uriNew.toString())
+                    .apply();
+
+            mBackupLocation.setSummary(getBackupLocationName());
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.backup_move_new_location)
+                    .setPositiveButton(android.R.string.yes,
+                            new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            mBackupService.moveBackups(uriOld, uriNew);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .show();
+        }
+    }
+
 }

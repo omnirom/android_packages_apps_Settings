@@ -41,6 +41,43 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/omnibackup"
+        android:key="omnirom_backup_category" >
+        <!-- OmniBackup -->
+
+        <PreferenceScreen
+                android:title="@string/manage_backups_activity_title"
+                android:summary="@string/manage_backups_activity_description"
+                android:persistent="false" >
+            <intent
+                android:targetPackage="com.android.settings"
+                android:targetClass="org.omnirom.omnigears.backup.ManageBackupsActivity" />
+        </PreferenceScreen>
+
+        <Preference
+                android:title="@string/backup_location_title"
+                android:key="backup_location"
+                android:persistent="false" />
+
+        <PreferenceScreen
+                android:title="@string/local_backup_password_title"
+                android:summary="@string/local_backup_password_summary_none"
+                android:persistent="false" >
+            <intent
+                    android:action="android.settings.privacy.SET_FULL_BACKUP_PASSWORD"
+                    android:targetPackage="com.android.settings"
+                    android:targetClass="com.android.settings.SetFullBackupPassword" />
+        </PreferenceScreen>
+
+        <org.omnirom.omnigears.preference.NumberPickerPreference
+                android:title="@string/backup_history_title"
+                android:summary="@string/backup_history_summary"
+                android:key="backup_history"
+                android:persistent="true"
+                android:defaultValue="@integer/backup_history_default"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
             android:title="@string/personal_data_section_title"/>
         <!-- Factory reset -->
     <PreferenceScreen
