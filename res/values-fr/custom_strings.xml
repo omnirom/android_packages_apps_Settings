@@ -19,7 +19,6 @@
     <string name="mod_version">Version d\'Omni</string>
     <string name="mod_version_default">Inconnu</string>
     <string name="header_category_interface">Interface</string>
-    <string name="performance_settings">Performance</string>
     <string name="notification_light_settings">LED de notification</string>
     <string name="battery_light_settings">Voyant de la batterie</string>
     <string name="header_button_settings">Boutons</string>
