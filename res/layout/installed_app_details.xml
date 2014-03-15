@@ -340,6 +340,34 @@
 
         </RelativeLayout>
 
+        <!-- Backups section -->
+        <TextView
+			android:id="@+id/backups_header"
+			style="?android:attr/listSeparatorTextViewStyle"
+			android:layout_marginTop="8dip"
+			android:text="@string/backups_header_label" />
+
+		<RelativeLayout
+			android:id="@+id/backups_panel"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" >
+
+			<Button
+				android:id="@+id/create_backup"
+				android:text="@string/create_backup"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerHorizontal="true" />
+
+			<LinearLayout
+				android:id="@+id/backups_list"
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/create_backup" />
+
+		</RelativeLayout>
+
         <!-- Prefered activities section -->
         <TextView android:id="@+id/auto_launch_title"
             style="?android:attr/listSeparatorTextViewStyle"
