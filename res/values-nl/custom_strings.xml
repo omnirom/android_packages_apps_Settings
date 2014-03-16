@@ -16,8 +16,8 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- About phone screen,  setting option name-->
-    <string name="mod_version">Omni-versie</string>
-    <string name="mod_version_default">Onbekend</string>
+    <string name="mod_version">Aoscp-versie</string>
+    <string name="mod_version_default">AndroidOSCullenProject</string>
 
     <!-- Main list strings -->
     <string name="header_category_interface">Uiterlijk</string>

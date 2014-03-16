@@ -55,6 +55,11 @@
             android:title="@string/lockscreen_settings_title"
             android:fragment="org.omnirom.omnigears.interfacesettings.LockscreenSettings" />
 
+        <CheckBoxPreference
+            android:key="lock_before_unlock"
+            android:title="@string/lock_before_unlock_title"
+            android:summary="@string/lock_before_unlock_summary" />
+        
         <PreferenceScreen
             android:fragment="com.android.settings.OwnerInfoSettings"
             android:key="owner_info_settings"
