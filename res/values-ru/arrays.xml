@@ -166,6 +166,19 @@
     <item msgid="6670588712989942178">"Только 5 ГГц"</item>
     <item msgid="2715516524973207876">"Только 2,4 ГГц"</item>
   </string-array>
+  <string-array name="wifi_countrycode_entries">
+        <item>США</item>
+        <item>Канада, Тайвань</item>
+        <item>Германия</item>
+        <item>Европа</item>
+        <item>Япония, Россия</item>
+        <item>Австралия</item>
+        <item>Китай</item>
+        <item>Корея</item>
+        <item>Турция</item>
+        <item>Сингапур</item>
+        <item>Бразилия</item>
+  </string-array>
   <string-array name="usage_stats_display_order_types">
     <item msgid="2100172576767439288">"Время использования"</item>
     <item msgid="3703676222230317933">"Подсчитать"</item>
