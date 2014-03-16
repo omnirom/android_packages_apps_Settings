@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2013 The Dirty Unicorns project
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/dirt_settings"
+    android:layout="@layout/preference_dirtytweaks"
+    xmlns:settings="http://schemas.android.com/apk/res/com.android.settings">
+
+        <PreferenceScreen android:key="dt_logo"
+                          android:enabled="false"
+                          android:layout="@layout/dt_logo" />
+
+    <PreferenceCategory
+        android:title="@string/generalUI_title">
+
+         <Preference
+            android:fragment="com.android.settings.du.NotificationDrawerStyle"
+            android:key="notification_style"
+            android:layout="@layout/preference_notification_drawer"
+            android:title="@string/notification_style_title" />
+
+         <Preference
+            android:fragment="com.android.settings.du.LockscreenOptions"
+            android:key="lockscreen_targets"
+            android:layout="@layout/preference_lockscreenshortcuts"
+            android:title="@string/lockscreen_screen_options" />
+
+         <Preference
+            android:fragment="com.android.settings.du.interfacesettings.MenusSettings"
+            android:key="lockscreen_targets"
+            android:layout="@layout/preference_powermenu"
+            android:title="@string/powermenu_settings" />
+
+         <Preference
+            android:key="app_sidebar"
+            android:fragment="com.android.settings.du.AppSidebar"
+            android:layout="@layout/preference_appbar"
+            android:title="@string/app_sidebar_title"/>
+
+         <Preference
+            android:key="misc_tweaks"
+            android:fragment="com.android.settings.du.MiscTweaks"
+            android:layout="@layout/preference_misctweaks"
+            android:title="@string/misc_tweaks_title"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/statusbar_title">
+
+         <PreferenceScreen
+            android:key="battery_style_pref"
+            android:layout="@layout/preference_statusbar_tweaks"
+            android:fragment="com.android.settings.du.BatteryIconStyle"
+            android:title="@string/status_bar_header" />
+
+         <PreferenceScreen
+            android:key="battery_style_pref"
+            android:layout="@layout/preference_statusbarcolor"
+            android:fragment="com.android.settings.du.interfacesettings.StatusBarColor"
+            android:title="@string/custom_status_bar_header_title" />
+
+         <Preference
+            android:key="lockscreen_targets"
+            android:fragment="com.android.settings.du.Traffic"
+            android:layout="@layout/preference_traffic"
+            android:title="@string/misc_traffic" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="navigation_bar"
+        android:title="@string/navigation_bar_category">
+
+         <CheckBoxPreference
+            android:key="enable_nav_bar"
+            android:layout="@layout/preference_navbar_enable"
+            android:title="@string/navbar_enable_bar" />
+
+         <PreferenceScreen
+            android:key="navbar_style_dimen_settings"
+            android:layout="@layout/preference_navbar_dimen"
+            android:fragment="com.android.settings.du.NavbarDimenSettings"
+            android:title="@string/navbar_style_dimen_title"
+            android:dependency="enable_nav_bar" />
+
+         <PreferenceScreen
+            android:fragment="com.android.settings.du.interfacesettings.NavBar"
+            android:key="navigation_bar"
+            android:layout="@layout/preference_navbar"
+            android:title="@string/navigation_bar"
+            android:dependency="enable_nav_bar" />
+
+        <PreferenceScreen
+            android:key="navigation_ring"
+            android:fragment="com.android.settings.du.NavRing"
+            android:layout="@layout/preference_navbar_ring"
+            android:dependency="enable_nav_bar"
+            android:title="@string/navigation_ring_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/system_title">
+
+         <PreferenceScreen
+            android:key="interface_animation"
+            android:title="@string/interface_animation_title"
+            android:layout="@layout/preference_animations"
+            android:fragment="com.android.settings.du.interfacesettings.AnimationInterfaceSettings" />
+
+         <PreferenceScreen
+            android:key="quicksettings_tiles_style"
+            android:fragment="com.android.settings.du.QuickSettings"
+            android:layout="@layout/preference_quicksettings"
+            android:title="@string/quick_settings_title" />
+
+         <Preference
+            android:fragment="com.android.settings.du.Recents"
+            android:key="recents_ram_bar"
+            android:layout="@layout/preference_recents"
+            android:title="@string/recents_category" />
+
+         <PreferenceScreen
+            android:key="interface_voice_tts"
+            android:fragment="com.android.settings.du.DrivingMode"
+            android:layout="@layout/preference_drivingmode"
+            android:title="@string/voice_tts_title" />
+
+         <PreferenceScreen
+            android:id="@+id/wakelock_blocker"
+            android:layout="@layout/preference_wakelockblocker"
+            android:title="@string/wakelock_blocker"
+            android:fragment="com.android.settings.du.WakeLockBlocker" />
+
+         <PreferenceScreen
+            android:id="@+id/screen_state_service"
+            android:layout="@layout/preference_suspend"
+            android:title="@string/screen_state_toggles_title"
+            android:fragment="com.android.settings.du.ScreenStateToggles" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/misc_title">
+
+         <Preference
+            android:fragment="com.android.settings.chameleonos.ActiveDisplaySettings"
+            android:key="lockscreen_targets"
+            android:layout="@layout/preference_ad"
+            android:title="@string/active_display_settings" />
+
+         <PreferenceScreen
+            android:key="gesture_anywhere"
+            android:fragment="com.android.settings.chameleonos.labs.gestureanywhere.GestureAnywhereSettings"
+            android:layout="@layout/preference_gestures"
+            android:title="@string/gesture_anywhere_title" />
+
+         <PreferenceScreen
+            android:key="identicons"
+            android:fragment="com.android.settings.chameleonos.labs.identicons.IdenticonsSettings"
+            android:layout="@layout/preference_idicons"
+            android:title="@string/identicons_title" />
+
+         <PreferenceScreen
+            android:id="@+id/omniswitch"
+            android:layout="@layout/preference_omniswitch"
+            android:title="@string/omniswitch_settings_title" >
+            <intent
+                android:action="android.intent.action.MAIN"
+                android:targetPackage="org.omnirom.omniswitch"
+                android:targetClass="org.omnirom.omniswitch.SettingsActivity" />
+         </PreferenceScreen>
+
+         <Preference
+            android:fragment="com.android.settings.du.Halo"
+            android:key="lockscreen_targets"
+            android:layout="@layout/preference_halo"
+            android:title="@string/halo_settings_title" />
+
+         <PreferenceScreen
+            android:key="progressbar_settings"
+            android:layout="@layout/preference_progressbar"
+            android:fragment="com.android.settings.dokdo.ProgressBar"
+            android:title="@string/progressbar_title" >
+         </PreferenceScreen>
+
+         <Preference
+            android:key="buildprop_modder"
+            android:title="@string/propmodder_title"
+            android:layout="@layout/preference_buildprop"
+            android:fragment="com.android.settings.cyanogenmod.PropModder" />
+
+         <Preference
+            android:key="initD"
+            android:fragment="com.android.settings.InitD"
+            android:layout="@layout/preference_initd"
+            android:title="@string/init_d_title" />
+
+         <PreferenceScreen
+            android:id="@+id/system_app_remover"
+            android:title="@string/system_app_remover"
+            android:layout="@layout/preference_systemappremover"
+            android:fragment="com.android.settings.du.SystemappRemover" />
+
+         <Preference
+            android:key="download_center"
+            android:fragment="com.android.settings.du.Download"
+            android:layout="@layout/preference_download"
+            android:title="@string/download_category" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
