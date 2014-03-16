@@ -1,0 +1,650 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_1e0affd4",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "Gestos con Stylus",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_5ef477cc",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "La coma está de sobra.\n\"Ejecutar acciones personalizadas asociadas a gestos del Stylus. Atención: Si el botón del Stylus se mantiene pulsado las aplicaciones no reaccionarán al gesto realizado.\"",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_7ef133db",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Ejecutar\" sobra a la hora de la comprensión:\n\n\"Acción personalizada al deslizar a la izquierda\".",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_9efe0fa9",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "Lo mismo que justo encima.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_befbcbb8",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "Lo mismo que justo encima.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_de288734",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "Lo mismo que justo encima.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_fe2d4341",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "Lo mismo que justo encima. Sobra \"Iniciar\" en este caso.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_1e23df56",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "Lo mismo que justo encima. Sobra \"Iniciar\" en este caso.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_3e289b2e",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "Yo diría \"... con fines experimentales...\", me suena mejor que usando \"para\".\nTambién cambiaría \"correcto inicio\" por \"correcto arranque\"",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_7e1a131d",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Silenciar el dispositivo por un tiempo específico\". Hay que buscar la sencillez y mantener las oraciones originales en la medida de lo posible.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_5e1d5712",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Las llamadas entrantes se comportarán con normalidad durante el modo descanso\"\nLo que es habitual depende de la configuración de la persona, la normalidad indica que es el ajuste por defecto.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_9e17eff2",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Habilitar modo descanso\". Buscar la sencillez, pero sin cortar cosas relevantes para el significado de la oración.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_be14abee",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Inicio del modo descanso\". Buscar la sencillez, pero sin cortar cosas relevantes para el significado de la oración.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_1ee03ff8",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Cuándo iniciar el modo descanso\".",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_ded5e721",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Fin del modo descanso\". Buscar la sencillez, pero sin cortar cosas relevantes para el significado de la oración.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_fedaa34e",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Cuándo finalizar el modo descanso\".",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_3ee5fb07",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Desactivar tono de llamada\". Buscar la sencillez, pero sin cortar cosas relevantes para el significado de la oración.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_5eeab7d7",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Desactivar notificaciones\". Buscar la sencillez, pero sin cortar cosas relevantes para el significado de la oración.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_7ee7730e",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Desactivar vibraciones\". Buscar la sencillez, pero sin cortar cosas relevantes para el significado de la oración.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_bef10bcc",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Desactivar luz de notificación\". Buscar la sencillez, pero sin cortar cosas relevantes para el significado de la oración.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_1eb91fe6",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "Escribiste \"notifación\" en lugar de \"notificación\", tanto aquí, como en la línea de abajo.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_9ecd2f8a",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Desactivar respuesta háptica\". Buscar la sencillez, pero sin cortar cosas relevantes para el significado de la oración.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_dea327ae",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"[Mensaje automático] Me pondré en contacto contigo en cuanto pueda.\"\nPara ser más educados.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_fea8e38a",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Filtrar mensajes de texto\". Buscar la sencillez, pero sin cortar cosas relevantes para el significado de la oración.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_1eae7f94",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Filtrar llamadas entrantes\". Buscar la sencillez, pero sin cortar cosas relevantes para el significado de la oración.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_3eb33b00",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"MODO DESCANSO DESACTIVADO\". La oración original estaba en mayúsculas para destacarla.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_5e98f77b",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\" se cumplió un requisito del filtro para desactivar el modo descanso!\"\nDudo mucho con esto, pues no tengo claro como es la función, y si este texto debería ir en otra persona gramatical.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_7e95b342",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"contrasña\" no, \"contraseña\". :)",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_9ea28fa4",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Desactivar teclado a pantalla completa\". Para mantener el significado original.",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_be9f4b60",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Deshabilitar sensor de rotación\u003cxliff:g id\u003d\"rotate_timeout\"\u003e%1$s\u003c/xliff:g\u003e segundos después de ocultarse el teclado\"",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_de8c073c",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Nota: Esta función fuerza la auto-rotación del teclado temporalmente. No tiene efecto si la rotación automática ya está habilitada.\"",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_fe91c354",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Mostrar tecla Intro\".",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_3e8c1b36",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"El teclado mostrará la tecla Intro en lugar de la de emoticonos\"",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_7e7e9314",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Notificación de selector de teclado\"",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_9e7b6f22",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Muestra una notificación para seleccionar el método de entrada cuando un teclado es visible\".",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_fe8e2328",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "Esto lo eliminaron de la traducción original, al igual que la parte de \"Enable camera\" y \"Enable power menu\". Así que no tiene sentido mantenerlo.\n\nhttps://github.com/omnirom/android_packages_apps_Settings/commit/75dc6a7ab4408ae1262dad115b45cf6c0fef4fd6",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_be782b26",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Aviso de volumen\".",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_de896723",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2014-03-16T18:15:11Z",
+      "side": 1,
+      "message": "\"Notificar cuando el nivel de volumen sea perjudicial\".",
+      "revId": "3128f37ffca3169d15cfb320ed4779badfb78ac9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
