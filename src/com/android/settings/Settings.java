@@ -672,13 +672,7 @@ public class Settings extends PreferenceActivity
                     target.remove(i);
                 }
             } else if (id == R.id.superuser) {
-                // Embedding Superuser
-                boolean supported = false;
-                try {
-                    supported = (getPackageManager().getPackageInfo("com.koushikdutta.superuser", 0).versionCode >= 1030);
-                } catch (PackageManager.NameNotFoundException e) {
-                }
-                if (!supported) {
+                if (!DevelopmentSettings.isRootForAppsEnabled()) {
                     target.remove(i);
                 }
             }
