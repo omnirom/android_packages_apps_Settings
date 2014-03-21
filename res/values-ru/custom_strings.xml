@@ -287,4 +287,34 @@
     <string name="wifi_setting_countrycode_title">Код региона Wi-Fi</string>
     <string name="wifi_setting_countrycode_summary">Укажите код региона Wi-Fi</string>
     <string name="wifi_setting_countrycode_error">При настройке кода региона Wi-Fi возникла неполадка.</string>
+
+    <!-- Blacklist preferences -->
+    <string name="blacklist_title">Черный список</string>
+    <string name="blacklist_edit_dialog_title">Редактировать пункт черного списка</string>
+    <string name="blacklist_prefs">Настройки</string>
+    <string name="blacklist_button_delete">Удалить</string>
+    <string name="blacklist_empty_text">В вашем черном списке нет номеров. Чтобы добавить пункт, нажмите (+)</string>
+    <string name="blacklist_disabled_empty_text">Активируйте черный список, чтобы добавлять номера и/или сообщения.</string>
+    <string name="blacklist_summary_disabled">Отключено</string>
+    <string name="blacklist_summary">Входящие звонки и сообщения с телефонных номеров в черном списке будут заблокированы</string>
+    <string name="blacklist_notify">Показать уведомление</string>
+    <string name="blacklist_private_numbers_title">Скрытые номера</string>
+    <string name="blacklist_private_numbers_summary_disabled">Не блокировать звонки со скрытых номеров</string>
+    <string name="blacklist_private_numbers_summary">Блокировать входящие <xliff:g id="type">%s</xliff:g> со скрытых номеров</string>
+    <string name="blacklist_unknown_numbers_title">Неизвестные номера</string>
+    <string name="blacklist_unknown_numbers_summary_disabled">Не блокировать звонки или сообщения с номеров не в списке контактов</string>
+    <string name="blacklist_unknown_numbers_summary">Блокировать входящие <xliff:g id="type">%s</xliff:g> с номеров не в списке контактов</string>
+    <string name="blacklist_summary_type_calls_only">звонки</string>
+    <string name="blacklist_summary_type_messages_only">сообщения</string>
+    <string name="blacklist_summary_type_calls_and_messages">звонки и сообщения</string>
+    <string name="blacklist_regex_title">Использовать маски</string>
+    <string name="blacklist_regex_summary">Использовать . как любой символ и * для повторения. Например, 123.* блокирует номера, начинающиеся с 123, а .*123.* содержащие 123</string>
+    <string name="blacklist_policy_block_calls">Блокировать входящие звонки</string>
+    <string name="blacklist_policy_block_messages">Блокировать входящие сообщения</string>
+
+    <!-- Blacklist management -->
+    <string name="add_blacklist_number">Добавить номер телефона</string>
+    <string name="remove_blacklist_number_title">Удалить номер</string>
+    <string name="remove_blacklist_entry">Удалить из черного списка?</string>
+    <string name="select_contact">Выбрать контакт</string>
 </resources>
