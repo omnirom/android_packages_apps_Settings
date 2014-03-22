@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_2bc77817",
+        "filename": "res/xml/security_settings_biometric_weak.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000036
+      },
+      "writtenOn": "2014-03-22T20:25:10Z",
+      "side": 1,
+      "message": "whitespace",
+      "revId": "2b8834c235445ac7cacdca3c6d4cdf89c11ca46e",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
