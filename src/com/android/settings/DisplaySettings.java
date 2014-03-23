@@ -155,7 +155,10 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             getPreferenceScreen().removePreference(mDozeFragement);
         }
 
-        if (RotationPolicy.isRotationLockToggleVisible(activity)) {
+        // is replaced by new rotation setting
+        removePreference(KEY_AUTO_ROTATE);
+
+        /*if (RotationPolicy.isRotationLockToggleVisible(activity)) {
             DropDownPreference rotatePreference =
                     (DropDownPreference) findPreference(KEY_AUTO_ROTATE);
             rotatePreference.addItem(activity.getString(R.string.display_auto_rotate_rotate),
@@ -188,7 +191,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             });
         } else {
             removePreference(KEY_AUTO_ROTATE);
-        }
+        }*/
     }
 
     private static boolean allowAllRotations(Context context) {
@@ -377,10 +380,11 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     }
 
     private void updateDisplayRotationPreferenceDescription() {
-        if (mDisplayRotationPreference == null) {
+        PreferenceScreen preference = mDisplayRotationPreference;
+        if (preference == null) {
             return;
         }
-        PreferenceScreen preference = mDisplayRotationPreference;
+        preference.setEnabled(RotationPolicy.isRotationLockToggleVisible(getActivity()));
         StringBuilder summary = new StringBuilder();
         Boolean rotationEnabled = Settings.System.getInt(getContentResolver(),
                 Settings.System.ACCELEROMETER_ROTATION, 0) != 0;
