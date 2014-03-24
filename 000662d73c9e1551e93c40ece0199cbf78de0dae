@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_ee782e27",
+        "filename": "res/xml/security_settings_lockscreen.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-03-24T13:07:39Z",
+      "side": 1,
+      "message": "Just wonderig why owner info is visible on \"screen lock \u003d no\" since it allows defining stuff to be shown on lock screen :)",
+      "revId": "000662d73c9e1551e93c40ece0199cbf78de0dae",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
