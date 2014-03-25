@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_e1491fd4",
+        "filename": "res/values/strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 4918,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-03-25T23:28:40Z",
+      "side": 1,
+      "message": "Sorry - missed that\nYou should put new strings into custom_strings.xml",
+      "revId": "dc88e8e8e7d0729baf1516d71aef4eff74076b90",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_0117fba9",
+        "filename": "src/com/android/settings/DisplaySettings.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-03-25T23:28:40Z",
+      "side": 1,
+      "message": "still a \"tiny little one\" :)",
+      "revId": "dc88e8e8e7d0729baf1516d71aef4eff74076b90",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
