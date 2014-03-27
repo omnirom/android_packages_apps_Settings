@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_44874115",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-03-27T22:41:15Z",
+      "side": 1,
+      "message": "Here I would just use the string \"lockscreen\"",
+      "revId": "bba6006f5babc871bc8c8bd67135f9d7288ef0db",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_24924559",
+        "filename": "src/com/android/settings/DisplaySettings.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-03-27T22:41:15Z",
+      "side": 1,
+      "message": "LOL - other way round :)",
+      "revId": "bba6006f5babc871bc8c8bd67135f9d7288ef0db",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_648c3d37",
+        "filename": "src/com/android/settings/DisplaySettings.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-03-27T22:41:15Z",
+      "side": 1,
+      "message": "this doesnt look good - 0,90 \u0026 Lock screen degrees? I would not include that information here.",
+      "revId": "bba6006f5babc871bc8c8bd67135f9d7288ef0db",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
