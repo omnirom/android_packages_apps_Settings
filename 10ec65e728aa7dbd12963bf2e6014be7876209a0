@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_246085a1",
+        "filename": "src/com/android/settings/DisplaySettings.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-03-27T13:53:20Z",
+      "side": 1,
+      "message": "you could save some space by using lockScreenRotationEnabled here :)",
+      "revId": "10ec65e728aa7dbd12963bf2e6014be7876209a0",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
