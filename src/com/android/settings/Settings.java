@@ -160,7 +160,14 @@ public class Settings extends PreferenceActivity
             R.id.accessibility_settings,
             R.id.print_settings,
             R.id.nfc_payment_settings,
-            R.id.home_settings
+            R.id.home_settings,
+            R.id.interface_section,
+            R.id.interface_bars,
+            R.id.interface_menus,
+            R.id.interface_notification_panel,
+            R.id.active_display,
+            R.id.interface_more,
+            R.id.button_settings
     };
 
     private SharedPreferences mDevelopmentPreferences;
