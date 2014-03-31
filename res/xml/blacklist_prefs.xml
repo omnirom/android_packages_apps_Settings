@@ -30,6 +30,7 @@
         android:dialogTitle="@string/blacklist_private_numbers_title"
         android:entries="@array/blacklist_policy_private_entries"
         android:entryValues="@array/blacklist_policy_private_values"
+        android:defaultValue="@array/empty_array"
         android:persistent="false" />
 
     <MultiSelectListPreference
@@ -38,6 +39,7 @@
         android:dialogTitle="@string/blacklist_unknown_numbers_title"
         android:entries="@array/blacklist_policy_unknown_entries"
         android:entryValues="@array/blacklist_policy_unknown_values"
+        android:defaultValue="@array/empty_array"
         android:persistent="false" />
 
     <org.omnirom.omnigears.preference.SystemCheckBoxPreference

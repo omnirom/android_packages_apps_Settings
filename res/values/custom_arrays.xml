@@ -201,4 +201,6 @@
         <item>1</item>
     </string-array>
 
+    <string-array name="empty_array"/>
+
 </resources>
