@@ -421,34 +421,6 @@
         <item>2</item>
     </string-array>
 
-    <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code. -->
-    <string-array name="wifi_countrycode_entries">
-        <item>United States</item>
-        <item>Canada, Taiwan</item>
-        <item>Germany</item>
-        <item>Europe</item>
-        <item>Japan, Russia</item>
-        <item>Australia</item>
-        <item>China</item>
-        <item>Korea</item>
-        <item>Turkey</item>
-        <item>Singapore</item>
-        <item>Brazil</item>
-    </string-array>
-
-    <string-array name="wifi_countrycode_values" translatable="false">
-        <item>US</item>
-        <item>CA</item>
-        <item>DE</item>
-        <item>GB</item>
-        <item>JP</item>
-        <item>AU</item>
-        <item>CN</item>
-        <item>KR</item>
-        <item>TR</item>
-        <item>SG</item>
-        <item>BR</item>
-    </string-array>
 
     <!-- Display options for UsageStats class -->
     <string-array name="usage_stats_display_order_types">
@@ -1215,22 +1187,11 @@
         <item>critical</item>
     </string-array>
 
-    <!-- **** CYANOGENMOD EDITS START **** -->
-
-    <!-- Arrays for root access capability -->
-    <string-array name="root_access_entries">
-        <item>@string/root_access_none</item>
-        <item>@string/root_access_apps</item>
-        <item>@string/root_access_adb</item>
-        <item>@string/root_access_all</item>
+    <!-- Display settings.  Entries for each type of Subscription. -->
+    <string-array name="multi_sim_entries">
+        <item> Subscription 1 </item>
+        <item> Subscription 2 </item>
+        <item> Subscription 3 </item>
     </string-array>
 
-    <string-array name="root_access_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <!-- **** CYANOGENMOD EDITS END **** -->
 </resources>

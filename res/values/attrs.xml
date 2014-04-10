@@ -124,9 +124,15 @@
     </declare-styleable>
 
     <declare-styleable name="IntervalSeekBar">
+        <attr name="min" format="float" />
         <attr name="max" format="float" />
         <attr name="defaultValue" format="float" />
         <attr name="digits" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="DeveloperPreference">
+        <attr name="nameDev" format="string"/>
+        <attr name="githubLink" format="string"/>
+        <attr name="emailDev" format="string"/>
+    </declare-styleable>
 </resources>

@@ -47,7 +47,6 @@ import com.android.settings.AccountPreference;
 import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.location.LocationSettings;
-import com.android.settings.preference.ProxyPreferenceRootAdapter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -346,12 +345,11 @@ public class ManageAccountsSettings extends AccountPreferenceBase
     }
 
     private void addAuthenticatorSettings() {
-        PreferenceScreen preferencescreen = addPreferencesForType(mAccountType, getPreferenceScreen());
-        if(preferencescreen != null)
-            updatePreferenceIntents(preferencescreen);
-        ProxyPreferenceRootAdapter proxypreferencerootadapter = new ProxyPreferenceRootAdapter(getActivity(), getPreferenceScreen().getRootAdapter());
-        getListView().setAdapter(proxypreferencerootadapter);
+        PreferenceScreen prefs = addPreferencesForType(mAccountType, getPreferenceScreen());
+        if (prefs != null) {
+            updatePreferenceIntents(prefs);
         }
+    }
 
     /** Listens to a preference click event and starts a fragment */
     private class FragmentStarter

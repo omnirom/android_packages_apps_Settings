@@ -72,6 +72,13 @@
 
     <dimen name="captioning_preview_height">200dp</dimen>
 
+    <!-- Minimal notification row height used to calculate max notification count -->
+    <dimen name="notification_row_min_height">70dp</dimen>
+
+    <!-- Custom -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
     <dimen name="settings_side_margin">@*android:dimen/preference_fragment_padding_side</dimen>
 
     <!-- Default distance beyond which snaps to the matching target -->

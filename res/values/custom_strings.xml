@@ -18,39 +18,52 @@
     <!-- About phone screen,  setting option name-->
     <string name="mod_version">Omni version</string>
     <string name="mod_version_default">Unknown</string>
+    <string name="amra_mod_version">Amra version</string>
 
     <!-- General -->
     <string name="reset">Reset</string>
+    <string name="enabled">Enabled</string>
+    <string name="attention">Attention</string>
+    <string name="default_string">Default</string>
 
-    <!-- Main list strings -->
-    <string name="header_category_interface">Interface</string>
-    <string name="performance_settings">Performance</string>
-    <string name="notification_light_settings">Notification light</string>
-    <string name="battery_light_settings">Battery light</string>
-    <string name="header_button_settings">Buttons</string>
+    <!-- Sub list strings -->
+    <string name="device_control_settings">Device Control</string>
+    <string name="device_update_center">Update Center</string>
 
-    <!-- Volume panel tweaks -->
-    <string name="volume_adjust_sounds_enable_title">Volume adjust sound</string>
-    <string name="volume_adjust_sounds_enable_summary">Play sound when changing ringer volume</string>
-    <string name="link_volume_ringtones">Link ringtone &amp; notifications volumes</string>
-    <string name="volume_ring_only_description">Ringtone</string>
-    <string name="category_volume_panel_title">Volume panel</string>
+    <!-- Interface -->
+    <string name="interface_animation_title">Animation Control</string>
 
-    <string name="volume_panel_timeout_title">Timeout</string>
-    <string name="volume_panel_timeout_summary">Time until the panel will be hidden</string>
+    <!-- Themes -->
+    <string name="theme_settings_title">Dark UI (TRDS)</string>
+    <string name="theme_auto_mode_title">Switch theme</string>
+    <string name="theme_auto_mode_off">Manual</string>
+    <string name="theme_auto_mode_lightsensor">On light condition change</string>
+    <string name="theme_auto_mode_twilight">On daytime</string>
+    <string name="theme_auto_switch_mode_error">Automatic light condition change mode is enabled. Manual switching is not possible.</string>
+    <string name="title_tile_theme">Theme switcher</string>
 
-    <string name="volume_panel_style">Style</string>
-    <string name="single">Single</string>
-    <string name="expandable">Expandable</string>
-    <string name="expanded">Expanded</string>
+    <!-- Status Bar Activity Indicators -->
+    <string name="show_activity_indicators_on_status_bar_title">Network activity indicator</string>
+    <string name="show_activity_indicators_on_status_bar_summary">Show network activity in statusbar</string>
 
-    <!-- Safe headset volume warning -->
-    <string name="safe_headset_volume_warning_title">Volume warning</string>
-    <string name="safe_headset_volume_warning_summary">Show safe headset volume warning</string>
+    <!-- Power Menu -->
+    <string name="power_menu_screenrecord_title">Screen Record</string>
 
-    <!-- Advanced reboot options -->
-    <string name="advanced_reboot_title">Advanced reboot</string>
-    <string name="advanced_reboot_summary">When unlocked, include options in the power menu for rebooting into recovery or bootloader</string>
+    <!-- Volume Steps -->
+    <string name="volume_steps_title">Volume Steps</string>
+    <string name="volume_steps_60">60</string>
+    <string name="volume_steps_45">45</string>
+    <string name="volume_steps_30">30</string>
+    <string name="volume_steps_15">15</string>
+    <string name="volume_steps_7">7</string>
+    <string name="volume_steps_5">5</string>
+    <string name="volume_steps_alarm_title">Alarm</string>
+    <string name="volume_steps_dtmf_title">DTMF</string>
+    <string name="volume_steps_music_title">Music</string>
+    <string name="volume_steps_notification_title">Notification</string>
+    <string name="volume_steps_ring_title">Ringer</string>
+    <string name="volume_steps_system_title">System</string>
+    <string name="volume_steps_voice_call_title">Voice Call</string>
 
     <!-- Lockscreen battery ring -->
     <string name="battery_around_lockscreen_ring">Battery around unlock ring</string>
@@ -64,24 +77,21 @@
     <string name="lockscreen_quick_unlock_control_title">Quick unlock</string>
     <string name="lockscreen_quick_unlock_control_summary">Unlock automatically when the correct PIN/password is entered</string>
 
-    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
-    <string name="change_crypt_password_title">Change password</string>
-    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
-    <string name="change_crypt_password_summary">Change the password used for device encryption</string>
 
-    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
-    <string name="encryptionpassword_choose_your_password_header">Set encryption password</string>
+    <!-- Recents clear all -->
+    <string name="system_ui_recent_panel_title">Recents panel</string>
 
-    <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
-    <string name="show_cpu_info">Show CPU info</string>
-    <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
-    <string name="show_cpu_info_summary">Screen overlay showing current CPU info</string>
+    <!-- Notification Drawer -->
+    <string name="custom_statusbar_header_title">Contextual notification panel header</string>
+    <string name="custom_statusbar_header_summary">Sets the background of the notification panel header to an image based on the current date and time</string>
 
-    <!-- Screen off animation -->
-    <string name="screen_off_animation">Screen-off animation</string>
-    <string name="screen_off_fadeout">Fade out</string>
-    <string name="screen_off_electronbeam">Electron beam</string>
-    <string name="screen_off_scaledown">Scale down</string>
+    <!-- Brightness Slider -->
+    <string name="notification_drawer_brightness_slider_title">Brightness Slider</string>
+
+    <!--Lockscreen See Through-->
+    <string name="see_through_title">See through</string>
+    <string name="see_through_summary">Shows the content behind your lockscreen, your data may be visible to those around you</string>
+
 
     <!-- AppOps additions -->
     <string name="appops_settings">Apps permissions</string>
@@ -99,34 +109,50 @@
     <string name="battery_prefs_title">Options</string>
     <string name="battery_stats_title">Statistics</string>
 
-    <!-- Setting checkbox summary for displaying USB debugging notification -->
-    <string name="adb_notify">USB debugging notify</string>
-    <string name="adb_notify_summary">Display a notification when USB debugging is connected</string>
+    <!-- WiFi forget all networks -->
+    <string name="wifi_menu_forget_all">Forget all networks</string>
 
-    <!-- Lockscreen pin shuffle -->
-    <string name="lock_numpad_random_title">Change the order of PIN pad numbers</string>
-    <string name="lock_numpad_random_dialog_title">PIN pad random order</string>
-    <string name="lock_numpad_random_off">Disabled</string>
-    <string name="lock_numpad_random_always">Always</string>
-    <string name="lock_numpad_random_on_request">On request</string>
+    <!-- Color Picker -->
+    <string name="dialog_color_picker">Color Picker</string>
+    <string name="press_color_to_apply">Press on color below to apply</string>
+    <string name="set">Set</string>
+    <string name="color_default">Default</string>
 
-    <string name="interface_more_title">More\u2026</string>
-    <string name="interface_bars_title">Bars</string>
-    <string name="interface_menus_title">Menus</string>
-    <string name="interface_notification_panel_title">Notification Drawer</string>
-    <string name="interface_animation_title">Animation Control</string>
+    <!-- RAM Bar -->
+    <string name="ram_bar_title">Recents RAM bar</string>
+    <string name="ram_bar_summary">Shows RAM usage in the recent apps window</string>
+    <string name="ram_bar_cached_title">Include cached apps</string>
+    <string name="ram_bar_cached_summary">Calculate RAM usage with cached apps</string>
 
-    <!-- Battery Icon selection -->
-    <string name="pref_battery_indicator_title">Battery indicator</string>
-    <string name="battery_status_icon_title">Status icon</string>
-    <string name="battery_bar">Battery bar</string>
-    <string name="battery_bar_percent">Battery bar &amp; percent</string>
-    <string name="battery_circle">Battery circle</string>
-    <string name="battery_circle_percent">Battery circle &amp; percent</string>
+    <!-- Lockscreen Notifications -->
+    <!-- Categories -->
+    <string name="general">General</string>
+    <string name="layout">Layout</string>
+    <string name="privacy">Privacy</string>
 
-    <!-- Turn on display when power connected; turn off display when power disconnected -->
-    <string name="wake_when_plugged_or_unplugged_title">Wake on plug</string>
-    <string name="wake_when_plugged_or_unplugged_summary">Turn the screen on when connecting or disconnecting the charger</string>
+    <string name="lockscreen_notifications">Lockscreen Notifications</string>
+    <string name="lockscreen_notifications_summary">Show pending notifications on lockscreen</string>
+    <string name="pocket_mode">Pocket mode</string>
+    <string name="pocket_mode_summary">Turn screen on and show all notifications when device is pulled out of pocket. Turn screen off when device gets back into pocket.</string>
+    <string name="show_always">Show always</string>
+    <string name="show_always_summary">Always turn screen on when pulled out of pocket, even when there are no notifications pending</string>
+    <string name="hide_low_priority">Hide low priority</string>
+    <string name="hide_low_priority_summary">Hide low priority notifications such as google now weather notifications</string>
+    <string name="hide_non_clearable">Hide non clearable</string>
+    <string name="hide_non_clearable_summary">Hide all non clearable notifications</string>
+    <string name="dismiss_all">Allow dismissing all notifications</string>
+    <string name="dismiss_all_summary">Allow dismissing even non clearable notifications. Of course, they\'re just hidden from lockscreen and not from the notification panel.</string>
+    <string name="expanded_view">Expanded notification view</string>
+    <string name="expanded_view_summary">Show notifications expanded when possible</string>
+    <string name="force_expanded_view">Force expanded view</string>
+    <string name="force_expanded_view_summary">Show notifications expanded by default. You still will be able to toggle between expanded and normal view.</string>
+    <string name="wake_on_notification">Wake on notification</string>
+    <string name="wake_on_notification_summary">Wake device when a new notification is received</string>
+    <string name="notifications_height">Notification count</string>
+    <string name="notifications_height_summary">Number of notifications displayed at once</string>
+    <string name="offset_top">Offset to the top of the screen:</string>
+    <string name="privacy_mode">Privacy Mode</string>
+    <string name="privacy_mode_summary">Disables notifications from being shown and dismissed. This way, you just see the icons of your notifications.</string>
 
     <!-- security settings menu unlock -->
     <string name="unlock_menu_unlock_title">Menu unlock</string>
@@ -410,6 +436,242 @@
     <string name="ime_exit_animation_title">Exit Animation</string>
     <string name="ime_interpolator_title">Interpolator</string>
     <string name="ime_duration_title">IME Duration</string>
+
+    <!-- Lockscreen widget carousel animation -->
+    <string name="lockscreen_use_widget_container_carousel_title">Use widget carousel in portrait</string>
+    <string name="lockscreen_use_widget_container_carousel_summary">Use carousel animation in portrait like it is in landscape when switching between lockscreen widgets.</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_image_not_valid">The chosen app did not return a valid icon or does not support image cropping. Use another app</string>
+
+    <!-- Notification drawer background -->
+    <string name="notification_style_title">Notification Drawer Style</string>
+    <string name="notification_style_summary">Change your notification drawer style</string>
+    <string name="notification_wallpaper_title">Background</string>
+    <string name="notification_wallpaper_landscape_title">Different landscape background</string>
+    <string name="notification_background_color_fill">Color fill</string>
+    <string name="notification_background_custom_image">Custom image</string>
+    <string name="notification_background_default_wallpaper">Default background</string>
+    <string name="notification_drawer_custom_background_dialog_title">Choose color</string>
+    <string name="notif_wallpaper_alpha_title">Background transparency</string>
+    <string name="notif_alpha_title">Notification transparency</string>
+
+    <!-- Network speed -->
+    <string name="show_network_speed">Network speed indicator</string>
+    <string name="show_network_speed_summary">Show network speed in status bar</string>
+    <string name="show_network_speed_bits">Show speed as bits per second</string>
+    <string name="show_network_speed_bytes">Show speed as Bytes per second</string>
+
+    <!-- Custom Carrier Label -->
+    <string name="notification_carrier_label_title">Carrier label</string>
+    <string name="notification_custom_carrier_label_title">Custom carrier label</string>
+    <string name="notification_custom_carrier_label_explain">Please enter a new label. Enter an empty label to revert to stock label.</string>
+    <string name="notification_custom_carrier_label_notset">Custom label currently not set</string>
+
+    <!-- Advanced Device Info -->
+    <string name="advanced_device_info_title">Advanced Device Info</string>
+    <string name="advanced_device_info_summary">Information about CPU, GPU etc.</string>
+    <!-- CPU -->
+    <string name="cpu_features">Processor Features</string>
+    <!-- GPU -->
+    <string name="gpu_title">GPU / OpenGl</string>
+    <string name="gpu_vendor">GPU Vendor</string>
+    <string name="gpu_renderer">GPU Renderer</string>
+    <string name="gpu_gl_version">OpenGl Version</string>
+    <string name="gpu_gl_extensions">OpenGl Extensions</string>
+    <string name="gpu_shader_version">Shader Version</string>
+
+    <!-- Sound themes -->
+    <string name="sound_packages_title">Sound packs</string>
+    <string name="install_sound_pack_title">Install sound pack</string>
+    <string name="install_sound_pack_summary">Install new sound packs added in \"SoundPacks\" folder on the internal storage</string>
+    <string name="install_sound_pack_summary_disabled">No installable sound packs found!\nPlease put your sound packs in \n%s and try again!</string>
+    <string name="select_sound_pack_title">Select sound pack</string>
+    <string name="select_sound_pack_summary">Select the active sound pack</string>
+    <string name="default_sound_pack">Default (System)</string>
+    <string name="error_pack_install">Error while installing the sound pack</string>
+    <string name="sound_pack_folder_created_success">Created %s to place your sound packs in!</string>
+    <string name="sound_pack_folder_created_failure">Error creating %s!</string>
+
+    <!-- Breathing Notifications -->
+    <string name="breathing_notifications_title">Breathing Notifications</string>
+    <string name="sms_breath_title">Breathing SMS</string>
+    <string name="sms_breath_summary">Will give your sms notifications a breathing effect in the statusbar</string>
+    <string name="missed_call_breath_title">Breathing Missed Call</string>
+    <string name="missed_call_breath_summary">Will give your missed call notifications a breathing effect in the statusbar</string>
+    <string name="voicemail_breath_title">Breathing Voicemail</string>
+    <string name="voicemail_breath_summary">Will give your voicemail notifications a breathing effect in the statusbar</string>
+
+    <!-- Status bar | Clock -->
+    <string name="status_bar_clock">Clock and date</string>
+    <string name="status_bar_clock_title">Clock and date style</string>
+    <string name="clock_title_enable">Alignment</string>
+    <string name="clock_enabled">Enabled</string>
+    <string name="clock_disabled">Disabled</string>
+    <string name="status_bar_am_pm_title">AM/PM</string>
+    <string name="status_bar_am_pm_info">24-hour clock is enabled</string>
+    <string name="enable_clock_weekday">Day of the week</string>
+    <string name="enable_clock_weekday_summary">Abbreviated day of the week before the time</string>
+    <string name="right_clock">Right clock</string>
+    <string name="center_clock">Center clock</string>
+    <string name="dont_show">Don\'t show</string>
+    <string name="clock_date_display">Date</string>
+    <string name="clock_date_display_summary">Display custom date before the clock</string>
+    <string name="clock_date_style">Date style</string>
+    <string name="clock_date_format">Date format</string>
+    <string name="clock_date_string_edittext_title">Must be in DateFormat eg. MM/dd/yy</string>
+    <string name="clock_date_string_edittext_summary">Enter string</string>
+    <string name="am_pm_clock_normal">Normal font size</string>
+    <string name="am_pm_clock_small">Small font size</string>
+    <string name="am_pm_clock_none">Don\'t show</string>
+    <string name="clock_date_display_none">Don\'t show</string>
+    <string name="clock_date_display_small">Small font size</string>
+    <string name="clock_date_display_normal">Normal font size</string>
+    <string name="clock_date_style_normal">Normal</string>
+    <string name="clock_date_style_lowercase">Lowercase</string>
+    <string name="clock_date_style_uppercase">Uppercase</string>
+    <string name="clock_date_format_custom">Custom java format</string>
+    <string name="status_bar_clock_style_reset_message">Reset clock color?</string>
+
+    <!-- Screen-On Notification Light -->
+    <string name="screen_on_notification_led_title">Screen-on notification light</string>
+    <string name="screen_on_notification_led_summary">Enable notification light even when screen is on</string>
+
+    <!-- Navigation bar -->
+    <!-- Navigation bar height/width -->
+    <string name="navbar_dimen_title">Dimensions</string>
+    <string name="navbar_dimensions_reset_message">Reset all dimensions entries to default?</string>
+    <string name="navigation_bar_height_title">Navigation bar height</string>
+    <string name="navigation_bar_height_summary">Navigation bar height while in portrait</string>
+    <string name="navigation_bar_width_title">Navigation bar width</string>
+    <string name="navigation_bar_width_summary">Navigation bar height if the bar is along a side</string>
+    <string name="navigation_bar_size_42_dp_default">42 dp (default)</string>
+    <string name="navigation_bar_size_36_dp">36 dp</string>
+    <string name="navigation_bar_size_30_dp">30 dp</string>
+    <string name="navigation_bar_size_24_dp">24 dp</string>
+    <string name="navigation_bar_size_48_dp_default">48 dp (default)</string>
+    <string name="navigation_bar_size_44_dp">44 dp</string>
+    <string name="navigation_bar_size_40_dp">40 dp</string>
+    <string name="navigation_bar_size_42_dp">42 dp</string>
+    <string name="navigation_bar_size_0_dp">0 dp (off)</string>
+    <!-- Navigation bar force enable -->
+    <string name="navbar_force_enable_title">Force navigation bar</string>
+    <string name="navbar_force_enable_summary">Requires a reboot</string>
+
+    <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
+    <string name="supersu_title">SuperSU</string>
+    <string name="superuser">Superuser</string>
+
+    <!-- QuickSettings: Smart Pulldown -->
+    <string name="smart_pulldown_title">Smart pulldown</string>
+    <string name="smart_pulldown_summary">Open Quick Settings when there are no notifications present</string>
+    <string name="smart_pulldown_off">Off</string>
+    <string name="smart_pulldown_dismissable">Pulldown if there are no cleareable notifications</string>
+    <string name="smart_pulldown_persistent">Pulldown if there are no notifications</string>
+
+    <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+    <string name="show_cpu_info">Show CPU info</string>
+    <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+    <string name="show_cpu_info_summary">Screen overlay showing current CPU info</string>
+
+    <!-- More app settings -->
+    <string name="more_app_settings">More app settings</string>
+
+    <!-- Wakelock blocker -->
+    <string name="wakelock_blocker">Wakelock Blocker</string>
+    <string name="wakelock_blocker_title">Enable</string>
+    <string name="wakelock_blocker_summary">Activate blocking for checked wakelocks</string>
+    <string name="wakelock_blocker_save">Save</string>
+    <string name="wakelock_list_header">Available Wakelocks</string>
+    <string name="wakelock_blocker_reload">Reload</string>
+    <string name="wakelock_blocker_warning_title">Proceed with Caution</string>
+    <string name="wakelock_blocker_warning">Blocking wakelocks have the potential to cause instability, crashes or data loss.</string>
+
+    <!-- QuickSettings fliptiles -->
+    <string name="flip_qs_tiles_title">Flip tiles</string>
+    <string name="flip_qs_tiles_summary">Flips the tiles on touch</string>
+
+    <!-- QuickSettings haptic feedback -->
+    <string name="haptic_qs_tiles_title">Vibrate on touch</string>
+    <string name="haptic_qs_tiles_summary">Vibrate when touching tiles</string>
+
+    <!-- Glowpad Torch -->
+    <string name="lockscreen_glowpad_torch_title">Glowpad torch</string>
+    <string name="lockscreen_glowpad_torch_summary">Double-tap and hold the slider to start torch</string>
+
+    <!-- Disable Camera Shutter Sound -->
+    <string name="camera_sounds_title">Camera shutter sound</string>
+    <string name="camera_sounds_summary">WARNING: Disabling the camera shutter sound is illegal in some areas!</string>
+
+    <!-- ACRA -->
+    <string name="enable_acra_title">Enable Crashreporting</string>
+    <string name="enable_acra_summary">If checked, crashes are automatically send to Amra</string>
+
+    <!-- New Recents Screen -->
+    <string name="new_recents_screen_title">Use new recents</string>
+    <string name="new_recents_screen_summary">Replaces the recents screen with one based on the new google cards optic.</string>
+
+    <!-- On-The-Go -->
+    <string name="power_menu_onthego_title">On-The-Go Mode</string>
+    <string name="title_tile_onthego">On-The-Go</string>
+
+    <!-- Disable safe volume warning with headphones -->
+    <string name="disable_safe_volume_title">Disable safe volume warning</string>
+    <string name="disable_safe_volume_summary">This will disable the safe volume warning when using headphones. A reboot is necessary in order to take effect.</string>
+
+    <!-- Screen Recording -->
+    <string name="misc_tweaks_srec">Screen Recording</string>
+    <string name="srec_enable_touches_title">Enable Pointer</string>
+    <string name="srec_enable_touches_summary">Enable visual pointer to show touches during screen recording</string>
+    <string name="srec_enable_mic_title">Use Microphone</string>
+    <string name="srec_enable_mic_summary">Use microphone as audio input during screen recording</string>
+
+
+    <!-- Main list strings -->
+    <string name="header_category_interface">Interface</string>
+    <string name="performance_settings">Performance</string>
+    <string name="notification_light_settings">Notification light</string>
+    <string name="battery_light_settings">Battery light</string>
+    <string name="header_button_settings">Buttons</string>
+
+    <!-- Volume panel tweaks -->
+    <string name="volume_adjust_sounds_enable_title">Volume adjust sound</string>
+    <string name="volume_adjust_sounds_enable_summary">Play sound when changing ringer volume</string>
+    <string name="link_volume_ringtones">Link ringtone &amp; notifications volumes</string>
+    <string name="volume_ring_only_description">Ringtone</string>
+    <string name="category_volume_panel_title">Volume panel</string>
+
+    <string name="volume_panel_timeout_title">Timeout</string>
+    <string name="volume_panel_timeout_summary">Time until the panel will be hidden</string>
+
+    <string name="volume_panel_style">Style</string>
+    <string name="single">Single</string>
+    <string name="expandable">Expandable</string>
+    <string name="expanded">Expanded</string>
+
+    <!-- Lockscreen pin shuffle -->
+    <string name="lock_numpad_random_title">Change the order of PIN pad numbers</string>
+    <string name="lock_numpad_random_dialog_title">PIN pad random order</string>
+    <string name="lock_numpad_random_off">Disabled</string>
+    <string name="lock_numpad_random_always">Always</string>
+    <string name="lock_numpad_random_on_request">On request</string>
+
+    <string name="interface_more_title">More\u2026</string>
+    <string name="interface_bars_title">Bars</string>
+    <string name="interface_menus_title">Menus</string>
+    <string name="interface_notification_panel_title">Notification Drawer</string>
+
+    <!-- Battery Icon selection -->
+    <string name="pref_battery_indicator_title">Battery indicator</string>
+    <string name="battery_status_icon_title">Status icon</string>
+    <string name="battery_bar">Battery bar</string>
+    <string name="battery_bar_percent">Battery bar &amp; percent</string>
+    <string name="battery_circle">Battery circle</string>
+    <string name="battery_circle_percent">Battery circle &amp; percent</string>
+
+    <!-- Turn on display when power connected; turn off display when power disconnected -->
+    <string name="wake_when_plugged_or_unplugged_title">Wake on plug</string>
+    <string name="wake_when_plugged_or_unplugged_summary">Turn the screen on when connecting or disconnecting the charger</string>
 
     <!-- Hostname setting -->
     <string name="device_hostname">Device hostname</string>

@@ -22,22 +22,22 @@
 
     <PreferenceScreen
         android:key="interface_animation_system"
-        android:fragment="com.android.settings.nameless.interfacesettings.SystemAnimationInterfaceSettings"
+        android:fragment="com.android.settings.amra.interfacesettings.SystemAnimationInterfaceSettings"
         android:title="@string/bars_and_menus_category_system_title" />
 
     <PreferenceScreen
         android:key="interface_animation_listview"
-        android:fragment="com.android.settings.nameless.interfacesettings.ListViewAnimationInterfaceSettings"
+        android:fragment="com.android.settings.amra.interfacesettings.ListViewAnimationInterfaceSettings"
         android:title="@string/listview_title" />
 
     <PreferenceScreen
         android:key="interface_animation_scroll"
-        android:fragment="com.android.settings.nameless.interfacesettings.ScrollAnimationInterfaceSettings"
+        android:fragment="com.android.settings.amra.interfacesettings.ScrollAnimationInterfaceSettings"
         android:title="@string/scrolling_title" />
 
     <PreferenceScreen
         android:key="interface_animation_keyboard"
-        android:fragment="com.android.settings.nameless.interfacesettings.KeyboardAnimationInterfaceSettings"
+        android:fragment="com.android.settings.amra.interfacesettings.KeyboardAnimationInterfaceSettings"
         android:title="@string/ime_animation_title" />
 
 </PreferenceScreen>

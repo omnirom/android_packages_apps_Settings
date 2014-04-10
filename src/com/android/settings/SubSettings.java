@@ -28,7 +28,6 @@ import com.android.settings.ChooseLockGeneric.ChooseLockGenericFragment;
  * since for our app it is a special singleTask class.
  */
 public class SubSettings extends Settings {
-
     @Override
     public boolean onNavigateUp() {
         if (!popFragment()) {

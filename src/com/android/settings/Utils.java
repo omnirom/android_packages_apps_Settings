@@ -58,8 +58,8 @@ import android.provider.ContactsContract.Profile;
 import android.provider.ContactsContract.RawContacts;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.DisplayInfo;
 import android.view.Surface;
 import android.view.View;
@@ -70,6 +70,10 @@ import android.widget.TabWidget;
 
 import com.android.settings.users.ProfileUpdateReceiver;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -79,6 +83,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class Utils {
+
+    private static final String TAG = "Utils";
 
     /**
      * Set the preference's title to the matching activity's label.
@@ -195,8 +201,7 @@ public class Utils {
     public static boolean updatePreferenceToSpecificActivityFromMetaDataOrRemove(Context context,
             PreferenceGroup parentPreferenceGroup, String preferenceKey) {
 
-        IconPreferenceScreen preference = (IconPreferenceScreen)parentPreferenceGroup
-                .findPreference(preferenceKey);
+        Preference preference = parentPreferenceGroup.findPreference(preferenceKey);
         if (preference == null) {
             return false;
         }
@@ -222,7 +227,9 @@ public class Utils {
                         Bundle metaData = resolveInfo.activityInfo.metaData;
 
                         if (res != null && metaData != null) {
-                            icon = res.getDrawable(metaData.getInt(META_DATA_PREFERENCE_ICON));
+                            if (preference instanceof IconPreferenceScreen) {
+                                icon = res.getDrawable(metaData.getInt(META_DATA_PREFERENCE_ICON));
+                            }
                             title = res.getString(metaData.getInt(META_DATA_PREFERENCE_TITLE));
                             summary = res.getString(metaData.getInt(META_DATA_PREFERENCE_SUMMARY));
                         }
@@ -239,9 +246,12 @@ public class Utils {
                     }
 
                     // Set icon, title and summary for the preference
-                    preference.setIcon(icon);
                     preference.setTitle(title);
                     preference.setSummary(summary);
+                    if (preference instanceof IconPreferenceScreen) {
+                        IconPreferenceScreen iconPreference = (IconPreferenceScreen) preference;
+                        iconPreference.setIcon(icon);
+                    }
 
                     // Replace the intent with this specific activity
                     preference.setIntent(new Intent().setClassName(
@@ -404,6 +414,15 @@ public class Utils {
         return batteryChangedIntent.getBooleanExtra(BatteryManager.EXTRA_PRESENT, true);
     }
 
+    public static boolean isDockBatteryPresent(Intent batteryChangedIntent) {
+        return batteryChangedIntent.getBooleanExtra(BatteryManager.EXTRA_DOCK_PRESENT, true);
+    }
+
+    public static boolean isDockBatteryPlugged(Intent batteryChangedIntent) {
+        if (!isDockBatteryPresent(batteryChangedIntent)) return false;
+        return batteryChangedIntent.getIntExtra(BatteryManager.EXTRA_DOCK_PLUGGED, 0) != 0;
+    }
+
     public static String getBatteryPercentage(Intent batteryChangedIntent) {
         int level = batteryChangedIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
         int scale = batteryChangedIntent.getIntExtra(BatteryManager.EXTRA_SCALE, 100);
@@ -413,13 +432,23 @@ public class Utils {
     public static String getBatteryStatus(Resources res, Intent batteryChangedIntent) {
         final Intent intent = batteryChangedIntent;
 
+        int dockPlugType = intent.getIntExtra(BatteryManager.EXTRA_DOCK_PLUGGED, 0);
         int plugType = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0);
         int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS,
                 BatteryManager.BATTERY_STATUS_UNKNOWN);
         String statusString;
         if (status == BatteryManager.BATTERY_STATUS_CHARGING) {
             statusString = res.getString(R.string.battery_info_status_charging);
-            if (plugType > 0) {
+            if (isDockBatteryPresent(batteryChangedIntent) &&
+                    isDockBatteryPlugged(batteryChangedIntent) && dockPlugType > 0) {
+                int resId;
+                if (dockPlugType == BatteryManager.BATTERY_DOCK_PLUGGED_AC) {
+                    resId = R.string.battery_info_status_charging_dock_ac;
+                } else {
+                    resId = R.string.battery_info_status_charging_dock_usb;
+                }
+                statusString = statusString + " " + res.getString(resId);
+            } else if (plugType > 0) {
                 int resId;
                 if (plugType == BatteryManager.BATTERY_PLUGGED_AC) {
                     resId = R.string.battery_info_status_charging_ac;
@@ -462,7 +491,8 @@ public class Utils {
             ((PreferenceFrameLayout.LayoutParams) child.getLayoutParams()).removeBorders = true;
 
             final Resources res = list.getResources();
-            final int paddingSide = res.getDimensionPixelSize(R.dimen.settings_side_margin);
+            final int paddingSide = res.getDimensionPixelSize(
+                    com.android.internal.R.dimen.preference_fragment_padding_side);
             final int paddingBottom = res.getDimensionPixelSize(
                     com.android.internal.R.dimen.preference_fragment_padding_bottom);
 
@@ -499,6 +529,43 @@ public class Utils {
         } else {
             return R.string.tether_settings_title_bluetooth;
         }
+    }
+
+    public static boolean fileExists(String filename) {
+        return new File(filename).exists();
+    }
+
+    public static String fileReadOneLine(String fname) {
+        BufferedReader br;
+        String line = null;
+
+        try {
+            br = new BufferedReader(new FileReader(fname), 512);
+            try {
+                line = br.readLine();
+            } finally {
+                br.close();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "IO Exception when reading /sys/ file", e);
+        }
+        return line;
+    }
+
+    public static boolean fileWriteOneLine(String fname, String value) {
+        try {
+            FileWriter fw = new FileWriter(fname);
+            try {
+                fw.write(value);
+            } finally {
+                fw.close();
+            }
+        } catch (IOException e) {
+            String Error = "Error writing to " + fname + ". Exception: ";
+            Log.e(TAG, Error, e);
+            return false;
+        }
+        return true;
     }
 
     /* Used by UserSettings as well. Call this on a non-ui thread. */
@@ -683,5 +750,10 @@ public class Utils {
                 break;
         }
         activity.setRequestedOrientation(frozenRotation);
+    }
+
+    /* returns whether the device has volume rocker or not. */
+    public static boolean hasVolumeRocker(Context context) {
+        return context.getResources().getBoolean(R.bool.has_volume_rocker);
     }
 }

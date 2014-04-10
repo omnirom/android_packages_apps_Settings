@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aokp="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/scrollView">
+
+    <LinearLayout
+        android:id="@+id/crew"
+        style="@style/settingsFragmentStyle">
+
+        <com.android.settings.amra.widgets.DeveloperPreference
+            android:title="David"
+            aokp:nameDev="Regulusv7"
+            aokp:githubLink="@string/github_regulus"
+            aokp:emailDev="Regulusv7@gmail.com"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</ScrollView>

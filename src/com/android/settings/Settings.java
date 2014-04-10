@@ -31,6 +31,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
@@ -48,6 +50,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.text.TextUtils;
+import android.telephony.MSimTelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,7 +77,11 @@ import com.android.settings.applications.ProcessStatsUi;
 import com.android.settings.blacklist.BlacklistSettings;
 import com.android.settings.bluetooth.BluetoothEnabler;
 import com.android.settings.bluetooth.BluetoothSettings;
-import com.android.settings.superuser.PolicyNativeFragment;
+import com.android.settings.cyanogenmod.ButtonSettings;
+import com.android.settings.cyanogenmod.LockscreenInterface;
+import com.android.settings.cyanogenmod.MoreDeviceSettings;
+import com.android.settings.cyanogenmod.PerformanceSettings;
+import com.android.settings.cyanogenmod.SystemUiSettings;
 import com.android.settings.deviceinfo.Memory;
 import com.android.settings.deviceinfo.UsbSettings;
 import com.android.settings.fuelgauge.PowerUsageSummary;
@@ -82,18 +89,20 @@ import com.android.settings.inputmethod.InputMethodAndLanguageSettings;
 import com.android.settings.inputmethod.KeyboardLayoutPickerFragment;
 import com.android.settings.inputmethod.SpellCheckersSettings;
 import com.android.settings.inputmethod.UserDictionaryList;
+import com.android.settings.location.LocationEnabler;
 import com.android.settings.location.LocationSettings;
 import com.android.settings.nfc.AndroidBeam;
 import com.android.settings.nfc.PaymentSettings;
 import com.android.settings.print.PrintJobSettingsFragment;
 import com.android.settings.print.PrintServiceSettingsFragment;
 import com.android.settings.print.PrintSettingsFragment;
-import com.android.settings.slim.QuietHours;
-import com.android.settings.slim.themes.ThemeEnabler;
 import com.android.settings.profiles.AppGroupConfig;
 import com.android.settings.profiles.ProfileConfig;
 import com.android.settings.profiles.ProfileEnabler;
 import com.android.settings.profiles.ProfilesSettings;
+import com.android.settings.slim.QuietHours;
+import com.android.settings.slim.themes.ThemeEnabler;
+import com.android.settings.slim.themes.ThemeSettings;
 import com.android.settings.tts.TextToSpeechSettings;
 import com.android.settings.users.UserSettings;
 import com.android.settings.vpn2.VpnSettings;
@@ -102,7 +111,6 @@ import com.android.settings.wifi.AdvancedWifiSettings;
 import com.android.settings.wifi.WifiEnabler;
 import com.android.settings.wifi.WifiSettings;
 import com.android.settings.wifi.p2p.WifiP2pSettings;
-import com.android.settings.slim.QuietHours;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -131,6 +139,11 @@ public class Settings extends PreferenceActivity
 
     private static final String SAVE_KEY_CURRENT_HEADER = "com.android.settings.CURRENT_HEADER";
     private static final String SAVE_KEY_PARENT_HEADER = "com.android.settings.PARENT_HEADER";
+
+    private static final String ACTION_PERFORMANCE =
+            "org.regulus.amra.devicecontrol.activities.PerformanceActivity";
+    private static final String ACTION_DEVICE_CONTROL =
+            "org.regulus.amra.devicecontrol.activities.MainActivity";
 
     static final int DIALOG_ONLY_ONE_HOME = 1;
 
@@ -171,7 +184,12 @@ public class Settings extends PreferenceActivity
             R.id.accessibility_settings,
             R.id.print_settings,
             R.id.nfc_payment_settings,
-            R.id.home_settings
+            R.id.home_settings,
+            R.id.interface_section,
+            R.id.lock_screen_settings,
+            R.id.system_settings,
+            R.id.privacy_settings_cyanogenmod,
+            R.id.button_settings
     };
 
     private SharedPreferences mDevelopmentPreferences;
@@ -318,11 +336,6 @@ public class Settings extends PreferenceActivity
         }
     }
 
-    @Override
-    public boolean onIsMultiPane() {
-        return false;
-    }
-
     private static final String[] ENTRY_FRAGMENTS = {
         WirelessSettings.class.getName(),
         WifiSettings.class.getName(),
@@ -371,16 +384,25 @@ public class Settings extends PreferenceActivity
         KeyboardLayoutPickerFragment.class.getName(),
         QuietHours.class.getName(),
         BlacklistSettings.class.getName(),
+        ApnSettings.class.getName(),
+        HomeSettings.class.getName(),
+        LockscreenInterface.class.getName(),
+        SystemUiSettings.class.getName(),
+        ButtonSettings.class.getName(),
+        MoreDeviceSettings.class.getName(),
         ProfilesSettings.class.getName(),
-        ApnSettings.class.getName()
+        PerformanceSettings.class.getName(),
+        com.android.settings.cyanogenmod.PrivacySettings.class.getName(),
+        com.android.settings.quicksettings.QuickSettingsTiles.class.getName(),
+        ThemeSettings.class.getName()
     };
 
     @Override
     protected boolean isValidFragment(String fragmentName) {
         // Almost all fragments are wrapped in this,
         // except for a few that have their own activities.
-        for (int i = 0; i < ENTRY_FRAGMENTS.length; i++) {
-            if (ENTRY_FRAGMENTS[i].equals(fragmentName)) return true;
+        for (String ENTRY_FRAGMENT : ENTRY_FRAGMENTS) {
+            if (ENTRY_FRAGMENT.equals(fragmentName)) return true;
         }
         return false;
     }
@@ -535,7 +557,7 @@ public class Settings extends PreferenceActivity
         return intent;
     }
 
-    private Intent onBuildStartFragmentIntentHelper(String fragmentName, Intent intent) {
+    private void onBuildStartFragmentIntentHelper(String fragmentName, Intent intent) {
         // Some fragments want split ActionBar; these should stay in sync with
         // uiOptions for fragments also defined as activities in manifest.
         if (WifiSettings.class.getName().equals(fragmentName) ||
@@ -546,15 +568,14 @@ public class Settings extends PreferenceActivity
                 ProfilesSettings.class.getName().equals(fragmentName) ||
                 ProfileConfig.class.getName().equals(fragmentName) ||
                 AppGroupConfig.class.getName().equals(fragmentName) ||
+                HomeSettings.class.getName().equals(fragmentName) ||
                 LocationSettings.class.getName().equals(fragmentName) ||
                 ToggleAccessibilityServicePreferenceFragment.class.getName().equals(fragmentName) ||
                 PrintSettingsFragment.class.getName().equals(fragmentName) ||
                 PrintServiceSettingsFragment.class.getName().equals(fragmentName)) {
             intent.putExtra(EXTRA_UI_OPTIONS, ActivityInfo.UIOPTION_SPLIT_ACTION_BAR_WHEN_NARROW);
         }
-
         intent.setClass(this, SubSettings.class);
-        return intent;
     }
 
     /**
@@ -582,15 +603,6 @@ public class Settings extends PreferenceActivity
             int id = (int) header.id;
             if (id == R.id.operator_settings || id == R.id.manufacturer_settings) {
                 Utils.updateHeaderToSpecificActivityFromMetaDataOrRemove(this, target, header);
-            } else if (id == R.id.advanced_settings) {
-                try{
-                    // Set localized title of advanced settings
-                    header.title = getPackageManager().getApplicationLabel(getPackageManager()
-                            .getPackageInfo("org.omnirom.device", PackageManager.GET_META_DATA).applicationInfo);
-                }
-                catch (NameNotFoundException e){
-                    target.remove(header);  // Package does not exist. Remove entry.
-                }
             } else if (id == R.id.wifi_settings) {
                 // Remove WiFi Settings if WiFi service is not available.
                 if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_WIFI)) {
@@ -618,6 +630,14 @@ public class Settings extends PreferenceActivity
                 if (!mBatteryPresent) {
                     target.remove(i);
                 }
+            } else if (id == R.id.display_settings) {
+                final Resources res = getResources();
+                boolean hasLed =
+                        res.getBoolean(com.android.internal.R.bool.config_intrusiveNotificationLed)
+                        || res.getBoolean(com.android.internal.R.bool.config_intrusiveBatteryLed);
+                if (hasLed) {
+                    header.titleRes = R.string.display_lights_settings_title;
+                }
             } else if (id == R.id.account_settings) {
                 int headerIndex = i + 1;
                 i = insertAccountsHeaders(target, headerIndex);
@@ -637,29 +657,30 @@ public class Settings extends PreferenceActivity
                 } else {
                     // Only show if NFC is on and we have the HCE feature
                     NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
-                    if (adapter == null || !adapter.isEnabled() || !getPackageManager().hasSystemFeature(
-                           PackageManager.FEATURE_NFC_HOST_CARD_EMULATION)) {
-                       target.remove(i);
-                       if (adapter == null) {
-                           Log.e(LOG_TAG, "NFC feature advertised but the default adapter is NULL!");
-                       }
+                    if (!adapter.isEnabled() || !getPackageManager().hasSystemFeature(
+                            PackageManager.FEATURE_NFC_HOST_CARD_EMULATION)) {
+                        target.remove(i);
                     }
                 }
             } else if (id == R.id.development_settings) {
                 if (!showDev) {
                     target.remove(i);
                 }
-            } else if (id == R.id.performance_controls) {
-                if (!showDev) {
+            } else if (id == R.id.performance_settings) {
+                if (!showDev && !actionExists(ACTION_PERFORMANCE)) {
                     target.remove(i);
+                } else {
+                    target.get(i).intent = new Intent().setAction(ACTION_PERFORMANCE);
                 }
             } else if (id == R.id.account_add) {
                 if (um.hasUserRestriction(UserManager.DISALLOW_MODIFY_ACCOUNTS)) {
                     target.remove(i);
                 }
-            } else if (id == R.id.button_settings) {
-                boolean hasButtonsettings = getResources().getBoolean(R.bool.config_device_has_button_settings);
-                if (!hasButtonsettings){
+            } else if (id == R.id.device_control_settings) {
+                if (actionExists(ACTION_DEVICE_CONTROL)) {
+                    target.get(i).intent = new Intent().setAction(ACTION_DEVICE_CONTROL);
+                    target.get(i).titleRes = R.string.device_control_settings;
+                } else {
                     target.remove(i);
                 }
             } else if (id == R.id.supersu_settings) {
@@ -672,10 +693,9 @@ public class Settings extends PreferenceActivity
                 if (!supported) {
                     target.remove(i);
                 }
-            } else if (id == R.id.superuser) {
-                if (!DevelopmentSettings.isRootForAppsEnabled()) {
-                    target.remove(i);
-                }
+            } else if (id == R.id.multi_sim_settings) {
+                if (!MSimTelephonyManager.getDefault().isMultiSimEnabled())
+                    target.remove(header);
             }
 
             if (i < target.size() && target.get(i) == header
@@ -760,40 +780,51 @@ public class Settings extends PreferenceActivity
     }
 
     private boolean updateHomeSettingHeaders(Header header) {
-        // Once we decide to show Home settings, keep showing it forever
-        SharedPreferences sp = getSharedPreferences(HomeSettings.HOME_PREFS, Context.MODE_PRIVATE);
-        if (sp.getBoolean(HomeSettings.HOME_PREFS_DO_SHOW, false)) {
-            return true;
-        }
-
         try {
+            PackageManager pm = getPackageManager();
             final ArrayList<ResolveInfo> homeApps = new ArrayList<ResolveInfo>();
-            getPackageManager().getHomeActivities(homeApps);
+            pm.getHomeActivities(homeApps);
+
             if (homeApps.size() < 2) {
-                // When there's only one available home app, omit this settings
-                // category entirely at the top level UI.  If the user just
-                // uninstalled the penultimate home app candidiate, we also
-                // now tell them about why they aren't seeing 'Home' in the list.
-                if (sShowNoHomeNotice) {
-                    sShowNoHomeNotice = false;
-                    NoHomeDialogFragment.show(this);
+                Intent prefsIntent = new Intent(Intent.ACTION_MAIN);
+                prefsIntent.addCategory("com.cyanogenmod.category.LAUNCHER_PREFERENCES");
+                List<ResolveInfo> prefsActivities = pm.queryIntentActivities(prefsIntent, 0);
+
+                boolean hasAtleastOneSettings = false;
+                for (ResolveInfo info : homeApps) {
+                    for (ResolveInfo activityInfo : prefsActivities) {
+                        if (info.activityInfo.packageName
+                                .equals(activityInfo.activityInfo.packageName)) {
+                            hasAtleastOneSettings = true;
+                            break;
+                        }
+                    }
                 }
-                return false;
-            } else {
-                // Okay, we're allowing the Home settings category.  Tell it, when
-                // invoked via this front door, that we'll need to be told about the
-                // case when the user uninstalls all but one home app.
-                if (header.fragmentArguments == null) {
-                    header.fragmentArguments = new Bundle();
+                if (!hasAtleastOneSettings) {
+                    // When there's only one available home app, omit this settings
+                    // category entirely at the top level UI.  If the user just
+                    // uninstalled the penultimate home app candidiate, we also
+                    // now tell them about why they aren't seeing 'Home' in the list.
+                    if (sShowNoHomeNotice) {
+                        sShowNoHomeNotice = false;
+                        NoHomeDialogFragment.show(this);
+                    }
+                    return false;
                 }
-                header.fragmentArguments.putBoolean(HomeSettings.HOME_SHOW_NOTICE, true);
             }
+
+            // Okay, we're allowing the Home settings category.  Tell it, when
+            // invoked via this front door, that we'll need to be told about the
+            // case when the user uninstalls all but one home app.
+            if (header.fragmentArguments == null) {
+                header.fragmentArguments = new Bundle();
+            }
+            header.fragmentArguments.putBoolean(HomeSettings.HOME_SHOW_NOTICE, true);
         } catch (Exception e) {
             // Can't look up the home activity; bail on configuring the icon
             Log.w(LOG_TAG, "Problem looking up home activity!", e);
         }
 
-        sp.edit().putBoolean(HomeSettings.HOME_PREFS_DO_SHOW, true).apply();
         return true;
     }
 
@@ -854,10 +885,11 @@ public class Settings extends PreferenceActivity
 
         private final WifiEnabler mWifiEnabler;
         private final BluetoothEnabler mBluetoothEnabler;
-        public static ThemeEnabler mThemeEnabler;
         private final ProfileEnabler mProfileEnabler;
+        private final LocationEnabler mLocationEnabler;
         private AuthenticatorHelper mAuthHelper;
         private DevicePolicyManager mDevicePolicyManager;
+        public static ThemeEnabler mThemeEnabler;
 
         private static class HeaderViewHolder {
             ImageView icon;
@@ -877,6 +909,7 @@ public class Settings extends PreferenceActivity
             } else if (header.id == R.id.wifi_settings
                     || header.id == R.id.bluetooth_settings
                     || header.id == R.id.profiles_settings
+                    || header.id == R.id.location_settings
                     || header.id == R.id.theme_settings) {
                 return HEADER_TYPE_SWITCH;
             } else if (header.id == R.id.security_settings) {
@@ -924,6 +957,7 @@ public class Settings extends PreferenceActivity
             mWifiEnabler = new WifiEnabler(context, new Switch(context));
             mBluetoothEnabler = new BluetoothEnabler(context, new Switch(context));
             mProfileEnabler = new ProfileEnabler(context, new Switch(context));
+            mLocationEnabler = new LocationEnabler(context, new Switch(context));
             mThemeEnabler = new ThemeEnabler(context, new Switch(context));
             mDevicePolicyManager = dpm;
         }
@@ -935,12 +969,12 @@ public class Settings extends PreferenceActivity
             int headerType = getHeaderType(header);
             View view = null;
 
-            if (convertView == null) {
+            if (convertView == null || headerType == HEADER_TYPE_SWITCH) {
                 holder = new HeaderViewHolder();
                 switch (headerType) {
                     case HEADER_TYPE_CATEGORY:
                         view = new TextView(getContext(), null,
-                                android.R.attr.listSeparatorTextViewStyle); 
+                                android.R.attr.listSeparatorTextViewStyle);
                         holder.title = (TextView) view;
                         break;
 
@@ -998,6 +1032,8 @@ public class Settings extends PreferenceActivity
                         mBluetoothEnabler.setSwitch(holder.switch_);
                     } else if (header.id == R.id.profiles_settings) {
                         mProfileEnabler.setSwitch(holder.switch_);
+                    } else if (header.id == R.id.location_settings) {
+                        mLocationEnabler.setSwitch(holder.switch_);
                     } else if (header.id == R.id.theme_settings) {
                         mThemeEnabler.setSwitch(holder.switch_);
                     }
@@ -1074,6 +1110,7 @@ public class Settings extends PreferenceActivity
             mWifiEnabler.resume();
             mBluetoothEnabler.resume();
             mProfileEnabler.resume();
+            mLocationEnabler.resume();
             mThemeEnabler.resume();
         }
 
@@ -1081,7 +1118,8 @@ public class Settings extends PreferenceActivity
             mWifiEnabler.pause();
             mBluetoothEnabler.pause();
             mProfileEnabler.pause();
-            mThemeEnabler.pause();
+            mLocationEnabler.pause();
+            mThemeEnabler.resume();
         }
     }
 
@@ -1158,6 +1196,19 @@ public class Settings extends PreferenceActivity
         sShowNoHomeNotice = true;
     }
 
+    /**
+     * Checks if a specific action exists.
+     * @param actionName The action as string
+     * @return if the action exists.
+     */
+    private boolean actionExists(String actionName) {
+        Intent i = new Intent();
+        i.setAction(actionName);
+        List<ResolveInfo> list = getPackageManager().queryIntentActivities(i,
+                PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
+    }
+
     /*
      * Settings subclasses for launching independently.
      */
@@ -1177,10 +1228,6 @@ public class Settings extends PreferenceActivity
     public static class UserDictionarySettingsActivity extends Settings { /* empty */ }
     public static class SoundSettingsActivity extends Settings { /* empty */ }
     public static class QuietHoursSettingsActivity extends Settings { /* empty */ }
-    public static class BarsSettingsActivity extends Settings { /* empty */ }
-    public static class MenusSettingsActivity extends Settings { /* empty */ }
-    public static class NotificationPanelSettingsActivity extends Settings { /* empty */ }
-    public static class MoreInterfaceSettingsActivity extends Settings { /* empty */ }
     public static class ActiveDisplaySettingsActivity extends Settings { /* empty */ }
     public static class DisplaySettingsActivity extends Settings { /* empty */ }
     public static class DeviceInfoSettingsActivity extends Settings { /* empty */ }
@@ -1229,9 +1276,11 @@ public class Settings extends PreferenceActivity
     public static class BlacklistSettingsActivity extends Settings { /* empty */ }
     public static class PerformanceSettingsActivity extends Settings { /* empty */ }
     public static class SystemSettingsActivity extends Settings { /* empty */ }
+    public static class QuickSettingsConfigActivity extends Settings { /* empty */ }
     /* AmraSettings */
     public static class AmraSettingsActivity extends Settings { /* empty */ }
-    public static class AdBlockerActivity extends Settings { /* empty */ }
     /* NamelessROM */
     public static class AnimationInterfaceSettingsActivity extends Settings { /* empty */ }
+    public static class MoreInterfaceSettingsActivity extends Settings { /* empty */ }
+    public static class ThemeSettingsActivity extends Settings { /* empty */ }
 }

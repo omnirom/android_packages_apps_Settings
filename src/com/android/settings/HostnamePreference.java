@@ -70,7 +70,7 @@ public class HostnamePreference extends EditTextPreference {
                     hostname = DEFAULT_HOSTNAME;
                 } else {
                     // if no other name can be determined
-                   // fall back on the current hostname
+                    // fall back on the current hostname
                     hostname = getText();
                 }
             }

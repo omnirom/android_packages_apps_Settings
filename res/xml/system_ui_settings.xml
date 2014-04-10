@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2012 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/system_interface_title"
+    xmlns:settings="http://schemas.android.com/apk/res/com.android.settings">
+
+    <PreferenceScreen
+        android:key="status_bar"
+        android:icon="@drawable/ic_settings_statusbar"
+        android:title="@string/status_bar_title"
+        android:fragment="com.android.settings.cyanogenmod.StatusBar" />
+
+    <PreferenceScreen
+        android:key="notification_drawer"
+        android:icon="@drawable/ic_settings_notifications"
+        android:fragment="com.android.settings.cyanogenmod.NotificationDrawer"
+        android:title="@string/notification_drawer_title" />
+
+    <PreferenceScreen
+        android:key="quick_settings_panel"
+        android:icon="@drawable/ic_settings_quick_settings"
+        android:fragment="com.android.settings.quicksettings.QuickSettings"
+        android:title="@string/quick_settings_panel_title" />
+
+    <ListPreference
+            android:key="expanded_desktop"
+            android:title="@string/power_menu_expanded_desktop"
+            android:entries="@array/expanded_desktop_entries"
+            android:entryValues="@array/expanded_desktop_values"
+            android:persistent="false" />
+
+    <CheckBoxPreference
+            android:key="expanded_desktop_no_navbar"
+            android:title="@string/power_menu_expanded_desktop"
+            android:persistent="true" />
+
+    <!-- Device Specific Touchscreen gestures -->
+    <Preference
+        android:key="touch_screen_gesture_settings">
+        <intent
+            android:action="com.cyanogenmod.action.LAUNCH_TOUCHSCREEN_GESTURE_SETTINGS"
+            android:targetPackage="com.cyanogenmod.settings.device"
+            android:targetClass="com.cyanogenmod.settings.device.TouchscreenGestureSettings" />
+    </Preference>
+
+    <com.android.settings.amra.preferences.SystemSettingCheckBoxPreference
+        android:key="navbar_force_enable"
+        android:title="@string/navbar_force_enable_title"
+        android:summary="@string/navbar_force_enable_summary"
+        android:defaultValue="false" />
+
+    <PreferenceCategory
+        android:key="navigation_bar"
+        android:title="@string/navigation_bar_category" >
+
+        <PreferenceScreen
+            android:key="navigation_bar"
+            android:fragment="com.android.settings.cyanogenmod.NavBar"
+            android:title="@string/navigation_bar_title" />
+
+        <PreferenceScreen
+            android:key="navigation_ring"
+            android:fragment="com.android.settings.cyanogenmod.NavRing"
+            android:title="@string/navigation_ring_title" />
+
+        <com.android.settings.cyanogenmod.SystemSettingCheckBoxPreference
+            android:key="navigation_bar_left"
+            android:title="@string/navigation_bar_left_title"
+            android:summary="@string/navigation_bar_left_summary"
+            android:defaultValue="false" />
+
+        <ListPreference
+            android:key="navigation_bar_height"
+            android:entries="@array/navigation_bar_height_entries"
+            android:entryValues="@array/navigation_bar_height"
+            android:title="@string/navigation_bar_height_title"
+            android:summary="@string/navigation_bar_height_summary"
+            android:defaultValue="48" />
+
+        <ListPreference
+            android:key="navigation_bar_width"
+            android:entries="@array/navigation_bar_width_entries"
+            android:entryValues="@array/navigation_bar_width"
+            android:title="@string/navigation_bar_width_title"
+            android:summary="@string/navigation_bar_width_summary"
+            android:defaultValue="42" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

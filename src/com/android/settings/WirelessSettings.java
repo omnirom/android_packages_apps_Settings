@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2013, The Linux Foundation. All rights reserved.
+ * Not a Contribution.
  * Copyright (C) 2009 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,6 +45,7 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.telephony.MSimTelephonyManager;
 
 import com.android.internal.telephony.SmsApplication;
 import com.android.internal.telephony.SmsApplication.SmsApplicationData;
@@ -247,7 +250,7 @@ public class WirelessSettings extends RestrictedSettingsFragment
 
     private boolean isSmsSupported() {
         // Some tablet has sim card but could not do telephony operations. Skip those.
-        return (mTm.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE);
+        return mTm.isSmsCapable();
     }
 
     @Override
@@ -267,6 +270,23 @@ public class WirelessSettings extends RestrictedSettingsFragment
 
         final Activity activity = getActivity();
         mAirplaneModePreference = (CheckBoxPreference) findPreference(KEY_TOGGLE_AIRPLANE);
+
+        if (MSimTelephonyManager.getDefault().isMultiSimEnabled()) {
+            // Mobile Networks menu will traverse to Select Subscription menu.
+            PreferenceScreen manageSub =
+                    (PreferenceScreen) findPreference(KEY_MOBILE_NETWORK_SETTINGS);
+
+            if (manageSub != null) {
+                Intent intent = manageSub.getIntent();
+                intent.setClassName("com.android.phone",
+                                    "com.android.phone.SelectSubscription");
+                intent.putExtra(SelectSubscription.PACKAGE,
+                                    "com.android.phone");
+                intent.putExtra(SelectSubscription.TARGET_CLASS,
+                                "com.android.phone.MSimMobileNetworkSubSettings");
+            }
+        }
+
         CheckBoxPreference nfc = (CheckBoxPreference) findPreference(KEY_TOGGLE_NFC);
         PreferenceScreen androidBeam = (PreferenceScreen) findPreference(KEY_ANDROID_BEAM_SETTINGS);
         CheckBoxPreference nsd = (CheckBoxPreference) findPreference(KEY_TOGGLE_NSD);
@@ -376,18 +396,22 @@ public class WirelessSettings extends RestrictedSettingsFragment
         protectByRestrictions(KEY_TETHER_SETTINGS);
 
         // Enable link to CMAS app settings depending on the value in config.xml.
-        boolean isCellBroadcastAppLinkEnabled = this.getResources().getBoolean(
-                com.android.internal.R.bool.config_cellBroadcastAppLinks);
-        try {
-            if (isCellBroadcastAppLinkEnabled) {
-                PackageManager pm = getPackageManager();
-                if (pm.getApplicationEnabledSetting("com.android.cellbroadcastreceiver")
-                        == PackageManager.COMPONENT_ENABLED_STATE_DISABLED) {
-                    isCellBroadcastAppLinkEnabled = false;  // CMAS app disabled
+        PackageManager pm = getPackageManager();
+        // boolean hasPhoneFeatures = pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY);
+        boolean isCellBroadcastAppLinkEnabled = false;
+        if (isSmsSupported()) {
+            isCellBroadcastAppLinkEnabled = this.getResources().getBoolean(
+                    com.android.internal.R.bool.config_cellBroadcastAppLinks);
+            try {
+                if (isCellBroadcastAppLinkEnabled) {
+                    if (pm.getApplicationEnabledSetting("com.android.cellbroadcastreceiver")
+                            == PackageManager.COMPONENT_ENABLED_STATE_DISABLED) {
+                        isCellBroadcastAppLinkEnabled = false;  // CMAS app disabled
+                    }
                 }
+            } catch (IllegalArgumentException ignored) {
+                isCellBroadcastAppLinkEnabled = false;  // CMAS app not installed
             }
-        } catch (IllegalArgumentException ignored) {
-            isCellBroadcastAppLinkEnabled = false;  // CMAS app not installed
         }
         if (isSecondaryUser || !isCellBroadcastAppLinkEnabled) {
             PreferenceScreen root = getPreferenceScreen();

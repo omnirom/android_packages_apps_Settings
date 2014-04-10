@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (C) 2014 The Amra Project
+  ~
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses
+  -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/system_interface_title">
+
+    <!-- Themes -->
+    <Preference
+        android:id="@+id/themes_settings"
+        android:icon="@drawable/ic_settings_themes"
+        android:title="@string/themes_settings_title">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.tmobile.themechooser"
+            android:targetClass="com.tmobile.themechooser.ThemeChooser" />
+    </Preference>
+
+    <PreferenceCategory
+        android:key="category_recent_panel"
+        android:title="@string/system_ui_recent_panel_title">
+
+        <com.android.settings.amra.preferences.AmraSettingCheckBoxPreference
+            android:key="new_recents_screen"
+            android:title="@string/new_recents_screen_title"
+            android:summary="@string/new_recents_screen_summary"
+            android:defaultValue="false"
+            android:disableDependentsState="true" />
+
+        <com.android.settings.amra.preferences.SystemSettingCheckBoxPreference
+            android:key="ram_usage_bar"
+            android:title="@string/ram_bar_title"
+            android:summary="@string/ram_bar_summary"
+            android:defaultValue="true"
+            android:dependency="new_recents_screen" />
+
+        <com.android.settings.amra.preferences.SystemSettingCheckBoxPreference
+            android:key="ram_usage_bar_cached"
+            android:title="@string/ram_bar_cached_title"
+            android:summary="@string/ram_bar_cached_summary"
+            android:dependency="ram_usage_bar"
+            android:defaultValue="false" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
