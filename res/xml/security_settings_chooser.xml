@@ -48,6 +48,11 @@
             android:summary="@string/unlock_menu_unlock_summary" 
             android:persistent="false"/>
 
+        <org.omnirom.omnigears.preference.SystemCheckBoxPreference
+            android:key="camera_unlock"
+            android:title="@string/unlock_camera_unlock_title"
+            android:summary="@string/unlock_camera_unlock_summary" />
+
         <PreferenceScreen
             android:key="lockscreen_link"
             android:title="@string/lockscreen_settings_title"

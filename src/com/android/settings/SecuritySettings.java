@@ -94,6 +94,10 @@ public class SecuritySettings extends RestrictedSettingsFragment
     private static final String KEY_APP_SECURITY_CATEGORY = "app_security";
     private static final String KEY_BLACKLIST = "blacklist";
 
+    // Keep this up to date with config.xml and OmniGears ButtonSettings
+    private static final int KEY_MASK_MENU = 0x04;
+    private static final int KEY_MASK_CAMERA = 0x20;
+
     private PackageManager mPM;
     private DevicePolicyManager mDPM;
 
@@ -227,6 +231,20 @@ public class SecuritySettings extends RestrictedSettingsFragment
                     Settings.System.MENU_UNLOCK_SCREEN, configDisabled ? 0 : 1) == 1);
         }
 
+        CheckBoxPreference cameraUnlock = (CheckBoxPreference)
+            root.findPreference(Settings.System.CAMERA_UNLOCK_SCREEN);
+
+        final int deviceKeys = getResources().getInteger(
+                com.android.internal.R.integer.config_deviceHardwareKeys);
+        // Hide the MenuUnlock setting if no menu button is available
+        if ((deviceKeys & KEY_MASK_MENU) == 0) {
+            root.removePreference(mMenuUnlock);
+        }
+        // Hide the CameraUnlock setting if no camera button is available
+        if ((deviceKeys & KEY_MASK_CAMERA) == 0) {
+            root.removePreference(cameraUnlock);
+        }
+
         // biometric weak liveliness
         mBiometricWeakLiveliness =
                 (CheckBoxPreference) root.findPreference(KEY_BIOMETRIC_WEAK_LIVELINESS);
@@ -303,7 +321,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
 
         mQuickUnlockScreen = (CheckBoxPreference) root.findPreference(LOCKSCREEN_QUICK_UNLOCK_CONTROL);
         if (mQuickUnlockScreen  != null) {
-            mQuickUnlockScreen.setChecked(Settings.System.getInt(getContentResolver(), 
+            mQuickUnlockScreen.setChecked(Settings.System.getInt(getContentResolver(),
                     Settings.System.LOCKSCREEN_QUICK_UNLOCK_CONTROL, 0) == 1);
             mQuickUnlockScreen.setOnPreferenceChangeListener(this);
         }
@@ -615,7 +633,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
                     Settings.System.LOCKSCREEN_QUICK_UNLOCK_CONTROL, isToggled(preference) ? 1 : 0);
         } else if (preference == mMenuUnlock) {
             Settings.System.putInt(getActivity().getApplicationContext().getContentResolver(),
-                    Settings.System.MENU_UNLOCK_SCREEN, isToggled(preference) ? 1 : 0);        
+                    Settings.System.MENU_UNLOCK_SCREEN, isToggled(preference) ? 1 : 0);
         } else if (preference == mShowPassword) {
             Settings.System.putInt(getContentResolver(), Settings.System.TEXT_SHOW_PASSWORD,
                     mShowPassword.isChecked() ? 1 : 0);
