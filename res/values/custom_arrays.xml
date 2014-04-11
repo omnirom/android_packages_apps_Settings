@@ -201,4 +201,17 @@
         <item>1</item>
     </string-array>
 
+    <!-- Quiet hours auto switch -->
+    <string-array name="quiet_hours_auto_entries">
+        <item>@string/disabled</item>
+        <item>@string/quiet_hours_auto_silent</item>
+        <item>@string/quiet_hours_auto_vibrate</item>
+    </string-array>
+
+    <string-array name="quiet_hours_auto_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
 </resources>

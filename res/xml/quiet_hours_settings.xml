@@ -26,6 +26,13 @@
         android:summaryOff="@string/quiet_hours_enabled_off"
         android:defaultValue="false" />
 
+    <ListPreference
+        android:defaultValue="0"
+        android:entries="@array/quiet_hours_auto_entries"
+        android:entryValues="@array/quiet_hours_auto_values"
+        android:key="quiet_hours_auto"
+        android:title="@string/quiet_hours_auto_title" />
+
     <com.android.settings.slim.TimeRangePreference
         android:key="quiet_hours_timerange"
         android:dependency="quiet_hours_enabled" />
