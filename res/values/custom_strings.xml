@@ -124,9 +124,11 @@
     <string name="wake_when_plugged_or_unplugged_title">Wake on plug</string>
     <string name="wake_when_plugged_or_unplugged_summary">Turn the screen on when connecting or disconnecting the charger</string>
 
-    <!-- security settings menu unlock -->
+    <!-- Menu and Camera Unlock -->
     <string name="unlock_menu_unlock_title">Menu unlock</string>
     <string name="unlock_menu_unlock_summary">Pressing the menu button unlocks the device</string>
+    <string name="unlock_camera_unlock_title">Camera unlock</string>
+    <string name="unlock_camera_unlock_summary">Pressing the camera button unlocks the device</string>
 
     <!-- Stylus Icon -->
     <string name="stylus_icon_enabled_title">Show icon when using stylus</string>
