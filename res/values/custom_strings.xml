@@ -318,4 +318,7 @@
 
     <!-- Lockscreen rotation -->
     <string name="display_lockscreen_rotation_title">Lockscreen</string>
+
+    <!-- Headset plug -->
+    <string name="headset_plug_enable_title">Opens music app when headset is plugged</string>
 </resources>

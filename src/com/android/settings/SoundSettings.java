@@ -82,6 +82,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
     private static final String KEY_VOLUME_PANEL_STYLE = "volume_panel_style";
     private static final String KEY_SAFE_HEADSET_VOLUME_WARNING = "safe_headset_volume_warning";
     private static final String KEY_VOLUME_PANEL_TIMEOUT = "volume_panel_timeout";
+    private static final String KEY_HEADSET_PLUG = "headset_plug";
 
     private static final String[] NEED_VOICE_CAPABILITY = {
             KEY_RINGTONE, KEY_DTMF_TONE, KEY_CATEGORY_CALLS,
@@ -115,6 +116,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
     private CheckBoxPreference mDockAudioMediaEnabled;
 
     private CheckBoxPreference mVolumeAdustSound;
+    private CheckBoxPreference mHeadsetPlug;
     
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -210,6 +212,11 @@ public class SoundSettings extends SettingsPreferenceFragment implements
         mLockSounds.setPersistent(false);
         mLockSounds.setChecked(Settings.System.getInt(resolver,
                 Settings.System.LOCKSCREEN_SOUNDS_ENABLED, 1) != 0);
+
+        mHeadsetPlug = (CheckBoxPreference) findPreference(KEY_HEADSET_PLUG);
+        mHeadsetPlug.setPersistent(false);
+        mHeadsetPlug.setChecked(Settings.System.getInt(resolver,
+                Settings.System.HEADSET_PLUG_ENABLED, 1) != 0);
 
         mRingtonePreference = findPreference(KEY_RINGTONE);
         mNotificationPreference = findPreference(KEY_NOTIFICATION_SOUND);
@@ -351,6 +358,10 @@ public class SoundSettings extends SettingsPreferenceFragment implements
         } else if (preference == mLockSounds) {
             Settings.System.putInt(getContentResolver(), Settings.System.LOCKSCREEN_SOUNDS_ENABLED,
                     mLockSounds.isChecked() ? 1 : 0);
+
+        } else if (preference == mHeadsetPlug) {
+            Settings.System.putInt(getContentResolver(), Settings.System.HEADSET_PLUG_ENABLED,
+                    mHeadsetPlug.isChecked() ? 1 : 0);
 
         } else if (preference == mMusicFx) {
             // let the framework fire off the intent
