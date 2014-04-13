@@ -160,4 +160,9 @@
         android:title="@string/dock_sounds_enable_title"
         android:defaultValue="false" />
 
+    <CheckBoxPreference
+        android:key="headset_plug"
+        android:title="@string/headset_plug_enable_title"
+        android:defaultValue="false" />
+
 </PreferenceScreen>
