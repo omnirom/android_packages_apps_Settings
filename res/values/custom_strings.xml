@@ -350,4 +350,9 @@
     <string name="increasing_ring_interval_3seconds">3 seconds</string>
     <string name="increasing_ring_interval_5seconds">5 seconds</string>
     <string name="increasing_ring_interval_10seconds">10 seconds</string>
+
+    <!-- Headset plug -->
+    <string name="headset_plug_enable_title">Opens music app when headset is plugged</string>
+    <string name="headset_plug_positive_title">Default</string>
+    <string name="headset_plug_neutral_title">Disabled</string>
 </resources>
