@@ -74,14 +74,14 @@ import com.android.settings.accounts.ManageAccountsSettings;
 import com.android.settings.applications.AppOpsSummary;
 import com.android.settings.applications.ManageApplications;
 import com.android.settings.applications.ProcessStatsUi;
-import com.android.settings.blacklist.BlacklistSettings;
+import org.regulus.amrasettings.blacklist.BlacklistSettings;
 import com.android.settings.bluetooth.BluetoothEnabler;
 import com.android.settings.bluetooth.BluetoothSettings;
-import com.android.settings.cyanogenmod.ButtonSettings;
-import com.android.settings.cyanogenmod.LockscreenInterface;
-import com.android.settings.cyanogenmod.MoreDeviceSettings;
-import com.android.settings.cyanogenmod.PerformanceSettings;
-import com.android.settings.cyanogenmod.SystemUiSettings;
+import org.regulus.amrasettings.utils.ButtonSettings;
+import org.regulus.amrasettings.utils.LockscreenInterface;
+import org.regulus.amrasettings.utils.MoreDeviceSettings;
+import org.regulus.amrasettings.utils.PerformanceSettings;
+import org.regulus.amrasettings.utils.SystemUiSettings;
 import com.android.settings.deviceinfo.Memory;
 import com.android.settings.deviceinfo.UsbSettings;
 import com.android.settings.fuelgauge.PowerUsageSummary;
@@ -141,9 +141,9 @@ public class Settings extends PreferenceActivity
     private static final String SAVE_KEY_PARENT_HEADER = "com.android.settings.PARENT_HEADER";
 
     private static final String ACTION_PERFORMANCE =
-            "org.regulus.amra.devicecontrol.activities.PerformanceActivity";
+            "org.regulus.amra.amracontrol.activities.PerformanceActivity";
     private static final String ACTION_DEVICE_CONTROL =
-            "org.regulus.amra.devicecontrol.activities.MainActivity";
+            "org.regulus.amra.amracontrol.activities.MainActivity";
 
     static final int DIALOG_ONLY_ONE_HOME = 1;
 
@@ -188,7 +188,7 @@ public class Settings extends PreferenceActivity
             R.id.interface_section,
             R.id.lock_screen_settings,
             R.id.system_settings,
-            R.id.privacy_settings_cyanogenmod,
+            R.id.privacy_settings_amra,
             R.id.button_settings
     };
 
@@ -392,8 +392,8 @@ public class Settings extends PreferenceActivity
         MoreDeviceSettings.class.getName(),
         ProfilesSettings.class.getName(),
         PerformanceSettings.class.getName(),
-        com.android.settings.cyanogenmod.PrivacySettings.class.getName(),
-        com.android.settings.quicksettings.QuickSettingsTiles.class.getName(),
+        org.regulus.amrasettings.utils.PrivacySettings.class.getName(),
+        org.regulus.amrasettings.quicksettings.QuickSettingsTiles.class.getName(),
         ThemeSettings.class.getName()
     };
 
@@ -666,20 +666,18 @@ public class Settings extends PreferenceActivity
                 if (!showDev) {
                     target.remove(i);
                 }
-            } else if (id == R.id.performance_settings) {
-                if (!showDev && !actionExists(ACTION_PERFORMANCE)) {
+            } else if (id == R.id.performance_controls) {
+                if (!showDev) {
                     target.remove(i);
-                } else {
-                    target.get(i).intent = new Intent().setAction(ACTION_PERFORMANCE);
                 }
             } else if (id == R.id.account_add) {
                 if (um.hasUserRestriction(UserManager.DISALLOW_MODIFY_ACCOUNTS)) {
                     target.remove(i);
                 }
-            } else if (id == R.id.device_control_settings) {
+            } else if (id == R.id.amra_control_settings) {
                 if (actionExists(ACTION_DEVICE_CONTROL)) {
                     target.get(i).intent = new Intent().setAction(ACTION_DEVICE_CONTROL);
-                    target.get(i).titleRes = R.string.device_control_settings;
+                    target.get(i).titleRes = R.string.amra_control_settings;
                 } else {
                     target.remove(i);
                 }
@@ -1279,8 +1277,9 @@ public class Settings extends PreferenceActivity
     public static class QuickSettingsConfigActivity extends Settings { /* empty */ }
     /* AmraSettings */
     public static class AmraSettingsActivity extends Settings { /* empty */ }
-    /* NamelessROM */
     public static class AnimationInterfaceSettingsActivity extends Settings { /* empty */ }
+
+    /* NamelessROM */
     public static class MoreInterfaceSettingsActivity extends Settings { /* empty */ }
     public static class ThemeSettingsActivity extends Settings { /* empty */ }
 }

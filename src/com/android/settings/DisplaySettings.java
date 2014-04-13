@@ -45,7 +45,7 @@ import android.util.Log;
 import com.android.internal.view.RotationPolicy;
 import com.android.settings.DreamSettings;
 import com.android.settings.Utils;
-import com.android.settings.cyanogenmod.DisplayRotation;
+import org.regulus.amrasettings.utils.DisplayRotation;
 
 import org.cyanogenmod.hardware.AdaptiveBacklight;
 

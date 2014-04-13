@@ -29,7 +29,7 @@
 
         <PreferenceScreen
             android:key="display_rotation"
-            android:fragment="com.android.settings.cyanogenmod.DisplayRotation"
+            android:fragment="org.regulus.amrasettings.utils.DisplayRotation"
             android:title="@string/display_rotation_title" />
 
         <ListPreference
@@ -78,7 +78,7 @@
             android:summary="@string/wake_when_plugged_or_unplugged_summary"
             android:defaultValue="false" />
 
-        <com.android.settings.cyanogenmod.SystemSettingCheckBoxPreference
+        <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
             android:key="screen_off_animation"
             android:title="@string/screen_animation_off_title"
             android:defaultValue="true" />

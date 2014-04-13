@@ -31,7 +31,7 @@
 
     <PreferenceScreen
         android:key="volume_steps_settings"
-        android:fragment="com.android.settings.du.VolumeSteps"
+        android:fragment="org.regulus.amrasettings.volumesteps.VolumeSteps"
         android:title="@string/volume_steps_title" />
 
     <ListPreference
@@ -73,11 +73,11 @@
             android:persistent="false"
             android:ringtoneType="ringtone" />
 
-    <com.android.settings.cyanogenmod.SystemSettingCheckBoxPreference
+    <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
             android:key="vibrate_when_ringing"
             android:title="@string/vibrate_when_ringing_title" />
 
-    <com.android.settings.cyanogenmod.IncreasingRingPreference
+    <org.regulus.amrasettings.utils.IncreasingRingPreference
             android:key="increasing_ring"
             android:title="@string/increasing_ring_title"
             android:dialogTitle="@string/increasing_ring_title"
@@ -94,13 +94,13 @@
             android:persistent="false"
             android:ringtoneType="notification" />
 
-    <com.android.settings.cyanogenmod.SystemSettingCheckBoxPreference
+    <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
             android:key="convert_sound_to_vibration"
             android:title="@string/notification_convert_sound_to_vibration_title"
             android:summary="@string/notification_convert_sound_to_vibration_summary"
             android:defaultValue="true" />
 
-    <com.android.settings.cyanogenmod.SystemSettingCheckBoxPreference
+    <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
             android:key="vibrate_while_no_alerts"
             android:title="@string/notification_vibrate_during_calls_title"
             android:summary="@string/notification_vibrate_during_calls_summary"
@@ -113,36 +113,36 @@
 
     <PreferenceScreen
             android:key="sound_packages"
-            android:fragment="com.android.settings.omni.sounds.SoundPackageSettings"
+            android:fragment="org.regulus.amrasettings.sounds.SoundPackageSettings"
             android:title="@string/sound_packages_title" />
 
-    <com.android.settings.cyanogenmod.SystemSettingCheckBoxPreference
+    <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
             android:key="dtmf_tone"
             android:title="@string/dtmf_tone_enable_title"
             android:defaultValue="true" />
 
-    <com.android.settings.cyanogenmod.SystemSettingCheckBoxPreference
+    <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
             android:key="sound_effects_enabled"
             android:title="@string/sound_effects_enable_title"
             android:defaultValue="true" />
 
-    <com.android.settings.cyanogenmod.SystemSettingCheckBoxPreference
+    <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
             android:key="lockscreen_sounds_enabled"
             android:title="@string/lock_sounds_enable_title"
             android:defaultValue="true" />
 
-    <com.android.settings.amra.preferences.SystemSettingCheckBoxPreference
+    <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
             android:key="camera_sounds"
             android:title="@string/camera_sounds_title"
             android:summary="@string/camera_sounds_summary"
             android:defaultValue="true" />
 
-    <com.android.settings.cyanogenmod.SystemSettingCheckBoxPreference
+    <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
             android:key="haptic_feedback_enabled"
             android:title="@string/haptic_feedback_enable_title"
             android:defaultValue="true" />
 
-    <com.android.settings.cyanogenmod.SystemSettingCheckBoxPreference
+    <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
             android:key="volume_adjust_sounds_enabled"
             android:title="@string/volume_adjust_sounds_enable_title"
             android:summary="@string/volume_adjust_sounds_enable_summary"

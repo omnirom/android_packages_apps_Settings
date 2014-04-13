@@ -54,7 +54,7 @@
     <PreferenceCategory
         android:title="@string/headset_category_title" >
 
-        <com.android.settings.cyanogenmod.SystemSettingCheckBoxPreference
+        <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
             android:key="headset_connect_player"
             android:title="@string/headset_connect_player_title"
             android:summary="@string/headset_connect_player_summary"

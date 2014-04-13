@@ -28,7 +28,7 @@
 
         <!-- Advanced Device Info -->
         <PreferenceScreen
-                android:fragment="com.android.settings.amra.AdvancedDeviceInfoSettings"
+                android:fragment="org.regulus.amrasettings.amra.AdvancedDeviceInfoSettings"
                 android:key="advanced_device_info"
                 android:title="@string/advanced_device_info_title"
                 android:summary="@string/advanced_device_info_summary">
@@ -81,7 +81,7 @@
 
         <!-- Contributors -->
         <PreferenceScreen
-                android:fragment="com.android.settings.amra.about.AboutCrewFragment"
+                android:fragment="org.regulus.amrasettings.amra.about.AboutCrewFragment"
                 android:key="contributors"
                 android:title="@string/contributors_title">
         </PreferenceScreen>

@@ -89,12 +89,6 @@
         <uses-library android:name="org.cyanogenmod.hardware"
             android:required="false" />
 
-        <receiver android:name=".cyanogenmod.LockscreenInterface$DeviceAdminLockscreenReceiver"
-            android:permission="android.permission.BIND_DEVICE_ADMIN">
-            <meta-data android:name="android.app.device_admin"
-                android:resource="@xml/device_admin_lockscreen" />
-        </receiver>
-
         <!-- Settings -->
 
         <activity android:name="Settings"
@@ -641,21 +635,6 @@
                 android:resource="@id/sound_settings" />
         </activity>
 
-        <activity android:name="Settings$ActiveDisplaySettingsActivity"
-                android:label="@string/ad_settings_title"
-                android:taskAffinity=""
-                android:excludeFromRecents="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.android.settings.SHORTCUT" />
-            </intent-filter>
-            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="org.regulus.amrasettings.activedisplay.ActiveDisplaySettings" />
-            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
-                android:resource="@id/active_display" />
-        </activity>
-
         <!-- 
             Amra Settings. 
         -->
@@ -673,7 +652,89 @@
             <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
                 android:resource="@id/amra_settings" />
         </activity>
+	
+	<receiver android:name="org.regulus.amrasettings.utils.LockscreenInterface$DeviceAdminLockscreenReceiver"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_lockscreen" />
+        </receiver>
+	
+        <activity android:name="Settings$ActiveDisplaySettingsActivity"
+                android:label="@string/ad_settings_title"
+                android:taskAffinity=""
+                android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.android.settings.SHORTCUT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="org.regulus.amrasettings.activedisplay.ActiveDisplaySettings" />
+            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
+                android:resource="@id/active_display" />
+        </activity>
+	
+	<activity android:name="Settings$SystemSettingsActivity"
+                android:label="@string/system_settings_title"
+                android:taskAffinity=""
+                android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="org.regulus.amrasettings.utils.SystemUiSettings" />
+            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
+                android:resource="@id/system_settings" />
+        </activity>
+	
+        <activity android:name="org.regulus.amrasettings.utils.AutoBrightnessSetup"
+                android:excludeFromRecents="true"
+                android:theme="@style/Theme.Settings.Dialog.Alert" />
+	
+	<receiver android:name="org.regulus.amrasettings.utils.BootReceiver" android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+	
+        <activity android:name="org.regulus.amrasettings.utils.LockscreenTargets" />
+
+        <activity android:name="org.regulus.amrasettings.utils.LockscreenButtons" />
+
+        <activity android:name="org.regulus.amrasettings.utils.PerformanceSettings" />
+
+        <activity android:name="org.regulus.amrasettings.utils.LockscreenInterface" />
+
+        <activity android:name="org.regulus.amrasettings.utils.LockscreenInterface" />
         
+        
+         <!-- "Blacklist settings" UI, used only on voice-capable phone devices. -->
+        <activity android:name="Settings$BlacklistSettingsActivity"
+                android:theme="@style/Theme.Settings.DialogWhenLarge"
+                android:uiOptions="splitActionBarWhenNarrow"
+                android:label="@string/blacklist_title"
+                android:taskAffinity=""
+                android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="org.regulus.amrasettings.blacklist.BlacklistSettings" />
+            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
+                android:resource="@id/security_settings" />
+        </activity>
+
+        <activity android:name="org.regulus.amrasettings.utils.PrivacySettings" />
+        
+        <!-- Lto Service -->
+        <service android:label="LtoService"
+            android:enabled="true"
+            android:exported="false"
+            android:name="org.regulus.amrasettings.utils.LtoService">
+        </service>
+	
         <!--
         Amra Settings End. 
         -->
@@ -1790,20 +1851,6 @@
         </activity>
 
         <!-- CyanogenMod activities Start -->
-        <activity android:name="Settings$SystemSettingsActivity"
-                android:label="@string/system_settings_title"
-                android:taskAffinity=""
-                android:excludeFromRecents="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="com.android.settings.cyanogenmod.SystemUiSettings" />
-            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
-                android:resource="@id/system_settings" />
-        </activity>
-
         <activity android:name="Settings$QuickSettingsConfigActivity"
                 android:label="@string/tile_picker_title"
                 android:taskAffinity=""
@@ -1817,10 +1864,6 @@
         </activity>
 
         <activity android:name=".quicksettings.QuickSettingsTiles" />
-
-        <activity android:name=".cyanogenmod.AutoBrightnessSetup"
-                android:excludeFromRecents="true"
-                android:theme="@*android:style/Theme.Holo.Dialog.Alert" />
 
         <activity android:name=".profiles.ProfilesSettings" />
         <activity android:name="Settings$ProfilesSettingsActivity"
@@ -1876,40 +1919,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".cyanogenmod.LockscreenTargets" />
-
-        <activity android:name=".cyanogenmod.LockscreenButtons" />
-
-        <activity android:name=".cyanogenmod.PerformanceSettings" />
-
         <activity android:name=".ApnEditor" />
-
-        <activity android:name=".cyanogenmod.LockscreenInterface" />
 
         <activity android:name=".notificationlight.NotificationLightSettings" />
 
         <activity android:name=".notificationlight.BatteryLightSettings" />
-
-        <activity android:name=".cyanogenmod.LockscreenInterface" />
-
-         <!-- "Blacklist settings" UI, used only on voice-capable phone devices. -->
-        <activity android:name="Settings$BlacklistSettingsActivity"
-                android:theme="@style/Theme.Settings.DialogWhenLarge"
-                android:uiOptions="splitActionBarWhenNarrow"
-                android:label="@string/blacklist_title"
-                android:taskAffinity=""
-                android:excludeFromRecents="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="com.android.settings.blacklist.BlacklistSettings" />
-            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
-                android:resource="@id/security_settings" />
-        </activity>
-
-        <activity android:name=".cyanogenmod.PrivacySettings" />
 
         <!-- CyanogenMod activities End -->
 
@@ -2085,6 +2099,30 @@
             </intent-filter>
         </activity>
 
+        <!-- PerformanceControl activities -->
+        <activity android:name="com.brewcrewfoo.performance.activities.MainActivity"/>
+        <activity android:name="com.brewcrewfoo.performance.activities.PCSettings"/>
+        <activity android:name="com.brewcrewfoo.performance.activities.PackActivity"/>
+        <activity android:name="com.brewcrewfoo.performance.activities.FlasherActivity"/>
+        <activity android:name="com.brewcrewfoo.performance.activities.FileChooser"
+                  android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name="com.brewcrewfoo.performance.activities.ResidualsActivity"
+                  android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name="com.brewcrewfoo.performance.activities.iResidualsActivity"
+                  android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name="com.brewcrewfoo.performance.activities.KSMActivity"/>
+        <activity android:name="com.brewcrewfoo.performance.activities.FreezerActivity"
+                  android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name="com.brewcrewfoo.performance.activities.GovSetActivity"/>
+
+        <receiver android:name="com.brewcrewfoo.performance.service.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.brewcrewfoo.performance.service.BootService"/>
+
         <receiver android:name=".widget.SettingsAppWidgetProvider"
                 android:label="@string/gadget_title"
                 android:exported="false"
@@ -2108,12 +2146,6 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".cyanogenmod.BootReceiver" android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-
         <!-- Watch for ContactsContract.Profile changes and update the user's photo.  -->
         <receiver android:name=".users.ProfileUpdateReceiver">
             <intent-filter>
@@ -2131,12 +2163,6 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <!-- Lto Service -->
-        <service android:label="LtoService"
-            android:enabled="true"
-            android:exported="false"
-            android:name=".cyanogenmod.LtoService">
-        </service>
 
     </application>
 </manifest>

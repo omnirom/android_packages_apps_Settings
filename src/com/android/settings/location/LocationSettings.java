@@ -44,7 +44,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.android.settings.R;
-import com.android.settings.cyanogenmod.LtoService;
+import org.regulus.amrasettings.utils.LtoService;
 
 import org.cyanogenmod.hardware.LongTermOrbits;
 

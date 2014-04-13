@@ -51,7 +51,7 @@ import android.util.Log;
 
 import com.android.internal.widget.LockPatternUtils;
 import com.android.settings.R;
-import com.android.settings.cyanogenmod.ButtonSettings;
+import org.regulus.amrasettings.utils.ButtonSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -243,7 +243,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
             setupLockAfterPreference();
             updateLockAfterPreferenceSummary();
         } else if (!mLockPatternUtils.isLockScreenDisabled() && isCmSecurity) {
-            addPreferencesFromResource(R.xml.security_settings_slide_delay_cyanogenmod);
+            addPreferencesFromResource(R.xml.security_settings_slide_delay_amra);
 
             mSlideLockTimeoutDelay = (ListPreference) root
                     .findPreference(SLIDE_LOCK_TIMEOUT_DELAY);
@@ -415,7 +415,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
             }
 
             // App security settings
-            addPreferencesFromResource(R.xml.security_settings_app_cyanogenmod);
+            addPreferencesFromResource(R.xml.security_settings_app_amra);
             mSmsSecurityCheck = (ListPreference) root.findPreference(KEY_SMS_SECURITY_CHECK_PREF);
             // Determine options based on device telephony support
             if (pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {

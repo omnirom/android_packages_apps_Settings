@@ -27,7 +27,7 @@
     <string name="default_string">Default</string>
 
     <!-- Sub list strings -->
-    <string name="device_control_settings">Device Control</string>
+    <string name="amra_control_settings">Amra Control</string>
     <string name="device_update_center">Update Center</string>
 
     <!-- Interface -->
