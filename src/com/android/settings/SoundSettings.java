@@ -16,6 +16,14 @@
 
 package com.android.settings;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import com.android.settings.R;
+import com.android.settings.SettingsPreferenceFragment;
+import java.net.URISyntaxException;
+import org.omnirom.omnigears.preference.AppSelectListPreference;
+
 import com.android.settings.bluetooth.DockEventReceiver;
 
 import android.app.AlertDialog;
@@ -83,6 +91,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
     private static final String KEY_VOLUME_PANEL_STYLE = "volume_panel_style";
     private static final String KEY_SAFE_HEADSET_VOLUME_WARNING = "safe_headset_volume_warning";
     private static final String KEY_VOLUME_PANEL_TIMEOUT = "volume_panel_timeout";
+    private static final String KEY_HEADSET_PLUG = "headset_plug";
 
     private static final String[] NEED_VOICE_CAPABILITY = {
             KEY_RINGTONE, KEY_DTMF_TONE, KEY_CATEGORY_CALLS,
@@ -116,6 +125,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
     private CheckBoxPreference mDockAudioMediaEnabled;
 
     private CheckBoxPreference mVolumeAdustSound;
+    private AppSelectListPreference mHeadsetPlug;
     
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -211,6 +221,10 @@ public class SoundSettings extends SettingsPreferenceFragment implements
         mLockSounds.setPersistent(false);
         mLockSounds.setChecked(Settings.System.getInt(resolver,
                 Settings.System.LOCKSCREEN_SOUNDS_ENABLED, 1) != 0);
+
+        mHeadsetPlug = (AppSelectListPreference) findPreference(KEY_HEADSET_PLUG);
+        mHeadsetPlug.setOnPreferenceChangeListener(this);
+        updateHeadsetPlugSummary();
 
         mRingtonePreference = findPreference(KEY_RINGTONE);
         mNotificationPreference = findPreference(KEY_NOTIFICATION_SOUND);
@@ -420,9 +434,42 @@ public class SoundSettings extends SettingsPreferenceFragment implements
             int volumePanelTimeout = (Integer) objValue;
             Settings.System.putInt(getContentResolver(),
                     Settings.System.VOLUME_PANEL_TIMEOUT, volumePanelTimeout * 1000);
+        } else if (preference == mHeadsetPlug) {
+           String value = (String) objValue;
+           Settings.System.putString(getContentResolver(),
+                    Settings.System.HEADSET_PLUG_ENABLED, value);
+           updateHeadsetPlugSummary();
         }
 
         return true;
+    }
+
+    private void updateHeadsetPlugSummary(){
+        final PackageManager packageManager = getPackageManager();
+
+        mHeadsetPlug.setSummary(getResources().getString(R.string.headset_plug_positive_summary));
+
+        String headSetPlugIntentUri = Settings.System.getString(getContentResolver(), Settings.System.HEADSET_PLUG_ENABLED);
+
+        if (headSetPlugIntentUri != null) {
+            if(headSetPlugIntentUri.equals(Settings.System.HEADSET_PLUG_IS_DISABLED)) {
+                 mHeadsetPlug.setSummary(getResources().getString(R.string.headset_plug_neutral_title));
+            } else {
+                Intent headSetPlugIntent = null;
+                try {
+                    headSetPlugIntent = Intent.parseUri(headSetPlugIntentUri, 0);
+                } catch (URISyntaxException e) {
+                    headSetPlugIntent = null;
+                }
+
+                if(headSetPlugIntent != null) {
+                    ResolveInfo info = packageManager.resolveActivity(headSetPlugIntent, 0);
+                    if (info != null) {
+                        mHeadsetPlug.setSummary(info.loadLabel(packageManager));
+                    }
+                }
+            }
+        }
     }
 
     @Override
