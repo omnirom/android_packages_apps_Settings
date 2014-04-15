@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_9d4e0b96",
+        "filename": "res/xml/security_settings_misc.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-04-15T22:57:13Z",
+      "side": 1,
+      "message": "what would be used as default location if I never change this? I would show the current location as summary",
+      "revId": "236c391769bf847818fb79f42114fc6adcb3762e",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
