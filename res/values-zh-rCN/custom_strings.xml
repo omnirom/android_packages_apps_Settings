@@ -40,6 +40,10 @@
     <string name="expandable">可扩展</string>
     <string name="expanded">完全扩展</string>
 
+    <!-- Safe headset volume warning -->
+    <string name="safe_headset_volume_warning_title">音量警告</string>
+    <string name="safe_headset_volume_warning_summary">显示安全耳机音量警告</string>
+
     <!-- Advanced reboot options -->
     <string name="advanced_reboot_title">高级重启选项</string>
     <string name="advanced_reboot_summary">解锁后，在电源菜单内包含重启至恢复模式或引导模式选项</string>
@@ -51,6 +55,14 @@
     <string name="adb_over_network_warning">警告：网络 ADB 调试启用后，您的设备将会在已连接的网络 (包括 GSM 数据网络) 上被视为是开放的，并有可能被侵入！\n\n请仅在您所信任的网络上使用此功能。\n\n您确实要启用该功能吗？</string>
     <string name="lockscreen_quick_unlock_control_title">快速解锁</string>
     <string name="lockscreen_quick_unlock_control_summary">当输入正确 PIN / 密码后自动解锁</string>
+
+    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
+    <string name="change_crypt_password_title">更改密码</string>
+    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
+    <string name="change_crypt_password_summary">更改设备加密所用的密码</string>
+
+    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
+    <string name="encryptionpassword_choose_your_password_header">设置加密密码</string>
 
     <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
     <string name="show_cpu_info">显示 CPU 信息</string>
@@ -66,7 +78,7 @@
     <!-- AppOps additions -->
     <string name="appops_settings">应用权限</string>
     <string name="appops_sysapp_beware">注意！</string>
-    <string name="appops_sysapp_warning">修改安卓核心组件的权限可能引起不可预料的行为。请自行承担此处修改设置的风险！</string>
+    <string name="appops_sysapp_warning">修改Android核心组件的权限可能引起不可预料的行为。请自行承担此处修改设置的风险！</string>
 
     <!-- Low battery warning policy -->
     <string name="pref_low_battery_warning_policy_title">低电量警告</string>
@@ -114,6 +126,7 @@
     <!-- Stylus Icon -->
     <string name="stylus_icon_enabled_title">使用触控笔时显示图标</string>
     <string name="stylus_icon_enabled_summary">使用触控笔时显示指针</string>
+
     <!-- Stylus Gestures -->
     <string name="gestures_settings_title">触控笔手势</string>
     <string name="category_spen_title">触控笔手势</string>
@@ -152,6 +165,13 @@
     <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
     <string name="custom_runtime_warning_title">警告</string>
     <string name="custom_runtime_warning_message">OmniROM 不正式支持 ART 模式。本设置仅用于测试与研究，并可能潜在不稳定的因素、导致奔溃, 数据丢失或设备无法启动。请查看 &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt; ART&lt;/a&gt; 相关介绍以获得更多相关信息。&lt;br/&gt;&lt;br/&gt; 我们希望当您开启 ART 模式作为运行时模式的时候不要发送 Bug 报告。&lt;br/&gt;&lt;br/&gt; 你确认你真的想要重启并将运行时模式从 <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> 切换至 <xliff:g id="new" example="libart.so">%2$s</xliff:g>？</string>
+
+    <!-- Basic Numbers -->
+    <string name="two">二</string>
+    <string name="three">三</string>
+    <string name="four">四</string>
+    <string name="five">五</string>
+    <string name="six">六</string>
 
     <!-- Quiet hours -->
     <string name="quiet_hours_title">静默时段</string>
@@ -212,14 +232,6 @@
     <string name="start_time_title">起始</string>
     <string name="end_time_title">结束</string>
 
-    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
-    <string name="change_crypt_password_title">修改密码</string>
-    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
-    <string name="change_crypt_password_summary">修改用于设备加密的密码</string>
-
-    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
-    <string name="encryptionpassword_choose_your_password_header">设置加密密码</string>
-
     <!-- Keyboard and Input ASS methods  -->
     <string name="title_keyboard_input">高级选项</string>
     <string name="disable_fullscreen_keyboard_title">禁用全屏键盘</string>
@@ -233,9 +245,6 @@
     <string name="show_enter_key_summary">强制键盘显示回车键而不是符号键</string>
     <string name="ime_switcher_notify">输入法选择通知</string>
     <string name="ime_switcher_notify_summary">显示输入法选择通知</string>
-
-
-
 
     <!-- Display : Rotation -->
     <string name="display_rotation_title">自动旋转</string>
@@ -264,5 +273,43 @@
     <string name="weekday_thursday">星期四</string>
     <string name="weekday_friday">星期五</string>
     <string name="weekday_saturday">星期六</string>
+
+    <!-- Hostname setting -->
+    <string name="device_hostname">设备主机名</string>
+
+    <string name="lockscreen_settings_title">锁屏</string>
+
+    <!-- Blacklist preferences -->
+    <string name="blacklist_title">黑名单</string>
+    <string name="blacklist_edit_dialog_title">编辑黑名单项目</string>
+    <string name="blacklist_prefs">设置</string>
+    <string name="blacklist_button_delete">删除</string>
+    <string name="blacklist_empty_text">您没有设定任何被列入黑名单的号码。请触摸添加（+）按钮来增加一个项目。</string>
+    <string name="blacklist_disabled_empty_text">若要将某一个号码的来电或短信列入黑名单，请启用此功能。</string>
+    <string name="blacklist_summary_disabled">禁用</string>
+    <string name="blacklist_summary">黑名单内号码的来电和短信将被阻止</string>
+    <string name="blacklist_notify">显示通知</string>
+    <string name="blacklist_private_numbers_title">私人号码</string>
+    <string name="blacklist_private_numbers_summary_disabled">不阻止私人号码列表中的号码</string>
+    <string name="blacklist_private_numbers_summary">阻止私人号码的<xliff:g id="type">%s</xliff:g> </string>
+    <string name="blacklist_unknown_numbers_title">未知号码</string>
+    <string name="blacklist_unknown_numbers_summary_disabled">不阻止不在联系人列表中的号码的来电和短信</string>
+    <string name="blacklist_unknown_numbers_summary">阻止不在联系人列表中的号码的<xliff:g id="type">%s</xliff:g> </string>
+    <string name="blacklist_summary_type_calls_only">电话</string>
+    <string name="blacklist_summary_type_messages_only">短信</string>
+    <string name="blacklist_summary_type_calls_and_messages">电话和短信</string>
+    <string name="blacklist_regex_title">使用通配符</string>
+    <string name="blacklist_regex_summary">使用 . 作为匹配一个字符，* 表示重复。例如123.*将阻止所有以123开头的号码，而.*123.*将阻止包含123的号码。</string>
+    <string name="blacklist_policy_block_calls">阻止来电</string>
+    <string name="blacklist_policy_block_messages">阻止短信</string>
+
+    <!-- Blacklist management -->
+    <string name="add_blacklist_number">添加号码</string>
+    <string name="remove_blacklist_number_title">移除号码</string>
+    <string name="remove_blacklist_entry">您想要移除此黑名单项目吗？</string>
+    <string name="select_contact">选择联系人</string>
+
+    <!-- Lockscreen rotation -->
+    <string name="display_lockscreen_rotation_title">锁屏界面</string>
 </resources>
 

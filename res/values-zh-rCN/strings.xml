@@ -2042,4 +2042,9 @@
     <string name="user_image_take_photo" msgid="1280274310152803669">"拍照"</string>
     <string name="user_image_choose_photo" msgid="7940990613897477057">"从图库中选择照片"</string>
     <string name="regulatory_info_text" msgid="5623087902354026557"></string>
+    <string name="supersu_title">SuperSU</string>
+    <string name="wifi_setting_countrycode_title">Wi-Fi 区域代码</string>
+    <string name="wifi_setting_countrycode_summary">指定Wi-Fi硬件使用的区域码</string>
+    <string name="wifi_setting_countrycode_error">设置区域码时出错</string>
+    <string name="data_usage_lengths_spinner_subtitle">统计重置周期：</string>
 </resources>
