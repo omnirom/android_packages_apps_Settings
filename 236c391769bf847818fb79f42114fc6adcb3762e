@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "8b77b57d_7d176f57",
+        "filename": "res/xml/security_settings_misc.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-04-16T12:49:45Z",
+      "side": 1,
+      "message": "since security settings are already quite long I would move all of this to a separate screen in OmniGears",
+      "revId": "236c391769bf847818fb79f42114fc6adcb3762e",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8b77b57d_9d4e0b96",
         "filename": "res/xml/security_settings_misc.xml",
         "patchSetId": 7
