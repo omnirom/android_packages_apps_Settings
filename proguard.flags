@@ -17,10 +17,11 @@
 -keep class org.**
 -keep class com.android.settings.superuser.**
 -keep class com.android.settings.privacyguard.*
--keep class com.android.settings.cyanogenmod.*Settings
+-keep class org.regulus.amrasettings.privacyguard.*
+-keep class org.regulus.amrasettings.utils.*Settings
 -keep class com.android.settings.slim.**
--keep class com.android.settings.amra.**
--keep class com.android.settings.amra.interfacesettings.**
+-keep class org.regulus.amrasettings.amra.**
+-keep class org.regulus.amrasettings.amra.interfacesettings.**
 
 # Keep click responders
 -keepclassmembers class com.android.settings.inputmethod.UserDictionaryAddWordActivity {

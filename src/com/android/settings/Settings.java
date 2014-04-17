@@ -80,7 +80,6 @@ import com.android.settings.bluetooth.BluetoothSettings;
 import org.regulus.amrasettings.utils.ButtonSettings;
 import org.regulus.amrasettings.utils.LockscreenInterface;
 import org.regulus.amrasettings.utils.MoreDeviceSettings;
-import org.regulus.amrasettings.utils.PerformanceSettings;
 import org.regulus.amrasettings.utils.SystemUiSettings;
 import com.android.settings.deviceinfo.Memory;
 import com.android.settings.deviceinfo.UsbSettings;
@@ -391,7 +390,6 @@ public class Settings extends PreferenceActivity
         ButtonSettings.class.getName(),
         MoreDeviceSettings.class.getName(),
         ProfilesSettings.class.getName(),
-        PerformanceSettings.class.getName(),
         org.regulus.amrasettings.utils.PrivacySettings.class.getName(),
         org.regulus.amrasettings.quicksettings.QuickSettingsTiles.class.getName(),
         ThemeSettings.class.getName()

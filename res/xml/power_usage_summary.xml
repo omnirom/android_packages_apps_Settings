@@ -18,6 +18,11 @@
         android:title="@string/battery_since_unplugged"
         android:key="app_list">
 
+    <PreferenceScreen
+        android:key="pref_battery_saver"
+        android:fragment="org.regulus.amrasettings.batterysaver.BatterySaverSettings"
+        android:title="@string/battery_saver_title" />
+
     <PreferenceCategory
         android:key="battery_prefs"
         android:title="@string/battery_prefs_title" />

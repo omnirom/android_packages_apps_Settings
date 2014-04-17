@@ -1189,9 +1189,15 @@
 
     <!-- Display settings.  Entries for each type of Subscription. -->
     <string-array name="multi_sim_entries">
-        <item> Subscription 1 </item>
-        <item> Subscription 2 </item>
-        <item> Subscription 3 </item>
+        <item>Subscription 1</item>
+        <item>Subscription 2</item>
+        <item>Subscription 3</item>
+    </string-array>
+
+    <string-array name="screen_color_setting">
+        <item>Standard</item>
+        <item>Vivid</item>
+        <item>Custom</item>
     </string-array>
 
 </resources>

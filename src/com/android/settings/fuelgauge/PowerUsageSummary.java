@@ -60,6 +60,7 @@ public class PowerUsageSummary extends PreferenceFragment implements
 
     private static final String KEY_APP_LIST = "app_list";
     private static final String KEY_BATTERY_STATUS = "battery_status";
+    private static final String KEY_BATTERY_SAVER = "pref_battery_saver";
     private static final String KEY_LOW_BATTERY_WARNING_POLICY = "pref_low_battery_warning_policy";
     private static final String KEY_BATTERY_PREFS_CATEGORY = "battery_prefs";
     private static final String KEY_BATTERY_STATS_CATEGORY = "battery_stats";
@@ -71,6 +72,7 @@ public class PowerUsageSummary extends PreferenceFragment implements
 
     private PreferenceGroup mAppListGroup;
     private Preference mBatteryStatusPref;
+    private PreferenceScreen mBatterySaverPrefs;
     private ListPreference mLowBatteryWarning;
     private PreferenceCategory mBatteryPrefsCat;
     private PreferenceCategory mBatteryStatsCat;
@@ -117,7 +119,10 @@ public class PowerUsageSummary extends PreferenceFragment implements
         mAppListGroup = (PreferenceGroup) findPreference(KEY_APP_LIST);
         mBatteryStatusPref = mAppListGroup.findPreference(KEY_BATTERY_STATUS);
 
-	mBatteryPrefsCat =
+        mBatterySaverPrefs =
+            (PreferenceScreen) mAppListGroup.findPreference(KEY_BATTERY_SAVER);
+
+		mBatteryPrefsCat =
             (PreferenceCategory) mAppListGroup.findPreference(KEY_BATTERY_PREFS_CATEGORY);
         mBatteryStatsCat =
             (PreferenceCategory) mAppListGroup.findPreference(KEY_BATTERY_STATS_CATEGORY);
@@ -173,6 +178,9 @@ public class PowerUsageSummary extends PreferenceFragment implements
             PreferenceActivity pa = (PreferenceActivity)getActivity();
             pa.startPreferencePanel(BatteryHistoryDetail.class.getName(), args,
                     R.string.history_details_title, null, null, 0);
+            return super.onPreferenceTreeClick(preferenceScreen, preference);
+        }
+        if (preference == mBatterySaverPrefs) {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
         if (!(preference instanceof PowerGaugePreference)) {
@@ -257,6 +265,8 @@ public class PowerUsageSummary extends PreferenceFragment implements
         mAppListGroup.removeAll();
         mAppListGroup.setOrderingAsAdded(false);
 
+        mBatterySaverPrefs.setOrder(-6);
+        mAppListGroup.addPreference(mBatterySaverPrefs);
 	mBatteryPrefsCat.setOrder(-5);
         mAppListGroup.addPreference(mBatteryPrefsCat);
         mLowBatteryWarning.setOrder(-4);
