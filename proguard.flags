@@ -16,7 +16,6 @@
 -keep class com.android.settings.nfc.*
 -keep class org.**
 -keep class com.android.settings.superuser.**
--keep class com.android.settings.privacyguard.*
 -keep class org.regulus.amrasettings.privacyguard.*
 -keep class org.regulus.amrasettings.utils.*Settings
 -keep class com.android.settings.slim.**
