@@ -772,6 +772,15 @@
             android:exported="false"
             android:name="org.regulus.amrasettings.utils.LtoService">
         </service>
+
+        <activity
+            android:name="org.regulus.amrasettings.remover.SystemappRemover"
+            android:label="@string/sizer_title"
+            android:parentActivityName="Settings" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.myfirstapp.MainActivity" />
+        </activity>
 	
         <!--
         Amra Settings End. 
