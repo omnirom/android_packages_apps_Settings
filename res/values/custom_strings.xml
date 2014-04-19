@@ -318,4 +318,5 @@
 
     <!-- Lockscreen rotation -->
     <string name="display_lockscreen_rotation_title">Lockscreen</string>
+    <string name="bluetooth_accept_all_files">Accept all file types</string>
 </resources>
