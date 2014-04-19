@@ -311,5 +311,6 @@
 
     <!-- Lockscreen rotation -->
     <string name="display_lockscreen_rotation_title">锁屏界面</string>
+    <string name="bluetooth_accept_all_files">接受所有文件</string>
 </resources>
 
