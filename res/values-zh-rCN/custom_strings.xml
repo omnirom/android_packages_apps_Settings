@@ -31,6 +31,7 @@
     <string name="volume_adjust_sounds_enable_summary">当使用音量键调整音量时播放声音</string>
     <string name="link_volume_ringtones">链接铃声与通知音量</string>
     <string name="volume_ring_only_description">铃声</string>
+    <string name="category_volume_panel_title">音量面板</string>
 
     <string name="volume_panel_timeout_title">面板超时</string>
     <string name="volume_panel_timeout_summary">设定音量面板将在几秒后被隐藏</string>
