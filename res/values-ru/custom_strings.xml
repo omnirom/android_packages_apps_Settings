@@ -317,4 +317,8 @@
     <string name="remove_blacklist_number_title">Удалить номер</string>
     <string name="remove_blacklist_entry">Удалить из черного списка?</string>
     <string name="select_contact">Выбрать контакт</string>
+
+    <!-- Lockscreen rotation -->
+    <string name="display_lockscreen_rotation_title">Экран блокировки</string>
+    <string name="bluetooth_accept_all_files">Принимать все типы файлов</string>
 </resources>
