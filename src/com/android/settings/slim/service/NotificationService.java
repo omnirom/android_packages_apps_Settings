@@ -87,6 +87,7 @@ public class NotificationService extends Service {
                 }
                 Settings.System.putInt(context.getContentResolver(), Settings.System.QUIET_HOURS_PAUSED, 0);
                 Settings.System.putInt(context.getContentResolver(), Settings.System.QUIET_HOURS_FORCED, 0);
+                notifyQuietHour(context);
             } else if (action.equals(QUIETHOUR_NOTIFICATION_PAUSE_ID)){
                 mPaused = true;
                 mSnoozed = false;
