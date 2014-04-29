@@ -16,6 +16,24 @@
       "revId": "92dd7acbb602cc53db94a1adef8893d4172d26e5",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_090c7942",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000098
+      },
+      "writtenOn": "2014-04-29T19:57:22Z",
+      "side": 1,
+      "message": "Beaucoup plus clair. Merci.",
+      "parentUuid": "8b77b57d_497cb1e7",
+      "revId": "92dd7acbb602cc53db94a1adef8893d4172d26e5",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
