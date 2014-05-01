@@ -604,17 +604,13 @@ public class SmsCallController {
     }
 
     public void stopSmsCallService() {
-        if (!QuietHoursHelper.inQuietHours(mContext, null)) {
-            mContext.stopServiceAsUser(mServiceTriggerIntent,
-                    android.os.Process.myUserHandle());
-        }
+        mContext.stopServiceAsUser(mServiceTriggerIntent,
+                android.os.Process.myUserHandle());
     }
 
     public void stopNotificationService() {
-        if (!QuietHoursHelper.inQuietHours(mContext, null)) {
-            mContext.stopServiceAsUser(mNotificationTriggerIntent,
-                    android.os.Process.myUserHandle());
-        }
+        mContext.stopServiceAsUser(mNotificationTriggerIntent,
+                android.os.Process.myUserHandle());
     }
 
     /**
