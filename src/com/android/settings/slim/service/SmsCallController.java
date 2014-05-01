@@ -38,6 +38,7 @@ import android.util.Log;
 import com.android.internal.util.slim.QuietHoursHelper;
 
 import java.util.Calendar;
+import java.text.DateFormat;
 
 import com.android.settings.R;
 
@@ -494,12 +495,14 @@ public class SmsCallController {
 
         if (serviceStartMinutes >= 0) {
             calendar.add(Calendar.MINUTE, serviceStartMinutes);
+            Log.d(TAG, "NotificationService schedule start at " + DateFormat.getDateTimeInstance().format(calendar.getTime()));
             mAlarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), mStartNotificationIntent);
             calendar.add(Calendar.MINUTE, -serviceStartMinutes);
         }
 
         if (serviceStopMinutes >= 0) {
             calendar.add(Calendar.MINUTE, serviceStopMinutes);
+            Log.d(TAG, "NotificationService schedule stop at " + DateFormat.getDateTimeInstance().format(calendar.getTime()));
             mAlarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), mStopNotificationIntent);
             calendar.add(Calendar.MINUTE, -serviceStopMinutes);
         }
@@ -590,6 +593,7 @@ public class SmsCallController {
             // Start service a minute early
             serviceStartMinutes--;
             calendar.add(Calendar.MINUTE, serviceStartMinutes);
+            Log.d(TAG, "SmsCallService schedule start at " + DateFormat.getDateTimeInstance().format(calendar.getTime()));
             mAlarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), mStartIntent);
             calendar.add(Calendar.MINUTE, -serviceStartMinutes);
         }
@@ -598,23 +602,18 @@ public class SmsCallController {
             // Stop service a minute late
             serviceStopMinutes++;
             calendar.add(Calendar.MINUTE, serviceStopMinutes);
+            Log.d(TAG, "SmsCallService schedule stop at " + DateFormat.getDateTimeInstance().format(calendar.getTime()));
             mAlarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), mStopIntent);
             calendar.add(Calendar.MINUTE, -serviceStopMinutes);
         }
     }
 
     public void stopSmsCallService() {
-        if (!QuietHoursHelper.inQuietHours(mContext, null)) {
-            mContext.stopServiceAsUser(mServiceTriggerIntent,
-                    android.os.Process.myUserHandle());
-        }
+        scheduleSmsCallService();
     }
 
     public void stopNotificationService() {
-        if (!QuietHoursHelper.inQuietHours(mContext, null)) {
-            mContext.stopServiceAsUser(mNotificationTriggerIntent,
-                    android.os.Process.myUserHandle());
-        }
+        scheduleNotificationService();
     }
 
     /**
