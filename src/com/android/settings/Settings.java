@@ -1276,6 +1276,7 @@ public class Settings extends PreferenceActivity
     /* AmraSettings */
     public static class AmraSettingsActivity extends Settings { /* empty */ }
     public static class AnimationInterfaceSettingsActivity extends Settings { /* empty */ }
+    public static class RamBarActivity extends Settings { /* empty */ } 
 
     /* NamelessROM */
     public static class MoreInterfaceSettingsActivity extends Settings { /* empty */ }

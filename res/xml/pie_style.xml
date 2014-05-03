@@ -27,7 +27,7 @@
             android:summary="@string/pie_show_background_summary"
             android:defaultValue="true" />
 
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
+        <org.regulus.amrasettings.colorpicker.ColorPickerPreference
             android:key="pie_background_color"
             android:title="@string/pie_background_color_title"
             android:defaultValue="0xff000000"
@@ -44,7 +44,7 @@
             android:summary="@string/pie_show_snap_summary"
             android:defaultValue="true" />
 
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
+        <org.regulus.amrasettings.colorpicker.ColorPickerPreference
             android:key="pie_snap_color"
             android:title="@string/pie_snap_color_title"
             android:defaultValue="0xffffff"
@@ -56,7 +56,7 @@
             android:summary="@string/pie_show_text_summary"
             android:defaultValue="true" />
 
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
+        <org.regulus.amrasettings.colorpicker.ColorPickerPreference
             android:key="pie_text_color"
             android:title="@string/pie_text_color_title"
             android:defaultValue="0xffffffff"

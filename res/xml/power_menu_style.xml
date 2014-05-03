@@ -16,12 +16,12 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <net.margaritov.preference.colorpicker.ColorPickerPreference
+    <org.regulus.amrasettings.colorpicker.ColorPickerPreference
         android:key="pref_power_menu_text_color"
         android:defaultValue="0xffffffff"
         android:title="@string/shortcuts_text_color_title" />
 
-    <net.margaritov.preference.colorpicker.ColorPickerPreference
+    <org.regulus.amrasettings.colorpicker.ColorPickerPreference
         android:key="pref_power_menu_icon_color"
         android:defaultValue="0xffffffff"
         android:title="@string/shortcuts_color_title" />

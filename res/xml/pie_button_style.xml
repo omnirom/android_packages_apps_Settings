@@ -22,7 +22,7 @@
     <PreferenceCategory
         android:title="@string/pie_button_style">
 
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
+        <org.regulus.amrasettings.colorpicker.ColorPickerPreference
              android:key="pie_button_color"
              android:title="@string/pie_button_color_title"
              android:defaultValue="0xff0099cc" />
@@ -31,17 +31,17 @@
              android:key="pie_button_alpha"
              android:title="@string/pie_button_alpha_title" />
 
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
+        <org.regulus.amrasettings.colorpicker.ColorPickerPreference
              android:key="pie_button_outline_color"
              android:title="@string/pie_button_outline_color_title"
              android:defaultValue="0xff0099cc" />
 
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
+        <org.regulus.amrasettings.colorpicker.ColorPickerPreference
              android:key="pie_button_pressed_color"
              android:title="@string/pie_button_pressed_color_title"
              android:defaultValue="0xff33b5e5" />
 
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
+        <org.regulus.amrasettings.colorpicker.ColorPickerPreference
              android:key="pie_button_long_pressed_color"
              android:title="@string/pie_button_long_pressed_color_title"
              android:defaultValue="0xff8ad5f0" />
@@ -55,7 +55,7 @@
     <PreferenceCategory
         android:title="@string/pie_icon_style">
 
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
+        <org.regulus.amrasettings.colorpicker.ColorPickerPreference
              android:key="pie_icon_color"
              android:title="@string/pie_icon_color_title"
              android:defaultValue="0xffffffff" />

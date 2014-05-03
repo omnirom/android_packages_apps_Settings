@@ -38,7 +38,7 @@ import android.view.MenuItem;
 import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.R;
 
-import net.margaritov.preference.colorpicker.ColorPickerPreference;
+import org.regulus.amrasettings.colorpicker.ColorPickerPreference;
 
 public class NavBarButtonStyle extends SettingsPreferenceFragment implements
         OnPreferenceChangeListener {

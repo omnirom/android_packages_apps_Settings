@@ -791,6 +791,19 @@
         <activity android:name="org.regulus.amrasettings.gestureanywhere.GestureAnywhereBuilderActivity" />
 
         <activity android:name="org.regulus.amrasettings.gestureanywhere.GestureAnywhereCreateGestureActivity" />
+
+	<activity android:name="org.regulus.amrasettings.ram.RamBar" />  
+
+   	<!-- Pseudo-activity used to provide an intent-filter entry point to display rotation config -->
+        <activity android:name="Settings$RamBarActivity"
+                android:label="@string/ram_bar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="org.regulus.amrasettings.ram.RamBar" />
+        </activity>
 	
         <!--
         Amra Settings End. 

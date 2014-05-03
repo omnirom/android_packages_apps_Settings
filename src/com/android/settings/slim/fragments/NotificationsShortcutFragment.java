@@ -34,7 +34,7 @@ import android.widget.ListView;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 
-import net.margaritov.preference.colorpicker.ColorPickerPreference;
+import org.regulus.amrasettings.colorpicker.ColorPickerPreference;
 
 public class NotificationsShortcutFragment extends SettingsPreferenceFragment {
 
