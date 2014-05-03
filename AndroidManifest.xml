@@ -782,13 +782,15 @@
                 android:value="com.example.myfirstapp.MainActivity" />
         </activity>
 
-        <activity android:name="org.regulus.amrasettings.identicons.IdenticonsSettings" />
-
         <service android:name="org.regulus.amrasettings.identicons.IdenticonCreationService"
                  android:exported="false" />
 
         <service android:name="org.regulus.amrasettings.identicons.IdenticonRemovalService"
                  android:exported="false" />
+
+        <activity android:name="org.regulus.amrasettings.gestureanywhere.GestureAnywhereBuilderActivity" />
+
+        <activity android:name="org.regulus.amrasettings.gestureanywhere.GestureAnywhereCreateGestureActivity" />
 	
         <!--
         Amra Settings End. 
