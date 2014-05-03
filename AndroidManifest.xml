@@ -782,7 +782,13 @@
                 android:value="com.example.myfirstapp.MainActivity" />
         </activity>
 
-        <activity android:name="org.regulus.amrasettings.amrapie.PieControls" />
+        <activity android:name="org.regulus.amrasettings.identicons.IdenticonsSettings" />
+
+        <service android:name="org.regulus.amrasettings.identicons.IdenticonCreationService"
+                 android:exported="false" />
+
+        <service android:name="org.regulus.amrasettings.identicons.IdenticonRemovalService"
+                 android:exported="false" />
 	
         <!--
         Amra Settings End. 
