@@ -80,7 +80,7 @@ public class ToggleImageView extends ImageView implements Checkable {
         mOnCheckedChangeListener = listener;
     }
 
-    /* package */ void setCheckedInternal(boolean checked, boolean callListener) {
+    public void setCheckedInternal(boolean checked, boolean callListener) {
         if (mIsChecked != checked) {
             mIsChecked = checked;
             setImageState(checked ? CHECKED_STATE_SET : null, true);
