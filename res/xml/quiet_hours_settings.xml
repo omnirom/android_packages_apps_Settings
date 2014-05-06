@@ -113,6 +113,12 @@
         android:key="quiethours_bypass"
         android:title="@string/quiet_hours_bypass_group">
 
+        <PreferenceScreen
+            android:title="@string/quiet_hours_bypass_whitelist"
+            android:summary="@string/quiet_hours_bypass_whitelist_summary"
+            android:dependency="quiet_hours_enabled"
+            android:fragment="com.android.settings.slim.WhitelistSettings" />
+
         <ListPreference
             android:defaultValue="0"
             android:entries="@array/incoming_contact_entries"
