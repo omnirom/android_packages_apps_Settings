@@ -105,11 +105,7 @@
             </intent-filter>
         </activity>
 
-        <!-- QuietHours SmsCall Service -->
-
-        <service android:name=".slim.service.SmsCallService"/>
-        <service android:name=".slim.service.AlarmService"/>
-
+        <!-- QuietHours  -->
         <receiver android:name=".slim.service.SmsCallController$NotificationIntentReceiver" />
 
         <receiver
@@ -134,15 +130,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-
-        <activity
-            android:name=".slim.service.BypassAlarm"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:taskAffinity="com.android.settings.slim.service.BypassAlarm"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
         <!-- Wireless Controls -->
 

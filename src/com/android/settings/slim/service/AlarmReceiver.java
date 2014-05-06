@@ -29,9 +29,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         Log.d("AlarmReceiver", "onReceive action = " + action);
-        if (action.equals(SmsCallController.QUIET_HOURS_STOP_SMSCALL_COMMAND)){
-            SmsCallController.getInstance(context).stopSmsCallService();
-        } else if (action.equals(SmsCallController.QUIET_HOURS_START_COMMAND)){
+        if (action.equals(SmsCallController.QUIET_HOURS_START_COMMAND)){
             SmsCallController.getInstance(context).startQuietHours();
         } else if (action.equals(SmsCallController.QUIET_HOURS_STOP_COMMAND)){
             SmsCallController.getInstance(context).stopQuietHours();
