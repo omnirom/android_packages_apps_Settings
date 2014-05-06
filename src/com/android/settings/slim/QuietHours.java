@@ -247,6 +247,7 @@ public class QuietHours extends SettingsPreferenceFragment implements
     public void onResume() {
         super.onResume();
         updateStartSwitch();
+        shouldDisplayRingerPrefs();
         mPrefs.registerOnSharedPreferenceChangeListener(mPreferencesChangeListener);
     }
 
@@ -358,8 +359,9 @@ public class QuietHours extends SettingsPreferenceFragment implements
     }
 
     private void shouldDisplayRingerPrefs() {
-        mBypassRingtone.setEnabled(mSmsBypassPref != 0 || mCallBypassPref != 0);
-        mRingtoneLoop.setEnabled(mSmsBypassPref != 0 || mCallBypassPref != 0);
+        boolean whitelistBypass = WhitelistUtils.hasBypass(mContext);
+        mBypassRingtone.setEnabled(mSmsBypassPref != 0 || mCallBypassPref != 0 || whitelistBypass);
+        mRingtoneLoop.setEnabled(mSmsBypassPref != 0 || mCallBypassPref != 0 || whitelistBypass);
     }
 
     private void setSmsBypassCodeSummary() {
