@@ -104,12 +104,28 @@
     </string-array>
 
     <!-- QuietHours Incoming Contact -->
+    <string-array name="incoming_contact_entries_bypass" translatable="false">
+        <item>@string/quiet_hours_auto_disabled</item>
+        <item>@string/quiet_hours_auto_enabled</item>
+        <item>@string/quiet_hours_auto_contacts</item>
+        <item>@string/quiet_hours_auto_starred</item>
+        <item>@string/quiet_hours_ringer_allow_whitelist</item>
+    </string-array>
+    <string-array name="incoming_contact_values_bypass" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
     <string-array name="incoming_contact_entries" translatable="false">
         <item>@string/quiet_hours_auto_disabled</item>
         <item>@string/quiet_hours_auto_enabled</item>
         <item>@string/quiet_hours_auto_contacts</item>
         <item>@string/quiet_hours_auto_starred</item>
     </string-array>
+
     <string-array name="incoming_contact_values" translatable="false">
         <item>0</item>
         <item>1</item>
@@ -119,6 +135,7 @@
 
     <!-- QuietHours Calls Required -->
     <string-array name="incoming_call_number_entries" translatable="false">
+        <item>@string/one</item>
         <item>@string/two</item>
         <item>@string/three</item>
         <item>@string/four</item>
@@ -127,6 +144,7 @@
     </string-array>
 
     <string-array name="incoming_call_number_values" translatable="false">
+        <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
@@ -138,6 +156,7 @@
         <item>@string/quiet_hours_ringer_allow_all</item>
         <item>@string/quiet_hours_ringer_allow_contacts</item>
         <item>@string/quiet_hours_ringer_allow_starred</item>
+        <item>@string/quiet_hours_ringer_allow_whitelist</item>
         <item>@string/quiet_hours_ringer_mute_all</item>
     </string-array>
 
@@ -145,6 +164,7 @@
         <item>0</item>
         <item>1</item>
         <item>2</item>
+        <item>4</item>
         <item>3</item>
     </string-array>
 
