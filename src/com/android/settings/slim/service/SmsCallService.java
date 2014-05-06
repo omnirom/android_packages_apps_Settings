@@ -37,7 +37,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.android.internal.util.slim.QuietHoursHelper;
-
+import com.android.settings.slim.WhitelistUtils;
 import com.android.settings.R;
 
 public class SmsCallService extends Service {
@@ -73,7 +73,8 @@ public class SmsCallService extends Service {
                         mContext).returnUserAutoCall();
 
                 if ((bypassPreference != SmsCallController.DEFAULT_DISABLED
-                        || userAutoSms != SmsCallController.DEFAULT_DISABLED)
+                        || userAutoSms != SmsCallController.DEFAULT_DISABLED
+                        || WhitelistUtils.hasCallBypass(mContext))
                         && QuietHoursHelper.inQuietHours(mContext, null)) {
 
                     if (isContact) {
@@ -141,10 +142,11 @@ public class SmsCallService extends Service {
                         mMinutes = SmsCallController.getInstance(
                                 mContext).returnTimeInMinutes();
                     }
-                    if ((mBypassCallCount
+                    if (((mBypassCallCount
                             == SmsCallController.getInstance(
                                     mContext).returnUserCallBypassCount())
-                            && timeConstraintMet) {
+                            && timeConstraintMet)
+                            || WhitelistUtils.isCallBypass(mContext, mIncomingNumber)) {
                         // Don't auto-respond if alarm fired
                         mIncomingCall = false;
                         mKeepCounting = false;
@@ -196,13 +198,17 @@ public class SmsCallService extends Service {
             }
 
             if ((bypassCodePref != SmsCallController.DEFAULT_DISABLED
-                   || userAutoSms != SmsCallController.DEFAULT_DISABLED)
+                   || userAutoSms != SmsCallController.DEFAULT_DISABLED
+                   || WhitelistUtils.hasMessageBypass(mContext))
                     && QuietHoursHelper.inQuietHours(mContext, null)) {
                 final String bypassCode =
                         SmsCallController.getInstance(
                                 mContext).returnUserTextBypassCode();
                 final String messageBody = msg.getMessageBody();
-                if (messageBody.contains(bypassCode)) {
+                if (WhitelistUtils.isMessageBypass(mContext, incomingNumber)){
+                    nawDawg = true;
+                    startAlarm(incomingNumber);
+                } else if (messageBody.contains(bypassCode)) {
                     switch (bypassCodePref) {
                        case SmsCallController.DEFAULT_DISABLED:
                            break;
@@ -303,6 +309,6 @@ public class SmsCallService extends Service {
                 | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         alarmDialog.setClass(mContext, BypassAlarm.class);
         alarmDialog.putExtra("number", contactName);
-        startActivity(alarmDialog);
+        startActivityAsUser(alarmDialog, UserHandle.CURRENT);
     }
 }
