@@ -21,7 +21,8 @@
 
     <SwitchPreference
         android:key="quiet_hours_enabled"
-        android:title="@string/quiet_hours_enabled"/>
+        android:title="@string/quiet_hours_enabled"
+        android:persistent="false" />
 
     <com.android.settings.slim.TimeRangePreference
         android:key="quiet_hours_timerange"
@@ -30,11 +31,13 @@
     <SwitchPreference
         android:key="quiet_hours_start"
         android:title="@string/quiet_hours_start"
-        android:dependency="quiet_hours_enabled" />
+        android:dependency="quiet_hours_enabled"
+        android:persistent="false" />
 
     <CheckBoxPreference
         android:key="quiet_hours_enable_notification"
         android:title="@string/quiet_hours_enable_notification_title"
+        android:summary="@string/quiet_hours_enable_notification_summary"
         android:dependency="quiet_hours_enabled" />
 
     <ListPreference
@@ -42,70 +45,90 @@
         android:defaultValue="10"
         android:title="@string/quiet_hours_snooze_time"
         android:dialogTitle="@string/quiet_hours_snooze_time"
-        android:dependency="quiet_hours_enabled"
+        android:dependency="quiet_hours_enable_notification"
         android:entries="@array/quiet_hours_snooze_time_entries"
         android:entryValues="@array/quiet_hours_snooze_time_values" />
 
-    <ListPreference
-        android:key="quiet_hours_ringer"
-        android:title="@string/quiet_hours_ringer"
-        android:dialogTitle="@string/quiet_hours_ringer"
+    <PreferenceScreen
+        android:title="@string/quiet_hours_whitelist"
+        android:summary="@string/quiet_hours_whitelist_summary"
         android:dependency="quiet_hours_enabled"
-        android:entries="@array/quiet_hours_ringer_entries"
-        android:entryValues="@array/quiet_hours_ringer_values" />
+        android:fragment="com.android.settings.slim.WhitelistSettings" />
 
-    <org.omnirom.omnigears.preference.SystemCheckBoxPreference
-        android:key="quiet_hours_mute"
-        android:title="@string/quiet_hours_mute"
-        android:summaryOn="@string/quiet_hours_mute_on"
-        android:summaryOff="@string/quiet_hours_mute_off"
-        android:dependency="quiet_hours_enabled" />
+    <PreferenceCategory
+        android:key="quiet_hours_settings"
+        android:title="@string/quiet_hours_options_group">
 
-    <org.omnirom.omnigears.preference.SystemCheckBoxPreference
-        android:key="quiet_hours_haptic"
-        android:title="@string/quiet_hours_haptic"
-        android:summaryOn="@string/quiet_hours_haptic_on"
-        android:summaryOff="@string/quiet_hours_haptic_off"
-        android:dependency="quiet_hours_enabled" />
+        <ListPreference
+            android:key="quiet_hours_ringer"
+            android:title="@string/quiet_hours_ringer"
+            android:dialogTitle="@string/quiet_hours_ringer"
+            android:dependency="quiet_hours_enabled"
+            android:entries="@array/quiet_hours_ringer_entries"
+            android:entryValues="@array/quiet_hours_ringer_values"
+            android:persistent="false" />
 
-    <org.omnirom.omnigears.preference.SystemCheckBoxPreference
-        android:key="quiet_hours_still"
-        android:title="@string/quiet_hours_still"
-        android:summaryOn="@string/quiet_hours_still_on"
-        android:summaryOff="@string/quiet_hours_still_off"
-        android:dependency="quiet_hours_enabled" />
+        <org.omnirom.omnigears.preference.SystemCheckBoxPreference
+            android:key="quiet_hours_mute"
+            android:title="@string/quiet_hours_mute"
+            android:summaryOn="@string/quiet_hours_mute_on"
+            android:summaryOff="@string/quiet_hours_mute_off"
+            android:dependency="quiet_hours_enabled" />
 
-    <org.omnirom.omnigears.preference.SystemCheckBoxPreference
-        android:key="quiet_hours_dim"
-        android:title="@string/quiet_hours_dim"
-        android:summaryOn="@string/quiet_hours_dim_on"
-        android:summaryOff="@string/quiet_hours_dim_off"
-        android:dependency="quiet_hours_enabled" />
+        <org.omnirom.omnigears.preference.SystemCheckBoxPreference
+            android:key="quiet_hours_haptic"
+            android:title="@string/quiet_hours_haptic"
+            android:summaryOn="@string/quiet_hours_haptic_on"
+            android:summaryOff="@string/quiet_hours_haptic_off"
+            android:dependency="quiet_hours_enabled" />
+
+        <org.omnirom.omnigears.preference.SystemCheckBoxPreference
+            android:key="quiet_hours_still"
+            android:title="@string/quiet_hours_still"
+            android:summaryOn="@string/quiet_hours_still_on"
+            android:summaryOff="@string/quiet_hours_still_off"
+            android:dependency="quiet_hours_enabled" />
+
+        <org.omnirom.omnigears.preference.SystemCheckBoxPreference
+            android:key="quiet_hours_dim"
+            android:title="@string/quiet_hours_dim"
+            android:summaryOn="@string/quiet_hours_dim_on"
+            android:summaryOff="@string/quiet_hours_dim_off"
+            android:dependency="quiet_hours_enabled" />
+
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:key="sms_respond"
         android:title="@string/quiet_hours_auto_sms_group">
 
-        <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/incoming_contact_entries"
-            android:entryValues="@array/incoming_contact_values"
-            android:key="auto_sms"
-            android:title="@string/quiet_hours_auto_sms_title"
-            android:dependency="quiet_hours_enabled" />
+        <Preference
+            android:selectable="false"
+            android:title="@string/quiet_hours_auto_sms_summary"/>
 
         <ListPreference
             android:defaultValue="0"
-            android:entries="@array/incoming_contact_entries"
-            android:entryValues="@array/incoming_contact_values"
+            android:entries="@array/incoming_contact_entries_bypass"
+            android:entryValues="@array/incoming_contact_values_bypass"
+            android:key="auto_sms"
+            android:title="@string/quiet_hours_auto_sms_title"
+            android:dependency="quiet_hours_enabled"
+            android:persistent="false" />
+
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/incoming_contact_entries_bypass"
+            android:entryValues="@array/incoming_contact_values_bypass"
             android:key="auto_sms_call"
             android:title="@string/quiet_hours_auto_sms_call_title"
-            android:dependency="quiet_hours_enabled" />
+            android:dependency="quiet_hours_enabled"
+            android:persistent="false" />
 
         <Preference
             android:key="auto_sms_message"
             android:title="@string/quiet_hours_auto_string_title"
-            android:dependency="quiet_hours_enabled" />
+            android:dependency="quiet_hours_enabled"
+            android:persistent="false" />
 
     </PreferenceCategory>
 
@@ -113,18 +136,24 @@
         android:key="quiethours_bypass"
         android:title="@string/quiet_hours_bypass_group">
 
+        <Preference
+            android:selectable="false"
+            android:title="@string/quiet_hours_bypass_summary"/>
+
         <ListPreference
             android:defaultValue="0"
             android:entries="@array/incoming_contact_entries"
             android:entryValues="@array/incoming_contact_values"
             android:key="sms_bypass"
             android:title="@string/quiet_hours_sms_bypass_title"
-            android:dependency="quiet_hours_enabled" />
+            android:dependency="quiet_hours_enabled"
+            android:persistent="false" />
 
         <Preference
             android:key="sms_bypass_code"
             android:title="@string/quiet_hours_sms_code_title"
-            android:dependency="quiet_hours_enabled" />
+            android:dependency="quiet_hours_enabled"
+            android:persistent="false" />
 
         <ListPreference
             android:defaultValue="0"
@@ -132,7 +161,8 @@
             android:entryValues="@array/incoming_contact_values"
             android:key="call_bypass"
             android:title="@string/quiet_hours_call_bypass_title"
-            android:dependency="quiet_hours_enabled" />
+            android:dependency="quiet_hours_enabled"
+            android:persistent="false" />
 
         <ListPreference
             android:defaultValue="2"
@@ -140,19 +170,27 @@
             android:entryValues="@array/incoming_call_number_values"
             android:key="required_calls"
             android:title="@string/quiet_hours_calls_required_title"
-            android:dependency="quiet_hours_enabled" />
+            android:dependency="quiet_hours_enabled"
+            android:persistent="false" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:key="quiethours_bypass_options"
+        android:title="@string/quiet_hours_bypass_options_group">
 
-        <RingtonePreference
+        <com.android.settings.slim.QuietHoursAlarmRingtonePreference
             android:ringtoneType="all"
             android:showSilent="false"
             android:key="bypass_ringtone"
             android:title="@string/quiet_hours_bypass_ringtone_title"
-            android:dependency="quiet_hours_enabled" />
+            android:dependency="quiet_hours_enabled"
+            android:persistent="false" />
 
-        <CheckBoxPreference
-            android:key="loop_bypass_ringtone"
+        <org.omnirom.omnigears.preference.SystemCheckBoxPreference
+            android:key="quiet_hours_alarm_loop"
             android:title="@string/quiet_hours_bypass_ringtone_loop_title"
-            android:dependency="quiet_hours_enabled" />
+            android:dependency="quiet_hours_enabled"
+            android:defaultValue="0" />
 
     </PreferenceCategory>
 </PreferenceScreen>
