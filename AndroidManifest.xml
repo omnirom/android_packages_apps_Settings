@@ -78,6 +78,7 @@
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.READ_PHONE_BLACKLIST" />
     <uses-permission android:name="android.permission.CHANGE_PHONE_BLACKLIST" />
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
 
     <permission
         android:name="android.permission.REQUEST_SUPERUSER"
@@ -804,6 +805,22 @@
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="org.regulus.amrasettings.ram.RamBar" />
         </activity>
+
+        <service
+            android:name="org.regulus.amrasettings.backup.BackupService" />
+
+        <activity
+            android:name="org.regulus.amrasettings.backup.ManageBackupsActivity"
+            android:label="@string/manage_backups_activity_title"
+            android:taskAffinity="com.android.settings"
+            android:theme="@android:style/Theme.Holo.DialogWhenLarge"
+            android:launchMode="singleTask" />
+
+        <activity
+               android:name="org.regulus.amrasettings.backup.BackupSettings"
+               android:label="@string/backups_title"
+               android:taskAffinity="com.android.settings"
+               android:launchMode="singleTask" />
 	
         <!--
         Amra Settings End. 
