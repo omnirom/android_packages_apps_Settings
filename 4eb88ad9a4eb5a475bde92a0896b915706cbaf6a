@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_f518eb7b",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 12
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-05-09T14:58:28Z",
+      "side": 1,
+      "message": "That is not really english :)\nWhat about  \"Headset insert shortcut\"",
+      "revId": "4eb88ad9a4eb5a475bde92a0896b915706cbaf6a",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
