@@ -36,6 +36,7 @@ import android.os.Bundle;
 import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceScreen;
@@ -57,7 +58,7 @@ public class WirelessSettings extends RestrictedSettingsFragment
     private static final String TAG = "WirelessSettings";
 
     private static final String KEY_TOGGLE_AIRPLANE = "toggle_airplane";
-    private static final String KEY_TOGGLE_NFC = "toggle_nfc";
+    private static final String KEY_NFC_POLLING = "nfc_polling";
     private static final String KEY_WIMAX_SETTINGS = "wimax_settings";
     private static final String KEY_ANDROID_BEAM_SETTINGS = "android_beam_settings";
     private static final String KEY_VPN_SETTINGS = "vpn_settings";
@@ -267,7 +268,8 @@ public class WirelessSettings extends RestrictedSettingsFragment
 
         final Activity activity = getActivity();
         mAirplaneModePreference = (CheckBoxPreference) findPreference(KEY_TOGGLE_AIRPLANE);
-        CheckBoxPreference nfc = (CheckBoxPreference) findPreference(KEY_TOGGLE_NFC);
+        ListPreference nfc = (ListPreference) findPreference(KEY_NFC_POLLING);
+        
         PreferenceScreen androidBeam = (PreferenceScreen) findPreference(KEY_ANDROID_BEAM_SETTINGS);
         CheckBoxPreference nsd = (CheckBoxPreference) findPreference(KEY_TOGGLE_NSD);
 
@@ -316,7 +318,7 @@ public class WirelessSettings extends RestrictedSettingsFragment
 
         // Manually set dependencies for NFC when not toggleable.
         if (toggleable == null || !toggleable.contains(Settings.Global.RADIO_NFC)) {
-            findPreference(KEY_TOGGLE_NFC).setDependency(KEY_TOGGLE_AIRPLANE);
+            findPreference(KEY_NFC_POLLING).setDependency(KEY_TOGGLE_AIRPLANE);
             findPreference(KEY_ANDROID_BEAM_SETTINGS).setDependency(KEY_TOGGLE_AIRPLANE);
         }
 

@@ -28,10 +28,13 @@
         android:title="@string/sms_application_title"
         android:persistent="false" />
 
-    <CheckBoxPreference
-        android:key="toggle_nfc"
-        android:title="@string/nfc_quick_toggle_title"
-        android:summary="@string/nfc_quick_toggle_summary"
+    <ListPreference
+        android:defaultValue="locked_screen_on"
+        android:entries="@array/nfc_polling_entries"
+        android:entryValues="@array/nfc_polling_values"
+        android:key="nfc_polling"
+        android:title="@string/nfc_polling_title"
+        android:summary="@string/nfc_polling_summary"
         android:persistent="false" />
 
     <PreferenceScreen

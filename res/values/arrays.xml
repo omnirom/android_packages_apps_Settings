@@ -1203,4 +1203,21 @@
         <item>critical</item>
     </string-array>
 
+    <string-array name="nfc_polling_entries">
+        <item>Off</item>
+        <item>Screen Off</item>
+        <item>Screen On &amp; Locked </item>
+        <item>Screen On &amp; Unlocked</item>
+        <!-- on if screen on and locked, off when unlocked -->
+        <item>Screen On &amp; Locked only</item>
+    </string-array>
+
+    <string-array name="nfc_polling_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <!-- turn off on screen on unlocked -->
+        <item>4</item>
+    </string-array>
 </resources>

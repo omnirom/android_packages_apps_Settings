@@ -21,20 +21,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
-import android.preference.CheckBoxPreference;
+import android.provider.Settings;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
 
 import com.android.settings.R;
 
 /**
- * NfcEnabler is a helper to manage the Nfc on/off checkbox preference. It is
+ * NfcEnabler is a helper to manage the Nfc polling list preference. It is
  * turns on/off Nfc and ensures the summary of the preference reflects the
  * current state.
  */
 public class NfcEnabler implements Preference.OnPreferenceChangeListener {
+    private static final String KEY_NFC_POLLING = "nfc_polling";
+    static final int POLLING_OFF = 0;
+    static final int POLLING_SCREEN_ON_LOCKED = 2;
+
     private final Context mContext;
-    private final CheckBoxPreference mCheckbox;
+    private final ListPreference mList;
     private final PreferenceScreen mAndroidBeam;
     private final NfcAdapter mNfcAdapter;
     private final IntentFilter mIntentFilter;
@@ -50,16 +55,16 @@ public class NfcEnabler implements Preference.OnPreferenceChangeListener {
         }
     };
 
-    public NfcEnabler(Context context, CheckBoxPreference checkBoxPreference,
+    public NfcEnabler(Context context, ListPreference listPreference,
             PreferenceScreen androidBeam) {
         mContext = context;
-        mCheckbox = checkBoxPreference;
+        mList = listPreference;
         mAndroidBeam = androidBeam;
         mNfcAdapter = NfcAdapter.getDefaultAdapter(context);
 
         if (mNfcAdapter == null) {
             // NFC is not supported
-            mCheckbox.setEnabled(false);
+            mList.setEnabled(false);
             mAndroidBeam.setEnabled(false);
             mIntentFilter = null;
             return;
@@ -73,7 +78,10 @@ public class NfcEnabler implements Preference.OnPreferenceChangeListener {
         }
         handleNfcStateChanged(mNfcAdapter.getAdapterState());
         mContext.registerReceiver(mReceiver, mIntentFilter);
-        mCheckbox.setOnPreferenceChangeListener(this);
+        final int currentPollingMode = Settings.System.getInt(mContext.getContentResolver(), KEY_NFC_POLLING,
+                POLLING_SCREEN_ON_LOCKED);
+        mList.setValue(String.valueOf(currentPollingMode));
+        mList.setOnPreferenceChangeListener(this);
     }
 
     public void pause() {
@@ -81,19 +89,19 @@ public class NfcEnabler implements Preference.OnPreferenceChangeListener {
             return;
         }
         mContext.unregisterReceiver(mReceiver);
-        mCheckbox.setOnPreferenceChangeListener(null);
+        mList.setOnPreferenceChangeListener(null);
     }
 
     public boolean onPreferenceChange(Preference preference, Object value) {
         // Turn NFC on/off
 
-        final boolean desiredState = (Boolean) value;
-        mCheckbox.setEnabled(false);
+        final int pollingMode = Integer.parseInt((String)value);
+        Settings.System.putInt(mContext.getContentResolver(), KEY_NFC_POLLING, pollingMode);
+        mList.setValue(String.valueOf(pollingMode));
 
-        if (desiredState) {
+        mNfcAdapter.disable();
+        if (pollingMode != POLLING_OFF) {
             mNfcAdapter.enable();
-        } else {
-            mNfcAdapter.disable();
         }
 
         return false;
@@ -102,14 +110,12 @@ public class NfcEnabler implements Preference.OnPreferenceChangeListener {
     private void handleNfcStateChanged(int newState) {
         switch (newState) {
         case NfcAdapter.STATE_OFF:
-            mCheckbox.setChecked(false);
-            mCheckbox.setEnabled(true);
+            mList.setEnabled(true);
             mAndroidBeam.setEnabled(false);
             mAndroidBeam.setSummary(R.string.android_beam_disabled_summary);
             break;
         case NfcAdapter.STATE_ON:
-            mCheckbox.setChecked(true);
-            mCheckbox.setEnabled(true);
+            mList.setEnabled(true);
             mAndroidBeam.setEnabled(true);
             if (mNfcAdapter.isNdefPushEnabled()) {
                 mAndroidBeam.setSummary(R.string.android_beam_on_summary);
@@ -118,13 +124,11 @@ public class NfcEnabler implements Preference.OnPreferenceChangeListener {
             }
             break;
         case NfcAdapter.STATE_TURNING_ON:
-            mCheckbox.setChecked(true);
-            mCheckbox.setEnabled(false);
+            mList.setEnabled(false);
             mAndroidBeam.setEnabled(false);
             break;
         case NfcAdapter.STATE_TURNING_OFF:
-            mCheckbox.setChecked(false);
-            mCheckbox.setEnabled(false);
+            mList.setEnabled(false);
             mAndroidBeam.setEnabled(false);
             break;
         }
