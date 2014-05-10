@@ -31,6 +31,12 @@
             android:persistent="false"
             />
 
+    <org.omnirom.omnigears.preference.AppSelectListPreference
+        android:key="bluetooth_app_shortcut"
+        android:title="@string/bluetooth_app_shortcut_enable_title"
+        android:positiveButtonText="@string/bluetooth_app_shortcut_positive_title"
+        android:persistent="false"/>
+
     <PreferenceCategory
             android:key="profile_container"
             android:order="100"

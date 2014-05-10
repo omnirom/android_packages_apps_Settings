@@ -356,4 +356,8 @@
     <string name="headset_plug_positive_title">None</string>
     <string name="headset_plug_neutral_title">Default</string>
     <string name="headset_plug_neutral_summary">System default music app</string>
+
+    <!-- Bluetooth app shortcut -->
+    <string name="bluetooth_app_shortcut_enable_title">Application shorcut</string>
+    <string name="bluetooth_app_shortcut_positive_title">None</string>
 </resources>

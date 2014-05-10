@@ -38,6 +38,8 @@ import android.widget.Button;
 import android.text.Editable;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
+import org.omnirom.omnigears.preference.AppSelectListPreference;
+import android.content.pm.PackageManager;
 
 import java.util.HashMap;
 
@@ -53,12 +55,14 @@ public final class DeviceProfilesSettings extends SettingsPreferenceFragment
     private static final String KEY_RENAME_DEVICE = "rename_device";
     private static final String KEY_PROFILE_CONTAINER = "profile_container";
     private static final String KEY_UNPAIR = "unpair";
+    private static final String KEY_APP_SHORTCUT = "bluetooth_app_shortcut";
 
     public static final String EXTRA_DEVICE = "device";
     private RenameEditTextPreference mRenameDeviceNamePref;
     private LocalBluetoothManager mManager;
     private CachedBluetoothDevice mCachedDevice;
     private LocalBluetoothProfileManager mProfileManager;
+    private AppSelectListPreference mAppShortcut;
 
     private PreferenceGroup mProfileContainer;
     private EditTextPreference mDeviceNamePref;
@@ -104,6 +108,9 @@ public final class DeviceProfilesSettings extends SettingsPreferenceFragment
         getPreferenceScreen().setOrderingAsAdded(false);
         mProfileContainer = (PreferenceGroup) findPreference(KEY_PROFILE_CONTAINER);
         mDeviceNamePref = (EditTextPreference) findPreference(KEY_RENAME_DEVICE);
+        mAppShortcut = (AppSelectListPreference) findPreference(KEY_APP_SHORTCUT);
+        mAppShortcut.setOnPreferenceChangeListener(this);
+        updateAppShortcutSummary();
 
         if (device == null) {
             Log.w(TAG, "Activity started without a remote Bluetooth device");
@@ -229,6 +236,7 @@ public final class DeviceProfilesSettings extends SettingsPreferenceFragment
         String key = preference.getKey();
         if (key.equals(KEY_UNPAIR)) {
             unpairDevice();
+            // TODO: Delete app shortcut for this device and this user
             finish();
             return true;
         }
@@ -239,6 +247,9 @@ public final class DeviceProfilesSettings extends SettingsPreferenceFragment
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (preference == mDeviceNamePref) {
             mCachedDevice.setName((String) newValue);
+        } else if (preference == mAppShortcut) {
+            //TODO: Save shortcut for this device for this user
+            updateAppShortcutSummary();
         } else if (preference instanceof CheckBoxPreference) {
             LocalBluetoothProfile prof = getProfileOf(preference);
             onProfileClicked(prof, (CheckBoxPreference) preference);
@@ -248,6 +259,12 @@ public final class DeviceProfilesSettings extends SettingsPreferenceFragment
         }
 
         return true;
+    }
+
+    private void updateAppShortcutSummary(){
+        //TODO: update info
+        final PackageManager packageManager = getPackageManager();
+        mAppShortcut.setSummary(getResources().getString(R.string.bluetooth_app_shortcut_positive_title));
     }
 
     private void onProfileClicked(LocalBluetoothProfile profile, CheckBoxPreference profilePref) {
