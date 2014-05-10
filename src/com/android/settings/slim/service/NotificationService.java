@@ -173,7 +173,7 @@ public class NotificationService extends Service {
         mSharedPrefs.registerOnSharedPreferenceChangeListener(mSharedPrefsObserver);
 
         Intent intent = new Intent(QuietHoursHelper.QUIET_HOURS_START);
-        mContext.sendBroadcast(intent);
+        mContext.sendBroadcastAsUser(intent, UserHandle.CURRENT);
     }
 
     @Override
@@ -196,7 +196,7 @@ public class NotificationService extends Service {
         mSharedPrefs.unregisterOnSharedPreferenceChangeListener(mSharedPrefsObserver);
 
         Intent intent = new Intent(QuietHoursHelper.QUIET_HOURS_STOP);
-        mContext.sendBroadcast(intent);
+        mContext.sendBroadcastAsUser(intent, UserHandle.CURRENT);
 
         super.onDestroy();
     }

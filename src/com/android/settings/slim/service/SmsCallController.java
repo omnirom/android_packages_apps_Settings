@@ -420,9 +420,11 @@ public class SmsCallController {
         mAlarmManager.cancel(mStartNotificationIntent);
         mAlarmManager.cancel(mStopNotificationIntent);
 
+        // always stop to make sure :)
+        mContext.stopServiceAsUser(mNotificationTriggerIntent,
+                android.os.Process.myUserHandle());
+
         if (!mQuietHoursEnabled) {
-            mContext.stopServiceAsUser(mNotificationTriggerIntent,
-                    android.os.Process.myUserHandle());
             return;
         }
 
@@ -512,13 +514,15 @@ public class SmsCallController {
         mAlarmManager.cancel(mStartIntent);
         mAlarmManager.cancel(mStopIntent);
 
+        // always stop to make sure :)
+        mContext.stopServiceAsUser(mServiceTriggerIntent,
+                android.os.Process.myUserHandle());
+
         if (!mQuietHoursEnabled
 			    || (mAutoCall == DEFAULT_DISABLED
 			    && mAutoText == DEFAULT_DISABLED
 			    && mCallBypass == DEFAULT_DISABLED
 			    && mSmsBypass == DEFAULT_DISABLED)) {
-			mContext.stopServiceAsUser(mServiceTriggerIntent,
-                    android.os.Process.myUserHandle());
             return;
         }
 
