@@ -47,6 +47,11 @@
             android:entryValues="@array/lock_after_timeout_values"
             android:persistent="false"/>
 
+        <PreferenceScreen
+            android:key="nfc_unlock_settings"
+            android:title="@string/nfc_unlock_settings_title"
+            android:summary="@string/nfc_unlock_settings_summary"/>
+
         <CheckBoxPreference
             android:key="power_button_instantly_locks"
             android:title="@string/lockpattern_settings_enable_power_button_instantly_locks"/>

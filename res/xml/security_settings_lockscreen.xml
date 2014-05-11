@@ -30,6 +30,17 @@
             android:key="blacklist"
             android:title="@string/blacklist_title"
             android:fragment="com.android.settings.blacklist.BlacklistSettings" />
+
+        <PreferenceScreen
+            android:key="nfc_unlock_settings"
+            android:title="@string/nfc_unlock_settings_title"
+            android:summary="@string/nfc_unlock_settings_summary"/>
+
+        <PreferenceScreen
+            android:fragment="com.android.settings.OwnerInfoSettings"
+            android:key="owner_info_settings"
+            android:title="@string/owner_info_settings_title"
+            android:summary="@string/owner_info_settings_summary"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
