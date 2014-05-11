@@ -168,23 +168,44 @@
         android:defaultValue="false" />
 
     <!-- Headset -->
-	<PreferenceCategory
-        android:key="headset_category"
-        android:title="@string/headset_settings">
+    <PreferenceCategory
+    android:key="headset_category"
+    android:title="@string/headset_settings">
+    
+    <org.omnirom.omnigears.preference.AppSelectListPreference
+        android:key="headset_plug"
+        android:title="@string/headset_plug_enable_title"
+        android:positiveButtonText="@string/headset_plug_positive_title"
+        settings:neutralButtonText="@string/headset_plug_neutral_title"
+        settings:neutralButtonValue="SYSTEM_DEFAULT"
+        android:persistent="false" />
+    
+    <org.omnirom.omnigears.preference.SystemCheckBoxPreference
+        android:key="headset_plug_music_active"
+        android:title="@string/headset_plug_music_active_title"
+        android:summary="@string/headset_plug_music_active_summary"
+        android:defaultValue="true" />
 
-        <org.omnirom.omnigears.preference.AppSelectListPreference
-            android:key="headset_plug"
-            android:title="@string/headset_plug_enable_title"
-            android:positiveButtonText="@string/headset_plug_positive_title"
-            settings:neutralButtonText="@string/headset_plug_neutral_title"
-            settings:neutralButtonValue="SYSTEM_DEFAULT"
-            android:persistent="false" />
+    <ListPreference
+        android:key="headset_plug_app_running"
+        android:title="@string/headset_plug_app_running_title"
+        android:entries="@array/headset_plug_app_running_entries"
+        android:entryValues="@array/headset_plug_app_running_values"
+        android:persistent="false" />
 
-        <org.omnirom.omnigears.preference.SystemCheckBoxPreference
-            android:key="headset_plug_music_active"
-            android:title="@string/headset_plug_music_active_title"
-            android:summary="@string/headset_plug_music_active_summary"
-            android:defaultValue="true" />
+    <ListPreference
+        android:key="headset_plug_actions"
+        android:title="@string/headset_plug_actions_title"
+        android:entries="@array/headset_plug_actions_entries"
+        android:entryValues="@array/headset_plug_actions_values"
+        android:persistent="false" />
+
+    <org.omnirom.omnigears.preference.SystemCheckBoxPreference
+        android:key="headset_plug_force_actions"
+        android:title="@string/headset_plug_force_actions_title"
+        android:summary="@string/headset_plug_force_actions_summary"
+        android:defaultValue="false" />
 
     </PreferenceCategory>
+
 </PreferenceScreen>
