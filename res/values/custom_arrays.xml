@@ -254,4 +254,17 @@
         <item>30</item>
         <item>60</item>
     </string-array>
+
+    <!-- Headset plug -->
+    <string-array name="headset_plug_stop_app_entries" translatable="false">
+        <item>@string/headset_plug_stop_app_disabled</item>
+        <item>@string/headset_plug_stop_app_stop</item>
+        <item>@string/headset_plug_stop_app_kill</item>
+    </string-array>
+
+    <string-array name="headset_plug_stop_app_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 </resources>
