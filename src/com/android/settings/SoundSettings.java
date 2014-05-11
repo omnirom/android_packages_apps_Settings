@@ -92,6 +92,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
     private static final String KEY_SAFE_HEADSET_VOLUME_WARNING = "safe_headset_volume_warning";
     private static final String KEY_VOLUME_PANEL_TIMEOUT = "volume_panel_timeout";
     private static final String KEY_HEADSET_PLUG = "headset_plug";
+    private static final String KEY_HEADSET_ACTIONS = "headset_plug_actions";
 
     private static final String[] NEED_VOICE_CAPABILITY = {
             KEY_RINGTONE, KEY_DTMF_TONE, KEY_CATEGORY_CALLS,
@@ -126,6 +127,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
 
     private CheckBoxPreference mVolumeAdustSound;
     private AppSelectListPreference mHeadsetPlug;
+    private ListPreference mHeadsetAction;
     
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -221,6 +223,12 @@ public class SoundSettings extends SettingsPreferenceFragment implements
         mLockSounds.setPersistent(false);
         mLockSounds.setChecked(Settings.System.getInt(resolver,
                 Settings.System.LOCKSCREEN_SOUNDS_ENABLED, 1) != 0);
+
+        mHeadsetAction = (ListPreference) findPreference(KEY_HEADSET_ACTIONS);
+        mHeadsetAction.setValue(Integer.toString(Settings.System.getInt(
+            getContentResolver(), Settings.System.HEADSET_PLUG_ACTIONS, 0)));
+        mHeadsetAction.setSummary(mHeadsetAction.getEntry());
+        mHeadsetAction.setOnPreferenceChangeListener(this);
 
         mHeadsetPlug = (AppSelectListPreference) findPreference(KEY_HEADSET_PLUG);
         mHeadsetPlug.setOnPreferenceChangeListener(this);
@@ -439,6 +447,13 @@ public class SoundSettings extends SettingsPreferenceFragment implements
            Settings.System.putString(getContentResolver(),
                     Settings.System.HEADSET_PLUG_ENABLED, value);
            updateHeadsetPlugSummary();
+        } else if (preference == mHeadsetAction) {
+           String value = (String) objValue;
+           int val = Integer.parseInt(value);
+           Settings.System.putInt(getContentResolver(),
+                   Settings.System.HEADSET_PLUG_ACTIONS, val);
+           int index = mHeadsetAction.findIndexOfValue(value);
+           mHeadsetAction.setSummary(mHeadsetAction.getEntries()[index]);
         }
 
         return true;
@@ -448,12 +463,15 @@ public class SoundSettings extends SettingsPreferenceFragment implements
         final PackageManager packageManager = getPackageManager();
 
         mHeadsetPlug.setSummary(getResources().getString(R.string.headset_plug_positive_title));
+        mHeadsetAction.setEnabled(false);
 
         String headSetPlugIntentUri = Settings.System.getString(getContentResolver(), Settings.System.HEADSET_PLUG_ENABLED);
 
         if (headSetPlugIntentUri != null) {
+
             if(headSetPlugIntentUri.equals(Settings.System.HEADSET_PLUG_SYSTEM_DEFAULT)) {
                  mHeadsetPlug.setSummary(getResources().getString(R.string.headset_plug_neutral_summary));
+                 mHeadsetAction.setEnabled(true);
             } else {
                 Intent headSetPlugIntent = null;
                 try {
@@ -466,6 +484,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
                     ResolveInfo info = packageManager.resolveActivity(headSetPlugIntent, 0);
                     if (info != null) {
                         mHeadsetPlug.setSummary(info.loadLabel(packageManager));
+                        mHeadsetAction.setEnabled(true);
                     }
                 }
             }
