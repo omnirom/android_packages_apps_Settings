@@ -41,6 +41,10 @@
             android:title="@string/lock_numpad_random_title"
             android:dialogTitle="@string/lock_numpad_random_dialog_title" 
             android:persistent="false"/>
+        <PreferenceScreen
+            android:key="nfc_unlock_settings"
+            android:title="@string/nfc_unlock_settings_title"
+            android:summary="@string/nfc_unlock_settings_summary"/>
 
         <CheckBoxPreference
             android:key="power_button_instantly_locks"
