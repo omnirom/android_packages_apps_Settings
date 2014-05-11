@@ -359,4 +359,11 @@
     <string name="headset_plug_neutral_summary">System default music app</string>
     <string name="headset_plug_music_active_title">Disable on active audio</string>
     <string name="headset_plug_music_active_summary">Dont run shortcut on active audio playback</string>
+    <string name="headset_plug_app_running_title">If app already running</string>
+    <string name="headset_plug_app_running_nothing">Do nothing</string>
+    <string name="headset_plug_app_running_front">Move app to front</string>
+    <string name="headset_plug_actions_title">Unplug action</string>
+    <string name="headset_plug_actions_disabled">None</string>
+    <string name="headset_plug_actions_front">Move app to front</string>
+    <string name="headset_plug_actions_kill">Kill app</string>
 </resources>
