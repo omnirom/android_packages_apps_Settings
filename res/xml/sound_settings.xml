@@ -167,11 +167,22 @@
         android:title="@string/dock_sounds_enable_title"
         android:defaultValue="false" />
 
+    <!-- Headset -->
+    <PreferenceCategory
+        android:key="headset_category"
+        android:title="@string/headset_settings"/>
+
     <org.omnirom.omnigears.preference.AppSelectListPreference
         android:key="headset_plug"
         android:title="@string/headset_plug_enable_title"
         android:positiveButtonText="@string/headset_plug_positive_title"
         settings:neutralButtonText="@string/headset_plug_neutral_title"
         settings:neutralButtonValue="SYSTEM_DEFAULT"
-        android:persistent="false"/>
+        android:persistent="false" />
+
+    <org.omnirom.omnigears.preference.SystemCheckBoxPreference
+        android:key="headset_plug_stop_app"
+        android:title="@string/headset_plug_stop_app_title"
+        android:summary="@string/headset_plug_stop_app_summary"
+        android:defaultValue="false" />
 </PreferenceScreen>

@@ -92,6 +92,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
     private static final String KEY_SAFE_HEADSET_VOLUME_WARNING = "safe_headset_volume_warning";
     private static final String KEY_VOLUME_PANEL_TIMEOUT = "volume_panel_timeout";
     private static final String KEY_HEADSET_PLUG = "headset_plug";
+    private static final String KEY_HEADSET_STOP_APP = "headset_plug_stop_app";
 
     private static final String[] NEED_VOICE_CAPABILITY = {
             KEY_RINGTONE, KEY_DTMF_TONE, KEY_CATEGORY_CALLS,
@@ -126,6 +127,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
 
     private CheckBoxPreference mVolumeAdustSound;
     private AppSelectListPreference mHeadsetPlug;
+    private SystemCheckBoxPreference mHeadsetStopApp;
     
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -224,6 +226,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
 
         mHeadsetPlug = (AppSelectListPreference) findPreference(KEY_HEADSET_PLUG);
         mHeadsetPlug.setOnPreferenceChangeListener(this);
+        mHeadsetStopApp = (SystemCheckBoxPreference) findPreference(KEY_HEADSET_STOP_APP);
         updateHeadsetPlugSummary();
 
         mRingtonePreference = findPreference(KEY_RINGTONE);
@@ -448,12 +451,15 @@ public class SoundSettings extends SettingsPreferenceFragment implements
         final PackageManager packageManager = getPackageManager();
 
         mHeadsetPlug.setSummary(getResources().getString(R.string.headset_plug_positive_title));
+        mHeadsetStopApp.setEnabled(false);
 
         String headSetPlugIntentUri = Settings.System.getString(getContentResolver(), Settings.System.HEADSET_PLUG_ENABLED);
 
         if (headSetPlugIntentUri != null) {
+
             if(headSetPlugIntentUri.equals(Settings.System.HEADSET_PLUG_SYSTEM_DEFAULT)) {
                  mHeadsetPlug.setSummary(getResources().getString(R.string.headset_plug_neutral_summary));
+                 mHeadsetStopApp.setEnabled(true);
             } else {
                 Intent headSetPlugIntent = null;
                 try {
@@ -466,6 +472,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements
                     ResolveInfo info = packageManager.resolveActivity(headSetPlugIntent, 0);
                     if (info != null) {
                         mHeadsetPlug.setSummary(info.loadLabel(packageManager));
+                        mHeadsetStopApp.setEnabled(true);
                     }
                 }
             }
