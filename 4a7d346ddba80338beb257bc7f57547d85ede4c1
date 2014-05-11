@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_b542f3b1",
+        "filename": "res/xml/sound_settings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000686
+      },
+      "writtenOn": "2014-05-11T15:49:13Z",
+      "side": 1,
+      "message": "forgot to clean spaces :)",
+      "revId": "4a7d346ddba80338beb257bc7f57547d85ede4c1",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
