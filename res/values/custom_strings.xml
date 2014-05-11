@@ -191,10 +191,10 @@
     <string name="quiet_hours_end">End of quiet hours</string>
     <string name="quiet_hours_end_summary">When to stop enforcing quiet hours</string>
     <string name="quiet_hours_ringer">Phone ringer</string>
-    <string name="quiet_hours_ringer_allow_all">Ring for all callers</string>
-    <string name="quiet_hours_ringer_allow_contacts">Ring for all contacts</string>
-    <string name="quiet_hours_ringer_allow_starred">Ring for favorite contacts</string>
-    <string name="quiet_hours_ringer_mute_all">Mute ringer for all callers</string>
+    <string name="quiet_hours_ringer_allow_all">All numbers</string>
+    <string name="quiet_hours_ringer_allow_contacts">Contacts only</string>
+    <string name="quiet_hours_ringer_allow_starred">Favorite contacts only</string>
+    <string name="quiet_hours_ringer_mute_all">Mute all</string>
     <string name="quiet_hours_mute">Mute notifications</string>
     <string name="quiet_hours_mute_on">No sounds will be played</string>
     <string name="quiet_hours_mute_off">Sounds will play like normal</string>
@@ -219,7 +219,7 @@
     <string name="quiet_hours_auto_disabled">Disabled</string>
     <string name="quiet_hours_auto_enabled">All numbers</string>
     <string name="quiet_hours_auto_contacts">Contacts only</string>
-    <string name="quiet_hours_auto_starred">Starred contacts only</string>
+    <string name="quiet_hours_auto_starred">Favorite contacts only</string>
     <string name="quiet_hours_bypass_group">Bypass quiet hours</string>
     <string name="quiet_hours_sms_code_null">[Alarm]</string>
     <string name="quiet_hours_sms_bypass_title">Text message bypass</string>
@@ -251,6 +251,15 @@
     <string name="quiet_hours_snooze_time">Snooze timeout</string>
     <string name="quiet_hours_notification_stop">Stop</string>
     <string name="quiet_hours_start">Start now</string>
+    <string name="quiet_hours_whitelist_bypass_calls">Incoming call bypass</string>
+    <string name="quiet_hours_whitelist_bypass_messages">Text message bypass</string>
+    <string name="quiet_hours_add_whitelist_number">Add number</string>
+    <string name="quiet_hours_remove_whitelist_number_title">Remove number</string>
+    <string name="quiet_hours_remove_whitelist_entry">Do you want to remove this entry?</string>
+    <string name="quiet_hours_bypass_whitelist">Bypass contacts</string>
+    <string name="quiet_hours_bypass_whitelist_summary">Contacts that will always bypass</string>
+    <string name="quiet_hours_whitelist_button_delete">Delete</string>
+    <string name="quiet_hours_whitelist_edit_dialog_title">Edit contact entry</string>
 
     <!-- time range preference -->
     <string name="start_time_title">Start</string>
@@ -354,9 +363,18 @@
     <!-- Headset plug -->
     <string name="headset_settings">Headset</string>
     <string name="headset_plug_enable_title">Insert shortcut</string>
-    <string name="headset_plug_positive_title">None</string>
+    <string name="headset_plug_positive_title">Disabled</string>
     <string name="headset_plug_neutral_title">Default</string>
     <string name="headset_plug_neutral_summary">System default music app</string>
     <string name="headset_plug_music_active_title">Disable on active audio</string>
     <string name="headset_plug_music_active_summary">Dont run shortcut on active audio playback</string>
+    <string name="headset_plug_app_running_title">Action on running shortcut</string>
+    <string name="headset_plug_app_running_nothing">None</string>
+    <string name="headset_plug_app_running_front">Move to front</string>
+    <string name="headset_plug_actions_title">Action on remove</string>
+    <string name="headset_plug_actions_disabled">None</string>
+    <string name="headset_plug_actions_front">Move to front</string>
+    <string name="headset_plug_actions_kill">Kill app</string>
+    <string name="headset_plug_force_actions_title">Force remove action</string>
+    <string name="headset_plug_force_actions_summary">Run remove action also if shortcut was already running</string>
 </resources>
