@@ -356,4 +356,6 @@
     <string name="headset_plug_positive_title">None</string>
     <string name="headset_plug_neutral_title">Default</string>
     <string name="headset_plug_neutral_summary">System default music app</string>
+    <string name="headset_plug_music_active_title">Disable if music was active</string>
+    <string name="headset_plug_music_active_summary">Don\'t open app if music was active before headset was plugged in</string>
 </resources>
