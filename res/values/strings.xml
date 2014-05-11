@@ -145,7 +145,7 @@
     <string name="large_font">Large</string>
 
     <!-- Do not translate. label for font size preview.  Does not need to be translated. -->
-    <string name="font_size_preview_text">Servez à ce monsieur une bière et des kiwis.</string>
+    <string name="font_size_preview_text">Servez Ã  ce monsieur une biÃ¨re et des kiwis.</string>
     <!-- Button. Chosen when they want to save the chosen text size. -->
     <string name="font_size_save">OK</string>
 
@@ -1272,11 +1272,11 @@
 
     <!-- NFC settings -->
     <!-- Used in the 1st-level settings screen to turn on NFC -->
-    <string name="nfc_quick_toggle_title">NFC</string>
+    <string name="nfc_polling_title">NFC Polling Mode</string>
     <!-- Description of NFC in the 1st level settings screen, for a tablet. [CHAR LIMIT=NONE] -->
-    <string name="nfc_quick_toggle_summary" product="tablet">Allow data exchange when the tablet touches another device</string>
+    <string name="nfc_polling_summary" product="tablet">Set the polling mode to allow data exchange when the tablet touches another device</string>
     <!-- Description of NFC in the 1st level settings screen, for a phone. [CHAR LIMIT=NONE] -->
-    <string name="nfc_quick_toggle_summary" product="default">Allow data exchange when the phone touches another device</string>
+    <string name="nfc_polling_summary" product="default">Set the polling mode to allow data exchange when the phone touches another device</string>
 
     <!-- Used to enter the Android Beam sharing preferences screen. This phrase is a trademark. [CHAR LIMIT=32] -->
     <string name="android_beam_settings_title">Android Beam</string>
@@ -2433,7 +2433,7 @@
     <string name="location_mode_sensors_only_description">Use GPS to determine your location</string>
     <!-- [CHAR LIMIT=130] Location mode screen, temporary value to show as the status of a location
          setting injected by an external app while the app is being queried for the actual value -->
-    <string name="location_loading_injected_setting">Retrieving…</string>
+    <string name="location_loading_injected_setting">Retrievingâ¦</string>
 
     <!-- [CHAR LIMIT=30] Security & location settings screen, setting check box label for Google location service (cell ID, wifi, etc.) -->
     <string name="location_network_based">Wi\u2011Fi &amp; mobile network location</string>
@@ -3065,7 +3065,7 @@
     <!-- User dictionary settings. The list item to choose to insert a word into the user dictionary for all languages -->
     <string name="user_dict_settings_all_languages">For all languages</string>
     <!-- User dictionary settings. The text to show for the option that shows the entire list of supported locales to choose one [CHAR LIMIT=30] -->
-    <string name="user_dict_settings_more_languages">More languages…</string>
+    <string name="user_dict_settings_more_languages">More languagesâ¦</string>
 
     <!-- This is for diagnostics screen. The title of a screen with various items realted to launching screens that will giev the user info. For example, it contains "Phone information" and "Battery information" -->
     <string name="testing">Testing</string>
@@ -4915,4 +4915,5 @@
 
     <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
     <string name="supersu_title">SuperSU</string>
+
 </resources>
