@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_9070a5a3",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-05-13T23:32:23Z",
+      "side": 1,
+      "message": "not was - is :)",
+      "revId": "2d9ede0d244240e709fa8397de03372bbcdde4a8",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_b065a1e0",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-05-13T23:32:23Z",
+      "side": 1,
+      "message": "not before - when\nWhat about: \"Disable on active music playback?\"\nDont think we need a summary then. And as said in base\nIMHO this should be checked by default",
+      "revId": "2d9ede0d244240e709fa8397de03372bbcdde4a8",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
