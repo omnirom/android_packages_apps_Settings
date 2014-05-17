@@ -424,6 +424,9 @@ public class SmsCallController {
         mContext.stopServiceAsUser(mNotificationTriggerIntent,
                 android.os.Process.myUserHandle());
 
+        // maxwen: this is only a workaround for now!
+        NotificationService.destroyQuietHour(mContext);
+
         if (!mQuietHoursEnabled) {
             return;
         }
