@@ -16,6 +16,24 @@
       "revId": "d9ae2fb22a9507e67fd5e8ae49a8893fe8d9e0d7",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_cb342ede",
+        "filename": "res/xml/sound_settings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000686
+      },
+      "writtenOn": "2014-05-17T21:51:03Z",
+      "side": 1,
+      "message": "the category is added at https://gerrit.omnirom.org/#/c/7409/",
+      "parentUuid": "8b77b57d_ab0e1234",
+      "revId": "d9ae2fb22a9507e67fd5e8ae49a8893fe8d9e0d7",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
