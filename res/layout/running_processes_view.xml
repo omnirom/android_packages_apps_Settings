@@ -63,8 +63,12 @@
             android:focusable="true"
             android:gravity="left|bottom"
             android:textAppearance="?android:attr/textAppearanceSmallInverse"
-            android:textColor="#000"
-            android:singleLine="true" />
+            android:textColor="#ffffff"
+            android:singleLine="true"
+            android:shadowColor="#000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,7 +89,11 @@
             android:focusable="true"
             android:gravity="right|bottom"
             android:textAppearance="?android:attr/textAppearanceSmallInverse"
-            android:textColor="#000"
-            android:singleLine="true" />
+            android:textColor="#ffffff"
+            android:singleLine="true"
+            android:shadowColor="#000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5" />
     </view>
 </LinearLayout>
