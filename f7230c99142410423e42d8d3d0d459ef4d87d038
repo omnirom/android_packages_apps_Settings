@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_c66c239b",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 11
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-05-19T20:47:45Z",
+      "side": 1,
+      "message": "above we have named it \"insert\" and now here \"unplug\"\nnormally the opposite to \"unplug\" would be \"plug\" the opposite to \"insert\" \"remove\". You can decide what you like more but I would use only one of them.\n\"Unplug action\" sounds also better here IMHO",
+      "revId": "f7230c99142410423e42d8d3d0d459ef4d87d038",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_e6691f89",
+        "filename": "res/xml/sound_settings.xml",
+        "patchSetId": 11
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-05-19T20:47:45Z",
+      "side": 1,
+      "message": "peristent\u003dfalse ?",
+      "revId": "f7230c99142410423e42d8d3d0d459ef4d87d038",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
