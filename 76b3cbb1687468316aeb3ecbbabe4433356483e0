@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_e632ff06",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 14
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-05-22T20:01:40Z",
+      "side": 1,
+      "message": "These strings needs some work :)",
+      "revId": "76b3cbb1687468316aeb3ecbbabe4433356483e0",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
