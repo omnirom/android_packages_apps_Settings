@@ -108,10 +108,9 @@
         <!-- QuietHours SmsCall Service -->
 
         <service android:name=".slim.service.SmsCallService"/>
-        <service android:name=".slim.service.NotificationService"/>
         <service android:name=".slim.service.AlarmService"/>
 
-        <receiver android:name=".slim.service.NotificationService$NotificationReceiver" />
+        <receiver android:name=".slim.service.SmsCallController$NotificationIntentReceiver" />
 
         <receiver
             android:name=".slim.service.AlarmReceiver">
@@ -119,9 +118,13 @@
                 <action android:name="android.intent.action.TIMEZONE_CHANGED"></action>
                 <action android:name="android.intent.action.TIME_CHANGED"></action>
                 <action android:name="android.intent.action.DATE_CHANGED"></action>
-                <action android:name="com.android.settings.slim.service.SCHEDULE_SERVICE_COMMAND"/>
+                <action android:name="com.android.settings.slim.service.QUIET_HOURS_SCHEDULE_COMMAND"/>
                 <action android:name="com.android.settings.slim.service.STOP_SMSCALL_SERVICE_COMMAND"/>
-                <action android:name="com.android.settings.slim.service.STOP_NOTIFICATION_SERVICE_COMMAND"/>
+                <action android:name="com.android.settings.slim.service.START_NOTIFICATION_COMMAND"/>
+                <action android:name="com.android.settings.slim.service.STOP_NOTIFICATION_COMMAND"/>
+                <action android:name="com.android.settings.slim.service.QUIET_HOURS_PAUSE_COMMAND"/>
+                <action android:name="com.android.settings.slim.service.QUIET_HOURS_RESUME_COMMAND"/>
+
             </intent-filter>
         </receiver>
 
