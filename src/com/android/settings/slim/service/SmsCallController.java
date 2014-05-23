@@ -18,11 +18,15 @@ package com.android.settings.slim.service;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.NotificationManager;
+import android.app.Notification;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.media.RingtoneManager;
@@ -55,13 +59,21 @@ public class SmsCallController {
     private static final String KEY_SMS_BYPASS = "sms_bypass";
     private static final String KEY_REQUIRED_CALLS = "required_calls";
     private static final String KEY_SMS_BYPASS_CODE = "sms_bypass_code";
-    protected static final String KEY_QUIET_HOURS_NOTIFICATION = "quiet_hours_enable_notification";
+    private static final String KEY_QUIET_HOURS_NOTIFICATION = "quiet_hours_enable_notification";
     private static final String KEY_SNOOZE_TIME = "snooze_time";
 
-    public static final String SCHEDULE_SMSCALL_SERVICE_COMMAND =
-            "com.android.settings.slim.service.SCHEDULE_SMSCALL_SERVICE_COMMAND";
-    public static final String SCHEDULE_NOTIFICATION_SERVICE_COMMAND =
-            "com.android.settings.slim.service.SCHEDULE_NOTIFICATION_SERVICE_COMMAND";
+    public static final String QUIET_HOURS_STOP_SMSCALL_COMMAND =
+            "com.android.settings.slim.service.QUIET_HOURS_STOP_SMSCALL_COMMAND";
+    public static final String QUIET_HOURS_START_COMMAND =
+            "com.android.settings.slim.service.QUIET_HOURS_START_COMMAND";
+    public static final String QUIET_HOURS_STOP_COMMAND =
+            "com.android.settings.slim.service.QUIET_HOURS_STOP_COMMAND";
+
+    private static final String NOTIFICATION_PAUSE_ID = "pause";
+    private static final String NOTIFICATION_RESUME_ID = "resume";
+    private static final String NOTIFICATION_STOP_ID = "stop";
+    private static final String NOTIFICATION_SNOOZE_ID = "snooze";
+    private static final String NOTIFICATION_RESUME_SNOOZE_ID = "resume_snooze";
 
     private static final int FULL_DAY = 1440; // 1440 minutes in a day
     private static final int TIME_LIMIT = 30; // 30 minute bypass limit
@@ -70,16 +82,19 @@ public class SmsCallController {
     public static final int CONTACTS_ONLY = 2;
     public static final int STARRED_ONLY = 3;
     public static final int DEFAULT_TWO = 2;
+    private static final int NOTIFICATION_ID = 5253;
 
     private Context mContext;
     private SharedPreferences mSharedPrefs;
     private OnSharedPreferenceChangeListener mSharedPrefsObserver;
-    private AlarmManager mAlarmManager;
+    private static AlarmManager mAlarmManager;
+    private NotificationManager mNotificationManager;
+    private SettingsObserver mSettingsObserver;
 
     private Intent mServiceTriggerIntent;
     private PendingIntent mStartIntent;
     private PendingIntent mStopIntent;
-    private Intent mNotificationTriggerIntent;
+
     private PendingIntent mStartNotificationIntent;
     private PendingIntent mStopNotificationIntent;
 
@@ -92,8 +107,54 @@ public class SmsCallController {
     private int mAutoCall;
     private int mAutoText;
     private boolean mForceStarted;
+    private boolean mPaused;
+    private boolean mInQuietHours;
+
+    private static boolean mSnoozed;
+    private static int mSnoozeTime = 10;
+    private static PendingIntent mResumeSnoozeIntent;
 
     private Handler mHandler = new Handler();
+
+    public static class NotificationIntentReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            Log.d("NotificationIntentReceiver", "onReceive action = " + action);
+
+            if (action.equals(NOTIFICATION_STOP_ID)){
+                mSnoozed = false;
+                if (mResumeSnoozeIntent != null){
+                    mAlarmManager.cancel(mResumeSnoozeIntent);
+                    mResumeSnoozeIntent = null;
+                }
+                Settings.System.putIntForUser(context.getContentResolver(),
+                        Settings.System.QUIET_HOURS_PAUSED, 0, UserHandle.USER_CURRENT);
+                Settings.System.putIntForUser(context.getContentResolver(),
+                        Settings.System.QUIET_HOURS_FORCED, 0, UserHandle.USER_CURRENT);
+            } else if (action.equals(NOTIFICATION_PAUSE_ID)){
+                SmsCallController.getInstance(context).pauseQuietHours();
+            } else if (action.equals(NOTIFICATION_RESUME_ID) ||
+                    action.equals(NOTIFICATION_RESUME_SNOOZE_ID)){
+                SmsCallController.getInstance(context).resumeQuietHours();
+            } else if (action.equals(NOTIFICATION_SNOOZE_ID)){
+                mSnoozed = true;
+                mSnoozeTime = SmsCallController.getInstance(context).returnSnoozeTime();
+                Log.d(TAG, "start snooze for " + mSnoozeTime);
+                Settings.System.putIntForUser(context.getContentResolver(),
+                        Settings.System.QUIET_HOURS_PAUSED, 1, UserHandle.USER_CURRENT);
+
+                Intent resume = new Intent(NOTIFICATION_RESUME_SNOOZE_ID, null,
+                    context, NotificationIntentReceiver.class);
+                mResumeSnoozeIntent = PendingIntent.getBroadcast(context, 0, resume,
+                    PendingIntent.FLAG_CANCEL_CURRENT);
+                mAlarmManager.set(AlarmManager.RTC_WAKEUP,
+                    System.currentTimeMillis() + mSnoozeTime * 60 * 1000,
+                    mResumeSnoozeIntent);
+            }
+        }
+    }
 
     /**
      * Singleton.
@@ -117,6 +178,7 @@ public class SmsCallController {
     private SmsCallController(Context context) {
         mContext = context;
 
+        Log.d(TAG, "SmsCallController");
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         mSharedPrefsObserver =
                 new OnSharedPreferenceChangeListener() {
@@ -127,6 +189,8 @@ public class SmsCallController {
                         || key.equals(KEY_AUTO_SMS)) {
                     updateSharedPreferences();
                     scheduleService();
+                } else if (key.equals(KEY_QUIET_HOURS_NOTIFICATION)) {
+                    updateNotification();
                 }
             }
         };
@@ -134,30 +198,36 @@ public class SmsCallController {
         updateSharedPreferences();
 
         mAlarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+        mNotificationManager = (NotificationManager)
+                mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
         mServiceTriggerIntent = new Intent(mContext, SmsCallService.class);
         Intent start = new Intent(mContext, SmsCallService.class);
         mStartIntent = PendingIntent.getService(
                 mContext, 0, start, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        mNotificationTriggerIntent = new Intent(mContext, NotificationService.class);
-        Intent notification = new Intent(mContext, NotificationService.class);
-        mStartNotificationIntent = PendingIntent.getService(
-                mContext, 1, notification, PendingIntent.FLAG_CANCEL_CURRENT);
+        Intent startNotification = new Intent(mContext, AlarmReceiver.class);
+        startNotification.setAction(QUIET_HOURS_START_COMMAND);
+        mStartNotificationIntent = PendingIntent.getBroadcast(
+                mContext, 1, startNotification, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Intent stopSmsCallService = new Intent(mContext, AlarmReceiver.class);
-        stopSmsCallService.setAction(SCHEDULE_SMSCALL_SERVICE_COMMAND);
+        stopSmsCallService.setAction(QUIET_HOURS_STOP_SMSCALL_COMMAND);
         mStopIntent = PendingIntent.getBroadcast(
                 mContext, 2, stopSmsCallService, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        Intent stopNotificationService = new Intent(mContext, AlarmReceiver.class);
-        stopNotificationService.setAction(SCHEDULE_NOTIFICATION_SERVICE_COMMAND);
+        Intent stopNotification = new Intent(mContext, AlarmReceiver.class);
+        stopNotification.setAction(QUIET_HOURS_STOP_COMMAND);
         mStopNotificationIntent= PendingIntent.getBroadcast(
-                mContext, 3, stopNotificationService, PendingIntent.FLAG_CANCEL_CURRENT);
+                mContext, 3, stopNotification, PendingIntent.FLAG_CANCEL_CURRENT);
 
         // Settings observer
-        SettingsObserver observer = new SettingsObserver(mHandler);
-        observer.observe();
+        mSettingsObserver = new SettingsObserver(mHandler);
+        mSettingsObserver.observe();
+    }
+
+    public void init() {
+        // dummy
     }
 
     private void updateSharedPreferences() {
@@ -412,35 +482,28 @@ public class SmsCallController {
      * AutoSMS service Stopped - Schedule again for next day
      */
     public void scheduleService() {
-        scheduleNotificationService();
+        Log.d(TAG, "scheduleService");
+        scheduleNotification();
         scheduleSmsCallService();
     }
 
-    public void scheduleNotificationService() {
+    public void scheduleNotification() {
         mAlarmManager.cancel(mStartNotificationIntent);
         mAlarmManager.cancel(mStopNotificationIntent);
 
-        // always stop to make sure :)
-        mContext.stopServiceAsUser(mNotificationTriggerIntent,
-                android.os.Process.myUserHandle());
-
-        // maxwen: this is only a workaround for now!
-        NotificationService.destroyQuietHour(mContext);
-
+        stopQuietHours();
         if (!mQuietHoursEnabled) {
             return;
         }
 
         if (mForceStarted) {
-            mContext.startServiceAsUser(mNotificationTriggerIntent,
-                    android.os.Process.myUserHandle());
+            startQuietHours();
             return;
         }
 
         if (mQuietHoursStart == mQuietHoursEnd) {
             // 24 hours, start without stop
-            mContext.startServiceAsUser(mNotificationTriggerIntent,
-                    android.os.Process.myUserHandle());
+            startQuietHours();
             return;
         }
 
@@ -491,23 +554,21 @@ public class SmsCallController {
         }
 
         if (inQuietHours) {
-            mContext.startServiceAsUser(mNotificationTriggerIntent,
-                    android.os.Process.myUserHandle());
+            startQuietHours();
         } else {
-            mContext.stopServiceAsUser(mNotificationTriggerIntent,
-                    android.os.Process.myUserHandle());
+            stopQuietHours();
         }
 
         if (serviceStartMinutes >= 0) {
             calendar.add(Calendar.MINUTE, serviceStartMinutes);
-            Log.d(TAG, "NotificationService schedule start at " + DateFormat.getDateTimeInstance().format(calendar.getTime()));
+            Log.d(TAG, "QuietHours schedule start at " + DateFormat.getDateTimeInstance().format(calendar.getTime()));
             mAlarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), mStartNotificationIntent);
             calendar.add(Calendar.MINUTE, -serviceStartMinutes);
         }
 
         if (serviceStopMinutes >= 0) {
             calendar.add(Calendar.MINUTE, serviceStopMinutes);
-            Log.d(TAG, "NotificationService schedule stop at " + DateFormat.getDateTimeInstance().format(calendar.getTime()));
+            Log.d(TAG, "QuietHours schedule stop at " + DateFormat.getDateTimeInstance().format(calendar.getTime()));
             mAlarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), mStopNotificationIntent);
             calendar.add(Calendar.MINUTE, -serviceStopMinutes);
         }
@@ -619,8 +680,154 @@ public class SmsCallController {
         scheduleSmsCallService();
     }
 
-    public void stopNotificationService() {
-        scheduleNotificationService();
+    public void stopQuietHours() {
+        Log.d(TAG, "stopQuietHours");
+        mInQuietHours = false;
+
+        if (mPaused){
+            mSnoozed = false;
+            Settings.System.putIntForUser(mContext.getContentResolver(),
+                    Settings.System.QUIET_HOURS_PAUSED, 0, UserHandle.USER_CURRENT);
+
+            if (mResumeSnoozeIntent != null){
+                mAlarmManager.cancel(mResumeSnoozeIntent);
+                mResumeSnoozeIntent = null;
+            }
+        }
+
+        Intent intent = new Intent(QuietHoursHelper.QUIET_HOURS_STOP);
+        mContext.sendBroadcastAsUser(intent, UserHandle.CURRENT);
+
+        destroyQuietHour();
+    }
+
+    public void startQuietHours() {
+        Log.d(TAG, "startQuietHours");
+        mInQuietHours = true;
+
+        if (mPaused){
+            mSnoozed = false;
+            Settings.System.putIntForUser(mContext.getContentResolver(),
+                    Settings.System.QUIET_HOURS_PAUSED, 0, UserHandle.USER_CURRENT);
+
+            if (mResumeSnoozeIntent != null){
+                mAlarmManager.cancel(mResumeSnoozeIntent);
+                mResumeSnoozeIntent = null;
+            }
+        }
+
+        Intent intent = new Intent(QuietHoursHelper.QUIET_HOURS_START);
+        mContext.sendBroadcastAsUser(intent, UserHandle.CURRENT);
+
+        if (returnUserNotification()){
+            notifyQuietHour();
+        }
+    }
+
+    public void updateNotification() {
+        if (mInQuietHours){
+            Log.d(TAG, "updateNotification");
+            if (returnUserNotification()){
+                notifyQuietHour();
+            } else {
+                destroyQuietHour();
+            }
+        }
+    }
+
+    private void destroyQuietHour() {
+        mNotificationManager.cancel(NOTIFICATION_ID);
+    }
+
+    public void pauseQuietHours() {
+        Log.d(TAG, "pauseQuietHours");
+        mSnoozed = false;
+        if (mResumeSnoozeIntent != null){
+            mAlarmManager.cancel(mResumeSnoozeIntent);
+            mResumeSnoozeIntent = null;
+        }
+        Settings.System.putIntForUser(mContext.getContentResolver(),
+                Settings.System.QUIET_HOURS_PAUSED, 1, UserHandle.USER_CURRENT);
+    }
+
+    public void resumeQuietHours() {
+        Log.d(TAG, "resumeQuietHours");
+        if (mSnoozed){
+            Log.d(TAG, "stop snooze");
+        } else {
+            if (mResumeSnoozeIntent != null){
+                mAlarmManager.cancel(mResumeSnoozeIntent);
+            }
+        }
+        mSnoozed = false;
+        mResumeSnoozeIntent = null;
+        Settings.System.putIntForUser(mContext.getContentResolver(),
+                Settings.System.QUIET_HOURS_PAUSED, 0, UserHandle.USER_CURRENT);
+    }
+
+    private void notifyQuietHour() {
+        final Intent pause = new Intent(NOTIFICATION_PAUSE_ID, null, mContext,
+                NotificationIntentReceiver.class);
+        final Intent resume = new Intent(NOTIFICATION_RESUME_ID, null, mContext,
+                NotificationIntentReceiver.class);
+        final Intent snooze = new Intent(NOTIFICATION_SNOOZE_ID, null, mContext,
+                NotificationIntentReceiver.class);
+        final Intent stop = new Intent(NOTIFICATION_STOP_ID, null, mContext,
+                NotificationIntentReceiver.class);
+        final boolean forceStarted = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.QUIET_HOURS_FORCED, 0, UserHandle.USER_CURRENT) != 0;
+
+        Intent touch = new Intent(Intent.ACTION_MAIN);
+        touch.setClassName("com.android.settings",
+                            "com.android.settings.Settings$QuietHoursSettingsActivity");
+        PendingIntent pi = PendingIntent.getActivity(mContext, 0, touch, 0);
+
+        Resources r = mContext.getResources();
+
+        String title = r.getString(R.string.quiet_hours_enable_title);
+        if (mPaused){
+            if (mSnoozed){
+                title = r.getString(R.string.quiet_hours_snoozed_title, mSnoozeTime);
+            } else {
+                title = r.getString(R.string.quiet_hours_paused_title);
+            }
+        }
+
+        int iconId = R.drawable.ic_qs_quiet_hours_on;
+        if (mPaused){
+            iconId = R.drawable.ic_qs_quiet_hours_off;
+        }
+
+        Notification.Builder b = new Notification.Builder(mContext)
+            .setTicker(r.getString(R.string.quiet_hours_enable_title))
+            .setContentTitle(title)
+            .setContentText(r.getString(R.string.quiet_hours_notification))
+            .setSmallIcon(iconId)
+            .setWhen(System.currentTimeMillis())
+            .setContentIntent(pi)
+            .setAutoCancel(false)
+            .setOngoing(true);
+
+        if (!mPaused){
+            b.addAction(R.drawable.ic_snooze,
+                     r.getString(R.string.quiet_hours_notification_snooze),
+                     PendingIntent.getBroadcast(mContext, 0, snooze, PendingIntent.FLAG_CANCEL_CURRENT));
+
+            b.addAction(com.android.internal.R.drawable.ic_media_pause,
+                     r.getString(R.string.quiet_hours_notification_pause),
+                     PendingIntent.getBroadcast(mContext, 0, pause, PendingIntent.FLAG_CANCEL_CURRENT));
+        } else {
+            b.addAction(com.android.internal.R.drawable.ic_media_play,
+                     r.getString(R.string.quiet_hours_notification_resume),
+                     PendingIntent.getBroadcast(mContext, 0, resume, PendingIntent.FLAG_CANCEL_CURRENT));
+        }
+        if (forceStarted){
+            b.addAction(R.drawable.ic_item_delete,
+                 r.getString(R.string.quiet_hours_notification_stop),
+                 PendingIntent.getBroadcast(mContext, 0, stop, PendingIntent.FLAG_CANCEL_CURRENT));
+        }
+
+        mNotificationManager.notify(NOTIFICATION_ID, b.build());
     }
 
     /**
@@ -645,30 +852,42 @@ public class SmsCallController {
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QUIET_HOURS_FORCED),
                     false, this, UserHandle.USER_ALL);
-            update();
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QUIET_HOURS_PAUSED),
+                    false, this, UserHandle.USER_ALL);
+
+            update(null);
         }
 
         @Override
-        public void onChange(boolean selfChange) {
+        public void onChange(boolean selfChange, Uri uri) {
             super.onChange(selfChange);
-            update();
+            update(uri);
         }
 
-        public void update() {
+        public void update(Uri uri) {
+            Log.d(TAG, "SettingsObserver " + uri);
             mQuietHoursEnabled = Settings.System.getIntForUser(mContext.getContentResolver(),
                     Settings.System.QUIET_HOURS_ENABLED, 0,
-                    UserHandle.USER_CURRENT_OR_SELF) != 0;
+                    UserHandle.USER_CURRENT) != 0;
             mQuietHoursStart = Settings.System.getIntForUser(mContext.getContentResolver(),
                     Settings.System.QUIET_HOURS_START, 0,
-                    UserHandle.USER_CURRENT_OR_SELF);
+                    UserHandle.USER_CURRENT);
             mQuietHoursEnd = Settings.System.getIntForUser(mContext.getContentResolver(),
                     Settings.System.QUIET_HOURS_END, 0,
-                    UserHandle.USER_CURRENT_OR_SELF);
+                    UserHandle.USER_CURRENT);
             mForceStarted = Settings.System.getIntForUser(mContext.getContentResolver(),
                     Settings.System.QUIET_HOURS_FORCED, 0,
-                    UserHandle.USER_CURRENT_OR_SELF) != 0;
+                    UserHandle.USER_CURRENT) != 0;
+            mPaused = Settings.System.getIntForUser(mContext.getContentResolver(),
+                    Settings.System.QUIET_HOURS_PAUSED, 0,
+                    UserHandle.USER_CURRENT) != 0;
 
-            scheduleService();
+            if (uri != null && uri.equals(Settings.System.getUriFor(Settings.System.QUIET_HOURS_PAUSED))){
+                updateNotification();
+            } else {
+                scheduleService();
+            }
         }
     }
 }
