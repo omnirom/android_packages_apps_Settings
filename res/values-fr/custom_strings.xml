@@ -277,4 +277,8 @@
     <string name="increasing_ring_interval_5seconds">5 secondes</string>
     <string name="increasing_ring_interval_10seconds">10 secondes</string>
     <string name="data_usage_lengths_spinner_subtitle">Longueur du cycle\u00A0:</string>
+    <string name="headset_plug_enable_title">Raccourci à l\'insertion du casque</string>
+    <string name="headset_plug_positive_title">Aucun</string>
+    <string name="headset_plug_neutral_title">Défaut</string>
+    <string name="headset_plug_neutral_summary">Application de musique par défaut</string>
 </resources>
