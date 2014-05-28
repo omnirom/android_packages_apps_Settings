@@ -276,9 +276,21 @@
     <string name="increasing_ring_interval_3seconds">3 secondes</string>
     <string name="increasing_ring_interval_5seconds">5 secondes</string>
     <string name="increasing_ring_interval_10seconds">10 secondes</string>
-    <string name="data_usage_lengths_spinner_subtitle">Longueur du cycle\u00A0:</string>
-    <string name="headset_plug_enable_title">Raccourci à l\'insertion du casque</string>
+    <string name="headset_settings">Casque</string>
+    <string name="headset_plug_enable_title">Raccourci au branchement</string>
     <string name="headset_plug_positive_title">Aucun</string>
     <string name="headset_plug_neutral_title">Défaut</string>
     <string name="headset_plug_neutral_summary">Application de musique par défaut</string>
+    <string name="headset_plug_music_active_title">Désactiver lors de lecture audio</string>
+    <string name="headset_plug_music_active_summary">Ne pas lancer les raccourcis lors de la lecture audio</string>
+    <string name="headset_plug_app_running_title">Action au lancement d\'un raccourci</string>
+    <string name="headset_plug_app_running_nothing">Aucun</string>
+    <string name="headset_plug_app_running_front">Déplacer à l\'avant</string>
+    <string name="headset_plug_actions_title">Action lors que retiré</string>
+    <string name="headset_plug_actions_disabled">Aucune</string>
+    <string name="headset_plug_actions_front">Déplacer à l\'avant</string>
+    <string name="headset_plug_actions_kill">Tuer l\'application</string>
+    <string name="headset_plug_force_actions_title">Forcer l\'action au retrait</string>
+    <string name="headset_plug_force_actions_summary">Exécutez l\'action au retrait même si un raccourci était déjà en cours d\'exécution</string>
+    <string name="data_usage_lengths_spinner_subtitle">Longueur du cycle\u00A0:</string>
 </resources>
