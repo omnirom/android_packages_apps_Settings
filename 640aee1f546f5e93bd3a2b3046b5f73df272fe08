@@ -16,6 +16,24 @@
       "revId": "640aee1f546f5e93bd3a2b3046b5f73df272fe08",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_4b8f3bd0",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1000098
+      },
+      "writtenOn": "2014-05-29T15:24:43Z",
+      "side": 1,
+      "message": "Exécutez l\\\u0027action au retrait du casque même si une action est déjà en cours d\\\u0027exécution",
+      "parentUuid": "8b77b57d_8b65d344",
+      "revId": "640aee1f546f5e93bd3a2b3046b5f73df272fe08",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
