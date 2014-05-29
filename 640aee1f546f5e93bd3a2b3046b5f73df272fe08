@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_8b65d344",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2014-05-29T05:50:07Z",
+      "side": 1,
+      "message": "Exécutez l\\\u0027action au retrait [de quoi ?, je pense qu\u0027il faut préciser] même si un raccourci [jsorti du contexte, je ne trouve pas ça très explicite] était déjà en cours d\\\u0027exécution",
+      "revId": "640aee1f546f5e93bd3a2b3046b5f73df272fe08",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
