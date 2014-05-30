@@ -190,9 +190,11 @@
     <string name="quiet_hours_start_summary">Когда начинаются тихие часы</string>
     <string name="quiet_hours_end">Конец тихих часов</string>
     <string name="quiet_hours_end_summary">Когда заканчиваются тихие часы</string>
-    <string name="quiet_hours_ringer_title">Отключать звонок телефона</string>
-    <string name="quiet_hours_ringer_on">Звонок телефона не будет слышен</string>
-    <string name="quiet_hours_ringer_off">Звонок будет слышен как обычно</string>
+    <string name="quiet_hours_ringer">Звонок телефона</string>
+    <string name="quiet_hours_ringer_allow_all">Звонить для всех вызовов</string>
+    <string name="quiet_hours_ringer_allow_contacts">Звонить для всех контактов</string>
+    <string name="quiet_hours_ringer_allow_starred">Звонить для избранных контактов</string>
+    <string name="quiet_hours_ringer_mute_all">Отключать звук для всех вызовов</string>
     <string name="quiet_hours_mute">Отключать звук уведомлений</string>
     <string name="quiet_hours_mute_on">Звуки уведомлений не проигрываются</string>
     <string name="quiet_hours_mute_off">Звуки проигрываются нормально</string>
@@ -216,6 +218,7 @@
     <string name="quiet_hours_auto_disabled">Отключено</string>
     <string name="quiet_hours_auto_enabled">Все номера</string>
     <string name="quiet_hours_auto_contacts">Только контакты</string>
+    <string name="quiet_hours_auto_starred">Только отмеченные контакты</string>
     <string name="quiet_hours_bypass_group">Игнорировать тихие часы</string>
     <string name="quiet_hours_sms_code_null">[Будильник]</string>
     <string name="quiet_hours_sms_bypass_title">Игнорировать для сообщений</string>
@@ -232,6 +235,20 @@
     <string name="quiet_hours_alarm_and">" и "</string>
     <string name="quiet_hours_alarm_dialog_title">\"ТИХИЕ ЧАСЫ\" ИГНОРИРУЮТСЯ</string>
     <string name="quiet_hours_alarm_message">&quot; соответствуют требованиям игнорирования \"тихих часов\"!&quot;</string>
+    <string name="quiet_hours_enable_title">\"Тихие часы\" активированы</string>
+    <string name="quiet_hours_notification">Нажмите, чтобы настроить.</string>
+    <string name="quiet_hours_enable_notification_title">Уведомление</string>
+    <string name="quiet_hours_enable_notification_summary_on"></string>
+    <string name="quiet_hours_enable_notification_summary_off"></string>
+    <string name="quiet_hours_notification_disable">Отключить</string>
+    <string name="quiet_hours_notification_pause">Приостановить</string>
+    <string name="quiet_hours_paused_title">\"Тихие часы\" приостановлены</string>
+    <string name="quiet_hours_notification_resume">Возобновить</string>
+    <string name="quiet_hours_snoozed_title">\"Тихие часы\" приостановлены на <xliff:g id="time">%1$d</xliff:g> мин.</string>
+    <string name="quiet_hours_notification_snooze">Повторить</string>
+    <string name="quiet_hours_snooze_time">Время повторения</string>
+    <string name="quiet_hours_notification_stop">Остановить</string>
+    <string name="quiet_hours_start">Начать сейчас</string>
 
     <!-- time range preference -->
     <string name="start_time_title">Начало</string>
@@ -321,4 +338,36 @@
     <!-- Lockscreen rotation -->
     <string name="display_lockscreen_rotation_title">Экран блокировки</string>
     <string name="bluetooth_accept_all_files">Принимать все типы файлов</string>
+
+    <!-- Increasing ringtone volume -->
+    <string name="checkbox_increasing_ring">Включить</string>
+    <string name="increasing_ring_title">Возрастающая громкость звонка</string>
+    <string name="increasing_ring_min_volume_title">Начальная громкость звонка</string>
+    <string name="increasing_ring_volume_notice">Примечание:\nЕсли начальная громкость рингтона выше установленной громкости звонка, рингтон будет воспроизведён на громкости, установленной в системе.</string>
+    <string name="increasing_ring_interval_title">Интервал увеличения</string>
+    <string name="increasing_ring_interval_eachring">При каждом гудке</string>
+    <string name="increasing_ring_interval_half_second">0.5 секунды</string>
+    <string name="increasing_ring_interval_1second">1 секунда</string>
+    <string name="increasing_ring_interval_2seconds">2 секунды</string>
+    <string name="increasing_ring_interval_3seconds">3 секунды</string>
+    <string name="increasing_ring_interval_5seconds">5 секунд</string>
+    <string name="increasing_ring_interval_10seconds">10 секунд</string>
+
+    <!-- Headset plug -->
+    <string name="headset_settings">Гарнитура</string>
+    <string name="headset_plug_enable_title">Приложение при подключении</string>
+    <string name="headset_plug_positive_title">Отключено</string>
+    <string name="headset_plug_neutral_title">По умолчанию</string>
+    <string name="headset_plug_neutral_summary">Системное муз. приложение по умолчанию</string>
+    <string name="headset_plug_music_active_title">Отключить при активном аудио</string>
+    <string name="headset_plug_music_active_summary">Не запускать приложение во время воспроизведения аудио</string>
+    <string name="headset_plug_app_running_title">Действия при уже запущенном приложении</string>
+    <string name="headset_plug_app_running_nothing">Ничего</string>
+    <string name="headset_plug_app_running_front">Переместить на передний план</string>
+    <string name="headset_plug_actions_title">Действия при отключении</string>
+    <string name="headset_plug_actions_disabled">Ничего</string>
+    <string name="headset_plug_actions_front">Переместить на передний план</string>
+    <string name="headset_plug_actions_kill">Закрыть приложение</string>
+    <string name="headset_plug_force_actions_title">Принудительные действия при отключении</string>
+    <string name="headset_plug_force_actions_summary">Выполнить \"Действия при отключении\" при уже запущенном приложении</string>
 </resources>
