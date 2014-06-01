@@ -1870,6 +1870,7 @@
     <string name="data_usage_auto_sync_off_dialog" msgid="4744145757533455623">"Esto te permitirá ahorrar datos y batería, pero tendrás que sincronizar cada cuenta de forma manual para recopilar información reciente y no recibirás notificaciones cuando se produzcan actualizaciones."</string>
     <string name="data_usage_cycle_editor_title" msgid="1373797281540188533">"Elige el día en el que empezará cada ciclo"</string>
     <string name="data_usage_cycle_editor_subtitle" msgid="5512903797979928416">"Día de cada mes:"</string>
+    <string name="data_usage_lengths_spinner_subtitle">Tipo de ciclo:</string>
     <string name="data_usage_cycle_editor_positive" msgid="8821760330497941117">"Establecer"</string>
     <string name="data_usage_warning_editor_title" msgid="3704136912240060339">"Establecer advertencia de uso de datos"</string>
     <string name="data_usage_limit_editor_title" msgid="9153595142385030015">"Limitar uso de datos"</string>
