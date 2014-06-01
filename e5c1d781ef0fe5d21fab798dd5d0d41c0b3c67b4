@@ -70,6 +70,23 @@
     },
     {
       "key": {
+        "uuid": "8b77b57d_912344a7",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:58:55Z",
+      "side": 1,
+      "message": "This is the title, need to be shorter, like just \"Sonido de alarma\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8b77b57d_8eb9617a",
         "filename": "res/values-es/custom_strings.xml",
         "patchSetId": 3
@@ -81,6 +98,23 @@
       "writtenOn": "2014-06-01T20:29:56Z",
       "side": 1,
       "message": "\"Pedimos no presentar reportes de errores si tienes ART habilitado.\" instead of \"No responderemos a reportes de errores si ART esta habilitado.\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_d11dbc66",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:58:55Z",
+      "side": 1,
+      "message": "\"con normalidad\", and not \"como es habitual\"",
       "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
@@ -138,6 +172,40 @@
     },
     {
       "key": {
+        "uuid": "8b77b57d_313510d8",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:58:55Z",
+      "side": 1,
+      "message": "\"Luz de notificación\", and not \"notificaciones de luz\"... the same for the next 2 lines",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_51328cf0",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:58:55Z",
+      "side": 1,
+      "message": "in the settings says \"Vibrar al tocar\", so here would say something like \"No vibrar al tocar\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8b77b57d_0eae312a",
         "filename": "res/values-es/custom_strings.xml",
         "patchSetId": 3
@@ -166,6 +234,23 @@
       "writtenOn": "2014-06-01T20:29:56Z",
       "side": 1,
       "message": "Same as above",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_712f8883",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:58:55Z",
+      "side": 1,
+      "message": "Souds informal... sound better something like \"[Mensaje automático] Me pondré en contacto contigo en cuanto pueda.\" or \"[Mensaje automático] Me pondré en contacto con usted en cuanto pueda.\"",
       "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
@@ -206,6 +291,23 @@
     },
     {
       "key": {
+        "uuid": "8b77b57d_9148a467",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:58:55Z",
+      "side": 1,
+      "message": "\"Palabra clave\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8b77b57d_4e0ca943",
         "filename": "res/values-es/custom_strings.xml",
         "patchSetId": 3
@@ -234,6 +336,23 @@
       "writtenOn": "2014-06-01T20:29:56Z",
       "side": 1,
       "message": "\" llamadas para ignorar las horas de descanso\"\n\nE.G. \"Tres llamadas para ignorar las horas de descanso\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_d1521c17",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:58:55Z",
+      "side": 1,
+      "message": "\"MODO DE DESCANSO IGNORADO\" or \"HORAS DE DESCANSO IGNORADAS\"",
       "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
@@ -319,6 +438,23 @@
       "writtenOn": "2014-06-01T20:29:56Z",
       "side": 1,
       "message": "The length of your sleep, something like \"Duración de la siesta\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_f1571804",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:58:55Z",
+      "side": 1,
+      "message": "\"Opciones avanzadas\"",
       "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
