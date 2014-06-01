@@ -1,0 +1,701 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_0e8551b2",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "\"Tiempo de espera hasta ocultar el panel\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_2e820dab",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "What about \"Cambiar la contraseña de encriptación\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_4e8f49d0",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "This its too long for the space, what about \"Original con porcentaje al lado\"?",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_6e8c05db",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "\"Ejecutar acciones personalizadas asociadas a gestos del Stylus. Atención: Si el botón del Stylus se mantiene pulsado las aplicaciones no reaccionarán al gesto realizado\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_8eb9617a",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "\"Pedimos no presentar reportes de errores si tienes ART habilitado.\" instead of \"No responderemos a reportes de errores si ART esta habilitado.\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_aebe1d5d",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "Dont sounds good, what about \"Horas de silencio activadas\"?",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_ceb35996",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "Same as above, what about \"Cuándo comenzar las horas de silencio\"?",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_eeb81573",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "Same as above, what about \"Cuando finalizar las horas de silencio\"?",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_0eae312a",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "This translation would be perfect if it were something like \"Activar desde las 11PM hasta las 6AM\"... but I think it would be something like \"Activar desde 11PM hasta 6AM\". In that case I think it is better \"de\" and \"a\": \"Activar de 11PM a 6AM\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_2eabed1a",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "Same as above",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_4ea8291c",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "I think \"filtro\" does not sound good ... at least in Chile that will not be understood \n\n\"Ignore quiet hours\" sounds good",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_6ea5e542",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "Same as above, in this case maybe something simple like \"Mensajes de texto\" or \"Mensajes de texto ignorarán las horas de silencio\" (But its too long)",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_4e0ca943",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "Same as above... \"Llamadas entrantes\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_8e66c125",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "\" llamadas para ignorar las horas de descanso\"\n\nE.G. \"Tres llamadas para ignorar las horas de descanso\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_ae6b7dec",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "Doesnt fit in the context, before this goes a name ...\n\n\" complió los requisitos para ignorar las horas de descanso!\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_ce70b9dd",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "Not required",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_ee7575ca",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "Not required",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_0e7b91bd",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "\"Siesta\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_2e784dbe",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "The length of your sleep, something like \"Duración de la siesta\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_4e85899f",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "The cellphone is in \"modo paisaje\", not the keyboard\n\n\"El teclado nunca ocupará toda la pantalla en el modo apaisado\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_8e4fa195",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "\"Forzar la rotación automática del teclado\" or \"Forzar la auto-rotación del teclado\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_ae545d2c",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "\"Nota: Esta función fuerza la auto-rotación del teclado temporalmente. No tiene efecto si la rotación automática ya está habilitada.\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_ce499991",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "\"El teclado mostrará la tecla Intro en lugar de la de emoticonos\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_ee4e5596",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "this says nothing... should be something like \"Modo paranoico de ADB\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_0e647111",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "its \"Immediately\", so \"está conectado\" doesnt work\n\n\"Reiniciar inmediatamente si un equipo desconocido es conectado mientras el dispositivo de encuentra bloqueado\" sounds better",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_2e612d02",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "Plural... \"segs\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_4e5e6947",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "Missing the following translation... is not in the original as it is in strings.xml\n\n    \u003c!-- Subtitle of dialog for editing data usage cycle length. [CHAR LIMIT\u003d32] --\u003e\n    \u003cstring name\u003d\"data_usage_lengths_spinner_subtitle\"\u003eTipo de ciclo:\u003c/string\u003e\n\nAlso you need to chnge values-es/strings.xml and values-es-rUS/strings.xml\n\nin \"data_usage_cycle_editor_subtitle\" its \"Día de cada ciclo:\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_6e5b2556",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "Its \"Tipo de ciclo\" so here should say \"Diario\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_8e3401fa",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "Same as above,  \"Semanal\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_ae39bdf0",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "Same as above, \"Mensual\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_ce3ef9d5",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "\"Nombre en red del dispositivo\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_ee43b566",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "\"Para bloquear llamadas y/o mensajes de ciertos números, habilite la lista negra.\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_0e29d199",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "\"Números privados\", al meno así se llaman acá\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_2e268dca",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "\"(...) de los números privados\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_4e33c90b",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "I dont understand this... should be something like \"No bloquear las llamadas o  mensajes procedentes de números desconocidos\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_6e3085fe",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "\"desconocidos\" instead of \"que no están en la lista de contactos\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_8e1de179",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "llamadas",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_ae229db0",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "Usar comodines",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_ce17d955",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "\"No ejecutar el acceso directo si hay audio en reproducción\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_ee1c957a",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "\"Forzar acción de eliminar\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_0e12b165",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-01T20:29:56Z",
+      "side": 1,
+      "message": "\"Ejecute acción de eliminar incluso si el atajo ya se estaba ejecutando\"",
+      "revId": "e5c1d781ef0fe5d21fab798dd5d0d41c0b3c67b4",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
