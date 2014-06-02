@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_b13760ab",
+        "filename": "res/values-es/strings.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 1873,
+      "author": {
+        "id": 1000686
+      },
+      "writtenOn": "2014-06-02T06:51:45Z",
+      "side": 1,
+      "message": "is there a good reason for don\u0027t move that to custom_strings? i don\u0027t think so :)",
+      "revId": "865b51a76023d0aefbef0a51ae2ac5a5b23365b9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
