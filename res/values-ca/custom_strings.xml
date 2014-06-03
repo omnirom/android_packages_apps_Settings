@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2012-2013 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- About phone screen, setting option name-->
+    <string name="mod_version">Versió d\'Omni</string>
+    <string name="mod_version_default">Desconeguda</string>
+
+    <!-- Main list strings -->
+    <string name="header_category_interface">Interfície</string>
+    <string name="performance_settings">Rendiment</string>
+    <string name="notification_light_settings">Llum d\'avís</string>
+    <string name="battery_light_settings">Llum de bateria</string>
+    <string name="header_button_settings">Botons</string>
+
+    <!-- Volume panel tweaks -->
+    <string name="volume_adjust_sounds_enable_title">So en ajustar el volum</string>
+    <string name="volume_adjust_sounds_enable_summary">Reprodueix un so en ajustar el volum amb les tecles físiques</string>
+    <string name="link_volume_ringtones">Enllaça els volums de trucades i avisos</string>
+    <string name="volume_ring_only_description">Trucades</string>
+    <string name="category_volume_panel_title">Panell de volum</string>
+
+    <string name="volume_panel_timeout_title">Temps d\'espera</string>
+    <string name="volume_panel_timeout_summary">Temps d\'espera fins ocultar el panell</string>
+
+    <string name="volume_panel_style">Estil</string>
+    <string name="single">Simple</string>
+    <string name="expandable">Ampliable</string>
+    <string name="expanded">Ampliat</string>
+
+    <!-- Safe headset volume warning -->
+    <string name="safe_headset_volume_warning_title">Avís de volumen</string>
+    <string name="safe_headset_volume_warning_summary">Avisar quan el nivell de volum sigui perillós per a les oïdes (auriculars)</string>
+
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">Reinici avançat</string>
+    <string name="advanced_reboot_summary">En desbloquejar-lo, al menú d\'engegada s\'inclouen opcions per anar al mode recuperació o al carregador d\'arrencada</string>
+
+    <!-- Android debugging over WiFi -->
+    <string name="adb_over_network">ADB per xarxa</string>
+    <string name="adb_over_network_summary">Habilita la depuració TCP/IP per interfícies de xarxa (sense fils, xarxes USB). Aquest ajustament es restableix en reiniciar</string>
+
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">AVÍS: Si s\'habilita ADB per xarxa, el telèfon queda obert a instrusions des de totes les xarxes connectades, incloent les xarxes de dades GSM!\n\nUtilitzeu aquesta característica si esteu connectats a xarxes de confiança.\n\nSegur que voleu habilitar aquesta funció?</string>
+    <string name="lockscreen_quick_unlock_control_title">Desbloqueig ràpid</string>
+    <string name="lockscreen_quick_unlock_control_summary">Desbloqueja automàticament quan s\'introdueix correctament el PIN/contrasenya</string>
+
+    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
+    <string name="change_crypt_password_title">Canvi de contrasenya</string>
+    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
+    <string name="change_crypt_password_summary">Canvi de contrasenya d\'encriptatge</string>
+
+    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
+    <string name="encryptionpassword_choose_your_password_header">Contrasenya d\'encriptatge</string>
+
+    <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+    <string name="show_cpu_info">Informació de la CPU</string>
+    <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+    <string name="show_cpu_info_summary">Pantalla amb la informació actual de la CPU</string>
+
+    <!-- Screen off animation -->
+    <string name="screen_off_animation">Animació d\'apagat de pantalla</string>
+    <string name="screen_off_fadeout">Desapareix</string>
+    <string name="screen_off_electronbeam">Feix d\'electrons</string>
+    <string name="screen_off_scaledown">Encongeix</string>
+
+    <!-- AppOps additions -->
+    <string name="appops_settings">Permisos d\'aplicacions</string>
+    <string name="appops_sysapp_beware">Compte!</string>
+    <string name="appops_sysapp_warning">"Canviar permisos de components centrals d\'Android pot causar comportaments no desitjats. Canvieu aquests paràmetres sota la vostra responsabilitat!</string>
+
+    <!-- Low battery warning policy -->
+    <string name="pref_low_battery_warning_policy_title">Avís de bateria baixa</string>
+    <string name="pref_low_battery_warning_policy_dialog_title">Indica bateria baixa amb</string>
+    <string name="low_battery_warning_policy_popup_sound">Missatge emergent i so</string>
+    <string name="low_battery_warning_policy_notif_sound">Avís i so</string>
+    <string name="low_battery_warning_policy_popup">Només missatge emergent</string>
+    <string name="low_battery_warning_policy_notif">Només avís</string>
+    <string name="low_battery_warning_policy_sound">Només so</string>
+    <string name="battery_prefs_title">Opcions</string>
+    <string name="battery_stats_title">Estadístiques</string>
+
+    <!-- Setting checkbox summary for displaying USB debugging notification -->
+    <string name="adb_notify">Avís de depuració USB</string>
+    <string name="adb_notify_summary">Mostra un avís quan estigui connectada la depuració USB</string>
+
+    <!-- Lockscreen pin shuffle -->
+    <string name="lock_numpad_random_title">Canvia l\'ordre dels nombres del teclat del PIN</string>
+    <string name="lock_numpad_random_dialog_title">Ordre del teclat del PIN aleatori</string>
+    <string name="lock_numpad_random_off">Inhabilitat</string>
+    <string name="lock_numpad_random_always">Sempre</string>
+    <string name="lock_numpad_random_on_request">Pregunta-ho</string>
+
+    <string name="interface_more_title">Més\u2026</string>
+    <string name="interface_bars_title">Barres</string>
+    <string name="interface_menus_title">Menús</string>
+    <string name="interface_notification_panel_title">Calaix d\'avisos</string>
+
+    <!-- Battery Icon selection -->
+    <string name="pref_battery_indicator_title">Indicador de la bateria</string>
+    <string name="battery_status_icon_title">Icona d\'estat</string>
+    <string name="battery_bar">Original</string>
+    <string name="battery_bar_percent">Original amb percentatge</string>
+    <string name="battery_percent_then_bar">Original amb percentatge al costat</string>
+    <string name="battery_circle">Cercle</string>
+    <string name="battery_circle_percent">Cercle amb percentatge</string>
+    <string name="battery_percent_only">Només percentatge</string>
+    <string name="battery_none">Cap</string>
+
+    <!-- Turn on display when power connected; turn off display when power disconnected -->
+    <string name="wake_when_plugged_or_unplugged_title">Desperta en endollar</string>
+    <string name="wake_when_plugged_or_unplugged_summary">Activa la pantalla en connectar o desconnectar el carregador</string>
+
+    <!-- security settings menu unlock -->
+    <string name="unlock_menu_unlock_title">Desbloqueig amb menú</string>
+    <string name="unlock_menu_unlock_summary">En prémer el botó menú es desbloqueja el dispositiu</string>
+
+    <!-- Stylus Icon -->
+    <string name="stylus_icon_enabled_title">Mostra una icona quan s\'utilitzi un llapis tàctil</string>
+    <string name="stylus_icon_enabled_summary">Mostra la icona del punter quan s\'utilitzi un llapis tàctil</string>
+
+    <!-- Stylus Gestures -->
+    <string name="gestures_settings_title">Gestos del llapis tàctil</string>
+    <string name="category_spen_title">Gestos del llapis tàctil</string>
+    <string name="enable_subcat_title">Llapis tàctic</string>
+    <string name="enable_spen_title_head">Habilita els gestos del llapis tàctil</string>
+    <string name="enable_spen_summary_head">Executa accions personalitzades amb els gestos de lliscament del llapis tàctil. Avís: les aplicacions no podran rebre entrades provinents de mantenir el botó del llapis</string>
+    <string name="gestures_subcat_title">Gestos</string>
+    <string name="gestures_left_spen_title_head">Lliscar a l\'esquerra</string>
+    <string name="gestures_left_spen_summary_head">Executa una acció personalitzada en lliscar a l\'esquerra</string>
+    <string name="gestures_right_spen_title_head">Lliscar a la dreta</string>
+    <string name="gestures_right_spen_summary_head">Executa una acció personalitzada en lliscar a la dreta</string>
+    <string name="gestures_up_spen_title_head">Lliscar amunt</string>
+    <string name="gestures_up_spen_summary_head">Executa una acció personalitzada en lliscar amunt</string>
+    <string name="gestures_down_spen_title_head">Lliscar avall</string>
+    <string name="gestures_down_spen_summary_head">Executa una acció personalitzada en lliscar avall</string>
+    <string name="gestures_long_spen_title_head">Pressió llarga</string>
+    <string name="gestures_long_spen_summary_head">Executa una acció personalitzada en fer una pressió llarga</string>
+    <string name="gestures_double_spen_title_head">Doble toc</string>
+    <string name="gestures_double_spen_summary_head">Executa una acció personalitzada en fer un doble toc</string>
+
+    <!-- Gestures Options -->
+    <string name="gestures_action_empty">Cap acció</string>
+    <string name="gestures_action_home">Emula la tecla inici</string>
+    <string name="gestures_action_back">Emula la tecla enrere</string>
+    <string name="gestures_action_menu">Emula la tecla menú</string>
+    <string name="gestures_action_search">Obre una cerca</string>
+    <string name="gestures_action_recent">Aplicacions recents</string>
+
+    <!-- stylus gestures support -->
+    <string name="stylus_app_not_installed">%s no està instal·lat</string>
+
+    <!-- default alarm tone -->
+    <string name="alarm_sound_title">So per defecte de l\'alarma</string>
+    <string name="alarm_sound_dialog_title">So per defecte de l\'alarma</string>
+
+    <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
+    <string name="custom_runtime_warning_title">Avís</string>
+    <string name="custom_runtime_warning_message">No hi ha suport d\'ART per OmniROM. Aquest ajustament s\'inclou només per a experimentació i té el potencial de causar inestabilitat, fallades, pèrdua de dades o impedir una arrencada correcta del dispositiu. Visiteu &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Presentant ART&lt;/a&gt; per a més informació.&lt;br/&gt;&lt;br/&gt;Us demanem que no envieu comunicacions d\'errors si heu habilitat ART com a temps d\'execució.&lt;br/&gt;&lt;br/&gt;Segur que voleu arrencar de nou per canviar el temps d\'execució de <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> a <xliff:g id="new" example="libart.so">%2$s</xliff:g>?</string>
+
+    <!-- Basic Numbers -->
+    <string name="two">Dos</string>
+    <string name="three">Tres</string>
+    <string name="four">Quatre</string>
+    <string name="five">Cinc</string>
+    <string name="six">Sis</string>
+
+    <!-- Quiet hours -->
+    <string name="quiet_hours_title">Hores de silenci</string>
+    <string name="quiet_hours_summary">Configuració de les hores que el dispositiu hauria d\'estar en silenci</string>
+    <string name="quiet_hours_note_title">Nota</string>
+    <string name="quiet_hours_note_summary">Les trucades entrants es comportaran com sempre durant les hores de silenci</string>
+    <string name="quiet_hours_enabled">Habilita les hores de silenci</string>
+    <string name="quiet_hours_enabled_on">Es compliran les hores de silenci</string>
+    <string name="quiet_hours_enabled_off">Els avisos funcionaran normalment</string>
+    <string name="quiet_hours_start">Inici de les hores de silenci</string>
+    <string name="quiet_hours_start_summary">Quan començarà el compliment de les hores de silenci</string>
+    <string name="quiet_hours_end">Final de les hores de silenci</string>
+    <string name="quiet_hours_end_summary">Quan s\'aturarà el compliment de les hores de silenci</string>
+    <string name="quiet_hours_ringer">Timbre del telèfon</string>
+    <string name="quiet_hours_ringer_allow_all">Sonar totes les persones que truquen</string>
+    <string name="quiet_hours_ringer_allow_contacts">Sonar per a tots els contactes</string>
+    <string name="quiet_hours_ringer_allow_starred">Sonar per als contactes favorits</string>
+    <string name="quiet_hours_ringer_mute_all">Silenci per a totes les trucades</string>
+    <string name="quiet_hours_mute">Silencia els avisos</string>
+    <string name="quiet_hours_mute_on">No es reproduirà cap so</string>
+    <string name="quiet_hours_mute_off">Es reproduiran sons normalment</string>
+    <string name="quiet_hours_still">Desactiva les vibracions</string>
+    <string name="quiet_hours_still_on">El dispositiu no vibrarà</string>
+    <string name="quiet_hours_still_off">El dispositiu vibrarà normalment</string>
+    <string name="quiet_hours_dim">Desactiva el llum d\'avís</string>
+    <string name="quiet_hours_dim_on">Es desactivarà el llum d\'avís</string>
+    <string name="quiet_hours_dim_off">El llum d\'avís funcionarà normalment</string>
+    <string name="quiet_hours_haptic">Desactiva la resposta hàptica</string>
+    <string name="quiet_hours_haptic_on">Es desactivarà la resposta hàptica</string>
+    <string name="quiet_hours_haptic_off">La resposta hàptica funcionarà normalment</string>
+    <string name="quiet_hours_active_from">Activa des de</string>
+    <string name="quiet_hours_active_to">a</string>
+    <string name="quiet_hours_auto_sms_group">Resposta automàtica</string>
+    <string name="quiet_hours_auto_sms_title">Missatges de text entrants</string>
+    <string name="quiet_hours_auto_sms_call_title">Trucades entrants</string>
+    <string name="quiet_hours_auto_string_title">Resposta que s\'enviarà</string>
+    <string name="quiet_hours_auto_string_explain">S\'enviarà aquest missatge a qualsevol que intenti contactar mentre estan actives les hores de silenci</string>
+    <string name="quiet_hours_auto_sms_null">[Missatge automàtic] Us donaré resposta quan pugui.</string>
+    <string name="quiet_hours_auto_disabled">Desactivat</string>
+    <string name="quiet_hours_auto_enabled">Tots els números</string>
+    <string name="quiet_hours_auto_contacts">Només els contactes</string>
+    <string name="quiet_hours_auto_starred">Només els contactes favorits</string>
+    <string name="quiet_hours_bypass_group">Evitació de les hores de silenci</string>
+    <string name="quiet_hours_sms_code_null">[Alarma]</string>
+    <string name="quiet_hours_sms_bypass_title">Evitació per missatge de text</string>
+    <string name="quiet_hours_sms_code_title">Clau del missatge de text</string>
+    <string name="quiet_hours_sms_code_explain">Si un missatge d\'entrada conté aquest text el telèfon farà sonar una alarma</string>
+    <string name="quiet_hours_call_bypass_title">Evitació per trucada d\'entrada</string>
+    <string name="quiet_hours_calls_required_title">Nombre de trucades en 30 minuts</string>
+    <string name="quiet_hours_calls_required_summary">" trucades per evitar les hores de silenci"</string>
+    <string name="quiet_hours_bypass_ringtone_title">To de trucada que sonarà</string>
+    <string name="quiet_hours_bypass_ringtone_loop_title">Repetició del to</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_on">El to es repetirà fins que es cancel·li</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_off">El to només sonarà un cop</string>
+    <string name="quiet_hours_alarm_dismiss">Cancel·la l\'alarma</string>
+    <string name="quiet_hours_alarm_and">" i "</string>
+    <string name="quiet_hours_alarm_dialog_title">S\'HA EVITAT LES HORES DE SILENCI</string>
+    <string name="quiet_hours_alarm_message">" compleix els criteris per evitar les hores de silenci!"</string>
+    <string name="quiet_hours_enable_title">Hores de silenci activades</string>
+    <string name="quiet_hours_notification">Toca per configurar.</string>
+    <string name="quiet_hours_enable_notification_title">Notificació</string>
+    <string name="quiet_hours_enable_notification_summary_on"></string>
+    <string name="quiet_hours_enable_notification_summary_off"></string>
+    <string name="quiet_hours_notification_disable">Desactivat</string>
+    <string name="quiet_hours_notification_pause">Pausa</string>
+    <string name="quiet_hours_paused_title">Mode descans pausat</string>
+    <string name="quiet_hours_notification_resume">Continuar</string>
+    <string name="quiet_hours_snoozed_title">Mode descans pausat durant <xliff:g id="time">%1$d</xliff:g> minuts</string>
+    <string name="quiet_hours_notification_snooze">Dormir</string>
+    <string name="quiet_hours_snooze_time">Tiemps d\'espera per dormir</string>
+    <string name="quiet_hours_notification_stop">Aturar</string>
+    <string name="quiet_hours_start">Iniciar ara</string>
+
+    <!-- time range preference -->
+    <string name="start_time_title">Inici</string>
+    <string name="end_time_title">Final</string>
+
+    <!-- Keyboard and Input ASS methods -->
+    <string name="title_keyboard_input">Opcions avançades</string>
+    <string name="disable_fullscreen_keyboard_title">Inhabilita el teclat en pantalla completa</string>
+    <string name="disable_fullscreen_keyboard_summary">El teclat en apaïsat no omplirà mai tota la pantalla</string>
+    <string name="keyboard_rotation_toggle_title">Rotació automàtica del teclat</string>
+    <string name="keyboard_rotation_toggle_summary">Força la rotació automàtica si es mostra el teclat</string>
+    <string name="keyboard_rotation_timeout_title">Temps d\'espera de la rotació automàtica</string>
+    <string name="keyboard_rotation_timeout_summary">Inhabilita el sensor de rotació automàtica <xliff:g id="rotate_timeout">%1$s</xliff:g> segons després d\'ocultar el teclat</string>
+    <string name="keyboard_rotation_dialog">Nota: Aquesta característica força que la rotació automàtica s\'activi temporalment quan el teclat està present. No té cap efecte si la rotació automàtica ja està habilitada.</string>
+    <string name="show_enter_key_title">Mostra la tecla de retorn</string>
+    <string name="show_enter_key_summary">Força que el teclat mostri la tecla de retorn en lloc de la tecla d\'emoticona</string>
+    <string name="ime_switcher_notify">Avís del selector</string>
+    <string name="ime_switcher_notify_summary">Mostra l\'avís del selector de mètode d\'entrada</string>
+
+    <!-- Display : Rotation -->
+    <string name="display_rotation_title">Rotació</string>
+    <string name="display_rotation_disabled">Desactivada</string>
+    <string name="display_rotation_unit">graus</string>
+    <string name="display_rotation_category_title">Modes de rotació</string>
+    <string name="display_rotation_0_title">0 graus</string>
+    <string name="display_rotation_90_title">90 graus</string>
+    <string name="display_rotation_180_title">180 graus</string>
+    <string name="display_rotation_270_title">270 graus</string>
+
+    <!-- ADB Paranoia settings -->
+    <string name="adb_paranoid">Mode paranoic de ADB</string>
+    <string name="adb_paranoid_summary">Reiniciar immediatament si un equip desconegut és connectat el dispositiu de troba bloquejat</string>
+
+    <string name="unit_sec">segons</string>
+
+    <!-- custom data usage period -->
+    <string name="daily_cycle_lenght">Diari</string>
+    <string name="weekly_cycle_length">Setmanal</string>
+    <string name="monthly_cycle_length">Mensual</string>
+    <string name="weekday_sunday">Diumenge</string>
+    <string name="weekday_monday">Dilluns</string>
+    <string name="weekday_tuesday">Dimarts</string>
+    <string name="weekday_wednesday">Dimecres</string>
+    <string name="weekday_thursday">Dijous</string>
+    <string name="weekday_friday">Divendres</string>
+    <string name="weekday_saturday">Dissabte</string>
+
+    <!-- Hostname setting -->
+    <string name="device_hostname">Nom del dispositiu</string>
+
+    <string name="lockscreen_settings_title">Pantalla de bloqueig</string>
+
+    <!-- Blacklist preferences -->
+    <string name="blacklist_title">Llista negra</string>
+    <string name="blacklist_edit_dialog_title">Editar Llista negra</string>
+    <string name="blacklist_prefs">Ajustos</string>
+    <string name="blacklist_button_delete">Eliminar</string>
+    <string name="blacklist_empty_text">No té cap número a la llista negra. Afegir un xifra fent clic sobre el botó Afegir (+).</string>
+    <string name="blacklist_disabled_empty_text">Per bloquejar trucades i/o missatges de certs nombres, habiliti la llista negra.</string>
+    <string name="blacklist_summary_disabled">Desactivat</string>
+    <string name="blacklist_summary">Les trucades i els missatges dels números de telèfon a la llista negra seran bloquejades</string>
+    <string name="blacklist_notify">Mostrar notificacions</string>
+    <string name="blacklist_private_numbers_title">Números ocults</string>
+    <string name="blacklist_private_numbers_summary_disabled">No bloquejar les trucades de números ocults</string>
+    <string name="blacklist_private_numbers_summary">Bloquejar <xliff:g id="type">%s</xliff:g> entrants de números privats</string>
+    <string name="blacklist_unknown_numbers_title">Números desconeguts</string>
+    <string name="blacklist_unknown_numbers_summary_disabled">No bloquejar les trucades o missatges procedents de nombres desconeguts</string>
+    <string name="blacklist_unknown_numbers_summary">Bloquejar <xliff:g id="type">%s</xliff:g> entrants de números desconeguts</string>
+    <string name="blacklist_summary_type_calls_only">trucades</string>
+    <string name="blacklist_summary_type_messages_only">missatges</string>
+    <string name="blacklist_summary_type_calls_and_messages">trucades i missatges</string>
+    <string name="blacklist_regex_title">Utilitza comodins</string>
+    <string name="blacklist_regex_summary">Utilitza . com a comodí i * per repeticions. Exemple. 123. * Bloqueja números que comencen amb 123 i. * 123. * Bloqueja números que contenen 123</string>
+    <string name="blacklist_policy_block_calls">Bloquejar trucades entrants</string>
+    <string name="blacklist_policy_block_messages">Bloquejar missatges entrants</string>
+
+    <!-- Blacklist management -->
+    <string name="add_blacklist_number">Afegir número</string>
+    <string name="remove_blacklist_number_title">Eliminar número</string>
+    <string name="remove_blacklist_entry">¿Vols eliminar aquesta entrada de llista negra?</string>
+    <string name="select_contact">Selecciona contacte</string>
+
+    <!-- Lockscreen rotation -->
+    <string name="display_lockscreen_rotation_title">Pantalla de bloqueig</string>
+    <string name="bluetooth_accept_all_files">Acceptar tota mena d'arxius</string>
+
+    <!-- Increasing ringtone volume -->
+    <string name="checkbox_increasing_ring">Activat</string>
+    <string name="increasing_ring_title">Volum ascendent</string>
+    <string name="increasing_ring_min_volume_title">Volum inicial</string>
+    <string name="increasing_ring_volume_notice">Avís:\nSi el volum inicial és més alt que el volum del to, aquest es reproduirà amb el volum del to.</string>
+    <string name="increasing_ring_interval_title">Interval d\'increment</string>
+    <string name="increasing_ring_interval_eachring">A cada to</string>
+    <string name="increasing_ring_interval_half_second">0.5 segons</string>
+    <string name="increasing_ring_interval_1second">1 segons</string>
+    <string name="increasing_ring_interval_2seconds">2 segons</string>
+    <string name="increasing_ring_interval_3seconds">3 segons</string>
+    <string name="increasing_ring_interval_5seconds">5 segons</string>
+    <string name="increasing_ring_interval_10seconds">10 segons</string>
+
+    <!-- Headset plug -->
+    <string name="headset_settings">Auriculars</string>
+    <string name="headset_plug_enable_title">Inseriu drecera</string>
+    <string name="headset_plug_positive_title">Deshabilitat</string>
+    <string name="headset_plug_neutral_title">Per defecteo</string>
+    <string name="headset_plug_neutral_summary">Aplicació de música per defecte del sistema</string>
+    <string name="headset_plug_music_active_title">Desactivar a l\'activar àudio</string>
+    <string name="headset_plug_music_active_summary">No executar l\'accés directe si hi ha àudio en reproducció</string>
+    <string name="headset_plug_app_running_title">Acció sobre l\'execució d\'accés directe</string>
+    <string name="headset_plug_app_running_nothing">Cap</string>
+    <string name="headset_plug_app_running_front">Porta al davant</string>
+    <string name="headset_plug_actions_title">Acció en eliminar</string>
+    <string name="headset_plug_actions_disabled">Cap</string>
+    <string name="headset_plug_actions_front">Porta al davant</string>
+    <string name="headset_plug_actions_kill">Matar aplicació</string>
+    <string name="headset_plug_force_actions_title">Forçar acció d\'eliminar</string>
+    <string name="headset_plug_force_actions_summary">Executeu acció d\'eliminar fins i tot si la drecera ja s\'estava executant</string>
+
+    <!-- This is in the english strings.xml -->
+    <string name="data_usage_lengths_spinner_subtitle">Tipus de cicle:</string>
+</resources>
