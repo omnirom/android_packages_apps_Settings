@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_510c4c43",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-03T15:43:22Z",
+      "side": 1,
+      "message": "Here are used the strings below... \"Bloquear llamadas y mensajes entrantes de números desconocidos\"",
+      "revId": "000fbde4997aa66126ee968df50b6bd9ee5c5152",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_d1177c55",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-03T15:43:22Z",
+      "side": 1,
+      "message": "\"llamadas\", see above",
+      "revId": "000fbde4997aa66126ee968df50b6bd9ee5c5152",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_f11c787a",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-03T15:43:22Z",
+      "side": 1,
+      "message": "\"mensajes\" see above",
+      "revId": "000fbde4997aa66126ee968df50b6bd9ee5c5152",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_1112d465",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1000933
+      },
+      "writtenOn": "2014-06-03T15:43:22Z",
+      "side": 1,
+      "message": "\"llamadas y mensajes\" see above",
+      "revId": "000fbde4997aa66126ee968df50b6bd9ee5c5152",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
