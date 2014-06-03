@@ -31,6 +31,19 @@
     <string name="volume_adjust_sounds_enable_summary">Reproducir un sonido al ajustar el volumen con las teclas</string>
     <string name="link_volume_ringtones">Usar el mismo volumen para llamadas y notificaciones</string>
     <string name="volume_ring_only_description">Llamadas</string>
+    <string name="category_volume_panel_title">Panel de Volumen</string>
+
+    <string name="volume_panel_timeout_title">Tiempo de espera</string>
+    <string name="volume_panel_timeout_summary">Tiempo de espera hasta ocultar el panel</string>
+
+    <string name="volume_panel_style">Estilo</string>
+    <string name="single">Simple</string>
+    <string name="expandable">Expansible</string>
+    <string name="expanded">Expandido</string>
+
+    <!-- Safe headset volume warning -->
+    <string name="safe_headset_volume_warning_title">Aviso de volumen</string>
+    <string name="safe_headset_volume_warning_summary">Notificar cuando el nivel de volumen sea perjudicial para los oidos (auriculares)</string>
 
     <!-- Advanced reboot options -->
     <string name="advanced_reboot_title">Reinicio avanzado</string>
@@ -44,6 +57,14 @@
     <string name="adb_over_network_warning">¡ADVERTENCIA: Cuando ADB sobre la red está activado, el teléfono está abierto para las intrusiones en todas las redes conectadas, incluyendo la red de datos GSM!\n\nUse esta función sólo en redes de confianza.\n\n¿Realmente desea activar esta función?</string>
     <string name="lockscreen_quick_unlock_control_title">Desbloqueo rápido</string>
     <string name="lockscreen_quick_unlock_control_summary">Desbloquear automáticamente cuando se introduzca el PIN o la contraseña correcta</string>
+
+    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
+    <string name="change_crypt_password_title">Cambiar contraseña</string>
+    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
+    <string name="change_crypt_password_summary">Cambiar la contraseña de encriptación</string>
+
+    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
+    <string name="encryptionpassword_choose_your_password_header">Establecer contraseña de encriptación</string>
 
     <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
     <string name="show_cpu_info">Mostrar información de la CPU</string>
@@ -93,8 +114,11 @@
     <string name="battery_status_icon_title">Estado del icono</string>
     <string name="battery_bar">Original</string>
     <string name="battery_bar_percent">Original con porcentaje</string>
+    <string name="battery_percent_then_bar">Original con porcentaje al lado</string>
     <string name="battery_circle">Circular</string>
     <string name="battery_circle_percent">Circular con porcentaje</string>
+    <string name="battery_percent_only">Sólo porcentaje</string>
+    <string name="battery_none">Ninguno</string>
 
     <!-- Turn on display when power connected; turn off display when power disconnected -->
     <string name="wake_when_plugged_or_unplugged_title">Encender al cargar</string>
@@ -108,4 +132,241 @@
     <string name="stylus_icon_enabled_title">Cursor del stylus</string>
     <string name="stylus_icon_enabled_summary">Mostrar un cursor mientras se usa el stylus</string>
 
+    <!-- Stylus Gestures -->
+    <string name="gestures_settings_title">Gestos con Stylus</string>
+    <string name="category_spen_title">Gestos con Stylus</string>
+    <string name="enable_subcat_title">Stylus</string>
+    <string name="enable_spen_title_head">Habilitar Gestos Stylus</string>
+    <string name="enable_spen_summary_head">Ejecutar acciones personalizadas asociadas a gestos del Stylus. Atención: Si el botón del Stylus se mantiene pulsado las aplicaciones no reaccionarán al gesto realizado</string>
+    <string name="gestures_subcat_title">Gestos</string>
+    <string name="gestures_left_spen_title_head">Deslizar a la izquierda</string>
+    <string name="gestures_left_spen_summary_head">Acción personalizada al deslizar a la izquierda</string>
+    <string name="gestures_right_spen_title_head">Deslizar a la derecha</string>
+    <string name="gestures_right_spen_summary_head">Acción personalizada al deslizar a la izquierda</string>
+    <string name="gestures_up_spen_title_head">Deslizar arriba</string>
+    <string name="gestures_up_spen_summary_head">Acción personalizada al deslizar hacia arriba</string>
+    <string name="gestures_down_spen_title_head">Deslizar abajo</string>
+    <string name="gestures_down_spen_summary_head">Acción personalizada al deslizar hacia abajo</string>
+    <string name="gestures_long_spen_title_head">Presión larga</string>
+    <string name="gestures_long_spen_summary_head">Acción personalizada al presionar y mantener</string>
+    <string name="gestures_double_spen_title_head">Doble pulsación</string>
+    <string name="gestures_double_spen_summary_head">Acción personalizada en la doble pulsación</string>
+
+    <!-- Gestures Options -->
+    <string name="gestures_action_empty">Sin acción</string>
+    <string name="gestures_action_home">Emular botón de inicio</string>
+    <string name="gestures_action_back">Emular botón atrás</string>
+    <string name="gestures_action_menu">Emular botón menú</string>
+    <string name="gestures_action_search">Buscar</string>
+    <string name="gestures_action_recent">Aplicaciones recientes</string>
+
+    <!-- stylus gestures support -->
+    <string name="stylus_app_not_installed">%s no está instalado</string>
+
+    <!-- default alarm tone -->
+    <string name="alarm_sound_title">Sonido de alarma</string>
+    <string name="alarm_sound_dialog_title">Sonido de alarma por defecto</string>
+
+    <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
+    <string name="custom_runtime_warning_title">Aviso</string>
+    <string name="custom_runtime_warning_message">ART no está soportado por OmniROM. Este ajuste está incluido solo con fines experimentales y puede provocar inestabilidad, bloqueos, pérdida de datos, reinicios e incluso impedir el correcto inicio del dispositivo. Visita &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introducing ART&lt;/a&gt; para más información.&lt;br/&gt;&lt;br/&gt; Pedimos no presentar reportes de errores si tienes ART habilitado.&lt;br/&gt;&lt;br/&gt;Seguro que desea reiniciar para cambiar el tiempo de ejecución de <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> a <xliff:g id="new" example="libart.so">%2$s</xliff:g>?</string>
+
+    <!-- Basic Numbers -->
+    <string name="two">Dos</string>
+    <string name="three">Tres</string>
+    <string name="four">Cuatro</string>
+    <string name="five">Cinco</string>
+    <string name="six">Seis</string>
+
+    <!-- Quiet hours -->
+    <string name="quiet_hours_title">Horas de silencio</string>
+    <string name="quiet_hours_summary">Configure las horas que el dispositivo debe estar en silencio</string>
+    <string name="quiet_hours_note_title">Nota</string>
+    <string name="quiet_hours_note_summary">Las llamadas entrantes se comportarán con normalidad durante las horas de silencio</string>
+    <string name="quiet_hours_enabled">Habilitado</string>
+    <string name="quiet_hours_enabled_on">Horas de silencio activadas</string>
+    <string name="quiet_hours_enabled_off">Las notificaciones funcionarán con normalidad</string>
+    <string name="quiet_hours_start">Comienzo de horas de silencio</string>
+    <string name="quiet_hours_start_summary">Cuándo comenzar las horas de silencio</string>
+    <string name="quiet_hours_end">Fin de las horas de silencio</string>
+    <string name="quiet_hours_end_summary">Cuándo finalizar las horas de silencio</string>
+    <string name="quiet_hours_ringer">Timbre del teléfono</string>
+    <string name="quiet_hours_ringer_allow_all">Sonar todas las personas que llaman</string>
+    <string name="quiet_hours_ringer_allow_contacts">Sonar para todos los contactos</string>
+    <string name="quiet_hours_ringer_allow_starred">Sonar para los contactos favoritos</string>
+    <string name="quiet_hours_ringer_mute_all">Silencio para todas las llamadas</string>
+    <string name="quiet_hours_mute">Silenciar Notificaciones</string>
+    <string name="quiet_hours_mute_on">No se reproducirán sonidos</string>
+    <string name="quiet_hours_mute_off">Los sonidos se reproducirán con normalidad</string>
+    <string name="quiet_hours_still">Desactivar vibración</string>
+    <string name="quiet_hours_still_on">El dispositivo no vibrará</string>
+    <string name="quiet_hours_still_off">El dispositivo vibrará con normalidad</string>
+    <string name="quiet_hours_dim">Desactivar luz de notificación</string>
+    <string name="quiet_hours_dim_on">Las notificaciones de luz serán desactivadas</string>
+    <string name="quiet_hours_dim_off">Las notificaciones de luz funcionarán con normalidad</string>
+    <string name="quiet_hours_haptic">Desactivar retroalimentación háptica</string>
+    <string name="quiet_hours_haptic_on">Respuesta táctil se desactivará</string>
+    <string name="quiet_hours_haptic_off">Respuesta táctil funcionará con normalidad</string>
+    <string name="quiet_hours_active_from">Activar de</string>
+    <string name="quiet_hours_active_to">hasta</string>
+    <string name="quiet_hours_auto_sms_group">Respuesta automática</string>
+    <string name="quiet_hours_auto_sms_title">Mensajes de texto entrantes</string>
+    <string name="quiet_hours_auto_sms_call_title">Llamadas entrantes</string>
+    <string name="quiet_hours_auto_string_title">Respuesta a enviar</string>
+    <string name="quiet_hours_auto_string_explain">Este mensaje será enviado a cualquier persona que se comunica con usted mientras las horas de silencio están activadas</string>
+    <string name="quiet_hours_auto_sms_null">[Mensaje automático] Me pondré en contacto con usted en cuanto pueda.</string>
+    <string name="quiet_hours_auto_disabled">Desactivado</string>
+    <string name="quiet_hours_auto_enabled">Todos los teléfonos</string>
+    <string name="quiet_hours_auto_contacts">Sólo contactos</string>
+    <string name="quiet_hours_auto_starred">Sólo contactos favoritos</string>
+    <string name="quiet_hours_bypass_group">Filtros</string>
+    <string name="quiet_hours_sms_code_null">[Alarma]</string>
+    <string name="quiet_hours_sms_bypass_title">Filtrar mensajes de texto</string>
+    <string name="quiet_hours_sms_code_title">Palabra clave</string>
+    <string name="quiet_hours_sms_code_explain">Si un mensaje entrante contiene este texto en su teléfono se hará sonar una alarma</string>
+    <string name="quiet_hours_call_bypass_title">Filtrar Llamadas entrantes</string>
+    <string name="quiet_hours_calls_required_title">Número de llamadas en 30 minutos</string>
+    <string name="quiet_hours_calls_required_summary">" llamadas para ignorar las horas de descanso"</string>
+    <string name="quiet_hours_bypass_ringtone_title">Tono de la alarma</string>
+    <string name="quiet_hours_bypass_ringtone_loop_title">Repetición de tono</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_on">Bucle de tono hasta que lo retire</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_off">Sonar una única vez</string>
+    <string name="quiet_hours_alarm_dismiss">Descartar alarma</string>
+    <string name="quiet_hours_alarm_and">" y "</string>
+    <string name="quiet_hours_alarm_dialog_title">HORAS DE DESCANSO IGNORADAS</string>
+    <string name="quiet_hours_alarm_message">" complió los requisitos para ignorar las horas de descanso!"</string>
+    <string name="quiet_hours_enable_title">Modo descanso activado</string>
+    <string name="quiet_hours_notification">Toca para configurar.</string>
+    <string name="quiet_hours_enable_notification_title">Notificación</string>
+    <string name="quiet_hours_enable_notification_summary_on"></string>
+    <string name="quiet_hours_enable_notification_summary_off"></string>
+    <string name="quiet_hours_notification_disable">Desactivado</string>
+    <string name="quiet_hours_notification_pause">Pausa</string>
+    <string name="quiet_hours_paused_title">Modo descanso pausado</string>
+    <string name="quiet_hours_notification_resume">Continuar</string>
+    <string name="quiet_hours_snoozed_title">Modo descanso pausado durante <xliff:g id="time">%1$d</xliff:g> minutos</string>
+    <string name="quiet_hours_notification_snooze">Dormir</string>
+    <string name="quiet_hours_snooze_time">Tiempo de espera para dormir</string>
+    <string name="quiet_hours_notification_stop">Parar</string>
+    <string name="quiet_hours_start">Iniciar ahora</string>
+
+    <!-- time range preference -->
+    <string name="start_time_title">Iniciar</string>
+    <string name="end_time_title">Terminar</string>
+
+    <!-- Keyboard and Input ASS methods  -->
+    <string name="title_keyboard_input">Opciones avanzadas</string>
+    <string name="disable_fullscreen_keyboard_title">Desactivar teclado a pantalla completa</string>
+    <string name="disable_fullscreen_keyboard_summary">El teclado nunca ocupará toda la pantalla en el modo apaisado</string>
+    <string name="keyboard_rotation_toggle_title">Rotación de teclado automática</string>
+    <string name="keyboard_rotation_toggle_summary">Forzar la rotación automática del teclado</string>
+    <string name="keyboard_rotation_timeout_title">Tiempo de espera auto rotación</string>
+    <string name="keyboard_rotation_timeout_summary">Descativar el sensor de auto rotación <xliff:g id="rotate_timeout">%1$s</xliff:g> segundos despues de ocultar el teclado.</string>
+    <string name="keyboard_rotation_dialog">Nota: Esta función fuerza la auto-rotación del teclado temporalmente. No tiene efecto si la rotación automática ya está habilitada.</string>
+    <string name="show_enter_key_title">Mostrar botón intro</string>
+    <string name="show_enter_key_summary">El teclado mostrará la tecla Intro en lugar de la de emoticonos</string>
+    <string name="ime_switcher_notify">Notificación de selector de teclado</string>
+    <string name="ime_switcher_notify_summary">Muestra una notificación para seleccionar el método de entrada cuando un teclado es visible</string>
+
+    <!-- Display : Rotation -->
+    <string name="display_rotation_title">Rotación</string>
+    <string name="display_rotation_disabled">Desactivado</string>
+    <string name="display_rotation_unit">grados</string>
+    <string name="display_rotation_category_title">Modos de rotación</string>
+    <string name="display_rotation_0_title">0 grados</string>
+    <string name="display_rotation_90_title">90 grados</string>
+    <string name="display_rotation_180_title">180 grados</string>
+    <string name="display_rotation_270_title">270 grados</string>
+
+    <!-- ADB Paranoia settings -->
+    <string name="adb_paranoid">Modo paranoico de ADB</string>
+    <string name="adb_paranoid_summary">Reiniciar inmediatamente si un equipo desconocido es conectado mientras el dispositivo de encuentra bloqueado</string>
+
+    <string name="unit_sec">segs</string>
+
+    <!-- custom data usage period -->
+    <string name="daily_cycle_lenght">Diario</string>
+    <string name="weekly_cycle_length">Semanal</string>
+    <string name="monthly_cycle_length">Mensual</string>
+    <string name="weekday_sunday">Domingo</string>
+    <string name="weekday_monday">Lunes</string>
+    <string name="weekday_tuesday">Martes</string>
+    <string name="weekday_wednesday">Miércoles</string>
+    <string name="weekday_thursday">Jueves</string>
+    <string name="weekday_friday">Viernes</string>
+    <string name="weekday_saturday">Sábado</string>
+
+    <!-- Hostname setting -->
+    <string name="device_hostname">Nombre del dispositivo</string>
+
+    <string name="lockscreen_settings_title">Pantalla de bloqueo</string>
+
+    <!-- Blacklist preferences -->
+    <string name="blacklist_title">Lista negra</string>
+    <string name="blacklist_edit_dialog_title">Editar Lista negra</string>
+    <string name="blacklist_prefs">Ajustes</string>
+    <string name="blacklist_button_delete">Eliminar</string>
+    <string name="blacklist_empty_text">No tienen ningún número en la lista negra. Añada un número pulsando el botón Añadir (+).</string>
+    <string name="blacklist_disabled_empty_text">Para bloquear llamadas y/o mensajes de ciertos números, habilite la lista negra.</string>
+    <string name="blacklist_summary_disabled">Desactivado</string>
+    <string name="blacklist_summary">Las llamadas y los mensajes de los números de teléfono en la lista negra serán bloqueadas</string>
+    <string name="blacklist_notify">Mostrar notificaciones</string>
+    <string name="blacklist_private_numbers_title">Números ocultos</string>
+    <string name="blacklist_private_numbers_summary_disabled">No bloquear las llamadas de números ocultos</string>
+    <string name="blacklist_private_numbers_summary">Bloquear <xliff:g id="type">%s</xliff:g> entrantes de números privados</string>
+    <string name="blacklist_unknown_numbers_title">Números desconocidos</string>
+    <string name="blacklist_unknown_numbers_summary_disabled">No bloquear las llamadas o mensajes procedentes de números desconocidos</string>
+    <string name="blacklist_unknown_numbers_summary">Bloquear <xliff:g id="type">%s</xliff:g> entrantes de números desconocidos</string>
+    <string name="blacklist_summary_type_calls_only">Llamadas</string>
+    <string name="blacklist_summary_type_messages_only">mensajes</string>
+    <string name="blacklist_summary_type_calls_and_messages">llamadas y mensajes</string>
+    <string name="blacklist_regex_title">Usar comodines</string>
+    <string name="blacklist_regex_summary">Use . como comodín y * para repeticiones. Ejemplo. 123.* bloquea numeros que empiezan con 123 y .*123.* bloquea números que contienen 123</string>
+    <string name="blacklist_policy_block_calls">Bloquear llamadas entrantes</string>
+    <string name="blacklist_policy_block_messages">Bloquear mensajes entrantes</string>
+
+    <!-- Blacklist management -->
+    <string name="add_blacklist_number">Añadir número</string>
+    <string name="remove_blacklist_number_title">Eliminar número</string>
+    <string name="remove_blacklist_entry">¿Quieres eliminar esta entrada de lista negra?</string>
+    <string name="select_contact">Seleccionar contacto</string>
+
+    <!-- Lockscreen rotation -->
+    <string name="display_lockscreen_rotation_title">Pantalla de bloqueo</string>
+    <string name="bluetooth_accept_all_files">Aceptar todo tipo de archivos</string>
+
+    <!-- Increasing ringtone volume -->
+    <string name="checkbox_increasing_ring">Activado</string>
+    <string name="increasing_ring_title">Volumen ascendente</string>
+    <string name="increasing_ring_min_volume_title">Volumen inicial</string>
+    <string name="increasing_ring_volume_notice">Aviso:\nSi el volumen inicial es más alto que el volumen del tono, éste se reproducirá con el volumen del tono.</string>
+    <string name="increasing_ring_interval_title">Intervalo de incremento</string>
+    <string name="increasing_ring_interval_eachring">En cada tono</string>
+    <string name="increasing_ring_interval_half_second">0.5 segundos</string>
+    <string name="increasing_ring_interval_1second">1 segundos</string>
+    <string name="increasing_ring_interval_2seconds">2 segundos</string>
+    <string name="increasing_ring_interval_3seconds">3 segundos</string>
+    <string name="increasing_ring_interval_5seconds">5 segundos</string>
+    <string name="increasing_ring_interval_10seconds">10 segundos</string>
+
+    <!-- Headset plug -->
+    <string name="headset_settings">Auriculares</string>
+    <string name="headset_plug_enable_title">Inserte atajo</string>
+    <string name="headset_plug_positive_title">Deshabilitado</string>
+    <string name="headset_plug_neutral_title">Por defecto</string>
+    <string name="headset_plug_neutral_summary">Aplicación de música por defecto del sistema</string>
+    <string name="headset_plug_music_active_title">Desactivar al activar audio</string>
+    <string name="headset_plug_music_active_summary">No ejecutar el acceso directo si hay audio en reproducción</string>
+    <string name="headset_plug_app_running_title">Acción sobre la ejecución de acceso directo</string>
+    <string name="headset_plug_app_running_nothing">Ninguna</string>
+    <string name="headset_plug_app_running_front">Traer al frente</string>
+    <string name="headset_plug_actions_title">Acción al eliminar</string>
+    <string name="headset_plug_actions_disabled">Ninguna</string>
+    <string name="headset_plug_actions_front">Traer al frente</string>
+    <string name="headset_plug_actions_kill">Matar aplicación</string>
+    <string name="headset_plug_force_actions_title">Forzar acción de eliminar</string>
+    <string name="headset_plug_force_actions_summary">Ejecute acción de eliminar incluso si el atajo ya se estaba ejecutando</string>
+
+    <!-- This is in the english strings.xml -->
+    <string name="data_usage_lengths_spinner_subtitle">Tipo de ciclo:</string>
 </resources>
