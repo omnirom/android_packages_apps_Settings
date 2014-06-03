@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_5c5d4317",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000501
+      },
+      "writtenOn": "2014-06-03T19:02:34Z",
+      "side": 1,
+      "message": "Here are used the strings below...",
+      "revId": "b081dc21b31c3a8be2ee8cfc72bb4fceaff46496",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_9ca35bfe",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1000501
+      },
+      "writtenOn": "2014-06-03T19:02:34Z",
+      "side": 1,
+      "message": "\"trucades\", see above",
+      "revId": "b081dc21b31c3a8be2ee8cfc72bb4fceaff46496",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_bca817d9",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000501
+      },
+      "writtenOn": "2014-06-03T19:02:34Z",
+      "side": 1,
+      "message": "\"missatges\", see above",
+      "revId": "b081dc21b31c3a8be2ee8cfc72bb4fceaff46496",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_fcb28f48",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1000501
+      },
+      "writtenOn": "2014-06-03T19:02:34Z",
+      "side": 1,
+      "message": "\"trucades i missatges\", see above",
+      "revId": "b081dc21b31c3a8be2ee8cfc72bb4fceaff46496",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
