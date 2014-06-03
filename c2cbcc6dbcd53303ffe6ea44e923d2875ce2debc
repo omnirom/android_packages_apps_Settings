@@ -16,6 +16,40 @@
       "revId": "c2cbcc6dbcd53303ffe6ea44e923d2875ce2debc",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_31619002",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000501
+      },
+      "writtenOn": "2014-06-03T14:36:44Z",
+      "side": 1,
+      "message": "its \"Mensajes\"",
+      "revId": "c2cbcc6dbcd53303ffe6ea44e923d2875ce2debc",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_515e0c47",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1000501
+      },
+      "writtenOn": "2014-06-03T14:36:44Z",
+      "side": 1,
+      "message": "its \"Llamadas y mensajes\"",
+      "revId": "c2cbcc6dbcd53303ffe6ea44e923d2875ce2debc",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
