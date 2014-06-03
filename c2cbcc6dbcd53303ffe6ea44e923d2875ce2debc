@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_f14e3896",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000501
+      },
+      "writtenOn": "2014-06-03T14:17:10Z",
+      "side": 1,
+      "message": "better \"No tiene ningún número en la lista negra. Añada un número p\nulsando el botón Añadir (+).\" ?",
+      "revId": "c2cbcc6dbcd53303ffe6ea44e923d2875ce2debc",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
