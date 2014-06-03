@@ -16,6 +16,24 @@
       "revId": "865b51a76023d0aefbef0a51ae2ac5a5b23365b9",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_f18c7838",
+        "filename": "res/values-es/strings.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 1873,
+      "author": {
+        "id": 1000501
+      },
+      "writtenOn": "2014-06-03T07:47:57Z",
+      "side": 1,
+      "message": "is placed in the same location as the original English translation of the \"values​​\" folder to keep order.",
+      "parentUuid": "8b77b57d_b13760ab",
+      "revId": "865b51a76023d0aefbef0a51ae2ac5a5b23365b9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
