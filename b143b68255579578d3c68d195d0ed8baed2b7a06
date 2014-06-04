@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_7ca4bfb6",
+        "filename": "res/values-es/custom_strings.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000686
+      },
+      "writtenOn": "2014-06-04T14:08:58Z",
+      "side": 1,
+      "message": "do not capitalize \"Volumen\"",
+      "revId": "b143b68255579578d3c68d195d0ed8baed2b7a06",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
