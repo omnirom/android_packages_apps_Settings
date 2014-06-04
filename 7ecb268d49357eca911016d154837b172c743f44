@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b77b57d_dcbeb3cc",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000686
+      },
+      "writtenOn": "2014-06-04T14:07:07Z",
+      "side": 1,
+      "message": "Maybe \"Panell de volum\"? and \"Volumen\" should not be capitalized :)",
+      "revId": "7ecb268d49357eca911016d154837b172c743f44",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_fcd36f2f",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000686
+      },
+      "writtenOn": "2014-06-04T14:07:07Z",
+      "side": 1,
+      "message": "maybe \"Avis de volum\"?",
+      "revId": "7ecb268d49357eca911016d154837b172c743f44",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_1cd10b28",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000686
+      },
+      "writtenOn": "2014-06-04T14:07:07Z",
+      "side": 1,
+      "message": "maybe \"Notificar quan el nivell de volum sigui perjudicial per les orelles (auriculars)\"?",
+      "revId": "7ecb268d49357eca911016d154837b172c743f44",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_3ccec784",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000686
+      },
+      "writtenOn": "2014-06-04T14:07:07Z",
+      "side": 1,
+      "message": "spelling error, should be \"xarxa\"",
+      "revId": "7ecb268d49357eca911016d154837b172c743f44",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
