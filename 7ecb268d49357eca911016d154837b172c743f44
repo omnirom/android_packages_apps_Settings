@@ -19,6 +19,40 @@
     },
     {
       "key": {
+        "uuid": "8b77b57d_1c966b50",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000493
+      },
+      "writtenOn": "2014-06-04T14:40:08Z",
+      "side": 1,
+      "message": "Maybe \"Ampliable\"",
+      "revId": "7ecb268d49357eca911016d154837b172c743f44",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_3ca327ab",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000493
+      },
+      "writtenOn": "2014-06-04T14:40:08Z",
+      "side": 1,
+      "message": "Maybe \"Ampliat\"",
+      "revId": "7ecb268d49357eca911016d154837b172c743f44",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8b77b57d_fcd36f2f",
         "filename": "res/values-ca/custom_strings.xml",
         "patchSetId": 2
@@ -53,6 +87,24 @@
     },
     {
       "key": {
+        "uuid": "8b77b57d_dcb313fd",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000493
+      },
+      "writtenOn": "2014-06-04T14:40:08Z",
+      "side": 1,
+      "message": "or \"Avisar quan el nivell de volum sigui perillós per a les oïdes (auriculars)\"",
+      "parentUuid": "8b77b57d_1cd10b28",
+      "revId": "7ecb268d49357eca911016d154837b172c743f44",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8b77b57d_3ccec784",
         "filename": "res/values-ca/custom_strings.xml",
         "patchSetId": 2
@@ -64,6 +116,108 @@
       "writtenOn": "2014-06-04T14:07:07Z",
       "side": 1,
       "message": "spelling error, should be \"xarxa\"",
+      "revId": "7ecb268d49357eca911016d154837b172c743f44",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_7c8d9f34",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000493
+      },
+      "writtenOn": "2014-06-04T14:40:08Z",
+      "side": 1,
+      "message": "Typo, should be \"Cercle\"",
+      "revId": "7ecb268d49357eca911016d154837b172c743f44",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_9c927b57",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000493
+      },
+      "writtenOn": "2014-06-04T14:40:08Z",
+      "side": 1,
+      "message": "Typo, should be \"Cercle amb percentatge\"",
+      "revId": "7ecb268d49357eca911016d154837b172c743f44",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_bc873714",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000493
+      },
+      "writtenOn": "2014-06-04T14:40:08Z",
+      "side": 1,
+      "message": "Typo, should be \"...canviar el temps d\\\u0027execució ...\"",
+      "revId": "7ecb268d49357eca911016d154837b172c743f44",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_fc81afff",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000493
+      },
+      "writtenOn": "2014-06-04T14:40:08Z",
+      "side": 1,
+      "message": "For coherence, maybe \"Hores de silenci activades\"",
+      "revId": "7ecb268d49357eca911016d154837b172c743f44",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_1c7f4b10",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1000493
+      },
+      "writtenOn": "2014-06-04T14:40:08Z",
+      "side": 1,
+      "message": "Typo, should be \"Setmanal\"",
+      "revId": "7ecb268d49357eca911016d154837b172c743f44",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b77b57d_3c7c0719",
+        "filename": "res/values-ca/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1000493
+      },
+      "writtenOn": "2014-06-04T14:40:08Z",
+      "side": 1,
+      "message": "Typo, should be \"Dissabte\"",
       "revId": "7ecb268d49357eca911016d154837b172c743f44",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
