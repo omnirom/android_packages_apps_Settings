@@ -333,7 +333,7 @@
 
     <!-- Lockscreen rotation -->
     <string name="display_lockscreen_rotation_title">Pantalla de bloqueig</string>
-    <string name="bluetooth_accept_all_files">Acceptar tota mena d'arxius</string>
+    <string name="bluetooth_accept_all_files">Acceptar tota mena d\'arxius</string>
 
     <!-- Increasing ringtone volume -->
     <string name="checkbox_increasing_ring">Activat</string>
