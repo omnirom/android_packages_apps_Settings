@@ -711,7 +711,7 @@
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="org.omnirom.omnigears.ActiveDisplaySettings" />
             <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
-                android:resource="@id/active_display" />
+                android:resource="@id/notifications" />
         </activity>
 
         <!-- Keep compatibility with old shortcuts. -->
