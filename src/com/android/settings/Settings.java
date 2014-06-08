@@ -165,7 +165,7 @@ public class Settings extends PreferenceActivity
             R.id.interface_bars,
             R.id.interface_menus,
             R.id.interface_notification_panel,
-            R.id.active_display,
+            R.id.notifications,
             R.id.interface_more,
             R.id.button_settings
     };
