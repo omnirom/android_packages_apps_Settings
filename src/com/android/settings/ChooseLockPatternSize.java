@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2013 The CyanogenMod Project
+ * Copyright (C) 2012 The CyanogenMod Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,17 +27,19 @@ import com.android.internal.widget.LockPatternUtils;
 public class ChooseLockPatternSize extends PreferenceActivity {
 
     @Override
+    protected boolean isValidFragment (String fragmentName) {
+        if (ChooseLockPatternSizeFragment.class.getName().equals(fragmentName)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public Intent getIntent() {
         Intent modIntent = new Intent(super.getIntent());
         modIntent.putExtra(EXTRA_SHOW_FRAGMENT, ChooseLockPatternSizeFragment.class.getName());
         modIntent.putExtra(EXTRA_NO_HEADERS, true);
         return modIntent;
-    }
-
-    @Override
-    protected boolean isValidFragment(String fragmentName) {
-        if (ChooseLockPatternSizeFragment.class.getName().equals(fragmentName)) return true;
-        return false;
     }
 
     public static class ChooseLockPatternSizeFragment extends SettingsPreferenceFragment {
@@ -47,9 +49,6 @@ public class ChooseLockPatternSize extends PreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             mChooseLockSettingsHelper = new ChooseLockSettingsHelper(this.getActivity());
-            if (!(getActivity() instanceof ChooseLockPatternSize)) {
-                throw new SecurityException("Fragment contained in wrong activity");
-            }
             addPreferencesFromResource(R.xml.security_settings_pattern_size);
         }
 
@@ -72,7 +71,8 @@ public class ChooseLockPatternSize extends PreferenceActivity {
             final boolean isFallback = getActivity().getIntent()
                 .getBooleanExtra(LockPatternUtils.LOCKSCREEN_BIOMETRIC_WEAK_FALLBACK, false);
 
-            Intent intent = new Intent(getActivity(), ChooseLockPattern.class);
+            Intent intent = new Intent();
+            intent.setClass(getActivity(), ChooseLockPattern.class);
             intent.putExtra("pattern_size", patternSize);
             intent.putExtra("key_lock_method", "pattern");
             intent.putExtra("confirm_credentials", false);

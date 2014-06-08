@@ -12,6 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * This file is a slightly modified ChooseLockPassword.java for OmniROM, which will
+ * change the volume encryption password, without the lockscreen password, allowing
+ * for both passwords to be separately changed, and different.
  */
 
 package com.android.settings;
@@ -19,6 +23,7 @@ package com.android.settings;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.internal.widget.PasswordEntryKeyboardHelper;
 import com.android.internal.widget.PasswordEntryKeyboardView;
+import com.android.settings.ChooseLockGeneric.ChooseLockGenericFragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -160,9 +165,6 @@ public class ChooseEncryptionPassword extends PreferenceActivity {
             super.onCreate(savedInstanceState);
             mLockPatternUtils = new LockPatternUtils(getActivity());
             Intent intent = getActivity().getIntent();
-            if (!(getActivity() instanceof ChooseEncryptionPassword)) {
-                throw new SecurityException("Fragment contained in wrong activity");
-            }
             mRequestedQuality = Math.max(intent.getIntExtra(LockPatternUtils.PASSWORD_TYPE_KEY,
                     mRequestedQuality), mLockPatternUtils.getRequestedPasswordQuality());
             mPasswordMinLength = Math.max(
@@ -389,7 +391,12 @@ public class ChooseEncryptionPassword extends PreferenceActivity {
                 }
             } else if (mUiStage == Stage.NeedToConfirm) {
                 if (mFirstPin.equals(pin)) {
+                    //final boolean isFallback = getActivity().getIntent().getBooleanExtra(
+                    //        LockPatternUtils.LOCKSCREEN_BIOMETRIC_WEAK_FALLBACK, false);
+                    //mLockPatternUtils.clearLock(isFallback);
+                    //mLockPatternUtils.saveLockPassword(pin, mRequestedQuality, isFallback);
                     mLockPatternUtils.saveEncryptionPassword(pin);
+                    getActivity().setResult(RESULT_FINISHED);
                     getActivity().finish();
                 } else {
                     CharSequence tmp = mPasswordEntry.getText();

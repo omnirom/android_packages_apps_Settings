@@ -15,12 +15,10 @@
 -keep class com.android.settings.NotificationStation
 -keep class com.android.settings.nfc.*
 -keep class org.**
--keep class com.android.settings.superuser.**
+-keep class org.regulus.amrasettings.superuser.**
 -keep class org.regulus.amrasettings.privacyguard.*
--keep class org.regulus.amrasettings.utils.*Settings
--keep class com.android.settings.slim.**
+-keep class org.regulus.amrasettings.**
 -keep class org.regulus.amrasettings.amra.**
--keep class org.regulus.amrasettings.amra.interfacesettings.**
 
 # Keep click responders
 -keepclassmembers class com.android.settings.inputmethod.UserDictionaryAddWordActivity {

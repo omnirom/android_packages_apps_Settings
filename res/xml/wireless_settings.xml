@@ -49,6 +49,13 @@
         android:key="vpn_settings"
         android:title="@string/vpn_settings_title" />
 
+
+    <PreferenceScreen
+        android:key="connection_manager"
+        android:id="@+id/telo_radio_settings"
+        android:fragment="org.regulus.amrasettings.teloradio.TeloRadioSettings"
+        android:title="@string/telo_radio_settings_title" />
+
     <PreferenceScreen
         android:key="mobile_network_settings"
         android:title="@string/network_settings_title"
@@ -58,6 +65,11 @@
             android:targetPackage="com.android.phone"
             android:targetClass="com.android.phone.MobileNetworkSettings" />
     </PreferenceScreen>
+
+    <CheckBoxPreference
+        android:key="show_lte_or_fourgee"
+        android:title="@string/show_lte_or_fourgee_title"
+        android:summary="@string/show_lte_or_fourgee_summary" />
 
     <Preference
         android:key="manage_mobile_plan"

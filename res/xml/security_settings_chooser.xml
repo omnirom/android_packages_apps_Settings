@@ -27,6 +27,40 @@
             android:persistent="false"/>
 
         <PreferenceScreen
+            android:key="keyguard_style"
+            android:fragment="org.regulus.amrasettings.lockscreen.LockscreenStyle"
+            android:title="@string/lockscreen_style_title"/>
+
+        <PreferenceScreen
+            android:key="lock_screen_settings"
+            android:fragment="org.regulus.amrasettings.lockscreen.LockscreenInterface"
+            android:title="@string/slide_target_title"
+            android:summary="@string/lock_screen_summary" />
+
+        <PreferenceScreen
+            android:fragment="org.regulus.amrasettings.lockscreen.LockscreenTargets"
+            android:key="lockscreen_targets"
+            android:summary="@string/lockscreen_target_summary"
+            android:title="@string/lockscreen_target_title" />
+
+        <ListPreference
+            android:key="lock_after_timeout"
+            android:title="@string/lock_after_timeout"
+            android:summary="@string/lock_after_timeout_summary"
+            android:entries="@array/lock_after_timeout_entries"
+            android:entryValues="@array/lock_after_timeout_values"
+            android:persistent="false"/>
+
+        <CheckBoxPreference
+            android:key="power_button_instantly_locks"
+            android:title="@string/lockpattern_settings_enable_power_button_instantly_locks"/>
+
+	<PreferenceScreen
+            android:key="keyguard_enable_widgets"
+            android:fragment="org.regulus.amrasettings.lockscreen.LockscreenWidgets"
+            android:title="@string/lockscreen_widgets_title"/>
+
+        <PreferenceScreen
             android:fragment="com.android.settings.OwnerInfoSettings"
             android:key="owner_info_settings"
             android:title="@string/owner_info_settings_title"

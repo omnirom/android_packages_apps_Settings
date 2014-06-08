@@ -20,8 +20,7 @@
             android:title="@string/sim_lock_settings_title"
             android:persistent="false">
 
-        <Preference android:key="sim_lock_settings"
-                android:title="@string/sim_lock_settings_category"
+        <Preference android:title="@string/sim_lock_settings_category"
                 android:persistent="false">
             <intent android:action="android.intent.action.MAIN"
                      android:targetPackage="com.android.settings"
@@ -66,6 +65,13 @@
                 android:persistent="false"
                 android:fragment="com.android.settings.NotificationAccessSettings"/>
 
+        <PreferenceScreen
+            android:title="@string/backups_title"
+            android:key="backup_category">
+	    <intent android:targetPackage="com.android.settings"
+            android:targetClass="corg.regulus.amrasettings.backup.BackupSettings"/>
+	</PreferenceScreen>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:key="credentials_management"
@@ -99,4 +105,5 @@
                     android:targetClass="com.android.settings.CredentialStorage"/>
         </Preference>
     </PreferenceCategory>
+
 </PreferenceScreen>

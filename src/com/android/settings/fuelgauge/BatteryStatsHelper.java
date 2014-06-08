@@ -29,7 +29,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.BatteryStats;
 import android.os.BatteryStats.Uid;
-import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
@@ -76,7 +75,6 @@ public class BatteryStatsHelper {
     private IBatteryStats mBatteryInfo;
     private UserManager mUm;
     private BatteryStatsImpl mStats;
-    private BatteryStatsImpl mDockStats;
     private PowerProfile mPowerProfile;
 
     private final List<BatterySipper> mUsageList = new ArrayList<BatterySipper>();
@@ -140,21 +138,13 @@ public class BatteryStatsHelper {
     /** Clears the current stats and forces recreating for future use. */
     public void clearStats() {
         mStats = null;
-        mDockStats = null;
     }
 
     public BatteryStatsImpl getStats() {
         if (mStats == null) {
-            loadStats();
+            load();
         }
         return mStats;
-    }
-
-    public BatteryStatsImpl getDockStats(Context context) {
-        if (mDockStats == null) {
-            loadDockStats(context);
-        }
-        return mDockStats;
     }
 
     public PowerProfile getPowerProfile() {
@@ -189,7 +179,6 @@ public class BatteryStatsHelper {
             PreferenceActivity caller, BatterySipper sipper, boolean showLocationButton) {
         // Initialize mStats if necessary.
         getStats();
-        getDockStats(caller);
 
         Bundle args = new Bundle();
         args.putString(PowerUsageDetail.EXTRA_TITLE, sipper.name);
@@ -333,14 +322,12 @@ public class BatteryStatsHelper {
 
     /**
      * Refreshes the power usage list.
-     * @parma context The current context
      * @param includeZeroConsumption whether includes those applications which have consumed very
      *                               little power up till now.
      */
-    public void refreshStats(Context context, boolean includeZeroConsumption) {
+    public void refreshStats(boolean includeZeroConsumption) {
         // Initialize mStats if necessary.
         getStats();
-        getDockStats(context);
 
         mMaxPower = 0;
         mTotalPower = 0;
@@ -833,7 +820,7 @@ public class BatteryStatsHelper {
         return mTotalPower;
     }
 
-    private void loadStats() {
+    private void load() {
         try {
             byte[] data = mBatteryInfo.getStatistics();
             Parcel parcel = Parcel.obtain();
@@ -842,34 +829,6 @@ public class BatteryStatsHelper {
             mStats = com.android.internal.os.BatteryStatsImpl.CREATOR
                     .createFromParcel(parcel);
             mStats.distributeWorkLocked(BatteryStats.STATS_SINCE_CHARGED);
-        } catch (RemoteException e) {
-            Log.e(TAG, "RemoteException:", e);
-        }
-    }
-
-    private void loadDockStats(Context context) {
-        BatteryManager mBatteryService = ((BatteryManager) context.getSystemService(
-                Context.BATTERY_SERVICE));
-        if (mBatteryService.isDockBatterySupported()) {
-            try {
-                byte[] data = mBatteryInfo.getDockStatistics();
-                Parcel parcel = Parcel.obtain();
-                parcel.unmarshall(data, 0, data.length);
-                parcel.setDataPosition(0);
-                mDockStats = com.android.internal.os.DockBatteryStatsImpl.CREATOR
-                        .createFromParcel(parcel);
-                mDockStats.distributeWorkLocked(BatteryStats.STATS_SINCE_CHARGED);
-            } catch (RemoteException e) {
-                Log.e(TAG, "RemoteException:", e);
-            }
-        } else {
-            mDockStats = null;
-        }
-    }
-
-    public void resetStatistics() {
-        try {
-            mBatteryInfo.resetStatistics();
         } catch (RemoteException e) {
             Log.e(TAG, "RemoteException:", e);
         }

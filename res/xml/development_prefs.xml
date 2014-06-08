@@ -27,15 +27,15 @@
                 android:targetClass="com.android.development.Development" />
     </PreferenceScreen>
 
-    <com.android.settings.BugreportPreference
-            android:key="bugreport"
-            android:title="@*android:string/bugreport_title"
-            android:dialogTitle="@*android:string/bugreport_title" />
-
     <CheckBoxPreference
         android:key="advanced_reboot"
         android:title="@string/advanced_reboot_title"
         android:summary="@string/advanced_reboot_summary" />
+
+    <com.android.settings.BugreportPreference
+            android:key="bugreport"
+            android:title="@*android:string/bugreport_title"
+            android:dialogTitle="@*android:string/bugreport_title" />
 
     <PreferenceScreen
             android:key="local_backup_password"
@@ -78,6 +78,9 @@
         android:entries="@array/root_access_entries"
         android:entryValues="@array/root_access_values" />
 
+    <Preference android:key="restart_systemui"
+            android:title="@string/restart_systemui" />
+
     <PreferenceCategory android:key="debug_debugging_category"
             android:title="@string/debug_debugging_category">
 
@@ -85,6 +88,17 @@
             android:key="enable_adb"
             android:title="@string/enable_adb"
             android:summary="@string/enable_adb_summary"/>
+
+        <com.android.settings.HostnamePreference
+            android:key="device_hostname"
+            android:title="@string/device_hostname"
+            android:dialogTitle="@string/device_hostname"
+            android:positiveButtonText="@string/wifi_save"
+            android:negativeButtonText="@string/wifi_cancel"
+            android:selectAllOnFocus="true"
+            android:imeOptions="actionDone"
+            android:inputType="textNoSuggestions"
+            android:persistent="false" />
 
         <CheckBoxPreference
             android:key="adb_notify"
@@ -98,16 +112,12 @@
             android:summary="@string/adb_over_network_summary"
             android:dependency="enable_adb"/>
 
-        <com.android.settings.HostnamePreference
-            android:key="device_hostname"
-            android:title="@string/device_hostname"
-            android:dialogTitle="@string/device_hostname"
-            android:positiveButtonText="@string/wifi_save"
-            android:negativeButtonText="@string/wifi_cancel"
-            android:selectAllOnFocus="true"
-            android:imeOptions="actionDone"
-            android:inputType="textNoSuggestions"
-            android:persistent="false" />
+        <CheckBoxPreference
+            android:key="adb_paranoid"
+            android:title="@string/adb_paranoid"
+            android:summary="@string/adb_paranoid_summary"
+            android:dependency="enable_adb"
+            android:persistent="false"/>
 
         <Preference android:key="clear_adb_keys"
                 android:title="@string/clear_adb_keys" />
@@ -167,12 +177,6 @@
             android:key="pointer_location"
             android:title="@string/pointer_location"
             android:summary="@string/pointer_location_summary"/>
-
-        <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
-            android:key="edge_service_for_gestures"
-            android:title="@string/edge_gesture_service_title"
-            android:summary="@string/edge_gesture_service_summary"
-            android:defaultValue="1"/>
 
     </PreferenceCategory>
 
@@ -329,11 +333,15 @@
             android:title="@string/show_all_anrs"
             android:summary="@string/show_all_anrs_summary"/>
 
-        <CheckBoxPreference
-            android:key="kill_app_longpress_back"
-            android:title="@string/kill_app_longpress_back"
-            android:summary="@string/kill_app_longpress_back_summary"/>
+     </PreferenceCategory>
 
-    </PreferenceCategory>
+     <!-- Must remain at bottom -->
+     <Preference
+         android:key="chamber_of_secrets"
+         android:title="\n \n" />
+
+     <CheckBoxPreference
+         android:key="chamber_of_unlocked_secrets"
+         android:title="@string/chamber_title" />
 
 </PreferenceScreen>

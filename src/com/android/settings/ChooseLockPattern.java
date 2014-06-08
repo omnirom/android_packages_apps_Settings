@@ -234,7 +234,6 @@ public class ChooseLockPattern extends PreferenceActivity {
          * Keep track internally of where the user is in choosing a pattern.
          */
         protected enum Stage {
-
             Introduction(
                     R.string.lockpattern_recording_intro_header,
                     LeftButtonMode.Cancel, RightButtonMode.ContinueDisabled,
@@ -313,8 +312,8 @@ public class ChooseLockPattern extends PreferenceActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
 
-            mPatternSize = getActivity().getIntent().getByteExtra("pattern_size",
-                    LockPatternUtils.PATTERN_SIZE_DEFAULT);
+            mPatternSize = getActivity().getIntent()
+                .getByteExtra("pattern_size", LockPatternUtils.PATTERN_SIZE_DEFAULT);
             LockPatternView.Cell.updateSize(mPatternSize);
             mAnimatePattern = Collections.unmodifiableList(Lists.newArrayList(
                     LockPatternView.Cell.of(0, 0, mPatternSize),

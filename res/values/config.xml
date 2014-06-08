@@ -42,12 +42,6 @@
 
     <!-- **** CYANOGENMOD ADDITIONS END **** -->
 
-    <!-- Whether the carousel widget animation preference should be hidden. -->
-    <bool name="config_show_carousel" translatable="false">false</bool>
-
-    <!-- Must be true to display button settings -->
-    <bool name="config_device_has_button_settings" translatable="false">true</bool>
-
     <!-- This used to define screen color's Hue progress bar minimum value -->
     <integer name="minimum_hue_value" translatable="false">0</integer>
 

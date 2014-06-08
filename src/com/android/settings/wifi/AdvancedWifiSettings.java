@@ -44,27 +44,29 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
     private static final String KEY_MAC_ADDRESS = "mac_address";
     private static final String KEY_CURRENT_IP_ADDRESS = "current_ip_address";
     private static final String KEY_FREQUENCY_BAND = "frequency_band";
-    private static final String KEY_COUNTRY_CODE = "wifi_countrycode";
     private static final String KEY_NOTIFY_OPEN_NETWORKS = "notify_open_networks";
     private static final String KEY_SLEEP_POLICY = "sleep_policy";
     private static final String KEY_POOR_NETWORK_DETECTION = "wifi_poor_network_detection";
     private static final String KEY_SCAN_ALWAYS_AVAILABLE = "wifi_scan_always_available";
     private static final String KEY_INSTALL_CREDENTIALS = "install_credentials";
     private static final String KEY_SUSPEND_OPTIMIZATIONS = "suspend_optimizations";
-    private static final String KEY_WIFI_PRIORITY = "wifi_priority";
+    private static final String KEY_COUNTRY_CODE = "wifi_countrycode";
 
     private WifiManager mWifiManager;
+
+    private ListPreference mCcodePref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.wifi_advanced_settings);
-    }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+
+        mCcodePref = (ListPreference) findPreference(KEY_COUNTRY_CODE);
+        mCcodePref.setOnPreferenceChangeListener(this);
+
+        updateWifiCodeSummary();
     }
 
     @Override
@@ -129,17 +131,6 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
             }
         }
 
-        ListPreference ccodePref = (ListPreference) findPreference(KEY_COUNTRY_CODE);
-        if (ccodePref != null) {
-            ccodePref.setOnPreferenceChangeListener(this);
-            String value = mWifiManager.getCountryCode();
-            if (value != null) {
-                ccodePref.setValue(value);
-            } else {
-                Log.e(TAG, "Failed to fetch country code");
-            }
-        }
-
         ListPreference sleepPolicyPref = (ListPreference) findPreference(KEY_SLEEP_POLICY);
         if (sleepPolicyPref != null) {
             if (Utils.isWifiOnly(getActivity())) {
@@ -153,9 +144,6 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
             sleepPolicyPref.setValue(stringValue);
             updateSleepPolicySummary(sleepPolicyPref, stringValue);
         }
-
-        Preference wifiPriority = findPreference(KEY_WIFI_PRIORITY);
-        wifiPriority.setEnabled(mWifiManager.isWifiEnabled());
     }
 
     private void updateSleepPolicySummary(Preference sleepPolicyPref, String value) {
@@ -213,6 +201,22 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String key = preference.getKey();
 
+        if (KEY_COUNTRY_CODE.equals(key)) {
+            try {
+                Settings.Global.putString(getContentResolver(),
+                       Settings.Global.WIFI_COUNTRY_CODE_USER,
+                       (String) newValue);
+                mWifiManager.setCountryCode((String) newValue, true);
+                int index = mCcodePref.findIndexOfValue((String) newValue);
+                mCcodePref.setSummary(mCcodePref.getEntries()[index]);
+                return true;
+            } catch (IllegalArgumentException e) {
+                Toast.makeText(getActivity(), R.string.wifi_setting_countrycode_error,
+                        Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+
         if (KEY_FREQUENCY_BAND.equals(key)) {
             try {
                 int value = Integer.parseInt((String) newValue);
@@ -220,16 +224,6 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
                 updateFrequencyBandSummary(preference, value);
             } catch (NumberFormatException e) {
                 Toast.makeText(getActivity(), R.string.wifi_setting_frequency_band_error,
-                        Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        }
-
-        if (KEY_COUNTRY_CODE.equals(key)) {
-            try {
-                mWifiManager.setCountryCode((String) newValue, true);
-            } catch (IllegalArgumentException e) {
-                Toast.makeText(getActivity(), R.string.wifi_setting_countrycode_error,
                         Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -265,4 +259,21 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
                 getActivity().getString(R.string.status_unavailable) : ipAddress);
     }
 
+    private void updateWifiCodeSummary() {
+        if (mCcodePref != null) {
+            String value = (mWifiManager.getCountryCode()).toUpperCase();
+            if (value != null) {
+                mCcodePref.setValue(value);
+                mCcodePref.setSummary(mCcodePref.getEntry());
+            } else {
+                Log.e(TAG, "Failed to fetch country code");
+            }
+            if (mWifiManager.isWifiEnabled()) {
+                mCcodePref.setEnabled(true);
+            } else {
+                mCcodePref.setEnabled(false);
+                mCcodePref.setSummary(R.string.wifi_setting_countrycode_disabled);
+            }
+        }
+    }
 }

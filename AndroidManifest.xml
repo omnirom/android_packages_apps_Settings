@@ -44,7 +44,6 @@
     <uses-permission android:name="android.permission.FORCE_STOP_PACKAGES"/>
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"/>
     <uses-permission android:name="android.permission.BATTERY_STATS"/>
-    <uses-permission android:name="android.permission.RESET_BATTERY_STATS"/>
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.MOVE_PACKAGE" />
@@ -68,14 +67,14 @@
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.REBOOT" />
     <uses-permission android:name="android.permission.MANAGE_DEVICE_ADMINS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.CHANGE_PRIVACY_GUARD_STATE" />
 	<uses-permission android:name="android.permission.STOP_APP_SWITCHES" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.DUMP" />
     <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_BLACKLIST" />
     <uses-permission android:name="android.permission.CHANGE_PHONE_BLACKLIST" />
     <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
@@ -109,11 +108,10 @@
             android:theme="@style/Theme.Settings"
             android:hardwareAccelerated="true"
             android:requiredForAllUsers="true"
-            android:supportsRtl="true"
-            android:name="org.regulus.amrasettings.AmraApplication">
+            android:supportsRtl="true">
 
-        <uses-library android:name="org.cyanogenmod.hardware"
-            android:required="false" />
+        <uses-library android:name="org.cyanogenmod.hardware" required="false" />
+
 
         <!-- Settings -->
 
@@ -145,33 +143,33 @@
 
         <!-- QuietHours SmsCall Service -->
 
-        <service android:name=".slim.service.SmsCallService"/>
-        <service android:name=".slim.service.AlarmService"/>
+        <service android:name="org.regulus.amrasettings.amra.service.SmsCallService"/>
+        <service android:name="org.regulus.amrasettings.amra.service.AlarmService"/>
 
         <receiver
-            android:name=".slim.service.AlarmReceiver">
+            android:name="org.regulus.amrasettings.amra.service.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.TIMEZONE_CHANGED"></action>
                 <action android:name="android.intent.action.TIME_CHANGED"></action>
                 <action android:name="android.intent.action.DATE_CHANGED"></action>
-                <action android:name="com.android.settings.slim.service.SCHEDULE_SERVICE_COMMAND"/>
+                <action android:name="org.regulus.amrasettings.amra.service.SCHEDULE_SERVICE_COMMAND"/>
             </intent-filter>
         </receiver>
 
         <receiver
-            android:name=".slim.service.BootReceiver">
+            android:name="org.regulus.amrasettings.amra.service.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
 
         <activity
-            android:name=".slim.service.BypassAlarm"
+            android:name="org.regulus.amrasettings.amra.service.BypassAlarm"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.android.settings.slim.service.BypassAlarm"
+            android:taskAffinity="org.regulus.amrasettings.amra.service.BypassAlarm"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
         <!-- Wireless Controls -->
@@ -209,7 +207,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.VOICE_LAUNCH" />
                 <category android:name="com.android.settings.SHORTCUT" />
-                <category android:name="codeaurora.intent.filter.settings.multisim.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.wifi.WifiSettings" />
@@ -361,7 +358,6 @@
                 <action android:name="android.settings.BLUETOOTH_SETTINGS" />
                 <category android:name="android.intent.category.VOICE_LAUNCH" />
                 <category android:name="com.android.settings.SHORTCUT" />
-                <category android:name="codeaurora.intent.filter.settings.multisim.SHORTCUT" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
@@ -403,7 +399,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.VOICE_LAUNCH" />
                 <category android:name="com.android.settings.SHORTCUT" />
-                <category android:name="codeaurora.intent.filter.settings.multisim.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.TetherSettings" />
@@ -461,7 +456,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.VOICE_LAUNCH" />
                 <category android:name="com.android.settings.SHORTCUT" />
-                <category android:name="codeaurora.intent.filter.settings.multisim.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.vpn2.VpnSettings" />
@@ -653,7 +647,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.VOICE_LAUNCH" />
                 <category android:name="com.android.settings.SHORTCUT" />
-                <category android:name="codeaurora.intent.filter.settings.multisim.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.SoundSettings" />
@@ -678,52 +671,39 @@
             <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
                 android:resource="@id/amra_settings" />
         </activity>
-	
-	<receiver android:name="org.regulus.amrasettings.utils.LockscreenInterface$DeviceAdminLockscreenReceiver"
-            android:permission="android.permission.BIND_DEVICE_ADMIN">
-            <meta-data android:name="android.app.device_admin"
-                android:resource="@xml/device_admin_lockscreen" />
-        </receiver>
-	
-        <activity android:name="Settings$ActiveDisplaySettingsActivity"
-                android:label="@string/ad_settings_title"
-                android:taskAffinity=""
-                android:excludeFromRecents="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.android.settings.SHORTCUT" />
-            </intent-filter>
-            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="org.regulus.amrasettings.activedisplay.ActiveDisplaySettings" />
-            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
-                android:resource="@id/active_display" />
+
+
+
+        <!-- Theme Toggle -->
+        <activity
+            android:name="org.regulus.amrasettings.themetoggle.ThemeToggleSettings"
+            android:label="@string/theme_settings_title" >
         </activity>
-	
-	<activity android:name="Settings$SystemSettingsActivity"
-                android:label="@string/system_settings_title"
-                android:taskAffinity=""
-                android:excludeFromRecents="true">
+        <activity
+            android:name="Settings$ThemeToggleSettingsActivity"
+            android:label="@string/theme_settings_title" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.settings.THEME_SETTINGS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="org.regulus.amrasettings.utils.SystemUiSettings" />
-            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
-                android:resource="@id/system_settings" />
+                android:value="org.regulus.amrasettings.themetoggle.ThemeToggleSettings" />
         </activity>
-	
-        <activity android:name="org.regulus.amrasettings.utils.AutoBrightnessSetup"
-                android:excludeFromRecents="true"
-                android:theme="@style/Theme.Settings.Dialog.Alert" />
-	
-		<receiver android:name="org.regulus.amrasettings.utils.BootReceiver" android:enabled="true">
+
+        <activity android:name="org.regulus.amrasettings.MoreDeviceSettings" />
+        <activity android:name="org.regulus.amrasettings.PrivacySettings" />
+        <activity android:name="org.regulus.amrasettings.amra.about.About" />
+
+
+         <!-- Boot Reciever -->	
+	    <receiver android:name="org.regulus.amrasettings.utils.BootReceiver" android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
+         <!-- Batter Saver -->
         <receiver
             android:name="org.regulus.amrasettings.batterysaver.BatterySaverReceiver">
             <intent-filter>
@@ -736,13 +716,19 @@
         </receiver>
 
 	
-        <activity android:name="org.regulus.amrasettings.utils.LockscreenTargets" />
+        <activity android:name="org.regulus.amrasettings.lockscreen.LockscreenTargets" />
 
-        <activity android:name="org.regulus.amrasettings.utils.LockscreenButtons" />
+        <activity android:name="org.regulus.amrasettings.lockscreen.LockscreenButtons" />
 
-        <activity android:name="org.regulus.amrasettings.utils.LockscreenInterface" />
+        <activity android:name="org.regulus.amrasettings.lockscreen.LockscreenInterface" />
 
-        <activity android:name="org.regulus.amrasettings.utils.LockscreenInterface" />
+        <activity android:name="org.regulus.amrasettings.lockscreen.LockscreenMisc" />
+
+        <activity android:name="org.regulus.amrasettings.lockscreen.LockscreenShortcutFragment" />
+
+        <activity android:name="org.regulus.amrasettings.lockscreen.LockscreenStyle" />
+
+        <activity android:name="org.regulus.amrasettings.lockscreen.LockscreenWidgets" />
         
         
          <!-- "Blacklist settings" UI, used only on voice-capable phone devices. -->
@@ -765,8 +751,7 @@
          <!-- PrivacyGuard Manager -->
         <activity android:name="org.regulus.amrasettings.privacyguard.PrivacyGuardManager" />
 
-        <activity android:name="org.regulus.amrasettings.utils.PrivacySettings" />
-        
+       
         <!-- Lto Service -->
         <service android:label="LtoService"
             android:enabled="true"
@@ -774,6 +759,7 @@
             android:name="org.regulus.amrasettings.utils.LtoService">
         </service>
 
+        <!-- System App Remover -->
         <activity
             android:name="org.regulus.amrasettings.remover.SystemappRemover"
             android:label="@string/sizer_title"
@@ -783,16 +769,19 @@
                 android:value="com.example.myfirstapp.MainActivity" />
         </activity>
 
+        <!-- Identicons -->
         <service android:name="org.regulus.amrasettings.identicons.IdenticonCreationService"
                  android:exported="false" />
 
         <service android:name="org.regulus.amrasettings.identicons.IdenticonRemovalService"
                  android:exported="false" />
 
+        <!-- Gesture Anywhere -->
         <activity android:name="org.regulus.amrasettings.gestureanywhere.GestureAnywhereBuilderActivity" />
 
         <activity android:name="org.regulus.amrasettings.gestureanywhere.GestureAnywhereCreateGestureActivity" />
 
+        <!-- Ram Bar -->
 	<activity android:name="org.regulus.amrasettings.ram.RamBar" />  
 
    	<!-- Pseudo-activity used to provide an intent-filter entry point to display rotation config -->
@@ -806,6 +795,7 @@
                 android:value="org.regulus.amrasettings.ram.RamBar" />
         </activity>
 
+        <!-- Backup -->
         <service
             android:name="org.regulus.amrasettings.backup.BackupService" />
 
@@ -821,6 +811,96 @@
                android:label="@string/backups_title"
                android:taskAffinity="com.android.settings"
                android:launchMode="singleTask" />
+
+        <!-- screen color Settings Controls -->
+        <activity android:name="org.regulus.amrasettings.screencolor.ScreenColorSettings" android:label="@string/screencolor"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="nosensor">
+        </activity>
+        <activity android:name="org.regulus.amrasettings.screencolor.CustomScreenColor" android:label="@string/custom_screencolor"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="nosensor">
+        </activity>
+
+        <!-- Others -->
+        <activity android:name="org.regulus.amrasettings.notificationdrawer.NotificationDrawerStyle" />
+        <activity
+            android:name="org.regulus.amrasettings.lockscreen.LockscreenNotifications"
+            android:label="@string/lockscreen_notifications" >
+        </activity>
+
+        <!-- Density Changer -->	
+        <activity
+            android:name="org.regulus.amrasettings.amra.fragments.DensityChanger"
+            android:label="@string/lcd_density_wizard" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="com.android.settings.SHORTCUT" />
+            </intent-filter>
+        </activity>	
+
+        <!-- Amra Shortcuts -->
+        <activity
+            android:name="CreateAmraShortcut"
+            android:label="@string/slim_shortcut_picker"
+            android:icon="@drawable/amra_lock"
+            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar"
+            android:excludeFromRecents="true"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="org.regulus.amrasettings.amrashortcut.AmraActionShortcut"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:icon="@drawable/amra_lock"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <!-- Auto Brightness -->
+        <activity android:name="org.regulus.amrasettings.autobrightness.AutoBrightnessSetup"
+                android:excludeFromRecents="true"
+                android:theme="@*android:style/Theme.Holo.Dialog.Alert" />
+
+        <!-- ScreenSate Toggles -->
+	    <activity
+            android:name="org.regulus.amrasettings.screenstate.ScreenStateToggles"
+            android:label="@string/screen_state_toggles_title" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+	    <!-- Telo -->
+        <activity android:name="org.regulus.amrasettings.teloradio.TeloRadioSettings"
+            android:label="@string/telo_radio_settings_title"
+            android:launchMode="singleTask"
+            android:process="com.android.phone">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+        <receiver android:name="org.regulus.amrasettings.teloradio.TeloRadioBoot">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name="org.regulus.amrasettings.powerwidget.PowerWidget" />
+
+	    <activity android:name="org.regulus.amrasettings.amra.about.About" />
 	
         <!--
         Amra Settings End. 
@@ -848,7 +928,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.VOICE_LAUNCH" />
                 <category android:name="com.android.settings.SHORTCUT" />
-                <category android:name="codeaurora.intent.filter.settings.multisim.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.DisplaySettings" />
@@ -866,20 +945,6 @@
             <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
                 android:resource="@id/display_settings" />
         </activity-alias>
-
-        <!-- Multi Sim (Subscription) Settings -->
-        <activity android:name="MultiSimSettings"
-                android:label="@string/multi_sim_settings_title"
-                android:process="com.android.phone"
-                android:clearTaskOnLaunch="true">
-           <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="com.android.settings.MULTI_SIM_SETTINGS" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.VOICE_LAUNCH" />
-                <category android:name="codeaurora.intent.filter.settings.multisim.SHORTCUT" />
-            </intent-filter>
-        </activity>
 
         <activity android:name="Settings$DeviceInfoSettingsActivity"
                 android:theme="@style/Theme.Settings.DialogWhenLarge"
@@ -929,7 +994,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.VOICE_LAUNCH" />
                 <category android:name="com.android.settings.SHORTCUT" />
-                <category android:name="codeaurora.intent.filter.settings.multisim.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.applications.ManageApplications" />
@@ -1054,7 +1118,6 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="com.android.settings.SHORTCUT" />
-                <category android:name="codeaurora.intent.filter.settings.multisim.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.NotificationStation" />
@@ -1063,15 +1126,13 @@
         <activity android:name="Settings$AppOpsSummaryActivity"
                 android:label="@string/app_ops_settings"
                 android:taskAffinity=""
-                android:excludeFromRecents="true"
-                android:enabled="false">
+                android:excludeFromRecents="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.settings.APP_OPS_SETTINGS" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.VOICE_LAUNCH" />
                 <category android:name="com.android.settings.SHORTCUT" />
-                <category android:name="codeaurora.intent.filter.settings.multisim.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.applications.AppOpsSummary" />
@@ -1115,7 +1176,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.VOICE_LAUNCH" />
                 <category android:name="com.android.settings.SHORTCUT" />
-                <category android:name="codeaurora.intent.filter.settings.multisim.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.location.LocationSettings" />
@@ -1163,7 +1223,6 @@
                 <action android:name="com.android.settings.TRUSTED_CREDENTIALS_USER" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="com.android.settings.SHORTCUT" />
-                <category android:name="codeaurora.intent.filter.settings.multisim.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.TrustedCredentialsSettings" />
@@ -1284,7 +1343,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.VOICE_LAUNCH" />
                 <category android:name="com.android.settings.SHORTCUT" />
-                <category android:name="codeaurora.intent.filter.settings.multisim.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.accessibility.AccessibilitySettings" />
@@ -1327,6 +1385,8 @@
         <!-- Lock screen settings -->
         <activity android:name="ConfirmLockPattern"/>
 
+        <activity android:name="ConfirmLockGesture"/>
+
         <activity android:name="ConfirmLockPassword"
             android:windowSoftInputMode="stateVisible|adjustResize"/>
 
@@ -1348,6 +1408,8 @@
 
         <activity android:name="ChooseLockPattern" android:exported="false"/>
 
+        <activity android:name="ChooseLockGesture" android:exported="false"/>
+
         <activity android:name="ChooseLockPassword" android:exported="false"
             android:windowSoftInputMode="stateVisible|adjustResize"/>
 
@@ -1355,36 +1417,11 @@
             android:windowSoftInputMode="stateVisible|adjustResize"/>
 
         <!-- Runs in the phone process since it needs access to the Phone object -->
-        <activity android:name=".deviceinfo.msim.MSimSubscriptionStatus"
-                android:label="@string/device_status_activity_title"
-                android:theme="@android:style/Theme.Holo.DialogWhenLarge"
-                android:process="com.android.phone">
-        
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.VOICE_LAUNCH" />
-            </intent-filter>
-        </activity>
-
-        <!-- Runs in the phone process since it needs access to the Phone object -->
-        <activity android:name=".deviceinfo.msim.MSimStatus"
-                android:label="@string/device_status_activity_title"
-                android:theme="@style/Theme.Settings.DialogWhenLarge"
-                android:process="com.android.phone">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.VOICE_LAUNCH" />
-            </intent-filter>
-        </activity>
-
-        <!-- Runs in the phone process since it needs access to the Phone object -->
         <activity android:name=".deviceinfo.Status"
                 android:label="@string/device_status_activity_title"
                 android:theme="@style/Theme.Settings.DialogWhenLarge"
-                android:process="com.android.phone"
-                android:parentActivityName="Settings$DeviceInfoSettingsActivity">
+                android:process="com.android.phone">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -1810,7 +1847,6 @@
                 <action android:name="android.intent.action.POWER_USAGE_SUMMARY" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="com.android.settings.SHORTCUT" />
-                <category android:name="codeaurora.intent.filter.settings.multisim.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.fuelgauge.PowerUsageSummary" />
@@ -1870,8 +1906,7 @@
         <activity android:name="com.android.settings.accounts.ChooseAccountActivity"
             android:label="@string/header_add_an_account"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/Theme.Settings.DialogWhenLarge"
-            android:parentActivityName="Settings"/>
+            android:theme="@style/Theme.Settings.DialogWhenLarge"/>
 
         <activity android:name=".CryptKeeper"
                   android:immersive="true"
@@ -1899,62 +1934,7 @@
             android:theme="@style/CryptKeeperBlankTheme"
         />
 
-        <activity android:name=".LockscreenTargets" />
-
-        <!--All in One Animation Control -->
-        <activity android:name="Settings$AnimationInterfaceSettingsActivity"
-                android:label="@string/interface_animation_title"
-                android:taskAffinity=""
-                android:excludeFromRecents="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.android.settings.SHORTCUT" />
-            </intent-filter>
-            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="com.android.settings.amra.interfacesettings.AnimationInterfaceSettings" />
-            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
-                android:resource="@id/interface_animation" />
-        </activity>
-
-        <!-- TRDS -->
-        <activity
-            android:name=".slim.themes.ThemeSettings"
-            android:label="@string/theme_settings_title" >
-        </activity>
-        <activity
-            android:name="Settings$ThemeSettingsActivity"
-            android:label="@string/theme_settings_title" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.settings.THEME_SETTINGS" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="com.android.settings.slim.themes.ThemeSettings" />
-        </activity>
-
-        <!-- Others -->
-        <activity android:name=".slim.NotificationDrawerStyle" />
-        <activity
-            android:name=".LockscreenNotifications"
-            android:label="@string/lockscreen_notifications" >
-        </activity>
-
         <!-- CyanogenMod activities Start -->
-        <activity android:name="Settings$QuickSettingsConfigActivity"
-                android:label="@string/tile_picker_title"
-                android:taskAffinity=""
-                android:excludeFromRecents="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="com.android.settings.quicksettings.QuickSettingsTiles" />
-        </activity>
-
-        <activity android:name=".quicksettings.QuickSettingsTiles" />
 
         <activity android:name=".profiles.ProfilesSettings" />
         <activity android:name="Settings$ProfilesSettingsActivity"
@@ -2026,32 +2006,48 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.android.settings.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="com.android.settings.slim.QuietHours" />
-            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
-                android:resource="@id/sound_settings" />
-            <meta-data android:name="com.android.settings.PARENT_FRAGMENT_CLASS"
-                android:value="com.android.settings.Settings$SoundSettingsActivity" />
+                android:value="org.regulus.amrasettings.quiethours.QuietHours" />
         </activity>
 
-        <!-- Pseudo-activity used to provide an intent-filter entry point to sound packages settings -->
-        <activity android:name="Settings$SoundPackageSettingsActivity"
-                android:label="@string/sound_packages_title"
+        <!-- Pseudo-activity used to provide an intent-filter entry point to quick tiles settings -->
+        <activity android:name="Settings$QuickSettingsTilesSettingsActivity"
+                android:label="@string/tile_picker_title"
                 android:taskAffinity=""
                 android:excludeFromRecents="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.android.settings.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="com.android.settings.omni.sounds.SoundPackageSettings" />
-            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
-                android:resource="@id/sound_settings" />
-            <meta-data android:name="com.android.settings.PARENT_FRAGMENT_CLASS"
-                android:value="com.android.settings.Settings$SoundSettingsActivity" />
+                android:value="org.regulus.amrasettings.quicksettings.quicksettings.QuickSettingsTiles" />
+        </activity>
+
+        <!-- Pseudo-activity used to provide an intent-filter entry point to battery icon settings -->
+        <activity android:name="Settings$BatteryIconStyleSettingsActivity"
+                android:label="@string/battery_icon_title"
+                android:taskAffinity=""
+                android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="org.regulus.amrasettings.battery.BatteryIconStyle" />
+        </activity>
+
+        <!-- Pseudo-activity used to provide an intent-filter entry point to rotation settings -->
+        <activity android:name="Settings$DisplayRotationSettingsActivity"
+                android:label="@string/display_rotation_title"
+                android:taskAffinity=""
+                android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="org.regulus.amrasettings.displayrotation.DisplayRotation" />
         </activity>
 
         <!-- Pseudo-activity used to provide an intent-filter entry point to encryption settings -->
@@ -2076,7 +2072,6 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="com.android.settings.SHORTCUT" />
-                <category android:name="codeaurora.intent.filter.settings.multisim.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.DataUsageSummary" />
@@ -2084,17 +2079,6 @@
                 android:resource="@id/wireless_settings" />
         </activity>
 
-        <!-- Select Subscription (SUB1 or SUB2) Screen -->
-        <activity android:name=".SelectSubscription"
-                android:label="@string/subs_settings"
-                android:process="com.android.phone"
-                android:clearTaskOnLaunch="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.VOICE_LAUNCH" />
-            </intent-filter>
-        </activity>
         <activity android:name="Settings$DreamSettingsActivity"
                 android:uiOptions="splitActionBarWhenNarrow"
                 android:label="@string/screensaver_settings_title"
@@ -2105,12 +2089,29 @@
                 <action android:name="android.settings.DREAM_SETTINGS" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="com.android.settings.SHORTCUT" />
-                <category android:name="codeaurora.intent.filter.settings.multisim.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.DreamSettings" />
             <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
                 android:resource="@id/display_settings" />
+        </activity>
+
+	<!-- Pseudo-activity used to provide an intent-filter entry point to sound packages settings -->
+        <activity android:name="Settings$SoundPackageSettingsActivity"
+                android:label="@string/sound_packages_title"
+                android:taskAffinity=""
+                android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.android.settings.SHORTCUT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="org.regulus.amrasettings.sounds.SoundPackageSettings" />
+            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
+                android:resource="@id/sound_settings" />
+            <meta-data android:name="com.android.settings.PARENT_FRAGMENT_CLASS"
+                android:value="com.android.settings.Settings$SoundSettingsActivity" />
         </activity>
 
         <activity android:name="Settings$UserSettingsActivity"

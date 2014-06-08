@@ -20,8 +20,6 @@ import android.app.LauncherActivity;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
-import android.os.SystemProperties;
-import android.telephony.MSimTelephonyManager;
 import android.view.View;
 import android.widget.ListView;
 
@@ -34,11 +32,7 @@ public class CreateShortcut extends LauncherActivity {
     @Override
     protected Intent getTargetIntent() {
         Intent targetIntent = new Intent(Intent.ACTION_MAIN, null);
-        if (MSimTelephonyManager.getDefault().isMultiSimEnabled()) {
-            targetIntent.addCategory("codeaurora.intent.filter.settings.multisim.SHORTCUT");
-        } else {
-            targetIntent.addCategory("com.android.settings.SHORTCUT");
-        }
+        targetIntent.addCategory("com.android.settings.SHORTCUT");
         targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return targetIntent;
     }
@@ -54,6 +48,17 @@ public class CreateShortcut extends LauncherActivity {
         intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, itemForPosition(position).label);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    private int getProperShortcutIcon(String className) {
+        String c = className.substring(className.lastIndexOf(".") + 1);
+
+        if (c.equals("ScreenStateToggles"))
+            return R.drawable.ic_screen_state;
+        else if (c.equals("WakeLockBlocker"))
+            return R.drawable.ic_wakelock_blocker;
+        else
+            return R.mipmap.ic_launcher;
     }
 
     @Override

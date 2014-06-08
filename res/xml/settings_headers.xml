@@ -41,7 +41,7 @@
         android:id="@+id/data_usage_settings"
         android:fragment="com.android.settings.DataUsageSummary"
         android:title="@string/data_usage_summary_title"
-        android:icon="@drawable/ic_settings_data_usage" /> 
+        android:icon="@drawable/ic_settings_data_usage" />
 
     <!-- Operator hook -->
     <header
@@ -70,42 +70,22 @@
         android:title="@string/amra_settings"
         android:fragment="org.regulus.amrasettings.AmraSettings"/>
 
-    <!-- Device Control -->
+    <!-- HALO -->
     <header
-        android:id="@+id/amra_control_settings"
-        android:icon="@drawable/ic_settings_devicecontrol"
-        android:title="@string/amra_control_settings" />
-
-    <!-- Other interface controls -->
-    <header
-        android:id="@+id/interface_more"
-        android:title="@string/more_device_controls_title"
-        android:breadCrumbTitle="@string/more_device_controls_title"
-        android:icon="@drawable/empty_icon"
-        android:fragment="org.regulus.amrasettings.amra.AmraMoreSettings" />
-
-    <!-- Multi Sim Settings - this is in the settings process -->
-    <header
-        android:id="@+id/multi_sim_settings"
-        android:icon="@drawable/ic_settings_sim"
-        android:title="@string/multi_sim_settings_title">
-        <intent
-            android:action="android.intent.action.MAIN"
-            android:targetPackage="com.android.settings"
-            android:targetClass="com.android.settings.MultiSimSettings" />
-    </header>
-
-    <!-- INTERFACE -->
-    <header
-        android:id="@+id/interface_section"
-        android:title="@string/header_category_interface" />
+        android:id="@+id/halo_settings"
+        android:fragment="org.regulus.amrasettings.halo.Halo"
+        android:icon="@drawable/ic_settings_halo" 
+        android:title="@string/halo_settings_title" />
 
     <!-- TRDS -->
     <header
-        android:id="@+id/theme_settings"
-        android:fragment="com.android.settings.slim.themes.ThemeSettings"
+        android:id="@+id/themetoggle_settings"
         android:icon="@drawable/ic_settings_theme"
-        android:title="@string/theme_settings_title" />
+        android:fragment="org.regulus.amrasettings.themetoggle.ThemeToggleSettings"
+        android:title="@string/themetoggle_settings_title" />
+
+    <!-- INTERFACE -->
+    <header android:title="@string/header_category_interface" />
 
     <!-- Home -->
     <header
@@ -114,45 +94,20 @@
         android:fragment="com.android.settings.HomeSettings"
         android:title="@string/home_settings" />
 
-    <!-- Active Display -->
-    <header
-        android:id="@+id/active_display"
-        android:title="@string/active_display_settings"
-        android:breadCrumbTitle="@string/active_display_settings"
-        android:fragment="org.regulus.amrasettings.activedisplay.ActiveDisplaySettings"
-        android:icon="@drawable/ic_settings_actived" />
-    
-    <!-- Navigation -->
-    <header
-        android:id="@+id/navigation_settings"
-        android:icon="@drawable/ic_settings_navigation"
-        android:fragment="com.android.settings.slim.NavigationSettings"
-        android:title="@string/navigation_settings_title" />
-
-    <!-- System UI -->
-    <header
-        android:id="@+id/system_settings"
-        android:icon="@drawable/ic_settings_system"
-        android:fragment="org.regulus.amrasettings.utils.SystemUiSettings"
-        android:title="@string/system_settings_title" />
-
     <!-- Lock screen -->
     <header
         android:id="@+id/lock_screen_settings"
-        android:fragment="org.regulus.amrasettings.utils.LockscreenInterface"
+        android:fragment="org.regulus.amrasettings.lockscreen.LockscreenInterface"
         android:title="@string/lock_screen_title"
         android:icon="@drawable/ic_settings_lockscreen" />
 
-    <!-- Animation Control -->
+    <!-- Themes -->
     <header
-        android:id="@+id/interface_animation"
-        android:title="@string/interface_animation_title"
-        android:breadCrumbTitle="@string/interface_animation_title"
-        android:fragment="org.regulus.amrasettings.interfacesettings.AnimationInterfaceSettings"
-        android:icon="@drawable/ic_rom_control_animations" />
-
-    <!-- CYANOGENMOD -->
-    <!--header android:title="@string/header_category_cyanogenmod" /-->
+        android:id="@+id/theme_settings"
+        android:title="@string/themes_settings_title"
+        android:breadCrumbTitle="@string/themes_settings_title"
+        android:fragment="org.regulus.amrasettings.theme.ThemeSettings"
+        android:icon="@drawable/prd_ic_themepacks" />
 
     <!-- DEVICE -->
     <header android:id="@+id/device_section"
@@ -176,7 +131,7 @@
     <header
         android:id="@+id/button_settings"
         android:icon="@drawable/ic_settings_buttons"
-        android:fragment="org.regulus.amrasettings.utils.ButtonSettings"
+        android:fragment="org.regulus.amrasettings.buttonsettings.ButtonSettings"
         android:title="@string/button_settings" />
 
     <!-- Storage -->
@@ -226,7 +181,7 @@
         android:id="@+id/more_device_settings"
         android:title="@string/more_device_controls_title"
         android:breadCrumbTitle="@string/more_device_settings_title"
-        android:fragment="org.regulus.amrasettings.utils.MoreDeviceSettings"
+        android:fragment="org.regulus.amrasettings.MoreDeviceSettings"
         android:icon="@drawable/empty_icon" />
 
     <!-- PERSONAL -->
@@ -239,7 +194,7 @@
         android:icon="@drawable/ic_settings_profiles"
         android:fragment="com.android.settings.profiles.ProfilesSettings"
         android:title="@string/profiles_settings_title" />
-
+    
     <!-- Location -->
     <header
         android:fragment="com.android.settings.location.LocationSettings"
@@ -254,14 +209,6 @@
         android:title="@string/security_settings_title"
         android:id="@+id/security_settings" />
 
-    <!-- Amra Privacy Settings -->
-    <!-- This is the 'real' Privacy items and includes Privacy Guard, Blacklist & WhisperPush -->
-    <header
-        android:fragment="org.regulus.amrasettings.utils.PrivacySettings"
-        android:icon="@drawable/ic_settings_privacy"
-        android:title="@string/privacy_settings_cyanogenmod_title"
-        android:id="@+id/privacy_settings_amra" />
-
     <!-- Apps Permissions -->
     <header
         android:id="@+id/appops_settings"
@@ -269,6 +216,13 @@
         android:fragment="com.android.settings.applications.AppOpsSummary"
         android:title="@string/appops_settings" />
 
+    <!-- Amra Privacy Settings -->
+    <!-- This is the 'real' Privacy items and includes Privacy Guard, Blacklist & WhisperPush -->
+    <header
+        android:fragment="org.regulus.amrasettings.PrivacySettings"
+        android:icon="@drawable/ic_settings_privacy"
+        android:title="@string/privacy_settings_cyanogenmod_title"
+        android:id="@+id/privacy_settings_amra" />
 
     <!-- Language -->
     <header
@@ -289,13 +243,13 @@
 
     <!--  ACCOUNTS section -->
     <header
-        android:id="@+id/account_settings"
-        android:title="@string/account_settings" />
+            android:id="@+id/account_settings"
+            android:title="@string/account_settings" />
 
     <header
-        android:id="@+id/account_add"
-        android:title="@string/add_account_label"
-        android:icon="@drawable/ic_menu_add_dark">
+            android:id="@+id/account_add"
+            android:title="@string/add_account_label"
+            android:icon="@drawable/ic_menu_add_dark">
         <intent
             android:action="android.settings.ADD_ACCOUNT_SETTINGS"/>
     </header>
@@ -349,6 +303,13 @@
         android:fragment="com.brewcrewfoo.performance.activities.MainActivity"
         android:icon="@drawable/ic_settings_performance"
         android:title="@string/performance_settings" />
+
+    <!-- About Amra -->
+    <header
+        android:id="@+id/about_rom"
+        android:fragment="org.regulus.amrasettings.amra.about.About"
+        android:icon="@drawable/ic_settings_about_amra"
+        android:title="@string/about_amra_settings_title" />
 
     <!-- About Device -->
     <header

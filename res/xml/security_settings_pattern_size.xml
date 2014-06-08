@@ -14,9 +14,8 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
 
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceScreen
         android:key="lock_pattern_size_3"
         android:title="@string/lock_pattern_size_3"
@@ -36,5 +35,4 @@
         android:key="lock_pattern_size_6"
         android:title="@string/lock_pattern_size_6"
         android:persistent="false"/>
-
 </PreferenceScreen>

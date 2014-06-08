@@ -34,13 +34,13 @@
     <string name="device_info_default">Unknown</string>
     <!-- [CHAR LIMIT=NONE] Device Info screen. Countdown for user taps to enable development settings -->
     <plurals name="show_dev_countdown">
-        <item quantity="one">You are now <xliff:g id="step_count">%1$d</xliff:g> step away from enabling developer options.</item>
-        <item quantity="other">You are now <xliff:g id="step_count">%1$d</xliff:g> steps away from enabling developer options.</item>
+        <item quantity="one">You are now <xliff:g id="step_count">%1$d</xliff:g> step away from enabling development settings.</item>
+        <item quantity="other">You are now <xliff:g id="step_count">%1$d</xliff:g> steps away from enabling development settings.</item>
     </plurals>
     <!-- [CHAR LIMIT=NONE] Device Info screen. Confirmation that developer settings are enabled -->
-    <string name="show_dev_on">You have enabled developer options!</string>
+    <string name="show_dev_on">You have enabled development settings!</string>
     <!-- [CHAR LIMIT=NONE] Device Info screen. Okay we get it, stop pressing, you already have it on -->
-    <string name="show_dev_already">No need, you have already enabled developer options.</string>
+    <string name="show_dev_already">No need, you have already enabled development settings.</string>
 
     <!-- Category headings in left-pane header menu --> <skip />
     <!-- Settings main menu category heading. Wireless and networks (Wi-Fi, Bluetooth, data usage...). [CHAR LIMIT=40] -->
@@ -877,6 +877,11 @@
     <!-- Title for preference that guides the user through creating an unlock password [CHAR LIMIT=45] -->
     <string name="unlock_set_unlock_password_summary">High security</string>
 
+    <!-- Title for preference that guides the user through creating an unlock gesture [CHAR LIMIT=22] -->
+    <string name="unlock_set_unlock_gesture_title">Gesture</string>
+    <!-- Title for preference that guides the user through creating an unlock gesture [CHAR LIMIT=45] -->
+    <string name="unlock_set_unlock_gesture_summary">Low security, experimental</string>
+
     <!-- Summary for preference that has been disabled by because of the DevicePolicyAdmin, or because device encryption is enabled, or because there are credentials in the credential storage [CHAR LIMIT=50] -->
     <string name="unlock_set_unlock_disabled_summary">Disabled by administrator, encryption policy, or credential storage</string>
 
@@ -888,6 +893,8 @@
     <string name="unlock_set_unlock_mode_biometric_weak">Face Unlock</string>
     <!-- Summary for "Configure lockscreen" when security pattern is enabled [CHAR LIMIT=45] -->
     <string name="unlock_set_unlock_mode_pattern">Pattern</string>
+    <!-- Summary for "Configure lockscreen" when security gesture is enabled [CHAR LIMIT=45] -->
+    <string name="unlock_set_unlock_mode_gesture">Gesture</string>
     <!-- Summary for "Configure lockscreen" when security PIN is enabled [CHAR LIMIT=45] -->
     <string name="unlock_set_unlock_mode_pin">PIN</string>
     <!-- Summary for "Configure lockscreen" when security password is enabled [CHAR LIMIT=45] -->
@@ -1267,23 +1274,23 @@
     <string name="wifi_display_options_name">Name</string>
 
     <!-- Wifi Display settings. The sub heading for wireless display certification options. [CHAR LIMIT=40] -->
-    <string name="wifi_display_certification_heading" translatable="false">Certification</string>
+    <string name="wifi_display_certification_heading">Certification</string>
     <!-- Wifi Display settings. The section title for wireless display session info. [CHAR LIMIT=40] -->
-    <string name="wifi_display_session_info" translatable="false">Session info</string>
+    <string name="wifi_display_session_info">Session info</string>
     <!-- Wifi Display settings. The checkbox title for enabling listen mode during certification process. [CHAR LIMIT=40] -->
-    <string name="wifi_display_listen_mode" translatable="false">Enable listen mode</string>
+    <string name="wifi_display_listen_mode">Enable listen mode</string>
     <!-- Wifi Display settings. The checkbox title for enabling autonomous GO during certification process. [CHAR LIMIT=40] -->
-    <string name="wifi_display_autonomous_go" translatable="false">Enable autonomous GO</string>
+    <string name="wifi_display_autonomous_go">Enable autonomous GO</string>
     <!-- Wifi Display settings. The button text for sending pause trigger during certification process. [CHAR LIMIT=40] -->
-    <string name="wifi_display_pause" translatable="false">Pause</string>
+    <string name="wifi_display_pause">Pause</string>
     <!-- Wifi Display settings. The button text for sending play (resume) trigger during certification process. [CHAR LIMIT=40] -->
-    <string name="wifi_display_resume" translatable="false">Resume</string>
+    <string name="wifi_display_resume">Resume</string>
     <!-- Wifi Display settings. The dropdown menu title for choosing WPS configuration during certification process. [CHAR LIMIT=40] -->
-    <string name="wifi_display_wps_config" translatable="false">WPS configuration</string>
+    <string name="wifi_display_wps_config">WPS configuration</string>
     <!-- Wifi Display settings. The dropdown menu title for choosing listen channel during certification process. [CHAR LIMIT=40] -->
-    <string name="wifi_display_listen_channel" translatable="false">Listen channel</string>
+    <string name="wifi_display_listen_channel">Listen channel</string>
     <!-- Wifi Display settings. The dropdown menu title for choosing operating channel during certification process. [CHAR LIMIT=40] -->
-    <string name="wifi_display_operating_channel" translatable="false">Operating channel</string>
+    <string name="wifi_display_operating_channel">Operating channel</string>
 
     <!-- NFC settings -->
     <!-- Used in the 1st-level settings screen to turn on NFC -->
@@ -1573,12 +1580,6 @@
     <string name="wifi_setting_frequency_band_summary">Specify the frequency range of operation</string>
     <!-- Wi-Fi settings screen, error message when the frequency band could not be set [CHAR LIMIT=50]. -->
     <string name="wifi_setting_frequency_band_error">There was a problem setting the frequency band.</string>
-    <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
-    <string name="wifi_setting_countrycode_title">Wi-Fi region code</string>
-    <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->
-    <string name="wifi_setting_countrycode_summary">Specify the region code for Wi-Fi</string>
-    <!-- Wi-Fi settings screen, error message when the region code could not be set [CHAR LIMIT=50]. -->
-    <string name="wifi_setting_countrycode_error">There was a problem setting the region code.</string>
     <!-- Wi-Fi settings screen, advanced, title of the item to show the Wi-Fi device's MAC address. -->
     <string name="wifi_advanced_mac_address_title">MAC address</string>
     <!-- Title of the screen to adjust IP settings -->
@@ -1766,6 +1767,20 @@
     <string name="musicfx_title">Music effects</string>
     <!-- Sound settings screen, setting option name -->
     <string name="ring_volume_title">Ringer volume</string>
+    <!-- Sound settings screen, setting option name -->
+    <string name="volume_steps_alarm_title">Volume steps: Alarm</string>
+    <!-- Sound settings screen, setting option name -->
+    <string name="volume_steps_dtmf_title">Volume steps: DTMF</string>
+    <!-- Sound settings screen, setting option name -->
+    <string name="volume_steps_music_title">Volume steps: Music</string>
+    <!-- Sound settings screen, setting option name -->
+    <string name="volume_steps_notification_title">Volume steps: Notification</string>
+    <!-- Sound settings screen, setting option name -->
+    <string name="volume_steps_ring_title">Volume steps: Ringer</string>
+    <!-- Sound settings screen, setting option name -->
+    <string name="volume_steps_system_title">Volume steps: System</string>
+    <!-- Sound settings screen, setting option name -->
+    <string name="volume_steps_voice_call_title">Volume steps: Voice Call</string>
     <!-- Sound settings screen, setting option name checkbox -->
     <string name="vibrate_in_silent_title">Vibrate when silent</string>
     <!-- Sound settings screen, setting option name -->
@@ -2009,11 +2024,7 @@
     <!-- About tablet screen, summary of the item that takes you to tablet status screen -->
     <string name="device_status_summary" product="tablet">Status of the battery, network, and other information</string>
     <!-- About phone screen, summary of the item to go into the phone status screen -->
-    <string name="device_status_summary" product="default">Battery status, battery level, etc.</string>
-    <!-- About phone screen, summary of the item to go into the phone status screen -->
     <string name="device_status_summary" product="default">Phone number, signal, etc.</string>
-    <!-- In About phone->Status screen, title of the item to go into the subscription status screen -->
-    <string name="device_additional_status">Additional status info</string>
     <!-- Main settings screen item's title to go into the storage settings screen [CHAR LIMIT=25] -->
     <string name="storage_settings" >Storage</string>
     <!-- Storage settings screen title -->
@@ -2540,12 +2551,16 @@
     <string name="lockpassword_choose_your_password_header">Choose your password</string>
     <!-- Header on first screen of choose pattern flow [CHAR LIMIT=30] -->
     <string name="lockpassword_choose_your_pattern_header">Choose your pattern</string>
+    <!-- Header on first screen of choose gesture flow [CHAR LIMIT=30] -->
+    <string name="lockpassword_choose_your_gesture_header">Draw your gesture</string>
     <!-- Header on first screen of choose password/PIN flow [CHAR LIMIT=30] -->
     <string name="lockpassword_choose_your_pin_header">Choose your PIN</string>
     <!-- Header on password confirm screen [CHAR LIMIT=30] -->
     <string name="lockpassword_confirm_your_password_header">Confirm your password</string>
     <!-- Header on pattern confirm screen [CHAR LIMIT=30] -->
     <string name="lockpassword_confirm_your_pattern_header">Confirm your pattern</string>
+    <!-- Header on gesture confirm screen [CHAR LIMIT=30] -->
+    <string name="lockpassword_confirm_your_gesture_header">Confirm your gesture</string>
     <!-- Header on password confirm screen [CHAR LIMIT=30] -->
     <string name="lockpassword_confirm_your_pin_header">Confirm your PIN</string>
     <!-- Header on password confirm screen if second password doesn't match the first. [CHAR LIMIT=30] -->
@@ -2560,6 +2575,8 @@
     <string name="lockpassword_pin_set_toast">PIN has been set</string>
     <!-- Toast shown if setting pattern was successful -->
     <string name="lockpassword_pattern_set_toast">Pattern has been set</string>
+    <!-- Toast shown if setting gesture was successful -->
+    <string name="lockpassword_gesture_set_toast">Gesture has been set</string>
 
     <!-- Lock Pattern settings -->
     <!-- Security & location settings screen, header -->
@@ -2621,6 +2638,59 @@
     <string name="lockpattern_too_many_failed_confirmation_attempts_footer">Try again in <xliff:g id="number">%d</xliff:g> seconds.</string>
     <!-- Displayed when user launches a widget configuration activity that was uninstalled -->
     <string name="activity_not_found">Application is not installed on your phone.</string>
+
+    <!-- Lock Gesture settings -->
+    <!-- Security & location settings screen, setting option name -->
+    <string name="lockgesture_change_lock_pattern_label">Change unlock gesture</string>
+    <!-- Security & location settings screen, change unlock gesture screen instruction when the user chooses "Change unlock gesture".  We first ask the user toe nter the current pattern, and this is the message seen -->
+    <string name="lockgesture_change_lock_pin_label">Change unlock PIN</string>
+    <!-- Security & location settings screen, change unlock gesture screen instruction when the user chooses "Change unlock gesture".  We first ask the user toe nter the current pattern, and this is the message seen -->
+    <string name="lockgesture_need_to_unlock">Confirm saved gesture</string>
+    <!-- Do not translate. -->
+    <string name="lockgesture_need_to_unlock_footer" />
+    <!-- Security & location settings screen, change unlock gesture screen instruction if user draws incorrect pattern -->
+    <string name="lockgesture_need_to_unlock_wrong">Try again:</string>
+    <!-- Do not translate. -->
+    <string name="lockgesture_need_to_unlock_wrong_footer" />
+    <!-- Security & location settings screen, change unlock gesture screen instruction on top of screen.  This si when they are supposed to draw a new unlock pattern (for example, if they are changing their unlock patterns)..-->
+    <string name="lockgesture_recording_intro_header">Draw an unlock gesture:</string>
+    <!-- Security & location settings screen, change unlock gesture screen hint on bottom of screen.  We are telling them to press the menu button to see more options or help. -->
+    <string name="lockgesture_recording_intro_footer">Press Menu for help.</string>
+    <!-- Security & location settings screen, change unlock gesture screen instruction on top of screen while drawing pattern -->
+    <string name="lockgesture_recording_inprogress">Release finger when done.</string>
+    <!-- Security & location settings screen, change unlock gesture screen message on top of screen after drawing pattern -->
+    <string name="lockgesture_pattern_entered_header">Gesture recorded.</string>
+    <!-- Security & location settings screen, change unlock gesture screen instruction on top of screen to confirm pattern -->
+    <string name="lockgesture_need_to_confirm">Draw gesture again to confirm:</string>
+    <string name="lockgesture_pattern_confirmed_header">Your new unlock gesture:</string>
+    <!-- Security & location settings screen, change unlock gesture screen button, on bottom of screen.  After they draw a gesture and release their finger, we display the pattern so they remember.  When they are ready to draw it once again to confirm it, they press this button. -->
+    <string name="lockgesture_confirm_button_text">Confirm</string>
+    <!-- Security & location settings screen, change unlock gesture screen button, on bottom of screen.  After they draw a gesture and release their finger, we display the pattern so they remember.  If they are nto satisfied with this pattern, they click this button to redraw the pattern. -->
+    <string name="lockgesture_restart_button_text">Redraw</string>
+    <!-- Security & location settings screen, change unlock gesture screen button, on bottom of screen. If they are supposed to enter their current gesture before being able to draw another one, and they screw up, they hit this button to try again -->
+    <string name="lockgesture_retry_button_text">Retry</string>
+    <!-- Security & location settings screen, change unlock gesture screen button, on bottom of screen. Once they draw a new gesture and confirm it by drawing it again, they press this button to exit -->
+    <string name="lockgesture_continue_button_text">Continue</string>
+    <!-- Security & location settings screen, unlock screen activity title -->
+    <string name="lockgesture_settings_title">Unlock gesture</string>
+    <!-- Security & location settings screen, setting check box title if the unlock pattern MUST be drawn everytime they turn on the screen -->
+    <string name="lockgesture_settings_enable_title">Require gesture</string>
+    <!-- Security & location settings screen, setting summary for the checkbox "Require pattern" -->
+    <string name="lockgesture_settings_enable_summary">Must draw gesture to unlock screen</string>
+    <!-- Security & location settings screen, setting check box title. This setting controls whether a visible gesture is drawn as the user moves his finger around while drawing the unlock pattern.  If checked, this line is drawn.  If unchecked, there is nothing drawn so the user does not reveal his pattern while he unlocks the phone.-->
+    <string name="lockgesture_settings_enable_visible_pattern_title">Make gesture visible</string>
+    <!-- Security & location settings screen, setting check box title. This controls whether the device locks immediately when the power button is pressed. [CHAR LIMIT=28]-->
+    <string name="lockgesture_settings_enable_power_button_instantly_locks">Power button instantly locks</string>
+    <!-- Security & location settings screen, setting option name when user has never set an unlock gesture -->
+    <string name="lockgesture_settings_choose_lock_pattern">Set unlock gesture</string>
+    <!-- Security & location settings screen, setting option name when user has previously set an unlock gesture and wants to change to a new pattern -->
+    <string name="lockgesture_settings_change_lock_pattern">Change unlock gesture</string>
+    <!-- Security & location settings screen, the help instructions (an animation) caption -->
+    <string name="lockgesture_settings_help_how_to_record">How to draw an unlock gesture</string>
+    <!-- Security & location settings screen, change unlock gesture screen instruction on top of screen after too many incorrect attempts -->
+    <string name="lockgesture_too_many_failed_confirmation_attempts_header">Too many incorrect attempts!</string>
+    <!-- Security & location settings screen, change unlock gesture screen countdown hint on bottom of screen after too many incorrect attempts -->
+    <string name="lockgesture_too_many_failed_confirmation_attempts_footer">Try again in <xliff:g id="number">%d</xliff:g> seconds.</string>
 
     <!-- Applications Settings --> <skip />
     <!-- Applications settings screen, setting option name for the user to go to the screen to manage installed applications  -->
@@ -4471,7 +4541,6 @@
     <string name="data_usage_tab_ethernet">Ethernet</string>
     <!-- Tab title for showing combined mobile data usage. [CHAR LIMIT=10] -->
     <string name="data_usage_tab_mobile">Mobile</string>
-    <string name="data_usage_tab_slot">SIM </string>
     <!-- Tab title for showing 4G data usage. [CHAR LIMIT=10] -->
     <string name="data_usage_tab_4g">4G</string>
     <!-- Tab title for showing 2G and 3G data usage. [CHAR LIMIT=10] -->
@@ -4688,56 +4757,6 @@
 
     <!-- Representation of a numerical percentage. [CHAR LIMIT=8] -->
     <string name="percentage"><xliff:g id="number" example="30">%d</xliff:g>%%</string>
-    <!-- Multi Sim Settings screen, Select Sub label -->
-    <string name="sel_sub_title">Configure Subscriptions </string>
-    <!-- Multi Sim Settings screen, Select Sub Summary label -->
-    <string name="sel_sub_summary">Select the Subscription SUB1, SUB2, etc..</string>
-    <!-- Select Subscription screen title -->
-    <string name="select_subscription">Select Subscription</string>
-    <!-- String displayed when no SIM info is present and Multi SIM settings is accessed-->
-    <string name="no_sim_info">SIM card info not available.\nMenu cannot be accessed</string>
-    <!-- Subscription settings title -->
-    <string name="subs_settings">SUBS Status</string>
-
-    <!-- Main settings screen, Multi Sim settings title for item to go into the Multi settings -->
-    <string name="multi_sim_settings_title">Multi Sim Settings</string>
-    <!-- Main settings screen, Multi Sim settings summary for item to go into Multi settings -->
-    <string name="multi_sim_settings_summary">Set up Multi Sim Settings for Voice, Data and SMS</string>
-
-    <!-- Multi Sim Settings screen, Voice box label -->
-    <string name="voice_title">Voice/USSD/MMI</string>
-    <!-- Multi Sim Settings screen, Voice Summary label -->
-    <string name="voice_summary">Select Subscription for Voice Call</string>
-
-    <!-- Multi Sim Settings screen, Data box label -->
-    <string name="data_title">Data Call</string>
-    <!-- Multi Sim Settings screen, Voice Summary label -->
-    <string name="data_summary">Select Subscription for Data Call</string>
-
-    <!-- Multi Sim Settings screen, SMS box label -->
-    <string name="sms_title">SMS </string>
-    <!-- Multi Sim Settings screen, Voice Summary label -->
-    <string name="sms_summary">Select the Subscription for Sending SMS</string>
-
-    <!-- Multi Sim Settings screen, Set DDS progress dialog message -->
-    <string name="set_data_subscription_progress">Set data subscription in progress</string>
-    <!-- Multi Sim Settings screen, Set DDS success message -->
-    <string name="set_dds_success">Set data subscription success</string>
-    <!-- Multi Sim Settings screen, Set DDS failure message -->
-    <string name="set_dds_failed">Error in set data subscription.  Clean up any existing data connection and try again.</string>
-    <!-- Multi Sim Settings screen, Set DDS error message -->
-    <string name="set_dds_error">Error in set data subscription.</string>
-    <!-- Multi Sim Settings screen, Set SMS error message -->
-    <string name="set_sms_error">Error in set sms subscription. Subscription not active.</string>
-    <!-- Multi Sim Settings screen, Set VOICE error message -->
-    <string name="set_voice_error">Error in set voice subscription. Subscription not active.</string>
-    <!-- Multi Sim Settings screen, Set PRIORITY SUB error message -->
-    <string name="set_priority_sub_error">Error in set priority subscription. Subscription not active.</string>
-
-
-    <!--Prompt, used only for voice-->
-    <string name="prompt">Prompt</string>
-    <string name="prompt_user">Prompt User</string>
 
     <!-- A menu item in "About phone" that allows the user to update the phone with settings
     from their cell phone carrier. The use of the string is similar to the string
@@ -4764,16 +4783,6 @@
     <string name="ssl_ca_cert_warning_message">A third party is capable of monitoring your network activity, including emails, apps, and secure websites.\n\nA trusted credential installed on your device is making this possible.</string>
     <!-- Label on button that will take the user to the Trusted Credentials settings page.  [CHAR LIMIT=NONE]-->
     <string name="ssl_ca_cert_settings_button">Check trusted credentials</string>
-    <!-- Tune Away settings -->
-    <string name="tune_away_title">Tune Away</string>
-    <string name="tune_away_Default">Disable</string>
-    <!-- Summary for the TuneAway status displayed in Multi SIM Settings -->
-    <string name="tune_away_enabled">TuneAway Enabled!</string>
-    <string name="tune_away_disabled">TuneAway Disabled!</string>
-
-    <!-- Priority subscription settings -->
-    <string name="priority_sub_title">Priority Subscription</string>
-    <string name="priority_sub_summary">Select Priority Subscription</string>
 
     <!-- User settings -->
     <skip/>
@@ -5003,11 +5012,6 @@
     <!-- Text to display in regulatory info screen (from device overlay). -->
     <string name="regulatory_info_text"></string>
 
-    <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
-    <string name="supersu_title">SuperSU</string>
-
-    <string name="auto_toggle">Amra Toggle</string>
-
     <string name="screencolor_save">Save</string>
     <string name="screencolor_cancel">Cancel</string>
     <string name="previous_str">Previous</string>
@@ -5020,4 +5024,6 @@
     <string name="saturation_str">Saturation: <xliff:g id="saturation_value">%1$s</xliff:g></string>
     <string name="contrast_str">Contrast: <xliff:g id="contrast_value">%1$s</xliff:g></string>
     <string name="intensity_str">Intensity: <xliff:g id="intensity_str_value">%1$s</xliff:g></string>
+
+    <string name="bluetooth_accept_all_files">Accept all file types</string>
 </resources>

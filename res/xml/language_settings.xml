@@ -39,14 +39,15 @@
     </PreferenceCategory>
 
     <PreferenceScreen
-        android:key="keyboard_input_settings"
-        android:fragment="com.android.settings.slim.InputMethodsSettings"
-        android:title="@string/title_keyboard_input" />
+         android:key="keyboard_input_settings"
+         android:fragment="org.regulus.amrasettings.ime.InputMethodsSettings"
+         android:title="@string/title_keyboard_input" />
 
     <PreferenceCategory
             android:key="hard_keyboard"
             android:title="@string/builtin_keyboard_settings_title"
             android:persistent="false">
+
         <!-- Additional preference screens are inserted here programmatically
              with low order values to set the key map of each attached keyboard. -->
 
@@ -73,12 +74,6 @@
                 android:persistent="false"/>
     </PreferenceCategory>
 
-    <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
-            android:key="status_bar_ime_switcher"
-            android:title="@string/ime_switcher_notify"
-            android:summary="@string/ime_switcher_notify_summary"
-            android:defaultValue="true" />
-
     <PreferenceCategory android:key="voice_category"
             android:title="@string/voice_category" >
 
@@ -104,7 +99,18 @@
                 android:title="@string/pointer_speed"
                 android:dialogTitle="@string/pointer_speed" />
 
-            <!-- Gesture pad settings -->
+        <PreferenceScreen
+                android:fragment="com.android.settings.inputmethod.StylusGestures"
+                android:key="stylus_gestures"
+                android:title="@string/gestures_settings_title" />
+
+        <CheckBoxPreference android:key="stylus_icon_enabled"
+                android:title="@string/stylus_icon_enabled_title"
+                android:summary="@string/stylus_icon_enabled_summary"
+                android:defaultValue="false"
+                android:persistent="false" />
+
+        <!-- Gesture pad settings -->
         <Preference
             android:key="gesture_pad_settings">
             <intent

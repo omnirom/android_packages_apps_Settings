@@ -57,6 +57,7 @@
         <item>5 minutes</item>
         <item>10 minutes</item>
         <item>30 minutes</item>
+        <item>Never</item>
     </string-array>
 
     <!-- Do not translate. -->
@@ -75,6 +76,8 @@
         <item>600000</item>
         <!-- Do not translate. -->
         <item>1800000</item>
+	<!-- Do not translate. -->
+        <item>2147483647</item>
     </string-array>
 
     <!-- Display settings.  The delay in inactivity before the dream is shown. These are shown in a list dialog. -->
@@ -87,6 +90,7 @@
         <item>5 minutes</item>
         <item>10 minutes</item>
         <item>30 minutes</item>
+        <item>Never</item>
     </string-array>
 
     <!-- Do not translate. -->
@@ -107,6 +111,8 @@
         <item>600000</item>
         <!-- Do not translate. -->
         <item>1800000</item>
+	<!-- Do not translate. -->
+        <item>2147483647</item>
     </string-array>
 
     <!-- Security settings.  The delay after screen is turned off until device locks.
@@ -121,6 +127,7 @@
         <item>5 minutes</item>
         <item>10 minutes</item>
         <item>30 minutes</item>
+	<item>Never</item>
     </string-array>
 
     <!-- Do not translate. -->
@@ -143,6 +150,8 @@
         <item>600000</item>
         <!-- Do not translate. -->
         <item>1800000</item>
+	<!-- Do not translate. -->
+        <item>2147483647</item>
     </string-array>
 
     <string-array name="entries_font_size">
@@ -640,12 +649,6 @@
         <item>keep awake</item>
         <item>monitor location</item>
         <item>monitor high power location</item>
-        <item>wifi change</item>
-        <item>bluetooth change</item>
-        <item>data change</item>
-        <item>send MMS</item>
-        <item>read MMS</item>
-        <item>write MMS</item>
     </string-array>
 
     <!-- User display names for app ops codes -->
@@ -664,15 +667,15 @@
         <item>Post notification</item>
         <item>Location</item>
         <item>Call phone</item>
-        <item>Read SMS</item>
-        <item>Write SMS</item>
-        <item>Receive SMS</item>
-        <item>Receive SMS</item>
-        <item>Receive MMS</item>
-        <item>Receive SMS</item>
-        <item>Send SMS</item>
-        <item>Read SMS</item>
-        <item>Write SMS</item>
+        <item>Read SMS/MMS</item>
+        <item>Write SMS/MMS</item>
+        <item>Receive SMS/MMS</item>
+        <item>Receive SMS/MMS</item>
+        <item>Receive SMS/MMS</item>
+        <item>Receive SMS/MMS</item>
+        <item>Send SMS/MMS</item>
+        <item>Read SMS/MMS</item>
+        <item>Write SMS/MMS</item>
         <item>Modify settings</item>
         <item>Draw on top</item>
         <item>Access notifications</item>
@@ -693,12 +696,6 @@
         <item>Keep awake</item>
         <item>Location</item>
         <item>Location</item>
-        <item>Wifi change</item>
-        <item>Bluetooth change</item>
-        <item>Data change</item>
-        <item>Send MMS</item>
-        <item>Read MMS</item>
-        <item>Write MMS</item>
     </string-array>
 
     <!-- Titles for the list of long press timeout options. -->
@@ -1187,11 +1184,36 @@
         <item>critical</item>
     </string-array>
 
-    <!-- Display settings.  Entries for each type of Subscription. -->
-    <string-array name="multi_sim_entries">
-        <item>Subscription 1</item>
-        <item>Subscription 2</item>
-        <item>Subscription 3</item>
+    <string-array name="lcd_density_entries" translatable="false">
+        <item>160</item>
+        <item>182</item>
+        <item>200</item>
+        <item>220</item>
+        <item>240</item>
+        <item>245</item>
+        <item>268</item>
+        <item>280</item>
+        <item>300</item>
+        <item>320</item>
+        <item>340</item>
+        <item>361</item>
+        <item>420</item>
+        <item>480</item>
+        <item>@string/custom_density</item>
+    </string-array>
+
+    <string-array name="lcd_density_stock_entries">
+        <item>213 -- nexus7</item>
+        <item>240 -- hdpi</item>
+        <item>320 -- xhdpi</item>
+        <item>480 -- xxhdpi</item>
+    </string-array>
+
+    <string-array name="lcd_density_stock_values" translatable="false">
+        <item>213</item>
+        <item>240</item>
+        <item>320</item>
+        <item>480</item>
     </string-array>
 
     <string-array name="screen_color_setting">

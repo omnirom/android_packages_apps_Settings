@@ -38,12 +38,12 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.text.format.Time;
 
-import com.android.internal.util.Objects;
 import com.google.android.collect.Lists;
 import com.google.android.collect.Sets;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * Utility class to modify list of {@link NetworkPolicy}. Specifically knows
@@ -88,18 +88,6 @@ public class NetworkPolicyEditor {
 
         // when we cleaned policies above, write back changes
         if (modified) writeAsync();
-    }
-
-    public int getPolicyCycleLength(NetworkTemplate template) {
-        return getPolicy(template).cycleLength;
-    }
-
-    public void setPolicyCycleLength(NetworkTemplate template, int cycleLength) {
-        final NetworkPolicy policy = getOrCreatePolicy(template);
-        policy.cycleLength = cycleLength;
-        policy.inferred = false;
-        policy.clearSnooze();
-        writeAsync();
     }
 
     public void writeAsync() {
@@ -184,6 +172,18 @@ public class NetworkPolicyEditor {
         final NetworkPolicy policy = getOrCreatePolicy(template);
         policy.cycleDay = cycleDay;
         policy.cycleTimezone = cycleTimezone;
+        policy.inferred = false;
+        policy.clearSnooze();
+        writeAsync();
+    }
+
+    public int getPolicyCycleLength(NetworkTemplate template) {
+        return getPolicy(template).cycleLength;
+    }
+
+    public void setPolicyCycleLength(NetworkTemplate template, int cycleLength) {
+        final NetworkPolicy policy = getOrCreatePolicy(template);
+        policy.cycleLength = cycleLength;
         policy.inferred = false;
         policy.clearSnooze();
         writeAsync();
@@ -284,7 +284,7 @@ public class NetworkPolicyEditor {
         boolean has4g = false;
         for (NetworkPolicy policy : mPolicies) {
             final NetworkTemplate template = policy.template;
-            if (Objects.equal(subscriberId, template.getSubscriberId())) {
+            if (Objects.equals(subscriberId, template.getSubscriberId())) {
                 switch (template.getMatchRule()) {
                     case MATCH_MOBILE_3G_LOWER:
                         has3g = true;

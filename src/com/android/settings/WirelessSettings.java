@@ -1,6 +1,4 @@
 /*
- * Copyright (c) 2013, The Linux Foundation. All rights reserved.
- * Not a Contribution.
  * Copyright (C) 2009 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,6 +22,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,13 +44,15 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.telephony.MSimTelephonyManager;
 
 import com.android.internal.telephony.SmsApplication;
 import com.android.internal.telephony.SmsApplication.SmsApplicationData;
+import com.android.internal.telephony.PhoneConstants;
 import com.android.internal.telephony.TelephonyIntents;
 import com.android.internal.telephony.TelephonyProperties;
 import com.android.settings.nfc.NfcEnabler;
+
+import com.android.internal.telephony.PhoneConstants;
 
 import java.util.Collection;
 
@@ -69,14 +70,22 @@ public class WirelessSettings extends RestrictedSettingsFragment
     private static final String KEY_MOBILE_NETWORK_SETTINGS = "mobile_network_settings";
     private static final String KEY_MANAGE_MOBILE_PLAN = "manage_mobile_plan";
     private static final String KEY_SMS_APPLICATION = "sms_application";
+    private static final String KEY_VOICE_PLUS_ACCOUNT = "voice_plus";
     private static final String KEY_TOGGLE_NSD = "toggle_nsd"; //network service discovery
     private static final String KEY_CELL_BROADCAST_SETTINGS = "cell_broadcast_settings";
+    private static final String KEY_SHOW_LTE_OR_FOURGEE = "show_lte_or_fourgee";
+    private static final String KEY_CONNECTION_MANAGER = "connection_manager";
+
+    private static final String GOOGLE_VOICE_PACKAGE = "com.google.android.apps.googlevoice";
+    private static final ComponentName VOICE_PLUS_SETUP =
+            new ComponentName("org.cyanogenmod.voiceplus", "org.cyanogenmod.voiceplus.VoicePlusSetup");
 
     public static final String EXIT_ECM_RESULT = "exit_ecm_result";
     public static final int REQUEST_CODE_EXIT_ECM = 1;
 
     private AirplaneModeEnabler mAirplaneModeEnabler;
     private CheckBoxPreference mAirplaneModePreference;
+    private CheckBoxPreference mShowLTEorFourGee;
     private NfcEnabler mNfcEnabler;
     private NfcAdapter mNfcAdapter;
     private NsdEnabler mNsdEnabler;
@@ -112,6 +121,16 @@ public class WirelessSettings extends RestrictedSettingsFragment
             return true;
         } else if (preference == findPreference(KEY_MANAGE_MOBILE_PLAN)) {
             onManageMobilePlanClick();
+        } else if (preference == mShowLTEorFourGee) {
+            Settings.System.putBoolean(getActivity().getApplicationContext().getContentResolver(),
+                    Settings.System.SHOW_LTE_OR_FOURGEE,
+                    ((CheckBoxPreference) preference).isChecked());
+            return true;
+        } else if (preference == findPreference(KEY_VOICE_PLUS_ACCOUNT)) {
+            Intent chooseVoicePlusAccount = new Intent();
+            chooseVoicePlusAccount.setComponent(VOICE_PLUS_SETUP);
+            chooseVoicePlusAccount.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(chooseVoicePlusAccount);
         }
         // Let the intents be launched by the Preference manager
         return super.onPreferenceTreeClick(preferenceScreen, preference);
@@ -270,23 +289,6 @@ public class WirelessSettings extends RestrictedSettingsFragment
 
         final Activity activity = getActivity();
         mAirplaneModePreference = (CheckBoxPreference) findPreference(KEY_TOGGLE_AIRPLANE);
-
-        if (MSimTelephonyManager.getDefault().isMultiSimEnabled()) {
-            // Mobile Networks menu will traverse to Select Subscription menu.
-            PreferenceScreen manageSub =
-                    (PreferenceScreen) findPreference(KEY_MOBILE_NETWORK_SETTINGS);
-
-            if (manageSub != null) {
-                Intent intent = manageSub.getIntent();
-                intent.setClassName("com.android.phone",
-                                    "com.android.phone.SelectSubscription");
-                intent.putExtra(SelectSubscription.PACKAGE,
-                                    "com.android.phone");
-                intent.putExtra(SelectSubscription.TARGET_CLASS,
-                                "com.android.phone.MSimMobileNetworkSubSettings");
-            }
-        }
-
         CheckBoxPreference nfc = (CheckBoxPreference) findPreference(KEY_TOGGLE_NFC);
         PreferenceScreen androidBeam = (PreferenceScreen) findPreference(KEY_ANDROID_BEAM_SETTINGS);
         CheckBoxPreference nsd = (CheckBoxPreference) findPreference(KEY_TOGGLE_NSD);
@@ -348,10 +350,16 @@ public class WirelessSettings extends RestrictedSettingsFragment
             mNfcEnabler = null;
         }
 
-        // Remove Mobile Network Settings and Manage Mobile Plan if it's a wifi-only device.
+        // Remove Connection Manager on CDMA devices
+        if (mTm.getPhoneType() == PhoneConstants.PHONE_TYPE_CDMA) {
+            removePreference(KEY_CONNECTION_MANAGER);
+        }
+
+        // Remove Mobile Network Settings, Manage Mobile Plan and Connection Manager if it's a wifi-only device.
         if (isSecondaryUser || Utils.isWifiOnly(getActivity())) {
             removePreference(KEY_MOBILE_NETWORK_SETTINGS);
             removePreference(KEY_MANAGE_MOBILE_PLAN);
+            removePreference(KEY_CONNECTION_MANAGER);
         }
         // Remove Mobile Network Settings and Manage Mobile Plan
         // if config_show_mobile_plan sets false.
@@ -369,6 +377,11 @@ public class WirelessSettings extends RestrictedSettingsFragment
         // Remove SMS Application if the device does not support SMS
         if (!isSmsSupported()) {
             removePreference(KEY_SMS_APPLICATION);
+        }
+
+        // Remove Voice+ option if Google Voice is not installed
+        if (!isPackageInstalled(GOOGLE_VOICE_PACKAGE)) {
+            removePreference(KEY_VOICE_PLUS_ACCOUNT);
         }
 
         // Remove Airplane Mode settings if it's a stationary device such as a TV.
@@ -419,6 +432,19 @@ public class WirelessSettings extends RestrictedSettingsFragment
             if (ps != null) root.removePreference(ps);
         }
         protectByRestrictions(KEY_CELL_BROADCAST_SETTINGS);
+
+        mShowLTEorFourGee = (CheckBoxPreference) findPreference(KEY_SHOW_LTE_OR_FOURGEE);
+        mShowLTEorFourGee.setChecked(Settings.System.getBoolean(getActivity().
+                getApplicationContext().getContentResolver(),
+                    Settings.System.SHOW_LTE_OR_FOURGEE, false));
+        if (!deviceSupportsLTE()) {
+            getPreferenceScreen().removePreference(mShowLTEorFourGee);
+        }
+    }
+
+    private boolean deviceSupportsLTE() {
+        return (TelephonyManager.getLteOnCdmaModeStatic() == PhoneConstants.LTE_ON_CDMA_TRUE
+                    || TelephonyManager.getLteOnGsmModeStatic() != 0);
     }
 
     @Override

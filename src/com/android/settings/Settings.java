@@ -24,6 +24,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.admin.DevicePolicyManager;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -50,7 +51,6 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.text.TextUtils;
-import android.telephony.MSimTelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +65,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.android.internal.util.ArrayUtils;
+import com.android.settings.ActivityPicker;
 import com.android.settings.accessibility.AccessibilitySettings;
 import com.android.settings.accessibility.ToggleAccessibilityServicePreferenceFragment;
 import com.android.settings.accessibility.ToggleCaptioningPreferenceFragment;
@@ -77,10 +78,9 @@ import com.android.settings.applications.ProcessStatsUi;
 import org.regulus.amrasettings.blacklist.BlacklistSettings;
 import com.android.settings.bluetooth.BluetoothEnabler;
 import com.android.settings.bluetooth.BluetoothSettings;
-import org.regulus.amrasettings.utils.ButtonSettings;
-import org.regulus.amrasettings.utils.LockscreenInterface;
-import org.regulus.amrasettings.utils.MoreDeviceSettings;
-import org.regulus.amrasettings.utils.SystemUiSettings;
+import org.regulus.amrasettings.buttonsettings.ButtonSettings;
+import org.regulus.amrasettings.MoreDeviceSettings;
+import org.regulus.amrasettings.superuser.PolicyNativeFragment;
 import com.android.settings.deviceinfo.Memory;
 import com.android.settings.deviceinfo.UsbSettings;
 import com.android.settings.fuelgauge.PowerUsageSummary;
@@ -88,9 +88,12 @@ import com.android.settings.inputmethod.InputMethodAndLanguageSettings;
 import com.android.settings.inputmethod.KeyboardLayoutPickerFragment;
 import com.android.settings.inputmethod.SpellCheckersSettings;
 import com.android.settings.inputmethod.UserDictionaryList;
-import com.android.settings.location.LocationEnabler;
 import com.android.settings.location.LocationSettings;
 import com.android.settings.nfc.AndroidBeam;
+import org.regulus.amrasettings.battery.BatteryIconStyle;
+import org.regulus.amrasettings.quiethours.QuietHours;
+import org.regulus.amrasettings.displayrotation.DisplayRotation;
+import org.regulus.amrasettings.quicksettings.QuickSettingsTiles;
 import com.android.settings.nfc.PaymentSettings;
 import com.android.settings.print.PrintJobSettingsFragment;
 import com.android.settings.print.PrintServiceSettingsFragment;
@@ -99,9 +102,6 @@ import com.android.settings.profiles.AppGroupConfig;
 import com.android.settings.profiles.ProfileConfig;
 import com.android.settings.profiles.ProfileEnabler;
 import com.android.settings.profiles.ProfilesSettings;
-import com.android.settings.slim.QuietHours;
-import com.android.settings.slim.themes.ThemeEnabler;
-import com.android.settings.slim.themes.ThemeSettings;
 import com.android.settings.tts.TextToSpeechSettings;
 import com.android.settings.users.UserSettings;
 import com.android.settings.vpn2.VpnSettings;
@@ -110,6 +110,9 @@ import com.android.settings.wifi.AdvancedWifiSettings;
 import com.android.settings.wifi.WifiEnabler;
 import com.android.settings.wifi.WifiSettings;
 import com.android.settings.wifi.p2p.WifiP2pSettings;
+
+import org.regulus.amrasettings.themetoggle.ThemeToggle;
+import org.regulus.amrasettings.themetoggle.ThemeToggleSettings;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -156,6 +159,7 @@ public class Settings extends PreferenceActivity
     private boolean mInLocalHeaderSwitch;
 
     private int mCurrentState = 0;
+    private boolean mAttached;
 
     // Show only these settings for restricted users
     private int[] SETTINGS_FOR_RESTRICTED = {
@@ -184,9 +188,7 @@ public class Settings extends PreferenceActivity
             R.id.print_settings,
             R.id.nfc_payment_settings,
             R.id.home_settings,
-            R.id.interface_section,
             R.id.lock_screen_settings,
-            R.id.system_settings,
             R.id.privacy_settings_amra,
             R.id.button_settings
     };
@@ -289,42 +291,46 @@ public class Settings extends PreferenceActivity
     public void onResume() {
         super.onResume();
 
-        mDevelopmentPreferencesListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                invalidateHeaders();
+        if (!mAttached) {
+            mAttached = true;
+            mDevelopmentPreferencesListener =
+                    new SharedPreferences.OnSharedPreferenceChangeListener() {
+                @Override
+                public void onSharedPreferenceChanged(
+                        SharedPreferences sharedPreferences, String key) {
+                    invalidateHeaders();
+                }
+            };
+            mDevelopmentPreferences.registerOnSharedPreferenceChangeListener(
+                    mDevelopmentPreferencesListener);
+
+            ListAdapter listAdapter = getListAdapter();
+            if (listAdapter instanceof HeaderAdapter) {
+                ((HeaderAdapter) listAdapter).resume();
             }
-        };
-        mDevelopmentPreferences.registerOnSharedPreferenceChangeListener(
-                mDevelopmentPreferencesListener);
+            invalidateHeaders();
 
-        ListAdapter listAdapter = getListAdapter();
-        if (listAdapter instanceof HeaderAdapter) {
-            ((HeaderAdapter) listAdapter).resume();
+            registerReceiver(mBatteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         }
-        invalidateHeaders();
-
-        registerReceiver(mBatteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        try {
+        if (mAttached) {
+            mAttached = false;
             unregisterReceiver(mBatteryInfoReceiver);
-        } catch (IllegalArgumentException e) {
-            // Ignore (receiver didn't have time to register)
-        }
 
-        ListAdapter listAdapter = getListAdapter();
-        if (listAdapter instanceof HeaderAdapter) {
-            ((HeaderAdapter) listAdapter).pause();
-        }
+            ListAdapter listAdapter = getListAdapter();
+            if (listAdapter instanceof HeaderAdapter) {
+                ((HeaderAdapter) listAdapter).pause();
+            }
 
-        mDevelopmentPreferences.unregisterOnSharedPreferenceChangeListener(
-                mDevelopmentPreferencesListener);
-        mDevelopmentPreferencesListener = null;
+            mDevelopmentPreferences.unregisterOnSharedPreferenceChangeListener(
+                    mDevelopmentPreferencesListener);
+            mDevelopmentPreferencesListener = null;
+        }
     }
 
     @Override
@@ -333,6 +339,11 @@ public class Settings extends PreferenceActivity
         if (mListeningToAccountUpdates) {
             AccountManager.get(this).removeOnAccountsUpdatedListener(this);
         }
+    }
+
+    @Override
+    public boolean onIsMultiPane() {
+        return false;
     }
 
     private static final String[] ENTRY_FRAGMENTS = {
@@ -381,18 +392,19 @@ public class Settings extends PreferenceActivity
         TrustedCredentialsSettings.class.getName(),
         PaymentSettings.class.getName(),
         KeyboardLayoutPickerFragment.class.getName(),
-        QuietHours.class.getName(),
-        BlacklistSettings.class.getName(),
+        org.regulus.amrasettings.blacklist.BlacklistSettings.class.getName(),
         ApnSettings.class.getName(),
-        HomeSettings.class.getName(),
-        LockscreenInterface.class.getName(),
-        SystemUiSettings.class.getName(),
-        ButtonSettings.class.getName(),
-        MoreDeviceSettings.class.getName(),
-        ProfilesSettings.class.getName(),
-        org.regulus.amrasettings.utils.PrivacySettings.class.getName(),
+	    org.regulus.amrasettings.quiethours.QuietHours.class.getName(),
         org.regulus.amrasettings.quicksettings.QuickSettingsTiles.class.getName(),
-        ThemeSettings.class.getName()
+	    org.regulus.amrasettings.battery.BatteryIconStyle.class.getName(),
+        org.regulus.amrasettings.displayrotation.DisplayRotation.class.getName(),
+        HomeSettings.class.getName(),
+        org.regulus.amrasettings.buttonsettings.ButtonSettings.class.getName(),
+        org.regulus.amrasettings.MoreDeviceSettings.class.getName(),
+        ProfilesSettings.class.getName(),
+        PolicyNativeFragment.class.getName(),
+        org.regulus.amrasettings.PrivacySettings.class.getName(),
+        org.regulus.amrasettings.themetoggle.ThemeToggleSettings.class.getName()
     };
 
     @Override
@@ -588,9 +600,7 @@ public class Settings extends PreferenceActivity
     }
 
     private void updateHeaderList(List<Header> target) {
-        final boolean showDev = mDevelopmentPreferences.getBoolean(
-                DevelopmentSettings.PREF_SHOW,
-                android.os.Build.TYPE.equals("eng"));
+        final boolean showDev = (UserHandle.myUserId() == UserHandle.USER_OWNER);;
         int i = 0;
 
         final UserManager um = (UserManager) getSystemService(Context.USER_SERVICE);
@@ -655,9 +665,13 @@ public class Settings extends PreferenceActivity
                 } else {
                     // Only show if NFC is on and we have the HCE feature
                     NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
-                    if (!adapter.isEnabled() || !getPackageManager().hasSystemFeature(
-                            PackageManager.FEATURE_NFC_HOST_CARD_EMULATION)) {
-                        target.remove(i);
+                    if (adapter == null || !adapter.isEnabled()
+                            || !getPackageManager().hasSystemFeature(
+                                    PackageManager.FEATURE_NFC_HOST_CARD_EMULATION)) {
+                       target.remove(i);
+                       if (adapter == null) {
+                           Log.e(LOG_TAG, "NFC feature advertised but the default adapter is NULL!");
+                       }
                     }
                 }
             } else if (id == R.id.development_settings) {
@@ -672,13 +686,6 @@ public class Settings extends PreferenceActivity
                 if (um.hasUserRestriction(UserManager.DISALLOW_MODIFY_ACCOUNTS)) {
                     target.remove(i);
                 }
-            } else if (id == R.id.amra_control_settings) {
-                if (actionExists(ACTION_DEVICE_CONTROL)) {
-                    target.get(i).intent = new Intent().setAction(ACTION_DEVICE_CONTROL);
-                    target.get(i).titleRes = R.string.amra_control_settings;
-                } else {
-                    target.remove(i);
-                }
             } else if (id == R.id.supersu_settings) {
                 // Embedding into Settings is supported from SuperSU v1.85 and up
                 boolean supported = false;
@@ -689,9 +696,6 @@ public class Settings extends PreferenceActivity
                 if (!supported) {
                     target.remove(i);
                 }
-            } else if (id == R.id.multi_sim_settings) {
-                if (!MSimTelephonyManager.getDefault().isMultiSimEnabled())
-                    target.remove(header);
             }
 
             if (i < target.size() && target.get(i) == header
@@ -882,10 +886,9 @@ public class Settings extends PreferenceActivity
         private final WifiEnabler mWifiEnabler;
         private final BluetoothEnabler mBluetoothEnabler;
         private final ProfileEnabler mProfileEnabler;
-        private final LocationEnabler mLocationEnabler;
+        public static ThemeToggle mThemeToggle;
         private AuthenticatorHelper mAuthHelper;
         private DevicePolicyManager mDevicePolicyManager;
-        public static ThemeEnabler mThemeEnabler;
 
         private static class HeaderViewHolder {
             ImageView icon;
@@ -899,14 +902,13 @@ public class Settings extends PreferenceActivity
         private LayoutInflater mInflater;
 
         static int getHeaderType(Header header) {
-            if (header.fragment == null && header.intent == null
-                    && header.id != R.id.theme_settings) {
+            if (header.fragment == null && header.intent == null && header.id != R.id.themetoggle_settings) {
                 return HEADER_TYPE_CATEGORY;
             } else if (header.id == R.id.wifi_settings
                     || header.id == R.id.bluetooth_settings
-                    || header.id == R.id.profiles_settings
-                    || header.id == R.id.location_settings
-                    || header.id == R.id.theme_settings) {
+                    || header.id == R.id.profiles_settings) {
+                return HEADER_TYPE_SWITCH;
+            } else if (header.id == R.id.wifi_settings || header.id == R.id.bluetooth_settings || header.id == R.id.themetoggle_settings) {
                 return HEADER_TYPE_SWITCH;
             } else if (header.id == R.id.security_settings) {
                 return HEADER_TYPE_BUTTON;
@@ -953,9 +955,8 @@ public class Settings extends PreferenceActivity
             mWifiEnabler = new WifiEnabler(context, new Switch(context));
             mBluetoothEnabler = new BluetoothEnabler(context, new Switch(context));
             mProfileEnabler = new ProfileEnabler(context, new Switch(context));
-            mLocationEnabler = new LocationEnabler(context, new Switch(context));
-            mThemeEnabler = new ThemeEnabler(context, new Switch(context));
             mDevicePolicyManager = dpm;
+            mThemeToggle = new ThemeToggle(context, new Switch(context));
         }
 
         @Override
@@ -1028,10 +1029,8 @@ public class Settings extends PreferenceActivity
                         mBluetoothEnabler.setSwitch(holder.switch_);
                     } else if (header.id == R.id.profiles_settings) {
                         mProfileEnabler.setSwitch(holder.switch_);
-                    } else if (header.id == R.id.location_settings) {
-                        mLocationEnabler.setSwitch(holder.switch_);
-                    } else if (header.id == R.id.theme_settings) {
-                        mThemeEnabler.setSwitch(holder.switch_);
+                    } else if (header.id == R.id.themetoggle_settings) {
+                        mThemeToggle.setSwitch(holder.switch_);
                     }
                     updateCommonHeaderView(header, holder);
                     break;
@@ -1106,16 +1105,14 @@ public class Settings extends PreferenceActivity
             mWifiEnabler.resume();
             mBluetoothEnabler.resume();
             mProfileEnabler.resume();
-            mLocationEnabler.resume();
-            mThemeEnabler.resume();
+            mThemeToggle.resume();
         }
 
         public void pause() {
             mWifiEnabler.pause();
             mBluetoothEnabler.pause();
             mProfileEnabler.pause();
-            mLocationEnabler.pause();
-            mThemeEnabler.resume();
+            mThemeToggle.pause();
         }
     }
 
@@ -1124,6 +1121,19 @@ public class Settings extends PreferenceActivity
         boolean revert = false;
         if (header.id == R.id.account_add) {
             revert = true;
+        }
+
+        // a temp hack while we prepare to switch
+        // to the new theme chooser.
+        if (header.id == R.id.theme_settings) {
+            try {
+                Intent intent = new Intent();
+                intent.setClassName("com.tmobile.themechooser", "com.tmobile.themechooser.ThemeChooser");
+                startActivity(intent);
+                return;
+            } catch(ActivityNotFoundException e) {
+                 // Do nothing, we will launch the submenu
+            }
         }
 
         super.onHeaderClick(header, position);
@@ -1182,9 +1192,9 @@ public class Settings extends PreferenceActivity
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        if (newConfig.uiThemeMode != mCurrentState && HeaderAdapter.mThemeEnabler != null) {
+        if (newConfig.uiThemeMode != mCurrentState && HeaderAdapter.mThemeToggle != null) {
             mCurrentState = newConfig.uiThemeMode;
-            HeaderAdapter.mThemeEnabler.setSwitchState();
+            HeaderAdapter.mThemeToggle.setSwitchState();
         }
     }
 
@@ -1223,8 +1233,6 @@ public class Settings extends PreferenceActivity
     public static class LocalePickerActivity extends Settings { /* empty */ }
     public static class UserDictionarySettingsActivity extends Settings { /* empty */ }
     public static class SoundSettingsActivity extends Settings { /* empty */ }
-    public static class QuietHoursSettingsActivity extends Settings { /* empty */ }
-    public static class ActiveDisplaySettingsActivity extends Settings { /* empty */ }
     public static class DisplaySettingsActivity extends Settings { /* empty */ }
     public static class DeviceInfoSettingsActivity extends Settings { /* empty */ }
     public static class ApplicationSettingsActivity extends Settings { /* empty */ }
@@ -1270,15 +1278,15 @@ public class Settings extends PreferenceActivity
     public static class ApnSettingsActivity extends Settings { /* empty */ }
     public static class ApnEditorActivity extends Settings { /* empty */ }
     public static class BlacklistSettingsActivity extends Settings { /* empty */ }
-    public static class PerformanceSettingsActivity extends Settings { /* empty */ }
-    public static class SystemSettingsActivity extends Settings { /* empty */ }
-    public static class QuickSettingsConfigActivity extends Settings { /* empty */ }
     /* AmraSettings */
     public static class AmraSettingsActivity extends Settings { /* empty */ }
+    public static class ThemeToggleSettingsActivity extends Settings { /* empty */ }
     public static class AnimationInterfaceSettingsActivity extends Settings { /* empty */ }
-    public static class RamBarActivity extends Settings { /* empty */ } 
-
-    /* NamelessROM */
-    public static class MoreInterfaceSettingsActivity extends Settings { /* empty */ }
-    public static class ThemeSettingsActivity extends Settings { /* empty */ }
+    public static class AboutActivity extends Settings { /* empty */ }
+    public static class RamBarActivity extends Settings { /* empty */ }
+    public static class QuietHoursSettingsActivity extends Settings { /* empty */ }
+    public static class QuickSettingsTilesSettingsActivity extends Settings { /* empty */ }
+    public static class BatteryIconStyleSettingsActivity extends Settings { /* empty */ }
+    public static class DisplayRotationSettingsActivity extends Settings { /* empty */ }
+    public static class PerformanceSettingsActivity extends Settings { /* empty */ }
 }

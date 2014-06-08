@@ -29,16 +29,11 @@
             android:persistent="false"
             android:streamType="ring" />
 
-    <PreferenceScreen
-        android:key="volume_steps_settings"
-        android:fragment="org.regulus.amrasettings.volumesteps.VolumeSteps"
-        android:title="@string/volume_steps_title" />
-
     <ListPreference
             android:key="ring_mode"
             android:title="@string/ring_mode_title"
             android:entries="@array/ring_mode_entries"
-            android:entryValues="@array/ring_mode_values" />
+            android:entryValues="@array/ring_mode_values" /> 
 
     <ListPreference
             android:key="volume_overlay"
@@ -46,15 +41,37 @@
             android:entries="@array/volume_overlay_entries"
             android:entryValues="@array/volume_overlay_values" />
 
+    <org.regulus.amrasettings.utils.SeekBarPreferenceAmra
+            android:key="volume_panel_timeout"
+            android:title="@string/volume_panel_timeout_title"
+            android:summary="@string/volume_panel_timeout_summary"
+            android:max="10"
+            settings:min="1"
+            settings:unitsLeft=""
+            settings:unitsRight="sec"
+            android:persistent="false" />
+
     <PreferenceCategory
             android:key="category_automation_effects"
             android:title="@string/automation_effects_title"/>
 
+    <!-- Volume steps -->
+    <PreferenceScreen
+            android:key="volume_steps"
+            android:fragment="org.regulus.amrasettings.volumesteps.VolumeSteps"
+            android:summary="@string/volume_steps_summary"
+            android:title="@string/volume_steps_title" />
+
+    <PreferenceScreen
+            android:key="sound_packages"
+            android:fragment="org.regulus.amrasettings.sounds.SoundPackageSettings"
+            android:title="@string/sound_packages_title" />
+
     <!-- Quiet hours -->
     <PreferenceScreen
-        android:key="quiet_hours"
-        android:fragment="com.android.settings.slim.QuietHours"
-        android:title="@string/quiet_hours_title" />
+            android:key="quiet_hours"
+            android:fragment="org.regulus.amrasettings.quiethours.QuietHours"
+            android:title="@string/quiet_hours_title" />
 
     <!-- DSP Manager -->
     <Preference
@@ -106,15 +123,17 @@
             android:summary="@string/notification_vibrate_during_calls_summary"
             android:defaultValue="false" />
 
+    <ListPreference
+            android:key="camera_click_sound"
+            android:title="@string/camera_sounds_title"
+            android:entries="@array/camera_sounds_entries"
+            android:entryValues="@array/camera_sounds_values" 
+            android:defaultValue="1" />
+
     <PreferenceCategory
             android:title="@string/sound_category_system_title"/>
 
     <!-- Do not nest these, or removals in code will break -->
-
-    <PreferenceScreen
-            android:key="sound_packages"
-            android:fragment="org.regulus.amrasettings.sounds.SoundPackageSettings"
-            android:title="@string/sound_packages_title" />
 
     <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
             android:key="dtmf_tone"
@@ -132,15 +151,13 @@
             android:defaultValue="true" />
 
     <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
-            android:key="camera_sounds"
-            android:title="@string/camera_sounds_title"
-            android:summary="@string/camera_sounds_summary"
-            android:defaultValue="true" />
-
-    <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
             android:key="haptic_feedback_enabled"
             android:title="@string/haptic_feedback_enable_title"
             android:defaultValue="true" />
+
+    <org.regulus.amrasettings.utils.SeekBarPreference
+            android:key="vibration_duration"
+            android:title="@string/minimum_vibration_duration" />
 
     <org.regulus.amrasettings.utils.SystemSettingCheckBoxPreference
             android:key="volume_adjust_sounds_enabled"

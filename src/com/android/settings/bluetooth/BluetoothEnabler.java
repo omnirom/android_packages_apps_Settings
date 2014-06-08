@@ -86,11 +86,7 @@ public final class BluetoothEnabler implements CompoundButton.OnCheckedChangeLis
             return;
         }
 
-        try {
-            mContext.unregisterReceiver(mReceiver);
-        } catch (Exception exc) {
-            // Not registered
-        }
+        mContext.unregisterReceiver(mReceiver);
         mSwitch.setOnCheckedChangeListener(null);
         mValidListener = false;
     }

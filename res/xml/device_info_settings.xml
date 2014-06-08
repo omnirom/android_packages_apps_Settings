@@ -17,6 +17,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
         android:title="@string/about_settings">
 
+	<PreferenceScreen android:key="amra_logo"
+                          android:layout="@layout/logo_row" />
+
         <!-- Device status - launches activity -->
         <PreferenceScreen android:key="status_info"
                 android:title="@string/device_status" 
@@ -25,20 +28,6 @@
                     android:targetPackage="com.android.settings"
                     android:targetClass="com.android.settings.deviceinfo.Status" />
         </PreferenceScreen>
-
-        <!-- Advanced Device Info -->
-        <PreferenceScreen
-                android:fragment="org.regulus.amrasettings.amra.AdvancedDeviceInfoSettings"
-                android:key="advanced_device_info"
-                android:title="@string/advanced_device_info_title"
-                android:summary="@string/advanced_device_info_summary">
-        </PreferenceScreen>
-
-        <!-- Change Log -->
-        <!--PreferenceScreen android:key="changelog"
-            android:title="@string/changelog_title"
-            android:fragment="com.android.settings.cyanogenmod.ChangeLog" >
-        </PreferenceScreen-->
 
         <!-- Legal Information -->
         <PreferenceScreen
@@ -81,7 +70,7 @@
 
         <!-- Contributors -->
         <PreferenceScreen
-                android:fragment="org.regulus.amrasettings.amra.about.AboutCrewFragment"
+                android:fragment="org.regulus.amrasettings.amra.about.About"
                 android:key="contributors"
                 android:title="@string/contributors_title">
         </PreferenceScreen>
@@ -97,6 +86,12 @@
                 style="?android:preferenceInformationStyle"
                 android:title="@string/model_number"
                 android:summary="@string/device_info_default"/>
+                
+        <!-- Device firmware version -->
+        <Preference android:key="firmware_version" 
+                style="?android:preferenceInformationStyle"
+                android:title="@string/firmware_version"
+                android:summary="@string/device_info_default"/>
 
         <!-- Device FCC equipment id -->
         <Preference android:key="fcc_equipment_id"
@@ -109,30 +104,42 @@
                 style="?android:preferenceInformationStyle"
                 android:title="@string/baseband_version"
                 android:summary="@string/device_info_default"/>
-
-        <!-- Device firmware version -->
-        <Preference android:key="firmware_version"
+        
+        <!-- Device Kernel version -->
+        <Preference android:key="kernel_version" 
                 style="?android:preferenceInformationStyle"
-                android:title="@string/firmware_version"
+                android:title="@string/kernel_version"
+                android:summary="@string/device_info_default"/>
+
+        <!-- Device cpu info -->
+        <Preference android:key="device_cpu"
+                style="?android:preferenceInformationStyle"
+                android:title="@string/cpu_info"
+                android:summary="@string/device_info_default"/>
+
+        <!-- Device mem info -->
+        <Preference android:key="device_memory"
+                style="?android:preferenceInformationStyle"
+                android:title="@string/mem_info"
                 android:summary="@string/device_info_default"/>
 
         <!-- Mod version -->
         <Preference android:key="mod_version"
                 style="?android:preferenceInformationStyle"
-                android:title="@string/amra_mod_version"
+                android:title="@string/mod_version"
                 android:summary="@string/mod_version_default" />
 
         <!-- Mod build date -->
-        <Preference android:key="build_date"
+<!--        <Preference android:key="build_date"
                 style="?android:preferenceInformationStyle"
                 android:title="@string/build_date"
                 android:summary="@string/build_date_default" />
 
-        <!-- Detailed build version -->
+         Detailed build version 
         <Preference android:key="build_number" 
                 style="?android:preferenceInformationStyle"
                 android:title="@string/build_number"
-                android:summary="@string/device_info_default"/>
+                android:summary="@string/device_info_default"/> -->
 
         <!-- SELinux status information -->
         <Preference android:key="selinux_status"

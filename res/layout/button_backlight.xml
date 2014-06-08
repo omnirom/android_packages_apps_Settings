@@ -89,7 +89,7 @@
             android:layout_alignParentRight="true"
             android:paddingLeft="10dip"
             android:paddingRight="10dip" />
-        <org.regulus.amrasettings.utils.BacklightTimeoutSeekBar
+        <org.regulus.amrasettings.buttonsettings.BacklightTimeoutSeekBar
             android:id="@+id/timeout_seekbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

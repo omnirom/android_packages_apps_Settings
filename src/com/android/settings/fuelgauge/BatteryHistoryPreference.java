@@ -34,13 +34,11 @@ import com.android.settings.R;
 public class BatteryHistoryPreference extends Preference {
 
     private BatteryStats mStats;
-    private BatteryStats mDockStats;
 
-    public BatteryHistoryPreference(Context context, BatteryStats stats, BatteryStats dockStats) {
+    public BatteryHistoryPreference(Context context, BatteryStats stats) {
         super(context);
         setLayoutResource(R.layout.preference_batteryhistory);
         mStats = stats;
-        mDockStats = dockStats;
     }
 
     BatteryStats getStats() {
@@ -54,6 +52,5 @@ public class BatteryHistoryPreference extends Preference {
         BatteryHistoryChart chart = (BatteryHistoryChart)view.findViewById(
                 R.id.battery_history_chart);
         chart.setStats(mStats);
-        chart.setDockStats(mDockStats);
     }
 }

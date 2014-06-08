@@ -24,13 +24,11 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.pm.UserInfo;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
@@ -61,7 +59,6 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.DisplayInfo;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -414,15 +411,6 @@ public class Utils {
         return batteryChangedIntent.getBooleanExtra(BatteryManager.EXTRA_PRESENT, true);
     }
 
-    public static boolean isDockBatteryPresent(Intent batteryChangedIntent) {
-        return batteryChangedIntent.getBooleanExtra(BatteryManager.EXTRA_DOCK_PRESENT, true);
-    }
-
-    public static boolean isDockBatteryPlugged(Intent batteryChangedIntent) {
-        if (!isDockBatteryPresent(batteryChangedIntent)) return false;
-        return batteryChangedIntent.getIntExtra(BatteryManager.EXTRA_DOCK_PLUGGED, 0) != 0;
-    }
-
     public static String getBatteryPercentage(Intent batteryChangedIntent) {
         int level = batteryChangedIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
         int scale = batteryChangedIntent.getIntExtra(BatteryManager.EXTRA_SCALE, 100);
@@ -432,23 +420,13 @@ public class Utils {
     public static String getBatteryStatus(Resources res, Intent batteryChangedIntent) {
         final Intent intent = batteryChangedIntent;
 
-        int dockPlugType = intent.getIntExtra(BatteryManager.EXTRA_DOCK_PLUGGED, 0);
         int plugType = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0);
         int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS,
                 BatteryManager.BATTERY_STATUS_UNKNOWN);
         String statusString;
         if (status == BatteryManager.BATTERY_STATUS_CHARGING) {
             statusString = res.getString(R.string.battery_info_status_charging);
-            if (isDockBatteryPresent(batteryChangedIntent) &&
-                    isDockBatteryPlugged(batteryChangedIntent) && dockPlugType > 0) {
-                int resId;
-                if (dockPlugType == BatteryManager.BATTERY_DOCK_PLUGGED_AC) {
-                    resId = R.string.battery_info_status_charging_dock_ac;
-                } else {
-                    resId = R.string.battery_info_status_charging_dock_usb;
-                }
-                statusString = statusString + " " + res.getString(resId);
-            } else if (plugType > 0) {
+            if (plugType > 0) {
                 int resId;
                 if (plugType == BatteryManager.BATTERY_PLUGGED_AC) {
                     resId = R.string.battery_info_status_charging_ac;
@@ -491,8 +469,7 @@ public class Utils {
             ((PreferenceFrameLayout.LayoutParams) child.getLayoutParams()).removeBorders = true;
 
             final Resources res = list.getResources();
-            final int paddingSide = res.getDimensionPixelSize(
-                    com.android.internal.R.dimen.preference_fragment_padding_side);
+            final int paddingSide = res.getDimensionPixelSize(R.dimen.settings_side_margin);
             final int paddingBottom = res.getDimensionPixelSize(
                     com.android.internal.R.dimen.preference_fragment_padding_bottom);
 
@@ -717,39 +694,6 @@ public class Utils {
 
     public static boolean isTablet(Context context) {
         return getScreenType(context) == DEVICE_TABLET;
-    }
-
-    /**
-     * Locks the activity orientation to the current device orientation
-     * @param activity
-     */
-    public static void lockCurrentOrientation(Activity activity) {
-        int currentRotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-        int orientation = activity.getResources().getConfiguration().orientation;
-        int frozenRotation = 0;
-        switch (currentRotation) {
-            case Surface.ROTATION_0:
-                frozenRotation = orientation == Configuration.ORIENTATION_LANDSCAPE
-                    ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-                    : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-                break;
-            case Surface.ROTATION_90:
-                frozenRotation = orientation == Configuration.ORIENTATION_PORTRAIT
-                    ? ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT
-                    : ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-                break;
-            case Surface.ROTATION_180:
-                frozenRotation = orientation == Configuration.ORIENTATION_LANDSCAPE
-                    ? ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
-                    : ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
-                break;
-            case Surface.ROTATION_270:
-                frozenRotation = orientation == Configuration.ORIENTATION_PORTRAIT
-                    ? ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-                    : ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
-                break;
-        }
-        activity.setRequestedOrientation(frozenRotation);
     }
 
     /* returns whether the device has volume rocker or not. */

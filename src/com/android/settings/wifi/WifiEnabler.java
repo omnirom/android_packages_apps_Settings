@@ -83,9 +83,7 @@ public class WifiEnabler implements CompoundButton.OnCheckedChangeListener  {
     }
 
     public void pause() {
-        try {
-            mContext.unregisterReceiver(mReceiver);
-        } catch (IllegalArgumentException e) { }
+        mContext.unregisterReceiver(mReceiver);
         mSwitch.setOnCheckedChangeListener(null);
     }
 
