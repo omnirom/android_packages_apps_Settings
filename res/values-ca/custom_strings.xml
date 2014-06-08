@@ -22,7 +22,6 @@
     <!-- Main list strings -->
     <string name="header_category_interface">Interfície</string>
     <string name="performance_settings">Rendiment</string>
-    <string name="notification_light_settings">Llum d\'avís</string>
     <string name="battery_light_settings">Llum de bateria</string>
     <string name="header_button_settings">Botons</string>
 

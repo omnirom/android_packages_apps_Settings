@@ -84,10 +84,10 @@
         android:icon="@drawable/ic_notifications" />
 
     <header
-        android:id="@+id/active_display"
-        android:title="@string/active_display_settings"
-        android:breadCrumbTitle="@string/active_display_settings"
-        android:fragment="org.omnirom.omnigears.chameleonos.ActiveDisplaySettings"
+        android:id="@+id/notifications"
+        android:title="@string/notifications_settings"
+        android:breadCrumbTitle="@string/notifications_settings"
+        android:fragment="org.omnirom.omnigears.notifications.NotificationsSettings"
         android:icon="@drawable/ic_settings_actived" />
 
     <header

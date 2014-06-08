@@ -58,11 +58,6 @@
                 android:dialogTitle="@string/dialog_title_font_size" />
 
         <PreferenceScreen
-                android:key="notification_light"
-                android:title="@string/notification_light_settings"
-                android:fragment="org.omnirom.omnigears.notificationlight.NotificationLightSettings" />
-
-        <PreferenceScreen
                 android:key="battery_light"
                 android:title="@string/battery_light_settings"
                 android:fragment="org.omnirom.omnigears.batterylight.BatteryLightSettings" />

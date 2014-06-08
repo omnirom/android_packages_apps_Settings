@@ -22,7 +22,6 @@
     <!-- Main list strings -->
     <string name="header_category_interface">Διεπαφή</string>
     <string name="performance_settings">Επιδόσεις</string>
-    <string name="notification_light_settings">Φως ειδοποιήσεων</string>
     <string name="battery_light_settings">Φως μπαταρίας</string>
     <string name="header_button_settings">Πλήκτρα</string>
 

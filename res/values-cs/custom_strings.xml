@@ -22,7 +22,6 @@
     <!-- Main list strings -->
     <string name="header_category_interface">Rozhraní</string>
     <string name="performance_settings">Výkon</string>
-    <string name="notification_light_settings">Světlo oznámení</string>
     <string name="battery_light_settings">Světlo baterie</string>
     <string name="header_button_settings">Tlačítka</string>
 

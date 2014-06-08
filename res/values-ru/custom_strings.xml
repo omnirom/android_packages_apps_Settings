@@ -22,7 +22,6 @@
     <!-- Main list strings -->
     <string name="header_category_interface">Интерфейс</string>
     <string name="performance_settings">Производительность</string>
-    <string name="notification_light_settings">Индикатор уведомлений</string>
     <string name="battery_light_settings">Индикатор батареи</string>
     <string name="header_button_settings">Кнопки</string>
 

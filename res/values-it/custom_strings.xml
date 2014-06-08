@@ -21,7 +21,6 @@
     <!-- Main list strings -->
     <string name="header_category_interface">Interfaccia</string>
     <string name="performance_settings">Prestazioni</string>
-    <string name="notification_light_settings">Led di notifica</string>
     <string name="battery_light_settings">Led batteria</string>
     <string name="header_button_settings">Pulsanti</string>
 

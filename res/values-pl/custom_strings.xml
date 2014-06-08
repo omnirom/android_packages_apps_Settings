@@ -22,7 +22,6 @@
     <!-- Main list strings -->
     <string name="header_category_interface">Interfejs</string>
     <string name="performance_settings">Wydajność</string>
-    <string name="notification_light_settings">Dioda powiadomień</string>
     <string name="battery_light_settings">Dioda baterii</string>
     <string name="header_button_settings">Przyciski</string>
 

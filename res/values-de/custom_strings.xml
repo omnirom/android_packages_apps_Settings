@@ -22,7 +22,6 @@
     <!-- Main list strings -->
     <string name="header_category_interface">Oberfläche</string>
     <string name="performance_settings">Leistung</string>
-    <string name="notification_light_settings">Benachrichtigungs-LED</string>
     <string name="battery_light_settings">Akku-LED</string>
     <string name="header_button_settings">Tasten</string>
 

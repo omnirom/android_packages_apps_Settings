@@ -18,7 +18,6 @@
     <string name="mod_version_default">Okänd</string>
     <string name="header_category_interface">Gränssnitt</string>
     <string name="performance_settings">Prestanda</string>
-    <string name="notification_light_settings">Aviseringsljus</string>
     <string name="battery_light_settings">Batteriljus</string>
     <string name="header_button_settings">Knappar</string>
     <string name="volume_adjust_sounds_enable_title">Volymjusteringsljud</string>

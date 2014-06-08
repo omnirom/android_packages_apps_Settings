@@ -22,7 +22,6 @@
     <!-- Main list strings -->
     <string name="header_category_interface">Uiterlijk</string>
     <string name="performance_settings">Prestaties</string>
-    <string name="notification_light_settings">Notificatie-led</string>
     <string name="battery_light_settings">Batterij-led</string>
     <string name="header_button_settings">Knoppen</string>
 
