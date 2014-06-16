@@ -126,6 +126,7 @@ public class QuietHours extends SettingsPreferenceFragment implements
                 (SwitchPreference) prefSet.findPreference(KEY_QUIET_HOURS_ENABLED);
             mQuietHoursTimeRange =
                 (TimeRangePreference) prefSet.findPreference(KEY_QUIET_HOURS_TIMERANGE);
+            mQuietHoursTimeRange.setFragmentManager(getChildFragmentManager());
             mQuietHoursRinger =
                 (ListPreference) prefSet.findPreference(KEY_QUIET_HOURS_RINGER);
             mQuietHoursDim =
