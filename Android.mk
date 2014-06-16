@@ -2,7 +2,7 @@ LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_JAVA_LIBRARIES := bouncycastle conscrypt telephony-common
-LOCAL_STATIC_JAVA_LIBRARIES := android-support-v4 android-support-v13 jsr305
+LOCAL_STATIC_JAVA_LIBRARIES := android-support-v4 android-support-v13 jsr305 android-opt-datetimepicker
 
 LOCAL_MODULE_TAGS := optional
 
@@ -14,18 +14,21 @@ LOCAL_SRC_FILES += $(call all-java-files-under, ../PerformanceControl/src)
 LOCAL_RESOURCE_DIR += $(LOCAL_PATH)/res
 LOCAL_RESOURCE_DIR += packages/apps/OmniGears/res
 LOCAL_RESOURCE_DIR += packages/apps/PerformanceControl/res
+LOCAL_RESOURCE_DIR += frameworks/opt/datetimepicker/res
 
 LOCAL_ASSET_DIR += packages/apps/PerformanceControl/assets
 
 LOCAL_AAPT_FLAGS := --auto-add-overlay \
 	--extra-packages org.omnirom.omnigears \
-	--extra-packages com.brewcrewfoo.performance
+	--extra-packages com.brewcrewfoo.performance \
+	--extra-packages com.android.datetimepicker
 
 LOCAL_PACKAGE_NAME := Settings
 LOCAL_CERTIFICATE := platform
 LOCAL_PRIVILEGED_MODULE := true
 
 LOCAL_PROGUARD_FLAG_FILES := proguard.flags
+LOCAL_PROGUARD_FLAG_FILES += ../../../frameworks/opt/datetimepicker/proguard.flags
 
 LOCAL_AAPT_FLAGS += -c zz_ZZ
 
