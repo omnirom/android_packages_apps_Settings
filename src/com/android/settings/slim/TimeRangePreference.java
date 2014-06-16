@@ -19,7 +19,10 @@ package com.android.settings.slim;
 import java.util.Calendar;
 import java.util.Date;
 
-import android.app.TimePickerDialog;
+import android.app.Fragment;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.preference.Preference;
 import android.text.format.DateFormat;
@@ -30,6 +33,8 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.android.datetimepicker.time.RadialPickerLayout;
 
 import com.android.settings.R;
 
@@ -44,7 +49,9 @@ public class TimeRangePreference extends Preference implements
     private TextView mEndTimeText;
     private int mStartTime;
     private int mEndTime;
+    private FragmentManager mManager;
 
+    private static final String FRAG_TAG_TIME_PICKER = "time_dialog";
     /**
      * @param context
      * @param attrs
@@ -64,6 +71,10 @@ public class TimeRangePreference extends Preference implements
         mStartTime = stime;
         mEndTime = etime;
         init();
+    }
+
+    public void setFragmentManager(FragmentManager manager) {
+        mManager = manager;
     }
 
     @Override
@@ -149,22 +160,56 @@ public class TimeRangePreference extends Preference implements
         }
 
         Context context = getContext();
-        TimePickerDialog dlg = new TimePickerDialog(context,
-        new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker v, int hours, int minutes) {
-                int time = hours * 60 + minutes;
-                if (key == DIALOG_START_TIME) {
-                    mStartTime = time;
-                    mStartTimeText.setText(returnTime(time));
-                } else {
-                    mEndTime = time;
-                    mEndTimeText.setText(returnTime(time));
-                }
-                callChangeListener(this);
-            };
-        }, hour, minutes, DateFormat.is24HourFormat(context));
-        dlg.show();
+        if (mManager == null){
+            android.app.TimePickerDialog dlg = new android.app.TimePickerDialog(context,
+            new android.app.TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker v, int hours, int minutes) {
+                    handleTimeChange(key, hours, minutes);
+                };
+            }, hour, minutes, DateFormat.is24HourFormat(context));
+            dlg.show();
+        } else {
+            showTimeEditDialog(mManager, new com.android.datetimepicker.time.TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(RadialPickerLayout view, int hours, int minutes) {
+                    handleTimeChange(key, hours, minutes);
+                };
+            }, hour, minutes, DateFormat.is24HourFormat(context));
+        }
+    }
+
+    private void handleTimeChange(int key, int hours, int minutes) {
+        int time = hours * 60 + minutes;
+        if (key == DIALOG_START_TIME) {
+            mStartTime = time;
+            mStartTimeText.setText(returnTime(time));
+        } else {
+            mEndTime = time;
+            mEndTimeText.setText(returnTime(time));
+        }
+        callChangeListener(this);
+    }
+
+    private void showTimeEditDialog(FragmentManager manager,
+            com.android.datetimepicker.time.TimePickerDialog.OnTimeSetListener listener, int hour, int minutes, boolean is24HourMode) {
+
+        com.android.datetimepicker.time.TimePickerDialog dialog = com.android.datetimepicker.time.TimePickerDialog.newInstance(listener,
+                hour, minutes, is24HourMode);
+        dialog.setThemeDark(true);
+
+        // Make sure the dialog isn't already added.
+        manager.executePendingTransactions();
+        final FragmentTransaction ft = manager.beginTransaction();
+        final Fragment prev = manager.findFragmentByTag(FRAG_TAG_TIME_PICKER);
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.commit();
+
+        if (dialog != null && !dialog.isAdded()) {
+            dialog.show(manager, FRAG_TAG_TIME_PICKER);
+        }
     }
 
     private String returnTime(int t) {
