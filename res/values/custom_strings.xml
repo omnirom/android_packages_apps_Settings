@@ -368,4 +368,9 @@
     <string name="headset_plug_actions_kill">Kill app</string>
     <string name="headset_plug_force_actions_title">Force remove action</string>
     <string name="headset_plug_force_actions_summary">Run remove action also if shortcut was already running</string>
+
+    <!-- Airplane mode settings -->
+    <string name="airplane_mode_settings">Airplane mode settings</string>
+    <string name="airplane_mode_settings_summary">Choose which components to disable in airplane mode</string>
+
 </resources>

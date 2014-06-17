@@ -23,6 +23,12 @@
         android:persistent="false"
         android:disableDependentsState="true" />
 
+    <PreferenceScreen
+        android:fragment="com.android.settings.nfc.AndroidBeam"
+        android:key="airplane_mode_settings"
+        android:title="@string/airplane_mode_settings"
+        android:summary="@string/airplane_mode_settings_summary" />
+
     <com.android.settings.SmsListPreference
         android:key="sms_application"
         android:title="@string/sms_application_title"

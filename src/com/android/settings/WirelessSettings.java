@@ -57,6 +57,7 @@ public class WirelessSettings extends RestrictedSettingsFragment
     private static final String TAG = "WirelessSettings";
 
     private static final String KEY_TOGGLE_AIRPLANE = "toggle_airplane";
+    private static final String KEY_AIRPLANE_MODE_SETTINGS = "airplane_mode_settings";
     private static final String KEY_TOGGLE_NFC = "toggle_nfc";
     private static final String KEY_WIMAX_SETTINGS = "wimax_settings";
     private static final String KEY_ANDROID_BEAM_SETTINGS = "android_beam_settings";
