@@ -380,4 +380,10 @@
     <string name="headset_plug_actions_kill">Kill app</string>
     <string name="headset_plug_force_actions_title">Force remove action</string>
     <string name="headset_plug_force_actions_summary">Run remove action also if shortcut was already running</string>
+
+    <!-- NFC in airplane mode -->
+    <string name="nfc_in_airplane">NFC in airplane mode</string>
+    <string name="nfc_in_airplane_summary">Keep NFC enabled in airplane mode</string>
+    <string name="needs_reboot">Reboot device to apply change</string>
+
 </resources>

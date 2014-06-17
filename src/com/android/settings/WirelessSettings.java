@@ -58,6 +58,7 @@ public class WirelessSettings extends RestrictedSettingsFragment
 
     private static final String KEY_TOGGLE_AIRPLANE = "toggle_airplane";
     private static final String KEY_TOGGLE_NFC = "toggle_nfc";
+    private static final String KEY_TOGGLE_NFC_IN_AIRPLANE = "toggle_nfc_in_airplane";
     private static final String KEY_WIMAX_SETTINGS = "wimax_settings";
     private static final String KEY_ANDROID_BEAM_SETTINGS = "android_beam_settings";
     private static final String KEY_VPN_SETTINGS = "vpn_settings";
@@ -74,6 +75,7 @@ public class WirelessSettings extends RestrictedSettingsFragment
 
     private AirplaneModeEnabler mAirplaneModeEnabler;
     private CheckBoxPreference mAirplaneModePreference;
+    private CheckBoxPreference mNfcInAirplanePreference;
     private NfcEnabler mNfcEnabler;
     private NfcAdapter mNfcAdapter;
     private NsdEnabler mNsdEnabler;
@@ -106,6 +108,25 @@ public class WirelessSettings extends RestrictedSettingsFragment
             startActivityForResult(
                 new Intent(TelephonyIntents.ACTION_SHOW_NOTICE_ECM_BLOCK_OTHERS, null),
                 REQUEST_CODE_EXIT_ECM);
+            return true;
+        } else if (preference == mNfcInAirplanePreference) {
+            String radios = Settings.Global.getString(getActivity().getContentResolver(),
+                Settings.Global.AIRPLANE_MODE_RADIOS);
+            if (radios.contains("nfc")){
+                radios = radios.replace("nfc","");
+                radios = radios.replace(",,",",");
+            } else {
+                radios = radios + ",nfc";
+            }
+            mNfcInAirplanePreference.setChecked(!radios.contains("nfc"));
+            Settings.Global.putString(getActivity().getContentResolver(),
+                Settings.Global.AIRPLANE_MODE_RADIOS, radios);
+
+            AlertDialog.Builder reboot_dialog = new AlertDialog.Builder(getActivity());
+            reboot_dialog.setMessage(R.string.needs_reboot);
+            reboot_dialog.setCancelable(true);
+            reboot_dialog.setPositiveButton(android.R.string.ok, null);
+            reboot_dialog.show();
             return true;
         } else if (preference == findPreference(KEY_MANAGE_MOBILE_PLAN)) {
             onManageMobilePlanClick();
@@ -267,6 +288,7 @@ public class WirelessSettings extends RestrictedSettingsFragment
 
         final Activity activity = getActivity();
         mAirplaneModePreference = (CheckBoxPreference) findPreference(KEY_TOGGLE_AIRPLANE);
+        mNfcInAirplanePreference = (CheckBoxPreference) findPreference(KEY_TOGGLE_NFC_IN_AIRPLANE);
         CheckBoxPreference nfc = (CheckBoxPreference) findPreference(KEY_TOGGLE_NFC);
         PreferenceScreen androidBeam = (PreferenceScreen) findPreference(KEY_ANDROID_BEAM_SETTINGS);
         CheckBoxPreference nsd = (CheckBoxPreference) findPreference(KEY_TOGGLE_NSD);
@@ -324,8 +346,13 @@ public class WirelessSettings extends RestrictedSettingsFragment
         mNfcAdapter = NfcAdapter.getDefaultAdapter(activity);
         if (mNfcAdapter == null) {
             getPreferenceScreen().removePreference(nfc);
+            getPreferenceScreen().removePreference(mNfcInAirplanePreference);
             getPreferenceScreen().removePreference(androidBeam);
             mNfcEnabler = null;
+        } else {
+            String radios = Settings.Global.getString(getActivity().getContentResolver(), 
+                Settings.Global.AIRPLANE_MODE_RADIOS);
+            mNfcInAirplanePreference.setChecked(!radios.contains("nfc"));
         }
 
         // Remove Mobile Network Settings and Manage Mobile Plan if it's a wifi-only device.
