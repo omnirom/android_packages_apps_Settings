@@ -350,7 +350,7 @@
     <string name="bluetooth_accept_all_files">Accept all file types</string>
 
     <!-- Increasing ringtone volume -->
-    <string name="checkbox_increasing_ring">Enable</string>
+    <string name="checkbox_increasing_ring">Enabled</string>
     <string name="increasing_ring_title">Ascending ringtone</string>
     <string name="increasing_ring_min_volume_title">Ringing start volume</string>
     <string name="increasing_ring_volume_notice">Notice:\nAs the start volume is set higher than the ringer volume, the ring tone will be played using the ringer volume.</string>
