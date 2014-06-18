@@ -56,6 +56,8 @@ public class IncreasingRingPreference extends VolumePreference implements
 
         setDialogLayoutResource(R.layout.preference_dialog_increasing_ring);
         setDialogIcon(R.drawable.ic_settings_sound);
+
+        updateSummary();
     }
 
     @Override
@@ -108,6 +110,7 @@ public class IncreasingRingPreference extends VolumePreference implements
             Settings.System.putInt(cr,
                     Settings.System.INCREASING_RING_MIN_VOLUME,
                     mMinVolumeSeekBar.getProgress());
+            updateSummary();
         }
     }
 
@@ -176,6 +179,14 @@ public class IncreasingRingPreference extends VolumePreference implements
         if (mInterval != null) {
             mInterval.setSelection(myState.mIntervalSelection);
         }
+    }
+
+    private void updateSummary() {
+        boolean checked = Settings.System.getInt(
+                    getContext().getContentResolver(), Settings.System.INCREASING_RING, 1) == 1;
+        setSummary(checked
+                    ? getContext().getResources().getString(R.string.checkbox_increasing_ring)
+                    : getContext().getResources().getString(R.string.disabled));
     }
 
     private static class SavedState extends BaseSavedState {
