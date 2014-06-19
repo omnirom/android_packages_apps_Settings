@@ -172,6 +172,7 @@
     <string name="custom_runtime_warning_message">No hi ha suport d\'ART per OmniROM. Aquest ajustament s\'inclou només per a experimentació i té el potencial de causar inestabilitat, fallades, pèrdua de dades o impedir una arrencada correcta del dispositiu. Visiteu &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Presentant ART&lt;/a&gt; per a més informació.&lt;br/&gt;&lt;br/&gt;Us demanem que no envieu comunicacions d\'errors si heu habilitat ART com a temps d\'execució.&lt;br/&gt;&lt;br/&gt;Segur que voleu arrencar de nou per canviar el temps d\'execució de <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> a <xliff:g id="new" example="libart.so">%2$s</xliff:g>?</string>
 
     <!-- Basic Numbers -->
+    <string name="one">Un</string>
     <string name="two">Dos</string>
     <string name="three">Tres</string>
     <string name="four">Quatre</string>
@@ -238,8 +239,7 @@
     <string name="quiet_hours_enable_title">Hores de silenci activades</string>
     <string name="quiet_hours_notification">Toca per configurar.</string>
     <string name="quiet_hours_enable_notification_title">Notificació</string>
-    <string name="quiet_hours_enable_notification_summary_on"></string>
-    <string name="quiet_hours_enable_notification_summary_off"></string>
+    <string name="quiet_hours_enable_notification_summary">Mostra notificació durant les hores de silenci</string>
     <string name="quiet_hours_notification_disable">Desactivat</string>
     <string name="quiet_hours_notification_pause">Pausa</string>
     <string name="quiet_hours_paused_title">Mode descans pausat</string>
@@ -249,6 +249,18 @@
     <string name="quiet_hours_snooze_time">Tiemps d\'espera per dormir</string>
     <string name="quiet_hours_notification_stop">Aturar</string>
     <string name="quiet_hours_start">Iniciar ara</string>
+    <string name="quiet_hours_whitelist_bypass_calls">Trucada entrant</string>
+    <string name="quiet_hours_whitelist_bypass_messages">Missatge de text</string>
+    <string name="quiet_hours_add_whitelist_number">Afegit contacte</string>
+    <string name="quiet_hours_whitelist">Filtrar contactes</string>
+    <string name="quiet_hours_whitelist_summary">Filtre de contactes en hores de silenci</string>
+    <string name="quiet_hours_whitelist_button_delete">Esborrar</string>
+    <string name="quiet_hours_whitelist_edit_dialog_title">Editar contacte</string>
+    <string name="quiet_hours_options_group">Opcions</string>
+    <string name="quiet_hours_ringer_allow_whitelist">Filtrar contactes únicament</string>
+    <string name="quiet_hours_bypass_options_group">Opcions d\'alarma</string>
+    <string name="quiet_hours_auto_sms_summary">Enviar resposta automàtica de missatges de text per a les trucades entrants o missatges de text</string>
+    <string name="quiet_hours_bypass_summary">Inici d'\alarma si la trucada entrant o missatge de text compleix el criteri del filtre. El filtre de contactes sempre iniciarà l\'alarma si està habilitat</string>
 
     <!-- time range preference -->
     <string name="start_time_title">Inici</string>
