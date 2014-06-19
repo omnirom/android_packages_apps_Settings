@@ -261,7 +261,7 @@
     <string name="quiet_hours_options_group">Options</string>
     <string name="quiet_hours_ringer_allow_whitelist">Bypass contacts only</string>
     <string name="quiet_hours_bypass_options_group">Alarm options</string>
-    <string name="quiet_hours_auto_sms_summary">Send automatic text message reply for not handled incoming calls or text messsages</string>
+    <string name="quiet_hours_auto_sms_summary">Send automatic text message reply for not handled incoming calls or text messages</string>
     <string name="quiet_hours_bypass_summary">Start alarm if incoming call or text message matches bypass criteria. Bypass contacts will always start the alarm if enabled</string>
 
     <!-- time range preference -->
