@@ -172,7 +172,7 @@
     <string name="custom_runtime_warning_message">ART no está soportado por OmniROM. Este ajuste está incluido solo con fines experimentales y puede provocar inestabilidad, bloqueos, pérdida de datos, reinicios e incluso impedir el correcto inicio del dispositivo. Visita &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt;Introducing ART&lt;/a&gt; para más información.&lt;br/&gt;&lt;br/&gt; Pedimos no presentar reportes de errores si tienes ART habilitado.&lt;br/&gt;&lt;br/&gt;Seguro que desea reiniciar para cambiar el tiempo de ejecución de <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> a <xliff:g id="new" example="libart.so">%2$s</xliff:g>?</string>
 
     <!-- Basic Numbers -->
-    <string name="one">Uno</string>
+    <string name="one">Una</string>
     <string name="two">Dos</string>
     <string name="three">Tres</string>
     <string name="four">Cuatro</string>
@@ -227,7 +227,7 @@
     <string name="quiet_hours_sms_code_explain">Si un mensaje entrante contiene este texto en su teléfono se hará sonar una alarma</string>
     <string name="quiet_hours_call_bypass_title">Filtrar Llamadas entrantes</string>
     <string name="quiet_hours_calls_required_title">Número de llamadas en 30 minutos</string>
-    <string name="quiet_hours_calls_required_summary">" llamadas para ignorar las horas de descanso"</string>
+    <string name="quiet_hours_calls_required_summary">" llamada(s) para ignorar las horas de descanso"</string>
     <string name="quiet_hours_bypass_ringtone_title">Tono de la alarma</string>
     <string name="quiet_hours_bypass_ringtone_loop_title">Repetición de tono</string>
     <string name="quiet_hours_bypass_ringtone_loop_summary_on">Bucle de tono hasta que lo retire</string>
