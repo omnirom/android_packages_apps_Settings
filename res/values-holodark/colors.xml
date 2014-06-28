@@ -54,4 +54,11 @@
 
     <color name="screencolor_background">#50000000</color>
     <drawable name="transparent_background">#00000000</drawable>
+
+    <!-- Background color of action bars -->
+    <color name="actionbar_background_color">#ff000000</color>
+
+    <!-- Underline color of action bars.  Ensure this stays in sync with packages/Telephony
+         actionbar_underline. -->
+    <color name="actionbar_underline">#ffffffff</color>
 </resources>

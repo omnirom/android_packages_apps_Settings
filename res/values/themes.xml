@@ -60,10 +60,11 @@
     </style>
 
     <style name="ActionBar" parent="@*android:style/Widget.Holo.Light.ActionBar">
-        <item name="@*android:titleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Title</item>
-        <item name="@*android:subtitleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle</item>
-        <item name="android:background">@drawable/ab_transparent_light_holo</item>
-        <item name="android:backgroundStacked">@drawable/ab_stacked_transparent_light_holo</item>
+        <item name="@*android:titleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Title.Inverse</item>
+        <item name="@*android:subtitleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle.Inverse</item>
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:background">@drawable/actionbar_background</item>
+        <item name="android:backgroundStacked">@drawable/actionbar_background</item>
     </style>
 
     <style name="Theme.Settings" parent="@*android:style/Theme.Holo.Light">
@@ -72,9 +73,6 @@
         <item name="@*android:preferenceListStyle">@style/PreferenceHeaderListSinglePane</item>
         <item name="@*android:preferenceFragmentListStyle">@style/PreferenceFragmentListSinglePane</item>
         <item name="@*android:preferenceFragmentPaddingSide">@dimen/settings_side_margin</item>
-        <item name="@*android:windowTranslucentStatus">true</item>
-        <item name="@*android:windowTranslucentNavigation">true</item>
-        <item name="@*android:fitsSystemWindows">true</item>
         <item name="apnPreferenceStyle">@style/ApnPreference</item>
         <item name="ic_menu_add">@drawable/ic_menu_add_light</item>
         <item name="ic_menu_moreoverflow">@*android:drawable/ic_menu_moreoverflow_holo_light</item>

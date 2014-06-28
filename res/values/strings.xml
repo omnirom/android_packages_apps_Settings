@@ -1144,7 +1144,7 @@
     <!-- Bluetooth settings. Title of the advanced bluetooth settings screen [CHAR LIMIT=30]-->
     <string name="bluetooth_advanced_titlebar">Advanced Bluetooth</string>
     <!-- Bluetooth settings. Text displayed when Bluetooth is off and device list is empty [CHAR LIMIT=50]-->
-    <string name="bluetooth_empty_list_bluetooth_off">To see devices, turn Bluetooth on.</string>
+    <string name="bluetooth_empty_list_bluetooth_off">When Bluetooth is turned on, your device can communicate with other nearby Bluetooth devices.</string>
 
 
     <!-- Bluetooth settings.  The title of the screen to pick which profiles to connect to on the device.  For example, headphones may have both A2DP and headset, this allows the user to choose which one he wants to connect to. -->
@@ -3437,6 +3437,8 @@
     <string name="captioning_background_opacity">Background opacity</string>
     <!-- Title for the preference to change video caption text color. [CHAR LIMIT=35] -->
     <string name="captioning_foreground_color">Text color</string>
+    <!-- Title for the preference to change video caption text opacity. [CHAR LIMIT=35] -->
+    <string name="captioning_foreground_opacity">Text opacity</string>
     <!-- Title for the preference to change video caption edge color. [CHAR LIMIT=35] -->
     <string name="captioning_edge_color">Edge color</string>
     <!-- Title for the preference to change video caption edge type. [CHAR LIMIT=35] -->
@@ -5024,6 +5026,11 @@
     <string name="saturation_str">Saturation: <xliff:g id="saturation_value">%1$s</xliff:g></string>
     <string name="contrast_str">Contrast: <xliff:g id="contrast_value">%1$s</xliff:g></string>
     <string name="intensity_str">Intensity: <xliff:g id="intensity_str_value">%1$s</xliff:g></string>
+
+    <!-- Wi-Fi SSID string limits -->
+    <string name="wifi_ssid_input_limit">SSID exceeds maximum length</string>
+    <!-- Wi-Fi P2P string limits -->
+    <string name="p2p_device_name_input_limit">P2P name exceeds maximum length</string>
 
     <string name="bluetooth_accept_all_files">Accept all file types</string>
 </resources>
