@@ -117,6 +117,7 @@
     <string name="wifi_setting_countrycode_title">Code région du Wi-Fi</string>
     <string name="wifi_setting_countrycode_summary">Spécifier le code Wi-Fi de la région</string>
     <string name="wifi_setting_countrycode_error">Un problème a été rencontré avec le paramétrage du code de région.</string>
+    <string name="one">Un</string>
     <string name="two">Deux</string>
     <string name="three">Trois</string>
     <string name="four">Quatre</string>
@@ -181,6 +182,7 @@
     <string name="quiet_hours_enable_title">Heures silencieuses activées</string>
     <string name="quiet_hours_notification">Appuyer pour configurer.</string>
     <string name="quiet_hours_enable_notification_title">Notification</string>
+    <string name="quiet_hours_enable_notification_summary">Afficher les notifications pendant les heures silencieuses</string>
     <string name="quiet_hours_notification_disable">Désactivé</string>
     <string name="quiet_hours_notification_pause">Pause</string>
     <string name="quiet_hours_paused_title">Heures silencieuses en pause</string>
@@ -189,6 +191,18 @@
     <string name="quiet_hours_notification_snooze">Répéter</string>
     <string name="quiet_hours_snooze_time">Délai de répétition</string>
     <string name="quiet_hours_notification_stop">Arrêter</string>
+    <string name="quiet_hours_whitelist_bypass_calls">Appel entrant</string>
+    <string name="quiet_hours_whitelist_bypass_messages">Message texte</string>
+    <string name="quiet_hours_add_whitelist_number">Ajouter un contact</string>
+    <string name="quiet_hours_whitelist">Outrepasser les contacts</string>
+    <string name="quiet_hours_whitelist_summary">Autoriser des contacts à outrepasser les heures silencieuses</string>
+    <string name="quiet_hours_whitelist_button_delete">Supprimer</string>
+    <string name="quiet_hours_whitelist_edit_dialog_title">Éditer le contact</string>
+    <string name="quiet_hours_options_group">Options</string>
+    <string name="quiet_hours_ringer_allow_whitelist">Seul les contacts peuvent outrepasser</string>
+    <string name="quiet_hours_bypass_options_group">Options des alarmes</string>
+    <string name="quiet_hours_auto_sms_summary">Envoyer automatiquement un message texte de réponse pour les appels entrant ou les messages texte non gérés</string>
+    <string name="quiet_hours_bypass_summary">Activer une alarme si un appel entrant ou un message texte correspond aux critères d\'autorisation à outrepasser. Si activé, les contacts autorisés à outrepasser les heures silencieuses activeront toujours l\'alarme. </string>
     <string name="start_time_title">Début</string>
     <string name="end_time_title">Fin</string>
     <string name="title_keyboard_input">Options avancées</string>
