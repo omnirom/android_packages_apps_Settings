@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2014 The OmniROM Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- About phone screen,  setting option name-->
+    <string name="mod_version">Omni 版本</string>
+    <string name="mod_version_default">未知</string>
+
+    <!-- Main list strings -->
+    <string name="header_category_interface">界面</string>
+    <string name="performance_settings">性能調整</string>
+    <string name="notification_light_settings">通知指示燈</string>
+    <string name="battery_light_settings">電池指示燈</string>
+    <string name="header_button_settings">按鍵</string>
+
+    <!-- Volume panel tweaks -->
+    <string name="volume_adjust_sounds_enable_title">音量調整聲</string>
+    <string name="volume_adjust_sounds_enable_summary">當使用音量鍵調整音量時播放聲音</string>
+    <string name="link_volume_ringtones">鏈接鈴聲與通知音量</string>
+    <string name="volume_ring_only_description">鈴聲</string>
+
+    <string name="volume_panel_timeout_title">面板超時</string>
+    <string name="volume_panel_timeout_summary">設定音量面板將在幾秒後被隱藏</string>
+
+    <string name="volume_panel_style">音量面板風格</string>
+    <string name="single">單項</string>
+    <string name="expandable">可擴展</string>
+    <string name="expanded">完全擴展</string>
+
+    <!-- Safe headset volume warning -->
+    <string name="safe_headset_volume_warning_title">音量警告</string>
+    <string name="safe_headset_volume_warning_summary">顯示安全耳機音量警告</string>
+
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">高級重啟選項</string>
+    <string name="advanced_reboot_summary">解鎖後，在電源菜單內包含重啟至恢復模式或引導模式選項</string>
+
+    <!-- Android debugging over WiFi -->
+    <string name="adb_over_network">網絡 ADB 調試</string>
+    <string name="adb_over_network_summary">通過網絡接口 (WLAN, USB 網絡) 啟用 TCP/IP 調試。 該設置重啟後失效</string>
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">警告：網絡 ADB 調試啟用後，您的設備將會在已連接的網絡 (包括 GSM 數據網絡) 上被視為是開放的，並有可能被侵入！\n\n請僅在您所信任的網絡上使用此功能。\n\n您確實要啟用該功能嗎？</string>
+    <string name="lockscreen_quick_unlock_control_title">快速解鎖</string>
+    <string name="lockscreen_quick_unlock_control_summary">當輸入正確 PIN / 密碼後自動解鎖</string>
+
+    <!-- Title for PreferenceScreen to change encryption password [CHAR LIMIT=22] -->
+    <string name="change_crypt_password_title">更改密碼</string>
+    <!-- Summary for PreferenceScreen to change encryption password [CHAR LIMIT=45] -->
+    <string name="change_crypt_password_summary">更改設備加密所用的密碼</string>
+
+    <!-- Header on first screen of choose encryption password [CHAR LIMIT=30] -->
+    <string name="encryptionpassword_choose_your_password_header">設置加密密碼</string>
+
+    <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+    <string name="show_cpu_info">顯示 CPU 信息</string>
+    <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+    <string name="show_cpu_info_summary">屏幕上方顯示當前 CPU 信息</string>
+
+    <!-- Screen off animation -->
+    <string name="screen_off_animation">關屏動畫</string>
+    <string name="screen_off_fadeout">淡出</string>
+    <string name="screen_off_electronbeam">電視關屏</string>
+    <string name="screen_off_scaledown">縮小</string>
+
+    <!-- AppOps additions -->
+    <string name="appops_settings">應用權限</string>
+    <string name="appops_sysapp_beware">注意！</string>
+    <string name="appops_sysapp_warning">修改Android核心組件的權限可能引起不可預料的行為。請自行承擔此處修改設置的風險！</string>
+
+    <!-- Low battery warning policy -->
+    <string name="pref_low_battery_warning_policy_title">低電量警告</string>
+    <string name="pref_low_battery_warning_policy_dialog_title">低電量提醒方式</string>
+    <string name="low_battery_warning_policy_popup_sound">彈窗與聲音</string>
+    <string name="low_battery_warning_policy_notif_sound">提醒與聲音</string>
+    <string name="low_battery_warning_policy_popup">只顯示彈窗</string>
+    <string name="low_battery_warning_policy_notif">只顯示提醒</string>
+    <string name="low_battery_warning_policy_sound">只播放聲音</string>
+    <string name="battery_prefs_title">選項</string>
+    <string name="battery_stats_title">用量統計</string>
+
+    <!-- Setting checkbox summary for displaying USB debugging notification -->
+    <string name="adb_notify">USB 調試提醒</string>
+    <string name="adb_notify_summary">當 USB 調試接入時顯示通知圖標</string>
+
+    <!-- Lockscreen pin shuffle -->
+    <string name="lock_numpad_random_title">改變 PIN 輸入面板上數字的位置</string>
+    <string name="lock_numpad_random_dialog_title">隨機排列 PIN 輸入面板上的按鍵位置</string>
+    <string name="lock_numpad_random_off">禁用</string>
+    <string name="lock_numpad_random_always">總是</string>
+    <string name="lock_numpad_random_on_request">請求時</string>
+
+    <string name="interface_more_title">更多\u2026</string>
+    <string name="interface_bars_title">狀態欄</string>
+    <string name="interface_menus_title">菜單</string>
+    <string name="interface_notification_panel_title">通知抽屜</string>
+
+    <!-- Battery Icon selection -->
+    <string name="pref_battery_indicator_title">電量指示器</string>
+    <string name="battery_status_icon_title">狀態圖標</string>
+    <string name="battery_bar">柱狀</string>
+    <string name="battery_bar_percent">含百分比的柱狀</string>
+    <string name="battery_circle">環狀</string>
+    <string name="battery_circle_percent">含百分比的環狀</string>
+
+    <!-- Turn on display when power connected; turn off display when power disconnected -->
+    <string name="wake_when_plugged_or_unplugged_title">接入電源時喚醒</string>
+    <string name="wake_when_plugged_or_unplugged_summary">當接入充電器或者拔出充電器時開啟屏幕</string>
+
+    <!-- security settings menu unlock -->
+    <string name="unlock_menu_unlock_title">菜單鍵解鎖</string>
+    <string name="unlock_menu_unlock_summary">按菜單鍵以解鎖設備</string>
+
+    <!-- Stylus Icon -->
+    <string name="stylus_icon_enabled_title">使用觸控筆時顯示圖標</string>
+    <string name="stylus_icon_enabled_summary">使用觸控筆時顯示指針</string>
+
+    <!-- Stylus Gestures -->
+    <string name="gestures_settings_title">觸控筆手勢</string>
+    <string name="category_spen_title">觸控筆手勢</string>
+    <string name="enable_subcat_title">觸控筆</string>
+    <string name="enable_spen_title_head">開啟觸控筆手勢</string>
+    <string name="enable_spen_summary_head">按下觸控筆按鍵時使用滑動手勢啟動自定義行為。警告：應用可能在按下觸控筆按鍵時無法接收到輸入內容</string>
+    <string name="gestures_subcat_title">手勢</string>
+    <string name="gestures_left_spen_title_head">向左滑動</string>
+    <string name="gestures_left_spen_summary_head">通過向左滑動啟動自定義行為</string>
+    <string name="gestures_right_spen_title_head">向右滑動</string>
+    <string name="gestures_right_spen_summary_head">通過向右滑動啟動自定義行為</string>
+    <string name="gestures_up_spen_title_head">向上滑動</string>
+    <string name="gestures_up_spen_summary_head">通過向上滑動啟動自定義行為</string>
+    <string name="gestures_down_spen_title_head">向下滑動</string>
+    <string name="gestures_down_spen_summary_head">通過向下滑動啟動自定義行為</string>
+    <string name="gestures_long_spen_title_head">長按</string>
+    <string name="gestures_long_spen_summary_head">通過長按啟動自定義行為</string>
+    <string name="gestures_double_spen_title_head">雙擊</string>
+    <string name="gestures_double_spen_summary_head">通過雙擊啟動自定義行為</string>
+
+    <!-- Gestures Options -->
+    <string name="gestures_action_empty">無</string>
+    <string name="gestures_action_home">模擬 Home 鍵</string>
+    <string name="gestures_action_back">模擬後退鍵</string>
+    <string name="gestures_action_menu">模擬菜單鍵</string>
+    <string name="gestures_action_search">調用搜索</string>
+    <string name="gestures_action_recent">當前應用</string>
+
+    <!-- stylus gestures support -->
+    <string name="stylus_app_not_installed">%s 沒有安裝</string>
+
+    <!-- default alarm tone -->
+    <string name="alarm_sound_title">默認提醒鈴聲</string>
+    <string name="alarm_sound_dialog_title">默認提醒鈴聲</string>
+
+    <!-- Message of dialog confirming that user wants to restart their device with a new runtime -->
+    <string name="custom_runtime_warning_title">警告</string>
+    <string name="custom_runtime_warning_message">OmniROM 不正式支持 ART 模式。本設置僅用於測試與研究，並可能潛在不穩定的因素、導致奔潰, 數據丟失或設備無法啟動。請查看 &lt;a href=\"http://source.android.com/devices/tech/dalvik/art.html\"&gt; ART&lt;/a&gt; 相關介紹以獲得更多相關信息。&lt;br/&gt;&lt;br/&gt; 我們希望當您開啟 ART 模式作為運行時模式的時候不要發送 Bug 報告。&lt;br/&gt;&lt;br/&gt; 你確認你真的想要重啟並將運行時模式從 <xliff:g id="old" example="libdvm.so">%1$s</xliff:g> 切換至 <xliff:g id="new" example="libart.so">%2$s</xliff:g>？</string>
+
+    <!-- Basic Numbers -->
+    <string name="two">二</string>
+    <string name="three">三</string>
+    <string name="four">四</string>
+    <string name="five">五</string>
+    <string name="six">六</string>
+
+    <!-- Quiet hours -->
+    <string name="quiet_hours_title">靜默時段</string>
+    <string name="quiet_hours_summary">配置設備應該安靜的時段</string>
+    <string name="quiet_hours_note_title">注意</string>
+    <string name="quiet_hours_note_summary">安靜時段將不會影響來電的正常行為</string>
+    <string name="quiet_hours_enabled">啟用靜默時段</string>
+    <string name="quiet_hours_enabled_on">靜默時段將被執行</string>
+    <string name="quiet_hours_enabled_off">靜默時段將不影響正常通知行為</string>
+    <string name="quiet_hours_start">靜默起始時間</string>
+    <string name="quiet_hours_start_summary">何時開始執行靜默時段</string>
+    <string name="quiet_hours_end">靜默結束時間</string>
+    <string name="quiet_hours_end_summary">何時結束執行靜默時段</string>
+    <string name="quiet_hours_ringer_title">靜音電話鈴聲</string>
+    <string name="quiet_hours_ringer_on">電話鈴聲將不被播放</string>
+    <string name="quiet_hours_ringer_off">電話鈴聲將正常播放</string>
+    <string name="quiet_hours_mute">靜音通知</string>
+    <string name="quiet_hours_mute_on">將不播放任何聲音</string>
+    <string name="quiet_hours_mute_off">所有聲音將正常播放</string>
+    <string name="quiet_hours_still">禁用震動</string>
+    <string name="quiet_hours_still_on">設備將不會震動</string>
+    <string name="quiet_hours_still_off">設備將正常震動</string>
+    <string name="quiet_hours_dim">關閉通知燈</string>
+    <string name="quiet_hours_dim_on">通知燈將被禁用</string>
+    <string name="quiet_hours_dim_off">通知燈將正常生效</string>
+    <string name="quiet_hours_haptic">禁用震動反饋</string>
+    <string name="quiet_hours_haptic_on">震動反饋將被禁用</string>
+    <string name="quiet_hours_haptic_off">震動反饋將正常生效</string>
+    <string name="quiet_hours_active_from">從</string>
+    <string name="quiet_hours_active_to">生效到</string>
+    <string name="quiet_hours_auto_sms_group">自動回復</string>
+    <string name="quiet_hours_auto_sms_title">收到的短信</string>
+    <string name="quiet_hours_auto_sms_call_title">來電</string>
+    <string name="quiet_hours_auto_string_title">回復內容</string>
+    <string name="quiet_hours_auto_string_explain">此回復將自動發送給任何在靜默時段激活時聯系您的人</string>
+    <string name="quiet_hours_auto_sms_null">[自動回復信息] 稍後我會聯系您。</string>
+    <string name="quiet_hours_auto_disabled">已禁用</string>
+    <string name="quiet_hours_auto_enabled">所有號碼</string>
+    <string name="quiet_hours_auto_contacts">通訊錄中的聯系人</string>
+    <string name="quiet_hours_bypass_group">靜默時段例外</string>
+    <string name="quiet_hours_sms_code_null">[鬧鈴]</string>
+    <string name="quiet_hours_sms_bypass_title">文本消息例外</string>
+    <string name="quiet_hours_sms_code_title">文本消息關鍵詞</string>
+    <string name="quiet_hours_sms_code_explain">如果收到的消息包含以下的關鍵詞，您的設備將會響起鬧鈴</string>
+    <string name="quiet_hours_call_bypass_title">新來電例外</string>
+    <string name="quiet_hours_calls_required_title">30 分鐘內來電次數</string>
+    <string name="quiet_hours_calls_required_summary">" 靜默時間下例外來電"</string>
+    <string name="quiet_hours_bypass_ringtone_title">播放鈴聲</string>
+    <string name="quiet_hours_bypass_ringtone_loop_title">鈴聲循環</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_on">鈴聲循環直到被解除</string>
+    <string name="quiet_hours_bypass_ringtone_loop_summary_off">鈴聲僅會播放一次</string>
+    <string name="quiet_hours_alarm_dismiss">關閉鬧鈴</string>
+    <string name="quiet_hours_alarm_and">" 和 "</string>
+    <string name="quiet_hours_alarm_dialog_title">靜默時段已被跳過</string>
+    <string name="quiet_hours_alarm_message">" 符合了跳過靜默時段的需求！"</string>
+
+    <!-- time range preference -->
+    <string name="start_time_title">起始</string>
+    <string name="end_time_title">結束</string>
+
+    <!-- Keyboard and Input ASS methods  -->
+    <string name="title_keyboard_input">高級選項</string>
+    <string name="disable_fullscreen_keyboard_title">禁用全屏鍵盤</string>
+    <string name="disable_fullscreen_keyboard_summary">橫屏鍵盤將永遠不會占用全部屏幕空間</string>
+    <string name="keyboard_rotation_toggle_title">自動鍵盤旋轉</string>
+    <string name="keyboard_rotation_toggle_summary">當鍵盤顯示時強制啟用自動旋轉</string>
+    <string name="keyboard_rotation_timeout_title">自動旋轉超時時間</string>
+    <string name="keyboard_rotation_timeout_summary">在鍵盤隱藏之後, 經過 <xliff:g id="rotate_timeout">%1$s</xliff:g>後關閉自動旋轉傳感器</string>
+    <string name="keyboard_rotation_dialog">提示：此選項在鍵盤開啟時將臨時強制啟用自動旋轉。在自動旋轉已經打開的情況下不會生效。</string>
+    <string name="show_enter_key_title">顯示回車鍵</string>
+    <string name="show_enter_key_summary">強制鍵盤顯示回車鍵而不是符號鍵</string>
+    <string name="ime_switcher_notify">輸入法選擇通知</string>
+    <string name="ime_switcher_notify_summary">顯示輸入法選擇通知</string>
+
+    <!-- Display : Rotation -->
+    <string name="display_rotation_title">自動旋轉</string>
+    <string name="display_rotation_disabled">已禁用</string>
+    <string name="display_rotation_unit">度</string>
+    <string name="display_rotation_category_title">旋轉模式</string>
+    <string name="display_rotation_0_title">0 度</string>
+    <string name="display_rotation_90_title">90 度</string>
+    <string name="display_rotation_180_title">180 度</string>
+    <string name="display_rotation_270_title">270 度</string>
+
+    <!-- ADB Paranoia settings -->
+    <string name="adb_paranoid">ADB 偏執模式</string>
+    <string name="adb_paranoid_summary">當未信任的電腦嘗試連接您被鎖定的設備時，設備將自動重啟</string>
+
+    <string name="unit_sec">秒</string>
+
+    <!-- custom data usage period -->
+    <string name="daily_cycle_lenght">每日</string>
+    <string name="weekly_cycle_length">每周</string>
+    <string name="monthly_cycle_length">每月</string>
+    <string name="weekday_sunday">星期日</string>
+    <string name="weekday_monday">星期一</string>
+    <string name="weekday_tuesday">星期二</string>
+    <string name="weekday_wednesday">星期三</string>
+    <string name="weekday_thursday">星期四</string>
+    <string name="weekday_friday">星期五</string>
+    <string name="weekday_saturday">星期六</string>
+
+    <!-- Hostname setting -->
+    <string name="device_hostname">設備主機名</string>
+
+    <string name="lockscreen_settings_title">鎖屏</string>
+
+    <!-- Blacklist preferences -->
+    <string name="blacklist_title">黑名單</string>
+    <string name="blacklist_edit_dialog_title">編輯黑名單項目</string>
+    <string name="blacklist_prefs">設置</string>
+    <string name="blacklist_button_delete">刪除</string>
+    <string name="blacklist_empty_text">您沒有設定任何被列入黑名單的號碼。請觸摸添加（+）按鈕來增加一個項目。</string>
+    <string name="blacklist_disabled_empty_text">若要將某一個號碼的來電或短信列入黑名單，請啟用此功能。</string>
+    <string name="blacklist_summary_disabled">禁用</string>
+    <string name="blacklist_summary">黑名單內號碼的來電和短信將被阻止</string>
+    <string name="blacklist_notify">顯示通知</string>
+    <string name="blacklist_private_numbers_title">私人號碼</string>
+    <string name="blacklist_private_numbers_summary_disabled">不阻止私人號碼列表中的號碼</string>
+    <string name="blacklist_private_numbers_summary">阻止私人號碼的<xliff:g id="type">%s</xliff:g> </string>
+    <string name="blacklist_unknown_numbers_title">未知號碼</string>
+    <string name="blacklist_unknown_numbers_summary_disabled">不阻止不在聯系人列表中的號碼的來電和短信</string>
+    <string name="blacklist_unknown_numbers_summary">阻止不在聯系人列表中的號碼的<xliff:g id="type">%s</xliff:g> </string>
+    <string name="blacklist_summary_type_calls_only">電話</string>
+    <string name="blacklist_summary_type_messages_only">短信</string>
+    <string name="blacklist_summary_type_calls_and_messages">電話和短信</string>
+    <string name="blacklist_regex_title">使用通配符</string>
+    <string name="blacklist_regex_summary">使用 . 作為匹配一個字符，* 表示重復。例如123.*將阻止所有以123開頭的號碼，而.*123.*將阻止包含123的號碼。</string>
+    <string name="blacklist_policy_block_calls">阻止來電</string>
+    <string name="blacklist_policy_block_messages">阻止短信</string>
+
+    <!-- Blacklist management -->
+    <string name="add_blacklist_number">添加號碼</string>
+    <string name="remove_blacklist_number_title">移除號碼</string>
+    <string name="remove_blacklist_entry">您想要移除此黑名單項目嗎？</string>
+    <string name="select_contact">選擇聯系人</string>
+
+    <!-- Lockscreen rotation -->
+    <string name="display_lockscreen_rotation_title">鎖屏界面</string>
+    <string name="bluetooth_accept_all_files">接受所有文件</string>
+</resources>
