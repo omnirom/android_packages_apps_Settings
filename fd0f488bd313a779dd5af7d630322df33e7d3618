@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4b713d8b_9d9d47c2",
+        "filename": "src/com/android/settings/WirelessSettings.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-07-06T21:45:29Z",
+      "side": 1,
+      "message": "you could do this in one line :)\nradios \u003d radios.replace(\"nfc\",\"\").replace(\",,\",\",\");",
+      "revId": "fd0f488bd313a779dd5af7d630322df33e7d3618",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4b713d8b_5d5f2f12",
+        "filename": "src/com/android/settings/WirelessSettings.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-07-06T21:45:29Z",
+      "side": 1,
+      "message": "Maybe its nicer to use a Toast for this. Or add the info in the summary line of the checkbox",
+      "revId": "fd0f488bd313a779dd5af7d630322df33e7d3618",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
