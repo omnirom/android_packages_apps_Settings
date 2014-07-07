@@ -27,7 +27,7 @@
     <item quantity="other" msgid="6722953419953594148">"In <xliff:g id="STEP_COUNT">%1$d</xliff:g> Schritten sind Sie ein Entwickler."</item>
   </plurals>
     <string name="show_dev_on" msgid="1110711554982716293">"Sie sind jetzt ein Entwickler!"</string>
-    <string name="show_dev_already" msgid="2151632240145446227">"Okay, sind Sie bereits ein Entwickler."</string>
+    <string name="show_dev_already" msgid="2151632240145446227">"Sie sind bereits ein Entwickler."</string>
     <string name="header_category_wireless_networks" msgid="4944823405420438623">"Drahtlos &amp; Netzwerke"</string>
     <string name="header_category_device" msgid="5781174212691167553">"Gerät"</string>
     <string name="header_category_personal" msgid="6225932173498802187">"Nutzer"</string>
