@@ -33,6 +33,24 @@
       "revId": "fd0f488bd313a779dd5af7d630322df33e7d3618",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4b713d8b_9d28e733",
+        "filename": "src/com/android/settings/WirelessSettings.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000650
+      },
+      "writtenOn": "2014-07-07T15:30:33Z",
+      "side": 1,
+      "message": "Tried both. But it\u0027s very easy to overlook toast and summary. Maybe we can add a reboot button to the dialog, then it is even nicer. Unfortunately, I don\u0027t know how to do this.",
+      "parentUuid": "4b713d8b_5d5f2f12",
+      "revId": "fd0f488bd313a779dd5af7d630322df33e7d3618",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
