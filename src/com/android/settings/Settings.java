@@ -404,7 +404,8 @@ public class Settings extends PreferenceActivity
         ProfilesSettings.class.getName(),
         PolicyNativeFragment.class.getName(),
         org.regulus.amrasettings.PrivacySettings.class.getName(),
-        org.regulus.amrasettings.themetoggle.ThemeToggleSettings.class.getName()
+        org.regulus.amrasettings.themetoggle.ThemeToggleSettings.class.getName(),
+        org.regulus.amrasettings.theme.ThemeSettings.class.getName()
     };
 
     @Override
@@ -1289,4 +1290,6 @@ public class Settings extends PreferenceActivity
     public static class BatteryIconStyleSettingsActivity extends Settings { /* empty */ }
     public static class DisplayRotationSettingsActivity extends Settings { /* empty */ }
     public static class PerformanceSettingsActivity extends Settings { /* empty */ }
+    public static class ThemeSettingsActivity extends Settings { /* empty */ }
+
 }
