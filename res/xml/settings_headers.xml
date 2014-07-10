@@ -122,6 +122,16 @@
         android:fragment="com.android.settings.DisplaySettings"
         android:title="@string/display_settings" />
 
+    <!-- HDMI -->
+    <header 
+        android:icon="@drawable/ic_settings_hdmi" 
+        android:title="@string/hdmi_settings">
+        <intent 
+            android:action="android.intent.action.MAIN" 
+            android:targetClass="com.jucaroba.hdmirk.HdmiRK"
+            android:targetPackage="com.jucaroba.hdmirk" />
+    </header>
+
     <!-- buttons -->
     <header
         android:id="@+id/button_settings"
