@@ -15,5 +15,5 @@
 -->
 
 <resources>
-    <dimen name="settings_side_margin">150dp</dimen>
+    <dimen name="settings_side_margin">@*android:dimen/preference_fragment_padding_side</dimen>
 </resources>
