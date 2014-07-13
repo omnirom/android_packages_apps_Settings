@@ -48,4 +48,10 @@
         android:summary="@string/master_clear_summary"
         android:fragment="com.android.settings.MasterClear" />
 
+        <Preference
+            android:fragment="com.android.settings.privacyguard.PrivacyGuardManager"
+            android:key="privacy_guard_manager"
+            android:summary="@string/privacy_guard_manager_summary"
+            android:title="@string/privacy_guard_manager_title" />
+
 </PreferenceScreen>
