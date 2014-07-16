@@ -29,6 +29,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.BatteryStats;
 import android.os.BatteryStats.Uid;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
@@ -142,7 +143,7 @@ public class BatteryStatsHelper {
 
     public BatteryStatsImpl getStats() {
         if (mStats == null) {
-            load();
+            loadStats();
         }
         return mStats;
     }
@@ -322,6 +323,7 @@ public class BatteryStatsHelper {
 
     /**
      * Refreshes the power usage list.
+     * @parma context The current context
      * @param includeZeroConsumption whether includes those applications which have consumed very
      *                               little power up till now.
      */
@@ -820,7 +822,7 @@ public class BatteryStatsHelper {
         return mTotalPower;
     }
 
-    private void load() {
+    private void loadStats() {
         try {
             byte[] data = mBatteryInfo.getStatistics();
             Parcel parcel = Parcel.obtain();
@@ -829,6 +831,14 @@ public class BatteryStatsHelper {
             mStats = com.android.internal.os.BatteryStatsImpl.CREATOR
                     .createFromParcel(parcel);
             mStats.distributeWorkLocked(BatteryStats.STATS_SINCE_CHARGED);
+        } catch (RemoteException e) {
+            Log.e(TAG, "RemoteException:", e);
+        }
+    }
+
+    public void resetStatistics() {
+        try {
+            mBatteryInfo.resetStatistics();
         } catch (RemoteException e) {
             Log.e(TAG, "RemoteException:", e);
         }
