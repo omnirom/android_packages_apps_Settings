@@ -573,6 +573,17 @@ public class InstalledAppDetails extends Fragment
         }
     }
 
+    private void initPrivacyGuardButton() {
+        if (mPrivacyGuardSwitch == null) {
+            return;
+        }
+        mAppOps = (AppOpsManager) getActivity().getSystemService(Context.APP_OPS_SERVICE);
+        int state = mAppOps.getPrivacyGuardSettingForPackage(
+            mAppEntry.info.uid, mAppEntry.info.packageName);
+        mPrivacyGuardSwitch.setChecked(state > AppOpsManager.PRIVACY_GUARD_DISABLED_PLUS);
+        mPrivacyGuardSwitch.setOnCheckedChangeListener(this);
+    }
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle icicle) {
@@ -670,6 +681,7 @@ public class InstalledAppDetails extends Fragment
         mEnableCompatibilityCB = (CheckBox)view.findViewById(R.id.enable_compatibility_cb);
         
         mNotificationSwitch = (CompoundButton) view.findViewById(R.id.notification_switch);
+        mPrivacyGuardSwitch = (CompoundButton) view.findViewById(R.id.privacy_guard_switch);
 
         mAppOps = (AppOpsManager) getActivity().getSystemService(Context.APP_OPS_SERVICE);
         mAppOpsButton = (Button) view.findViewById(R.id.app_ops_button);
@@ -1129,6 +1141,11 @@ public class InstalledAppDetails extends Fragment
             }
         }
 
+        // only setup the privacy guard setting if we didn't get uninstalled
+        if (!mMoveInProgress) {
+            initPrivacyGuardButton();
+        }
+
         return true;
     }
 
@@ -1491,6 +1508,31 @@ public class InstalledAppDetails extends Fragment
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.setCancelable(false);
                     return dialog;
+                case DLG_PRIVACY_GUARD:
+                    final int messageResId;
+                    if ((getOwner().mAppEntry.info.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
+                        messageResId = R.string.privacy_guard_dlg_system_app_text;
+                    } else {
+                        messageResId = R.string.privacy_guard_dlg_text;
+                    }
+
+                    return new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.privacy_guard_dlg_title)
+                    .setIconAttribute(android.R.attr.alertDialogIcon)
+                    .setMessage(messageResId)
+                    .setPositiveButton(R.string.dlg_ok,
+                        new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            getOwner().setPrivacyGuard(true, false);
+                        }
+                    })
+                    .setNegativeButton(R.string.dlg_cancel,
+                        new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .create();
             }
             throw new IllegalArgumentException("unknown id " + id);
         }
@@ -1593,6 +1635,13 @@ public class InstalledAppDetails extends Fragment
         } catch (android.os.RemoteException ex) {
             mNotificationSwitch.setChecked(!enabled); // revert
         }
+    }
+
+    private void setPrivacyGuard(boolean enabled, boolean forceAll) {
+        mAppOps.setPrivacyGuardSettingForPackage(
+            mPackageInfo.applicationInfo.uid,
+            mPackageInfo.packageName, enabled, forceAll);
+        refreshUi();
     }
 
     private void setHaloState(boolean state) {
@@ -1750,6 +1799,12 @@ public class InstalledAppDetails extends Fragment
                 showDialogInner(DLG_DISABLE_NOTIFICATIONS, 0);
             } else {
                 setNotificationsEnabled(true);
+            }
+        } else if (buttonView == mPrivacyGuardSwitch) {
+            if (isChecked) {
+                showDialogInner(DLG_PRIVACY_GUARD, 0);
+            } else {
+                setPrivacyGuard(false, false);
             }
         } else if (buttonView == mHaloState) {
             setHaloState(isChecked);
