@@ -58,8 +58,8 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.List;
 
-import org.regulus.amrasettings.sounds.SeekBarPreference;
-import org.regulus.amrasettings.sounds.SeekBarPreferenceAmra;
+import org.regulus.amrasettings.utils.SeekBarPreference;
+import org.regulus.amrasettings.utils.SeekBarPreferenceAmra;
 
 public class SoundSettings extends SettingsPreferenceFragment implements
         Preference.OnPreferenceChangeListener {
