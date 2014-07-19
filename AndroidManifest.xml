@@ -950,6 +950,15 @@
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                        android:value="org.regulus.amrasettings.theme.ThemeSettings" />
         </activity>
+
+	<receiver android:name="org.regulus.amrasettings.hfm.IntentReceiver" >
+	    <intent-filter>
+		<action android:name="android.intent.action.BOOT_COMPLETED" />
+	    </intent-filter>
+	</receiver>
+
+	<service android:name="org.regulus.amrasettings.hfm.CheckHosts" />
+
         <!--
         Amra Settings End. 
         -->
