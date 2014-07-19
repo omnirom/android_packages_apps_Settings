@@ -102,6 +102,11 @@ import org.omnirom.omnigears.interfacesettings.MenusSettings;
 import org.omnirom.omnigears.interfacesettings.NotificationPanelSettings;
 import org.omnirom.omnigears.chameleonos.ActiveDisplaySettings;
 import org.omnirom.omnigears.interfacesettings.MoreInterfaceSettings;
+import org.omnirom.omnigears.notifications.HeadsUpDoNotDisturbSettings;
+import org.omnirom.omnigears.notifications.LockscreenNotifications;
+import org.omnirom.omnigears.notifications.NotificationsSettings;
+import org.omnirom.omnigears.notifications.PocketModeSettings;
+import org.omnirom.omnigears.notifications.ShakeSettings;
 import com.brewcrewfoo.performance.activities.MainActivity;
 
 import java.util.ArrayList;
@@ -385,6 +390,11 @@ public class Settings extends PreferenceActivity
         MoreInterfaceSettings.class.getName(),
         AppOpsSummary.class.getName(),
         HomeSettings.class.getName(),
+        HeadsUpDoNotDisturbSettings.class.getName(),
+        LockscreenNotifications.class.getName(),
+        NotificationsSettings.class.getName(),
+        PocketModeSettings.class.getName(),
+        ShakeSettings.class.getName(),
         MainActivity.class.getName()
     };
 
