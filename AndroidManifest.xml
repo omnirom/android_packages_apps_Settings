@@ -79,6 +79,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_BLACKLIST" />
     <uses-permission android:name="android.permission.CHANGE_PHONE_BLACKLIST" />
     <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.SYSTEM_NOTIFICATION_LISTENER" />
     <uses-permission android:name="android.permission.CHANGE_HEADS_UP_STATE" />
 
 
@@ -906,10 +908,13 @@
             </intent-filter>
         </receiver>
 
+        <!-- PowerWidget -->
         <activity android:name="org.regulus.amrasettings.powerwidget.PowerWidget" />
 
+        <!-- About -->
 	    <activity android:name="org.regulus.amrasettings.amra.about.About" />
 
+        <!-- Protected Apps -->
 	    <activity android:name="org.regulus.amrasettings.protectedapps.ProtectedAppsActivity"
                   android:label="@string/protected_apps"
                   android:excludeFromRecents="true"
@@ -937,6 +942,7 @@
             </intent-filter>
         </receiver>
 
+        <!-- Theme Settings -->
         <activity android:name="Settings$ThemeSettingsActivity"
                   android:label="@string/themes_settings_title"
                   android:taskAffinity=""
@@ -951,6 +957,7 @@
                        android:value="org.regulus.amrasettings.theme.ThemeSettings" />
         </activity>
 
+        <!-- Host File Management -->
 	<receiver android:name="org.regulus.amrasettings.hfm.IntentReceiver" >
 	    <intent-filter>
 		<action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -958,6 +965,22 @@
 	</receiver>
 
 	<service android:name="org.regulus.amrasettings.hfm.CheckHosts" />
+
+        <!-- Driving Mode -->
+        <receiver android:name="org.regulus.amrasettings.driving.tts.IntentReceiver" >
+            <intent-filter>
+                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                 <action android:name="android.intent.action.PHONE_STATE" />
+                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                 <action android:name="org.regulus.amrasettings.driving.tts.action.SPEAK_NOTIFICATION" />
+                 <action android:name="org.regulus.amrasettings.driving.tts.action.SPEAK_MUSIC" />
+                 <action android:name="org.regulus.amrasettings.driving.tts.action.RUN_DRIVEMODE" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="org.regulus.amrasettings.driving.tts.NotifyService" />
 
         <!--
         Amra Settings End. 
