@@ -98,10 +98,10 @@ import com.android.settings.nfc.PaymentSettings;
 import com.android.settings.print.PrintJobSettingsFragment;
 import com.android.settings.print.PrintServiceSettingsFragment;
 import com.android.settings.print.PrintSettingsFragment;
-import com.android.settings.profiles.AppGroupConfig;
-import com.android.settings.profiles.ProfileConfig;
-import com.android.settings.profiles.ProfileEnabler;
-import com.android.settings.profiles.ProfilesSettings;
+import org.regulus.amrasettings.profiles.AppGroupConfig;
+import org.regulus.amrasettings.profiles.ProfileConfig;
+import org.regulus.amrasettings.profiles.ProfileEnabler;
+import org.regulus.amrasettings.profiles.ProfilesSettings;
 import com.android.settings.tts.TextToSpeechSettings;
 import com.android.settings.users.UserSettings;
 import com.android.settings.vpn2.VpnSettings;
@@ -401,7 +401,7 @@ public class Settings extends PreferenceActivity
         HomeSettings.class.getName(),
         org.regulus.amrasettings.buttonsettings.ButtonSettings.class.getName(),
         org.regulus.amrasettings.MoreDeviceSettings.class.getName(),
-        ProfilesSettings.class.getName(),
+        org.regulus.amrasettings.profiles.ProfilesSettings.class.getName(),
         PolicyNativeFragment.class.getName(),
         org.regulus.amrasettings.PrivacySettings.class.getName(),
         org.regulus.amrasettings.themetoggle.ThemeToggleSettings.class.getName(),
@@ -1266,7 +1266,6 @@ public class Settings extends PreferenceActivity
     public static class TextToSpeechSettingsActivity extends Settings { /* empty */ }
     public static class AndroidBeamSettingsActivity extends Settings { /* empty */ }
     public static class WifiDisplaySettingsActivity extends Settings { /* empty */ }
-    public static class ProfilesSettingsActivity extends Settings { /* empty */ }
     public static class DreamSettingsActivity extends Settings { /* empty */ }
     public static class NotificationStationActivity extends Settings { /* empty */ }
     public static class UserSettingsActivity extends Settings { /* empty */ }
@@ -1278,9 +1277,10 @@ public class Settings extends PreferenceActivity
     public static class PrintJobSettingsActivity extends Settings { /* empty */ }
     public static class ApnSettingsActivity extends Settings { /* empty */ }
     public static class ApnEditorActivity extends Settings { /* empty */ }
-    public static class BlacklistSettingsActivity extends Settings { /* empty */ }
     /* AmraSettings */
     public static class AmraSettingsActivity extends Settings { /* empty */ }
+    public static class BlacklistSettingsActivity extends Settings { /* empty */ }
+    public static class ProfilesSettingsActivity extends Settings { /* empty */ }
     public static class ThemeToggleSettingsActivity extends Settings { /* empty */ }
     public static class AnimationInterfaceSettingsActivity extends Settings { /* empty */ }
     public static class AboutActivity extends Settings { /* empty */ }

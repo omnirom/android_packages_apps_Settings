@@ -256,11 +256,6 @@
         <item name="android:widgetLayout">@layout/preference_profiles_widget</item>
     </style>
 
-    <style name="ProfilesPreferenceStyle">
-        <item name="android:layout">@layout/preference_profiles</item>
-        <item name="android:widgetLayout">@layout/preference_profiles_widget</item>
-    </style>
-
     <style name="Widget.Settings.ListSeparator" parent="@*android:style/Widget.Holo.Light.TextView.ListSeparator">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

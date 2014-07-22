@@ -982,6 +982,60 @@
 
         <service android:name="org.regulus.amrasettings.driving.tts.NotifyService" />
 
+	<!-- Profiles. -->
+        <activity android:name="org.regulus.amrasettings.profiles.ProfilesSettings" />
+        <activity android:name="Settings$ProfilesSettingsActivity"
+                android:label="@string/profile_settings"
+                android:taskAffinity=""
+                android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.settings.PROFILES_SETTINGS" />
+                <action android:name="com.android.settings.PROFILES_SETTINGS" />
+                <category android:name="android.intent.category.VOICE_LAUNCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.SHORTCUT" />
+                </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="org.regulus.amrasettings.profiles.ProfilesSettings" />
+            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
+                android:resource="@id/profiles_settings" />
+            </activity>
+
+        <!-- Keep compatibility with old shortcuts. -->
+        <activity-alias android:name="ProfileSettings"
+                android:label="@string/profile_settings"
+                android:exported="true"
+                android:targetActivity="Settings$ProfilesSettingsActivity">
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="org.regulus.amrasettings.profiles.ProfilesSettings" />
+            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
+                android:resource="@id/profiles_settings" />
+        </activity-alias>
+
+        <activity android:name="org.regulus.amrasettings.profiles.ProfileConfig" />
+
+        <activity android:name="org.regulus.amrasettings.profiles.AppGroupList" />
+
+        <activity android:name="org.regulus.amrasettings.profiles.AppGroupConfig" />
+
+        <activity android:name="org.regulus.amrasettings.profiles.ProfileGroupConfig" />
+
+        <activity android:name="org.regulus.amrasettings.profiles.WifiTriggers" />
+
+        <activity android:name="org.regulus.amrasettings.profiles.NFCProfileWriter"
+                android:parentActivityName="Settings$ProfilesSettingsActivity" />
+
+        <activity android:name="org.regulus.amrasettings.profiles.NFCProfileSelect" />
+
+        <activity android:name="org.regulus.amrasettings.profiles.NFCProfile"
+                android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="cm/profile" />
+            </intent-filter>
+        </activity>
         <!--
         Amra Settings End. 
         -->
@@ -2008,60 +2062,6 @@
         />
 
         <!-- CyanogenMod activities Start -->
-
-        <activity android:name=".profiles.ProfilesSettings" />
-        <activity android:name="Settings$ProfilesSettingsActivity"
-                android:label="@string/profile_settings"
-                android:taskAffinity=""
-                android:excludeFromRecents="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.settings.PROFILES_SETTINGS" />
-                <action android:name="com.android.settings.PROFILES_SETTINGS" />
-                <category android:name="android.intent.category.VOICE_LAUNCH" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.SHORTCUT" />
-                </intent-filter>
-            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="com.android.settings.profiles.ProfilesSettings" />
-            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
-                android:resource="@id/profiles_settings" />
-            </activity>
-
-        <!-- Keep compatibility with old shortcuts. -->
-        <activity-alias android:name="ProfileSettings"
-                android:label="@string/profile_settings"
-                android:exported="true"
-                android:targetActivity="Settings$ProfilesSettingsActivity">
-            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="com.android.settings.profiles.ProfilesSettings" />
-            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
-                android:resource="@id/profiles_settings" />
-        </activity-alias>
-
-        <activity android:name=".profiles.ProfileConfig" />
-
-        <activity android:name=".profiles.AppGroupList" />
-
-        <activity android:name=".profiles.AppGroupConfig" />
-
-        <activity android:name=".profiles.ProfileGroupConfig" />
-
-        <activity android:name=".profiles.WifiTriggers" />
-
-        <activity android:name=".profiles.NFCProfileWriter"
-                android:parentActivityName="Settings$ProfilesSettingsActivity" />
-
-        <activity android:name=".profiles.NFCProfileSelect" />
-
-        <activity android:name=".profiles.NFCProfile"
-                android:theme="@android:style/Theme.NoDisplay">
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="cm/profile" />
-            </intent-filter>
-        </activity>
 
         <activity android:name=".ApnEditor" />
 

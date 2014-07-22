@@ -192,7 +192,7 @@
     <header
         android:id="@+id/profiles_settings"
         android:icon="@drawable/ic_settings_profiles"
-        android:fragment="com.android.settings.profiles.ProfilesSettings"
+        android:fragment="org.regulus.amrasettings.profiles.ProfilesSettings"
         android:title="@string/profiles_settings_title" />
     
     <!-- Location -->
