@@ -228,7 +228,7 @@ public class QuietHoursController {
     }
 
     protected boolean returnUserNotification() {
-        return mSharedPrefs.getBoolean(KEY_QUIET_HOURS_NOTIFICATION, true);
+        return mSharedPrefs.getBoolean(KEY_QUIET_HOURS_NOTIFICATION, false);
     }
 
     // Code sender can deliver to start an alert
