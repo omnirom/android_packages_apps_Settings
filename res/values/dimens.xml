@@ -80,4 +80,9 @@
     <dimen name="navbar_search_outerring_radius">170dp</dimen>
     <!-- Diameter of outer shape drawable shown in navbar search-->
     <dimen name="navbar_search_outerring_diameter">340dp</dimen>
+
+    <!-- Height of a normal list item in edit playlist mode -->
+    <dimen name="normal_height">64dip</dimen>
+    <!-- Height of an expanded list item in edit playlist mode -->
+    <dimen name="expanded_height">128dip</dimen>
 </resources>

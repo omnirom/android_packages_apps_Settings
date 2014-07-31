@@ -363,6 +363,19 @@
     <string name="increasing_ring_interval_5seconds">5 seconds</string>
     <string name="increasing_ring_interval_10seconds">10 seconds</string>
 
+    <!-- Wifi AP: connected devices -->
+    <string name="wifi_ap_title_general">Wi-Fi hotspot</string>
+    <string name="wifi_ap_clients_title">Connected devices</string>
+    <string name="wifi_ap_client_ap_disabled">Hotspot is disabled</string>
+    <string name="wifi_ap_client_none_connected">No client is connected</string>
+    <string name="wifi_ap_client_reachable"><xliff:g id="addr">%1$s</xliff:g> - reachable</string>
+    <string name="wifi_ap_client_unreachable"><xliff:g id="addr">%1$s</xliff:g> - unreachable</string>
+
+    <!-- Wi-Fi settings screen, advanced, title of the item to set the Wi-Fi priority. -->
+    <string name="wifi_setting_priority_title">Wi-Fi priority</string>
+    <!-- Wi-Fi settings screen, setting summary for setting the Wi-Fi priority-->
+    <string name="wifi_setting_priority_summary">Specify the priority of the Wi-Fi networks</string>
+
     <!-- Headset plug -->
     <string name="headset_settings">Headset</string>
     <string name="headset_plug_enable_title">Insert shortcut</string>
