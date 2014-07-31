@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4b713d8b_d4b791d2",
+        "filename": "src/com/android/settings/location/LocationEnabler.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-07-31T11:53:01Z",
+      "side": 1,
+      "message": "Have you really taken this from CM?",
+      "revId": "8226f1191342cbc458b8f370a9339e5817b63ed9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4b713d8b_f4ac8d85",
+        "filename": "src/com/android/settings/location/LocationEnabler.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-07-31T11:53:01Z",
+      "side": 1,
+      "message": "I dont think using _ is good coding style",
+      "revId": "8226f1191342cbc458b8f370a9339e5817b63ed9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
