@@ -140,4 +140,8 @@
     <string name="usb_paranoia_connect_title">USB secure connect</string>
     <string name="usb_paranoia_connect_summary">Only enable charging when USB plugged on secure lock screens</string>
     <string name="usb_category_title">USB</string>
+
+    <!-- Scramble PIN layout when unlocking -->
+    <string name="unlock_scramble_pin_layout_title">Scramble layout</string>
+    <string name="unlock_scramble_pin_layout_summary">Scramble PIN layout when unlocking device</string>
 </resources>
