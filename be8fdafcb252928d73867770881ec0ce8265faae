@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2b6ec9b0_b31b18d3",
+        "filename": "res/layout/nfc_unlock.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-08-05T13:29:23Z",
+      "side": 1,
+      "message": "whitespaces",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 2
+      },
+      "revId": "be8fdafcb252928d73867770881ec0ce8265faae",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2b6ec9b0_93161cac",
+        "filename": "res/values/strings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4919,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-08-05T13:29:23Z",
+      "side": 1,
+      "message": "all new strings should go into custom_strings.xml\n+whitespaces",
+      "range": {
+        "startLine": 4919,
+        "startChar": 4,
+        "endLine": 4919,
+        "endChar": 8
+      },
+      "revId": "be8fdafcb252928d73867770881ec0ce8265faae",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2b6ec9b0_d31094b1",
+        "filename": "res/xml/security_settings_lockscreen.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-08-05T13:29:23Z",
+      "side": 1,
+      "message": "why you want to add this here?",
+      "range": {
+        "startLine": 39,
+        "startChar": 9,
+        "endLine": 39,
+        "endChar": 25
+      },
+      "revId": "be8fdafcb252928d73867770881ec0ce8265faae",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2b6ec9b0_f315909e",
+        "filename": "res/xml/security_settings_pin.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-08-05T13:29:23Z",
+      "side": 1,
+      "message": "even this is not your whitespace please remove it with your change :)",
+      "range": {
+        "startLine": 42,
+        "startChar": 73,
+        "endLine": 42,
+        "endChar": 74
+      },
+      "revId": "be8fdafcb252928d73867770881ec0ce8265faae",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2b6ec9b0_132becdb",
+        "filename": "src/com/android/settings/NfcUnlockSettings.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-08-05T13:29:23Z",
+      "side": 1,
+      "message": "tabs",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 6
+      },
+      "revId": "be8fdafcb252928d73867770881ec0ce8265faae",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2b6ec9b0_3328e8dc",
+        "filename": "src/com/android/settings/NfcUnlockSettings.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-08-05T13:29:23Z",
+      "side": 1,
+      "message": "detto",
+      "range": {
+        "startLine": 184,
+        "startChar": 0,
+        "endLine": 184,
+        "endChar": 6
+      },
+      "revId": "be8fdafcb252928d73867770881ec0ce8265faae",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2b6ec9b0_b38078c7",
+        "filename": "src/com/android/settings/SecuritySettings.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-08-05T13:29:23Z",
+      "side": 1,
+      "message": "the checkbox should only be visible if the device supports NFC - else you need to use removePreference.\n\nto check you can use DeviceUtils - see also here https://gerrit.omnirom.org/#/c/8791/",
+      "range": {
+        "startLine": 633,
+        "startChar": 8,
+        "endLine": 633,
+        "endChar": 9
+      },
+      "revId": "be8fdafcb252928d73867770881ec0ce8265faae",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
