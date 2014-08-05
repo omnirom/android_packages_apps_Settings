@@ -46,6 +46,7 @@ import android.util.Log;
 import com.android.internal.telephony.util.BlacklistUtils;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.settings.R;
+import com.android.internal.util.omni.DeviceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,6 @@ public class SecuritySettings extends RestrictedSettingsFragment
     private static final String KEY_LOCK_AFTER_TIMEOUT = "lock_after_timeout";
     private static final String KEY_OWNER_INFO_SETTINGS = "owner_info_settings";
     private static final String KEY_ENABLE_WIDGETS = "keyguard_enable_widgets";
-
     private static final int SET_OR_CHANGE_LOCK_METHOD_REQUEST = 123;
     private static final int CONFIRM_EXISTING_FOR_BIOMETRIC_WEAK_IMPROVE_REQUEST = 124;
     private static final int CONFIRM_EXISTING_FOR_BIOMETRIC_WEAK_LIVELINESS_OFF = 125;
@@ -93,6 +93,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
     private static final String MENU_UNLOCK_PREF = "menu_unlock";
     private static final String KEY_APP_SECURITY_CATEGORY = "app_security";
     private static final String KEY_BLACKLIST = "blacklist";
+    private static final String KEY_NFC_UNLOCK = "nfc_unlock_settings";
 
     private PackageManager mPM;
     private DevicePolicyManager mDPM;
@@ -128,6 +129,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
     private ListPreference mLockNumpadRandom;
     private CheckBoxPreference mMenuUnlock;
     private PreferenceScreen mBlacklist;
+    private Preference mNfcUnlock;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -303,7 +305,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
 
         mQuickUnlockScreen = (CheckBoxPreference) root.findPreference(LOCKSCREEN_QUICK_UNLOCK_CONTROL);
         if (mQuickUnlockScreen  != null) {
-            mQuickUnlockScreen.setChecked(Settings.System.getInt(getContentResolver(), 
+            mQuickUnlockScreen.setChecked(Settings.System.getInt(getContentResolver(),
                     Settings.System.LOCKSCREEN_QUICK_UNLOCK_CONTROL, 0) == 1);
             mQuickUnlockScreen.setOnPreferenceChangeListener(this);
         }
@@ -360,6 +362,14 @@ public class SecuritySettings extends RestrictedSettingsFragment
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
             // No telephony, remove dependent options
             root.removePreference(mBlacklist);
+        }
+
+        mNfcUnlock = root.findPreference(KEY_NFC_UNLOCK);
+
+         // Determine options based on device nfc support
+         if (!DeviceUtils.deviceSupportsNfc(getActivity().getApplicationContext())) {
+            // No nfc, remove dependent options
+            root.removePreference(mNfcUnlock);
         }
 
         mNotificationAccess = findPreference(KEY_NOTIFICATION_ACCESS);
@@ -615,7 +625,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
                     Settings.System.LOCKSCREEN_QUICK_UNLOCK_CONTROL, isToggled(preference) ? 1 : 0);
         } else if (preference == mMenuUnlock) {
             Settings.System.putInt(getActivity().getApplicationContext().getContentResolver(),
-                    Settings.System.MENU_UNLOCK_SCREEN, isToggled(preference) ? 1 : 0);        
+                    Settings.System.MENU_UNLOCK_SCREEN, isToggled(preference) ? 1 : 0);
         } else if (preference == mShowPassword) {
             Settings.System.putInt(getContentResolver(), Settings.System.TEXT_SHOW_PASSWORD,
                     mShowPassword.isChecked() ? 1 : 0);
@@ -629,6 +639,10 @@ public class SecuritySettings extends RestrictedSettingsFragment
         } else if (KEY_TOGGLE_VERIFY_APPLICATIONS.equals(key)) {
             Settings.Global.putInt(getContentResolver(), Settings.Global.PACKAGE_VERIFIER_ENABLE,
                     mToggleVerifyApps.isChecked() ? 1 : 0);
+        } else if (KEY_NFC_UNLOCK.equals(key)) {
+            final Intent intent = new Intent();
+            intent.setClassName("com.android.settings", "com.android.settings.NfcUnlockSettings");
+            startActivity(intent);
         } else {
             // If we didn't handle it, let preferences handle it.
             return super.onPreferenceTreeClick(preferenceScreen, preference);
