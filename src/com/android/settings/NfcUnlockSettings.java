@@ -141,7 +141,7 @@ public class NfcUnlockSettings extends Activity {
         IntentFilter tech = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
 
         mIntentFiltersArray = new IntentFilter[] {tech};
-		    mTechListsArray = new String[][] {
+          mTechListsArray = new String[][] {
             new String[] { NfcA.class.getName() },
             new String[] { NfcB.class.getName() },
             new String[] { NfcF.class.getName() },
@@ -181,7 +181,7 @@ public class NfcUnlockSettings extends Activity {
         } else if (mTagIds.contains(uidStr + "|")) {
             Toast.makeText(this, R.string.nfc_unlock_tag_exists, Toast.LENGTH_SHORT).show();
             return;
-		    }
+          }
 
         AlertDialog dialog = createDialog(uidStr, true);
         dialog.show();

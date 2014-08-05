@@ -30,11 +30,6 @@
             android:key="visiblepattern"
             android:title="@string/lockpattern_settings_enable_visible_pattern_title"/>
 
-        <PreferenceScreen
-            android:key="nfc_unlock_settings"
-            android:title="@string/nfc_unlock_settings_title"
-            android:summary="@string/nfc_unlock_settings_summary"/>
-
         <ListPreference
             android:key="lock_after_timeout"
             android:title="@string/lock_after_timeout"
@@ -46,6 +41,11 @@
         <CheckBoxPreference
             android:key="power_button_instantly_locks"
             android:title="@string/lockpattern_settings_enable_power_button_instantly_locks"/>
+
+        <PreferenceScreen
+          android:key="nfc_unlock_settings"
+            android:title="@string/nfc_unlock_settings_title"
+            android:summary="@string/nfc_unlock_settings_summary"/>
 
         <CheckBoxPreference
             android:key="keyguard_enable_widgets"
