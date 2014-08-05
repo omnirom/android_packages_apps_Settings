@@ -42,6 +42,11 @@
             android:key="power_button_instantly_locks"
             android:title="@string/lockpattern_settings_enable_power_button_instantly_locks"/>
 
+        <PreferenceScreen
+          android:key="nfc_unlock_settings"
+            android:title="@string/nfc_unlock_settings_title"
+            android:summary="@string/nfc_unlock_settings_summary"/>
+
         <CheckBoxPreference
             android:key="keyguard_enable_widgets"
             android:title="@string/security_enable_widgets_title"/>

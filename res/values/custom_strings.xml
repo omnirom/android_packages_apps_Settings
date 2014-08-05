@@ -380,4 +380,20 @@
     <string name="headset_plug_actions_kill">Kill app</string>
     <string name="headset_plug_force_actions_title">Force remove action</string>
     <string name="headset_plug_force_actions_summary">Run remove action also if shortcut was already running</string>
+
+
+    <!-- Title of the Nfc Unlock section of Security -->
+    <string name="nfc_unlock_settings_title">NFC unlock</string>
+    <!-- Summary of the Nfc Unlock feature -->
+    <string name="nfc_unlock_settings_summary">Authorize NFC tags to override the screen lock.</string>
+    <string name="nfc_unlock_settings_desc">The following NFC tags will unlock your device
+    Tap an NFC tag to authorize it, long press to delete.
+    Ensure NFC polling is at least set to enabled while the screen is on but locked</string>
+    <string name="nfc_unlock_tag_detected">New tag detected</string>
+    <string name="nfc_unlock_tag_name">Enter a name for this tag</string>
+    <string name="nfc_unlock_tag_exists">Tag already exists</string>
+    <string name="nfc_unlock_unnamed_tag">(Unnamed)</string>
+    <string name="nfc_unlock_remove_tag">Remove tag</string>
+    <string name="nfc_unlock_remove_tag_confirm">Remove and unauthorize selected tag?</string>
+
 </resources>
