@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2b6ec9b0_d66a42b0",
+        "filename": "res/values/strings.xml",
+        "patchSetId": 9
+      },
+      "lineNbr": 4918,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-08-06T11:36:38Z",
+      "side": 1,
+      "message": "dont change whats not needed :)",
+      "revId": "059ddfb181ac36497937dec6d85963ec17217b12",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
