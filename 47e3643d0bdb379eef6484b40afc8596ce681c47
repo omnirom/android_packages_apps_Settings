@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2b6ec9b0_9670caa6",
+        "filename": "res/values/arrays.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-08-06T11:34:46Z",
+      "side": 1,
+      "message": "should be in custom_arrays.xml",
+      "range": {
+        "startLine": 1206,
+        "startChar": 12,
+        "endLine": 1206,
+        "endChar": 17
+      },
+      "revId": "47e3643d0bdb379eef6484b40afc8596ce681c47",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2b6ec9b0_76432e45",
+        "filename": "res/values/strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1275,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-08-06T11:34:46Z",
+      "side": 1,
+      "message": "new strings should be in custom_strings,xml. Dont rename old strings else merging upstream will become more complicated",
+      "range": {
+        "startLine": 1275,
+        "startChar": 5,
+        "endLine": 1275,
+        "endChar": 11
+      },
+      "revId": "47e3643d0bdb379eef6484b40afc8596ce681c47",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
