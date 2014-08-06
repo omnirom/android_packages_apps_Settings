@@ -25,6 +25,29 @@
     },
     {
       "key": {
+        "uuid": "2b6ec9b0_765c0e1d",
+        "filename": "res/values/arrays.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1212,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-08-06T12:11:19Z",
+      "side": 1,
+      "message": "I dont understand the difference between most of these :)\nWhy difference between Off and Screen Off - and whats the magic to the last one?",
+      "range": {
+        "startLine": 1212,
+        "startChar": 36,
+        "endLine": 1212,
+        "endChar": 37
+      },
+      "revId": "47e3643d0bdb379eef6484b40afc8596ce681c47",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2b6ec9b0_76432e45",
         "filename": "res/values/strings.xml",
         "patchSetId": 1
