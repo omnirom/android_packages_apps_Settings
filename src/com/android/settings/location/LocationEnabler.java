@@ -76,8 +76,9 @@ public class LocationEnabler implements CompoundButton.OnCheckedChangeListener  
 
         int currentMode = Settings.Secure.getInt(mContext.getContentResolver(),
                 Settings.Secure.LOCATION_MODE, Settings.Secure.LOCATION_MODE_OFF);
-        int newMode = isChecked ? Settings.Secure.LOCATION_MODE_HIGH_ACCURACY
-                : Settings.Secure.LOCATION_MODE_OFF;
+        int lastMode = Settings.Secure.getInt(mContext.getContentResolver(),
+                Settings.Secure.LOCATION_LAST_MODE, Settings.Secure.LOCATION_MODE_HIGH_ACCURACY);
+        int newMode = isChecked ? lastMode : Settings.Secure.LOCATION_MODE_OFF;
         LocationSettingsBase.sendModeChangingIntent(mContext, currentMode, newMode);
     }
 
