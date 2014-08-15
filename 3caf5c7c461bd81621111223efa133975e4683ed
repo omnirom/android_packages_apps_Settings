@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2b6ec9b0_c7efee7f",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2014-08-15T05:17:57Z",
+      "side": 1,
+      "message": "Changer l\\\u0027ordre des chiffres du pavé numérique",
+      "range": {
+        "startLine": 63,
+        "startChar": 92,
+        "endLine": 63,
+        "endChar": 98
+      },
+      "revId": "3caf5c7c461bd81621111223efa133975e4683ed",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2b6ec9b0_e7e4eaa6",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2014-08-15T05:17:57Z",
+      "side": 1,
+      "message": "Ordre des chiffres aléatoire",
+      "range": {
+        "startLine": 64,
+        "startChar": 61,
+        "endLine": 64,
+        "endChar": 68
+      },
+      "revId": "3caf5c7c461bd81621111223efa133975e4683ed",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
