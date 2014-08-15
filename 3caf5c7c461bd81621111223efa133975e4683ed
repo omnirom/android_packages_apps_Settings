@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "2b6ec9b0_67f9ba49",
+        "filename": "res/values-fr/custom_strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000519
+      },
+      "writtenOn": "2014-08-15T06:39:19Z",
+      "side": 1,
+      "message": "Inconnue\n\nJe pense que c\u0027est la version qui est \"inconnue\", donc au féminin.",
+      "revId": "3caf5c7c461bd81621111223efa133975e4683ed",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2b6ec9b0_c7efee7f",
         "filename": "res/values-fr/custom_strings.xml",
         "patchSetId": 1
