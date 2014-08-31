@@ -383,4 +383,8 @@
     <string name="headset_plug_actions_kill">Kill app</string>
     <string name="headset_plug_force_actions_title">Force remove action</string>
     <string name="headset_plug_force_actions_summary">Run remove action also if shortcut was already running</string>
+
+    <!-- Development shortcut -->
+    <string name="development_shortcut_title">Development shortcut</string>
+    <string name="development_shortcut_summary">Enable \'wipe\' and \'force close\' options in notification area and recents app list</string>
 </resources>
