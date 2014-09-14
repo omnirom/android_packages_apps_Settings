@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb528df8_b0a218f9",
+        "filename": "src/com/android/settings/SecuritySettings.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-09-14T22:15:15Z",
+      "side": 1,
+      "message": "copy paste error",
+      "range": {
+        "startLine": 368,
+        "startChar": 14,
+        "endLine": 368,
+        "endChar": 30
+      },
+      "revId": "f2df93695e435e5d1f442277fa953e80b64ebb87",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
