@@ -183,7 +183,7 @@ public class IncreasingRingPreference extends VolumePreference implements
 
     private void updateSummary() {
         boolean checked = Settings.System.getInt(
-                    getContext().getContentResolver(), Settings.System.INCREASING_RING, 1) == 1;
+                    getContext().getContentResolver(), Settings.System.INCREASING_RING, 0) == 1;
         setSummary(checked
                     ? getContext().getResources().getString(R.string.checkbox_increasing_ring)
                     : getContext().getResources().getString(R.string.disabled));
