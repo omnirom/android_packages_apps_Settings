@@ -220,9 +220,13 @@ public class SecuritySettings extends RestrictedSettingsFragment
 
         // Menu Unlock
         mMenuUnlock = (CheckBoxPreference) root.findPreference(MENU_UNLOCK_PREF);
-        if (mMenuUnlock != null) {
-            final boolean configDisabled = getResources().getBoolean
-                    (com.android.internal.R.bool.config_disableMenuKeyInLockScreen);
+        final boolean configDisabled = getResources().getBoolean
+                (com.android.internal.R.bool.config_disableMenuKeyInLockScreen);
+        if (mMenuUnlock != null && configDisabled) {
+            PreferenceGroup securityCategory
+                    = (PreferenceGroup) root.findPreference(KEY_SECURITY_CATEGORY);
+            securityCategory.removePreference(mMenuUnlock);
+        } else {
             mMenuUnlock.setChecked(Settings.System.getInt(getContentResolver(),
                     Settings.System.MENU_UNLOCK_SCREEN, configDisabled ? 0 : 1) == 1);
         }
