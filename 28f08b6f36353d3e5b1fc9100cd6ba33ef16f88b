@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb528df8_e4cea2b7",
+        "filename": "res/xml/development_prefs.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-09-30T12:27:46Z",
+      "side": 0,
+      "message": "I would actually just do these changes (comment out the sections). Not really needed at the moment to do heavy code modifications before L :) Also in the light of maybe easier merging (hope dies last :))",
+      "range": {
+        "startLine": 19,
+        "startChar": 5,
+        "endLine": 19,
+        "endChar": 8
+      },
+      "revId": "28f08b6f36353d3e5b1fc9100cd6ba33ef16f88b",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
