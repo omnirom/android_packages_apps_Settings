@@ -636,7 +636,7 @@
                 <category android:name="com.android.settings.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="org.omnirom.omnigears.interfacesettings.BarSettings" />
+                android:value="org.omnirom.omnigears.interfacesettings.BarsSettings" />
             <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
                 android:resource="@id/interface_bars" />
         </activity>
@@ -696,7 +696,7 @@
                 <category android:name="com.android.settings.SHORTCUT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="org.omnirom.omnigears.ActiveDisplaySettings" />
+                android:value="org.omnirom.omnigears.chameleonos.ActiveDisplaySettings" />
             <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
                 android:resource="@id/active_display" />
         </activity>
