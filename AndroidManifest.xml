@@ -1873,6 +1873,13 @@
 
         <service android:name="com.brewcrewfoo.performance.service.BootService"/>
 
+        <receiver android:name="com.brewcrewfoo.performance.service.PowerConnectionReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+            </intent-filter>
+        </receiver>
+
         <receiver android:name=".widget.SettingsAppWidgetProvider"
                 android:label="@string/gadget_title"
                 android:exported="false"
