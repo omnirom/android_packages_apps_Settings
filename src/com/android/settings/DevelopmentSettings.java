@@ -734,21 +734,23 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     }
 
     private void updateBugreportOptions() {
-        if ("user".equals(Build.TYPE)) {
-            final ContentResolver resolver = getActivity().getContentResolver();
-            final boolean adbEnabled = Settings.Global.getInt(
-                    resolver, Settings.Global.ADB_ENABLED, 0) != 0;
-            if (adbEnabled) {
-                mBugreport.setEnabled(true);
-                mBugreportInPower.setEnabled(true);
+        if (mBugreport != null && mBugreportInPower != null) {
+            if ("user".equals(Build.TYPE)) {
+                final ContentResolver resolver = getActivity().getContentResolver();
+                final boolean adbEnabled = Settings.Global.getInt(
+                        resolver, Settings.Global.ADB_ENABLED, 0) != 0;
+                if (adbEnabled) {
+                    mBugreport.setEnabled(true);
+                    mBugreportInPower.setEnabled(true);
+                } else {
+                    mBugreport.setEnabled(false);
+                    mBugreportInPower.setEnabled(false);
+                    mBugreportInPower.setChecked(false);
+                    Settings.Secure.putInt(resolver, Settings.Secure.BUGREPORT_IN_POWER_MENU, 0);
+                }
             } else {
-                mBugreport.setEnabled(false);
-                mBugreportInPower.setEnabled(false);
-                mBugreportInPower.setChecked(false);
-                Settings.Secure.putInt(resolver, Settings.Secure.BUGREPORT_IN_POWER_MENU, 0);
+                mBugreportInPower.setEnabled(true);
             }
-        } else {
-            mBugreportInPower.setEnabled(true);
         }
     }
 
