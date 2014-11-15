@@ -76,6 +76,15 @@
                 android:dependency="increasing_ring"
                 android:persistent="false" />
 
+        <!-- Less notification sounds -->
+        <ListPreference
+                android:key="less_notification_sounds"
+                android:title="@string/less_notification_sounds_title"
+                android:summary="@string/less_notification_sounds_summary"
+                android:entries="@array/less_notification_sounds_entries"
+                android:entryValues="@array/less_notification_sounds_values"
+                android:persistent="false" />
+
         <org.omnirom.omnigears.preference.SystemSettingSwitchPreference
                 android:key="force_safe_media_volume_disabled"
                 android:title="@string/force_safe_media_volume_disabled_title"
