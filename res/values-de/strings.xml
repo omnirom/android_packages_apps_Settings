@@ -1293,6 +1293,7 @@
     <string name="app_disable_notifications_dlg_title" msgid="7669264654851761857">"Benachrichtigungen deaktivieren?"</string>
     <string name="app_disable_notifications_dlg_text" msgid="5088484670924769845">"Wenn Sie die Benachrichtigungen für diese App deaktivieren, verpassen Sie eventuell wichtige Warnmeldungen und Updates."</string>
     <string name="app_ops_settings" msgid="5108481883575527511">"App-Vorgänge"</string>
+    <string name="app_ops_settings_summary">Zeige oder ändere App-Berechtigungen</string>
     <string name="app_ops_running" msgid="7706949900637284122">"Aktiv"</string>
     <string name="app_ops_never_used" msgid="9114608022906887802">"(Nie verwendet)"</string>
     <string name="storageuse_settings_title" msgid="5657014373502630403">"Speichernutzung"</string>
@@ -1690,6 +1691,7 @@
     <string name="battery_saver" msgid="1426682272004907982">"Energiesparmodus"</string>
     <string name="battery_saver_turn_on_automatically_title" msgid="9023847300114669426">"Automatisch aktivieren"</string>
     <string name="battery_saver_turn_on_automatically_never" msgid="6610846456314373">"Nie"</string>
+    <string name="battery_saver_turn_on_automatically_pct">bei %1$d%% Akku</string>
     <!-- String.format failed for translation -->
     <!-- no translation found for battery_saver_turn_on_automatically_pct (3033681629861428940) -->
     <skip />
