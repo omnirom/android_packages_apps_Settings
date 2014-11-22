@@ -29,7 +29,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.UserInfo;
+import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.preference.CheckBoxPreference;
@@ -43,12 +45,15 @@ import android.security.KeyStore;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import android.view.HardwareRenderer;
+import android.widget.Toast;
 import com.android.internal.telephony.util.BlacklistUtils;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.settings.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Gesture lock pattern settings.
@@ -93,6 +98,8 @@ public class SecuritySettings extends RestrictedSettingsFragment
     private static final String MENU_UNLOCK_PREF = "menu_unlock";
     private static final String KEY_APP_SECURITY_CATEGORY = "app_security";
     private static final String KEY_BLACKLIST = "blacklist";
+    private static final String KEY_DISABLE_CAMERAS = "disable_cameras";
+    private static final String PROPERTY_DISABLE_CAMERAS = "persist.sys.disable_cameras";
 
     private PackageManager mPM;
     private DevicePolicyManager mDPM;
@@ -128,6 +135,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
     private ListPreference mLockNumpadRandom;
     private CheckBoxPreference mMenuUnlock;
     private PreferenceScreen mBlacklist;
+    private ListPreference mDisableCameras;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -311,6 +319,18 @@ public class SecuritySettings extends RestrictedSettingsFragment
         // Show password
         mShowPassword = (CheckBoxPreference) root.findPreference(KEY_SHOW_PASSWORD);
         mResetCredentials = root.findPreference(KEY_RESET_CREDENTIALS);
+
+        // Disable Cameras
+        mDisableCameras = (ListPreference) root.findPreference(KEY_DISABLE_CAMERAS);
+        if (mDisableCameras != null) {
+            if (Camera.getNumberOfCameras() == 0) {
+                root.removePreference(mDisableCameras);
+                mDisableCameras = null;
+            } else {
+                mDisableCameras.setOnPreferenceChangeListener(this);
+                updateDisableCameras();
+            }
+        }
 
         // Credential storage
         final UserManager um = (UserManager) getActivity().getSystemService(Context.USER_SERVICE);
@@ -680,6 +700,9 @@ public class SecuritySettings extends RestrictedSettingsFragment
                     Integer.valueOf((String) value));
             mLockNumpadRandom.setValue(String.valueOf(value));
             mLockNumpadRandom.setSummary(mLockNumpadRandom.getEntry());
+        } else if (preference == mDisableCameras) {
+            SystemProperties.set(PROPERTY_DISABLE_CAMERAS, value == null ? "0" : value.toString());
+            updateDisableCameras();
         }
         return true;
     }
@@ -703,5 +726,18 @@ public class SecuritySettings extends RestrictedSettingsFragment
                 mBlacklist.setSummary(R.string.blacklist_summary_disabled);
             }
         }
+    }
+
+    private void updateDisableCameras() {
+        String currentValue = SystemProperties.get(PROPERTY_DISABLE_CAMERAS, "0");
+        CharSequence[] values = mDisableCameras.getEntryValues();
+        for (int i = 0; i < values.length; i++) {
+            if (currentValue.contentEquals(values[i])) {
+                mDisableCameras.setValueIndex(i);
+                mDisableCameras.setSummary(getResources().getStringArray(R.array.disable_cameras_summaries)[i]);
+                break;
+            }
+        }
+        return;
     }
 }

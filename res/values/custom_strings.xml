@@ -383,4 +383,16 @@
     <string name="headset_plug_actions_kill">Kill app</string>
     <string name="headset_plug_force_actions_title">Force remove action</string>
     <string name="headset_plug_force_actions_summary">Run remove action also if shortcut was already running</string>
+
+    <!-- Disable Camera Option -->
+    <string name="hardware_title">Hardware</string>
+    <string name="disable_cameras_title">Disable Device Cameras</string>
+    <string name="disable_cameras_summary_none">Cameras are enabled</string>
+    <string name="disable_cameras_summary_front">Front facing camera is disabled</string>
+    <string name="disable_cameras_summary_back">Back facing camera is disabled</string>
+    <string name="disable_cameras_summary_all">All cameras are disabled</string>
+    <string name="disable_cameras_entries_none">None</string>
+    <string name="disable_cameras_entries_front">Front</string>
+    <string name="disable_cameras_entries_back">Back</string>
+    <string name="disable_cameras_entries_all">All</string>
 </resources>
