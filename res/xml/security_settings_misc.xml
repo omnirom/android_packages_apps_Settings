@@ -36,6 +36,17 @@
                 android:persistent="false"/>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/hardware_title"
+                android:persistent="false">
+
+        <ListPreference android:key="disable_cameras"
+                android:title="@string/disable_cameras_title"
+                android:summary="@string/disable_cameras_summary_none"
+                android:entries="@array/disable_cameras_entries"
+                android:entryValues="@array/disable_cameras_values"
+                android:persistent="false"/>
+    </PreferenceCategory>
+
     <PreferenceCategory android:key="device_admin_category"
             android:title="@string/device_admin_title"
             android:persistent="false">
