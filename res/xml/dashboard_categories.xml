@@ -233,6 +233,13 @@
                 android:icon="@drawable/ic_settings_development"
                 />
 
+        <!-- PerformanceControl -->
+        <dashboard-tile
+                android:id="@+id/performance_controls"
+                android:fragment="com.brewcrewfoo.performance.activities.MainActivity"
+                android:icon="@drawable/ic_settings_performance"
+                android:title="@string/performance_settings" />
+
         <!-- About Device -->
         <dashboard-tile
                 android:id="@+id/about_settings"
