@@ -16,10 +16,10 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
         android:title="@string/development_settings_title">
-    <com.android.settings.BugreportPreference
+    <!--<com.android.settings.BugreportPreference
             android:key="bugreport"
             android:title="@*android:string/bugreport_title"
-            android:dialogTitle="@*android:string/bugreport_title" />
+            android:dialogTitle="@*android:string/bugreport_title" />-->
 
     <PreferenceScreen
             android:key="local_backup_password"
@@ -31,6 +31,12 @@
                 android:targetPackage="com.android.settings"
                 android:targetClass="com.android.settings.SetFullBackupPassword" />
     </PreferenceScreen>
+
+    <CheckBoxPreference
+        android:key="advanced_reboot"
+        android:title="@string/advanced_reboot_title"
+        android:summary="@string/advanced_reboot_summary" 
+        android:persistent="false"/>
 
     <CheckBoxPreference
         android:key="keep_screen_on"
