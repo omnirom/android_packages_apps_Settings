@@ -25,4 +25,8 @@
     <!-- Main list strings -->
     <string name="performance_settings">Performance</string>
     <string name="advanced_settings_title">Advanced</string>
+
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">Advanced reboot</string>
+    <string name="advanced_reboot_summary">When unlocked, include options in the power menu for rebooting into recovery or bootloader</string>
 </resources>
