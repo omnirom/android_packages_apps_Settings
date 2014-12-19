@@ -19,20 +19,10 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- About phone screen,  setting option name-->
-    <string name="mod_version">Omni version</string>
-    <string name="mod_version_default">Unknown</string>
+    <string name="mod_version">Omni Version</string>
+    <string name="mod_version_default">Unbekannt</string>
 
     <!-- Main list strings -->
-    <string name="performance_settings">Performance</string>
-    <string name="advanced_settings_title">Advanced</string>
-
-    <!-- Setting checkbox summary for displaying USB debugging notification -->
-    <string name="adb_notify">USB debugging notify</string>
-    <string name="adb_notify_summary">Display a notification when USB debugging is connected</string>
-
-    <string name="volume_adjust_sound_title">Volume adjust sound</string>
-
-    <!-- Advanced reboot options -->
-    <string name="advanced_reboot_title">Advanced reboot</string>
-    <string name="advanced_reboot_summary">Include options in the power menu for rebooting into recovery or bootloader</string>
+    <string name="performance_settings">Leistung</string>
+    <string name="advanced_settings_title">Erweitert</string>
 </resources>
