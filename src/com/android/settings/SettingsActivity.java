@@ -1206,8 +1206,15 @@ public class SettingsActivity extends Activity
                     if (!supported) {
                         removeTile = true;
                     }
+                } else if (id == R.id.advanced_settings) {
+                    try {
+                        header.title = getPackageManager().getApplicationLabel(
+                            getPackageManager().getPackageInfo("org.omnirom.device", PackageManager.GET_META_DATA).applicationInfo);
+                    }
+                    catch (NameNotFoundException e){
+                        removeTile = true; // Package does not exist. Remove entry.
+                    }
                 }
-
                 if (UserHandle.MU_ENABLED && UserHandle.myUserId() != 0
                         && !ArrayUtils.contains(SETTINGS_FOR_RESTRICTED, id)) {
                     removeTile = true;
