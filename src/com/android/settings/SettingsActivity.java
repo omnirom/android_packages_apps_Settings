@@ -1201,13 +1201,23 @@ public class SettingsActivity extends Activity
                     boolean supported = false;
                     try {
                         supported = (getPackageManager().getPackageInfo("eu.chainfire.supersu", 0).versionCode >= 185);
-                    } catch (PackageManager.NameNotFoundException e) {
+                    } catch (NameNotFoundException e) {
+                    }
+                    if (!supported) {
+                        removeTile = true;
+                    }
+                } else if (id == R.id.advanced_settings) {
+                    boolean supported = false;
+                    try {
+                        // this will throw NameNotFoundException if not installed
+                        getPackageManager().getPackageInfo("org.omnirom.device", PackageManager.GET_META_DATA);
+                        supported = true;
+                    } catch (NameNotFoundException e){
                     }
                     if (!supported) {
                         removeTile = true;
                     }
                 }
-
                 if (UserHandle.MU_ENABLED && UserHandle.myUserId() != 0
                         && !ArrayUtils.contains(SETTINGS_FOR_RESTRICTED, id)) {
                     removeTile = true;
