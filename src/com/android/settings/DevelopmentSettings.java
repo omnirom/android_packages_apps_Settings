@@ -121,6 +121,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private static final String USB_AUDIO_KEY = "usb_audio";
     private static final String USE_AWESOMEPLAYER_PROPERTY = "persist.sys.media.use-awesome";
     private static final String SHOW_CPU_USAGE_KEY = "show_cpu_usage";
+    private static final String SHOW_CPU_INFO_KEY = "show_cpu_info";
     private static final String FORCE_HARDWARE_UI_KEY = "force_hw_ui";
     private static final String FORCE_MSAA_KEY = "force_msaa";
     private static final String TRACK_FRAME_TIME_KEY = "track_frame_time";
@@ -206,6 +207,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private CheckBoxPreference mShowScreenUpdates;
     private CheckBoxPreference mDisableOverlays;
     private CheckBoxPreference mShowCpuUsage;
+    private CheckBoxPreference mShowCpuInfo;
     private CheckBoxPreference mForceHardwareUi;
     private CheckBoxPreference mForceMsaa;
     private CheckBoxPreference mShowHwScreenUpdates;
@@ -327,6 +329,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         mShowScreenUpdates = findAndInitCheckboxPref(SHOW_SCREEN_UPDATES_KEY);
         mDisableOverlays = findAndInitCheckboxPref(DISABLE_OVERLAYS_KEY);
         mShowCpuUsage = findAndInitCheckboxPref(SHOW_CPU_USAGE_KEY);
+        mShowCpuInfo = findAndInitCheckboxPref(SHOW_CPU_INFO_KEY);
         mForceHardwareUi = findAndInitCheckboxPref(FORCE_HARDWARE_UI_KEY);
         mForceMsaa = findAndInitCheckboxPref(FORCE_MSAA_KEY);
         mTrackFrameTime = addListPreference(TRACK_FRAME_TIME_KEY);
@@ -527,6 +530,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateShowTouchesOptions();
         updateFlingerOptions();
         updateCpuUsageOptions();
+        updateCpuInfoOptions();
         updateHardwareUiOptions();
         updateMsaaOptions();
         updateTrackFrameTimeOptions();
@@ -1166,6 +1170,25 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         }
     }
 
+    private void updateCpuInfoOptions() {
+        updateCheckBox(mShowCpuInfo, Settings.Global.getInt(getActivity().getContentResolver(),
+                Settings.Global.SHOW_CPU, 0) != 0);
+    }
+
+    private void writeCpuInfoOptions() {
+        boolean value = mShowCpuInfo.isChecked();
+        Settings.Global.putInt(getActivity().getContentResolver(),
+                Settings.Global.SHOW_CPU, value ? 1 : 0);
+        Intent service = (new Intent())
+                .setClassName("com.android.systemui", "com.android.systemui.CPUInfoService");
+        if (value) {
+            getActivity().startService(service);
+        } else {
+            getActivity().stopService(service);
+        }
+    }
+
+
     private void writeImmediatelyDestroyActivitiesOptions() {
         try {
             ActivityManagerNative.getDefault().setAlwaysFinish(
@@ -1424,6 +1447,8 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             writeDisableOverlaysOption();
         } else if (preference == mShowCpuUsage) {
             writeCpuUsageOptions();
+        } else if (preference == mShowCpuInfo) {
+            writeCpuInfoOptions();
         } else if (preference == mImmediatelyDestroyActivities) {
             writeImmediatelyDestroyActivitiesOptions();
         } else if (preference == mShowAllANRs) {
