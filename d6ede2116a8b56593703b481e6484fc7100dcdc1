@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab30f9cd_a732ea5a",
+        "filename": "res/drawable/ic_settings_buttons.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2014-12-30T00:13:10Z",
+      "side": 1,
+      "message": "from where is this image?",
+      "range": {
+        "startLine": 11,
+        "startChar": 2,
+        "endLine": 11,
+        "endChar": 8
+      },
+      "revId": "d6ede2116a8b56593703b481e6484fc7100dcdc1",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
