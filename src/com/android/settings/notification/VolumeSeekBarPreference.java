@@ -132,6 +132,12 @@ public class VolumeSeekBarPreference extends SeekBarPreference
                 + "/" + R.raw.media_volume);
     }
 
+    public void updateVolume() {
+        if (mVolumizer != null) {
+            mVolumizer.updateVolume();
+        }
+    }
+
     public interface Callback {
         void onSampleStarting(SeekBarVolumizer sbv);
         void onStreamValueChanged(int stream, int progress);
