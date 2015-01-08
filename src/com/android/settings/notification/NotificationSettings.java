@@ -23,6 +23,7 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.media.AudioManager;
+import android.media.AudioSystem;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -36,6 +37,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceCategory;
 import android.preference.SeekBarVolumizer;
 import android.preference.TwoStatePreference;
+import android.preference.CheckBoxPreference;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.provider.SearchIndexableResource;
@@ -49,6 +51,7 @@ import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.Utils;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.search.Indexable;
+import com.android.settings.preference.SystemCheckBoxPreference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,6 +65,7 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
     private static final String KEY_ALARM_VOLUME = "alarm_volume";
     private static final String KEY_RING_VOLUME = "ring_volume";
     private static final String KEY_NOTIFICATION_VOLUME = "notification_volume";
+    private static final String KEY_VOLUME_LINK_NOTIFICATION = "volume_link_notification";
     private static final String KEY_PHONE_RINGTONE = "ringtone";
     private static final String KEY_NOTIFICATION_RINGTONE = "notification_ringtone";
     private static final String KEY_ALARM_RINGTONE = "alarm_ringtone";
@@ -81,7 +85,10 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
     private PackageManager mPM;
     private boolean mVoiceCapable;
     private Vibrator mVibrator;
-    private VolumeSeekBarPreference mRingOrNotificationPreference;
+    private VolumeSeekBarPreference mRingPreference;
+    private VolumeSeekBarPreference mNotificationPreference;
+    private VolumeSeekBarPreference mMediaPreference;
+    private VolumeSeekBarPreference mAlarmPreference;
 
     private Preference mPhoneRingtonePreference;
     private Preference mNotificationRingtonePreference;
@@ -92,12 +99,15 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
     private boolean mSecure;
     private int mLockscreenSelectedValue;
     private Preference mAlarmRingtonePreference;
+    private AudioManager mAudioManager;
+    private CheckBoxPreference mVolumeLinkNotification;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
         mPM = mContext.getPackageManager();
+        mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
         mVoiceCapable = Utils.isVoiceCapable(mContext);
         mSecure = new LockPatternUtils(getActivity()).isSecure();
 
@@ -109,19 +119,22 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
         addPreferencesFromResource(R.xml.notification_settings);
 
         final PreferenceCategory sound = (PreferenceCategory) findPreference(KEY_SOUND);
-        initVolumePreference(KEY_MEDIA_VOLUME, AudioManager.STREAM_MUSIC);
-        initVolumePreference(KEY_ALARM_VOLUME, AudioManager.STREAM_ALARM);
+        mMediaPreference = initVolumePreference(KEY_MEDIA_VOLUME, AudioManager.STREAM_MUSIC);
+        mAlarmPreference = initVolumePreference(KEY_ALARM_VOLUME, AudioManager.STREAM_ALARM);
+        mNotificationPreference = initVolumePreference(KEY_NOTIFICATION_VOLUME,
+                    AudioManager.STREAM_NOTIFICATION);
+
         if (mVoiceCapable) {
-            mRingOrNotificationPreference =
-                    initVolumePreference(KEY_RING_VOLUME, AudioManager.STREAM_RING);
-            sound.removePreference(sound.findPreference(KEY_NOTIFICATION_VOLUME));
+            mRingPreference = initVolumePreference(KEY_RING_VOLUME, AudioManager.STREAM_RING);
+            mVolumeLinkNotification = (CheckBoxPreference) sound.findPreference(KEY_VOLUME_LINK_NOTIFICATION);
         } else {
-            mRingOrNotificationPreference =
-                    initVolumePreference(KEY_NOTIFICATION_VOLUME, AudioManager.STREAM_NOTIFICATION);
             sound.removePreference(sound.findPreference(KEY_RING_VOLUME));
+            sound.removePreference(sound.findPreference(KEY_VOLUME_LINK_NOTIFICATION));
         }
+
         initRingtones(sound);
         initVibrateWhenRinging(sound);
+        initVolumeLinkNotification();
 
         final PreferenceCategory notification = (PreferenceCategory)
                 findPreference(KEY_NOTIFICATION);
@@ -156,9 +169,9 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
         return volumePref;
     }
 
-    private void updateRingOrNotificationIcon(int progress) {
-        mRingOrNotificationPreference.showIcon(progress > 0
-                    ? R.drawable.ring_notif
+    private void updateRingIcon(int progress) {
+        mRingPreference.showIcon(progress > 0
+                    ? R.drawable.ring_ring
                     : (mVibrator == null
                             ? R.drawable.ring_notif_mute
                             : R.drawable.ring_notif_vibrate));
@@ -395,6 +408,33 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
         mLockscreen.setSelectedValue(mLockscreenSelectedValue);
     }
 
+    private void initVolumeLinkNotification() {
+        if (mVoiceCapable) {
+            final boolean enabled = Settings.System.getInt(getContentResolver(),
+                    Settings.System.VOLUME_LINK_NOTIFICATION, 1) == 1;
+
+            mNotificationPreference.setEnabled(!enabled);
+            mVolumeLinkNotification.setChecked(enabled);
+            mVolumeLinkNotification.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    final boolean val = (Boolean)newValue;
+                    if (val) {
+                        // set to same volume as ringer by default if link is enabled
+                        // otherwise notification volume will only change after next
+                        // change of ringer volume
+                        final int ringerVolume = mAudioManager.getStreamVolume(AudioSystem.STREAM_RING);
+                        mAudioManager.setStreamVolume(AudioSystem.STREAM_NOTIFICATION, ringerVolume, 0);  
+                    }
+                    Settings.System.putInt(getContentResolver(),
+                            Settings.System.VOLUME_LINK_NOTIFICATION, val ? 1 : 0);
+                    mNotificationPreference.setEnabled(!val);
+                    return true;
+                }
+            });
+        }
+    }
+
     private boolean getLockscreenNotificationsEnabled() {
         return Settings.Secure.getInt(getContentResolver(),
                 Settings.Secure.LOCK_SCREEN_SHOW_NOTIFICATIONS, 0) != 0;
@@ -493,7 +533,7 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
                     mVolumeCallback.stopSample();
                     break;
                 case UPDATE_RINGER_ICON:
-                    updateRingOrNotificationIcon(msg.arg1);
+                    updateRingIcon(msg.arg1);
                     break;
                 case UPDATE_ALARM_RINGTONE:
                     mAlarmRingtonePreference.setSummary((CharSequence) msg.obj);
@@ -517,12 +557,11 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
 
         public List<String> getNonIndexableKeys(Context context) {
             final ArrayList<String> rt = new ArrayList<String>();
-            if (Utils.isVoiceCapable(context)) {
-                rt.add(KEY_NOTIFICATION_VOLUME);
-            } else {
+            if (!Utils.isVoiceCapable(context)) {
                 rt.add(KEY_RING_VOLUME);
                 rt.add(KEY_PHONE_RINGTONE);
                 rt.add(KEY_VIBRATE_WHEN_RINGING);
+                rt.add(KEY_VOLUME_LINK_NOTIFICATION);
             }
             return rt;
         }
