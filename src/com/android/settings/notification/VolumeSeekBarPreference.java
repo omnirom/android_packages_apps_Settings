@@ -71,6 +71,8 @@ public class VolumeSeekBarPreference extends SeekBarPreference
     public void onActivityStop() {
         if (mVolumizer != null) {
             mVolumizer.stop();
+            // else we can never reuse this preference
+            mVolumizer = null;
         }
     }
 
@@ -130,6 +132,12 @@ public class VolumeSeekBarPreference extends SeekBarPreference
         return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
                 + getContext().getPackageName()
                 + "/" + R.raw.media_volume);
+    }
+
+    public void updateVolume() {
+        if (mVolumizer != null) {
+            mVolumizer.updateVolume();
+        }
     }
 
     public interface Callback {
