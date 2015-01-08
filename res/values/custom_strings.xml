@@ -78,4 +78,8 @@
 
     <string name="zen_mode_none_category">No interruptions</string>
     <string name="zen_mode_alarms">Allow alarms</string>
+
+    <!-- Linked / unlinked notification volume -->
+    <string name="link_volume_option_title">Link ring and notification volumes</string>
+    <string name="notification_volume_option_title">Notification volume</string>
 </resources>
