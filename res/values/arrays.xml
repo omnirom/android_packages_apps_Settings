@@ -658,6 +658,7 @@
         <item>data change</item>
         <item>other accounts</item>
         <item>read phone info</item>
+        <item>access internet</item>
     </string-array>
 
     <!-- User display names for app ops codes -->
@@ -724,6 +725,7 @@
         <item>Data change</item>
         <item>Other accounts</item>
         <item>Read phone info</item>
+        <item>Access internet</item>
     </string-array>
 
     <!-- Titles for the list of long press timeout options. -->
