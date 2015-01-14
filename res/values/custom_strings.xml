@@ -59,4 +59,8 @@
     <string name="display_rotation_270_title">270 degrees</string>
 
     <string name="alarm_ringtone_title">Default alarm ringtone</string>
+
+    <!-- Title for the accessibility preference to home button to answers a call. [CHAR LIMIT=35] -->
+    <string name="accessibility_home_button_answers_call_prerefence_title">Home button answers call</string>
+
 </resources>
