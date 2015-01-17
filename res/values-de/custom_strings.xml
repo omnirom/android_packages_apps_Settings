@@ -25,4 +25,14 @@
     <!-- Main list strings -->
     <string name="performance_settings">Leistung</string>
     <string name="advanced_settings_title">Erweitert</string>
+
+    <!-- Setting checkbox summary for displaying USB debugging notification -->
+    <string name="adb_notify">Benachrichtigung USB Debugging</string>
+    <string name="adb_notify_summary">Zeige Benachrichtigung wenn USB Debugging verbunden ist</string>
+
+    <string name="volume_adjust_sound_title">Ton bei Lautstärkeänderung</string>
+
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">Erweitertes Neustartmenü</string>
+    <string name="advanced_reboot_summary">Neustartmenü mit Optionen für Recovery und Bootloader</string>
 </resources>
