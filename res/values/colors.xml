@@ -19,7 +19,7 @@
     <color name="red">#F00</color>
 
     <color name="material_empty_color_light">#FFCED7DB</color>
-
+    
     <color name="memory_used">#F00</color>
     <color name="memory_avail">@color/material_empty_color_light</color>
     <color name="memory_apps_usage">#77831A</color>
@@ -74,5 +74,15 @@
     <color name="switch_accent_color">#ff7fcac3</color>
 
     <color name="wifi_divider">#ffe0e0e0</color>
+    
+    <!-- Exposed resources for theming -->
+    <color name="exposed_bg_dark">#ffffffff</color>
+    <color name="exposed_bg_light">#ff212121</color>
+    <color name="exposed_primary_text_light">#de000000</color>
+    <color name="exposed_secondary_text_light">#8a000000</color>
+    <color name="exposed_primary_text_dark">#ffffffff</color>
+    <color name="exposed_secondary_text_dark">#b3ffffff</color>
+    <color name="exposed_barPrimaryColor">#ff009688</color>
+    <color name="exposed_barPredictionColor">@color/material_empty_color_light</color>
 
 </resources>
