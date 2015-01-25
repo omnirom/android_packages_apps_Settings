@@ -17,6 +17,7 @@
 <resources>
 
     <style name="info_label">
+        <item name="android:textColor">@color/exposed_primary_text_light</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textAppearance">@style/TextAppearance.info_label</item>
@@ -24,15 +25,17 @@
     </style>
 
     <style name="info_value">
+        <item name="android:textColor">@color/exposed_secondary_text_light</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textAppearance">@style/TextAppearance.info_value</item>
     </style>
 
     <style name="info_small">
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/exposed_secondary_text_light</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textAppearance">@style/TextAppearance.info_small</item>
+	
     </style>
 
     <style name="info_layout">
@@ -58,21 +61,27 @@
 
 
     <style name="TextAppearance" parent="android:TextAppearance.Material">
+      <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+	<item name="android:textColor">@color/exposed_primary_text_light</item>
     </style>
 
     <style name="TextAppearance.info_label">
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
+	<item name="android:textColor">@color/exposed_primary_text_light</item>
     </style>
 
     <style name="TextAppearance.info_small">
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">normal</item>
+	<item name="android:textColor">@color/exposed_secondary_text_light</item>
     </style>
 
     <style name="TextAppearance.info_value">
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
+	<item name="android:textColor">@color/exposed_secondary_text_light</item>
     </style>
 
     <style name="TextAppearance.PasswordEntry" parent="android:TextAppearance.Material">
@@ -220,6 +229,8 @@
     </style>
 
     <style name="wifi_item">
+        <item name="android:textColorPrimary">@color/exposed_primary_text_light</item>
+	<item name="android:textColorSecondary">@color/exposed_secondary_text_light</item>
         <item name="android:layout_marginTop">8dip</item>
         <item name="android:layout_marginStart">8dip</item>
         <item name="android:layout_marginEnd">8dip</item>
@@ -234,13 +245,15 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textAlignment">viewStart</item>
         <item name="android:textAppearance">@android:style/TextAppearance.Material.Body1</item>
-        <item name="android:textColor">@*android:color/secondary_text_default_material_light</item>
+        <item name="android:textColorPrimary">@color/exposed_primary_text_light</item>
+	<item name="android:textColorSecondary">@color/exposed_secondary_text_light</item>
     </style>
 
     <style name="wifi_item_content">
         <item name="android:textAlignment">viewStart</item>
         <item name="android:textAppearance">@android:style/TextAppearance.Material.Subhead</item>
-        <item name="android:textColor">@*android:color/primary_text_default_material_light</item>
+        <item name="android:textColorPrimary">@color/exposed_primary_text_light</item>
+	<item name="android:textColorSecondary">@color/exposed_secondary_text_light</item>
     </style>
 
     <style name="wifi_item_edit_content">
@@ -307,13 +320,14 @@
 
     <style name="WifiAssistantText">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorPrimary">@color/exposed_primary_text_light</item>
+	<item name="android:textColorSecondary">@color/exposed_secondary_text_light</item>
     </style>
 
     <style name="WifiAssistantButton">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:background">@android:color/white</item>
+        <item name="android:background">@color/exposed_bg_dark</item>
         <item name="android:paddingStart">@dimen/wifi_assistant_text_padding</item>
         <item name="android:paddingEnd">@dimen/wifi_assistant_text_padding</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
@@ -334,12 +348,15 @@
     </style>
 
     <style name="TextAppearance.Medium" parent="@android:style/TextAppearance.Material.Medium">
+      <item name="android:textColor">@color/exposed_primary_text_light</item>
     </style>
 
     <style name="TextAppearance.Small" parent="@android:style/TextAppearance.Material.Small">
+      <item name="android:textColor">@color/exposed_primary_text_light</item>
     </style>
 
     <style name="TextAppearance.Switch" parent="TextAppearance.Medium">
+      <item name="android:textColor">@color/exposed_primary_text_light</item>
     </style>
 
     <style name="TextAppearance.CategoryTitle" parent="@android:style/TextAppearance.Material.Small">
@@ -348,19 +365,22 @@
     </style>
 
     <style name="TextAppearance.TileTitle" parent="@android:style/TextAppearance.Material.Medium">
+      <item name="android:textColor">@color/exposed_primary_text_light</item>
     </style>
 
     <style name="TextAppearance.TileSubTitle" parent="@android:style/TextAppearance.Material.Small">
+      <item name="android:textColor">@color/exposed_primary_text_light</item>
     </style>
 
-    <style name="TextAppearance.RecentsTitle" parent="TextAppearance.CategoryTitle">
+    <style name="TextAppearance.RecentsTitle" parent="TextAppearance.CategoryTitle"><item name="android:textColor">@color/exposed_primary_text_light</item>
     </style>
 
     <style name="TextAppearance.ResultTitle" parent="TextAppearance.CategoryTitle">
+      <item name="android:textColor">@color/exposed_primary_text_light</item>
     </style>
 
     <style name="Widget.TimePicker" parent="@*android:style/Widget.Material.Light.TimePicker">
-        <item name="@android:numbersBackgroundColor">@android:color/white</item>
+        <item name="@android:numbersBackgroundColor">@color/exposed_bg_dark</item>
     </style>
 
 </resources>
