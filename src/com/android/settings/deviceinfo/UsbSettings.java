@@ -26,6 +26,7 @@ import android.os.UserManager;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.android.settings.R;
@@ -41,11 +42,13 @@ public class UsbSettings extends SettingsPreferenceFragment {
 
     private static final String KEY_MTP = "usb_mtp";
     private static final String KEY_PTP = "usb_ptp";
+    private static final String KEY_NO_MEDIA_NOTIFICTION = "no_media_notification";
 
     private UsbManager mUsbManager;
     private CheckBoxPreference mMtp;
     private CheckBoxPreference mPtp;
     private boolean mUsbAccessoryMode;
+    private CheckBoxPreference mNoMediaNotification;
 
     private final BroadcastReceiver mStateReceiver = new BroadcastReceiver() {
         public void onReceive(Context content, Intent intent) {
@@ -75,6 +78,9 @@ public class UsbSettings extends SettingsPreferenceFragment {
             mPtp.setEnabled(false);
         }
 
+        mNoMediaNotification = (CheckBoxPreference) root.findPreference(KEY_NO_MEDIA_NOTIFICTION);
+        mNoMediaNotification.setChecked(Settings.System.getInt(getActivity().getContentResolver(),
+                Settings.System.STORAGE_NO_MEDIA_NOTIFICTION, 1) == 1);
         return root;
     }
 
@@ -151,6 +157,10 @@ public class UsbSettings extends SettingsPreferenceFragment {
             function = UsbManager.USB_FUNCTION_MTP;
         } else if (preference == mPtp && mPtp.isChecked()) {
             function = UsbManager.USB_FUNCTION_PTP;
+        }  else if (preference == mNoMediaNotification) {
+            Settings.System.putInt(getActivity().getContentResolver(),
+                    Settings.System.STORAGE_NO_MEDIA_NOTIFICTION, mNoMediaNotification.isChecked() ? 1:0);
+            return true;
         }
 
         mUsbManager.setCurrentFunction(function, true);

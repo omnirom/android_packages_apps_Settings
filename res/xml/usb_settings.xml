@@ -32,4 +32,14 @@
         android:summary="@string/usb_ptp_summary"
         />
 
+    <PreferenceCategory
+            android:title="@string/storage_options_category" />
+
+    <CheckBoxPreference
+        android:key="no_media_notification"
+        android:title="@string/no_media_notification_title"
+        android:summary="@string/no_media_notification_summary"
+        android:persistent="false"
+        />
+
 </PreferenceScreen>
