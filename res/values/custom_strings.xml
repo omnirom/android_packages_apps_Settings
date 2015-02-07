@@ -66,4 +66,7 @@
     <string name="lock_numpad_random_on_request">On request</string>
 
     <string name="alarm_ringtone_title">Default alarm ringtone</string>
+
+    <!-- Hostname setting -->
+    <string name="device_hostname">Device hostname</string>
 </resources>
