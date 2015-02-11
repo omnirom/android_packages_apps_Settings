@@ -234,4 +234,8 @@
     <string name="app_ops_permissions_always_ask">Always ask</string>
 
     <string name="interface_bars_title">Bars</string>
+
+    <!-- Permissions -->
+    <string name="permlab_injectSettings">inject settings into system</string>
+    <string name="permdesc_injectSettings">Allows the app to add new entries in the system settings.</string>
 </resources>

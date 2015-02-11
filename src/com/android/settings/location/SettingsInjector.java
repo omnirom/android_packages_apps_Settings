@@ -40,6 +40,7 @@ import android.util.Log;
 import android.util.Xml;
 
 import com.android.settings.R;
+import com.android.settings.Manifest;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -156,9 +157,12 @@ class SettingsInjector {
         ServiceInfo si = service.serviceInfo;
         ApplicationInfo ai = si.applicationInfo;
 
-        if ((ai.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+        int perm = pm.checkPermission(Manifest.permission.INJECT_SETTINGS, ai.packageName);
+        if ((ai.flags & ApplicationInfo.FLAG_SYSTEM) == 0
+                && perm == PackageManager.PERMISSION_DENIED) {
             if (Log.isLoggable(TAG, Log.WARN)) {
-                Log.w(TAG, "Ignoring attempt to inject setting from app not in system image: "
+                Log.w(TAG, "Ignoring attempt to inject setting from app not in system image "
+                        + "and without " + Manifest.permission.INJECT_SETTINGS + " permission: "
                         + service);
                 return null;
             }
