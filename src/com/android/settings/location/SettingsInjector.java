@@ -156,14 +156,6 @@ class SettingsInjector {
         ServiceInfo si = service.serviceInfo;
         ApplicationInfo ai = si.applicationInfo;
 
-        if ((ai.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-            if (Log.isLoggable(TAG, Log.WARN)) {
-                Log.w(TAG, "Ignoring attempt to inject setting from app not in system image: "
-                        + service);
-                return null;
-            }
-        }
-
         XmlResourceParser parser = null;
         try {
             parser = si.loadXmlMetaData(pm, SettingInjectorService.META_DATA_NAME);
