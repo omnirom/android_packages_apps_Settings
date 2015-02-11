@@ -243,4 +243,6 @@
     <string name="wifi_setting_countrycode_error">There was a problem setting the region code.</string>
     <string name="wifi_setting_countrycode_default">Default</string>
 
+    <string name="permlab_injectSettings">inject settings into system</string>
+    <string name="permdesc_injectSettings">Allows the app to add new entries in the system settings.</string>
 </resources>

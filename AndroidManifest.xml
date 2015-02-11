@@ -5,6 +5,12 @@
 
     <original-package android:name="com.android.settings" />
 
+    <permission android:description="@string/permdesc_injectSettings"
+            android:label="@string/permlab_injectSettings"
+            android:name="com.android.settings.INJECT_SETTINGS"
+            android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
+            android:protectionLevel="normal" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
