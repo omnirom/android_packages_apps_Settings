@@ -49,6 +49,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
+import android.preference.PreferenceCategory;
 import android.preference.SwitchPreference;
 import android.provider.SearchIndexableResource;
 import android.provider.Settings;
@@ -57,6 +58,7 @@ import android.util.Log;
 
 import com.android.internal.view.RotationPolicy;
 import com.android.settings.slim.DisplayRotation;
+import org.omniroms.omnigears.preference.SlimSeekBarPreference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +79,12 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private static final String KEY_AUTO_BRIGHTNESS = "auto_brightness";
     private static final String KEY_AUTO_ROTATE = "auto_rotate";
 
+    private static final String KEY_DOZE_CATEGORY = "category_doze_options";
+    private static final String KEY_DOZE_PULSE_IN = "doze_pulse_in";
+    private static final String KEY_DOZE_PULSE_VISIBLE = "doze_pulse_visible";
+    private static final String KEY_DOZE_PULSE_IN = "doze_pulse_out";
+    private static final String KEY_DOZE_SHAKE_THRESHOLD = "doze_shake_threshold";
+
     private static final int DLG_GLOBAL_CHANGE_WARNING = 1;
 
     private static final String ROTATION_ANGLE_0 = "0";
@@ -94,6 +102,12 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private SwitchPreference mLiftToWakePreference;
     private SwitchPreference mDozePreference;
     private SwitchPreference mAutoBrightnessPreference;
+
+    private PreferenceCategory mDozeCategory;
+    private SlimSeekBarPreference mDozePulseIn;
+    private SlimSeekBarPreference mDozePulseVisible;
+    private SlimSeekBarPreference mDozePulseOut;
+    private SlimSeekBarPreference mDozeShakeThreshold;
 
     private ContentObserver mAccelerometerRotationObserver =
             new ContentObserver(new Handler()) {
@@ -149,11 +163,53 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             removePreference(KEY_LIFT_TO_WAKE);
         }
 
+        mDozeCategory = (PreferenceCategory) findPreference(KEY_DOZE_CATEGORY);
         if (isDozeAvailable(activity)) {
             mDozePreference = (SwitchPreference) findPreference(KEY_DOZE);
             mDozePreference.setOnPreferenceChangeListener(this);
+
+            mDozePulseIn = (SlimSeekBarPreference) findPreference(KEY_DOZE_PULSE_IN);
+            if (mDozePulseIn != null) {
+                mDozePulseIn.setDefault(1000);
+                mDozePulseIn.isMilliseconds(true);
+                mDozePulseIn.setInterval(1);
+                mDozePulseIn.minimumValue(100);
+                mDozePulseIn.multiplyValue(100);
+                mDozePulseIn.setOnPreferenceChangeListener(this);
+            }
+
+            mDozePulseVisible = (SlimSeekBarPreference) findPreference(KEY_DOZE_PULSE_VISIBLE);
+            if (mDozePulseVisible != null) {
+                mDozePulseVisible.setDefault(3000);
+                mDozePulseVisible.isMilliseconds(true);
+                mDozePulseVisible.setInterval(1);
+                mDozePulseVisible.minimumValue(100);
+                mDozePulseVisible.multiplyValue(100);
+                mDozePulseVisible.setOnPreferenceChangeListener(this);
+            }
+
+            mDozePulseOut = (SlimSeekBarPreference) findPreference(KEY_DOZE_PULSE_OUT);
+            if (mDozePulseOut != null) {
+                mDozePulseOut.setDefault(1000);
+                mDozePulseOut.isMilliseconds(true);
+                mDozePulseOut.setInterval(1);
+                mDozePulseOut.minimumValue(100);
+                mDozePulseOut.multiplyValue(100);
+                mDozePulseOut.setOnPreferenceChangeListener(this);
+            }
+
+            mDozeShakeThreshold = (SlimSeekBarPreference) findPreference(KEY_DOZE_SHAKE_THRESHOLD);
+            if (mDozeShakeThreshold != null) {
+                mDozeShakeThreshold.setDefault(10);
+                mDozeShakeThreshold.isMilliseconds(false);
+                mDozeShakeThreshold.setInterval(1);
+                mDozeShakeThreshold.minimumValue(2);
+                mDozeShakeThreshold.multiplyValue(1);
+                mDozeShakeThreshold.setOnPreferenceChangeListener(this);
+            }
+
         } else {
-            removePreference(KEY_DOZE);
+            getPreferenceScreen().removePreference(mDozeCategory);
         }
 
         if (RotationPolicy.isRotationLockToggleVisible(activity)) {
@@ -313,6 +369,33 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
                 fontSizeNames[index]));
     }
 
+    private void updateDozeOptions() {
+        if (mDozePulseIn != null) {
+            final int statusDozePulseIn = Settings.System.getInt(getContentResolver(),
+                    Settings.System.DOZE_PULSE_DURATION_IN, 1000);
+            // minimum 100 is 1 interval of the 100 multiplier
+            mDozePulseIn.setInitValue((statusDozePulseIn / 100) - 1);
+        }
+        if (mDozePulseVisible != null) {
+            final int statusDozePulseVisible = Settings.System.getInt(getContentResolver(),
+                    Settings.System.DOZE_PULSE_DURATION_VISIBLE, 3000);
+            // minimum 100 is 1 interval of the 100 multiplier
+            mDozePulseVisible.setInitValue((statusDozePulseVisible / 100) - 1);
+        }
+        if (mDozePulseOut != null) {
+            final int statusDozePulseOut = Settings.System.getInt(getContentResolver(),
+                    Settings.System.DOZE_PULSE_DURATION_OUT, 1000);
+            // minimum 100 is 1 interval of the 100 multiplier
+            mDozePulseOut.setInitValue((statusDozePulseOut / 100) - 1);
+        }
+        if (mDozeShakeThreshold != null) {
+            final int statusDozeShakeThreshold = Settings.System.getInt(getContentResolver(),
+                    Settings.System.DOZE_SHAKE_ACC_THRESHOLD, 10);
+            // minimum 2 is 1 interval of the 1 multiplier
+            mDozeShakeThreshold.setInitValue(statusDozeShakeThreshold);
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -321,6 +404,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
                 mAccelerometerRotationObserver);
         updateDisplayRotationPreferenceDescription();
         updateState();
+        updateDozeOptions();
     }
 
     @Override
@@ -468,6 +552,26 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         if (preference == mDozePreference) {
             boolean value = (Boolean) objValue;
             Settings.Secure.putInt(getContentResolver(), DOZE_ENABLED, value ? 1 : 0);
+        }
+        if (preference == mDozePulseIn) {
+            int dozePulseIn = Integer.valueOf((String) objValue);
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.DOZE_PULSE_DURATION_IN, dozePulseIn);
+        }
+        if (preference == mDozePulseVisible) {
+            int dozePulseVisible = Integer.valueOf((String) objValue);
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.DOZE_PULSE_DURATION_VISIBLE, dozePulseVisible);
+        }
+        if (preference == mDozePulseOut) {
+            int dozePulseOut = Integer.valueOf((String) objValue);
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.DOZE_PULSE_DURATION_OUT, dozePulseOut);
+        }
+        if (preference == mDozeShakeThreshold) {
+            int dozeShakeThreshold = Integer.valueOf((String) objValue);
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.DOZE_SHAKE_ACC_THRESHOLD, dozeShakeThreshold);
         }
         return true;
     }
