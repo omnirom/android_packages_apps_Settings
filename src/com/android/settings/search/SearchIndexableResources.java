@@ -49,6 +49,7 @@ import com.android.settings.wifi.AdvancedWifiSettings;
 import com.android.settings.wifi.SavedAccessPointsWifiSettings;
 import com.android.settings.wifi.WifiSettings;
 
+import org.omnirom.omnigears.AmbientSettings;
 import org.omnirom.omnigears.ButtonSettings;
 
 import java.util.Collection;
@@ -266,13 +267,19 @@ public final class SearchIndexableResources {
                         R.drawable.ic_settings_about));
 
         // omni additions
+        sResMap.put(AmbientSettings.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(AmbientSettings.class.getName()),
+                        NO_DATA_RES_ID,
+                        AmbientSettings.class.getName(),
+                        R.drawable.ic_settings_display));
+
         sResMap.put(ButtonSettings.class.getName(),
                 new SearchIndexableResource(
                         Ranking.getRankForClassName(ButtonSettings.class.getName()),
                         NO_DATA_RES_ID,
                         ButtonSettings.class.getName(),
                         R.drawable.ic_buttons));
-
     }
 
     private SearchIndexableResources() {
