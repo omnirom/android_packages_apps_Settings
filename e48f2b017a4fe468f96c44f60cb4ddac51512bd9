@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b22818b_1484c2b5",
+        "filename": "src/com/android/settings/wifi/AdvancedWifiSettings.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1000313
+      },
+      "writtenOn": "2015-02-13T19:45:56Z",
+      "side": 1,
+      "message": "i added this,and i have correct value which set using this option, but see my comment in fw_opt",
+      "revId": "e48f2b017a4fe468f96c44f60cb4ddac51512bd9",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
