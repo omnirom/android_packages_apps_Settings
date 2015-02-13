@@ -55,6 +55,7 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
     private static final String KEY_MAC_ADDRESS = "mac_address";
     private static final String KEY_CURRENT_IP_ADDRESS = "current_ip_address";
     private static final String KEY_FREQUENCY_BAND = "frequency_band";
+    private static final String KEY_COUNTRY_CODE = "wifi_countrycode";
     private static final String KEY_NOTIFY_OPEN_NETWORKS = "notify_open_networks";
     private static final String KEY_SLEEP_POLICY = "sleep_policy";
     private static final String KEY_SCAN_ALWAYS_AVAILABLE = "wifi_scan_always_available";
@@ -187,6 +188,21 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
             }
         }
 
+        ListPreference ccodePref = (ListPreference) findPreference(KEY_COUNTRY_CODE);
+        if (ccodePref != null) {
+            ccodePref.setOnPreferenceChangeListener(this);
+            String value = mWifiManager.getCountryCode();
+            if ((value == null) || TextUtils.isEmpty(value)) {
+                value = Settings.Global.getString(getContentResolver(),
+                                Settings.Global.WIFI_COUNTRY_CODE);
+            }
+            if (value != null) {
+                ccodePref.setValue(value);
+            } else {
+                Log.e(TAG, "Failed to fetch country code");
+            }
+        }
+
         ListPreference sleepPolicyPref = (ListPreference) findPreference(KEY_SLEEP_POLICY);
         if (sleepPolicyPref != null) {
             if (Utils.isWifiOnly(context)) {
@@ -282,6 +298,16 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
             }
 
             startActivity(intent);
+        }
+
+        if (KEY_COUNTRY_CODE.equals(key)) {
+            try {
+                mWifiManager.setCountryCode((String) newValue, true);
+            } catch (IllegalArgumentException e) {
+                Toast.makeText(context, R.string.wifi_setting_countrycode_error,
+                        Toast.LENGTH_SHORT).show();
+                return false;
+            }
         }
 
         if (KEY_SLEEP_POLICY.equals(key)) {
