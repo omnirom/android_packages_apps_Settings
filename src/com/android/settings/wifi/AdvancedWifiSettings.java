@@ -48,6 +48,9 @@ import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.Utils;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AdvancedWifiSettings extends SettingsPreferenceFragment
         implements Preference.OnPreferenceChangeListener {
@@ -56,6 +59,7 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
     private static final String KEY_MAC_ADDRESS = "mac_address";
     private static final String KEY_CURRENT_IP_ADDRESS = "current_ip_address";
     private static final String KEY_FREQUENCY_BAND = "frequency_band";
+    private static final String KEY_COUNTRY_CODE = "wifi_countrycode";
     private static final String KEY_NOTIFY_OPEN_NETWORKS = "notify_open_networks";
     private static final String KEY_SLEEP_POLICY = "sleep_policy";
     private static final String KEY_SCAN_ALWAYS_AVAILABLE = "wifi_scan_always_available";
@@ -185,6 +189,20 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
             }
         }
 
+        ListPreference ccodePref = (ListPreference) findPreference(KEY_COUNTRY_CODE);
+        if (ccodePref != null) {
+            ccodePref.setEntries(getCountryCodeEntries());
+            ccodePref.setEntryValues(getCountryCodeValues());
+            ccodePref.setOnPreferenceChangeListener(this);
+            String valueString = mWifiManager.getCountryCode();
+            if (valueString != null) {
+                ccodePref.setValue(valueString);
+                updateChannelSummary(ccodePref, valueString);
+            } else {
+                Log.e(TAG, "Failed to fetch country code");
+            }
+        }
+
         ListPreference sleepPolicyPref = (ListPreference) findPreference(KEY_SLEEP_POLICY);
         if (sleepPolicyPref != null) {
             if (Utils.isWifiOnly(context)) {
@@ -235,6 +253,11 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
     private void updateFrequencyBandSummary(Preference frequencyBandPref, int index) {
         String[] summaries = getResources().getStringArray(R.array.wifi_frequency_band_entries);
         frequencyBandPref.setSummary(summaries[index]);
+    }
+
+    private void updateChannelSummary(Preference channelPref, String value) {
+        String channel = getResources().getString(R.string.wifi_setting_countrycode_summary);
+        channelPref.setSummary(channel + " (" + value + ")");
     }
 
     @Override
@@ -298,6 +321,18 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
             return false;
         }
 
+        if (KEY_COUNTRY_CODE.equals(key)) {
+            try {
+                String valueString = (String) newValue;
+                mWifiManager.setCountryCode(valueString, true);
+                updateChannelSummary(preference, valueString);
+            } catch (IllegalArgumentException e) {
+                Toast.makeText(context, R.string.wifi_setting_countrycode_error,
+                        Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+
         if (KEY_SLEEP_POLICY.equals(key)) {
             try {
                 String stringValue = (String) newValue;
@@ -351,4 +386,41 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
         }
     }
 
+    private List<String> getAlKnownCountryCodes() {
+        final String simCountryCode = Settings.Global.getString(getContentResolver(),
+                Settings.Global.WIFI_COUNTRY_CODE_SIM0);
+        String[] values = getResources().getStringArray(R.array.wifi_countrycode_values);
+        List<String> valuesList = new ArrayList<String>();
+        if (simCountryCode != null && !TextUtils.isEmpty(simCountryCode)) {
+            valuesList.add(simCountryCode);
+        }
+        valuesList.addAll(Arrays.asList(values));
+        return valuesList;
+    }
+
+    private String[] getCountryCodeEntries() {
+        final String savedCountryCode = mWifiManager.getCountryCode();
+        final String simCountryCode = Settings.Global.getString(getContentResolver(),
+                Settings.Global.WIFI_COUNTRY_CODE_SIM0);
+        String[] entries = getResources().getStringArray(R.array.wifi_countrycode_entries);
+        List<String> entriesList = new ArrayList<String>();
+        if (simCountryCode != null && !TextUtils.isEmpty(simCountryCode)) {
+            entriesList.add(getResources().getString(R.string.wifi_setting_countrycode_default) + " (" + simCountryCode + ")");
+        }
+        entriesList.addAll(Arrays.asList(entries));
+        if (!getAlKnownCountryCodes().contains(savedCountryCode)) {
+            entriesList.add(savedCountryCode);
+        }
+        return entriesList.toArray(new String[entriesList.size()]);
+    }
+
+    private String[] getCountryCodeValues() {
+        final String savedCountryCode = mWifiManager.getCountryCode();
+        List<String> valuesList = new ArrayList<String>();
+        valuesList.addAll(getAlKnownCountryCodes());
+        if (!valuesList.contains(savedCountryCode)) {
+            valuesList.add(savedCountryCode);
+        }
+        return valuesList.toArray(new String[valuesList.size()]);
+    }
 }
