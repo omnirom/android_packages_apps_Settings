@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b22818b_b453ee43",
+        "filename": "src/com/android/settings/wifi/AdvancedWifiSettings.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1000313
+      },
+      "writtenOn": "2015-02-13T21:17:39Z",
+      "side": 1,
+      "message": "If you get build break, just change \"ccodePref\" into \"preference\"",
+      "revId": "a0fca7bf8bee98f220e2d373bf44da305fb14f18",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
