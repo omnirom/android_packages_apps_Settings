@@ -51,6 +51,7 @@ import com.android.settings.wifi.WifiSettings;
 
 import org.omnirom.omnigears.AmbientSettings;
 import org.omnirom.omnigears.ButtonSettings;
+import org.omnirom.omnigears.interfaces.BarsSettings;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -280,6 +281,13 @@ public final class SearchIndexableResources {
                         NO_DATA_RES_ID,
                         ButtonSettings.class.getName(),
                         R.drawable.ic_buttons));
+
+        sResMap.put(BarsSettings.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(BarsSettings.class.getName()),
+                        NO_DATA_RES_ID,
+                        BarsSettings.class.getName(),
+                        R.drawable.ic_bars));
     }
 
     private SearchIndexableResources() {

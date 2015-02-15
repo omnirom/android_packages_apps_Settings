@@ -18,6 +18,7 @@ package com.android.settings;
 
 import com.android.settings.applications.AppOpsSummary;
 import org.omnirom.omnigears.ButtonSettings;
+import org.omnirom.omnigears.interfaces.BarsSettings;
 import com.brewcrewfoo.performance.activities.MainActivity;
 
 /**
@@ -102,6 +103,7 @@ public class Settings extends SettingsActivity {
     public static class QuickLaunchSettingsActivity extends SettingsActivity { /* empty */ }
     public static class TopLevelSettings extends SettingsActivity { /* empty */ }
     public static class ApnSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class BarsSettingsActivity extends SettingsActivity { /* empty */ }
     public static class ButtonSettingsActivity extends SettingsActivity { /* empty */ }
     public static class MainActivityActivity extends SettingsActivity { /* empty */ }
 }
