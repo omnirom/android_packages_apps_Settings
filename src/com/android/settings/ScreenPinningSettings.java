@@ -79,6 +79,8 @@ public class ScreenPinningSettings extends SettingsPreferenceFragment
     private void setLockToAppEnabled(boolean isEnabled) {
         Settings.System.putInt(getContentResolver(), Settings.System.LOCK_TO_APP_ENABLED,
                 isEnabled ? 1 : 0);
+        // always reset the hide dialog flag
+        Settings.System.putInt(getContentResolver(), Settings.System.LOCK_TO_APP_HIDE_DIALOG, 0);
     }
 
     /**
