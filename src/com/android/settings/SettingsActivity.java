@@ -238,6 +238,7 @@ public class SettingsActivity extends Activity
             R.id.nfc_payment_settings,
             R.id.home_settings,
             R.id.button_settings,
+            R.id.interface_bars,
             R.id.dashboard
     };
 
