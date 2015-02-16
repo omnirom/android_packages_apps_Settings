@@ -71,6 +71,36 @@
 
     </dashboard-category>
 
+    <!-- OMNI -->
+    <dashboard-category
+            android:id="@+id/interface_section"
+            android:title="@string/header_category_interface" >
+
+        <!-- Bars
+        <dashboard-tile
+               android:id="@+id/interface_bars"
+               android:title="@string/interface_bars_title"
+               android:fragment="org.omnirom.omnigears.interfacesettings.BarsSettings"
+               android:icon="@drawable/ic_bars"
+               /> -->
+
+        <!-- Menus
+        <dashboard-tile
+               android:id="@+id/interface_menus"
+               android:title="@string/interface_menus_title"
+               android:fragment="org.omnirom.omnigears.interfacesettings.MenusSettings"
+               android:icon="@drawable/ic_menus"
+               /> -->
+
+        <!-- More
+        <dashboard-tile
+               android:id="@+id/interface_more"
+               android:title="@string/radio_controls_title"
+               android:fragment="org.omnirom.omnigears.interfacesettings.MoreInterfaceSettings"
+               android:icon="@drawable/ic_settings_more"
+               /> -->
+    </dashboard-category>
+
     <!-- DEVICE -->
     <dashboard-category
             android:id="@+id/device_section"

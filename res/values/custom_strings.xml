@@ -23,6 +23,7 @@
     <string name="mod_version_default">Unknown</string>
 
     <!-- Main list strings -->
+    <string name="header_category_interface">Interface</string>
     <string name="performance_settings">Performance</string>
     <string name="advanced_settings_title">Advanced</string>
     <string name="button_settings">Buttons</string>
