@@ -113,6 +113,9 @@ import com.android.settings.wifi.SavedAccessPointsWifiSettings;
 import com.android.settings.wifi.WifiSettings;
 import com.android.settings.wifi.p2p.WifiP2pSettings;
 
+import org.omnirom.omnigears.ButtonSettings;
+import com.brewcrewfoo.performance.activities.MainActivity;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -215,6 +218,7 @@ public class SettingsActivity extends Activity
             R.id.sim_settings,
             R.id.wireless_settings,
             R.id.device_section,
+            R.id.interface_section,
             R.id.notification_settings,
             R.id.display_settings,
             R.id.storage_settings,
@@ -233,6 +237,7 @@ public class SettingsActivity extends Activity
             R.id.print_settings,
             R.id.nfc_payment_settings,
             R.id.home_settings,
+            R.id.button_settings,
             R.id.dashboard
     };
 
@@ -297,7 +302,9 @@ public class SettingsActivity extends Activity
             AppNotificationSettings.class.getName(),
             OtherSoundSettings.class.getName(),
             QuickLaunchSettings.class.getName(),
-            ApnSettings.class.getName()
+            ApnSettings.class.getName(),
+            ButtonSettings.class.getName(),
+            MainActivity.class.getName()
     };
 
 

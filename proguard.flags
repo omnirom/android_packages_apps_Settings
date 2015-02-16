@@ -17,6 +17,7 @@
 
 # Keep OmniGears stuff
 -keep class org.omnirom.omnigears.*
+-keep class org.**
 
 # Keep click responders
 -keepclassmembers class com.android.settings.inputmethod.UserDictionaryAddWordActivity {
