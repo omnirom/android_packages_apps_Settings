@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b22818b_8ef17acc",
+        "filename": "res/xml/dashboard_categories.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-02-18T16:52:59Z",
+      "side": 1,
+      "message": "hm buttons are in under device - and actually they belong there IMHO. They are really device specific and not things for all devices",
+      "revId": "59ca9126bd66cc6133e23abbdf471379a46e371d",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_aebe36ce",
+        "filename": "src/com/android/settings/SettingsActivity.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-02-18T16:52:59Z",
+      "side": 1,
+      "message": "ah nice - forgot that completely\ncan you please also add performance settings here",
+      "revId": "59ca9126bd66cc6133e23abbdf471379a46e371d",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
