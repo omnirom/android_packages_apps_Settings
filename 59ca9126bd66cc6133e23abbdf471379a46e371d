@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "6b22818b_8ebedaa7",
+        "filename": "res/xml/dashboard_categories.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000313
+      },
+      "writtenOn": "2015-02-19T03:21:12Z",
+      "side": 1,
+      "message": "Got it, btw, do i need to move ambient display into this section?",
+      "parentUuid": "6b22818b_8ef17acc",
+      "revId": "59ca9126bd66cc6133e23abbdf471379a46e371d",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b22818b_aebe36ce",
         "filename": "src/com/android/settings/SettingsActivity.java",
         "patchSetId": 3
