@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b22818b_6e4c3ee4",
+        "filename": "src/com/android/settings/search/SearchIndexableResources.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-02-19T12:29:27Z",
+      "side": 1,
+      "message": "pretty sure you must put that inside of a isDozeAvailable(activity) to prevent anything from that fragment to show up if no doze mode available. And its way easier then to remove everything in the fragment istself and also saver for future enhancements. -1 unless you can prove me that I am wrong :)",
+      "revId": "a9778bcb5302fe4b18da8c5578f1c6460bb9259d",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
