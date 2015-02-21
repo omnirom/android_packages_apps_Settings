@@ -16,6 +16,23 @@
       "revId": "82d1412de4e630a0d033ef61204cd0eb3b0b8804",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_d194f7ed",
+        "filename": "src/com/android/settings/notification/NotificationSettings.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-02-21T16:05:09Z",
+      "side": 1,
+      "message": "why put this into Secure??? This is a normal system setting",
+      "revId": "82d1412de4e630a0d033ef61204cd0eb3b0b8804",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
