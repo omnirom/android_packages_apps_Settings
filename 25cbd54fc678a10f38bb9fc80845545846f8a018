@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b22818b_3dcc3a65",
+        "filename": "res/layout/battery_history_chart.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:02:37Z",
+      "side": 1,
+      "message": "Layers incompatibility",
+      "revId": "25cbd54fc678a10f38bb9fc80845545846f8a018",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_5dc9f653",
+        "filename": "res/layout/dashboard_category.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:02:37Z",
+      "side": 1,
+      "message": "Layers incompatibility",
+      "revId": "25cbd54fc678a10f38bb9fc80845545846f8a018",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_7dd6b2f8",
+        "filename": "res/layout/ownerinfo.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:02:37Z",
+      "side": 1,
+      "message": "Layers incompatibility",
+      "revId": "25cbd54fc678a10f38bb9fc80845545846f8a018",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_9dd36e06",
+        "filename": "res/layout/ownerinfo.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:02:37Z",
+      "side": 1,
+      "message": "Layers incompatibility",
+      "revId": "25cbd54fc678a10f38bb9fc80845545846f8a018",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_bd002a70",
+        "filename": "res/values/colors.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:02:37Z",
+      "side": 1,
+      "message": "lefover cruft",
+      "revId": "25cbd54fc678a10f38bb9fc80845545846f8a018",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
