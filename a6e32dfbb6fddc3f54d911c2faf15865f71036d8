@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b22818b_3df51a81",
+        "filename": "res/layout/battery_history_chart.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 1,
+      "message": "Layers incompatibility",
+      "revId": "a6e32dfbb6fddc3f54d911c2faf15865f71036d8",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_5df2d699",
+        "filename": "res/layout/dashboard_category.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 1,
+      "message": "Layers incompatibility",
+      "revId": "a6e32dfbb6fddc3f54d911c2faf15865f71036d8",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_7def92ac",
+        "filename": "res/layout/ownerinfo.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 1,
+      "message": "Layers incompatibility",
+      "revId": "a6e32dfbb6fddc3f54d911c2faf15865f71036d8",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_9dec4eb8",
+        "filename": "res/layout/ownerinfo.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 1,
+      "message": "Layers incompatibility",
+      "revId": "a6e32dfbb6fddc3f54d911c2faf15865f71036d8",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_bd2d8afb",
+        "filename": "res/values/colors.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 1,
+      "message": "cruft",
+      "revId": "a6e32dfbb6fddc3f54d911c2faf15865f71036d8",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}

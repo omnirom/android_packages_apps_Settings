@@ -1,0 +1,616 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b22818b_dd32465c",
+        "filename": "res/values/custom_colors.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Not used, should be removed in cleanup patch.",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_fd370249",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Layers incompatibility",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_1d3dbe28",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Layers incompatibility",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_3d427ab4",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Layers incompatibility",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_5d3f361f",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_7d4cf2e3",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_9d49aed5",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_bd166aab",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_dd1b26d2",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_fd10e2b0",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Layers incompatibility",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_1d169eaa",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Layers incompatibility",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_3d2b5adc",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Layers incompatibility",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_5d2816dd",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Layers incompatibility",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_7d25d203",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_9d228efb",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_bd7bcaef",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_dd8086c8",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_fd8542d5",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_1d8bfee8",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Layers incompatibility",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_3d70ba08",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_5d6d762b",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Layers incompatibility",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_7d7a32e8",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_9d77eefd",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?\n\nLooks like we missed some cleanup here?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_bd64aa47",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_dd69661e",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_fd5e2279",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Layers incompatibility",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_1d64de42",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_3d599a90",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_5d565661",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_7d531270",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_9d50ce63",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_bdc10a05",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Layers incompatibility, also possible failure in cleanup patch.",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_ddc6c619",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Layers incompatibility",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_fdcb821e",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Layers incompatibility",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_1dd13ed2",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Layers incompatibility",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_3dd6fac9",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-04T00:17:08Z",
+      "side": 0,
+      "message": "Only in Layers?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
