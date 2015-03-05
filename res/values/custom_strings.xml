@@ -76,4 +76,6 @@
     <string name="mount_notification_title">Mount notification</string>
     <string name="mount_notification_summary">Display ongoing notification for mounted storage</string>
 
+    <string name="zen_mode_none_category">No interruptions</string>
+    <string name="zen_mode_alarms">Allow alarms</string>
 </resources>
