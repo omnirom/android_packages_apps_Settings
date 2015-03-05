@@ -19,6 +19,74 @@
     },
     {
       "key": {
+        "uuid": "6b22818b_38460828",
+        "filename": "res/values/custom_colors.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-05T12:17:07Z",
+      "side": 0,
+      "message": "Not used, remove in cleanup patch",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_d836d4af",
+        "filename": "res/values/custom_colors.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-05T12:17:07Z",
+      "side": 0,
+      "message": "Also not used, remove in cleanup",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_f83b9094",
+        "filename": "res/values/custom_colors.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-05T12:17:07Z",
+      "side": 0,
+      "message": "Not used, remove in cleanup",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_18414c10",
+        "filename": "res/values/custom_colors.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-05T12:17:07Z",
+      "side": 0,
+      "message": "Not used, remove in cleanup",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b22818b_fd370249",
         "filename": "res/values/styles.xml",
         "patchSetId": 2
