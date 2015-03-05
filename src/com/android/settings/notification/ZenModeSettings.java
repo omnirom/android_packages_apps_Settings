@@ -73,6 +73,8 @@ public class ZenModeSettings extends SettingsPreferenceFragment implements Index
     private static final String KEY_MESSAGES = "messages";
     private static final String KEY_STARRED = "starred";
     private static final String KEY_EVENTS = "events";
+    private static final String KEY_NONE = "none";
+    private static final String KEY_ALARMS = "alarms";
     private static final String KEY_ALARM_INFO = "alarm_info";
 
     private static final String KEY_DOWNTIME = "downtime";
@@ -121,6 +123,7 @@ public class ZenModeSettings extends SettingsPreferenceFragment implements Index
         rt.put(R.string.zen_mode_end_time, KEY_END_TIME);
         rt.put(R.string.zen_mode_automation_category, KEY_AUTOMATION);
         rt.put(R.string.manage_condition_providers, KEY_CONDITION_PROVIDERS);
+        rt.put(R.string.zen_mode_alarms, KEY_ALARMS);
         return rt;
     }
 
@@ -142,6 +145,7 @@ public class ZenModeSettings extends SettingsPreferenceFragment implements Index
     private Preference mEntry;
     private Preference mConditionProviders;
     private AlertDialog mDialog;
+    private SwitchPreference mAlarms;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -233,6 +237,23 @@ public class ZenModeSettings extends SettingsPreferenceFragment implements Index
                 if (DEBUG) Log.d(TAG, "onPrefChange allowEvents=" + val);
                 final ZenModeConfig newConfig = mConfig.copy();
                 newConfig.allowEvents = val;
+                return setZenModeConfig(newConfig);
+            }
+        });
+
+        final PreferenceCategory none =
+                (PreferenceCategory) root.findPreference(KEY_NONE);
+    
+        mAlarms = (SwitchPreference) none.findPreference(KEY_ALARMS);
+        mAlarms.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if (mDisableListeners) return true;
+                final boolean val = (Boolean) newValue;
+                if (val == mConfig.allowAlarms) return true;
+                if (DEBUG) Log.d(TAG, "onPrefChange allowAlarms=" + val);
+                final ZenModeConfig newConfig = mConfig.copy();
+                newConfig.allowAlarms = val;
                 return setZenModeConfig(newConfig);
             }
         });
@@ -383,6 +404,7 @@ public class ZenModeSettings extends SettingsPreferenceFragment implements Index
         mMessages.setChecked(mConfig.allowMessages);
         mStarred.setSelectedValue(mConfig.allowFrom);
         mEvents.setChecked(mConfig.allowEvents);
+        mAlarms.setChecked(mConfig.allowAlarms);
         updateStarredEnabled();
         updateDays();
         mStart.setTime(mConfig.sleepStartHour, mConfig.sleepStartMinute);

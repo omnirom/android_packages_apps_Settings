@@ -26,6 +26,19 @@
             android:persistent="false" />
 
     <PreferenceCategory
+        android:key="none"
+        android:title="@string/zen_mode_none_category" >
+
+        <SwitchPreference
+            android:key="alarms"
+            android:title="@string/zen_mode_alarms"
+            android:persistent="false"
+            android:switchTextOff=""
+            android:switchTextOn="" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="important"
         android:title="@string/zen_mode_important_category" >
 
