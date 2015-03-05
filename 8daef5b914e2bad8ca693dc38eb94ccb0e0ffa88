@@ -155,6 +155,41 @@
     },
     {
       "key": {
+        "uuid": "6b22818b_58f104db",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-05T13:55:05Z",
+      "side": 0,
+      "message": "Also, why was Layers changing the text size?",
+      "parentUuid": "6b22818b_5d3f361f",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_78fec0ab",
+        "filename": "res/values/styles.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-05T13:55:05Z",
+      "side": 0,
+      "message": "Why was Layers making this bold?",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b22818b_7d4cf2e3",
         "filename": "res/values/styles.xml",
         "patchSetId": 2
