@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b22818b_785080db",
+        "filename": "res/values/custom_colors.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-05T12:19:21Z",
+      "side": 1,
+      "message": "Not used, remove",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_984d3c41",
+        "filename": "res/values/custom_colors.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-05T12:19:21Z",
+      "side": 1,
+      "message": "Not used, remove",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_b85af8f6",
+        "filename": "res/values/custom_colors.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-05T12:19:21Z",
+      "side": 1,
+      "message": "Not used, remove",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_d85fb4e5",
+        "filename": "res/values/custom_colors.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-05T12:19:21Z",
+      "side": 1,
+      "message": "Not used, remove",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_f85470cc",
+        "filename": "res/values/custom_colors.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-05T12:19:21Z",
+      "side": 1,
+      "message": "Not used, remove",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
