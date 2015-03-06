@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b22818b_53e7270e",
+        "filename": "res/layout/battery_history_chart.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-06T20:45:37Z",
+      "side": 1,
+      "message": "this is not #ff000000 - it\u0027s de000000\n\nThere is no way to fix this without breaking compatibility.",
+      "revId": "4e7285c100c4f00b7d61fc509b9bde750b61a11b",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
