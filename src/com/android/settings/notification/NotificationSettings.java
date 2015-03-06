@@ -106,7 +106,6 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
     private Preference mAlarmRingtonePreference;
     private AudioManager mAudioManager;
     private CheckBoxPreference mVolumeLinkNotification;
-    private PreferenceCategory mSoundPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,17 +123,17 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
 
         addPreferencesFromResource(R.xml.notification_settings);
 
-        mSoundPreferences = (PreferenceCategory) findPreference(KEY_SOUND);
+        final PreferenceCategory sound = (PreferenceCategory) findPreference(KEY_SOUND);
 
         if (mVoiceCapable) {
-            mVolumeLinkNotification = (CheckBoxPreference) mSoundPreferences.findPreference(KEY_VOLUME_LINK_NOTIFICATION);
+            mVolumeLinkNotification = (CheckBoxPreference) sound.findPreference(KEY_VOLUME_LINK_NOTIFICATION);
         } else {
-            mSoundPreferences.removePreference(mSoundPreferences.findPreference(KEY_RING_VOLUME));
-            mSoundPreferences.removePreference(mSoundPreferences.findPreference(KEY_VOLUME_LINK_NOTIFICATION));
+            sound.removePreference(sound.findPreference(KEY_RING_VOLUME));
+            sound.removePreference(sound.findPreference(KEY_VOLUME_LINK_NOTIFICATION));
         }
 
-        initRingtones(mSoundPreferences);
-        initVibrateWhenRinging(mSoundPreferences);
+        initRingtones(sound);
+        initVibrateWhenRinging(sound);
 
         final PreferenceCategory notification = (PreferenceCategory)
                 findPreference(KEY_NOTIFICATION);
@@ -217,6 +216,8 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
             mNotificationPreference.updateVolume();
             muted = mAudioManager.isStreamMute(AudioManager.STREAM_NOTIFICATION);
             mNotificationPreference.setEnabled(!muted);
+        } else {
+            mNotificationPreference.setEnabled(false);
         }
     }
 
@@ -456,11 +457,7 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
             final boolean linkEnabled = Settings.System.getInt(getContentResolver(),
                     Settings.System.VOLUME_LINK_NOTIFICATION, 1) == 1;
 
-            if (!linkEnabled) {
-                mSoundPreferences.addPreference(mNotificationPreference);
-            } else {
-                mSoundPreferences.removePreference(mNotificationPreference);
-            }
+            mNotificationPreference.setEnabled(!linkEnabled);
             mVolumeLinkNotification.setChecked(linkEnabled);
             mVolumeLinkNotification.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
                 @Override
@@ -475,11 +472,6 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
                     }
                     Settings.System.putInt(getContentResolver(),
                             Settings.System.VOLUME_LINK_NOTIFICATION, val ? 1 : 0);
-                    if (!val) {
-                        mSoundPreferences.addPreference(mNotificationPreference);
-                    } else {
-                        mSoundPreferences.removePreference(mNotificationPreference);
-                    }
                     updateSlidersAndMutedStates();
                     return true;
                 }
