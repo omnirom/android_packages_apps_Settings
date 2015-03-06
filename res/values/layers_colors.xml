@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<!--
+     This file contains "legacy" resource names from the Layers project,
+     aka Layers 2.
+
+     These names really shouldn't all be prefixed with exposed_*, as the
+     justification for those names (making exposed values easy to identify)
+     is achieved simply by sticking the colors in their own XML...
+-->
+<resources>
+    <color name="exposed_bg_dark">@android:color/white</color>
+    <!-- This has no mapping in CM's commit...  What should map to it if anything?
+         Most mappings to this in Layers are all of the changes to styles.xml which
+         I'm still trying to understand as NONE of the ones referencing
+         primary_text_light are in CM.  The only other reference to this is
+         from battery_history_chart.xml which is WRONG - that's #ff000000
+         and hence should be text_color_black (as it is in CM's commit...)
+    -->
+    <color name="exposed_primary_text_light">#de000000</color>
+    <color name="exposed_secondary_text_light">@*android:color/secondary_text_material_light</color>
+    <color name="exposed_datachartfillcolor">#ff009688</color>
+    <color name="exposed_datachartfillcolor_secondary">#ff80cbc4</color>
+    <color name="exposed_data_limit_chart_labelcolor">#ff37474f</color>
+    <color name="exposed_data_warning_chart_labelcolor">#fff4511e</color>
+</resources>
