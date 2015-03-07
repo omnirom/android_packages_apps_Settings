@@ -547,6 +547,24 @@
     },
     {
       "key": {
+        "uuid": "6b22818b_13e76fe1",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-07T16:34:30Z",
+      "side": 0,
+      "message": "Also, he\u0027s directly referencing a color when this is a drawable...\n\nIn addition, it\u0027s unnecessary to expose this since drawable/preference_background is overlayable",
+      "parentUuid": "6b22818b_fd5e2279",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b22818b_1d64de42",
         "filename": "res/values/themes.xml",
         "patchSetId": 2
@@ -666,6 +684,24 @@
     },
     {
       "key": {
+        "uuid": "6b22818b_f3e1f3cd",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-07T16:34:30Z",
+      "side": 0,
+      "message": "Also, he\u0027s directly referencing a color when this is a drawable...\n\nIn addition, it\u0027s unnecessary to expose this since drawable/preference_background is overlayable",
+      "parentUuid": "6b22818b_ddc6c619",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b22818b_fdcb821e",
         "filename": "res/values/themes.xml",
         "patchSetId": 2
@@ -677,6 +713,23 @@
       "writtenOn": "2015-03-04T00:17:08Z",
       "side": 0,
       "message": "Layers incompatibility",
+      "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_33cc6b65",
+        "filename": "res/values/themes.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-07T16:34:30Z",
+      "side": 0,
+      "message": "Also, he\u0027s directly referencing a color when this is a drawable...\n\nIn addition, it\u0027s unnecessary to expose this since drawable/preference_background is overlayable",
       "revId": "8daef5b914e2bad8ca693dc38eb94ccb0e0ffa88",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
