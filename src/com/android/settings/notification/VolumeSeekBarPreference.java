@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.preference.SeekBarPreference;
 import android.preference.SeekBarVolumizer;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -104,6 +105,15 @@ public class VolumeSeekBarPreference extends SeekBarPreference
                         boolean fromTouch) {
                     super.onProgressChanged(seekBar, progress, fromTouch);
                     mCallback.onStreamValueChanged(mStream, progress);
+                }
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    final boolean volumeAdjustSound = Settings.System.getInt(getContext().getContentResolver(),
+                            Settings.System.VOLUME_ADJUST_SOUND, 1) == 1;
+                    // if play adjust sound
+                    if (volumeAdjustSound) {
+                        super.onStopTrackingTouch(seekBar);
+                    }
                 }
             };
         }
