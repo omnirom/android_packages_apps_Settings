@@ -20,7 +20,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- Random PIN lock view -->
-    <string-array name="lock_numpad_random_entries">
+    <string-array name="lock_numpad_random_entries" translatable="false">
         <item>@string/lock_numpad_random_off</item>
         <item>@string/lock_numpad_random_always</item>
         <item>@string/lock_numpad_random_on_request</item>
