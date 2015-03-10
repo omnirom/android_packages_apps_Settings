@@ -185,12 +185,10 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private boolean mDontPokeProperties;
 
     private SwitchPreference mEnableAdb;
-    private CheckBoxPreference mAdbNotify;
+    private SwitchPreference mAdbNotify;
     private Preference mClearAdbKeys;
     private SwitchPreference mEnableTerminal;
-    private CheckBoxPreference mAdbOverNetwork;
-    private Preference mBugreport;
-    private SwitchPreference mBugreportInPower;
+    private SwitchPreference mAdbOverNetwork;
     private SwitchPreference mKeepScreenOn;
     private SwitchPreference mBtHciSnoopLog;
     private SwitchPreference mEnableOemUnlock;
@@ -213,6 +211,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private SwitchPreference mShowScreenUpdates;
     private SwitchPreference mDisableOverlays;
     private SwitchPreference mShowCpuUsage;
+    private SwitchPreference mShowCpuInfo;
     private SwitchPreference mForceHardwareUi;
     private SwitchPreference mForceMsaa;
     private SwitchPreference mShowHwScreenUpdates;
@@ -238,7 +237,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private ListPreference mAppProcessLimit;
 
     private SwitchPreference mShowAllANRs;
-    private CheckBoxPreference mAdvancedReboot;
+    private SwitchPreference mAdvancedReboot;
 
     private PreferenceScreen mProcessStats;
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
@@ -281,7 +280,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
                 findPreference(DEBUG_DEBUGGING_CATEGORY_KEY);
 
         mEnableAdb = findAndInitSwitchPref(ENABLE_ADB);
-        mAdbNotify = findAndInitCheckboxPref(ADB_NOTIFY);
+        mAdbNotify = findAndInitSwitchPref(ADB_NOTIFY);
         mClearAdbKeys = findPreference(CLEAR_ADB_KEYS);
         if (!SystemProperties.getBoolean("ro.adb.secure", false)) {
             if (debugDebuggingCategory != null) {
@@ -295,9 +294,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             mEnableTerminal = null;
         }
 
-        mAdbOverNetwork = findAndInitCheckboxPref(ADB_TCPIP);
-        mBugreport = findPreference(BUGREPORT);
-        mBugreportInPower = findAndInitSwitchPref(BUGREPORT_IN_POWER_KEY);
+        mAdbOverNetwork = findAndInitSwitchPref(ADB_TCPIP);
         mKeepScreenOn = findAndInitSwitchPref(KEEP_SCREEN_ON);
         mBtHciSnoopLog = findAndInitSwitchPref(BT_HCI_SNOOP_LOG);
         mEnableOemUnlock = findAndInitSwitchPref(ENABLE_OEM_UNLOCK);
@@ -309,7 +306,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         mDebugViewAttributes = findAndInitSwitchPref(DEBUG_VIEW_ATTRIBUTES);
         mPassword = (PreferenceScreen) findPreference(LOCAL_BACKUP_PASSWORD);
         mAllPrefs.add(mPassword);
-        mAdvancedReboot = findAndInitCheckboxPref(ADVANCED_REBOOT_KEY);
+        mAdvancedReboot = findAndInitSwitchPref(ADVANCED_REBOOT_KEY);
 
         if (!android.os.Process.myUserHandle().equals(UserHandle.OWNER)) {
             disableForUser(mEnableAdb);
@@ -522,8 +519,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
                     context.getPackageManager().getApplicationEnabledSetting(TERMINAL_APP_PACKAGE)
                             == PackageManager.COMPONENT_ENABLED_STATE_ENABLED);
         }
-        updateSwitchPreference(mBugreportInPower, Settings.Secure.getInt(cr,
-                Settings.Secure.BUGREPORT_IN_POWER_MENU, 0) != 0);
         updateSwitchPreference(mKeepScreenOn, Settings.Global.getInt(cr,
                 Settings.Global.STAY_ON_WHILE_PLUGGED_IN, 0) != 0);
         updateSwitchPreference(mBtHciSnoopLog, Settings.Secure.getInt(cr,
@@ -1164,7 +1159,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     }
 
     private void updateCpuInfoOptions() {
-        updateCheckBox(mShowCpuInfo, Settings.Global.getInt(getActivity().getContentResolver(),
+        updateSwitchPreference(mShowCpuInfo, Settings.Global.getInt(getActivity().getContentResolver(),
                 Settings.Global.SHOW_CPU, 0) != 0);
     }
 
@@ -1751,7 +1746,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
                 Settings.Secure.ADB_PORT, 0);
         boolean enabled = port > 0;
 
-        updateCheckBox(mAdbOverNetwork, enabled);
+        updateSwitchPreference(mAdbOverNetwork, enabled);
 
         WifiInfo wifiInfo = null;
 

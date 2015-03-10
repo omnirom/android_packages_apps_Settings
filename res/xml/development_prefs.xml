@@ -28,7 +28,7 @@
                 android:targetClass="com.android.settings.SetFullBackupPassword" />
     </PreferenceScreen>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:key="advanced_reboot"
         android:title="@string/advanced_reboot_title"
         android:summary="@string/advanced_reboot_summary"
@@ -70,7 +70,7 @@
             android:title="@string/enable_adb"
             android:summary="@string/enable_adb_summary"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="adb_notify"
             android:title="@string/adb_notify"
             android:summary="@string/adb_notify_summary"
@@ -84,7 +84,7 @@
             android:title="@string/enable_terminal_title"
             android:summary="@string/enable_terminal_summary" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="adb_over_network"
             android:title="@string/adb_over_network"
             android:summary="@string/adb_over_network_summary"
@@ -289,7 +289,7 @@
             android:title="@string/show_cpu_usage"
             android:summary="@string/show_cpu_usage_summary"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="show_cpu_info"
             android:title="@string/show_cpu_info"
             android:summary="@string/show_cpu_info_summary"/>
