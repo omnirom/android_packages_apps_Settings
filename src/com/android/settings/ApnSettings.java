@@ -39,6 +39,8 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
 import android.provider.Telephony;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,6 +54,7 @@ import com.android.internal.telephony.Phone;
 import com.android.internal.telephony.PhoneConstants;
 import com.android.internal.telephony.TelephonyIntents;
 import com.android.internal.telephony.TelephonyProperties;
+import android.telephony.TelephonyManager;
 
 import java.util.ArrayList;
 
@@ -88,6 +91,7 @@ public class ApnSettings extends SettingsPreferenceFragment implements
     private RestoreApnUiHandler mRestoreApnUiHandler;
     private RestoreApnProcessHandler mRestoreApnProcessHandler;
     private HandlerThread mRestoreDefaultApnThread;
+    private SubscriptionInfo mSubscriptionInfo;
 
     private UserManager mUm;
 
@@ -128,6 +132,9 @@ public class ApnSettings extends SettingsPreferenceFragment implements
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        final Activity activity = getActivity();
+        final int subId = activity.getIntent().getIntExtra("sub_id",
+                SubscriptionManager.INVALID_SUBSCRIPTION_ID);
 
         mUm = (UserManager) getSystemService(Context.USER_SERVICE);
 
@@ -137,6 +144,8 @@ public class ApnSettings extends SettingsPreferenceFragment implements
         if (!mUm.hasUserRestriction(UserManager.DISALLOW_CONFIG_MOBILE_NETWORKS)) {
             setHasOptionsMenu(true);
         }
+
+        mSubscriptionInfo = Utils.findRecordBySubId(activity, subId);
     }
 
     @Override
@@ -196,9 +205,13 @@ public class ApnSettings extends SettingsPreferenceFragment implements
     }
 
     private void fillList() {
-        String where = "numeric=\""
-            + android.os.SystemProperties.get(TelephonyProperties.PROPERTY_ICC_OPERATOR_NUMERIC, "")
-            + "\"";
+        final TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        final String mccmnc = mSubscriptionInfo == null ? ""
+            : tm.getSimOperator(mSubscriptionInfo.getSubscriptionId());
+        Log.d(TAG, "mccmnc = " + mccmnc);
+        final String where = "numeric=\""
+            + mccmnc
+            + "\" AND NOT (type='ia' AND (apn=\"\" OR apn IS NULL))";
 
         Cursor cursor = getContentResolver().query(Telephony.Carriers.CONTENT_URI, new String[] {
                 "_id", "name", "apn", "type"}, where, null,
@@ -276,7 +289,11 @@ public class ApnSettings extends SettingsPreferenceFragment implements
     }
 
     private void addNewApn() {
-        startActivity(new Intent(Intent.ACTION_INSERT, Telephony.Carriers.CONTENT_URI));
+        Intent intent = new Intent(Intent.ACTION_INSERT, Telephony.Carriers.CONTENT_URI);
+        int subId = mSubscriptionInfo != null ? mSubscriptionInfo.getSubscriptionId()
+                : SubscriptionManager.INVALID_SUBSCRIPTION_ID;
+        intent.putExtra("sub_id", subId);
+        startActivity(intent);
     }
 
     @Override

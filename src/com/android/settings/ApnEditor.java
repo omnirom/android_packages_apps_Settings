@@ -32,7 +32,9 @@ import android.preference.ListPreference;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.SwitchPreference;
 import android.provider.Telephony;
+import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -81,7 +83,7 @@ public class ApnEditor extends PreferenceActivity
     private EditTextPreference mApnType;
     private ListPreference mProtocol;
     private ListPreference mRoamingProtocol;
-    private CheckBoxPreference mCarrierEnabled;
+    private SwitchPreference mCarrierEnabled;
     private ListPreference mBearer;
     private ListPreference mMvnoType;
     private EditTextPreference mMvnoMatchData;
@@ -93,6 +95,7 @@ public class ApnEditor extends PreferenceActivity
     private Cursor mCursor;
     private boolean mNewApn;
     private boolean mFirstTime;
+    private int mSubId;
     private Resources mRes;
     private TelephonyManager mTelephonyManager;
 
@@ -177,7 +180,7 @@ public class ApnEditor extends PreferenceActivity
         mRoamingProtocol = (ListPreference) findPreference(KEY_ROAMING_PROTOCOL);
         mRoamingProtocol.setOnPreferenceChangeListener(this);
 
-        mCarrierEnabled = (CheckBoxPreference) findPreference(KEY_CARRIER_ENABLED);
+        mCarrierEnabled = (SwitchPreference) findPreference(KEY_CARRIER_ENABLED);
 
         mBearer = (ListPreference) findPreference(KEY_BEARER);
         mBearer.setOnPreferenceChangeListener(this);
@@ -190,6 +193,7 @@ public class ApnEditor extends PreferenceActivity
 
         final Intent intent = getIntent();
         final String action = intent.getAction();
+        mSubId = intent.getIntExtra("sub_id", SubscriptionManager.INVALID_SUBSCRIPTION_ID);
 
         mFirstTime = icicle == null;
 
@@ -262,8 +266,7 @@ public class ApnEditor extends PreferenceActivity
             mMnc.setText(mCursor.getString(MNC_INDEX));
             mApnType.setText(mCursor.getString(TYPE_INDEX));
             if (mNewApn) {
-                String numeric =
-                    SystemProperties.get(TelephonyProperties.PROPERTY_ICC_OPERATOR_NUMERIC);
+                String numeric = mTelephonyManager.getSimOperator(mSubId);
                 // MCC is first 3 chars and then in 2 - 3 chars of MNC
                 if (numeric != null && numeric.length() > 4) {
                     // Country code
@@ -386,8 +389,7 @@ public class ApnEditor extends PreferenceActivity
                 if (values[mvnoIndex].equals("SPN")) {
                     mMvnoMatchData.setText(mTelephonyManager.getSimOperatorName());
                 } else if (values[mvnoIndex].equals("IMSI")) {
-                    String numeric =
-                            SystemProperties.get(TelephonyProperties.PROPERTY_ICC_OPERATOR_NUMERIC);
+                    String numeric = mTelephonyManager.getSimOperator(mSubId);
                     mMvnoMatchData.setText(numeric + "x");
                 } else if (values[mvnoIndex].equals("GID")) {
                     mMvnoMatchData.setText(mTelephonyManager.getGroupIdLevel1());
