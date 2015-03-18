@@ -119,6 +119,11 @@
                 android:title="@string/lock_screen_notifications_title"
                 android:persistent="false" />
 
+        <PreferenceScreen
+                android:key="battery_light"
+                android:title="@string/battery_light_settings"
+                android:fragment="org.omnirom.omnigears.batterylight.BatteryLightSettings" />
+
         <!-- App notifications -->
         <PreferenceScreen
                 android:key="app_notifications"
