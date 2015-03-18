@@ -71,10 +71,13 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private static final String KEY_SCREEN_TIMEOUT = "screen_timeout";
     private static final String KEY_DISPLAY_ROTATION = "display_rotation";
     private static final String KEY_FONT_SIZE = "font_size";
+    private static final String KEY_CHARGING_LIGHT = "charging_light";
     private static final String KEY_SCREEN_SAVER = "screensaver";
     private static final String KEY_LIFT_TO_WAKE = "lift_to_wake";
     private static final String KEY_AUTO_BRIGHTNESS = "auto_brightness";
     private static final String KEY_AUTO_ROTATE = "auto_rotate";
+    
+    private Preference mChargingLight;
 
     private static final String KEY_DOZE_FRAGMENT = "doze_fragment";
 
@@ -135,6 +138,14 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         mFontSizePref = (WarnedListPreference) findPreference(KEY_FONT_SIZE);
         mFontSizePref.setOnPreferenceChangeListener(this);
         mFontSizePref.setOnPreferenceClickListener(this);
+        
+        mChargingLight = (Preference) findPreference(KEY_CHARGING_LIGHT);
+        mChargingLight = (Preference) findPreference(KEY_CHARGING_LIGHT);
+        if (mChargingLight != null
+                && getResources().getBoolean(
+                        com.android.internal.R.bool.config_intrusiveBatteryLed) == false) {
+            getPreferenceScreen().removePreference(mChargingLight);
+        }
 
         if (isAutomaticBrightnessAvailable(getResources())) {
             mAutoBrightnessPreference = (SwitchPreference) findPreference(KEY_AUTO_BRIGHTNESS);
