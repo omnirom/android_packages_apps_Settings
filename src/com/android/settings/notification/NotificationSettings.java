@@ -79,6 +79,7 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
     private static final String KEY_NOTIFICATION_PULSE = "notification_pulse";
     private static final String KEY_LOCK_SCREEN_NOTIFICATIONS = "lock_screen_notifications";
     private static final String KEY_NOTIFICATION_ACCESS = "manage_notification_access";
+    private static final String KEY_CHARGING_LIGHT = "charging_light";
 
     private static final int SAMPLE_CUTOFF = 2000;  // manually cap sample playback at 2 seconds
 
@@ -109,6 +110,7 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
     private int mRingerMode = -1;
     private CheckBoxPreference mVolumeLinkNotification;
     private PreferenceCategory mSoundCategory;
+    private Preference mChargingLight;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,6 +128,13 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
         }
 
         addPreferencesFromResource(R.xml.notification_settings);
+
+        mChargingLight = (Preference) findPreference(KEY_CHARGING_LIGHT);
+        if (mChargingLight != null
+                && !getResources().getBoolean(
+                        com.android.internal.R.bool.config_intrusiveBatteryLed)) {
+            getPreferenceScreen().removePreference(mChargingLight);
+        }
 
         mSoundCategory = (PreferenceCategory) findPreference(KEY_SOUND);
 
