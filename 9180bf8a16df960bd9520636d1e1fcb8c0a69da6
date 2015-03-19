@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b22818b_22d40e49",
+        "filename": "res/values/custom_colors.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-19T20:02:51Z",
+      "side": 1,
+      "message": "These are CM-specific features as far as I can tell, so we should remove them for application to AOSP.\n\nThe lockscreen shortcuts colors are NOT used anywhere.",
+      "revId": "9180bf8a16df960bd9520636d1e1fcb8c0a69da6",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
