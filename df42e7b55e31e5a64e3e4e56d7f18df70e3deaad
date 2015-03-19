@@ -16,6 +16,23 @@
       "revId": "df42e7b55e31e5a64e3e4e56d7f18df70e3deaad",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_a781f095",
+        "filename": "res/values/custom_colors.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-19T12:38:23Z",
+      "side": 1,
+      "message": "This one is used in battery history (text_color_black) - Layers points this to exposed_secondary_text_light which is NOT defined as pure black.",
+      "revId": "df42e7b55e31e5a64e3e4e56d7f18df70e3deaad",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
