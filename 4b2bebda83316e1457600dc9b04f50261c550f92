@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b22818b_c2317aba",
+        "filename": "res/values/custom_colors.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-19T20:13:36Z",
+      "side": 1,
+      "message": "Unused, remove from original commit",
+      "revId": "4b2bebda83316e1457600dc9b04f50261c550f92",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_e23676af",
+        "filename": "res/values/custom_colors.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-19T20:13:36Z",
+      "side": 1,
+      "message": "Unused, remove from original commit",
+      "revId": "4b2bebda83316e1457600dc9b04f50261c550f92",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_023c728c",
+        "filename": "res/values/custom_colors.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2015-03-19T20:13:36Z",
+      "side": 1,
+      "message": "Unused, remove from original commit",
+      "revId": "4b2bebda83316e1457600dc9b04f50261c550f92",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
