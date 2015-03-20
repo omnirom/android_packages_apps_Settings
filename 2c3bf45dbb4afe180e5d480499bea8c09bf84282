@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b22818b_cd228ba3",
+        "filename": "res/xml/display_settings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-03-20T22:13:44Z",
+      "side": 1,
+      "message": "tabs",
+      "revId": "2c3bf45dbb4afe180e5d480499bea8c09bf84282",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_ed2747b0",
+        "filename": "src/com/android/settings/DisplaySettings.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-03-20T22:13:44Z",
+      "side": 1,
+      "message": "whitespace",
+      "revId": "2c3bf45dbb4afe180e5d480499bea8c09bf84282",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_0d1d8365",
+        "filename": "src/com/android/settings/DisplaySettings.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-03-20T22:13:44Z",
+      "side": 1,
+      "message": "ouch",
+      "revId": "2c3bf45dbb4afe180e5d480499bea8c09bf84282",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
