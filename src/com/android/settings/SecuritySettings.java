@@ -99,6 +99,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
     private static final String KEY_APP_OPS_SUMMARY = "app_ops_summary";
     private static final String KEY_TOGGLE_INSTALL_APPLICATIONS = "toggle_install_applications";
     private static final String KEY_POWER_INSTANTLY_LOCKS = "power_button_instantly_locks";
+    private static final String KEY_QUICK_UNLOCK = "quick_unlock";
     private static final String KEY_CREDENTIALS_MANAGER = "credentials_management";
     private static final String PACKAGE_MIME_TYPE = "application/vnd.android.package-archive";
     private static final String KEY_TRUST_AGENT = "trust_agent";
@@ -107,7 +108,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
     // These switch preferences need special handling since they're not all stored in Settings.
     private static final String SWITCH_PREFERENCE_KEYS[] = { KEY_LOCK_AFTER_TIMEOUT,
             KEY_LOCK_ENABLED, KEY_VISIBLE_PATTERN, KEY_BIOMETRIC_WEAK_LIVELINESS,
-            KEY_POWER_INSTANTLY_LOCKS, KEY_SHOW_PASSWORD, KEY_TOGGLE_INSTALL_APPLICATIONS };
+            KEY_POWER_INSTANTLY_LOCKS, KEY_QUICK_UNLOCK, KEY_SHOW_PASSWORD, KEY_TOGGLE_INSTALL_APPLICATIONS };
 
     // Only allow one trust agent on the platform.
     private static final boolean ONLY_ONE_TRUST_AGENT = true;
@@ -131,6 +132,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
     private SwitchPreference mToggleAppInstallation;
     private DialogInterface mWarnInstallApps;
     private SwitchPreference mPowerButtonInstantlyLocks;
+    private SwitchPreference mQuickUnlock;
 
     private boolean mIsPrimary;
 
@@ -272,6 +274,13 @@ public class SecuritySettings extends SettingsPreferenceFragment
 
         // visible pattern
         mVisiblePattern = (SwitchPreference) root.findPreference(KEY_VISIBLE_PATTERN);
+
+        // quick unlock
+        mQuickUnlock = (SwitchPreference) root.findPreference(KEY_QUICK_UNLOCK);
+        if (mQuickUnlock != null) {
+            // Preference does only exist for pin lock
+            mQuickUnlock.setOnPreferenceChangeListener(this);
+        }
 
         // lock instantly on power key press
         mPowerButtonInstantlyLocks = (SwitchPreference) root.findPreference(
@@ -671,6 +680,9 @@ public class SecuritySettings extends SettingsPreferenceFragment
             mLockPatternUtils.setPowerButtonInstantlyLocks((Boolean) value);
         } else if (KEY_SHOW_PASSWORD.equals(key)) {
             Settings.System.putInt(getContentResolver(), Settings.System.TEXT_SHOW_PASSWORD,
+                    ((Boolean) value) ? 1 : 0);
+        } else if (KEY_QUICK_UNLOCK.equals(key)) {
+            Settings.System.putInt(getContentResolver(), Settings.System.KEYGUARD_QUICK_UNLOCK,
                     ((Boolean) value) ? 1 : 0);
         } else if (KEY_TOGGLE_INSTALL_APPLICATIONS.equals(key)) {
             if ((Boolean) value) {
