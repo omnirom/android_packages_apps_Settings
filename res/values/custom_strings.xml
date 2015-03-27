@@ -84,4 +84,9 @@
     <string name="link_volume_option_title">Link ring and notification volumes</string>
     <string name="notification_volume_option_title">Notification volume</string>
     <string name="ring_notification_volume_option_tile">Ring and notification volume</string>
+
+    <!-- Keyguard: quick unlock -->
+    <string name="keyguard_quick_unlock">Quick unlock</string>
+    <string name="keyguard_quick_unlock_summary_pin">Unlock automatically when correct PIN is entered</string>
+    <string name="keyguard_quick_unlock_summary_password">Unlock automatically when correct password is entered</string>
 </resources>
