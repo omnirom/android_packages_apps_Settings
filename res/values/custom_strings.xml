@@ -76,6 +76,9 @@
     <string name="mount_notification_title">Mount notification</string>
     <string name="mount_notification_summary">Display ongoing notification for mounted storage</string>
 
+    <!-- Hide IME switcher that appears when keyboard is visible-->
+    <string name="ime_switcher_hide_notification">Hide IME switcher notification</string>
+
     <!-- Linked / unlinked notification volume -->
     <string name="link_volume_option_title">Link ring and notification volumes</string>
     <string name="notification_volume_option_title">Notification volume</string>

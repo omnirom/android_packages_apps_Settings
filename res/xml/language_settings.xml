@@ -54,6 +54,17 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+            android:key="keyboard_settings_advanced_category"
+            android:title="@string/advanced_settings"
+            settings:keywords="@string/keywords_keyboard_and_ime">
+
+        <SwitchPreference
+            android:key="ime_switcher_hide_notification"
+            android:title="@string/ime_switcher_hide_notification"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
             android:key="hard_keyboard"
             android:title="@string/builtin_keyboard_settings_title"
             android:persistent="false">
