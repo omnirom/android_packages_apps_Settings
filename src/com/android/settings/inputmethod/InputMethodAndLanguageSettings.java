@@ -43,6 +43,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 import android.provider.Settings;
 import android.provider.Settings.System;
 import android.speech.RecognitionService;
@@ -88,6 +89,7 @@ public class InputMethodAndLanguageSettings extends SettingsPreferenceFragment
     private static final String KEY_INPUT_METHOD_SELECTOR = "input_method_selector";
     private static final String KEY_USER_DICTIONARY_SETTINGS = "key_user_dictionary_settings";
     private static final String KEY_PREVIOUSLY_ENABLED_SUBTYPES = "previously_enabled_subtypes";
+    private static final String KEY_IME_SWITCHER_HIDE_NOTIFICATION = "ime_switcher_hide_notification";
     // false: on ICS or later
     private static final boolean SHOW_INPUT_METHOD_SWITCHER_SETTINGS = false;
 
@@ -96,6 +98,7 @@ public class InputMethodAndLanguageSettings extends SettingsPreferenceFragment
     private PreferenceCategory mKeyboardSettingsCategory;
     private PreferenceCategory mHardKeyboardCategory;
     private PreferenceCategory mGameControllerCategory;
+    private SwitchPreference mImeSwitcherHideNotificationPreference;
     private Preference mLanguagePref;
     private final ArrayList<InputMethodPreference> mInputMethodPreferenceList = new ArrayList<>();
     private final ArrayList<PreferenceScreen> mHardKeyboardPreferenceList = new ArrayList<>();
@@ -137,6 +140,10 @@ public class InputMethodAndLanguageSettings extends SettingsPreferenceFragment
             // TODO: Update current input method name on summary
             updateInputMethodSelectorSummary(loadInputMethodSelectorVisibility());
         }
+
+        mImeSwitcherHideNotificationPreference = (SwitchPreference)findPreference(
+                    KEY_IME_SWITCHER_HIDE_NOTIFICATION);
+        mImeSwitcherHideNotificationPreference.setOnPreferenceChangeListener(this);
 
         new VoiceInputOutputSettings(this).onCreate();
 
@@ -376,6 +383,11 @@ public class InputMethodAndLanguageSettings extends SettingsPreferenceFragment
                     saveInputMethodSelectorVisibility((String)value);
                 }
             }
+        }
+        if (preference == mImeSwitcherHideNotificationPreference) {
+            Settings.System.putInt(getContentResolver(), Settings.System.IME_SWITCHER_HIDE_NOTIFICATION,
+                    ((Boolean) value) ? 1 : 0);
+            return true;
         }
         return false;
     }
@@ -666,8 +678,15 @@ public class InputMethodAndLanguageSettings extends SettingsPreferenceFragment
                 indexables.add(indexable);
             }
 
-            // Spell checker.
+            // Hide IME switcher
             SearchIndexableRaw indexable = new SearchIndexableRaw(context);
+            indexable.key = KEY_IME_SWITCHER_HIDE_NOTIFICATION;
+            indexable.title = context.getString(R.string.ime_switcher_hide_notification);
+            indexable.screenTitle = screenTitle;
+            indexables.add(indexable);
+
+            // Spell checker.
+            indexable = new SearchIndexableRaw(context);
             indexable.key = KEY_SPELL_CHECKERS;
             indexable.title = context.getString(R.string.spellcheckers_settings_title);
             indexable.screenTitle = screenTitle;
