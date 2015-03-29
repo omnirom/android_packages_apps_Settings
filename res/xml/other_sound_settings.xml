@@ -49,6 +49,14 @@
             android:key="vibrate_on_touch"
             android:title="@string/vibrate_on_touch_title" />
 
+    <!-- Shutter adjust sound -->
+    <SwitchPreference
+            android:key="screenshot_shutter_sound"
+            android:title="@string/screenshot_shutter_sound_title"
+            android:switchTextOff=""
+            android:switchTextOn=""
+            android:persistent="false" />
+
     <!-- Dock speaker plays -->
     <DropDownPreference
             android:key="dock_audio_media"
