@@ -65,6 +65,7 @@ public class OtherSoundSettings extends SettingsPreferenceFragment implements In
     private static final String KEY_DOCK_AUDIO_MEDIA = "dock_audio_media";
     private static final String KEY_EMERGENCY_TONE = "emergency_tone";
     private static final String KEY_VOLUME_ADJUST_SOUND = "volume_adjust_sound";
+    private static final String KEY_SCREENSHOT_SHUTTER_SOUND = "screenshot_shutter_sound";
 
     private static final SettingPref PREF_DIAL_PAD_TONES = new SettingPref(
             TYPE_SYSTEM, KEY_DIAL_PAD_TONES, System.DTMF_TONE_WHEN_DIALING, DEFAULT_ON) {
@@ -152,8 +153,11 @@ public class OtherSoundSettings extends SettingsPreferenceFragment implements In
         }
     };
 
-    private static final SettingPref PREF_VOLUME_ADJUST_SOUNDS = new SettingPref(
+    private static final SettingPref PREF_VOLUME_ADJUST_SOUND = new SettingPref(
             TYPE_SYSTEM, KEY_VOLUME_ADJUST_SOUND, System.VOLUME_ADJUST_SOUND, DEFAULT_ON);
+
+    private static final SettingPref PREF_SCREENSHOT_SHUTTER_SOUND = new SettingPref(
+            TYPE_SYSTEM, KEY_SCREENSHOT_SHUTTER_SOUND, System.SCREENSHOT_SHUTTER_SOUND, DEFAULT_ON);
 
     private static final SettingPref[] PREFS = {
         PREF_DIAL_PAD_TONES,
@@ -163,7 +167,8 @@ public class OtherSoundSettings extends SettingsPreferenceFragment implements In
         PREF_VIBRATE_ON_TOUCH,
         PREF_DOCK_AUDIO_MEDIA,
         PREF_EMERGENCY_TONE,
-        PREF_VOLUME_ADJUST_SOUNDS,
+        PREF_VOLUME_ADJUST_SOUND,
+        PREF_SCREENSHOT_SHUTTER_SOUND
     };
 
     private final SettingsObserver mSettingsObserver = new SettingsObserver();
