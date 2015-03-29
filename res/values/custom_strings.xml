@@ -41,4 +41,7 @@
     <string name="custom_light_off_time_title">Light OFF time during led pulse (ms)"</string>
     <string name="value_equals_default">def</string>
     <string name="show_light_on_zen_title">Blink during Do Not Disturb</string>
+
+    <string name="screenshot_shutter_sound_title">Screenshot shutter sound</string>
+
 </resources>
