@@ -34,6 +34,7 @@
     <string name="adb_notify_summary">Display a notification when USB debugging is connected</string>
 
     <string name="volume_adjust_sound_title">Volume adjust sound</string>
+    <string name="screenshot_shutter_sound_title">Screenshot shutter sound</string>
 
     <!-- Advanced reboot options -->
     <string name="advanced_reboot_title">Advanced reboot</string>
