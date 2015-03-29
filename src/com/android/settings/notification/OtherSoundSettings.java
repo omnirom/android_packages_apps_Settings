@@ -74,6 +74,7 @@ public class OtherSoundSettings extends SettingsPreferenceFragment implements In
     // Boot Sounds needs to be a system property so it can be accessed during boot.
     private static final String KEY_BOOT_SOUNDS = "boot_sounds";
     private static final String PROPERTY_BOOT_SOUNDS = "persist.sys.bootanim.play_sound";
+    private static final String KEY_SCREENSHOT_SHUTTER_SOUND = "screenshot_shutter_sound";
 
     private static final SettingPref PREF_DIAL_PAD_TONES = new SettingPref(
             TYPE_SYSTEM, KEY_DIAL_PAD_TONES, System.DTMF_TONE_WHEN_DIALING, DEFAULT_ON) {
@@ -170,6 +171,9 @@ public class OtherSoundSettings extends SettingsPreferenceFragment implements In
         }
     };
 
+    private static final SettingPref PREF_SCREENSHOT_SHUTTER_SOUND = new SettingPref(
+            TYPE_SYSTEM, KEY_SCREENSHOT_SHUTTER_SOUND, System.SCREENSHOT_SHUTTER_SOUND, DEFAULT_ON);
+
     private static final SettingPref[] PREFS = {
         PREF_DIAL_PAD_TONES,
         PREF_SCREEN_LOCKING_SOUNDS,
@@ -179,6 +183,7 @@ public class OtherSoundSettings extends SettingsPreferenceFragment implements In
         PREF_VIBRATE_ON_TOUCH,
         PREF_DOCK_AUDIO_MEDIA,
         PREF_EMERGENCY_TONE,
+        PREF_SCREENSHOT_SHUTTER_SOUND
     };
 
     private SwitchPreference mBootSounds;
