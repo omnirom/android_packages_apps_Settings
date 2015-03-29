@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+**
+** Copyright 2017 The OmniROM Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="style_settings_title">Style</string>
+    <string name="header_category_omni">OmniGears</string>
+    <string name="omni_dashboard_summary">Omnify your device</string>
+    <string name="style_settings_summary">Wallpapers and other swag</string>
+    <string name="omni_device_parts">Device features</string>
+    <string name="columns_menu">Columns layout</string>
+    <string name="hide_summary_menu">Hide summary</string>
+    <string name="bars_settings_title">Bars and lock screen</string>
+    <string name="button_settings_title">Buttons</string>
+    <string name="mod_version">Omni version</string>
+    <string name="mod_version_default">Unknown</string>
+    <string name="more_settings_title">More</string>
+    <string name="global_actions_title">Power menu</string>
+    <string name="display_rotation_title">Rotation</string>
+    <string name="display_rotation_summary">Configure possible rotation angles</string>
+    <string name="battery_light_settings_title">Battery LED settings</string>
+    <string name="link_volume_option_title">Link ring and notification volume</string>
+
+    <!-- Custom light color -->
+    <string name="light_customization">Led light notification</string>
+    <string name="custom_light_title">Light color</string>
+    <string name="custom_light_on_time_title">"Light ON time during led pulse (ms)"</string>
+    <string name="custom_light_off_time_title">"Light OFF time during led pulse (ms)"</string>
+    <string name="app_notifications_info_desc">Tap on one of above channels to configure their light colors and other options</string>
+    <string name="value_equals_default">Auto</string>
+    <string name="show_light_on_zen_title">Blink during Do Not Disturb</string>
+
+    <!-- Android debugging over WiFi -->
+    <string name="adb_over_network">ADB over network</string>
+    <string name="adb_over_network_summary">Enable TCP/IP debugging over network interfaces (Wi-Fi, USB networks). This setting is reset on reboot</string>
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">WARNING: When ADB over network is enabled, your phone is open for intrusions on all connected networks, including GSM data network!\n\nOnly use this feature when you are connected on trusted networks.\n\nDo you really want to enable this function?</string>
+
+    <string name="battery_image">Battery image</string>
+    <string name="battery_image_description">Show battery image in status bar</string>
+
+    <string name="twilight_mode_location_dialog">Location disabled</string>
+    <string name="twilight_mode_location_disabled">Location access is disabled</string>
+    <string name="twilight_mode_location_enable">Enable</string>
+
+    <!-- Encryption and credential -->
+    <string name="custom_encryption_and_credential_settings_summary_on">Device is encrypted</string>
+    <string name="custom_encryption_and_credential_settings_summary_off">Device is decrypted</string>
+
+    <string name="select_sim_for_sms">Select a SIM for SMS</string>
+
+    <!-- Format string for fingerprint location message -->
+    <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Locate the fingerprint sensor on the <xliff:g id="sensor_location">%1$s</xliff:g> of your phone.</string>
+
+    <!-- Fingerprint sensor locations -->
+    <string name="security_settings_fingerprint_sensor_location_back">back</string>
+    <string name="security_settings_fingerprint_sensor_location_front">front</string>
+    <string name="security_settings_fingerprint_sensor_location_left">left side</string>
+    <string name="security_settings_fingerprint_sensor_location_right">right side</string>
+
+    <string name="screenshot_shutter_sound_title">Screenshot shutter sound</string>
+</resources>
