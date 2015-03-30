@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b22818b_958179a8",
+        "filename": "res/xml/security_settings_pin.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-03-30T21:29:53Z",
+      "side": 1,
+      "message": "ALWAYS add persistent\u003dfalse for things that get store in settings!",
+      "revId": "021ff78e0760f04e7894b43aa2555087ffcfe4f8",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b22818b_7584fdb6",
+        "filename": "src/com/android/settings/SecuritySettings.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-03-30T21:29:53Z",
+      "side": 1,
+      "message": "for the future - you must set the value here also!",
+      "revId": "021ff78e0760f04e7894b43aa2555087ffcfe4f8",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
