@@ -40,5 +40,10 @@
             android:title="@string/app_notification_sensitive_title"
             android:summary="@string/app_notification_sensitive_summary"
             android:persistent="false" />
+    
+    <PreferenceScreen
+            android:key="notification_light"
+            android:title="@string/notification_light_settings"
+            android:fragment="org.omnirom.omnigears.notificationlight.NotificationLightSettings" />
 
 </PreferenceScreen>

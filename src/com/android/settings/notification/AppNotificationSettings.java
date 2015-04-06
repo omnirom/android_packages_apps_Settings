@@ -51,6 +51,7 @@ public class AppNotificationSettings extends SettingsPreferenceFragment {
     private static final String KEY_BLOCK = "block";
     private static final String KEY_PRIORITY = "priority";
     private static final String KEY_SENSITIVE = "sensitive";
+    private static final String KEY_NOTIFICATION_LIGHT = "notification_light";
 
     static final String EXTRA_HAS_SETTINGS_INTENT = "has_settings_intent";
     static final String EXTRA_SETTINGS_INTENT = "settings_intent";
@@ -61,6 +62,7 @@ public class AppNotificationSettings extends SettingsPreferenceFragment {
     private SwitchPreference mBlock;
     private SwitchPreference mPriority;
     private SwitchPreference mSensitive;
+    private Preference mNotificationLight;
     private AppRow mAppRow;
     private boolean mCreated;
 
@@ -135,6 +137,12 @@ public class AppNotificationSettings extends SettingsPreferenceFragment {
         mBlock = (SwitchPreference) findPreference(KEY_BLOCK);
         mPriority = (SwitchPreference) findPreference(KEY_PRIORITY);
         mSensitive = (SwitchPreference) findPreference(KEY_SENSITIVE);
+        mNotificationLight = (Preference) findPreference(KEY_NOTIFICATION_LIGHT);
+        if (mNotificationLight != null
+                && getResources().getBoolean(
+                        com.android.internal.R.bool.config_intrusiveNotificationLed) == false) {
+            getPreferenceScreen().removePreference(mNotificationLight);
+        }
 
         final boolean secure = new LockPatternUtils(getActivity()).isSecure();
         final boolean enabled = getLockscreenNotificationsEnabled();
