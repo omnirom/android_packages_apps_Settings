@@ -29,7 +29,7 @@
   <string name="adb_notify_summary">Zeige Benachrichtigung wenn USB Debugging verbunden ist</string>
   <string name="volume_adjust_sound_title">Ton bei Lautstärkeänderung</string>
   <string name="advanced_reboot_title">Erweitertes Neustartmenü</string>
-  <string name="advanced_reboot_summary">Neustartmenü mit Optionen für Recovery und Bootloader</string>
+  <string name="advanced_reboot_summary">Fügt dem Neustartmenü Optionen für den Neustart ins Recovery und in den Bootloader hinzu</string>
   <string name="show_cpu_info">Zeige CPU Informationen</string>
   <string name="show_cpu_info_summary">Bildschirm-Überlagerung mit aktueller CPU Information zeigen</string>
   <string name="adb_over_network">ADB über Netzwerk</string>
@@ -56,4 +56,6 @@
   <string name="no_media_notification_summary">Benachrichtigung zeigen, wenn Speichermedium entfernt wird</string>
   <string name="mount_notification_title">Benachrichtigung über eingehängten Speicher</string>
   <string name="mount_notification_summary">Dauerhafte Benachrichtigung über eingelegten Speicher</string>
+  <string name="zen_mode_none_category">Keine Unterbrechungen</string>
+  <string name="zen_mode_alarms">Alarme erlauben</string>
 </resources>

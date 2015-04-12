@@ -56,4 +56,6 @@
   <string name="no_media_notification_summary">当存储媒体被移除时显示通知</string>
   <string name="mount_notification_title">挂载通知</string>
   <string name="mount_notification_summary">为已挂载的存储显示持续性通知</string>
+  <string name="zen_mode_none_category">禁止打扰</string>
+  <string name="zen_mode_alarms">允许闹铃</string>
 </resources>
