@@ -40,6 +40,8 @@
     <string name="sms_over_ims_off" msgid="8354792045992793959">"Desaktibatu IMS bidezko SMSak"</string>
     <string name="ims_reg_required_on" msgid="3885152087309614653">"Aktibatu IMS erregistratzearen eskaera."</string>
     <string name="ims_reg_required_off" msgid="1720570343422743943">"Desaktibatu IMS erregistratzearen eskaera"</string>
+    <string name="volte_provisioned_flag_on" msgid="6023503159480902956">"Aktibatu VoLTE hornituta egotearen marka"</string>
+    <string name="volte_provisioned_flag_off" msgid="6168612015904744405">"Desaktibatu VoLTE hornituta egotearen marka"</string>
     <string name="lte_ram_dump_on" msgid="8568568019520172177">"Aktibatu LTE RAM iraulketa."</string>
     <string name="lte_ram_dump_off" msgid="2514507918652378283">"Desaktibatu LTE RAM iraulketa"</string>
     <string name="radioInfo_menu_viewADN" msgid="8743377494429930831">"Ikusi SIMaren helbide-agenda"</string>
@@ -1290,10 +1292,10 @@
     <string name="move_app_failed_dlg_text" msgid="3465267182923054022">"Ezin izan da aplikazioa eraman. <xliff:g id="REASON">%1$s</xliff:g>"</string>
     <string name="app_install_location_title" msgid="2068975150026852168">"Instalazioaren kokapen hobetsia"</string>
     <string name="app_install_location_summary" msgid="5155453752692959098">"Aldatu aplikazio berrien instalazio-kokapen hobetsia"</string>
-    <string name="app_disable_dlg_title" msgid="3916469657537695436">"Barneratutako aplikazioa desgaitu?"</string>
-    <string name="app_disable_dlg_text" msgid="3562567756362627323">"Barneratutako aplikazioa desgaitzen baduzu, beste aplikazioek portaera okerra izan dezakete."</string>
+    <string name="app_disable_dlg_title" msgid="3916469657537695436">"Aplikazio integratua desgaitu?"</string>
+    <string name="app_disable_dlg_text" msgid="3562567756362627323">"Aplikazio integratua desgaitzen baduzu, beste aplikazioek portaera okerra izan dezakete."</string>
     <string name="app_special_disable_dlg_title" msgid="2690148680327142674">"Datuak ezabatu eta aplikazioa desgaitu?"</string>
-    <string name="app_special_disable_dlg_text" msgid="3447657419284854195">"Aplikazio barneratu bat desgaitzen baduzu, beste aplikazio batzuek funtzionamendu okerra izan dezakete. Zure datuak ere ezabatuko dira."</string>
+    <string name="app_special_disable_dlg_text" msgid="3447657419284854195">"Aplikazio integratu bat desgaitzen baduzu, beste aplikazio batzuek funtzionamendu okerra izan dezakete. Zure datuak ere ezabatuko dira."</string>
     <string name="app_disable_notifications_dlg_title" msgid="7669264654851761857">"Jakinarazpenak desaktibatu nahi dituzu?"</string>
     <string name="app_disable_notifications_dlg_text" msgid="5088484670924769845">"Aplikazioaren jakinarazpenak desaktibatzen badituzu, alerta eta eguneratze garrantzitsuak gal ditzakezu."</string>
     <string name="app_ops_settings" msgid="5108481883575527511">"Aplikazioen eragiketak"</string>
@@ -1433,8 +1435,8 @@
     <string name="enable_adb" msgid="7982306934419797485">"USB arazketa"</string>
     <string name="enable_adb_summary" msgid="4881186971746056635">"Gaitu arazketa modua USBa konektatzean"</string>
     <string name="clear_adb_keys" msgid="4038889221503122743">"Baliogabetu USB arazketarako baimenak"</string>
-    <string name="bugreport_in_power" msgid="7923901846375587241">"Programa-akatsen txostenerako lasterbidea"</string>
-    <string name="bugreport_in_power_summary" msgid="1778455732762984579">"Bateriaren menuan, erakutsi programa-akatsen txostena sortzeko botoia"</string>
+    <string name="bugreport_in_power" msgid="7923901846375587241">"Akatsen txostenerako lasterbidea"</string>
+    <string name="bugreport_in_power_summary" msgid="1778455732762984579">"Bateriaren menuan, erakutsi akatsen txostena sortzeko botoia"</string>
     <string name="keep_screen_on" msgid="1146389631208760344">"Mantendu aktibo"</string>
     <string name="keep_screen_on_summary" msgid="2173114350754293009">"Pantaila ez da inoiz inaktibo ezarriko kargatu bitartean"</string>
     <string name="bt_hci_snoop_log" msgid="3340699311158865670">"Gaitu Bluetooth HCI miatze-erregistroa"</string>
@@ -1739,7 +1741,7 @@
     <string name="voice_input_settings" msgid="1099937800539324567">"Ahots bidezko idazketaren ezarpenak"</string>
     <string name="voice_input_settings_title" msgid="2676028028084981891">"Ahots bidezko idazketa"</string>
     <string name="voice_service_preference_section_title" msgid="3778706644257601021">"Ahots bidezko idazketa-zerbitzuak"</string>
-    <string name="voice_interactor_preference_summary" msgid="1801414022026937190">"Erabateko interakzioa eta gako-hitzen erabilera"</string>
+    <string name="voice_interactor_preference_summary" msgid="1801414022026937190">"Ahozko pasahitzak eta erabateko interakzioa"</string>
     <string name="voice_recognizer_preference_summary" msgid="669880813593690527">"Ahoz idazteko eginbide arrunta"</string>
     <string name="voice_interaction_security_warning" msgid="6378608263983737325">"Aginduak ahoz emateko zerbitzu honek uneoro kontrolatuko du ahotsa eta ahozko gaitasuna duten aplikazioak ere kontrolatu ahal izango ditu. <xliff:g id="VOICE_INPUT_SERVICE_APP_NAME">%s</xliff:g> aplikazioarena da. Zerbitzu hau erabiltzeko aukera gaitu nahi duzu?"</string>
     <string name="tts_settings" msgid="8186971894801348327">"Testua ahots bihurtzeko eginbidearen ezarpenak"</string>

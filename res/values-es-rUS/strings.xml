@@ -40,6 +40,8 @@
     <string name="sms_over_ims_off" msgid="8354792045992793959">"Desactivar SMS por IMS"</string>
     <string name="ims_reg_required_on" msgid="3885152087309614653">"Activar el registro de MI requerido"</string>
     <string name="ims_reg_required_off" msgid="1720570343422743943">"Desactivar el registro de MI requerido"</string>
+    <string name="volte_provisioned_flag_on" msgid="6023503159480902956">"Activar marca de aprovisionamiento de VoLTE"</string>
+    <string name="volte_provisioned_flag_off" msgid="6168612015904744405">"Desactivar marca de aprovisionamiento de VoLTE"</string>
     <string name="lte_ram_dump_on" msgid="8568568019520172177">"Activar volcado LTE RAM"</string>
     <string name="lte_ram_dump_off" msgid="2514507918652378283">"Desactivar volcado LTE RAM"</string>
     <string name="radioInfo_menu_viewADN" msgid="8743377494429930831">"Ver libreta de direcciones de SIM"</string>
@@ -1119,7 +1121,7 @@
     <string name="location_access_title" msgid="7064108942964081243">"Acceso a mi ubicación"</string>
     <string name="location_access_summary" msgid="69031404093194341">"Permitir que las aplicaciones que solicitaron permiso usen la información de tu ubicación"</string>
     <string name="location_sources_heading" msgid="1278732419851088319">"Fuentes de ubicación"</string>
-    <string name="about_settings" product="tablet" msgid="593457295516533765">"Acerca del tablet"</string>
+    <string name="about_settings" product="tablet" msgid="593457295516533765">"Acerca de la tablet"</string>
     <string name="about_settings" product="default" msgid="1743378368185371685">"Acerca del dispositivo"</string>
     <string name="about_settings_summary" msgid="3371517697156165959">"Ver información legal, estado, versión de software del tablet"</string>
     <string name="legal_information" msgid="5769301644270604095">"Información legal"</string>

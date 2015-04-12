@@ -40,6 +40,8 @@
     <string name="sms_over_ims_off" msgid="8354792045992793959">"IMS-ը փոխարինել SMS-ով"</string>
     <string name="ims_reg_required_on" msgid="3885152087309614653">"Միացնել IMS պարտադիր գրանցումը"</string>
     <string name="ims_reg_required_off" msgid="1720570343422743943">"Պահանջվում է անջատել IMS գրանցումը"</string>
+    <string name="volte_provisioned_flag_on" msgid="6023503159480902956">"Միացնել VoLTE-ի տրամադրած դրոշը"</string>
+    <string name="volte_provisioned_flag_off" msgid="6168612015904744405">"Անջատել VoLTE-ի տրամադրած դրոշը"</string>
     <string name="lte_ram_dump_on" msgid="8568568019520172177">"Անջատել բջջային ռամի պարպումը"</string>
     <string name="lte_ram_dump_off" msgid="2514507918652378283">"Անջատել lte ռամի պարպումը"</string>
     <string name="radioInfo_menu_viewADN" msgid="8743377494429930831">"Դիտել SIM-ի հասցեների գրքույկը"</string>
@@ -376,7 +378,7 @@
     <string name="crypt_keeper_failed_title" msgid="7133499413023075961">"Կոդավորումը անհաջող էր"</string>
     <string name="crypt_keeper_failed_summary" product="tablet" msgid="4478225241476039013">"Կոդավորումը դադարեցվեց, և այն հնարավոր չէ ավարտել: Արդյունքում ձեր գրասալիկի տվյալները այլևս մատչելի չեն: \n\n Շարունակելու համար օգտագործել ձեր գրասալիկը` դուք պետք է կատարեք գործարանային վերականգնում: Ձեր գրասալիկի վերականգնումից և կարգավորումից հետո դուք հնարավորություն կունենանք վերականգնել ցանկացած տվյալ, որը պահուստավորվել էր ձեր Google Հաշվում:"</string>
     <string name="crypt_keeper_failed_summary" product="default" msgid="3083477162766772532">"Կոդավորումն ընդհատվել է և հնարավոր չէ ավարտել: Արդյունքում հեռախոսի տվյալներն այլևս հասանելի չեն:\n\nՀեռախոսը նորից օգտագործելու համար պետք է գործարանային վերականգնում իրականացնեք: Երբ վերականգնումից հետո կարգավորեք հեռախոսը, հնարավորություն կունենաք վերականգնելու ցանկացած տվյալ, որ պահուստավորվել է ձեր Google Հաշվում:"</string>
-    <string name="crypt_keeper_data_corrupt_title" msgid="8759119849089795751">"Ապակոդավորումը չհաջողվեց"</string>
+    <string name="crypt_keeper_data_corrupt_title" msgid="8759119849089795751">"Չհաջողվեց վերծանել"</string>
     <string name="crypt_keeper_data_corrupt_summary" product="tablet" msgid="3775740783651700375">"Ձեր մուտքագրած գաղտնաբառը ճիշտ է, բայց ձեր տվյալները վնասված են: \n\nՈրպեսզի կարողանաք օգտագործել ձեռ գրասալիկը, պետք է կատարեք գործարանային տվյալների վերակայում: Վերակայումից հետո գրասալիկը կարգավորելիս հնարավորություն կունենաք վերականգնել ձեր տվյալները, եթե դրանք պահուստավորված են ձեր Google հաշվում:"</string>
     <string name="crypt_keeper_data_corrupt_summary" product="default" msgid="6898436151871328007">"Ձեր մուտքագրած գաղտնաբառը ճիշտ է, բայց ձեր տվյալները վնասված են: \n\nՈրպեսզի կարողանաք օգտագործել ձեռ հեռախոսը, պետք է կատարեք գործարանային տվյալների վերակայում: Վերակայումից հետո հեռախոսը կարգավորելիս հնարավորություն կունենաք վերականգնել ձեր տվյալները, եթե դրանք պահուստավորված են ձեր Google հաշվում:"</string>
     <string name="crypt_keeper_switch_input_method" msgid="4168332125223483198">"Փոխարկել մուտքագրման եղանակը"</string>
@@ -2360,7 +2362,7 @@
     <string name="keywords_battery" msgid="2096185085932675704">"սնուցում օգտագործում լիցքավորում"</string>
     <string name="keywords_spell_checker" msgid="6106749039734174140">"ուղղագրություն բառարան ուղղագրության ստուգում ինքնուղղում"</string>
     <string name="keywords_voice_input" msgid="3519547605812413860">"ճանաչող մուտքի խոսք խոսքի լեզու անձեռն անձեռն ճանաչում վիրավորական բառ աուդիո պատմություն Bluetooth ականջակալ"</string>
-    <string name="keywords_text_to_speech_output" msgid="392447904221657930">"արագություն լեզու կանխադրված խոսել տեքստից խոսք հնչյունավորում մատչելիություն ընթերցող կույր"</string>
+    <string name="keywords_text_to_speech_output" msgid="392447904221657930">"արագություն լեզու կանխադրված խոսել տեքստից խոսք հնչեցում մատչելիություն ընթերցող կույր"</string>
     <string name="keywords_date_and_time" msgid="2631808108134830066">"ժամացույց ռազմական"</string>
     <string name="keywords_factory_data_reset" msgid="4355133848707691977">"սրբել ջնջել վերականգնել մաքրել հեռացնել"</string>
     <string name="keywords_printing" msgid="1701778563617114846">"տպիչ"</string>

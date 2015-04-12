@@ -3073,8 +3073,6 @@
     <!-- App Ops Settings --> <skip />
     <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
     <string name="app_ops_settings">App ops</string>
-    <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
-    <string name="app_ops_settings_summary">View or change app permissions</string>
     <!-- [CHAR LIMIT=NONE] Time label for an operation that is currently running. -->
     <string name="app_ops_running">Running</string>
     <!-- [CHAR LIMIT=NONE] Time label for an operation that has never executed. -->
@@ -6051,11 +6049,5 @@
    <string name="imei_information_title">IMEI information</string>
    <string name="imei_information_summary">IMEI relative information</string>
    <string name="slot_number">(Slot<xliff:g id="slot_num">%1$d</xliff:g>)</string>
-
-   <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
-   <string name="supersu_title">SuperSU</string>
-
-   <!-- Toast message when trying to open system app AppOps -->
-   <string name="appops_sys_app">Cannot change operations for system apps</string>
 
 </resources>

@@ -40,6 +40,8 @@
     <string name="sms_over_ims_off" msgid="8354792045992793959">"IMS හරහා SMS අක්‍රිය කරන්න"</string>
     <string name="ims_reg_required_on" msgid="3885152087309614653">"අවශ්‍ය IMS ලියාපදිංචිය සක්‍රිය කරන්න"</string>
     <string name="ims_reg_required_off" msgid="1720570343422743943">"නියමිත IMS ලියාපදිංචි අක්‍රිය කරන්න"</string>
+    <string name="volte_provisioned_flag_on" msgid="6023503159480902956">"VoLTE ප්‍රරතිපාදන ධජය සක්‍රීය කරන්න"</string>
+    <string name="volte_provisioned_flag_off" msgid="6168612015904744405">"VoLTE ප්‍රරතිපාදන සලකුණු අක්‍රීය කරන්න"</string>
     <string name="lte_ram_dump_on" msgid="8568568019520172177">"lte රැම් නික්ෂේපය සක්‍රිය කරන්න"</string>
     <string name="lte_ram_dump_off" msgid="2514507918652378283">"රැම් නික්ෂේපය අක්‍රිය කරන්න"</string>
     <string name="radioInfo_menu_viewADN" msgid="8743377494429930831">"SIM ලිපින පොත බලන්න"</string>
@@ -2275,7 +2277,7 @@
     <skip />
     <string name="cell_broadcast_settings" msgid="2451014351355183338">"හදිසි විකාශන"</string>
     <string name="network_operators_settings" msgid="2583178259504630435">"ජාල ක්‍රියාකරුවන්"</string>
-    <string name="access_point_names" msgid="1381602020438634481">"ප්‍රවේශ ලක්ෂ්‍ය නම්"</string>
+    <string name="access_point_names" msgid="1381602020438634481">"ප්‍රවේශ ලක්ෂ්‍ය වල නම්"</string>
     <string name="enhanced_4g_lte_mode_title" msgid="5808043757309522392">"දියුණු කරන ලද 4G LTE ආකාරය"</string>
     <string name="enhanced_4g_lte_mode_summary" msgid="1376589643017218924">"හඬ සහ සන්නිවේදනය දියුණු කිරීමට LTE දත්ත භාවිතා කරන්න (නිර්දේශිතයි)"</string>
     <string name="preferred_network_type_title" msgid="3431041717309776341">"ප්‍රියකරන ජාල වර්ගය"</string>

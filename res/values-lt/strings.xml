@@ -40,6 +40,8 @@
     <string name="sms_over_ims_off" msgid="8354792045992793959">"Išjungti SMS per IMS"</string>
     <string name="ims_reg_required_on" msgid="3885152087309614653">"Būtina įjungti IMS registraciją"</string>
     <string name="ims_reg_required_off" msgid="1720570343422743943">"Būtina išjungti IMS registraciją"</string>
+    <string name="volte_provisioned_flag_on" msgid="6023503159480902956">"Įjungti „VoLTE“ aprūpinimo žymą"</string>
+    <string name="volte_provisioned_flag_off" msgid="6168612015904744405">"Išjungti „VoLTE“ aprūpinimo žymą"</string>
     <string name="lte_ram_dump_on" msgid="8568568019520172177">"Įjungti ilgalaikės raidos laisvosios prieigos atminties išklotinę"</string>
     <string name="lte_ram_dump_off" msgid="2514507918652378283">"Išjungti ilgalaikės raidos laisvosios prieigos atminties išklotinę"</string>
     <string name="radioInfo_menu_viewADN" msgid="8743377494429930831">"Žiūrėti SIM kortelės adresų knygą"</string>
@@ -2367,7 +2369,7 @@
     <string name="keywords_sounds_and_notifications" msgid="5965996187974887000">"garsiakalbis pyptelėjimas"</string>
     <string name="keywords_sounds_and_notifications_interruptions" msgid="2912933812460077912">"negalima netrukdyti pertraukti nutraukimas nutrūkęs ryšys"</string>
     <string name="keywords_app" msgid="6334757056536837791">"Laisvosios prieigos atmintis"</string>
-    <string name="keywords_location" msgid="782326973714313480">"netoliese vietovė istorija ataskaitų teikimas"</string>
+    <string name="keywords_location" msgid="782326973714313480">"netolimų vietovių istorijos ataskaitų teikimas"</string>
     <string name="keywords_location_mode" msgid="8584992704568356084">"tikslumas"</string>
     <string name="keywords_accounts" msgid="1957925565953357627">"paskyra"</string>
     <string name="keywords_users" msgid="4673901601478559100">"apribojimas riboti apribota"</string>
