@@ -56,4 +56,6 @@
   <string name="no_media_notification_summary">Értesítés megjelenítése, ha a tároló eltávolításra került</string>
   <string name="mount_notification_title">Csatlakoztatási értesítés</string>
   <string name="mount_notification_summary">Folyamatos értesítés megjelenítése csatlakoztatott tároló esetén</string>
+  <string name="zen_mode_none_category">Megszakítások nélkül</string>
+  <string name="zen_mode_alarms">Riasztás engedélyezése</string>
 </resources>
