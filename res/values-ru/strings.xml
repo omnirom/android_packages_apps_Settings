@@ -40,6 +40,8 @@
     <string name="sms_over_ims_off" msgid="8354792045992793959">"Отключить SMS через IMS"</string>
     <string name="ims_reg_required_on" msgid="3885152087309614653">"Обязательная регистрация IMS включена"</string>
     <string name="ims_reg_required_off" msgid="1720570343422743943">"Обязательная регистрация IMS отключена"</string>
+    <string name="volte_provisioned_flag_on" msgid="6023503159480902956">"Включить синхронизацию VoLTE"</string>
+    <string name="volte_provisioned_flag_off" msgid="6168612015904744405">"Отключить синхронизацию VoLTE"</string>
     <string name="lte_ram_dump_on" msgid="8568568019520172177">"Очищать ОЗУ"</string>
     <string name="lte_ram_dump_off" msgid="2514507918652378283">"Не очищать ОЗУ"</string>
     <string name="radioInfo_menu_viewADN" msgid="8743377494429930831">"Просмотреть адресную книгу на SIM-карте"</string>
@@ -603,7 +605,7 @@
     <string name="wifi_scan_always_available_title" msgid="1518769058260729007">"Всегда искать сети"</string>
     <string name="wifi_scan_always_available_summary" msgid="5442775583708315387">"Разрешить службе геопозиционирования Google и другим приложениям искать сети, даже когда модуль Wi‑Fi отключен"</string>
     <string name="wifi_automatically_connect_title" msgid="7950640291510621742">"Подключаться к открытым сетям Wi-Fi"</string>
-    <string name="wifi_automatically_connect_summary" msgid="6722194413023965902">"Разрешить ассистенту Wi-Fi автоматически проверять открытые сети и подключаться к ним"</string>
+    <string name="wifi_automatically_connect_summary" msgid="6722194413023965902">"Разрешить ассистенту Wi-Fi автоматически подключаться к проверенным открытым сетям"</string>
     <string name="wifi_select_assistant_dialog_title" msgid="4014645210955009439">"Выбор ассистента Wi-Fi"</string>
     <string name="wifi_install_credentials" msgid="3551143317298272860">"Установка сертификатов"</string>
     <string name="wifi_scan_notify_text_location_on" msgid="8135076005488914200">"Чтобы точнее определять местоположение, а также и в других целях, приложение Google и другие приложения могут искать доступные сети даже при отключенном Wi-Fi. Изменить настройки можно в меню \"Дополнительно &gt; Всегда искать сети\"."</string>
@@ -2312,7 +2314,7 @@
     <string name="sim_calls_always_use" msgid="7936774751250119715">"Всегда использовать для звонков"</string>
     <string name="select_sim_for_data" msgid="2366081042162853044">"SIM-карта для передачи данных"</string>
     <string name="data_switch_started" msgid="2040761479817166311">"Смена SIM-карты… Подождите минуту."</string>
-    <string name="select_sim_for_calls" msgid="3503094771801109334">"SIM-карта для звонков"</string>
+    <string name="select_sim_for_calls" msgid="3503094771801109334">"Выберите SIM-карту"</string>
     <string name="sim_select_card" msgid="211285163525563293">"Выберите SIM-карту"</string>
     <string name="sim_card_number_title" msgid="7845379943474336488">"SIM-карта <xliff:g id="CARD_NUMBER">%1$d</xliff:g>"</string>
     <string name="sim_slot_empty" msgid="8964505511911854688">"Пустая SIM-карта"</string>
@@ -2337,7 +2339,7 @@
     <string name="sim_signal_strength" msgid="9144010043784767984">"<xliff:g id="DBM">%1$d</xliff:g> дБмВт, asu: <xliff:g id="ASU">%2$d</xliff:g>"</string>
     <string name="sim_notification_title" msgid="6272913297433198340">"SIM-карты заменены"</string>
     <string name="sim_notification_summary" msgid="5024470200658902406">"Нажмите, чтобы настроить"</string>
-    <string name="sim_pref_divider" msgid="6778907671867621874">"Использовать SIM-карту для"</string>
+    <string name="sim_pref_divider" msgid="6778907671867621874">"Использование SIM-карт"</string>
     <string name="sim_calls_ask_first_prefs_title" msgid="7941299533514115976">"Всегда спрашивать"</string>
     <string name="sim_selection_required_pref" msgid="3446721423206414652">"Выберите SIM-карту"</string>
     <string name="dashboard_title" msgid="5453710313046681820">"Настройки"</string>

@@ -40,6 +40,8 @@
     <string name="sms_over_ims_off" msgid="8354792045992793959">"Zima SMS juu ya IMS"</string>
     <string name="ims_reg_required_on" msgid="3885152087309614653">"Inahitaji kuwasha usajili wa IMS"</string>
     <string name="ims_reg_required_off" msgid="1720570343422743943">"Inahitaji kuzima usajili wa IMS"</string>
+    <string name="volte_provisioned_flag_on" msgid="6023503159480902956">"Washa alama inayoonyesha VoLTE inatumika"</string>
+    <string name="volte_provisioned_flag_off" msgid="6168612015904744405">"Zima alama inayoonyesha VoLTE inatumika"</string>
     <string name="lte_ram_dump_on" msgid="8568568019520172177">"Washa Ite ram dump"</string>
     <string name="lte_ram_dump_off" msgid="2514507918652378283">"Zima Ite ram dump"</string>
     <string name="radioInfo_menu_viewADN" msgid="8743377494429930831">"Ona anwani za kijitabu cha SIM"</string>
@@ -2192,7 +2194,7 @@
     <string name="user_add_user_message_long" msgid="718192651887726259">"Unaweza kutumia kifaa hiki pamoja na watu wengine kwa kuongeza watumiaji wa ziada. Kila mtumiaji ana nafasi yake mwenyewe, ambayo anaweza kuweka programu anazopenda, mandhari na kadhalika. Watumiaji pia wanaweza kurekebisha mipangilio ya kifaa inayoathiri kila mtu kama Wi-Fi. \n\n Unapomwongeza mtumiaji mpya, mtu huyo anahitaji kujitayarishia nafasi yake. \n\n Mtumiaji yeyote anaweza kusasishia watumiaji wengine wote programu."</string>
     <string name="user_add_user_message_short" msgid="1511354412249044381">"Unapomwongeza mtumiaji mpya, mtu huyo anahitaji kusanidi nafasi yake.\n\nMtumiaji yoyote anaweza kusasisha programu kwa ajili ya watumiaji wengine wote."</string>
     <string name="user_setup_dialog_title" msgid="1765794166801864563">"Mtumiaji aongezwe sasa?"</string>
-    <string name="user_setup_dialog_message" msgid="1004068621380867148">"Hakikisha kuwa kuna mtu wa kuchukua kifaa na kusanidi nafasi"</string>
+    <string name="user_setup_dialog_message" msgid="1004068621380867148">"Hakikisha kuwa mtu huyu anaweza kuchukua kifaa na kuweka mapendeleo yake"</string>
     <string name="user_setup_profile_dialog_message" msgid="3896568553327558731">"Ungependa kuweka wasifu sasa?"</string>
     <string name="user_setup_button_setup_now" msgid="3391388430158437629">"Ongeza sasa"</string>
     <string name="user_setup_button_setup_later" msgid="3068729597269172401">"Siyo sasa"</string>

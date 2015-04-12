@@ -40,6 +40,8 @@
     <string name="sms_over_ims_off" msgid="8354792045992793959">"‏غیرفعال کردن پیامک در IMS"</string>
     <string name="ims_reg_required_on" msgid="3885152087309614653">"‏لازم است که ثبت‌ IMS را فعال کنید"</string>
     <string name="ims_reg_required_off" msgid="1720570343422743943">"‏لازم است که ثبت‌ IMS را غیرفعال کنید"</string>
+    <string name="volte_provisioned_flag_on" msgid="6023503159480902956">"‏روشن کردن پرچم مشروط VoLTE"</string>
+    <string name="volte_provisioned_flag_off" msgid="6168612015904744405">"‏خاموش کردن پرچم مشروط VoLTE"</string>
     <string name="lte_ram_dump_on" msgid="8568568019520172177">"‏روشن کردن رونوشت رمپ lte"</string>
     <string name="lte_ram_dump_off" msgid="2514507918652378283">"‏غیرفعال کردن رونوشت رم lte"</string>
     <string name="radioInfo_menu_viewADN" msgid="8743377494429930831">"مشاهده دفترچه آدرس سیم کارت"</string>
@@ -91,7 +93,7 @@
     <string name="battery_info_awake_plugged" msgid="176716874713478188">"زمان بیداری هنگام شارژ کردن:"</string>
     <string name="battery_info_screen_on" msgid="376277447175613889">"زمان روشن بودن صفحه:"</string>
     <string name="battery_info_status_unknown" msgid="196130600938058547">"ناشناس"</string>
-    <string name="battery_info_status_charging" msgid="1705179948350365604">"شارژ کردن"</string>
+    <string name="battery_info_status_charging" msgid="1705179948350365604">"در حال شارژ شدن"</string>
     <string name="battery_info_status_charging_ac" msgid="2909861890674399949">"شارژ با جریان متناوب"</string>
     <string name="battery_info_status_charging_usb" msgid="2207489369680923929">"‏شارژ از طریق USB"</string>
     <string name="battery_info_status_charging_wireless" msgid="3574032603735446573">"شارژ به صورت بی‌سیم"</string>
@@ -1616,7 +1618,7 @@
     <string name="battery_since_reset" msgid="7464546661121187045">"استفاده از باتری از زمان بازنشانی"</string>
     <string name="battery_stats_on_battery" msgid="4970762168505236033">"<xliff:g id="TIME">%1$s</xliff:g> در باتری"</string>
     <string name="battery_stats_duration" msgid="7464501326709469282">"<xliff:g id="TIME">%1$s</xliff:g> از زمان جدا کردن"</string>
-    <string name="battery_stats_charging_label" msgid="4223311142875178785">"شارژ کردن"</string>
+    <string name="battery_stats_charging_label" msgid="4223311142875178785">"در حال شارژ شدن"</string>
     <string name="battery_stats_screen_on_label" msgid="7150221809877509708">"صفحه روشن"</string>
     <string name="battery_stats_gps_on_label" msgid="1193657533641951256">"‏GPS در"</string>
     <string name="battery_stats_wifi_running_label" msgid="1845839195549226252">"Wi-Fi"</string>

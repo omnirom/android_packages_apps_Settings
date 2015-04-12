@@ -40,6 +40,8 @@
     <string name="sms_over_ims_off" msgid="8354792045992793959">"Isključi SMS putem IMS-a"</string>
     <string name="ims_reg_required_on" msgid="3885152087309614653">"Treba uključiti IMS prijavu"</string>
     <string name="ims_reg_required_off" msgid="1720570343422743943">"Treba isključiti IMS prijavu"</string>
+    <string name="volte_provisioned_flag_on" msgid="6023503159480902956">"Uključi oznaku pružanja usluga putem VoLTE-a"</string>
+    <string name="volte_provisioned_flag_off" msgid="6168612015904744405">"Isključi oznaku pružanja usluga putem VoLTE-a"</string>
     <string name="lte_ram_dump_on" msgid="8568568019520172177">"Uključi LTE RAM kopiranje"</string>
     <string name="lte_ram_dump_off" msgid="2514507918652378283">"Isključi LTE RAM kopiranje"</string>
     <string name="radioInfo_menu_viewADN" msgid="8743377494429930831">"Prikaži SIM imenik"</string>
@@ -1259,8 +1261,8 @@
     <string name="app_factory_reset_dlg_text" msgid="6371247225487725860">"Sva ažuriranja ove aplikacije sustava Android bit će deinstalirana."</string>
     <string name="clear_failed_dlg_title" msgid="2387060805294783175">"Izbriši podatke"</string>
     <string name="clear_failed_dlg_text" msgid="1092177570631523106">"Brisanje podataka za aplikaciju nije uspjelo."</string>
-    <string name="security_settings_desc" product="tablet" msgid="1292421279262430109">"Ova aplikacija može pristupiti sljedećim stavkama na vašem tabletnom računalu:"</string>
-    <string name="security_settings_desc" product="default" msgid="61749028818785244">"Ova aplikacija može pristupiti sljedećim stavkama na vašem telefonu:"</string>
+    <string name="security_settings_desc" product="tablet" msgid="1292421279262430109">"Ova aplikacija može pristupiti sljedećem na vašem tabletu:"</string>
+    <string name="security_settings_desc" product="default" msgid="61749028818785244">"Ova aplikacija može pristupiti sljedećem na vašem telefonu:"</string>
     <string name="security_settings_desc_multi" product="tablet" msgid="7300932212437084403">"Ta aplikacija može pristupiti sljedećim stavkama na vašem tabletnom računalu. Radi poboljšanja uspješnosti i smanjenja upotrebe memorije neke od tih dozvola dostupne su aplikaciji <xliff:g id="BASE_APP_NAME">%1$s</xliff:g> jer izvodi isti proces kao i <xliff:g id="ADDITIONAL_APPS_LIST">%2$s</xliff:g>:"</string>
     <string name="security_settings_desc_multi" product="default" msgid="6610268420793984752">"Ta aplikacija može pristupiti sljedećim stavkama na vašem telefonu. Radi poboljšanja uspješnosti i smanjenja upotrebe memorije neke od tih dozvola dostupne su aplikaciji <xliff:g id="BASE_APP_NAME">%1$s</xliff:g> jer izvodi isti proces kao i <xliff:g id="ADDITIONAL_APPS_LIST">%2$s</xliff:g>:"</string>
     <string name="join_two_items" msgid="1336880355987539064">"<xliff:g id="FIRST_ITEM">%1$s</xliff:g> i <xliff:g id="SECOND_ITEM">%2$s</xliff:g>"</string>

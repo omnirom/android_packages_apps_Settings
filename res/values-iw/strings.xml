@@ -40,6 +40,8 @@
     <string name="sms_over_ims_off" msgid="8354792045992793959">"‏כבה SMS באמצעות IMS"</string>
     <string name="ims_reg_required_on" msgid="3885152087309614653">"‏הפעל את הדרישה להרשמת IMS"</string>
     <string name="ims_reg_required_off" msgid="1720570343422743943">"‏כבה את הדרישה להרשמת IMS"</string>
+    <string name="volte_provisioned_flag_on" msgid="6023503159480902956">"‏הפעל את הסימון של ניהול תצורת VoLTE"</string>
+    <string name="volte_provisioned_flag_off" msgid="6168612015904744405">"‏כבה את הסימון של ניהול תצורת VoLTE"</string>
     <string name="lte_ram_dump_on" msgid="8568568019520172177">"‏הפעל פעולת Dump של lte RAM"</string>
     <string name="lte_ram_dump_off" msgid="2514507918652378283">"‏כבה פעולת Dump של lte RAM"</string>
     <string name="radioInfo_menu_viewADN" msgid="8743377494429930831">"‏הצג פנקס כתובות של SIM"</string>
@@ -2388,9 +2390,9 @@
     <string name="notification_volume_option_title" msgid="6064656124416882130">"עוצמת קול של הודעות"</string>
     <string name="zen_mode_settings_title" msgid="7014915558669122902">"הפרעות"</string>
     <string name="zen_mode_option_title" msgid="5061978632306007914">"כשנכנסות שיחות והודעות"</string>
-    <string name="zen_mode_option_off" msgid="3167702608910820883">"התר תמיד הפרעות"</string>
-    <string name="zen_mode_option_important_interruptions" msgid="2320263300561981257">"התר רק הפרעות בעדיפות גבוהה"</string>
-    <string name="zen_mode_option_no_interruptions" msgid="5664234817617301449">"אל תתיר הפרעות"</string>
+    <string name="zen_mode_option_off" msgid="3167702608910820883">"הפרעות בכל מצב"</string>
+    <string name="zen_mode_option_important_interruptions" msgid="2320263300561981257">"רק הפרעות בעדיפות גבוהה"</string>
+    <string name="zen_mode_option_no_interruptions" msgid="5664234817617301449">"ללא הפרעות"</string>
     <string name="ringtone_title" msgid="5379026328015343686">"רינגטון של טלפון"</string>
     <string name="notification_ringtone_title" msgid="3361201340352664272">"רינגטון להודעות המוגדר כברירת מחדל"</string>
     <string name="vibrate_when_ringing_title" msgid="3806079144545849032">"הפעל גם רטט עבור שיחות"</string>
