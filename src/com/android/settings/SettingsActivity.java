@@ -1122,8 +1122,9 @@ public class SettingsActivity extends Activity
                             XmlUtils.skipCurrentTag(parser);
                         }
                     }
-
-                    target.add(category);
+                    if (category.getTilesCount() > 0) {
+                        target.add(category);
+                    }
                 } else {
                     XmlUtils.skipCurrentTag(parser);
                 }
