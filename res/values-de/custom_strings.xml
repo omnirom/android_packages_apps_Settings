@@ -25,11 +25,13 @@
   <string name="performance_settings">Leistung</string>
   <string name="advanced_settings_title">Erweitert</string>
   <string name="button_settings">Schaltflächen</string>
+  <string name="battery_light_settings">Akku-LED</string>
   <string name="adb_notify">Benachrichtigung USB Debugging</string>
   <string name="adb_notify_summary">Zeige Benachrichtigung wenn USB Debugging verbunden ist</string>
   <string name="volume_adjust_sound_title">Ton bei Lautstärkeänderung</string>
+  <string name="screenshot_shutter_sound_title">Bildschirmfoto Auslöse-Geräusch</string>
   <string name="advanced_reboot_title">Erweitertes Neustartmenü</string>
-  <string name="advanced_reboot_summary">Neustartmenü mit Optionen für Recovery und Bootloader</string>
+  <string name="advanced_reboot_summary">Fügt dem Neustartmenü Optionen für den Neustart ins Recovery und in den Bootloader hinzu</string>
   <string name="show_cpu_info">Zeige CPU Informationen</string>
   <string name="show_cpu_info_summary">Bildschirm-Überlagerung mit aktueller CPU Information zeigen</string>
   <string name="adb_over_network">ADB über Netzwerk</string>
@@ -56,4 +58,14 @@
   <string name="no_media_notification_summary">Benachrichtigung zeigen, wenn Speichermedium entfernt wird</string>
   <string name="mount_notification_title">Benachrichtigung über eingehängten Speicher</string>
   <string name="mount_notification_summary">Dauerhafte Benachrichtigung über eingelegten Speicher</string>
+  <string name="zen_mode_none_category">Keine Unterbrechungen</string>
+  <string name="zen_mode_alarms">Alarme erlauben</string>
+  <string name="link_volume_option_title">Klingel- und Benachrichtigungslautstärken verbinden</string>
+  <string name="notification_volume_option_title">Benachrichtigungslautstärke</string>
+  <string name="ring_notification_volume_option_tile">Klingel- und Benachrichtigungslautstärke</string>
+  <string name="show_unac_and_overcounted_stats_title">Nicht zuweisbaren Batterieverbrauch anzeigen</string>
+  <string name="show_unac_and_overcounted_stats_summary">In der Verbrauchsstatistik nicht direkt zuweisbare Akku-Nutzung anzeigen.</string>
+  <string name="keyguard_quick_unlock">Schnelles Entsperren</string>
+  <string name="keyguard_quick_unlock_summary_pin">Automatisch entsperren, wenn die richtige PIN eingegeben wurde</string>
+  <string name="keyguard_quick_unlock_summary_password">Automatisch entsperren, wenn das richtige Kennwort eingegeben wurde</string>
 </resources>
