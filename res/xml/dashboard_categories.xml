@@ -76,13 +76,13 @@
             android:id="@+id/interface_section"
             android:title="@string/header_category_interface" >
 
-        <!-- Bars
+        <!-- Bars -->
         <dashboard-tile
                android:id="@+id/interface_bars"
                android:title="@string/interface_bars_title"
                android:fragment="org.omnirom.omnigears.interfacesettings.BarsSettings"
                android:icon="@drawable/ic_bars"
-               /> -->
+               />
 
         <!-- Menus
         <dashboard-tile
