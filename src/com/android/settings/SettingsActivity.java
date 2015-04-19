@@ -116,6 +116,7 @@ import com.android.settings.wifi.p2p.WifiP2pSettings;
 import org.omnirom.omnigears.ButtonSettings;
 import com.brewcrewfoo.performance.activities.MainActivity;
 import org.omnirom.omnigears.batterylight.BatteryLightSettings;
+import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.brightness.ButtonBrightnessSettings;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -245,7 +246,8 @@ public class SettingsActivity extends Activity
             R.id.nfc_payment_settings,
             R.id.home_settings,
             R.id.button_settings,
-            R.id.dashboard
+            R.id.dashboard,
+            R.id.interface_bars
     };
 
     private static final String[] ENTRY_FRAGMENTS = {
@@ -313,6 +315,7 @@ public class SettingsActivity extends Activity
             ButtonSettings.class.getName(),
             MainActivity.class.getName(),
             BatteryLightSettings.class.getName(),
+            BarsSettings.class.getName(),
             ButtonBrightnessSettings.class.getName()
     };
 
