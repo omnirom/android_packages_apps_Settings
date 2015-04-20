@@ -84,13 +84,13 @@
                android:icon="@drawable/ic_bars"
                /> -->
 
-        <!-- Menus
+        <!-- Menus -->
         <dashboard-tile
                android:id="@+id/interface_menus"
                android:title="@string/interface_menus_title"
                android:fragment="org.omnirom.omnigears.interfacesettings.MenusSettings"
                android:icon="@drawable/ic_menus"
-               /> -->
+               />
 
         <!-- More
         <dashboard-tile
