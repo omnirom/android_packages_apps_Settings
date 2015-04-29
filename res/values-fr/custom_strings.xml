@@ -57,4 +57,5 @@
   <string name="mount_notification_title">Notification de montage</string>
   <string name="mount_notification_summary">Afficher une notification pour le périphériques montés</string>
   <string name="zen_mode_alarms">Autoriser les alarmes</string>
+  <string name="supersu_title">SuperSU</string>
 </resources>
