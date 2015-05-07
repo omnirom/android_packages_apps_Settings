@@ -25,11 +25,11 @@
     <string name="dlg_switch" msgid="6243971420240639064">"Switch"</string>
     <string name="device_info_default" msgid="7847265875578739287">"Unknown"</string>
     <plurals name="show_dev_countdown" formatted="false" msgid="7201398282729229649">
-      <item quantity="other">You are now <xliff:g id="STEP_COUNT_1">%1$d</xliff:g> steps away from being a developer.</item>
-      <item quantity="one">You are now <xliff:g id="STEP_COUNT_0">%1$d</xliff:g> step away from being a developer.</item>
+      <item quantity="other">"You are now <xliff:g id="STEP_COUNT_1">%1$d</xliff:g> taps away from enabling Developer options."</item>
+      <item quantity="one">"You are now <xliff:g id="STEP_COUNT_0">%1$d</xliff:g> taps away from enabling Developer options."</item>
     </plurals>
-    <string name="show_dev_on" msgid="1110711554982716293">"You are now a developer!"</string>
-    <string name="show_dev_already" msgid="2151632240145446227">"No need, you are already a developer."</string>
+    <string name="show_dev_on" msgid="1110711554982716293">"You have enabled Developer options!"</string>
+    <string name="show_dev_already" msgid="2151632240145446227">"No need, you have already enabled Developer options."</string>
     <string name="header_category_wireless_networks" msgid="5110914332313954940">"Wireless &amp; networks"</string>
     <string name="header_category_connections" msgid="6471513040815680662">"Connections"</string>
     <string name="header_category_device" msgid="4544026001618307754">"Device"</string>
