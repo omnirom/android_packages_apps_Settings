@@ -32,6 +32,8 @@ import android.hardware.input.InputManager;
 import android.hardware.input.KeyboardLayout;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.UserHandle;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -40,6 +42,7 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.provider.Settings;
+import android.provider.Settings.SettingNotFoundException;
 import android.provider.Settings.System;
 import android.speech.tts.TtsEngines;
 import android.text.TextUtils;
@@ -83,11 +86,13 @@ public class InputMethodAndLanguageSettings extends SettingsPreferenceFragment
     private static final String KEY_INPUT_METHOD_SELECTOR = "input_method_selector";
     private static final String KEY_USER_DICTIONARY_SETTINGS = "key_user_dictionary_settings";
     private static final String KEY_PREVIOUSLY_ENABLED_SUBTYPES = "previously_enabled_subtypes";
+    private static final String KEY_STYLUS_ICON_ENABLED = "stylus_icon_enabled";
     // false: on ICS or later
     private static final boolean SHOW_INPUT_METHOD_SWITCHER_SETTINGS = false;
 
     private int mDefaultInputMethodSelectorVisibility = 0;
     private ListPreference mShowInputMethodSelectorPref;
+    private CheckBoxPreference mStylusIconEnabled;
     private PreferenceCategory mKeyboardSettingsCategory;
     private PreferenceCategory mHardKeyboardCategory;
     private PreferenceCategory mGameControllerCategory;
@@ -159,6 +164,9 @@ public class InputMethodAndLanguageSettings extends SettingsPreferenceFragment
         // Build hard keyboard and game controller preference categories.
         mIm = (InputManager)activity.getSystemService(Context.INPUT_SERVICE);
         updateInputDevices();
+
+	//Stylus arrow preference
+	mStylusIconEnabled = (CheckBoxPreference) findPreference(KEY_STYLUS_ICON_ENABLED);
 
         // Spell Checker
         final Preference spellChecker = findPreference(KEY_SPELL_CHECKERS);
@@ -268,6 +276,16 @@ public class InputMethodAndLanguageSettings extends SettingsPreferenceFragment
             }
         }
 
+	if (mStylusIconEnabled != null) {
+	    try{
+                mStylusIconEnabled.setChecked(
+		     Settings.System.getIntForUser(getActivity().getContentResolver(),
+                     Settings.System.STYLUS_ICON_ENABLED, UserHandle.USER_CURRENT) == 1);
+	    } catch (SettingNotFoundException e){
+		    //You should not be here
+	    }
+        }
+
         updateInputDevices();
 
         // Refresh internal states in mInputMethodSettingValues to keep the latest
@@ -328,7 +346,10 @@ public class InputMethodAndLanguageSettings extends SettingsPreferenceFragment
                         pref.isChecked() ? 1 : 0);
                 return true;
             }
-        }
+        } else if (preference == mStylusIconEnabled) {
+            Settings.System.putInt(getContentResolver(),
+                Settings.System.STYLUS_ICON_ENABLED, mStylusIconEnabled.isChecked() ? 1 : 0);
+         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 
