@@ -243,4 +243,6 @@
     <string name="wifi_setting_countrycode_error">There was a problem setting the region code.</string>
     <string name="wifi_setting_countrycode_default">Default</string>
 
+    <string name="wifi_aggressive_blacklist">Aggressive Wi\u2011Fi blacklisting</string>
+    <string name="wifi_aggressive_blacklist_summary">When enabled, Wi\u2011Fi blaccklisting is enabled to avoid networks with config problems</string>
 </resources>
