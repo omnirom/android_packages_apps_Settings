@@ -149,6 +149,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private static final String WIFI_VERBOSE_LOGGING_KEY = "wifi_verbose_logging";
     private static final String WIFI_AGGRESSIVE_HANDOVER_KEY = "wifi_aggressive_handover";
     private static final String WIFI_ALLOW_SCAN_WITH_TRAFFIC_KEY = "wifi_allow_scan_with_traffic";
+    private static final String WIFI_AGGRESSIVE_BLACKLIST_KEY = "wifi_aggressive_blacklist";
     private static final String SELECT_LOGD_SIZE_KEY = "select_logd_size";
     private static final String SELECT_LOGD_SIZE_PROPERTY = "persist.logd.size";
     private static final String SELECT_LOGD_DEFAULT_SIZE_PROPERTY = "ro.logd.size";
@@ -209,7 +210,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private SwitchPreference mWifiDisplayCertification;
     private SwitchPreference mWifiVerboseLogging;
     private SwitchPreference mWifiAggressiveHandover;
-
+    private SwitchPreference mWifiAggressiveBlacklist;
     private SwitchPreference mWifiAllowScansWithTraffic;
     private SwitchPreference mStrictMode;
     private SwitchPreference mPointerLocation;
@@ -355,6 +356,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         mWifiVerboseLogging = findAndInitSwitchPref(WIFI_VERBOSE_LOGGING_KEY);
         mWifiAggressiveHandover = findAndInitSwitchPref(WIFI_AGGRESSIVE_HANDOVER_KEY);
         mWifiAllowScansWithTraffic = findAndInitSwitchPref(WIFI_ALLOW_SCAN_WITH_TRAFFIC_KEY);
+        mWifiAggressiveBlacklist = findAndInitSwitchPref(WIFI_AGGRESSIVE_BLACKLIST_KEY);
         mLogdSize = addListPreference(SELECT_LOGD_SIZE_KEY);
 
         mWindowAnimationScale = addListPreference(WINDOW_ANIMATION_SCALE_KEY);
@@ -571,6 +573,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateWifiVerboseLoggingOptions();
         updateWifiAggressiveHandoverOptions();
         updateWifiAllowScansWithTrafficOptions();
+        updateWifiAggressiveBlacklist();
         updateSimulateColorSpace();
         updateUseNuplayerOptions();
         updateUSBAudioOptions();
@@ -1101,6 +1104,18 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         mWifiManager.setAllowScansWithTraffic(mWifiAllowScansWithTraffic.isChecked() ? 1 : 0);
     }
 
+    private void updateWifiAggressiveBlacklist() {
+        updateSwitchPreference(mWifiAggressiveBlacklist, Settings.Global.getInt(
+                getActivity().getContentResolver(),
+                Settings.Global.WIFI_AGGRESIVE_BLACKLIST, 1) != 0);
+    }
+
+    private void writeWifiAggressiveBlacklist() {
+        Settings.Global.putInt(getActivity().getContentResolver(),
+                Settings.Global.WIFI_AGGRESIVE_BLACKLIST,
+                mWifiAggressiveBlacklist.isChecked() ? 1 : 0);
+    }
+
     private void updateLogdSizeValues() {
         if (mLogdSize != null) {
             String currentValue = SystemProperties.get(SELECT_LOGD_SIZE_PROPERTY);
@@ -1522,6 +1537,8 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             writeUSBAudioOptions();
         } else if (preference == mAdvancedReboot) {
             writeAdvancedRebootOptions();
+        } else if (preference == mWifiAggressiveBlacklist) {
+            writeWifiAggressiveBlacklist();
         } else {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }

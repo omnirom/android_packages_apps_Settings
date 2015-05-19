@@ -234,4 +234,7 @@
     <string name="app_ops_permissions_always_ask">Always ask</string>
 
     <string name="interface_bars_title">Bars</string>
+
+    <string name="wifi_aggressive_blacklist">Aggressive Wi\u2011Fi blacklisting</string>
+    <string name="wifi_aggressive_blacklist_summary">When enabled, Wi\u2011Fi blaccklisting is enabled to avoid networks with config problems</string>
 </resources>
