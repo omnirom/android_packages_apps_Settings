@@ -178,6 +178,7 @@
   <string name="app_ops_labels_write_mms">MMS írása</string>
   <string name="app_ops_labels_auto_start">Automatikus indítás</string>
   <string name="app_ops_labels_nfc_change">NFC váltása</string>
+  <string name="app_ops_labels_delete_sms">SMS törlése</string>
   <string name="app_ops_labels_delete_mms">MMS törlése</string>
   <string name="app_ops_labels_delete_contacts">Névjegyek törlése</string>
   <string name="app_ops_labels_delete_call_log">Hívásnapló törlése</string>

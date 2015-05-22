@@ -114,6 +114,7 @@
   <string name="app_ops_summaries_keep_awake">Aktiv lassen</string>
   <string name="app_ops_summaries_monitor_location">Standort beobachten</string>
   <string name="app_ops_summaries_monitor_high_power_location">genauen Standort beobachten (hoher Verbrauch)</string>
+  <string name="app_ops_summaries_get_usage_stats">App-Nutzungsstatistik erhalten</string>
   <string name="app_ops_summaries_mute_unmute_microphone">Mikrofon Stumm / Aktiv schalten</string>
   <string name="app_ops_summaries_toast_window">App-Meldungen anzeigen</string>
   <string name="app_ops_summaries_project_media">Projekt Medien</string>
@@ -165,6 +166,7 @@
   <string name="app_ops_labels_notification_volume">Benachrichtigungslautstärke</string>
   <string name="app_ops_labels_bluetooth_volume">Bluetooth-Lautstärke</string>
   <string name="app_ops_labels_keep_awake">Aktiv lassen</string>
+  <string name="app_ops_labels_get_usage_stats">App-Nutzungsstatistik erhalten</string>
   <string name="app_ops_labels_mute_unmute_microphone">Mikrofon Stumm / Aktiv schalten</string>
   <string name="app_ops_labels_toast_window">App-Meldungen anzeigen</string>
   <string name="app_ops_labels_project_media">Projekt Medien</string>
@@ -192,4 +194,5 @@
   <string name="app_ops_permissions_allowed">Erlaubt</string>
   <string name="app_ops_permissions_ignored">Ignoriert</string>
   <string name="app_ops_permissions_always_ask">Immer nachfragen</string>
+  <string name="interface_bars_title">Leisten</string>
 </resources>
