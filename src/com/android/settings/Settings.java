@@ -105,10 +105,6 @@ public class Settings extends SettingsActivity {
     public static class QuickLaunchSettingsActivity extends SettingsActivity { /* empty */ }
     public static class TopLevelSettings extends SettingsActivity { /* empty */ }
     public static class ApnSettingsActivity extends SettingsActivity { /* empty */ }
-    public static class ButtonSettingsActivity extends SettingsActivity { /* empty */ }
-    public static class MainActivityActivity extends SettingsActivity { /* empty */ }
-    public static class BatteryLightSettingsActivity extends SettingsActivity { /* empty */ }
-    public static class BarsSettingsActivity extends SettingsActivity { /* empty */ }
-    public static class ButtonBrightnessSettings extends SettingsActivity { /* empty */ }
+    public static class WifiCallingSettingsActivity extends SettingsActivity { /* empty */ }
 }
 

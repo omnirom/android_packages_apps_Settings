@@ -1884,6 +1884,23 @@
          Label on Wifi Configuration screen-->
     <string name="config_list_label" translatable="false">Configured networks</string>
 
+    <!-- Wireless networks, item title to go into the WFC settings [CHAR LIMIT=30] -->
+    <string name="wifi_calling_settings_title">Wi-Fi calling</string>
+    <!-- WFC mode [CHAR LIMIT=30] -->
+    <string name="wifi_calling_mode_title">Calling preference</string>
+    <!-- WFC mode dialog [CHAR LIMIT=30] -->
+    <string name="wifi_calling_mode_dialog_title">Wi-Fi calling mode</string>
+    <string-array name="wifi_calling_mode_choices">
+        <item>Wi-Fi preferred</item>
+        <item>Cellular preferred</item>
+    </string-array>
+    <string-array name="wifi_calling_mode_values">
+        <item>"2"</item>
+        <item>"1"</item>
+    </string-array>
+    <!-- Wi-Fi Calling settings. Text displayed when Wi-Fi Calling is off -->
+    <string name="wifi_calling_off_explanation">When Wi-Fi calling is on, your phone can route calls via Wi-Fi networks or your carrier\'s network, depending on your preference and which signal is stronger. Before turning on this feature, check with your carrier regarding fees and other details.</string>
+
     <!-- Sound and alerts settings -->
     <skip/>
     <!-- Main Settings screen setting option name to go into the display settings screen -->
@@ -2639,7 +2656,7 @@
     <!-- [CHAR LIMIT=130] Location mode screen, description for battery saving mode -->
     <string name="location_mode_battery_saving_description">Use Wi\u2011Fi and cellular networks to determine location</string>
     <!-- [CHAR LIMIT=130] Location mode screen, description for sensors only mode -->
-    <string name="location_mode_sensors_only_description">Use GPS to determine your location</string>
+    <string name="location_mode_sensors_only_description">Use GPS to determine location</string>
 
     <!-- [CHAR LIMIT=30] Security & location settings screen, setting check box label for Google location service (cell ID, wifi, etc.) -->
     <string name="location_network_based">Wi\u2011Fi &amp; cellular network location</string>
@@ -5608,6 +5625,7 @@
     <string name="keywords_wifi">wifi wi-fi network connection</string>
     <string name="keywords_more_default_sms_app">text message texting messages messaging</string>
     <string name="keywords_more_mobile_networks">cellular cell carrier wireless data 4g 3g 2g lte</string>
+    <string name="keywords_wifi_calling">wifi wi-fi call calling</string>
     <string name="keywords_home">launcher</string>
     <string name="keywords_display">screen touchscreen</string>
     <string name="keywords_display_brightness_level">dim screen touchscreen battery</string>
