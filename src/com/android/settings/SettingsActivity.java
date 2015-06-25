@@ -119,6 +119,7 @@ import com.brewcrewfoo.performance.activities.MainActivity;
 import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.brightness.ButtonBrightnessSettings;
+import org.omnirom.omnigears.interfacesettings.MoreInterfaceSettings;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -248,7 +249,8 @@ public class SettingsActivity extends Activity
             R.id.home_settings,
             R.id.button_settings,
             R.id.dashboard,
-            R.id.interface_bars
+            R.id.interface_bars,
+	    R.id.interface_more
     };
 
     private static final String[] ENTRY_FRAGMENTS = {
@@ -318,7 +320,8 @@ public class SettingsActivity extends Activity
             MainActivity.class.getName(),
             BatteryLightSettings.class.getName(),
             BarsSettings.class.getName(),
-            ButtonBrightnessSettings.class.getName()
+            ButtonBrightnessSettings.class.getName(),
+	    MoreInterfaceSettings.class.getName()
     };
 
 

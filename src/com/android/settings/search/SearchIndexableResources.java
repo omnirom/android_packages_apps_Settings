@@ -56,6 +56,8 @@ import org.omnirom.omnigears.ButtonSettings;
 import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.brightness.ButtonBrightnessSettings;
+import org.omnirom.omnigears.interfacesettings.MoreInterfaceSettings;
+
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -319,6 +321,12 @@ public final class SearchIndexableResources {
                         Ranking.getRankForClassName(ButtonBrightnessSettings.class.getName()),
                         NO_DATA_RES_ID,
                         ButtonBrightnessSettings.class.getName(),
+                        R.drawable.ic_buttons));
+        sResMap.put(MoreInterfaceSettings.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(MoreInterfaceSettings.class.getName()),
+                        NO_DATA_RES_ID,
+                        MoreInterfaceSettings.class.getName(),
                         R.drawable.ic_buttons));
     }
 
