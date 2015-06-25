@@ -234,4 +234,5 @@
     <string name="app_ops_permissions_always_ask">Always ask</string>
 
     <string name="interface_bars_title">Bars</string>
+    <string name="interface_more_title">More</string>
 </resources>
