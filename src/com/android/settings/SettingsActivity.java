@@ -313,7 +313,7 @@ public class SettingsActivity extends Activity
             OtherSoundSettings.class.getName(),
             QuickLaunchSettings.class.getName(),
             ApnSettings.class.getName(),
-            WifiCallingSettings.class.getName()
+            WifiCallingSettings.class.getName(),
             ButtonSettings.class.getName(),
             MainActivity.class.getName(),
             BatteryLightSettings.class.getName(),
