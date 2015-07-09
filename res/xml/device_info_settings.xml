@@ -17,6 +17,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
         android:title="@string/about_settings">
 
+        <!-- Mod version -->
+        <Preference android:key="mod_version"
+                android:title="@string/mod_version"
+                android:summary="@string/mod_version_default"
+                android:icon="@drawable/omnirom_logo" />
+
         <!-- System update settings - launches activity -->
         <Preference android:key="additional_system_update_settings"
                     android:title="@string/additional_system_update_settings_list_item_title">
