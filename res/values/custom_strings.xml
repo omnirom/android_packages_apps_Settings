@@ -245,4 +245,7 @@
 
     <!-- Lock screen rotation -->
     <string name="display_lockscreen_rotation_title">Lock screen</string>
+
+    <!-- Lock screen settings -->
+    <string name="lockscreen_settings_title">More &#8230;</string>
 </resources>
