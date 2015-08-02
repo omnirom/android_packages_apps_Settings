@@ -17,6 +17,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   android:title="@string/security_settings_title">
 
+
+     <Preference
+        android:key="lockscreen_wallpaper"
+        android:title="@string/lockscreen_category_title"
+        android:persistent="false"
+        android:fragment="org.omnirom.omnigears.LockscreenSettings" >
+    </Preference>
+            
     <PreferenceCategory android:key="sim_lock"
             android:title="@string/sim_lock_settings_title"
             android:persistent="false">
