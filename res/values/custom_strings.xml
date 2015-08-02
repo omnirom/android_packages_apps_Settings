@@ -242,6 +242,12 @@
     <!-- Wi-Fi settings screen, error message when the region code could not be set [CHAR LIMIT=50]. -->
     <string name="wifi_setting_countrycode_error">There was a problem setting the region code.</string>
     <string name="wifi_setting_countrycode_default">Default</string>
+    
+    <!-- Lock screen wallpaper -->
+   <string name="lockscreen_category_title">Lock screen</string>
+   <string name="lockscreen_wallpaper_title">Wallpaper</string>
+   <string name="lockscreen_wallpaper_set_title">Set</string>
+   <string name="lockscreen_wallpaper_clear_title">Clear</string>
 
     <!-- Lock screen rotation -->
     <string name="display_lockscreen_rotation_title">Lock screen</string>
