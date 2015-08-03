@@ -194,4 +194,6 @@
   <string name="app_ops_permissions_allowed">Autorisé</string>
   <string name="app_ops_permissions_ignored">Ignoré</string>
   <string name="app_ops_permissions_always_ask">Toujours demander</string>
+  <string name="interface_bars_title">Barre de statut</string>
+  <string name="wifi_setting_countrycode_default">Défaut</string>
 </resources>

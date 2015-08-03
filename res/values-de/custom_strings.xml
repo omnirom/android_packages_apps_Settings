@@ -195,4 +195,8 @@
   <string name="app_ops_permissions_ignored">Ignoriert</string>
   <string name="app_ops_permissions_always_ask">Immer nachfragen</string>
   <string name="interface_bars_title">Leisten</string>
+  <string name="wifi_setting_countrycode_title">WLAN-Ländercode</string>
+  <string name="wifi_setting_countrycode_summary">WLAN-Ländercode festlegen</string>
+  <string name="wifi_setting_countrycode_error">Beim Festlegen des Ländercodes ist ein Problem aufgetreten.</string>
+  <string name="wifi_setting_countrycode_default">Standard</string>
 </resources>
