@@ -194,4 +194,9 @@
   <string name="app_ops_permissions_allowed">Povoleno</string>
   <string name="app_ops_permissions_ignored">Ignorováno</string>
   <string name="app_ops_permissions_always_ask">Vždy se zeptat</string>
+  <string name="interface_bars_title">Lišty</string>
+  <string name="wifi_setting_countrycode_title">Kód regionu Wi-Fi</string>
+  <string name="wifi_setting_countrycode_summary">Zvolte kód regionu Wi-Fi</string>
+  <string name="wifi_setting_countrycode_error">Při nastavování kódu regionu došlo k chybě.</string>
+  <string name="wifi_setting_countrycode_default">Výchozí</string>
 </resources>

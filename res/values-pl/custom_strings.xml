@@ -66,4 +66,5 @@
   <string name="keyguard_quick_unlock">Szybkie odblokowanie</string>
   <string name="keyguard_quick_unlock_summary_pin">Odblokuj automatycznie, gdy zostanie wprowadzony prawidłowy kod PIN</string>
   <string name="keyguard_quick_unlock_summary_password">Odblokuj automatycznie, gdy zostanie wprowadzone prawidłowe hasło</string>
+  <string name="supersu_title">SuperSU</string>
 </resources>

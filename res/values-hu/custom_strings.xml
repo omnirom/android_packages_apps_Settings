@@ -194,4 +194,9 @@
   <string name="app_ops_permissions_allowed">Engedélyezett</string>
   <string name="app_ops_permissions_ignored">Figyelmen kívül hagyott</string>
   <string name="app_ops_permissions_always_ask">Mindig kérdezze meg</string>
+  <string name="interface_bars_title">Bárok</string>
+  <string name="wifi_setting_countrycode_title">Wi-Fi régiókód</string>
+  <string name="wifi_setting_countrycode_summary">Adja meg a Wi-Fi régiókódját</string>
+  <string name="wifi_setting_countrycode_error">Hiba történt a régiókód beállítása közben.</string>
+  <string name="wifi_setting_countrycode_default">Alapértelmezett</string>
 </resources>
