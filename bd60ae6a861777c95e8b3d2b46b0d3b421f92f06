@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f8eba960_eac9767f",
+        "filename": "src/com/android/settings/slim/DisplayRotation.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-08-04T10:41:01Z",
+      "side": 1,
+      "message": "no need to use getApplicationContext here",
+      "revId": "bd60ae6a861777c95e8b3d2b46b0d3b421f92f06",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
