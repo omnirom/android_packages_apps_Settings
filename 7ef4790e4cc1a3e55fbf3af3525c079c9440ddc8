@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f8eba960_8ded648e",
+        "filename": "src/com/android/settings/bluetooth/BluetoothSettings.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-08-13T11:17:14Z",
+      "side": 1,
+      "message": "nitpick! - intentation",
+      "revId": "7ef4790e4cc1a3e55fbf3af3525c079c9440ddc8",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
