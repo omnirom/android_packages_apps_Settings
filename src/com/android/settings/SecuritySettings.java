@@ -91,6 +91,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
     private static final int CONFIRM_EXISTING_FOR_BIOMETRIC_WEAK_IMPROVE_REQUEST = 124;
     private static final int CONFIRM_EXISTING_FOR_BIOMETRIC_WEAK_LIVELINESS_OFF = 125;
     private static final int CHANGE_TRUST_AGENT_SETTINGS = 126;
+    private static final String KEY_ENCRYPTION_CATEGORY = "security_category";
 
     // Misc Settings
     private static final String KEY_SIM_LOCK = "sim_lock";
@@ -106,6 +107,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
     private static final String PACKAGE_MIME_TYPE = "application/vnd.android.package-archive";
     private static final String KEY_TRUST_AGENT = "trust_agent";
     private static final String KEY_SCREEN_PINNING = "screen_pinning_settings";
+    private static final String KEY_REPLACE_ENCRYPTION_PASSWORD = "crypt_keeper_replace_password";
 
     // These switch preferences need special handling since they're not all stored in Settings.
     private static final String SWITCH_PREFERENCE_KEYS[] = { KEY_LOCK_AFTER_TIMEOUT,
@@ -236,6 +238,14 @@ public class SecuritySettings extends SettingsPreferenceFragment
             if (LockPatternUtils.isDeviceEncryptionEnabled()) {
                 // The device is currently encrypted.
                 addPreferencesFromResource(R.xml.security_settings_encrypted);
+                if (!mLockPatternUtils.isSeparateEncryptionPasswordEnabled()) {
+                    root = getPreferenceScreen();
+                    PreferenceGroup encryptionCategory =
+                            (PreferenceGroup)root.findPreference(KEY_ENCRYPTION_CATEGORY);
+                    Preference replaceEncryptionPassword =
+                            encryptionCategory.findPreference(KEY_REPLACE_ENCRYPTION_PASSWORD);
+                    encryptionCategory.removePreference(replaceEncryptionPassword);
+                }
             } else {
                 // This device supports encryption but isn't encrypted.
                 addPreferencesFromResource(R.xml.security_settings_unencrypted);

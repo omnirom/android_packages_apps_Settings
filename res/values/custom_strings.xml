@@ -252,4 +252,10 @@
     <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
     <string name="bluetooth_accept_all_files">Accept all file types</string>
 
+    <!--  Title for PreferenceScreen to replace encryption password [CHAR LIMIT=22]  -->
+    <string name="crypt_keeper_replace_password_title">Replace encryption password</string>
+
+    <!--  Summary for PreferenceScreen to replace encryption password [CHAR LIMIT=45]  -->
+    <string name="crypt_keeper_replace_password_summary">Remove the separate encryption password</string>
+
 </resources>
