@@ -90,10 +90,10 @@
             android:summary="@string/adb_over_network_summary"
             android:dependency="enable_adb"/>
 
-        <SwitchPreference
+        <!--<SwitchPreference
             android:key="bugreport_in_power"
             android:title="@string/bugreport_in_power"
-            android:summary="@string/bugreport_in_power_summary"/>
+            android:summary="@string/bugreport_in_power_summary"/>-->
 
         <SwitchPreference
             android:key="allow_mock_location"
