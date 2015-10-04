@@ -235,6 +235,11 @@
 
     <string name="interface_bars_title">Bars</string>
 
+    <!-- Wi-Fi filters -->
+    <string name="wifi_show_all">Show all</string>
+    <string name="wifi_show_protected">Show protected networks</string>
+    <string name="wifi_show_open">Show open networks</string>
+
     <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
     <string name="wifi_setting_countrycode_title">Wi-Fi region code</string>
     <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->

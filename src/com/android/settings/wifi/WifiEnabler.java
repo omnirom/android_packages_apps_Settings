@@ -105,6 +105,8 @@ public class WifiEnabler implements SwitchBar.OnSwitchChangeListener  {
             mListeningToOnSwitchChange = true;
         }
         mSwitchBar.show();
+        mSwitchBar.setSpinnerEntries(mContext.getResources()
+                .getStringArray(R.array.wifi_filter_entries));
     }
 
     public void teardownSwitchBar() {
@@ -140,6 +142,9 @@ public class WifiEnabler implements SwitchBar.OnSwitchChangeListener  {
                 break;
             case WifiManager.WIFI_STATE_ENABLED:
                 setSwitchBarChecked(true);
+                if (mSwitchBar != null) {
+                    mSwitchBar.showSpinner(true);
+                }
                 mSwitchBar.setEnabled(true);
                 updateSearchIndex(true);
                 break;
@@ -148,11 +153,17 @@ public class WifiEnabler implements SwitchBar.OnSwitchChangeListener  {
                 break;
             case WifiManager.WIFI_STATE_DISABLED:
                 setSwitchBarChecked(false);
+                if (mSwitchBar != null) {
+                    mSwitchBar.showSpinner(false);
+                }
                 mSwitchBar.setEnabled(true);
                 updateSearchIndex(false);
                 break;
             default:
                 setSwitchBarChecked(false);
+                if (mSwitchBar != null) {
+                    mSwitchBar.showSpinner(false);
+                }
                 mSwitchBar.setEnabled(true);
                 updateSearchIndex(false);
         }
