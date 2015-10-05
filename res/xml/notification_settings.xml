@@ -27,7 +27,7 @@
         <!-- Media volume -->
         <com.android.settings.notification.VolumeSeekBarPreference
                 android:key="media_volume"
-                android:icon="@*android:drawable/ic_audio_vol"
+                android:icon="@*android:drawable/ic_audio_media"
                 android:title="@string/media_volume_option_title" />
 
         <!-- Alarm volume -->
@@ -99,6 +99,12 @@
                 android:persistent="false"
                 android:fragment="com.android.settings.notification.OtherSoundSettings" />
 
+        <!-- Cast -->
+        <PreferenceScreen
+                android:key="wifi_display"
+                android:title="@string/wifi_display_settings_title"
+                android:fragment="com.android.settings.wfd.WifiDisplaySettings" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -109,12 +115,10 @@
         <SwitchPreference
                 android:key="notification_pulse"
                 android:title="@string/notification_pulse_title"
-                android:switchTextOff=""
-                android:switchTextOn=""
                 android:persistent="false" />
 
          <!-- When device is locked -->
-        <com.android.settings.notification.DropDownPreference
+        <com.android.settings.DropDownPreference
                 android:key="lock_screen_notifications"
                 android:title="@string/lock_screen_notifications_title"
                 android:persistent="false" />
@@ -128,7 +132,17 @@
         <PreferenceScreen
                 android:key="app_notifications"
                 android:title="@string/app_notifications_title"
-                android:fragment="com.android.settings.notification.NotificationAppList" />
+                android:fragment="com.android.settings.applications.ManageApplications">
+                <extra
+                    android:name="classname"
+                    android:value="com.android.settings.Settings$NotificationAppListActivity" />
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="advanced"
+        android:title="@string/advanced_section_header" >
 
         <!-- Notification access -->
         <Preference
@@ -136,6 +150,13 @@
                 android:title="@string/manage_notification_access_title"
                 android:persistent="false"
                 android:fragment="com.android.settings.notification.NotificationAccessSettings" />
+
+        <!-- Do Not Disturb access -->
+        <Preference
+                android:key="manage_zen_access"
+                android:title="@string/manage_zen_access_title"
+                android:persistent="false"
+                android:fragment="com.android.settings.notification.ZenAccessSettings" />
 
     </PreferenceCategory>
 

@@ -32,7 +32,6 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.UserHandle;
@@ -303,7 +302,7 @@ public class DeviceAdminSettings extends ListFragment {
                 bindView(convertView, (DeviceAdminInfo) o);
             } else {
                 if (convertView == null) {
-                    convertView = newTitleView(parent);
+                    convertView = Utils.inflateCategoryHeader(mInflater, parent);
                 }
                 final TextView title = (TextView) convertView.findViewById(android.R.id.title);
                 title.setText((String)o);
@@ -320,15 +319,6 @@ public class DeviceAdminSettings extends ListFragment {
             h.description = (TextView)v.findViewById(R.id.description);
             v.setTag(h);
             return v;
-        }
-
-        private View newTitleView(ViewGroup parent) {
-            final TypedArray a = mInflater.getContext().obtainStyledAttributes(null,
-                    com.android.internal.R.styleable.Preference,
-                    com.android.internal.R.attr.preferenceCategoryStyle, 0);
-            final int resId = a.getResourceId(com.android.internal.R.styleable.Preference_layout,
-                    0);
-            return mInflater.inflate(resId, parent, false);
         }
 
         private void bindView(View view, DeviceAdminInfo item) {

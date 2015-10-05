@@ -165,23 +165,26 @@ public class AppOpsState {
             );
 
     public static final OpsTemplate DEVICE_TEMPLATE = new OpsTemplate(
-            new int[] { AppOpsManager.OP_CALL_PHONE,
-                    AppOpsManager.OP_WIFI_CHANGE,
-                    AppOpsManager.OP_BLUETOOTH_CHANGE,
-                    AppOpsManager.OP_NFC_CHANGE,
-                    AppOpsManager.OP_DATA_CONNECT_CHANGE,
-                    AppOpsManager.OP_READ_PHONE_INFO },
-            new boolean[] { true,
+            new int[] { AppOpsManager.OP_POST_NOTIFICATION,
+                    AppOpsManager.OP_ACCESS_NOTIFICATIONS,
+                    AppOpsManager.OP_CALL_PHONE,
+                    AppOpsManager.OP_WRITE_SETTINGS,
+                    AppOpsManager.OP_SYSTEM_ALERT_WINDOW,
+                    AppOpsManager.OP_WAKE_LOCK,
+                    AppOpsManager.OP_PROJECT_MEDIA,
+                    AppOpsManager.OP_ACTIVATE_VPN,
+                    AppOpsManager.OP_ASSIST_STRUCTURE,
+                    AppOpsManager.OP_ASSIST_SCREENSHOT},
+            new boolean[] { false,
                     true,
                     true,
                     true,
                     true,
-                    true }
-            );
-
-    public static final OpsTemplate BOOTUP_TEMPLATE = new OpsTemplate(
-            new int[] { AppOpsManager.OP_BOOT_COMPLETED },
-            new boolean[] { true, }
+                    true,
+                    false,
+                    false,
+                    false,
+                    false }
             );
 
     public static final OpsTemplate[] ALL_TEMPLATES = new OpsTemplate[] {
@@ -573,19 +576,10 @@ public class AppOpsState {
 
                         }
                         AppOpsManager.OpEntry opEntry = new AppOpsManager.OpEntry(
-                                permOps.get(k), AppOpsManager.MODE_ALLOWED, 0, 0, 0);
-
-                        if (mAppOps.isControlAllowed(opEntry.getOp(),
-                                pkgOps.getPackageName())) {
-                            dummyOps.add(opEntry);
-                            addOp(entries,
-                                    pkgOps,
-                                    appEntry,
-                                    opEntry,
-                                    packageName == null,
-                                    packageName == null ? 0 : opToOrder[opEntry
-                                            .getOp()]);
-                        }
+                                permOps.get(k), AppOpsManager.MODE_ALLOWED, 0, 0, 0, -1, null);
+                        dummyOps.add(opEntry);
+                        addOp(entries, pkgOps, appEntry, opEntry, packageName == null,
+                                packageName == null ? 0 : opToOrder[opEntry.getOp()]);
                     }
                 }
             }

@@ -16,20 +16,24 @@
 
 package com.android.settings;
 
-import static android.content.Intent.EXTRA_USER;
-
 import android.annotation.Nullable;
 import android.app.ActivityManager;
 import android.app.ActivityManagerNative;
 import android.app.AlertDialog;
+import android.app.AppGlobals;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.IActivityManager;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.IPackageManager;
+import android.content.pm.IntentFilterVerificationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -38,19 +42,24 @@ import android.content.pm.Signature;
 import android.content.pm.UserInfo;
 import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.hardware.usb.IUsbManager;
 import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.INetworkManagementService;
 import android.os.RemoteException;
+import android.os.ServiceManager;
 import android.os.UserHandle;
 import android.os.UserManager;
+import android.os.storage.StorageManager;
 import android.preference.Preference;
 import android.preference.PreferenceFrameLayout;
 import android.preference.PreferenceGroup;
@@ -60,20 +69,28 @@ import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.Profile;
 import android.provider.ContactsContract.RawContacts;
 import android.service.persistentdata.PersistentDataBlockManager;
-import android.telephony.SubscriptionInfo;
-import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.TtsSpan;
+import android.util.ArraySet;
 import android.util.Log;
+import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.ListView;
 import android.widget.TabWidget;
 
 import com.android.internal.util.UserIcons;
-import com.android.settings.UserSpinnerAdapter.UserDetails;
+import com.android.settings.UserAdapter.UserDetails;
 import com.android.settings.dashboard.DashboardTile;
 import com.android.settings.drawable.CircleFramedDrawable;
+import com.android.settingslib.applications.ApplicationsState;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -83,6 +100,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+
+import static android.content.Intent.EXTRA_USER;
 
 public final class Utils {
     private static final String TAG = "Settings";
@@ -110,25 +129,29 @@ public final class Utils {
      * Name of the meta-data item that should be set in the AndroidManifest.xml
      * to specify the icon that should be displayed for the preference.
      */
-    private static final String META_DATA_PREFERENCE_ICON = "com.android.settings.icon";
+    public static final String META_DATA_PREFERENCE_ICON = "com.android.settings.icon";
 
     /**
      * Name of the meta-data item that should be set in the AndroidManifest.xml
      * to specify the title that should be displayed for the preference.
      */
-    private static final String META_DATA_PREFERENCE_TITLE = "com.android.settings.title";
+    public static final String META_DATA_PREFERENCE_TITLE = "com.android.settings.title";
 
     /**
      * Name of the meta-data item that should be set in the AndroidManifest.xml
      * to specify the summary text that should be displayed for the preference.
      */
-    private static final String META_DATA_PREFERENCE_SUMMARY = "com.android.settings.summary";
+    public static final String META_DATA_PREFERENCE_SUMMARY = "com.android.settings.summary";
 
     private static final String SETTINGS_PACKAGE_NAME = "com.android.settings";
 
     private static final int SECONDS_PER_MINUTE = 60;
     private static final int SECONDS_PER_HOUR = 60 * 60;
     private static final int SECONDS_PER_DAY = 24 * 60 * 60;
+
+    public static final String OS_PKG = "os";
+
+    private static SparseArray<Bitmap> sDarkDefaultUserBitmapCache = new SparseArray<Bitmap>();
 
     /**
      * Finds a matching activity for a preference's intent. If a matching
@@ -192,14 +215,17 @@ public final class Utils {
         if (intent != null) {
             // Find the activity that is in the system image
             PackageManager pm = context.getPackageManager();
-            List<ResolveInfo> list = pm.queryIntentActivities(intent, PackageManager.GET_META_DATA);
+            List<ResolveInfo> list = tile.userHandle.size() != 0
+                    ? pm.queryIntentActivitiesAsUser(intent, PackageManager.GET_META_DATA,
+                            tile.userHandle.get(0).getIdentifier())
+                    : pm.queryIntentActivities(intent, PackageManager.GET_META_DATA);
             int listSize = list.size();
             for (int i = 0; i < listSize; i++) {
                 ResolveInfo resolveInfo = list.get(i);
                 if ((resolveInfo.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM)
                         != 0) {
-                    Drawable icon = null;
-                    String title = null;
+                    int icon = 0;
+                    CharSequence title = null;
                     String summary = null;
 
                     // Get the activity's meta-data
@@ -209,14 +235,18 @@ public final class Utils {
                         Bundle metaData = resolveInfo.activityInfo.metaData;
 
                         if (res != null && metaData != null) {
-                            icon = res.getDrawable(
-                                    metaData.getInt(META_DATA_PREFERENCE_ICON), null);
-                            title = res.getString(metaData.getInt(META_DATA_PREFERENCE_TITLE));
-                            summary = res.getString(metaData.getInt(META_DATA_PREFERENCE_SUMMARY));
+                            if (metaData.containsKey(META_DATA_PREFERENCE_ICON)) {
+                                icon = metaData.getInt(META_DATA_PREFERENCE_ICON);
+                            }
+                            if (metaData.containsKey(META_DATA_PREFERENCE_TITLE)) {
+                                title = res.getString(metaData.getInt(META_DATA_PREFERENCE_TITLE));
+                            }
+                            if (metaData.containsKey(META_DATA_PREFERENCE_SUMMARY)) {
+                                summary = res.getString(
+                                        metaData.getInt(META_DATA_PREFERENCE_SUMMARY));
+                            }
                         }
-                    } catch (NameNotFoundException e) {
-                        // Ignore
-                    } catch (NotFoundException e) {
+                    } catch (NameNotFoundException | NotFoundException e) {
                         // Ignore
                     }
 
@@ -225,10 +255,13 @@ public final class Utils {
                     if (TextUtils.isEmpty(title)) {
                         title = resolveInfo.loadLabel(pm).toString();
                     }
+                    if (icon == 0) {
+                        icon = resolveInfo.activityInfo.icon;
+                    }
 
                     // Set icon, title and summary for the preference
-                    // TODO:
-                    //tile.icon = icon;
+                    tile.iconRes = icon;
+                    tile.iconPkg = resolveInfo.activityInfo.packageName;
                     tile.title = title;
                     tile.summary = summary;
                     // Replace the intent with this specific activity
@@ -722,14 +755,14 @@ public final class Utils {
     }
 
     /**
-     * Creates a {@link UserSpinnerAdapter} if there is more than one profile on the device.
+     * Creates a {@link UserAdapter} if there is more than one profile on the device.
      *
      * <p> The adapter can be used to populate a spinner that switches between the Settings
      * app on the different profiles.
      *
-     * @return a {@link UserSpinnerAdapter} or null if there is only one profile.
+     * @return a {@link UserAdapter} or null if there is only one profile.
      */
-    public static UserSpinnerAdapter createUserSpinnerAdapter(UserManager userManager,
+    public static UserAdapter createUserSpinnerAdapter(UserManager userManager,
             Context context) {
         List<UserHandle> userProfiles = userManager.getUserProfiles();
         if (userProfiles.size() < 2) {
@@ -741,12 +774,17 @@ public final class Utils {
         userProfiles.remove(myUserHandle);
         userProfiles.add(0, myUserHandle);
 
+        return createUserAdapter(userManager, context, userProfiles);
+    }
+
+    public static UserAdapter createUserAdapter(UserManager userManager,
+            Context context, List<UserHandle> userProfiles) {
         ArrayList<UserDetails> userDetails = new ArrayList<UserDetails>(userProfiles.size());
         final int count = userProfiles.size();
         for (int i = 0; i < count; i++) {
             userDetails.add(new UserDetails(userProfiles.get(i), userManager, context));
         }
-        return new UserSpinnerAdapter(context, userDetails);
+        return new UserAdapter(context, userDetails);
     }
 
     /**
@@ -846,43 +884,6 @@ public final class Utils {
                || um.getUserProfiles().contains(otherUser);
    }
 
-    /**
-     * Creates a dialog to confirm with the user if it's ok to remove the user
-     * and delete all the data.
-     *
-     * @param context a Context object
-     * @param removingUserId The userId of the user to remove
-     * @param onConfirmListener Callback object for positive action
-     * @return the created Dialog
-     */
-    public static Dialog createRemoveConfirmationDialog(Context context, int removingUserId,
-            DialogInterface.OnClickListener onConfirmListener) {
-        UserManager um = (UserManager) context.getSystemService(Context.USER_SERVICE);
-        UserInfo userInfo = um.getUserInfo(removingUserId);
-        int titleResId;
-        int messageResId;
-        if (UserHandle.myUserId() == removingUserId) {
-            titleResId = R.string.user_confirm_remove_self_title;
-            messageResId = R.string.user_confirm_remove_self_message;
-        } else if (userInfo.isRestricted()) {
-            titleResId = R.string.user_profile_confirm_remove_title;
-            messageResId = R.string.user_profile_confirm_remove_message;
-        } else if (userInfo.isManagedProfile()) {
-            titleResId = R.string.work_profile_confirm_remove_title;
-            messageResId = R.string.work_profile_confirm_remove_message;
-        } else {
-            titleResId = R.string.user_confirm_remove_title;
-            messageResId = R.string.user_confirm_remove_message;
-        }
-        Dialog dlg = new AlertDialog.Builder(context)
-                .setTitle(titleResId)
-                .setMessage(messageResId)
-                .setPositiveButton(R.string.user_delete_button,
-                        onConfirmListener)
-                .setNegativeButton(android.R.string.cancel, null)
-                .create();
-        return dlg;
-    }
 
     /**
      * Returns whether or not this device is able to be OEM unlocked.
@@ -919,18 +920,21 @@ public final class Utils {
                 return CircleFramedDrawable.getInstance(context, icon);
             }
         }
-        return UserIcons.getDefaultUserIcon(user.id, /* light= */ false);
+        return CircleFramedDrawable.getInstance(context, UserIcons.convertToBitmap(
+                UserIcons.getDefaultUserIcon(user.id, /* light= */ false)));
     }
 
     /**
      * Returns a label for the user, in the form of "User: user name" or "Work profile".
      */
     public static String getUserLabel(Context context, UserInfo info) {
+        String name = info != null ? info.name : null;
         if (info.isManagedProfile()) {
             // We use predefined values for managed profiles
             return context.getString(R.string.managed_user_title);
+        } else if (info.isGuest()) {
+            name = context.getString(R.string.user_guest);
         }
-        String name = info != null ? info.name : null;
         if (name == null && info != null) {
             name = Integer.toString(info.id);
         } else if (info == null) {
@@ -1036,49 +1040,6 @@ public final class Utils {
     }
 
     /**
-     * finds a record with subId.
-     * Since the number of SIMs are few, an array is fine.
-     */
-    public static SubscriptionInfo findRecordBySubId(Context context, final int subId) {
-        final List<SubscriptionInfo> subInfoList =
-                SubscriptionManager.from(context).getActiveSubscriptionInfoList();
-        if (subInfoList != null) {
-            final int subInfoLength = subInfoList.size();
-
-            for (int i = 0; i < subInfoLength; ++i) {
-                final SubscriptionInfo sir = subInfoList.get(i);
-                if (sir != null && sir.getSubscriptionId() == subId) {
-                    return sir;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * finds a record with slotId.
-     * Since the number of SIMs are few, an array is fine.
-     */
-    public static SubscriptionInfo findRecordBySlotId(Context context, final int slotId) {
-        final List<SubscriptionInfo> subInfoList =
-                SubscriptionManager.from(context).getActiveSubscriptionInfoList();
-        if (subInfoList != null) {
-            final int subInfoLength = subInfoList.size();
-
-            for (int i = 0; i < subInfoLength; ++i) {
-                final SubscriptionInfo sir = subInfoList.get(i);
-                if (sir.getSimSlotIndex() == slotId) {
-                    //Right now we take the first subscription on a SIM.
-                    return sir;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Queries for the UserInfo of a user. Returns null if the user doesn't exist (was removed).
      * @param userManager Instance of UserManager
      * @param checkUser The user to check the existence of.
@@ -1095,4 +1056,194 @@ public final class Utils {
         return null;
     }
 
+    public static View inflateCategoryHeader(LayoutInflater inflater, ViewGroup parent) {
+        final TypedArray a = inflater.getContext().obtainStyledAttributes(null,
+                com.android.internal.R.styleable.Preference,
+                com.android.internal.R.attr.preferenceCategoryStyle, 0);
+        final int resId = a.getResourceId(com.android.internal.R.styleable.Preference_layout,
+                0);
+        a.recycle();
+        return inflater.inflate(resId, parent, false);
+    }
+
+    /**
+     * Return if we are running low on storage space or not.
+     *
+     * @param context The context
+     * @return true if we are running low on storage space
+     */
+    public static boolean isLowStorage(Context context) {
+        final StorageManager sm = StorageManager.from(context);
+        return (sm.getStorageBytesUntilLow(context.getFilesDir()) < 0);
+    }
+
+    /**
+     * Returns a default user icon (as a {@link Bitmap}) for the given user.
+     *
+     * Note that for guest users, you should pass in {@code UserHandle.USER_NULL}.
+     * @param userId the user id or {@code UserHandle.USER_NULL} for a non-user specific icon
+     */
+    public static Bitmap getDefaultUserIconAsBitmap(int userId) {
+        Bitmap bitmap = null;
+        // Try finding the corresponding bitmap in the dark bitmap cache
+        bitmap = sDarkDefaultUserBitmapCache.get(userId);
+        if (bitmap == null) {
+            bitmap = UserIcons.convertToBitmap(UserIcons.getDefaultUserIcon(userId, false));
+            // Save it to cache
+            sDarkDefaultUserBitmapCache.put(userId, bitmap);
+        }
+        return bitmap;
+    }
+
+    public static boolean hasUsbDefaults(IUsbManager usbManager, String packageName) {
+        try {
+            if (usbManager != null) {
+                return usbManager.hasDefaults(packageName, UserHandle.myUserId());
+            }
+        } catch (RemoteException e) {
+            Log.e(TAG, "mUsbManager.hasDefaults", e);
+        }
+        return false;
+    }
+
+    public static boolean hasPreferredActivities(PackageManager pm, String packageName) {
+        // Get list of preferred activities
+        List<ComponentName> prefActList = new ArrayList<>();
+        // Intent list cannot be null. so pass empty list
+        List<IntentFilter> intentList = new ArrayList<>();
+        pm.getPreferredActivities(intentList, prefActList, packageName);
+        Log.d(TAG, "Have " + prefActList.size() + " number of activities in preferred list");
+        return prefActList.size() > 0;
+    }
+
+    public static ArraySet<String> getHandledDomains(PackageManager pm, String packageName) {
+        List<IntentFilterVerificationInfo> iviList = pm.getIntentFilterVerifications(packageName);
+        List<IntentFilter> filters = pm.getAllIntentFilters(packageName);
+
+        ArraySet<String> result = new ArraySet<>();
+        if (iviList.size() > 0) {
+            for (IntentFilterVerificationInfo ivi : iviList) {
+                for (String host : ivi.getDomains()) {
+                    result.add(host);
+                }
+            }
+        }
+        if (filters != null && filters.size() > 0) {
+            for (IntentFilter filter : filters) {
+                if (filter.hasCategory(Intent.CATEGORY_BROWSABLE)
+                        && (filter.hasDataScheme(IntentFilter.SCHEME_HTTP) ||
+                                filter.hasDataScheme(IntentFilter.SCHEME_HTTPS))) {
+                    result.addAll(filter.getHostsList());
+                }
+            }
+        }
+        return result;
+    }
+
+    public static CharSequence getLaunchByDeafaultSummary(ApplicationsState.AppEntry appEntry,
+            IUsbManager usbManager, PackageManager pm, Context context) {
+        String packageName = appEntry.info.packageName;
+        boolean hasPreferred = hasPreferredActivities(pm, packageName)
+                || hasUsbDefaults(usbManager, packageName);
+        int status = pm.getIntentVerificationStatus(packageName, UserHandle.myUserId());
+        boolean hasDomainURLsPreference =
+                (status == PackageManager.INTENT_FILTER_DOMAIN_VERIFICATION_STATUS_ALWAYS) ||
+                (status == PackageManager.INTENT_FILTER_DOMAIN_VERIFICATION_STATUS_NEVER);
+        return context.getString(hasPreferred || hasDomainURLsPreference
+                ? R.string.launch_defaults_some
+                : R.string.launch_defaults_none);
+    }
+
+    public static void handleLoadingContainer(View loading, View doneLoading, boolean done,
+            boolean animate) {
+        setViewShown(loading, !done, animate);
+        setViewShown(doneLoading, done, animate);
+    }
+
+    private static void setViewShown(final View view, boolean shown, boolean animate) {
+        if (animate) {
+            Animation animation = AnimationUtils.loadAnimation(view.getContext(),
+                    shown ? android.R.anim.fade_in : android.R.anim.fade_out);
+            if (shown) {
+                view.setVisibility(View.VISIBLE);
+            } else {
+                animation.setAnimationListener(new AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        view.setVisibility(View.INVISIBLE);
+                    }
+                });
+            }
+            view.startAnimation(animation);
+        } else {
+            view.clearAnimation();
+            view.setVisibility(shown ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
+    /**
+     * Returns the application info of the currently installed MDM package.
+     */
+    public static ApplicationInfo getAdminApplicationInfo(Context context, int profileId) {
+        DevicePolicyManager dpm =
+                (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
+        ComponentName mdmPackage = dpm.getProfileOwnerAsUser(profileId);
+        if (mdmPackage == null) {
+            return null;
+        }
+        String mdmPackageName = mdmPackage.getPackageName();
+        try {
+            IPackageManager ipm = AppGlobals.getPackageManager();
+            ApplicationInfo mdmApplicationInfo =
+                    ipm.getApplicationInfo(mdmPackageName, 0, profileId);
+            return mdmApplicationInfo;
+        } catch (RemoteException e) {
+            Log.e(TAG, "Error while retrieving application info for package " + mdmPackageName
+                    + ", userId " + profileId, e);
+            return null;
+        }
+    }
+
+    public static boolean isBandwidthControlEnabled() {
+        final INetworkManagementService netManager = INetworkManagementService.Stub
+                .asInterface(ServiceManager.getService(Context.NETWORKMANAGEMENT_SERVICE));
+        try {
+            return netManager.isBandwidthControlEnabled();
+        } catch (RemoteException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Returns an accessible SpannableString.
+     * @param displayText the text to display
+     * @param accessibileText the text text-to-speech engines should read
+     */
+    public static SpannableString createAccessibleSequence(CharSequence displayText,
+            String accessibileText) {
+        SpannableString str = new SpannableString(displayText);
+        str.setSpan(new TtsSpan.TextBuilder(accessibileText).build(), 0,
+                displayText.length(),
+                Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        return str;
+    }
+
+    public static int getEffectiveUserId(Context context) {
+        UserManager um = UserManager.get(context);
+        if (um != null) {
+            return um.getCredentialOwnerProfile(UserHandle.myUserId());
+        } else {
+            Log.e(TAG, "Unable to acquire UserManager");
+            return UserHandle.myUserId();
+        }
+    }
 }
+

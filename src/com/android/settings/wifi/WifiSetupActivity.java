@@ -35,11 +35,10 @@ import android.util.Log;
 import com.android.settings.ButtonBarHandler;
 import com.android.settings.R;
 import com.android.settings.SetupWizardUtils;
-import com.android.setupwizard.navigationbar.SetupWizardNavBar;
-import com.android.setupwizard.navigationbar.SetupWizardNavBar.NavigationBarListener;
+import com.android.setupwizardlib.view.NavigationBar;
 
 public class WifiSetupActivity extends WifiPickerActivity
-        implements ButtonBarHandler, NavigationBarListener {
+        implements ButtonBarHandler, NavigationBar.NavigationBarListener {
     private static final String TAG = "WifiSetupActivity";
 
     // this boolean extra specifies whether to auto finish when connection is established
@@ -72,7 +71,7 @@ public class WifiSetupActivity extends WifiPickerActivity
     // Whether the device is connected to WiFi
     private boolean mWifiConnected;
 
-    private SetupWizardNavBar mNavigationBar;
+    private NavigationBar mNavigationBar;
 
     private IntentFilter mFilter = new IntentFilter();
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -125,7 +124,7 @@ public class WifiSetupActivity extends WifiPickerActivity
         if (isWifiConnected()) {
             if (mAutoFinishOnConnection && mUserSelectedNetwork) {
                 Log.d(TAG, "Auto-finishing with connection");
-                finishOrNext(Activity.RESULT_OK);
+                finish(Activity.RESULT_OK);
                 // Require a user selection before auto-finishing next time we are here. The user
                 // can either connect to a different network or press "next" to proceed.
                 mUserSelectedNetwork = false;
@@ -180,7 +179,7 @@ public class WifiSetupActivity extends WifiPickerActivity
 
     @Override
     protected void onApplyThemeResource(Resources.Theme theme, int resid, boolean first) {
-        resid = SetupWizardUtils.getTheme(getIntent(), resid);
+        resid = SetupWizardUtils.getTheme(getIntent());
         super.onApplyThemeResource(theme, resid, first);
     }
 
@@ -195,24 +194,18 @@ public class WifiSetupActivity extends WifiPickerActivity
     }
 
     /**
-     * Complete this activity and return the results to the caller. If using WizardManager, this
-     * will invoke the next scripted action; otherwise, we simply finish.
+     * Complete this activity and return the results to the caller.
      */
-    public void finishOrNext(int resultCode) {
-        Log.d(TAG, "finishOrNext resultCode=" + resultCode
-                + " isUsingWizardManager=" + SetupWizardUtils.isUsingWizardManager(this));
-        if (SetupWizardUtils.isUsingWizardManager(this)) {
-            SetupWizardUtils.sendResultsToSetupWizard(this, resultCode);
-        } else {
-            setResult(resultCode);
-            finish();
-        }
+    public void finish(int resultCode) {
+        Log.d(TAG, "finishing, resultCode=" + resultCode);
+        setResult(resultCode);
+        finish();
     }
 
-    @Override
-    public void onNavigationBarCreated(final SetupWizardNavBar bar) {
+    public void onNavigationBarCreated(final NavigationBar bar) {
         mNavigationBar = bar;
-        SetupWizardUtils.setImmersiveMode(this, bar);
+        bar.setNavigationBarListener(this);
+        SetupWizardUtils.setImmersiveMode(this);
     }
 
     @Override
@@ -223,7 +216,7 @@ public class WifiSetupActivity extends WifiPickerActivity
     @Override
     public void onNavigateNext() {
         if (mWifiConnected) {
-            finishOrNext(RESULT_OK);
+            finish(RESULT_OK);
         } else {
             // Warn of possible data charges if there is a network connection, or lack of updates
             // if there is none.
@@ -263,24 +256,26 @@ public class WifiSetupActivity extends WifiPickerActivity
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             int messageRes = getArguments().getInt("messageRes");
-            return new AlertDialog.Builder(getActivity())
+            final AlertDialog dialog = new AlertDialog.Builder(getActivity())
                     .setMessage(messageRes)
                     .setCancelable(false)
                     .setPositiveButton(R.string.wifi_skip_anyway,
                             new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            WifiSetupActivity activity = (WifiSetupActivity) getActivity();
-                            activity.finishOrNext(RESULT_SKIP);
-                        }
-                    })
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    WifiSetupActivity activity = (WifiSetupActivity) getActivity();
+                                    activity.finish(RESULT_SKIP);
+                                }
+                            })
                     .setNegativeButton(R.string.wifi_dont_skip,
                             new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    })
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            })
                     .create();
+            SetupWizardUtils.applyImmersiveFlags(dialog);
+            return dialog;
         }
     }
 }

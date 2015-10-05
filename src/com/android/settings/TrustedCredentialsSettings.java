@@ -22,7 +22,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.UserInfo;
-import android.content.res.TypedArray;
 import android.net.http.SslCertificate;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -52,6 +51,7 @@ import android.widget.Switch;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.util.ParcelableString;
 
 import java.security.cert.CertificateEncodingException;
@@ -61,13 +61,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.HashMap;
 
-public class TrustedCredentialsSettings extends Fragment {
+public class TrustedCredentialsSettings extends InstrumentedFragment {
 
     private static final String TAG = "TrustedCredentialsSettings";
 
     private UserManager mUserManager;
 
     private static final String USER_ACTION = "com.android.settings.TRUSTED_CREDENTIALS_USER";
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.TRUSTED_CREDENTIALS;
+    }
 
     private enum Tab {
         SYSTEM("system",
@@ -321,7 +326,7 @@ public class TrustedCredentialsSettings extends Fragment {
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) getActivity()
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflateCategoryHeader(inflater, parent);
+                convertView = Utils.inflateCategoryHeader(inflater, parent);
             }
 
             final TextView title = (TextView) convertView.findViewById(android.R.id.title);
@@ -354,15 +359,6 @@ public class TrustedCredentialsSettings extends Fragment {
         public int getListViewId(Tab tab) {
             return tab.mExpandableList;
         }
-        private View inflateCategoryHeader(LayoutInflater inflater, ViewGroup parent) {
-            final TypedArray a = inflater.getContext().obtainStyledAttributes(null,
-                    com.android.internal.R.styleable.Preference,
-                    com.android.internal.R.attr.preferenceCategoryStyle, 0);
-            final int resId = a.getResourceId(com.android.internal.R.styleable.Preference_layout,
-                    0);
-            return inflater.inflate(resId, parent, false);
-        }
-
     }
 
     private class TrustedCertificateAdapter extends BaseAdapter implements

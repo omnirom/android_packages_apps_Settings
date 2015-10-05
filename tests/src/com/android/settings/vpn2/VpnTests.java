@@ -18,14 +18,14 @@ package com.android.settings.vpn2;
 
 import android.content.Context;
 import android.net.IConnectivityManager;
-import android.net.LinkAddress;
-import android.net.RouteInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+import android.os.UserHandle;
 import android.security.Credentials;
 import android.security.KeyStore;
+import android.security.NetworkSecurityPolicy;
 import android.test.InstrumentationTestCase;
 import android.test.InstrumentationTestRunner;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -35,13 +35,11 @@ import com.android.internal.net.LegacyVpnInfo;
 import com.android.internal.net.VpnConfig;
 import com.android.internal.net.VpnProfile;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import junit.framework.Assert;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
+import libcore.io.Streams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -131,18 +129,20 @@ public class VpnTests extends InstrumentationTestCase {
             }
         }
         // disconnect existing vpn if there is any
-        LegacyVpnInfo oldVpn = mService.getLegacyVpnInfo();
+        LegacyVpnInfo oldVpn = mService.getLegacyVpnInfo(UserHandle.myUserId());
         if (oldVpn != null) {
             Log.v(TAG, "disconnect legacy VPN");
             disconnect();
             // wait till the legacy VPN is disconnected.
             int tries = 0;
-            while (tries < MAX_DISCONNECTION_TRIES && mService.getLegacyVpnInfo() != null) {
+            while (tries < MAX_DISCONNECTION_TRIES &&
+                    mService.getLegacyVpnInfo(UserHandle.myUserId()) != null) {
                 tries++;
                 Thread.sleep(10 * 1000);
                 Log.v(TAG, "Wait for legacy VPN to be disconnected.");
             }
-            Assert.assertNull("Failed to disconect VPN", mService.getLegacyVpnInfo());
+            Assert.assertNull("Failed to disconect VPN",
+                    mService.getLegacyVpnInfo(UserHandle.myUserId()));
             // wait for 30 seconds after the previous VPN is disconnected.
             sleep(30 * 1000);
         }
@@ -217,7 +217,7 @@ public class VpnTests extends InstrumentationTestCase {
      */
     private void disconnect() throws Exception {
         try {
-            mService.prepareVpn(VpnConfig.LEGACY_VPN, VpnConfig.LEGACY_VPN);
+            mService.prepareVpn(VpnConfig.LEGACY_VPN, VpnConfig.LEGACY_VPN, UserHandle.myUserId());
         } catch (RemoteException e) {
             Log.e(TAG, String.format("disconnect VPN exception: %s", e.toString()));
         }
@@ -228,14 +228,28 @@ public class VpnTests extends InstrumentationTestCase {
      */
     private String getIpAddress() {
         String ip = null;
+        HttpURLConnection urlConnection = null;
+        // TODO: Rewrite this test to use an HTTPS URL.
+        // Because this test uses cleartext HTTP, the network security policy of this app needs to
+        // be temporarily relaxed to permit such traffic.
+        NetworkSecurityPolicy networkSecurityPolicy = NetworkSecurityPolicy.getInstance();
+        boolean cleartextTrafficPermittedBeforeTest =
+                networkSecurityPolicy.isCleartextTrafficPermitted();
+        networkSecurityPolicy.setCleartextTrafficPermitted(true);
         try {
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpGet httpGet = new HttpGet(EXTERNAL_SERVER);
-            HttpResponse httpResponse = httpClient.execute(httpGet);
-            Log.i(TAG, "Response from httpget: " + httpResponse.getStatusLine().toString());
+            URL url = new URL(EXTERNAL_SERVER);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            Log.i(TAG, "Response from httpget: " + urlConnection.getResponseCode());
 
-            String entityStr = EntityUtils.toString(httpResponse.getEntity());
-            JSONObject json_data = new JSONObject(entityStr);
+            InputStream is = urlConnection.getInputStream();
+            String response;
+            try {
+                response = new String(Streams.readFully(is), StandardCharsets.UTF_8);
+            } finally {
+                is.close();
+            }
+
+            JSONObject json_data = new JSONObject(response);
             ip = json_data.getString("ip");
             Log.v(TAG, "json_data: " + ip);
         } catch (IllegalArgumentException e) {
@@ -244,6 +258,11 @@ public class VpnTests extends InstrumentationTestCase {
             Log.e(TAG, "IOException while getting IP: " + e.toString());
         } catch (JSONException e) {
             Log.e(TAG, "exception while creating JSONObject: " + e.toString());
+        } finally {
+            networkSecurityPolicy.setCleartextTrafficPermitted(cleartextTrafficPermittedBeforeTest);
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
         }
         return ip;
     }
@@ -259,7 +278,7 @@ public class VpnTests extends InstrumentationTestCase {
      * Verify the vpn connection by checking the VPN state, external IP or ping test
      */
     private void validateVpnConnection(VpnProfile profile, boolean pingTestFlag) throws Exception {
-        LegacyVpnInfo legacyVpnInfo = mService.getLegacyVpnInfo();
+        LegacyVpnInfo legacyVpnInfo = mService.getLegacyVpnInfo(UserHandle.myUserId());
         Assert.assertTrue(legacyVpnInfo != null);
 
         long start = System.currentTimeMillis();
@@ -267,7 +286,7 @@ public class VpnTests extends InstrumentationTestCase {
                 (legacyVpnInfo.state != LegacyVpnInfo.STATE_CONNECTED)) {
             Log.v(TAG, "vpn state: " + legacyVpnInfo.state);
             sleep(10 * 1000);
-            legacyVpnInfo = mService.getLegacyVpnInfo();
+            legacyVpnInfo = mService.getLegacyVpnInfo(UserHandle.myUserId());
         }
 
         // the vpn state should be CONNECTED

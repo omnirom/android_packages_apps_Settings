@@ -27,6 +27,7 @@ import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.UserHandle;
 import android.os.storage.StorageManager;
 import android.preference.Preference;
 import android.text.TextUtils;
@@ -34,9 +35,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import com.android.internal.logging.MetricsLogger;
 
-public class CryptKeeperSettings extends Fragment {
+public class CryptKeeperSettings extends InstrumentedFragment {
     private static final String TAG = "CryptKeeper";
+    private static final String TYPE = "type";
+    private static final String PASSWORD = "password";
 
     private static final int KEYGUARD_REQUEST = 55;
 
@@ -111,6 +115,11 @@ public class CryptKeeperSettings extends Fragment {
     }
 
     @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.CRYPT_KEEPER;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         getActivity().registerReceiver(mIntentReceiver, mIntentFilter);
@@ -154,15 +163,14 @@ public class CryptKeeperSettings extends Fragment {
         Resources res = getActivity().getResources();
         ChooseLockSettingsHelper helper = new ChooseLockSettingsHelper(getActivity(), this);
 
-        if (helper.utils().getKeyguardStoredPasswordQuality()
+        if (helper.utils().getKeyguardStoredPasswordQuality(UserHandle.myUserId())
                 == DevicePolicyManager.PASSWORD_QUALITY_UNSPECIFIED) {
             showFinalConfirmation(StorageManager.CRYPT_TYPE_DEFAULT, "");
             return true;
         }
 
-        return helper.launchConfirmationActivity(request, null,
-                res.getText(R.string.crypt_keeper_confirm_encrypt),
-                true);
+        return helper.launchConfirmationActivity(request,
+                res.getText(R.string.crypt_keeper_encrypt_title), true);
     }
 
     @Override
@@ -188,8 +196,20 @@ public class CryptKeeperSettings extends Fragment {
         Preference preference = new Preference(getActivity());
         preference.setFragment(CryptKeeperConfirm.class.getName());
         preference.setTitle(R.string.crypt_keeper_confirm_title);
-        preference.getExtras().putInt("type", type);
-        preference.getExtras().putString("password", password);
+        addEncryptionInfoToPreference(preference, type, password);
         ((SettingsActivity) getActivity()).onPreferenceStartFragment(null, preference);
+    }
+
+    private void addEncryptionInfoToPreference(Preference preference, int type, String password) {
+        Activity activity = getActivity();
+        DevicePolicyManager dpm = (DevicePolicyManager)
+                activity.getSystemService(Context.DEVICE_POLICY_SERVICE);
+        if (dpm.getDoNotAskCredentialsOnBoot()) {
+            preference.getExtras().putInt(TYPE, StorageManager.CRYPT_TYPE_DEFAULT);
+            preference.getExtras().putString(PASSWORD, "");
+        } else {
+            preference.getExtras().putInt(TYPE, type);
+            preference.getExtras().putString(PASSWORD, password);
+        }
     }
 }

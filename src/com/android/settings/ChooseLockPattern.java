@@ -16,8 +16,10 @@
 
 package com.android.settings;
 
+import com.android.internal.logging.MetricsLogger;
 import com.google.android.collect.Lists;
 import com.android.internal.widget.LinearLayoutWithDefaultTouchRecepient;
+import com.android.internal.widget.LockPatternChecker;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.internal.widget.LockPatternView;
 import com.android.internal.widget.LockPatternView.Cell;
@@ -27,11 +29,12 @@ import static com.android.internal.widget.LockPatternView.DisplayMode;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.os.UserHandle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +65,8 @@ public class ChooseLockPattern extends SettingsActivity {
      */
     static final int RESULT_FINISHED = RESULT_FIRST_USER;
 
+    private static final String TAG = "ChooseLockPattern";
+
     @Override
     public Intent getIntent() {
         Intent modIntent = new Intent(super.getIntent());
@@ -69,13 +74,28 @@ public class ChooseLockPattern extends SettingsActivity {
         return modIntent;
     }
 
-    public static Intent createIntent(Context context, final boolean isFallback,
+    public static Intent createIntent(Context context,
             boolean requirePassword, boolean confirmCredentials) {
         Intent intent = new Intent(context, ChooseLockPattern.class);
         intent.putExtra("key_lock_method", "pattern");
         intent.putExtra(ChooseLockGeneric.CONFIRM_CREDENTIALS, confirmCredentials);
-        intent.putExtra(LockPatternUtils.LOCKSCREEN_BIOMETRIC_WEAK_FALLBACK, isFallback);
         intent.putExtra(EncryptionInterstitial.EXTRA_REQUIRE_PASSWORD, requirePassword);
+        return intent;
+    }
+
+    public static Intent createIntent(Context context,
+            boolean requirePassword, String pattern) {
+        Intent intent = createIntent(context, requirePassword, false);
+        intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_PASSWORD, pattern);
+        return intent;
+    }
+
+
+    public static Intent createIntent(Context context,
+            boolean requirePassword, long challenge) {
+        Intent intent = createIntent(context, requirePassword, false);
+        intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_HAS_CHALLENGE, true);
+        intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_CHALLENGE, challenge);
         return intent;
     }
 
@@ -104,7 +124,7 @@ public class ChooseLockPattern extends SettingsActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    public static class ChooseLockPatternFragment extends Fragment
+    public static class ChooseLockPatternFragment extends InstrumentedFragment
             implements View.OnClickListener {
 
         public static final int CONFIRM_EXISTING_REQUEST = 55;
@@ -117,6 +137,9 @@ public class ChooseLockPattern extends SettingsActivity {
 
         private static final int ID_EMPTY_MESSAGE = -1;
 
+        private String mCurrentPattern;
+        private boolean mHasChallenge;
+        private long mChallenge;
         protected TextView mHeaderText;
         protected LockPatternView mLockPatternView;
         protected TextView mFooterText;
@@ -144,7 +167,11 @@ public class ChooseLockPattern extends SettingsActivity {
                     if (resultCode != Activity.RESULT_OK) {
                         getActivity().setResult(RESULT_FINISHED);
                         getActivity().finish();
+                    } else {
+                        mCurrentPattern = data.getStringExtra(
+                                ChooseLockSettingsHelper.EXTRA_KEY_PASSWORD);
                     }
+
                     updateStage(Stage.Introduction);
                     break;
             }
@@ -207,6 +234,11 @@ public class ChooseLockPattern extends SettingsActivity {
                     mFooterRightButton.setEnabled(false);
                 }
          };
+
+        @Override
+        protected int getMetricsCategory() {
+            return MetricsLogger.CHOOSE_LOCK_PATTERN;
+        }
 
 
         /**
@@ -323,9 +355,11 @@ public class ChooseLockPattern extends SettingsActivity {
         };
 
         private ChooseLockSettingsHelper mChooseLockSettingsHelper;
+        private AsyncTask<?, ?, ?> mPendingLockCheck;
 
         private static final String KEY_UI_STAGE = "uiStage";
         private static final String KEY_PATTERN_CHOICE = "chosenPattern";
+        private static final String KEY_CURRENT_PATTERN = "currentPattern";
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -368,6 +402,11 @@ public class ChooseLockPattern extends SettingsActivity {
 
             final boolean confirmCredentials = getActivity().getIntent()
                     .getBooleanExtra("confirm_credentials", true);
+            Intent intent = getActivity().getIntent();
+            mCurrentPattern = intent.getStringExtra(ChooseLockSettingsHelper.EXTRA_KEY_PASSWORD);
+            mHasChallenge = intent.getBooleanExtra(
+                    ChooseLockSettingsHelper.EXTRA_KEY_HAS_CHALLENGE, false);
+            mChallenge = intent.getLongExtra(ChooseLockSettingsHelper.EXTRA_KEY_CHALLENGE, 0);
 
             if (savedInstanceState == null) {
                 if (confirmCredentials) {
@@ -376,7 +415,8 @@ public class ChooseLockPattern extends SettingsActivity {
                     updateStage(Stage.NeedToConfirm);
                     boolean launchedConfirmationActivity =
                         mChooseLockSettingsHelper.launchConfirmationActivity(
-                                CONFIRM_EXISTING_REQUEST, null, null);
+                                CONFIRM_EXISTING_REQUEST,
+                                getString(R.string.unlock_set_unlock_launch_picker_title), true);
                     if (!launchedConfirmationActivity) {
                         updateStage(Stage.Introduction);
                     }
@@ -389,9 +429,28 @@ public class ChooseLockPattern extends SettingsActivity {
                 if (patternString != null) {
                     mChosenPattern = LockPatternUtils.stringToPattern(patternString);
                 }
+
+                if (mCurrentPattern == null) {
+                    mCurrentPattern = savedInstanceState.getString(KEY_CURRENT_PATTERN);
+                }
                 updateStage(Stage.values()[savedInstanceState.getInt(KEY_UI_STAGE)]);
             }
             mDone = false;
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            mLockPatternView.enableInput();
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            if (mPendingLockCheck != null) {
+                mPendingLockCheck.cancel(false);
+                mPendingLockCheck = null;
+            }
         }
 
         protected Intent getRedactionInterstitialIntent(Context context) {
@@ -404,8 +463,6 @@ public class ChooseLockPattern extends SettingsActivity {
                 mLockPatternView.clearPattern();
                 updateStage(Stage.Introduction);
             } else if (mUiStage.leftMode == LeftButtonMode.Cancel) {
-                // They are canceling the entire wizard
-                getActivity().setResult(RESULT_FINISHED);
                 getActivity().finish();
             } else {
                 throw new IllegalStateException("left footer button pressed, but stage of " +
@@ -468,6 +525,11 @@ public class ChooseLockPattern extends SettingsActivity {
                 outState.putString(KEY_PATTERN_CHOICE,
                         LockPatternUtils.patternToString(mChosenPattern));
             }
+
+            if (mCurrentPattern != null) {
+                outState.putString(KEY_CURRENT_PATTERN,
+                        mCurrentPattern);
+            }
         }
 
         /**
@@ -518,6 +580,7 @@ public class ChooseLockPattern extends SettingsActivity {
             // the rest of the stuff varies enough that it is easier just to handle
             // on a case by case basis.
             mLockPatternView.setDisplayMode(DisplayMode.Correct);
+            boolean announceAlways = false;
 
             switch (mUiStage) {
                 case Introduction:
@@ -529,6 +592,7 @@ public class ChooseLockPattern extends SettingsActivity {
                 case ChoiceTooShort:
                     mLockPatternView.setDisplayMode(DisplayMode.Wrong);
                     postClearPatternRunnable();
+                    announceAlways = true;
                     break;
                 case FirstChoiceValid:
                     break;
@@ -538,6 +602,7 @@ public class ChooseLockPattern extends SettingsActivity {
                 case ConfirmWrong:
                     mLockPatternView.setDisplayMode(DisplayMode.Wrong);
                     postClearPatternRunnable();
+                    announceAlways = true;
                     break;
                 case ChoiceConfirmed:
                     break;
@@ -545,7 +610,7 @@ public class ChooseLockPattern extends SettingsActivity {
 
             // If the stage changed, announce the header for accessibility. This
             // is a no-op when accessibility is disabled.
-            if (previousStage != stage) {
+            if (previousStage != stage || announceAlways) {
                 mHeaderText.announceForAccessibility(mHeaderText.getText());
             }
         }
@@ -561,27 +626,72 @@ public class ChooseLockPattern extends SettingsActivity {
         private void saveChosenPatternAndFinish() {
             if (mDone) return;
             LockPatternUtils utils = mChooseLockSettingsHelper.utils();
-            final boolean lockVirgin = !utils.isPatternEverChosen();
+            final boolean lockVirgin = !utils.isPatternEverChosen(UserHandle.myUserId());
 
-            final boolean isFallback = getActivity().getIntent()
-                .getBooleanExtra(LockPatternUtils.LOCKSCREEN_BIOMETRIC_WEAK_FALLBACK, false);
-
-            boolean wasSecureBefore = utils.isSecure();
+            boolean wasSecureBefore = utils.isSecure(UserHandle.myUserId());
 
             final boolean required = getActivity().getIntent().getBooleanExtra(
                     EncryptionInterstitial.EXTRA_REQUIRE_PASSWORD, true);
+
             utils.setCredentialRequiredToDecrypt(required);
-            utils.setLockPatternEnabled(true);
-            utils.saveLockPattern(mChosenPattern, isFallback);
+            utils.saveLockPattern(mChosenPattern, mCurrentPattern, UserHandle.myUserId());
 
             if (lockVirgin) {
-                utils.setVisiblePatternEnabled(true);
+                utils.setVisiblePatternEnabled(true, UserHandle.myUserId());
             }
 
-            if (!wasSecureBefore) {
-                startActivity(getRedactionInterstitialIntent(getActivity()));
+            if (mHasChallenge) {
+                startVerifyPattern(utils, wasSecureBefore);
+            } else {
+                if (!wasSecureBefore) {
+                    Intent intent = getRedactionInterstitialIntent(getActivity());
+                    if (intent != null) {
+                        startActivity(intent);
+                    }
+                }
+                getActivity().setResult(RESULT_FINISHED);
+                doFinish();
             }
-            getActivity().setResult(RESULT_FINISHED);
+        }
+
+        private void startVerifyPattern(LockPatternUtils utils, final boolean wasSecureBefore) {
+            mLockPatternView.disableInput();
+            if (mPendingLockCheck != null) {
+                mPendingLockCheck.cancel(false);
+            }
+
+            mPendingLockCheck = LockPatternChecker.verifyPattern(
+                    utils,
+                    mChosenPattern,
+                    mChallenge,
+                    UserHandle.myUserId(),
+                    new LockPatternChecker.OnVerifyCallback() {
+                        @Override
+                        public void onVerified(byte[] token, int timeoutMs) {
+                            if (token == null) {
+                                Log.e(TAG, "critical: no token returned for known good pattern");
+                            }
+
+                            mLockPatternView.enableInput();
+                            mPendingLockCheck = null;
+
+                            if (!wasSecureBefore) {
+                                Intent intent = getRedactionInterstitialIntent(getActivity());
+                                if (intent != null) {
+                                    startActivity(intent);
+                                }
+                            }
+
+                            Intent intent = new Intent();
+                            intent.putExtra(
+                                    ChooseLockSettingsHelper.EXTRA_KEY_CHALLENGE_TOKEN, token);
+                            getActivity().setResult(RESULT_FINISHED, intent);
+                            doFinish();
+                        }
+                    });
+        }
+
+        private void doFinish() {
             getActivity().finish();
             mDone = true;
         }

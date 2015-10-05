@@ -31,8 +31,10 @@ import android.widget.Button;
 
 import com.android.internal.app.AlertActivity;
 import com.android.internal.app.AlertController;
-
 import com.android.settings.R;
+import com.android.settingslib.bluetooth.CachedBluetoothDevice;
+import com.android.settingslib.bluetooth.CachedBluetoothDeviceManager;
+import com.android.settingslib.bluetooth.LocalBluetoothManager;
 
 /**
  * BluetoothPermissionActivity shows a dialog for accepting incoming
@@ -99,6 +101,8 @@ public class BluetoothPermissionActivity extends AlertActivity implements
             showDialog(getString(R.string.bluetooth_phonebook_request), mRequestType);
         } else if (mRequestType == BluetoothDevice.REQUEST_TYPE_MESSAGE_ACCESS) {
             showDialog(getString(R.string.bluetooth_map_request), mRequestType);
+        } else if (mRequestType == BluetoothDevice.REQUEST_TYPE_SIM_ACCESS) {
+            showDialog(getString(R.string.bluetooth_sap_request), mRequestType);
         }
         else {
             Log.e(TAG, "Error: bad request type: " + mRequestType);
@@ -126,6 +130,9 @@ public class BluetoothPermissionActivity extends AlertActivity implements
             break;
         case BluetoothDevice.REQUEST_TYPE_MESSAGE_ACCESS:
             p.mView = createMapDialogView();
+            break;
+        case BluetoothDevice.REQUEST_TYPE_SIM_ACCESS:
+            p.mView = createSapDialogView();
             break;
         }
         p.mPositiveButtonText = getString(R.string.yes);
@@ -181,6 +188,15 @@ public class BluetoothPermissionActivity extends AlertActivity implements
         return mView;
     }
 
+    private View createSapDialogView() {
+        String mRemoteName = createRemoteName();
+        mView = getLayoutInflater().inflate(R.layout.bluetooth_access, null);
+        messageView = (TextView)mView.findViewById(R.id.message);
+        messageView.setText(getString(R.string.bluetooth_sap_acceptance_dialog_text,
+                mRemoteName, mRemoteName));
+        return mView;
+    }
+
     private void onPositive() {
         if (DEBUG) Log.d(TAG, "onPositive");
         sendReplyIntentToReceiver(true, true);
@@ -192,7 +208,7 @@ public class BluetoothPermissionActivity extends AlertActivity implements
 
         boolean always = true;
         if (mRequestType == BluetoothDevice.REQUEST_TYPE_MESSAGE_ACCESS) {
-            LocalBluetoothManager bluetoothManager = LocalBluetoothManager.getInstance(this);
+            LocalBluetoothManager bluetoothManager = Utils.getLocalBtManager(this);
             CachedBluetoothDeviceManager cachedDeviceManager =
                     bluetoothManager.getCachedDeviceManager();
             CachedBluetoothDevice cachedDevice = cachedDeviceManager.findDevice(mDevice);

@@ -42,6 +42,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.settings.AppListSwitchPreference;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
@@ -62,7 +63,6 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
     private static final String KEY_COUNTRY_CODE = "wifi_countrycode";
     private static final String KEY_NOTIFY_OPEN_NETWORKS = "notify_open_networks";
     private static final String KEY_SLEEP_POLICY = "sleep_policy";
-    private static final String KEY_SCAN_ALWAYS_AVAILABLE = "wifi_scan_always_available";
     private static final String KEY_INSTALL_CREDENTIALS = "install_credentials";
     private static final String KEY_WIFI_ASSISTANT = "wifi_assistant";
     private static final String KEY_WIFI_DIRECT = "wifi_direct";
@@ -84,6 +84,11 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
             }
         }
     };
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.WIFI_ADVANCED;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -122,11 +127,6 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
         notifyOpenNetworks.setChecked(Settings.Global.getInt(getContentResolver(),
                 Settings.Global.WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON, 0) == 1);
         notifyOpenNetworks.setEnabled(mWifiManager.isWifiEnabled());
-
-        SwitchPreference scanAlwaysAvailable =
-            (SwitchPreference) findPreference(KEY_SCAN_ALWAYS_AVAILABLE);
-        scanAlwaysAvailable.setChecked(Global.getInt(getContentResolver(),
-                    Global.WIFI_SCAN_ALWAYS_AVAILABLE, 0) == 1);
 
         Intent intent = new Intent(Credentials.INSTALL_AS_USER_ACTION);
         intent.setClassName("com.android.certinstaller",
@@ -267,10 +267,6 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
         if (KEY_NOTIFY_OPEN_NETWORKS.equals(key)) {
             Global.putInt(getContentResolver(),
                     Settings.Global.WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON,
-                    ((SwitchPreference) preference).isChecked() ? 1 : 0);
-        } else if (KEY_SCAN_ALWAYS_AVAILABLE.equals(key)) {
-            Global.putInt(getContentResolver(),
-                    Global.WIFI_SCAN_ALWAYS_AVAILABLE,
                     ((SwitchPreference) preference).isChecked() ? 1 : 0);
         } else {
             return super.onPreferenceTreeClick(screen, preference);

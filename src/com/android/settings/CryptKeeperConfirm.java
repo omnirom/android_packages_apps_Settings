@@ -27,19 +27,26 @@ import android.os.IBinder;
 import android.os.ServiceManager;
 import android.os.UserHandle;
 import android.os.storage.IMountService;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.widget.LockPatternUtils;
 
 import java.util.Locale;
 
-public class CryptKeeperConfirm extends Fragment {
+public class CryptKeeperConfirm extends InstrumentedFragment {
 
     private static final String TAG = "CryptKeeperConfirm";
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.CRYPT_KEEPER_CONFIRM;
+    }
 
     public static class Blank extends Activity {
         private Handler mHandler = new Handler();
@@ -114,11 +121,18 @@ public class CryptKeeperConfirm extends Fragment {
 
             // 1. The owner info.
             LockPatternUtils utils = new LockPatternUtils(getActivity());
-            utils.setVisiblePatternEnabled(utils.isVisiblePatternEnabled());
-            if (utils.isOwnerInfoEnabled()) {
+            utils.setVisiblePatternEnabled(
+                    utils.isVisiblePatternEnabled(UserHandle.USER_OWNER),
+                    UserHandle.USER_OWNER);
+            if (utils.isOwnerInfoEnabled(UserHandle.USER_OWNER)) {
                 utils.setOwnerInfo(utils.getOwnerInfo(UserHandle.USER_OWNER),
                                    UserHandle.USER_OWNER);
             }
+            int value = Settings.System.getInt(getContext().getContentResolver(),
+                                               Settings.System.TEXT_SHOW_PASSWORD,
+                                               1);
+            utils.setVisiblePasswordEnabled(value != 0, UserHandle.USER_OWNER);
+
             Intent intent = new Intent(getActivity(), Blank.class);
             intent.putExtras(getArguments());
             startActivity(intent);

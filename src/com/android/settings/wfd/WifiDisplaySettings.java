@@ -16,8 +16,6 @@
 
 package com.android.settings.wfd;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -61,6 +59,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.internal.app.MediaRouteDialogPresenter;
+import com.android.internal.logging.MetricsLogger;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 
@@ -114,6 +113,11 @@ public final class WifiDisplaySettings extends SettingsPreferenceFragment {
 
     public WifiDisplaySettings() {
         mHandler = new Handler();
+    }
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.WFD_WIFI_DISPLAY;
     }
 
     @Override

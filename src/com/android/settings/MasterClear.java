@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.UserInfo;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
@@ -34,9 +33,7 @@ import android.os.Process;
 import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.os.UserManager;
-import android.preference.Preference;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +41,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.android.internal.logging.MetricsLogger;
 
 import java.util.List;
 
@@ -57,7 +55,7 @@ import java.util.List;
  *
  * This is the initial screen.
  */
-public class MasterClear extends Fragment {
+public class MasterClear extends InstrumentedFragment {
     private static final String TAG = "MasterClear";
 
     private static final int KEYGUARD_REQUEST = 55;
@@ -77,9 +75,8 @@ public class MasterClear extends Fragment {
      */
     private boolean runKeyguardConfirmation(int request) {
         Resources res = getActivity().getResources();
-        return new ChooseLockSettingsHelper(getActivity(), this)
-                .launchConfirmationActivity(request, null,
-                        res.getText(R.string.master_clear_gesture_explanation));
+        return new ChooseLockSettingsHelper(getActivity(), this).launchConfirmationActivity(
+                request, res.getText(R.string.master_clear_title));
     }
 
     @Override
@@ -100,11 +97,10 @@ public class MasterClear extends Fragment {
     }
 
     private void showFinalConfirmation() {
-        Preference preference = new Preference(getActivity());
-        preference.setFragment(MasterClearConfirm.class.getName());
-        preference.setTitle(R.string.master_clear_confirm_title);
-        preference.getExtras().putBoolean(ERASE_EXTERNAL_EXTRA, mExternalStorage.isChecked());
-        ((SettingsActivity) getActivity()).onPreferenceStartFragment(null, preference);
+        Bundle args = new Bundle();
+        args.putBoolean(ERASE_EXTERNAL_EXTRA, mExternalStorage.isChecked());
+        ((SettingsActivity) getActivity()).startPreferencePanel(MasterClearConfirm.class.getName(),
+                args, R.string.master_clear_confirm_title, null, null, 0);
     }
 
     /**
@@ -172,6 +168,24 @@ public class MasterClear extends Fragment {
 
         final UserManager um = (UserManager) getActivity().getSystemService(Context.USER_SERVICE);
         loadAccountList(um);
+        StringBuffer contentDescription = new StringBuffer();
+        View masterClearContainer = mContentView.findViewById(R.id.master_clear_container);
+        getContentDescription(masterClearContainer, contentDescription);
+        masterClearContainer.setContentDescription(contentDescription);
+    }
+
+    private void getContentDescription(View v, StringBuffer description) {
+       if (v instanceof ViewGroup) {
+           ViewGroup vGroup = (ViewGroup) v;
+           for (int i = 0; i < vGroup.getChildCount(); i++) {
+               View nextChild = vGroup.getChildAt(i);
+               getContentDescription(nextChild, description);
+           }
+       } else if (v instanceof TextView) {
+           TextView vText = (TextView) v;
+           description.append(vText.getText());
+           description.append(","); // Allow Talkback to pause between sections.
+       }
     }
 
     private boolean isExtStorageEncrypted() {
@@ -209,7 +223,7 @@ public class MasterClear extends Fragment {
                     .getAuthenticatorTypesAsUser(profileId);
             final int M = descs.length;
 
-            View titleView = newTitleView(contents, inflater);
+            View titleView = Utils.inflateCategoryHeader(inflater, contents);
             final TextView titleText = (TextView) titleView.findViewById(android.R.id.title);
             titleText.setText(userInfo.isManagedProfile() ? R.string.category_work
                     : R.string.category_personal);
@@ -238,15 +252,18 @@ public class MasterClear extends Fragment {
                                 authContext.getDrawable(desc.iconId), userHandle);
                     }
                 } catch (PackageManager.NameNotFoundException e) {
-                    Log.w(TAG, "No icon for account type " + desc.type);
+                    Log.w(TAG, "Bad package name for account type " + desc.type);
+                } catch (Resources.NotFoundException e) {
+                    Log.w(TAG, "Invalid icon id for account type " + desc.type, e);
+                }
+                if (icon == null) {
+                    icon = context.getPackageManager().getDefaultActivityIcon();
                 }
 
                 TextView child = (TextView)inflater.inflate(R.layout.master_clear_account,
                         contents, false);
                 child.setText(account.name);
-                if (icon != null) {
-                    child.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-                }
+                child.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
                 contents.addView(child);
             }
         }
@@ -276,12 +293,8 @@ public class MasterClear extends Fragment {
         return mContentView;
     }
 
-    private View newTitleView(ViewGroup parent, LayoutInflater inflater) {
-        final TypedArray a = inflater.getContext().obtainStyledAttributes(null,
-                com.android.internal.R.styleable.Preference,
-                com.android.internal.R.attr.preferenceCategoryStyle, 0);
-        final int resId = a.getResourceId(com.android.internal.R.styleable.Preference_layout,
-                0);
-        return inflater.inflate(resId, parent, false);
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.MASTER_CLEAR;
     }
 }

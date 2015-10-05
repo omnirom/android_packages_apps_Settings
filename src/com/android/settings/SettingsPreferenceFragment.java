@@ -29,7 +29,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroupAdapter;
 import android.text.TextUtils;
 import android.util.Log;
@@ -43,21 +42,23 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.android.settings.widget.FloatingActionButton;
+
 /**
  * Base class for Settings fragments, with some helper functions and dialog management.
  */
-public class SettingsPreferenceFragment extends PreferenceFragment implements DialogCreatable {
+public abstract class SettingsPreferenceFragment extends InstrumentedPreferenceFragment
+        implements DialogCreatable {
 
     private static final String TAG = "SettingsPreferenceFragment";
 
-    private static final int MENU_HELP = Menu.FIRST + 100;
     private static final int DELAY_HIGHLIGHT_DURATION_MILLIS = 600;
 
     private static final String SAVE_HIGHLIGHTED_KEY = "android:preference_highlighted";
 
     private SettingsDialogFragment mDialogFragment;
 
-    private String mHelpUrl;
+    private String mHelpUri;
 
     // Cache the content resolver for async callbacks
     private ContentResolver mContentResolver;
@@ -81,6 +82,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Di
     };
 
     private ViewGroup mPinnedHeaderFrameLayout;
+    private FloatingActionButton mFloatingActionButton;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -93,7 +95,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Di
         // Prepare help url and enable menu if necessary
         int helpResource = getHelpResource();
         if (helpResource != 0) {
-            mHelpUrl = getResources().getString(helpResource);
+            mHelpUri = getResources().getString(helpResource);
         }
     }
 
@@ -102,17 +104,25 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Di
             Bundle savedInstanceState) {
         final View root = super.onCreateView(inflater, container, savedInstanceState);
         mPinnedHeaderFrameLayout = (ViewGroup) root.findViewById(R.id.pinned_header);
+        mFloatingActionButton = (FloatingActionButton) root.findViewById(R.id.fab);
         return root;
+    }
+
+    public FloatingActionButton getFloatingActionButton() {
+        return mFloatingActionButton;
+    }
+
+    public View setPinnedHeaderView(int layoutResId) {
+        final LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View pinnedHeader =
+                inflater.inflate(layoutResId, mPinnedHeaderFrameLayout, false);
+        setPinnedHeaderView(pinnedHeader);
+        return pinnedHeader;
     }
 
     public void setPinnedHeaderView(View pinnedHeader) {
         mPinnedHeaderFrameLayout.addView(pinnedHeader);
         mPinnedHeaderFrameLayout.setVisibility(View.VISIBLE);
-    }
-
-    public void clearPinnedHeaderView() {
-        mPinnedHeaderFrameLayout.removeAllViews();
-        mPinnedHeaderFrameLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -125,7 +135,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Di
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (!TextUtils.isEmpty(mHelpUrl)) {
+        if (!TextUtils.isEmpty(mHelpUri)) {
             setHasOptionsMenu(true);
         }
     }
@@ -156,6 +166,11 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Di
         super.onStop();
 
         unregisterObserverIfNeeded();
+    }
+
+    public void showLoadingWhenEmpty() {
+        View loading = getView().findViewById(R.id.loading_container);
+        getListView().setEmptyView(loading);
     }
 
     public void registerObserverIfNeeded() {
@@ -273,14 +288,13 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Di
      * @return the resource id for the help url
      */
     protected int getHelpResource() {
-        return 0;
+        return R.string.help_uri_default;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (mHelpUrl != null && getActivity() != null) {
-            MenuItem helpItem = menu.add(0, MENU_HELP, 0, R.string.help_label);
-            HelpUtils.prepareHelpMenuItem(getActivity(), helpItem, mHelpUrl);
+        if (mHelpUri != null && getActivity() != null) {
+            HelpUtils.prepareHelpMenuItem(getActivity(), menu, mHelpUri, getClass().getName());
         }
     }
 

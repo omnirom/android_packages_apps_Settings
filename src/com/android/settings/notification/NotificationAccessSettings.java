@@ -21,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.settings.R;
 
 public class NotificationAccessSettings extends ManagedServiceSettings {
@@ -41,15 +42,20 @@ public class NotificationAccessSettings extends ManagedServiceSettings {
     }
 
     @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.NOTIFICATION_ACCESS;
+    }
+
+    @Override
     protected Config getConfig() {
         return CONFIG;
     }
 
     public static int getListenersCount(PackageManager pm) {
-        return getServicesCount(CONFIG, pm);
+        return ServiceListing.getServicesCount(CONFIG, pm);
     }
 
     public static int getEnabledListenersCount(Context context) {
-        return getEnabledServicesCount(CONFIG, context);
+        return ServiceListing.getEnabledServicesCount(CONFIG, context);
     }
 }

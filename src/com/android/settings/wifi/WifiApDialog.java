@@ -22,18 +22,23 @@ import android.content.DialogInterface;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiConfiguration.AuthAlgorithm;
 import android.net.wifi.WifiConfiguration.KeyMgmt;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import java.nio.charset.Charset;
 
 import com.android.settings.R;
+
+import android.util.Log;
 
 /**
  * Dialog to configure the SSID and security settings
@@ -53,8 +58,13 @@ public class WifiApDialog extends AlertDialog implements View.OnClickListener,
     private TextView mSsid;
     private int mSecurityTypeIndex = OPEN_INDEX;
     private EditText mPassword;
+    private int mBandIndex = OPEN_INDEX;
 
     WifiConfiguration mWifiConfig;
+    WifiManager mWifiManager;
+    private Context mContext;
+
+    private static final String TAG = "WifiApDialog";
 
     public WifiApDialog(Context context, DialogInterface.OnClickListener listener,
             WifiConfiguration wifiConfig) {
@@ -64,6 +74,8 @@ public class WifiApDialog extends AlertDialog implements View.OnClickListener,
         if (wifiConfig != null) {
             mSecurityTypeIndex = getSecurityTypeIndex(wifiConfig);
         }
+        mWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        mContext =  context;
     }
 
     public static int getSecurityTypeIndex(WifiConfiguration wifiConfig) {
@@ -85,6 +97,8 @@ public class WifiApDialog extends AlertDialog implements View.OnClickListener,
          */
         config.SSID = mSsid.getText().toString();
 
+        config.apBand = mBandIndex;
+
         switch (mSecurityTypeIndex) {
             case OPEN_INDEX:
                 config.allowedKeyManagement.set(KeyMgmt.NONE);
@@ -104,9 +118,10 @@ public class WifiApDialog extends AlertDialog implements View.OnClickListener,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        boolean mInit = true;
         mView = getLayoutInflater().inflate(R.layout.wifi_ap_dialog, null);
         Spinner mSecurity = ((Spinner) mView.findViewById(R.id.security));
+        final Spinner mChannel = (Spinner) mView.findViewById(R.id.choose_channel);
 
         setView(mView);
         setInverseBackgroundForced(true);
@@ -118,17 +133,65 @@ public class WifiApDialog extends AlertDialog implements View.OnClickListener,
         mSsid = (TextView) mView.findViewById(R.id.ssid);
         mPassword = (EditText) mView.findViewById(R.id.password);
 
+        ArrayAdapter <CharSequence> channelAdapter;
+        String countryCode = mWifiManager.getCountryCode();
+        if (!mWifiManager.isDualBandSupported() || countryCode == null) {
+            //If no country code, 5GHz AP is forbidden
+            Log.i(TAG,(!mWifiManager.isDualBandSupported() ? "Device do not support 5GHz " :"") 
+                    + (countryCode == null ? " NO country code" :"") +  " forbid 5GHz");
+            channelAdapter = ArrayAdapter.createFromResource(mContext,
+                    R.array.wifi_ap_band_config_2G_only, android.R.layout.simple_spinner_item);
+            mWifiConfig.apBand = 0;
+        } else {
+            channelAdapter = ArrayAdapter.createFromResource(mContext,
+                    R.array.wifi_ap_band_config_full, android.R.layout.simple_spinner_item);
+        }
+
+        channelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         setButton(BUTTON_SUBMIT, context.getString(R.string.wifi_save), mListener);
         setButton(DialogInterface.BUTTON_NEGATIVE,
         context.getString(R.string.wifi_cancel), mListener);
 
         if (mWifiConfig != null) {
             mSsid.setText(mWifiConfig.SSID);
+            if (mWifiConfig.apBand == 0) {
+               mBandIndex = 0;
+            } else {
+               mBandIndex = 1;
+            }
+
             mSecurity.setSelection(mSecurityTypeIndex);
             if (mSecurityTypeIndex == WPA2_INDEX) {
-                  mPassword.setText(mWifiConfig.preSharedKey);
+                mPassword.setText(mWifiConfig.preSharedKey);
             }
         }
+
+        mChannel.setAdapter(channelAdapter);
+        mChannel.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    boolean mInit = true;
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position,
+                                               long id) {
+                        if (!mInit) {
+                            mBandIndex = position;
+                            mWifiConfig.apBand = mBandIndex;
+                            Log.i(TAG, "config on channelIndex : " + mBandIndex + " Band: " +
+                                    mWifiConfig.apBand);
+                        } else {
+                            mInit = false;
+                            mChannel.setSelection(mBandIndex);
+                        }
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                }
+        );
 
         mSsid.addTextChangedListener(this);
         mPassword.addTextChangedListener(this);
@@ -141,10 +204,21 @@ public class WifiApDialog extends AlertDialog implements View.OnClickListener,
         validate();
     }
 
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mPassword.setInputType(
+                InputType.TYPE_CLASS_TEXT |
+                (((CheckBox) mView.findViewById(R.id.show_password)).isChecked() ?
+                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD :
+                InputType.TYPE_TEXT_VARIATION_PASSWORD));
+    }
+
     private void validate() {
-        if ((mSsid != null && mSsid.length() == 0) ||
-                   ((mSecurityTypeIndex == WPA2_INDEX)&&
-                        mPassword.length() < 8)) {
+        String mSsidString = mSsid.getText().toString();
+        if ((mSsid != null && mSsid.length() == 0)
+                || ((mSecurityTypeIndex == WPA2_INDEX) && mPassword.length() < 8)
+                || (mSsid != null &&
+                Charset.forName("UTF-8").encode(mSsidString).limit() > 32)) {
             getButton(BUTTON_SUBMIT).setEnabled(false);
         } else {
             getButton(BUTTON_SUBMIT).setEnabled(true);

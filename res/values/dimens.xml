@@ -19,7 +19,7 @@
     <dimen name="device_memory_usage_button_height">32dip</dimen>
     <dimen name="action_bar_switch_padding">16dip</dimen>
 
-    <dimen name="app_icon_size">56dip</dimen>
+    <dimen name="app_icon_size">40dip</dimen>
     <dimen name="screen_margin_sides">64dip</dimen>
     <dimen name="screen_margin_top">72dip</dimen>
     <dimen name="screen_margin_bottom">48dip</dimen>
@@ -38,27 +38,13 @@
 
     <dimen name="crypt_clock_size">100sp</dimen>
 
-    <dimen name="setup_margin_bottom">0dip</dimen>
-    <dimen name="setup_title_size">24sp</dimen>
-    <dimen name="setup_title_margin_bottom">16dp</dimen>
-    <!-- This is the extra spacing required to make the leading exactly 32sp -->
-    <dimen name="setup_title_line_spacing_extra">3.67sp</dimen>
-    <dimen name="setup_title_padding_bottom">2dp</dimen>
-    <dimen name="setup_title_padding_top">16dp</dimen>
+    <dimen name="setup_add_network_item_height">56dp</dimen>
     <!-- Size of padding to give in the wifi list when there is no icon -->
     <dimen name="setup_list_no_icon_padding">56dp</dimen>
-    <dimen name="setup_add_network_item_height">56dp</dimen>
-    <dimen name="setup_wizard_card_corner_radius">2dp</dimen>
-    <dimen name="setup_wizard_card_elevation">5dp</dimen>
-    <dimen name="setup_wizard_tablet_illustration_height">256dp</dimen>
-    <dimen name="setup_wizard_card_title_padding_end">0dp</dimen>
-    <dimen name="setup_wizard_card_title_padding_start">0dp</dimen>
-    <dimen name="setup_wizard_card_title_padding_top">16dp</dimen>
-    <dimen name="setup_wizard_card_title_padding_bottom">28dp</dimen>
-    <dimen name="setup_wizard_card_port_margin_sides">56dp</dimen>
-    <dimen name="setup_wizard_card_land_margin_top">128dp</dimen>
-    <dimen name="setup_wizard_margin_sides">40dp</dimen>
-    <dimen name="setup_wizard_title_area_elevation">3dp</dimen>
+    <dimen name="setup_preference_icon_frame_margin_start">-4dp</dimen>
+    <dimen name="setup_preference_icon_frame_padding_end">12dp</dimen>
+    <dimen name="setup_preference_icon_frame_width">60dp</dimen>
+    <dimen name="setup_wizard_margin_top">24dp</dimen>
 
     <dimen name="divider_height">3dip</dimen>
     <dimen name="divider_margin_top">6dip</dimen>
@@ -72,9 +58,7 @@
 
     <dimen name="pager_tabs_padding">0dp</dimen>
 
-    <dimen name="circle_avatar_size">48dp</dimen>
-    <dimen name="circle_avatar_frame_stroke_width">1dp</dimen>
-    <dimen name="circle_avatar_frame_shadow_radius">3dp</dimen>
+    <dimen name="circle_avatar_size">40dp</dimen>
 
     <!-- Minimum width for the popup for updating a user's photo. -->
     <dimen name="update_user_photo_popup_min_width">300dip</dimen>
@@ -91,8 +75,8 @@
     <dimen name="notification_app_icon_size">64dp</dimen>
     <dimen name="notification_app_icon_badge_size">20dp</dimen>
     <dimen name="notification_app_icon_badge_margin">4dp</dimen>
-    <dimen name="zen_downtime_checkbox_padding">7dp</dimen>
-    <dimen name="zen_downtime_margin">17dp</dimen>
+    <dimen name="zen_schedule_rule_checkbox_padding">7dp</dimen>
+    <dimen name="zen_schedule_day_margin">17dp</dimen>
 
     <!-- Default text size for caption preview samples. Uses dp rather than sp because captions are not scaled. -->
     <dimen name="caption_preview_text_size">48dp</dimen>
@@ -213,7 +197,8 @@
     <dimen name="user_icon_view_height">56dp</dimen>
     <!-- User spinner -->
     <dimen name="user_spinner_height">72dp</dimen>
-    <dimen name="user_spinner_padding">8dp</dimen>
+    <dimen name="user_spinner_padding">4dp</dimen>
+    <dimen name="user_spinner_padding_sides">20dp</dimen>
     <dimen name="user_spinner_item_height">56dp</dimen>
 
     <!-- CheckBoxPreference -->
@@ -225,10 +210,50 @@
     <integer name="bluetooth_name_length">32</integer>
     <dimen name="bluetooth_pairing_padding">20dp</dimen>
 
+    <!-- WiFi Preferences -->
     <dimen name="wifi_divider_height">1px</dimen>
+    <dimen name="wifi_preference_badge_padding">8dip</dimen>
 
     <!-- Color picker -->
     <dimen name="color_swatch_size">16dp</dimen>
     <dimen name="color_swatch_stroke_width">4dp</dimen>
 
+    <!-- RedactionInterstitial -->
+    <dimen name="redaction_vertical_margins">8dp</dimen>
+
+    <!-- Fingerprint -->
+    <dimen name="fingerprint_ring_radius">92dip</dimen>
+    <dimen name="fingerprint_ring_thickness">4dip</dimen>
+    <dimen name="fingerprint_dot_radius">8dp</dimen>
+    <dimen name="fingerprint_pulse_radius">50dp</dimen>
+    <item name="fingerprint_sensor_location_fraction_x" type="fraction">50%</item>
+    <item name="fingerprint_sensor_location_fraction_y" type="fraction">30%</item>
+    <dimen name="fingerprint_find_sensor_graphic_size">190dp</dimen>
+    <item name="fingerprint_illustration_aspect_ratio" format="float" type="dimen">2.6</item>
+    <dimen name="fingerprint_decor_padding_top">0dp</dimen>
+    <dimen name="fingerprint_error_text_appear_distance">16dp</dimen>
+    <dimen name="fingerprint_error_text_disappear_distance">-8dp</dimen>
+    <dimen name="fingerprint_animation_size">88dp</dimen>
+    <dimen name="fingerprint_progress_bar_size">192dp</dimen>
+    <dimen name="fingerprint_enrolling_content_margin_top">36dp</dimen>
+    <dimen name="fingerprint_in_app_indicator_size">120dp</dimen>
+
+    <dimen name="setup_fingerprint_ring_radius">80dip</dimen>
+    <dimen name="setup_fingerprint_progress_bar_size">168dp</dimen>
+
+    <dimen name="confirm_credentials_security_method_margin">48dp</dimen>
+    <dimen name="fab_size">56dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_elevation">12dp</dimen>
+    <dimen name="fab_press_translation_z">9dp</dimen>
+
+    <!-- Delete managed profile dialog -->
+    <dimen name="delete_profile_dialog_padding_top">16dp</dimen>
+    <dimen name="delete_profile_dialog_padding_left_right">24dp</dimen>
+    <dimen name="mdm_app_info_height">72dp</dimen>
+    <dimen name="mdm_app_info_padding_top_bottom">8dp</dimen>
+    <dimen name="mdm_app_name_padding_left">16dp</dimen>
+
+    <dimen name="shortcut_size">40dp</dimen>
+    <dimen name="badge_size">10dp</dimen>
 </resources>

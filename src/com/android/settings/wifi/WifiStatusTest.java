@@ -17,14 +17,11 @@
 package com.android.settings.wifi;
 
 import com.android.settings.R;
+import com.android.settingslib.wifi.AccessPoint;
 
 import android.net.wifi.ScanResult;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 import android.app.Activity;
@@ -301,8 +298,9 @@ public class WifiStatusTest extends Activity {
     private void handleNetworkStateChanged(NetworkInfo networkInfo) {
         if (mWifiManager.isWifiEnabled()) {
             WifiInfo info = mWifiManager.getConnectionInfo();
-            String summary = Summary.get(this, info.getSSID(), networkInfo.getDetailedState(),
-                    info.getNetworkId() == WifiConfiguration.INVALID_NETWORK_ID);
+            String summary = AccessPoint.getSummary(this, info.getSSID(),
+                    networkInfo.getDetailedState(),
+                    info.getNetworkId() == WifiConfiguration.INVALID_NETWORK_ID, null);
             mNetworkState.setText(summary);
         }
     }
@@ -395,19 +393,22 @@ public class WifiStatusTest extends Activity {
     }
 
     private void httpClientTest() {
-        HttpClient client = new DefaultHttpClient();
+        HttpURLConnection urlConnection = null;
         try {
             // TODO: Hardcoded for now, make it UI configurable
-            HttpGet request = new HttpGet("http://www.google.com");
-            HttpResponse response = client.execute(request);
-            if (response.getStatusLine().getStatusCode() == 200) {
+            URL url = new URL("https://www.google.com");
+            urlConnection = (HttpURLConnection) url.openConnection();
+            if (urlConnection.getResponseCode() == 200) {
                 mHttpClientTestResult = "Pass";
             } else {
-                mHttpClientTestResult = "Fail: Code: " + String.valueOf(response);
+                mHttpClientTestResult = "Fail: Code: " + urlConnection.getResponseMessage();
             }
-            request.abort();
         } catch (IOException e) {
             mHttpClientTestResult = "Fail: IOException";
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
         }
     }
 

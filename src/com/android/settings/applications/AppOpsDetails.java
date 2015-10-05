@@ -27,6 +27,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,13 +41,15 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.android.internal.logging.MetricsLogger;
+import com.android.settings.InstrumentedFragment;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
 import com.android.settings.Utils;
 
 import java.util.List;
 
-public class AppOpsDetails extends Fragment {
+public class AppOpsDetails extends InstrumentedFragment {
     static final String TAG = "AppOpsDetails";
 
     public static final String ARG_PACKAGE_NAME = "package";
@@ -57,7 +60,6 @@ public class AppOpsDetails extends Fragment {
     private PackageInfo mPackageInfo;
     private LayoutInflater mInflater;
     private View mRootView;
-    private TextView mAppVersion;
     private LinearLayout mOperationsSection;
 
     private final int MODE_ALLOWED = 0;
@@ -93,23 +95,10 @@ public class AppOpsDetails extends Fragment {
     // Utility method to set application label and icon.
     private void setAppLabelAndIcon(PackageInfo pkgInfo) {
         final View appSnippet = mRootView.findViewById(R.id.app_snippet);
-        appSnippet.setPaddingRelative(0, appSnippet.getPaddingTop(), 0, appSnippet.getPaddingBottom());
-
-        ImageView icon = (ImageView) appSnippet.findViewById(R.id.app_icon);
-        icon.setImageDrawable(mPm.getApplicationIcon(pkgInfo.applicationInfo));
-        // Set application name.
-        TextView label = (TextView) appSnippet.findViewById(R.id.app_name);
-        label.setText(mPm.getApplicationLabel(pkgInfo.applicationInfo));
-        // Version number of application
-        mAppVersion = (TextView) appSnippet.findViewById(R.id.app_size);
-
-        if (pkgInfo.versionName != null) {
-            mAppVersion.setVisibility(View.VISIBLE);
-            mAppVersion.setText(getActivity().getString(R.string.version_text,
-                    String.valueOf(pkgInfo.versionName)));
-        } else {
-            mAppVersion.setVisibility(View.INVISIBLE);
-        }
+        CharSequence label = mPm.getApplicationLabel(pkgInfo.applicationInfo);
+        Drawable icon = mPm.getApplicationIcon(pkgInfo.applicationInfo);
+        InstalledAppDetails.setupAppSnippet(appSnippet, label, icon,
+                pkgInfo != null ? pkgInfo.versionName : null);
     }
 
     private String retrieveAppEntry() {
@@ -255,6 +244,11 @@ public class AppOpsDetails extends Fragment {
         mRootView = view;
         mOperationsSection = (LinearLayout)view.findViewById(R.id.operations_section);
         return view;
+    }
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.APP_OPS_DETAILS;
     }
 
     @Override

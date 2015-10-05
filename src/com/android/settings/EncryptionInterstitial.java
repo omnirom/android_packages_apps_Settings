@@ -16,6 +16,7 @@
 
 package com.android.settings;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
@@ -32,6 +33,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.UserHandle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,34 +80,51 @@ public class EncryptionInterstitial extends SettingsActivity {
         private boolean mPasswordRequired;
 
         @Override
+        protected int getMetricsCategory() {
+            return MetricsLogger.ENCRYPTION;
+        }
+
+        @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            final int layoutId = R.layout.encryption_interstitial;
-            View view = inflater.inflate(layoutId, container, false);
+            return inflater.inflate(R.layout.encryption_interstitial, container, false);
+        }
+
+        @Override
+        public void onViewCreated(View view, Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
             mRequirePasswordToDecryptButton =
                     (RadioButton) view.findViewById(R.id.encrypt_require_password);
             mDontRequirePasswordToDecryptButton =
                     (RadioButton) view.findViewById(R.id.encrypt_dont_require_password);
             mEncryptionMessage =
                     (TextView) view.findViewById(R.id.encryption_message);
+            boolean forFingerprint = getActivity().getIntent().getBooleanExtra(
+                    ChooseLockSettingsHelper.EXTRA_KEY_FOR_FINGERPRINT, false);
             int quality = getActivity().getIntent().getIntExtra(EXTRA_PASSWORD_QUALITY, 0);
             final int msgId;
             final int enableId;
             final int disableId;
             switch (quality) {
                 case DevicePolicyManager.PASSWORD_QUALITY_SOMETHING:
-                    msgId = R.string.encryption_interstitial_message_pattern;
+                    msgId = forFingerprint ?
+                            R.string.encryption_interstitial_message_pattern_for_fingerprint :
+                            R.string.encryption_interstitial_message_pattern;
                     enableId = R.string.encrypt_require_pattern;
                     disableId = R.string.encrypt_dont_require_pattern;
                     break;
                 case DevicePolicyManager.PASSWORD_QUALITY_NUMERIC:
                 case DevicePolicyManager.PASSWORD_QUALITY_NUMERIC_COMPLEX:
-                    msgId = R.string.encryption_interstitial_message_pin;
+                    msgId = forFingerprint ?
+                            R.string.encryption_interstitial_message_pin_for_fingerprint :
+                            R.string.encryption_interstitial_message_pin;
                     enableId = R.string.encrypt_require_pin;
                     disableId = R.string.encrypt_dont_require_pin;
                     break;
                 default:
-                    msgId = R.string.encryption_interstitial_message_password;
+                    msgId = forFingerprint ?
+                            R.string.encryption_interstitial_message_password_for_fingerprint :
+                            R.string.encryption_interstitial_message_password;
                     enableId = R.string.encrypt_require_password;
                     disableId = R.string.encrypt_dont_require_password;
                     break;
@@ -120,7 +139,6 @@ public class EncryptionInterstitial extends SettingsActivity {
 
             setRequirePasswordState(getActivity().getIntent().getBooleanExtra(
                     EXTRA_REQUIRE_PASSWORD, true));
-            return view;
         }
 
         @Override
@@ -143,7 +161,7 @@ public class EncryptionInterstitial extends SettingsActivity {
             switch(dialogId) {
                 case ACCESSIBILITY_WARNING_DIALOG: {
                     final int quality = new LockPatternUtils(getActivity())
-                            .getKeyguardStoredPasswordQuality();
+                            .getKeyguardStoredPasswordQuality(UserHandle.myUserId());
                     final int titleId;
                     final int messageId;
                     switch (quality) {

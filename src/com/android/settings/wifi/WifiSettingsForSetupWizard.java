@@ -16,55 +16,46 @@
 
 package com.android.settings.wifi;
 
-import android.content.Intent;
-import android.content.res.TypedArray;
-import android.database.DataSetObserver;
+import android.app.Dialog;
 import android.net.wifi.WifiConfiguration;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AbsListView.LayoutParams;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.settings.R;
+import com.android.settings.SetupWizardUtils;
+import com.android.setupwizardlib.SetupWizardListLayout;
+import com.android.setupwizardlib.view.NavigationBar;
 
 /**
  * This customized version of WifiSettings is shown to the user only during Setup Wizard. Menu
- * selections are limited, clicking on an access point will auto-advance to the next screen (once
- * connected), and, if the user opts to skip ahead without a wifi connection, a warning message
- * alerts of possible carrier data charges or missing software updates.
+ * is not shown, clicking on an access point will auto-advance to the next screen (once connected),
+ * and, if the user opts to skip ahead without a wifi connection, a warning message alerts of
+ * possible carrier data charges or missing software updates.
  */
 public class WifiSettingsForSetupWizard extends WifiSettings {
 
     private static final String TAG = "WifiSettingsForSetupWizard";
 
-    // show a text regarding data charges when wifi connection is required during setup wizard
-    protected static final String EXTRA_SHOW_WIFI_REQUIRED_INFO = "wifi_show_wifi_required_info";
-
+    private SetupWizardListLayout mLayout;
     private View mAddOtherNetworkItem;
-    private ListAdapter mAdapter;
     private TextView mEmptyFooter;
+    private View mMacAddressFooter;
     private boolean mListLastEmpty = false;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-
-        final View view = inflater.inflate(R.layout.setup_preference, container, false);
-
-        final ListView list = (ListView) view.findViewById(android.R.id.list);
-        final View title = view.findViewById(R.id.title);
-        if (title == null) {
-            final View header = inflater.inflate(R.layout.setup_wizard_header, list, false);
-            list.addHeaderView(header, null, false);
-        }
+        mLayout = (SetupWizardListLayout)
+                inflater.inflate(R.layout.setup_wifi_layout, container, false);
+        final ListView list = mLayout.getListView();
 
         mAddOtherNetworkItem = inflater.inflate(R.layout.setup_wifi_add_network, list, false);
         list.addFooterView(mAddOtherNetworkItem, null, true);
@@ -77,36 +68,39 @@ public class WifiSettingsForSetupWizard extends WifiSettings {
             }
         });
 
-        final Intent intent = getActivity().getIntent();
-        if (intent.getBooleanExtra(EXTRA_SHOW_WIFI_REQUIRED_INFO, false)) {
-            view.findViewById(R.id.wifi_required_info).setVisibility(View.VISIBLE);
+        mMacAddressFooter = inflater.inflate(R.layout.setup_wifi_mac_address, list, false);
+        list.addFooterView(mMacAddressFooter, null, false);
+
+        final NavigationBar navigationBar = mLayout.getNavigationBar();
+        if (navigationBar != null) {
+            WifiSetupActivity activity = (WifiSetupActivity) getActivity();
+            activity.onNavigationBarCreated(navigationBar);
         }
 
-        return view;
+        return mLayout;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getView().setSystemUiVisibility(
-                View.STATUS_BAR_DISABLE_HOME |
-                View.STATUS_BAR_DISABLE_RECENT |
-                View.STATUS_BAR_DISABLE_NOTIFICATION_ALERTS |
-                View.STATUS_BAR_DISABLE_CLOCK);
-
         if (hasNextButton()) {
             getNextButton().setVisibility(View.GONE);
         }
 
-        mAdapter = getPreferenceScreen().getRootAdapter();
-        mAdapter.registerDataSetObserver(new DataSetObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                updateFooter();
-            }
-        });
+        updateMacAddress();
+    }
+
+    @Override
+    public void onAccessPointsChanged() {
+        super.onAccessPointsChanged();
+        updateFooter(getPreferenceScreen().getPreferenceCount() == 0);
+    }
+
+    @Override
+    public void onWifiStateChanged(int state) {
+        super.onWifiStateChanged(state);
+        updateMacAddress();
     }
 
     @Override
@@ -121,18 +115,15 @@ public class WifiSettingsForSetupWizard extends WifiSettings {
     }
 
     @Override
-    /* package */ void addOptionsMenuItems(Menu menu) {
-        final boolean wifiIsEnabled = mWifiManager.isWifiEnabled();
-        final TypedArray ta = getActivity().getTheme()
-                .obtainStyledAttributes(new int[] {R.attr.ic_wps});
-        menu.add(Menu.NONE, MENU_ID_WPS_PBC, 0, R.string.wifi_menu_wps_pbc)
-                .setIcon(ta.getDrawable(0))
-                .setEnabled(wifiIsEnabled)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        menu.add(Menu.NONE, MENU_ID_ADD_NETWORK, 0, R.string.wifi_add_network)
-                .setEnabled(wifiIsEnabled)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        ta.recycle();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Do not show menu during setup wizard
+    }
+
+    @Override
+    public Dialog onCreateDialog(int dialogId) {
+        final Dialog dialog = super.onCreateDialog(dialogId);
+        SetupWizardUtils.applyImmersiveFlags(dialog);
+        return dialog;
     }
 
     @Override
@@ -151,27 +142,62 @@ public class WifiSettingsForSetupWizard extends WifiSettings {
 
     @Override
     protected TextView initEmptyView() {
-        mEmptyFooter = new TextView(getActivity());
-        mEmptyFooter.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.MATCH_PARENT));
-        mEmptyFooter.setGravity(Gravity.CENTER);
-        mEmptyFooter.setCompoundDrawablesWithIntrinsicBounds(0,
-                R.drawable.ic_wifi_emptystate, 0,0);
+        final LayoutInflater inflater = LayoutInflater.from(getActivity());
+        mEmptyFooter = (TextView) inflater.inflate(R.layout.setup_wifi_empty, getListView(), false);
         return mEmptyFooter;
     }
 
-    protected void updateFooter() {
-        final boolean isEmpty = mAdapter.isEmpty();
-        if (isEmpty != mListLastEmpty) {
+    protected void updateFooter(boolean isEmpty) {
+        if (isEmpty != mListLastEmpty && hasListView()) {
             final ListView list = getListView();
+            list.removeFooterView(mEmptyFooter);
+            list.removeFooterView(mAddOtherNetworkItem);
+            list.removeFooterView(mMacAddressFooter);
             if (isEmpty) {
-                list.removeFooterView(mAddOtherNetworkItem);
                 list.addFooterView(mEmptyFooter, null, false);
             } else {
-                list.removeFooterView(mEmptyFooter);
                 list.addFooterView(mAddOtherNetworkItem, null, true);
+                list.addFooterView(mMacAddressFooter, null, false);
             }
             mListLastEmpty = isEmpty;
+        }
+    }
+
+    @Override
+    public View setPinnedHeaderView(int layoutResId) {
+        // Pinned header is not supported in setup wizard
+        return null;
+    }
+
+    @Override
+    public void setPinnedHeaderView(View pinnedHeader) {
+        // Pinned header is not supported in setup wizard
+    }
+
+    @Override
+    protected void setProgressBarVisible(boolean visible) {
+        if (mLayout != null) {
+            if (visible) {
+                mLayout.showProgressBar();
+            } else {
+                mLayout.hideProgressBar();
+            }
+        }
+    }
+
+    private void updateMacAddress() {
+        if (mMacAddressFooter != null) {
+            String macAddress = null;
+            if (mWifiManager != null) {
+                android.net.wifi.WifiInfo connectionInfo = mWifiManager.getConnectionInfo();
+                if (connectionInfo != null) {
+                    macAddress = connectionInfo.getMacAddress();
+                }
+            }
+            final TextView macAddressTextView =
+                    (TextView) mMacAddressFooter.findViewById(R.id.mac_address);
+            macAddressTextView.setText(!TextUtils.isEmpty(macAddress) ?
+                    macAddress : getString(R.string.status_unavailable));
         }
     }
 }

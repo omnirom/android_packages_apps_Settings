@@ -17,6 +17,7 @@
 <resources>
     <color name="black">#000</color>
     <color name="red">#F00</color>
+    <color name="blue">#00F</color>
 
     <color name="material_empty_color_light">#FFCED7DB</color>
 
@@ -43,41 +44,62 @@
     <color name="setup_lock_pattern_view_regular_color_dark">#ffbdbdbd</color>
     <color name="setup_lock_pattern_view_regular_color_light">@color/lock_pattern_view_regular_color</color>
     <color name="setup_lock_pattern_view_success_color_dark">#ff84ffff</color>
-    <color name="setup_lock_pattern_view_success_color_light">@color/setup_wizard_color_accent_light</color>
+    <color name="setup_lock_pattern_view_success_color_light">@color/suw_color_accent_light</color>
     <color name="setup_lock_pattern_view_error_color_dark">#fff44336</color>
     <color name="setup_lock_pattern_view_error_color_light">@color/lock_pattern_view_error_color</color>
-    <color name="setup_wizard_color_accent_dark">#ff00e4ff</color>
-    <color name="setup_wizard_color_accent_light">#ff00828e</color>
-    <color name="setup_wizard_wifi_color_dark">#ff00e4ff</color>
-    <color name="setup_wizard_wifi_color_light">#ff0096a6</color>
+    <color name="setup_wizard_wifi_color_dark">#89ffffff</color>
+    <color name="setup_wizard_wifi_color_light">#89000000</color>
 
-    <color name="circle_avatar_frame_color">#ffffffff</color>
-    <color name="circle_avatar_frame_shadow_color">#80000000</color>
-    <color name="circle_avatar_frame_pressed_color">#ffffffff</color>
+    <color name="system_warning_color">#fff4511e</color><!-- deep orange 600 -->
 
     <color name="lock_pattern_background">#00000000</color>
     <color name="lock_pattern_view_regular_color">#ff37474f</color>
-    <color name="lock_pattern_view_success_color">@color/theme_accent</color>
-    <color name="lock_pattern_view_error_color">#fff4511e</color>
+    <color name="lock_pattern_view_error_color">@color/warning</color>
+
+    <color name="lock_pattern_view_regular_color_dark">#ffffff</color>
 
     <color name="unlock_pattern_view_regular_color">@android:color/white</color>
-    <color name="unlock_pattern_view_success_color">@color/theme_accent</color>
-    <color name="unlock_pattern_view_error_color">#fff4511e</color>
+    <color name="unlock_pattern_view_error_color">@color/system_warning_color</color>
+
+    <color name="fingerprint_title_area_bg">?android:attr/colorAccent</color>
+    <color name="fingerprint_title_color">#ffffffff</color>
+    <color name="fingerprint_message_color">#de000000</color>
+    <color name="fingerprint_progress_ring">?android:attr/colorAccent</color>
+    <color name="fingerprint_progress_ring_bg">#20000000</color>
+    <color name="fingerprint_indicator_background_resting">#12000000</color>
 
     <color name="running_processes_system_ram">#ff384248</color>
     <color name="running_processes_apps_ram">#ff009587</color>
     <color name="running_processes_free_ram">#ffced7db</color>
 
-    <!-- Palette colors referenced by top-level themes. -->
-    <color name="theme_primary">#ff263238</color>
-    <color name="theme_primary_dark">#ff21272b</color>
-    <color name="theme_accent">#ff009688</color>
+    <color name="card_background">#ffffffff</color>
 
-    <color name="dashboard_background_color">#ffe1e1e0</color>
     <color name="switchbar_background_color">#ff37474f</color>
     <color name="switch_accent_color">#ff7fcac3</color>
 
     <color name="wifi_divider">#ffe0e0e0</color>
     <color name="sim_noitification">@*android:color/material_deep_teal_500</color>
+
+    <color name="warning">#ff5621</color>
+    <color name="confirm_device_credential_dark_background">#263238</color>
+    <color name="fab_ripple">#1fffffff</color><!-- 12% white -->
+    <color name="fab_shape">?android:attr/colorAccent</color>
+    <color name="voice_interaction_highlight">#33b5e5</color>
+
+    <drawable name="fp_enrollment_header_landscape">#009688</drawable>
+
+    <color name="memory_normal">#ff009587</color>
+    <color name="memory_moderate">#ffF3B300</color>
+    <color name="memory_low">#ffff9700</color>
+    <color name="memory_critical">#ffff5621</color>
+
+    <color name="memory_avg_use">#ff384248</color>
+    <color name="memory_max_use">#ff009587</color>
+    <color name="memory_remaining">#ffced7db</color>
+
+    <color name="zen_rule_name_warning">@color/system_warning_color</color>
+
+    <!-- Accent color that matches the settings launcher icon -->
+    <color name="icon_accent">#ffabffec</color>
 
 </resources>

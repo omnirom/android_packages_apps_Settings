@@ -19,7 +19,7 @@
         android:key="battery_saver">
 
     <!-- Turn on automatically -->
-    <com.android.settings.notification.DropDownPreference
+    <com.android.settings.DropDownPreference
             android:key="turn_on_automatically"
             android:title="@string/battery_saver_turn_on_automatically_title"
             android:persistent="false" />

@@ -19,7 +19,6 @@ package com.android.settings.dashboard;
 import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -51,6 +50,16 @@ public class DashboardCategory implements Parcelable {
      * Title of the category that is shown to the user.
      */
     public CharSequence title;
+
+    /**
+     * Key used for placing external tiles.
+     */
+    public String key;
+
+    /**
+     * Optional index of where to place tiles specified by system apps.
+     */
+    public int externalIndex = -1;
 
     /**
      * List of the category's children
@@ -106,7 +115,9 @@ public class DashboardCategory implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(titleRes);
+        dest.writeInt(externalIndex);
         TextUtils.writeToParcel(title, dest, flags);
+        dest.writeString(key);
 
         final int count = tiles.size();
         dest.writeInt(count);
@@ -119,7 +130,9 @@ public class DashboardCategory implements Parcelable {
 
     public void readFromParcel(Parcel in) {
         titleRes = in.readInt();
+        externalIndex = in.readInt();
         title = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
+        key = in.readString();
 
         final int count = in.readInt();
 

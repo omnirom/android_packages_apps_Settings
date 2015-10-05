@@ -48,10 +48,10 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -66,9 +66,9 @@ import com.android.internal.widget.LockPatternUtils;
 import com.android.internal.widget.LockPatternView;
 import com.android.internal.widget.LockPatternView.Cell;
 
-import static com.android.internal.widget.LockPatternView.DisplayMode;
-
 import java.util.List;
+
+import static com.android.internal.widget.LockPatternView.DisplayMode;
 
 /**
  * Settings screens to show the UI flows for encrypting/decrypting the device.
@@ -116,7 +116,6 @@ public class CryptKeeper extends Activity implements TextView.OnEditorActionList
     /** If gone bad, should we show encryption failed (false) or corrupt (true)*/
     private boolean mCorrupt;
     /** A flag to indicate when the back event should be ignored */
-    private boolean mIgnoreBack = false;
     /** When set, blocks unlocking. Set every COOL_DOWN_ATTEMPTS attempts, only cleared
         by power cycling phone. */
     private boolean mCooldown = false;
@@ -390,15 +389,11 @@ public class CryptKeeper extends Activity implements TextView.OnEditorActionList
     }
 
     /**
-     * Ignore back events after the user has entered the decrypt screen and while the device is
-     * encrypting.
+     * Ignore back events from this activity always - there's nowhere to go back
+     * to
      */
     @Override
     public void onBackPressed() {
-        // In the rare case that something pressed back even though we were disabled.
-        if (mIgnoreBack)
-            return;
-        super.onBackPressed();
     }
 
     @Override
@@ -408,11 +403,7 @@ public class CryptKeeper extends Activity implements TextView.OnEditorActionList
         // If we are not encrypted or encrypting, get out quickly.
         final String state = SystemProperties.get("vold.decrypt");
         if (!isDebugView() && ("".equals(state) || DECRYPT_STATE.equals(state))) {
-            // Disable the crypt keeper.
-            PackageManager pm = getPackageManager();
-            ComponentName name = new ComponentName(this, CryptKeeper.class);
-            pm.setComponentEnabledSetting(name, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                    PackageManager.DONT_KILL_APP);
+            disableCryptKeeperComponent(this);
             // Typically CryptKeeper is launched as the home app.  We didn't
             // want to be running, so need to finish this activity.  We can count
             // on the activity manager re-launching the new home app upon finishing
@@ -478,6 +469,7 @@ public class CryptKeeper extends Activity implements TextView.OnEditorActionList
                 int passwordType = StorageManager.CRYPT_TYPE_PASSWORD;
                 String owner_info;
                 boolean pattern_visible;
+                boolean password_visible;
 
                 @Override
                 public Void doInBackground(Void... v) {
@@ -486,6 +478,7 @@ public class CryptKeeper extends Activity implements TextView.OnEditorActionList
                         passwordType = service.getPasswordType();
                         owner_info = service.getField(StorageManager.OWNER_INFO_KEY);
                         pattern_visible = !("0".equals(service.getField(StorageManager.PATTERN_VISIBLE_KEY)));
+                        password_visible = !("0".equals(service.getField(StorageManager.PASSWORD_VISIBLE_KEY)));
                     } catch (Exception e) {
                         Log.e(TAG, "Error calling mount service " + e);
                     }
@@ -495,6 +488,9 @@ public class CryptKeeper extends Activity implements TextView.OnEditorActionList
 
                 @Override
                 public void onPostExecute(java.lang.Void v) {
+                    Settings.System.putInt(getContentResolver(), Settings.System.TEXT_SHOW_PASSWORD,
+                                  password_visible ? 1 : 0);
+
                     if (passwordType == StorageManager.CRYPT_TYPE_PIN) {
                         setContentView(R.layout.crypt_keeper_pin_entry);
                         mStatusString = R.string.enter_pin;
@@ -514,6 +510,8 @@ public class CryptKeeper extends Activity implements TextView.OnEditorActionList
                     ownerInfo.setSelected(true); // Required for marquee'ing to work
 
                     passwordEntryInit();
+
+                    findViewById(android.R.id.content).setSystemUiVisibility(View.STATUS_BAR_DISABLE_BACK);
 
                     if (mLockPatternView != null) {
                         mLockPatternView.setInStealthMode(!pattern_visible);
@@ -693,7 +691,6 @@ public class CryptKeeper extends Activity implements TextView.OnEditorActionList
      * @param isEnabled true if back is enabled, false otherwise.
      */
     private final void setBackFunctionality(boolean isEnabled) {
-        mIgnoreBack = !isEnabled;
         if (isEnabled) {
             mStatusBar.disable(sWidgetsToDisable);
         } else {
@@ -769,7 +766,7 @@ public class CryptKeeper extends Activity implements TextView.OnEditorActionList
             imeSwitcher.setOnClickListener(new OnClickListener() {
                     @Override
                 public void onClick(View v) {
-                    imm.showInputMethodPicker();
+                    imm.showInputMethodPicker(false /* showAuxiliarySubtypes */);
                 }
             });
         }
@@ -1020,5 +1017,13 @@ public class CryptKeeper extends Activity implements TextView.OnEditorActionList
     @Override
     public void afterTextChanged(Editable s) {
         return;
+    }
+
+    private static void disableCryptKeeperComponent(Context context) {
+        PackageManager pm = context.getPackageManager();
+        ComponentName name = new ComponentName(context, CryptKeeper.class);
+        Log.d(TAG, "Disabling component " + name);
+        pm.setComponentEnabledSetting(name, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
     }
 }

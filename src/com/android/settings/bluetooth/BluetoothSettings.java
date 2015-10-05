@@ -18,44 +18,42 @@ package com.android.settings.bluetooth;
 
 import static android.os.UserManager.DISALLOW_CONFIG_BLUETOOTH;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
+import android.text.Spannable;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.internal.logging.MetricsLogger;
+import com.android.settings.LinkifyUtils;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
+import com.android.settings.location.ScanningSettings;
 import com.android.settings.search.BaseSearchIndexProvider;
-import com.android.settings.search.Index;
 import com.android.settings.search.Indexable;
 import com.android.settings.search.SearchIndexableRaw;
 import com.android.settings.widget.SwitchBar;
+import com.android.settingslib.bluetooth.BluetoothDeviceFilter;
+import com.android.settingslib.bluetooth.CachedBluetoothDevice;
+import com.android.settingslib.bluetooth.LocalBluetoothManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,13 +125,19 @@ public final class BluetoothSettings extends DeviceListPreferenceFragment implem
     }
 
     @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.BLUETOOTH;
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mInitialScanStarted = (savedInstanceState != null);    // don't auto start scan after rotation
+        mInitialScanStarted = false;
         mInitiateDiscoverable = true;
 
         mEmptyView = (TextView) getView().findViewById(android.R.id.empty);
         getListView().setEmptyView(mEmptyView);
+        mEmptyView.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
 
         final SettingsActivity activity = (SettingsActivity) getActivity();
         mSwitchBar = activity.getSwitchBar();
@@ -231,16 +235,19 @@ public final class BluetoothSettings extends DeviceListPreferenceFragment implem
         switch (item.getItemId()) {
             case MENU_ID_SCAN:
                 if (mLocalAdapter.getBluetoothState() == BluetoothAdapter.STATE_ON) {
+                    MetricsLogger.action(getActivity(), MetricsLogger.ACTION_BLUETOOTH_SCAN);
                     startScanning();
                 }
                 return true;
 
             case MENU_ID_RENAME_DEVICE:
+                MetricsLogger.action(getActivity(), MetricsLogger.ACTION_BLUETOOTH_RENAME);
                 new BluetoothNameDialogFragment().show(
                         getFragmentManager(), "rename device");
                 return true;
 
             case MENU_ID_SHOW_RECEIVED:
+                MetricsLogger.action(getActivity(), MetricsLogger.ACTION_BLUETOOTH_FILES);
                 Intent intent = new Intent(BTOPP_ACTION_OPEN_RECEIVED_FILES);
                 getActivity().sendBroadcast(intent);
                 return true;
@@ -365,7 +372,7 @@ public final class BluetoothSettings extends DeviceListPreferenceFragment implem
                 break;
 
             case BluetoothAdapter.STATE_OFF:
-                messageId = R.string.bluetooth_empty_list_bluetooth_off;
+                setOffMessage();
                 if (isUiRestricted()) {
                     messageId = R.string.bluetooth_empty_list_user_restricted;
                 }
@@ -379,15 +386,56 @@ public final class BluetoothSettings extends DeviceListPreferenceFragment implem
 
         setDeviceListGroup(preferenceScreen);
         removeAllDevices();
-        mEmptyView.setText(messageId);
+        if (messageId != 0) {
+            mEmptyView.setText(messageId);
+        }
         if (!isUiRestricted()) {
             getActivity().invalidateOptionsMenu();
         }
     }
 
+    private void setOffMessage() {
+        if (mEmptyView == null) {
+            return;
+        }
+        final CharSequence briefText = getText(R.string.bluetooth_empty_list_bluetooth_off);
+
+        final ContentResolver resolver = getActivity().getContentResolver();
+        final boolean bleScanningMode = Settings.Global.getInt(
+                resolver, Settings.Global.BLE_SCAN_ALWAYS_AVAILABLE, 0) == 1;
+
+        if (!bleScanningMode) {
+            // Show only the brief text if the scanning mode has been turned off.
+            mEmptyView.setText(briefText, TextView.BufferType.SPANNABLE);
+        } else {
+            final StringBuilder contentBuilder = new StringBuilder();
+            contentBuilder.append(briefText);
+            contentBuilder.append("\n\n");
+            contentBuilder.append(getText(R.string.ble_scan_notify_text));
+            LinkifyUtils.linkify(mEmptyView, contentBuilder, new LinkifyUtils.OnClickListener() {
+                @Override
+                public void onClick() {
+                    final SettingsActivity activity =
+                            (SettingsActivity) BluetoothSettings.this.getActivity();
+                    activity.startPreferencePanel(ScanningSettings.class.getName(), null,
+                            R.string.location_scanning_screen_title, null, null, 0);
+                }
+            });
+        }
+        getPreferenceScreen().removeAll();
+        Spannable boldSpan = (Spannable) mEmptyView.getText();
+        boldSpan.setSpan(
+                new TextAppearanceSpan(getActivity(), android.R.style.TextAppearance_Medium), 0,
+                briefText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
     @Override
     public void onBluetoothStateChanged(int bluetoothState) {
         super.onBluetoothStateChanged(bluetoothState);
+        // If BT is turned off/on staying in the same BT Settings screen
+        // discoverability to be set again
+        if (BluetoothAdapter.STATE_ON == bluetoothState)
+            mInitiateDiscoverable = true;
         updateContent(bluetoothState);
     }
 
@@ -400,6 +448,7 @@ public final class BluetoothSettings extends DeviceListPreferenceFragment implem
         }
     }
 
+    @Override
     public void onDeviceBondStateChanged(CachedBluetoothDevice cachedDevice, int bondState) {
         setDeviceListGroup(getPreferenceScreen());
         removeAllDevices();
@@ -407,6 +456,7 @@ public final class BluetoothSettings extends DeviceListPreferenceFragment implem
     }
 
     private final View.OnClickListener mDeviceProfilesListener = new View.OnClickListener() {
+        @Override
         public void onClick(View v) {
             // User clicked on advanced options icon for a device in the list
             if (!(v.getTag() instanceof CachedBluetoothDevice)) {
@@ -415,77 +465,13 @@ public final class BluetoothSettings extends DeviceListPreferenceFragment implem
             }
 
             final CachedBluetoothDevice device = (CachedBluetoothDevice) v.getTag();
-            final Activity activity = getActivity();
-            DeviceProfilesSettings profileFragment = (DeviceProfilesSettings)activity.
-                getFragmentManager().findFragmentById(R.id.bluetooth_fragment_settings);
-
-            if (mSettingsDialogView != null){
-                ViewGroup parent = (ViewGroup) mSettingsDialogView.getParent();
-                if (parent != null) {
-                    parent.removeView(mSettingsDialogView);
-                }
-            }
-
-            if (profileFragment == null) {
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                mSettingsDialogView = inflater.inflate(R.layout.bluetooth_device_settings, null);
-                profileFragment = (DeviceProfilesSettings)activity.getFragmentManager()
-                    .findFragmentById(R.id.bluetooth_fragment_settings);
-
-                // To enable scrolling we store the name field in a seperate header and add to
-                // the ListView of the profileFragment.
-                View header = inflater.inflate(R.layout.bluetooth_device_settings_header, null);
-                profileFragment.getListView().addHeaderView(header);
-            }
-
-            final View dialogLayout = mSettingsDialogView;
-            AlertDialog.Builder settingsDialog = new AlertDialog.Builder(activity);
-            profileFragment.setDevice(device);
-            final EditText deviceName = (EditText)dialogLayout.findViewById(R.id.name);
-            deviceName.setText(device.getName(), TextView.BufferType.EDITABLE);
-
-            final DeviceProfilesSettings dpsFragment = profileFragment;
-            final Context context = v.getContext();
-            settingsDialog.setView(dialogLayout);
-            settingsDialog.setTitle(R.string.bluetooth_preference_paired_devices);
-            settingsDialog.setPositiveButton(R.string.okay,
-                    new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    EditText deviceName = (EditText)dialogLayout.findViewById(R.id.name);
-                    device.setName(deviceName.getText().toString());
-                }
-            });
-
-            settingsDialog.setNegativeButton(R.string.forget,
-                    new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    device.unpair();
-                    com.android.settings.bluetooth.Utils.updateSearchIndex(activity,
-                            BluetoothSettings.class.getName(), device.getName(),
-                            context.getResources().getString(R.string.bluetooth_settings),
-                            R.drawable.ic_settings_bluetooth2, false);
-                }
-            });
-
-            // We must ensure that the fragment gets destroyed to avoid duplicate fragments.
-            settingsDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                public void onDismiss(final DialogInterface dialog) {
-                    if (!activity.isDestroyed()) {
-                        activity.getFragmentManager().beginTransaction().remove(dpsFragment)
-                            .commitAllowingStateLoss();
-                    }
-                }
-            });
-
-            AlertDialog dialog = settingsDialog.create();
-            dialog.create();
-            dialog.show();
-
-            // We must ensure that clicking on the EditText will bring up the keyboard.
-            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                    | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+            Bundle args = new Bundle();
+            args.putString(DeviceProfilesSettings.ARG_DEVICE_ADDRESS,
+                    device.getDevice().getAddress());
+            DeviceProfilesSettings profileSettings = new DeviceProfilesSettings();
+            profileSettings.setArguments(args);
+            profileSettings.show(getFragmentManager(),
+                    DeviceProfilesSettings.class.getSimpleName());
         }
     };
 
@@ -523,7 +509,7 @@ public final class BluetoothSettings extends DeviceListPreferenceFragment implem
                 result.add(data);
 
                 // Add cached paired BT devices
-                LocalBluetoothManager lbtm = LocalBluetoothManager.getInstance(context);
+                LocalBluetoothManager lbtm = Utils.getLocalBtManager(context);
                 // LocalBluetoothManager.getInstance can return null if the device does not
                 // support bluetooth (e.g. the emulator).
                 if (lbtm != null) {

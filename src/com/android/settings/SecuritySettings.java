@@ -27,30 +27,36 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.pm.UserInfo;
 import android.content.res.Resources;
+import android.hardware.fingerprint.Fingerprint;
+import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.os.UserHandle;
 import android.os.UserManager;
-import android.preference.SwitchPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 import android.provider.SearchIndexableResource;
 import android.provider.Settings;
-import android.provider.Settings.SettingNotFoundException;
 import android.security.KeyStore;
 import android.service.trust.TrustAgentService;
-import android.telephony.TelephonyManager;
-import android.telephony.SubscriptionManager;
+import android.telephony.CarrierConfigManager;
 import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.settings.TrustAgentUtils.TrustAgentComponentInfo;
+import com.android.settings.fingerprint.FingerprintEnrollIntroduction;
+import com.android.settings.fingerprint.FingerprintSettings;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.search.Index;
 import com.android.settings.search.Indexable;
@@ -66,17 +72,14 @@ import static android.provider.Settings.System.SCREEN_OFF_TIMEOUT;
  */
 public class SecuritySettings extends SettingsPreferenceFragment
         implements OnPreferenceChangeListener, DialogInterface.OnClickListener, Indexable {
+
+    private static final String TAG = "SecuritySettings";
     private static final String TRUST_AGENT_CLICK_INTENT = "trust_agent_click_intent";
-    static final String TAG = "SecuritySettings";
     private static final Intent TRUST_AGENT_INTENT =
             new Intent(TrustAgentService.SERVICE_INTERFACE);
 
     // Lock Settings
     private static final String KEY_UNLOCK_SET_OR_CHANGE = "unlock_set_or_change";
-    private static final String KEY_BIOMETRIC_WEAK_IMPROVE_MATCHING =
-            "biometric_weak_improve_matching";
-    private static final String KEY_BIOMETRIC_WEAK_LIVELINESS = "biometric_weak_liveliness";
-    private static final String KEY_LOCK_ENABLED = "lockenabled";
     private static final String KEY_VISIBLE_PATTERN = "visiblepattern";
     private static final String KEY_SECURITY_CATEGORY = "security_category";
     private static final String KEY_DEVICE_ADMIN_CATEGORY = "device_admin_category";
@@ -84,12 +87,11 @@ public class SecuritySettings extends SettingsPreferenceFragment
     private static final String KEY_OWNER_INFO_SETTINGS = "owner_info_settings";
     private static final String KEY_ADVANCED_SECURITY = "advanced_security";
     private static final String KEY_MANAGE_TRUST_AGENTS = "manage_trust_agents";
+    private static final String KEY_FINGERPRINT_SETTINGS = "fingerprint_settings";
 
     private static final String KEY_LOCK_NUMPAD_RANDOM = "lock_numpad_random";
 
     private static final int SET_OR_CHANGE_LOCK_METHOD_REQUEST = 123;
-    private static final int CONFIRM_EXISTING_FOR_BIOMETRIC_WEAK_IMPROVE_REQUEST = 124;
-    private static final int CONFIRM_EXISTING_FOR_BIOMETRIC_WEAK_LIVELINESS_OFF = 125;
     private static final int CHANGE_TRUST_AGENT_SETTINGS = 126;
 
     // Misc Settings
@@ -115,6 +117,8 @@ public class SecuritySettings extends SettingsPreferenceFragment
     // Only allow one trust agent on the platform.
     private static final boolean ONLY_ONE_TRUST_AGENT = true;
 
+    private static final int MY_USER_ID = UserHandle.myUserId();
+
     private DevicePolicyManager mDPM;
     private SubscriptionManager mSubscriptionManager;
 
@@ -122,7 +126,6 @@ public class SecuritySettings extends SettingsPreferenceFragment
     private LockPatternUtils mLockPatternUtils;
     private ListPreference mLockAfter;
 
-    private SwitchPreference mBiometricWeakLiveliness;
     private SwitchPreference mVisiblePattern;
 
     private ListPreference mLockNumpadRandom;
@@ -140,6 +143,12 @@ public class SecuritySettings extends SettingsPreferenceFragment
     private boolean mIsPrimary;
 
     private Intent mTrustAgentClickIntent;
+    private Preference mOwnerInfoPref;
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.SECURITY;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -162,22 +171,14 @@ public class SecuritySettings extends SettingsPreferenceFragment
     private static int getResIdForLockUnlockScreen(Context context,
             LockPatternUtils lockPatternUtils) {
         int resid = 0;
-        if (!lockPatternUtils.isSecure()) {
-            // if there are multiple users, disable "None" setting
-            UserManager mUm = (UserManager) context. getSystemService(Context.USER_SERVICE);
-            List<UserInfo> users = mUm.getUsers(true);
-            final boolean singleUser = users.size() == 1;
-
-            if (singleUser && lockPatternUtils.isLockScreenDisabled()) {
+        if (!lockPatternUtils.isSecure(MY_USER_ID)) {
+            if (lockPatternUtils.isLockScreenDisabled(MY_USER_ID)) {
                 resid = R.xml.security_settings_lockscreen;
             } else {
                 resid = R.xml.security_settings_chooser;
             }
-        } else if (lockPatternUtils.usingBiometricWeak() &&
-                lockPatternUtils.isBiometricWeakInstalled()) {
-            resid = R.xml.security_settings_biometric_weak;
         } else {
-            switch (lockPatternUtils.getKeyguardStoredPasswordQuality()) {
+            switch (lockPatternUtils.getKeyguardStoredPasswordQuality(MY_USER_ID)) {
                 case DevicePolicyManager.PASSWORD_QUALITY_SOMETHING:
                     resid = R.xml.security_settings_pattern;
                     break;
@@ -214,18 +215,17 @@ public class SecuritySettings extends SettingsPreferenceFragment
         addPreferencesFromResource(resid);
 
         // Add options for device encryption
-        mIsPrimary = UserHandle.myUserId() == UserHandle.USER_OWNER;
+        mIsPrimary = MY_USER_ID == UserHandle.USER_OWNER;
 
-        if (!mIsPrimary) {
-            // Rename owner info settings
-            Preference ownerInfoPref = findPreference(KEY_OWNER_INFO_SETTINGS);
-            if (ownerInfoPref != null) {
-                if (UserManager.get(getActivity()).isLinkedUser()) {
-                    ownerInfoPref.setTitle(R.string.profile_info_settings_title);
-                } else {
-                    ownerInfoPref.setTitle(R.string.user_info_settings_title);
+        mOwnerInfoPref = findPreference(KEY_OWNER_INFO_SETTINGS);
+        if (mOwnerInfoPref != null) {
+            mOwnerInfoPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    OwnerInfoSettings.show(SecuritySettings.this);
+                    return true;
                 }
-            }
+            });
         }
 
         if (!mLockPatternUtils.isLockScreenDisabled()) {
@@ -242,32 +242,12 @@ public class SecuritySettings extends SettingsPreferenceFragment
             }
         }
 
-        // Trust Agent preferences
+        // Fingerprint and trust agents
         PreferenceGroup securityCategory = (PreferenceGroup)
                 root.findPreference(KEY_SECURITY_CATEGORY);
         if (securityCategory != null) {
-            final boolean hasSecurity = mLockPatternUtils.isSecure();
-            ArrayList<TrustAgentComponentInfo> agents =
-                    getActiveTrustAgents(getPackageManager(), mLockPatternUtils);
-            for (int i = 0; i < agents.size(); i++) {
-                final TrustAgentComponentInfo agent = agents.get(i);
-                Preference trustAgentPreference =
-                        new Preference(securityCategory.getContext());
-                trustAgentPreference.setKey(KEY_TRUST_AGENT);
-                trustAgentPreference.setTitle(agent.title);
-                trustAgentPreference.setSummary(agent.summary);
-                // Create intent for this preference.
-                Intent intent = new Intent();
-                intent.setComponent(agent.componentName);
-                intent.setAction(Intent.ACTION_MAIN);
-                trustAgentPreference.setIntent(intent);
-                // Add preference to the settings menu.
-                securityCategory.addPreference(trustAgentPreference);
-                if (!hasSecurity) {
-                    trustAgentPreference.setEnabled(false);
-                    trustAgentPreference.setSummary(R.string.disabled_because_no_backup_security);
-                }
-            }
+            maybeAddFingerprintPreference(securityCategory);
+            addTrustAgentSettings(securityCategory);
         }
 
         // lock after preference
@@ -276,10 +256,6 @@ public class SecuritySettings extends SettingsPreferenceFragment
             setupLockAfterPreference();
             updateLockAfterPreferenceSummary();
         }
-
-        // biometric weak liveliness
-        mBiometricWeakLiveliness =
-                (SwitchPreference) root.findPreference(KEY_BIOMETRIC_WEAK_LIVELINESS);
 
         // visible pattern
         mVisiblePattern = (SwitchPreference) root.findPreference(KEY_VISIBLE_PATTERN);
@@ -329,7 +305,11 @@ public class SecuritySettings extends SettingsPreferenceFragment
 
         // Do not display SIM lock for devices without an Icc card
         TelephonyManager tm = TelephonyManager.getDefault();
-        if (!mIsPrimary || !isSimIccReady()) {
+        CarrierConfigManager cfgMgr = (CarrierConfigManager)
+                getActivity().getSystemService(Context.CARRIER_CONFIG_SERVICE);
+        PersistableBundle b = cfgMgr.getConfig();
+        if (!mIsPrimary || !isSimIccReady() ||
+                b.getBoolean(CarrierConfigManager.KEY_HIDE_SIM_LOCK_SETTINGS_BOOL)) {
             root.removePreference(root.findPreference(KEY_SIM_LOCK));
         } else {
             // Disable SIM lock if there is no ready SIM card.
@@ -371,7 +351,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
         mToggleAppInstallation.setChecked(isNonMarketAppsAllowed());
         // Side loading of apps.
         // Disable for restricted profiles. For others, check if policy disallows it.
-        mToggleAppInstallation.setEnabled(!um.getUserInfo(UserHandle.myUserId()).isRestricted());
+        mToggleAppInstallation.setEnabled(!um.getUserInfo(MY_USER_ID).isRestricted());
         if (um.hasUserRestriction(UserManager.DISALLOW_INSTALL_UNKNOWN_SOURCES)
                 || um.hasUserRestriction(UserManager.DISALLOW_INSTALL_APPS)) {
             mToggleAppInstallation.setEnabled(false);
@@ -382,7 +362,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
                 (PreferenceGroup)root.findPreference(KEY_ADVANCED_SECURITY);
         if (advancedCategory != null) {
             Preference manageAgents = advancedCategory.findPreference(KEY_MANAGE_TRUST_AGENTS);
-            if (manageAgents != null && !mLockPatternUtils.isSecure()) {
+            if (manageAgents != null && !mLockPatternUtils.isSecure(MY_USER_ID)) {
                 manageAgents.setEnabled(false);
                 manageAgents.setSummary(R.string.disabled_because_no_backup_security);
             }
@@ -399,6 +379,62 @@ public class SecuritySettings extends SettingsPreferenceFragment
             if (pref != null) pref.setOnPreferenceChangeListener(this);
         }
         return root;
+    }
+
+    private void maybeAddFingerprintPreference(PreferenceGroup securityCategory) {
+        FingerprintManager fpm = (FingerprintManager) getActivity().getSystemService(
+                Context.FINGERPRINT_SERVICE);
+        if (!fpm.isHardwareDetected()) {
+            Log.v(TAG, "No fingerprint hardware detected!!");
+            return;
+        }
+        Preference fingerprintPreference = new Preference(securityCategory.getContext());
+        fingerprintPreference.setKey(KEY_FINGERPRINT_SETTINGS);
+        fingerprintPreference.setTitle(R.string.security_settings_fingerprint_preference_title);
+        Intent intent = new Intent();
+        final List<Fingerprint> items = fpm.getEnrolledFingerprints();
+        final int fingerprintCount = items != null ? items.size() : 0;
+        final String clazz;
+        if (fingerprintCount > 0) {
+            fingerprintPreference.setSummary(getResources().getQuantityString(
+                    R.plurals.security_settings_fingerprint_preference_summary,
+                    fingerprintCount, fingerprintCount));
+            clazz = FingerprintSettings.class.getName();
+        } else {
+            clazz = FingerprintEnrollIntroduction.class.getName();
+        }
+        intent.setClassName("com.android.settings", clazz);
+        fingerprintPreference.setIntent(intent);
+        securityCategory.addPreference(fingerprintPreference);
+    }
+
+    private void addTrustAgentSettings(PreferenceGroup securityCategory) {
+        final boolean hasSecurity = mLockPatternUtils.isSecure(MY_USER_ID);
+        ArrayList<TrustAgentComponentInfo> agents =
+                getActiveTrustAgents(getPackageManager(), mLockPatternUtils, mDPM);
+        for (int i = 0; i < agents.size(); i++) {
+            final TrustAgentComponentInfo agent = agents.get(i);
+            Preference trustAgentPreference =
+                    new Preference(securityCategory.getContext());
+            trustAgentPreference.setKey(KEY_TRUST_AGENT);
+            trustAgentPreference.setTitle(agent.title);
+            trustAgentPreference.setSummary(agent.summary);
+            // Create intent for this preference.
+            Intent intent = new Intent();
+            intent.setComponent(agent.componentName);
+            intent.setAction(Intent.ACTION_MAIN);
+            trustAgentPreference.setIntent(intent);
+            // Add preference to the settings menu.
+            securityCategory.addPreference(trustAgentPreference);
+
+            if (agent.disabledByAdministrator) {
+                trustAgentPreference.setEnabled(false);
+                trustAgentPreference.setSummary(R.string.trust_agent_disabled_device_admin);
+            } else if (!hasSecurity) {
+                trustAgentPreference.setEnabled(false);
+                trustAgentPreference.setSummary(R.string.disabled_because_no_backup_security);
+            }
+        }
     }
 
     /* Return true if a there is a Slot that has Icc.
@@ -439,11 +475,15 @@ public class SecuritySettings extends SettingsPreferenceFragment
     }
 
     private static ArrayList<TrustAgentComponentInfo> getActiveTrustAgents(
-            PackageManager pm, LockPatternUtils utils) {
+            PackageManager pm, LockPatternUtils utils, DevicePolicyManager dpm) {
         ArrayList<TrustAgentComponentInfo> result = new ArrayList<TrustAgentComponentInfo>();
         List<ResolveInfo> resolveInfos = pm.queryIntentServices(TRUST_AGENT_INTENT,
                 PackageManager.GET_META_DATA);
-        List<ComponentName> enabledTrustAgents = utils.getEnabledTrustAgents();
+        List<ComponentName> enabledTrustAgents = utils.getEnabledTrustAgents(MY_USER_ID);
+
+        boolean disableTrustAgents = (dpm.getKeyguardDisabledFeatures(null)
+                & DevicePolicyManager.KEYGUARD_DISABLE_TRUST_AGENTS) != 0;
+
         if (enabledTrustAgents != null && !enabledTrustAgents.isEmpty()) {
             for (int i = 0; i < resolveInfos.size(); i++) {
                 ResolveInfo resolveInfo = resolveInfos.get(i);
@@ -455,6 +495,10 @@ public class SecuritySettings extends SettingsPreferenceFragment
                         !enabledTrustAgents.contains(
                                 TrustAgentUtils.getComponentName(resolveInfo)) ||
                         TextUtils.isEmpty(trustAgentComponentInfo.title)) continue;
+                if (disableTrustAgents && dpm.getTrustAgentConfiguration(
+                        null, TrustAgentUtils.getComponentName(resolveInfo)) == null) {
+                    trustAgentComponentInfo.disabledByAdministrator = true;
+                }
                 result.add(trustAgentComponentInfo);
                 if (ONLY_ONE_TRUST_AGENT) break;
             }
@@ -540,8 +584,13 @@ public class SecuritySettings extends SettingsPreferenceFragment
 
         Preference preference = getPreferenceScreen().findPreference(KEY_TRUST_AGENT);
         if (preference != null && preference.getTitle().length() > 0) {
-            mLockAfter.setSummary(getString(R.string.lock_after_timeout_summary_with_exception,
-                    entries[best], preference.getTitle()));
+            if (Long.valueOf(values[best].toString()) == 0) {
+                mLockAfter.setSummary(getString(R.string.lock_immediately_summary_with_exception,
+                        preference.getTitle()));
+            } else {
+                mLockAfter.setSummary(getString(R.string.lock_after_timeout_summary_with_exception,
+                        entries[best], preference.getTitle()));
+            }
         } else {
             mLockAfter.setSummary(getString(R.string.lock_after_timeout_summary, entries[best]));
         }
@@ -593,15 +642,13 @@ public class SecuritySettings extends SettingsPreferenceFragment
         createPreferenceHierarchy();
 
         final LockPatternUtils lockPatternUtils = mChooseLockSettingsHelper.utils();
-        if (mBiometricWeakLiveliness != null) {
-            mBiometricWeakLiveliness.setChecked(
-                    lockPatternUtils.isBiometricWeakLivelinessEnabled());
-        }
         if (mVisiblePattern != null) {
-            mVisiblePattern.setChecked(lockPatternUtils.isVisiblePatternEnabled());
+            mVisiblePattern.setChecked(lockPatternUtils.isVisiblePatternEnabled(
+                    MY_USER_ID));
         }
         if (mPowerButtonInstantlyLocks != null) {
-            mPowerButtonInstantlyLocks.setChecked(lockPatternUtils.getPowerButtonInstantlyLocks());
+            mPowerButtonInstantlyLocks.setChecked(lockPatternUtils.getPowerButtonInstantlyLocks(
+                    MY_USER_ID));
         }
 
         if (mShowPassword != null) {
@@ -612,6 +659,16 @@ public class SecuritySettings extends SettingsPreferenceFragment
         if (mResetCredentials != null) {
             mResetCredentials.setEnabled(!mKeyStore.isEmpty());
         }
+
+        updateOwnerInfo();
+    }
+
+    public void updateOwnerInfo() {
+        if (mOwnerInfoPref != null) {
+            mOwnerInfoPref.setSummary(mLockPatternUtils.isOwnerInfoEnabled(MY_USER_ID)
+                    ? mLockPatternUtils.getOwnerInfo(MY_USER_ID)
+                    : getString(R.string.owner_info_settings_summary));
+        }
     }
 
     @Override
@@ -620,23 +677,13 @@ public class SecuritySettings extends SettingsPreferenceFragment
         if (KEY_UNLOCK_SET_OR_CHANGE.equals(key)) {
             startFragment(this, "com.android.settings.ChooseLockGeneric$ChooseLockGenericFragment",
                     R.string.lock_settings_picker_title, SET_OR_CHANGE_LOCK_METHOD_REQUEST, null);
-        } else if (KEY_BIOMETRIC_WEAK_IMPROVE_MATCHING.equals(key)) {
-            ChooseLockSettingsHelper helper =
-                    new ChooseLockSettingsHelper(this.getActivity(), this);
-            if (!helper.launchConfirmationActivity(
-                    CONFIRM_EXISTING_FOR_BIOMETRIC_WEAK_IMPROVE_REQUEST, null, null)) {
-                // If this returns false, it means no password confirmation is required, so
-                // go ahead and start improve.
-                // Note: currently a backup is required for biometric_weak so this code path
-                // can't be reached, but is here in case things change in the future
-                startBiometricWeakImprove();
-            }
         } else if (KEY_TRUST_AGENT.equals(key)) {
             ChooseLockSettingsHelper helper =
                     new ChooseLockSettingsHelper(this.getActivity(), this);
             mTrustAgentClickIntent = preference.getIntent();
-            if (!helper.launchConfirmationActivity(CHANGE_TRUST_AGENT_SETTINGS, null, null) &&
-                    mTrustAgentClickIntent != null) {
+            boolean confirmationLaunched = helper.launchConfirmationActivity(
+                    CHANGE_TRUST_AGENT_SETTINGS, preference.getTitle());
+            if (!confirmationLaunched&&  mTrustAgentClickIntent != null) {
                 // If this returns false, it means no password confirmation is required.
                 startActivity(mTrustAgentClickIntent);
                 mTrustAgentClickIntent = null;
@@ -654,19 +701,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CONFIRM_EXISTING_FOR_BIOMETRIC_WEAK_IMPROVE_REQUEST &&
-                resultCode == Activity.RESULT_OK) {
-            startBiometricWeakImprove();
-            return;
-        } else if (requestCode == CONFIRM_EXISTING_FOR_BIOMETRIC_WEAK_LIVELINESS_OFF &&
-                resultCode == Activity.RESULT_OK) {
-            final LockPatternUtils lockPatternUtils = mChooseLockSettingsHelper.utils();
-            lockPatternUtils.setBiometricWeakLivelinessEnabled(false);
-            // Setting the mBiometricWeakLiveliness checked value to false is handled when onResume
-            // is called by grabbing the value from lockPatternUtils.  We can't set it here
-            // because mBiometricWeakLiveliness could be null
-            return;
-        } else if (requestCode == CHANGE_TRUST_AGENT_SETTINGS && resultCode == Activity.RESULT_OK) {
+        if (requestCode == CHANGE_TRUST_AGENT_SETTINGS && resultCode == Activity.RESULT_OK) {
             if (mTrustAgentClickIntent != null) {
                 startActivity(mTrustAgentClickIntent);
                 mTrustAgentClickIntent = null;
@@ -690,10 +725,8 @@ public class SecuritySettings extends SettingsPreferenceFragment
                 Log.e("SecuritySettings", "could not persist lockAfter timeout setting", e);
             }
             updateLockAfterPreferenceSummary();
-        } else if (KEY_LOCK_ENABLED.equals(key)) {
-            lockPatternUtils.setLockPatternEnabled((Boolean) value);
         } else if (KEY_VISIBLE_PATTERN.equals(key)) {
-            lockPatternUtils.setVisiblePatternEnabled((Boolean) value);
+            lockPatternUtils.setVisiblePatternEnabled((Boolean) value, MY_USER_ID);
         } else if (KEY_LOCK_NUMPAD_RANDOM.equals(key)) {
             Settings.Secure.putInt(getContentResolver(),
                     Settings.Secure.LOCK_NUMPAD_RANDOM,
@@ -721,13 +754,14 @@ public class SecuritySettings extends SettingsPreferenceFragment
                 }
             }
         } else if (KEY_POWER_INSTANTLY_LOCKS.equals(key)) {
-            mLockPatternUtils.setPowerButtonInstantlyLocks((Boolean) value);
+            mLockPatternUtils.setPowerButtonInstantlyLocks((Boolean) value, MY_USER_ID);
         } else if (KEY_QUICK_UNLOCK.equals(key)) {
             Settings.Secure.putInt(getContentResolver(), Settings.Secure.KEYGUARD_QUICK_UNLOCK,
                     ((Boolean) value) ? 1 : 0);
         } else if (KEY_SHOW_PASSWORD.equals(key)) {
             Settings.System.putInt(getContentResolver(), Settings.System.TEXT_SHOW_PASSWORD,
                     ((Boolean) value) ? 1 : 0);
+            lockPatternUtils.setVisiblePasswordEnabled((Boolean) value, MY_USER_ID);
         } else if (KEY_TOGGLE_INSTALL_APPLICATIONS.equals(key)) {
             if ((Boolean) value) {
                 mToggleAppInstallation.setChecked(false);
@@ -746,12 +780,6 @@ public class SecuritySettings extends SettingsPreferenceFragment
         return R.string.help_url_security;
     }
 
-    public void startBiometricWeakImprove(){
-        Intent intent = new Intent();
-        intent.setClassName("com.android.facelock", "com.android.facelock.AddToSetup");
-        startActivity(intent);
-    }
-
     /**
      * For Search. Please keep it in sync when updating "createPreferenceHierarchy()"
      */
@@ -765,7 +793,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
         public SecuritySearchIndexProvider() {
             super();
 
-            mIsPrimary = UserHandle.myUserId() == UserHandle.USER_OWNER;
+            mIsPrimary = MY_USER_ID == UserHandle.USER_OWNER;
         }
 
         @Override
@@ -832,6 +860,16 @@ public class SecuritySettings extends SettingsPreferenceFragment
                 result.add(data);
             }
 
+            // Fingerprint
+            FingerprintManager fpm =
+                    (FingerprintManager) context.getSystemService(Context.FINGERPRINT_SERVICE);
+            if (fpm.isHardwareDetected()) {
+                data = new SearchIndexableRaw(context);
+                data.title = res.getString(R.string.security_settings_fingerprint_preference_title);
+                data.screenTitle = screenTitle;
+                result.add(data);
+            }
+
             // Credential storage
             final UserManager um = (UserManager) context.getSystemService(Context.USER_SERVICE);
 
@@ -850,9 +888,10 @@ public class SecuritySettings extends SettingsPreferenceFragment
 
             // Advanced
             final LockPatternUtils lockPatternUtils = new LockPatternUtils(context);
-            if (lockPatternUtils.isSecure()) {
+            if (lockPatternUtils.isSecure(MY_USER_ID)) {
                 ArrayList<TrustAgentComponentInfo> agents =
-                        getActiveTrustAgents(context.getPackageManager(), lockPatternUtils);
+                        getActiveTrustAgents(context.getPackageManager(), lockPatternUtils,
+                                context.getSystemService(DevicePolicyManager.class));
                 for (int i = 0; i < agents.size(); i++) {
                     final TrustAgentComponentInfo agent = agents.get(i);
                     data = new SearchIndexableRaw(context);
@@ -872,13 +911,6 @@ public class SecuritySettings extends SettingsPreferenceFragment
             // Add options for lock/unlock screen
             int resId = getResIdForLockUnlockScreen(context, lockPatternUtils);
 
-            // don't display visible pattern if biometric and backup is not pattern
-            if (resId == R.xml.security_settings_biometric_weak &&
-                    lockPatternUtils.getKeyguardStoredPasswordQuality() !=
-                            DevicePolicyManager.PASSWORD_QUALITY_SOMETHING) {
-                keys.add(KEY_VISIBLE_PATTERN);
-            }
-
             // Do not display SIM lock for devices without an Icc card
             TelephonyManager tm = TelephonyManager.getDefault();
             if (!mIsPrimary || !tm.hasIccCard()) {
@@ -891,7 +923,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
             }
 
             // TrustAgent settings disappear when the user has no primary security.
-            if (!lockPatternUtils.isSecure()) {
+            if (!lockPatternUtils.isSecure(MY_USER_ID)) {
                 keys.add(KEY_TRUST_AGENT);
                 keys.add(KEY_MANAGE_TRUST_AGENTS);
             }

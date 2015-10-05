@@ -17,6 +17,7 @@
 package com.android.settings.notification;
 
 import android.app.NotificationManager;
+import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
@@ -37,6 +38,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.UserHandle;
+import android.os.UserManager;
 import android.os.Vibrator;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -50,7 +53,9 @@ import android.provider.SearchIndexableResource;
 import android.provider.Settings;
 import android.util.Log;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.widget.LockPatternUtils;
+import com.android.settings.DropDownPreference;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.Utils;
@@ -75,11 +80,23 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
     private static final String KEY_NOTIFICATION_RINGTONE = "notification_ringtone";
     private static final String KEY_ALARM_RINGTONE = "alarm_ringtone";
     private static final String KEY_VIBRATE_WHEN_RINGING = "vibrate_when_ringing";
+    private static final String KEY_WIFI_DISPLAY = "wifi_display";
     private static final String KEY_NOTIFICATION = "notification";
     private static final String KEY_NOTIFICATION_PULSE = "notification_pulse";
     private static final String KEY_LOCK_SCREEN_NOTIFICATIONS = "lock_screen_notifications";
     private static final String KEY_NOTIFICATION_ACCESS = "manage_notification_access";
     private static final String KEY_CHARGING_LIGHT = "charging_light";
+    private static final String KEY_ZEN_ACCESS = "manage_zen_access";
+    private static final String KEY_ZEN_MODE = "zen_mode";
+
+    private static final String[] RESTRICTED_KEYS = {
+        KEY_MEDIA_VOLUME,
+        KEY_ALARM_VOLUME,
+        KEY_RING_VOLUME,
+        KEY_NOTIFICATION_VOLUME,
+        KEY_ZEN_ACCESS,
+        KEY_ZEN_MODE,
+    };
 
     private static final int SAMPLE_CUTOFF = 2000;  // manually cap sample playback at 2 seconds
 
@@ -103,6 +120,7 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
     private TwoStatePreference mNotificationPulse;
     private DropDownPreference mLockscreen;
     private Preference mNotificationAccess;
+    private Preference mZenAccess;
     private boolean mSecure;
     private int mLockscreenSelectedValue;
     private Preference mAlarmRingtonePreference;
@@ -112,14 +130,22 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
     private PreferenceCategory mSoundCategory;
     private Preference mChargingLight;
 
+    private UserManager mUserManager;
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.NOTIFICATION;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
         mPM = mContext.getPackageManager();
         mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+        mUserManager = UserManager.get(getContext());
         mVoiceCapable = Utils.isVoiceCapable(mContext);
-        mSecure = new LockPatternUtils(getActivity()).isSecure();
+        mSecure = new LockPatternUtils(getActivity()).isSecure(UserHandle.myUserId());
 
         mAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
         mVibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
@@ -139,7 +165,7 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
         mSoundCategory = (PreferenceCategory) findPreference(KEY_SOUND);
 
         initVolumePreference(KEY_MEDIA_VOLUME, AudioManager.STREAM_MUSIC,
-                com.android.internal.R.drawable.ic_audio_vol_mute);
+                com.android.internal.R.drawable.ic_audio_media_mute);
         initVolumePreference(KEY_ALARM_VOLUME, AudioManager.STREAM_ALARM,
                 com.android.internal.R.drawable.ic_audio_alarm_mute);
         mNotificationPreference =
@@ -166,6 +192,8 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
 
         mNotificationAccess = findPreference(KEY_NOTIFICATION_ACCESS);
         refreshNotificationListeners();
+        mZenAccess = findPreference(KEY_ZEN_ACCESS);
+        refreshZenAccess();
         updateRingerMode();
         updateEffectsSuppressor();
     }
@@ -174,6 +202,7 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
     public void onResume() {
         super.onResume();
         refreshNotificationListeners();
+        refreshZenAccess();
         lookupRingtoneNames();
         initVolumeLinkNotification();
         mSettingsObserver.register(true);
@@ -183,6 +212,13 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
         updateEffectsSuppressor();
         for (VolumeSeekBarPreference volumePref : mVolumePrefs) {
             volumePref.onActivityResume();
+        }
+        boolean isRestricted = mUserManager.hasUserRestriction(UserManager.DISALLOW_ADJUST_VOLUME);
+        for (String key : RESTRICTED_KEYS) {
+            Preference pref = findPreference(key);
+            if (pref != null) {
+                pref.setEnabled(!isRestricted);
+            }
         }
     }
 
@@ -235,6 +271,19 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
                     ? com.android.internal.R.drawable.ic_audio_ring_notif_vibrate
                     : com.android.internal.R.drawable.ic_audio_ring_notif);
         }
+    }
+
+    private void updateRingOrNotificationPreference() {
+        mRingOrNotificationPreference.showIcon(mSuppressor != null
+                ? com.android.internal.R.drawable.ic_audio_ring_notif_mute
+                : mRingerMode == AudioManager.RINGER_MODE_VIBRATE || wasRingerModeVibrate()
+                ? com.android.internal.R.drawable.ic_audio_ring_notif_vibrate
+                : com.android.internal.R.drawable.ic_audio_ring_notif);
+    }
+
+    private boolean wasRingerModeVibrate() {
+        return mVibrator != null && mRingerMode == AudioManager.RINGER_MODE_SILENT
+                && mAudioManager.getLastAudibleStreamVolume(AudioManager.STREAM_RING) == 0;
     }
 
     private void updateRingerMode() {
@@ -472,32 +521,56 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
             return;
         }
 
-        mLockscreen.addItem(R.string.lock_screen_notifications_summary_show,
-                R.string.lock_screen_notifications_summary_show);
-        if (mSecure) {
+        boolean isSecureNotificationsDisabled = isSecureNotificationsDisabled();
+        boolean isUnredactedNotificationsDisabled = isUnredactedNotificationsDisabled();
+        if (!isSecureNotificationsDisabled && !isUnredactedNotificationsDisabled) {
+            mLockscreen.addItem(R.string.lock_screen_notifications_summary_show,
+                    R.string.lock_screen_notifications_summary_show);
+        }
+        if (mSecure && !isSecureNotificationsDisabled) {
             mLockscreen.addItem(R.string.lock_screen_notifications_summary_hide,
                     R.string.lock_screen_notifications_summary_hide);
         }
         mLockscreen.addItem(R.string.lock_screen_notifications_summary_disable,
                 R.string.lock_screen_notifications_summary_disable);
         updateLockscreenNotifications();
-        mLockscreen.setCallback(new DropDownPreference.Callback() {
-            @Override
-            public boolean onItemSelected(int pos, Object value) {
-                final int val = (Integer) value;
-                if (val == mLockscreenSelectedValue) {
+        if (mLockscreen.getItemCount() > 1) {
+            mLockscreen.setCallback(new DropDownPreference.Callback() {
+                @Override
+                public boolean onItemSelected(int pos, Object value) {
+                    final int val = (Integer) value;
+                    if (val == mLockscreenSelectedValue) {
+                        return true;
+                    }
+                    final boolean enabled =
+                            val != R.string.lock_screen_notifications_summary_disable;
+                    final boolean show = val == R.string.lock_screen_notifications_summary_show;
+                    Settings.Secure.putInt(getContentResolver(),
+                            Settings.Secure.LOCK_SCREEN_ALLOW_PRIVATE_NOTIFICATIONS, show ? 1 : 0);
+                    Settings.Secure.putInt(getContentResolver(),
+                            Settings.Secure.LOCK_SCREEN_SHOW_NOTIFICATIONS, enabled ? 1 : 0);
+                    mLockscreenSelectedValue = val;
                     return true;
                 }
-                final boolean enabled = val != R.string.lock_screen_notifications_summary_disable;
-                final boolean show = val == R.string.lock_screen_notifications_summary_show;
-                Settings.Secure.putInt(getContentResolver(),
-                        Settings.Secure.LOCK_SCREEN_ALLOW_PRIVATE_NOTIFICATIONS, show ? 1 : 0);
-                Settings.Secure.putInt(getContentResolver(),
-                        Settings.Secure.LOCK_SCREEN_SHOW_NOTIFICATIONS, enabled ? 1 : 0);
-                mLockscreenSelectedValue = val;
-                return true;
-            }
-        });
+            });
+        } else {
+            // There is one or less option for the user, disable the drop down.
+            mLockscreen.setEnabled(false);
+        }
+    }
+
+    private boolean isSecureNotificationsDisabled() {
+        final DevicePolicyManager dpm =
+                (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+        return dpm != null && (dpm.getKeyguardDisabledFeatures(null)
+                & DevicePolicyManager.KEYGUARD_DISABLE_SECURE_NOTIFICATIONS) != 0;
+    }
+
+    private boolean isUnredactedNotificationsDisabled() {
+        final DevicePolicyManager dpm =
+                (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+        return dpm != null && (dpm.getKeyguardDisabledFeatures(null)
+                & DevicePolicyManager.KEYGUARD_DISABLE_UNREDACTED_NOTIFICATIONS) != 0;
     }
 
     private void updateLockscreenNotifications() {
@@ -573,21 +646,22 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
 
     private void refreshNotificationListeners() {
         if (mNotificationAccess != null) {
-            final int total = NotificationAccessSettings.getListenersCount(mPM);
-            if (total == 0) {
-                getPreferenceScreen().removePreference(mNotificationAccess);
+            final int n = NotificationAccessSettings.getEnabledListenersCount(mContext);
+            if (n == 0) {
+                mNotificationAccess.setSummary(getResources().getString(
+                        R.string.manage_notification_access_summary_zero));
             } else {
-                final int n = NotificationAccessSettings.getEnabledListenersCount(mContext);
-                if (n == 0) {
-                    mNotificationAccess.setSummary(getResources().getString(
-                            R.string.manage_notification_access_summary_zero));
-                } else {
-                    mNotificationAccess.setSummary(String.format(getResources().getQuantityString(
-                            R.plurals.manage_notification_access_summary_nonzero,
-                            n, n)));
-                }
+                mNotificationAccess.setSummary(String.format(getResources().getQuantityString(
+                        R.plurals.manage_notification_access_summary_nonzero,
+                        n, n)));
             }
         }
+    }
+
+    // === Zen access ===
+
+    private void refreshZenAccess() {
+        // noop for now
     }
 
     // === Callbacks ===
@@ -715,6 +789,7 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
             if (!Utils.isVoiceCapable(context)) {
                 rt.add(KEY_RING_VOLUME);
                 rt.add(KEY_PHONE_RINGTONE);
+                rt.add(KEY_WIFI_DISPLAY);
                 rt.add(KEY_VIBRATE_WHEN_RINGING);
                 rt.add(KEY_VOLUME_LINK_NOTIFICATION);
             }

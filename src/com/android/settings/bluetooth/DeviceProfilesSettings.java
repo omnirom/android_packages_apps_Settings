@@ -17,7 +17,8 @@
 package com.android.settings.bluetooth;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
@@ -25,34 +26,34 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
-import android.preference.Preference;
-import android.preference.PreferenceGroup;
-import android.preference.PreferenceScreen;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.text.TextWatcher;
-import android.app.Dialog;
-import android.widget.Button;
-import android.text.Editable;
+import android.widget.TextView;
 
 import com.android.settings.R;
-import com.android.settings.SettingsPreferenceFragment;
-import com.android.settings.search.Index;
-import com.android.settings.search.SearchIndexableRaw;
+import com.android.settingslib.bluetooth.CachedBluetoothDevice;
+import com.android.settingslib.bluetooth.CachedBluetoothDeviceManager;
+import com.android.settingslib.bluetooth.LocalBluetoothManager;
+import com.android.settingslib.bluetooth.LocalBluetoothProfile;
+import com.android.settingslib.bluetooth.LocalBluetoothProfileManager;
+import com.android.settingslib.bluetooth.MapProfile;
+import com.android.settingslib.bluetooth.PanProfile;
+import com.android.settingslib.bluetooth.PbapServerProfile;
 
 import java.util.HashMap;
 
-/**
- * This preference fragment presents the user with all of the profiles
- * for a particular device, and allows them to be individually connected
- * (or disconnected).
- */
-public final class DeviceProfilesSettings extends SettingsPreferenceFragment
-        implements CachedBluetoothDevice.Callback, Preference.OnPreferenceChangeListener {
+public final class DeviceProfilesSettings extends DialogFragment implements
+        CachedBluetoothDevice.Callback, DialogInterface.OnClickListener, OnClickListener {
     private static final String TAG = "DeviceProfilesSettings";
+
+    public static final String ARG_DEVICE_ADDRESS = "device_address";
 
     private static final String KEY_PROFILE_CONTAINER = "profile_container";
     private static final String KEY_UNPAIR = "unpair";
@@ -62,7 +63,8 @@ public final class DeviceProfilesSettings extends SettingsPreferenceFragment
     private LocalBluetoothManager mManager;
     private LocalBluetoothProfileManager mProfileManager;
 
-    private PreferenceGroup mProfileContainer;
+    private ViewGroup mProfileContainer;
+    private TextView mProfileLabel;
     private EditTextPreference mDeviceNamePref;
 
     private final HashMap<LocalBluetoothProfile, CheckBoxPreference> mAutoConnectPrefs
@@ -71,19 +73,57 @@ public final class DeviceProfilesSettings extends SettingsPreferenceFragment
     private AlertDialog mDisconnectDialog;
     private boolean mProfileGroupIsRemoved;
 
+    private View mRootView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addPreferencesFromResource(R.xml.bluetooth_device_advanced);
-        getPreferenceScreen().setOrderingAsAdded(false);
-        mProfileContainer = (PreferenceGroup) findPreference(KEY_PROFILE_CONTAINER);
-        mProfileContainer.setLayoutResource(R.layout.bluetooth_preference_category);
+        mManager = Utils.getLocalBtManager(getActivity());
+        CachedBluetoothDeviceManager deviceManager = mManager.getCachedDeviceManager();
 
-        mManager = LocalBluetoothManager.getInstance(getActivity());
-        CachedBluetoothDeviceManager deviceManager =
-                mManager.getCachedDeviceManager();
+        String address = getArguments().getString(ARG_DEVICE_ADDRESS);
+        BluetoothDevice remoteDevice = mManager.getBluetoothAdapter().getRemoteDevice(address);
+
+        mCachedDevice = deviceManager.findDevice(remoteDevice);
+        if (mCachedDevice == null) {
+            mCachedDevice = deviceManager.addDevice(mManager.getBluetoothAdapter(),
+                    mManager.getProfileManager(), remoteDevice);
+        }
         mProfileManager = mManager.getProfileManager();
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        mRootView = LayoutInflater.from(getContext()).inflate(R.layout.device_profiles_settings,
+                null);
+        mProfileContainer = (ViewGroup) mRootView.findViewById(R.id.profiles_section);
+        mProfileLabel = (TextView) mRootView.findViewById(R.id.profiles_label);
+        final EditText deviceName = (EditText) mRootView.findViewById(R.id.name);
+        deviceName.setText(mCachedDevice.getName(), TextView.BufferType.EDITABLE);
+        return new AlertDialog.Builder(getContext())
+                .setView(mRootView)
+                .setNegativeButton(R.string.forget, this)
+                .setPositiveButton(R.string.okay, this)
+                .setTitle(R.string.bluetooth_preference_paired_devices)
+                .create();
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                EditText deviceName = (EditText) mRootView.findViewById(R.id.name);
+                mCachedDevice.setName(deviceName.getText().toString());
+                break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                mCachedDevice.unpair();
+                com.android.settings.bluetooth.Utils.updateSearchIndex(getContext(),
+                        BluetoothSettings.class.getName(), mCachedDevice.getName(),
+                        getString(R.string.bluetooth_settings),
+                        R.drawable.ic_settings_bluetooth, false);
+                break;
+        }
     }
 
     @Override
@@ -111,9 +151,10 @@ public final class DeviceProfilesSettings extends SettingsPreferenceFragment
         if (mCachedDevice != null) {
             mCachedDevice.registerCallback(this);
             if (mCachedDevice.getBondState() == BluetoothDevice.BOND_NONE) {
-                finish();
+                dismiss();
                 return;
             }
+            addPreferencesForProfiles();
             refresh();
         }
     }
@@ -129,48 +170,40 @@ public final class DeviceProfilesSettings extends SettingsPreferenceFragment
         mManager.setForegroundActivity(null);
     }
 
-    public void setDevice(CachedBluetoothDevice cachedDevice) {
-        mCachedDevice = cachedDevice;
-
-        if (isResumed()) {
-            mCachedDevice.registerCallback(this);
-            addPreferencesForProfiles();
-            refresh();
-        }
-    }
-
     private void addPreferencesForProfiles() {
-        mProfileContainer.removeAll();
+        mProfileContainer.removeAllViews();
         for (LocalBluetoothProfile profile : mCachedDevice.getConnectableProfiles()) {
-            Preference pref = createProfilePreference(profile);
-            mProfileContainer.addPreference(pref);
+            CheckBox pref = createProfilePreference(profile);
+            mProfileContainer.addView(pref);
         }
 
         final int pbapPermission = mCachedDevice.getPhonebookPermissionChoice();
         // Only provide PBAP cabability if the client device has requested PBAP.
         if (pbapPermission != CachedBluetoothDevice.ACCESS_UNKNOWN) {
             final PbapServerProfile psp = mManager.getProfileManager().getPbapProfile();
-            CheckBoxPreference pbapPref = createProfilePreference(psp);
-            mProfileContainer.addPreference(pbapPref);
+            CheckBox pbapPref = createProfilePreference(psp);
+            mProfileContainer.addView(pbapPref);
         }
 
         final MapProfile mapProfile = mManager.getProfileManager().getMapProfile();
         final int mapPermission = mCachedDevice.getMessagePermissionChoice();
         if (mapPermission != CachedBluetoothDevice.ACCESS_UNKNOWN) {
-            CheckBoxPreference mapPreference = createProfilePreference(mapProfile);
-            mProfileContainer.addPreference(mapPreference);
+            CheckBox mapPreference = createProfilePreference(mapProfile);
+            mProfileContainer.addView(mapPreference);
         }
 
         showOrHideProfileGroup();
     }
 
     private void showOrHideProfileGroup() {
-        int numProfiles = mProfileContainer.getPreferenceCount();
+        int numProfiles = mProfileContainer.getChildCount();
         if (!mProfileGroupIsRemoved && numProfiles == 0) {
-            getPreferenceScreen().removePreference(mProfileContainer);
+            mProfileContainer.setVisibility(View.GONE);
+            mProfileLabel.setVisibility(View.GONE);
             mProfileGroupIsRemoved = true;
         } else if (mProfileGroupIsRemoved && numProfiles != 0) {
-            getPreferenceScreen().addPreference(mProfileContainer);
+            mProfileContainer.setVisibility(View.VISIBLE);
+            mProfileLabel.setVisibility(View.VISIBLE);
             mProfileGroupIsRemoved = false;
         }
     }
@@ -183,43 +216,29 @@ public final class DeviceProfilesSettings extends SettingsPreferenceFragment
      * @return A preference that allows the user to choose whether this profile
      *         will be connected to.
      */
-    private CheckBoxPreference createProfilePreference(LocalBluetoothProfile profile) {
-        CheckBoxPreference pref = new CheckBoxPreference(getActivity());
-        pref.setLayoutResource(R.layout.preference_start_widget);
-        pref.setKey(profile.toString());
-        pref.setTitle(profile.getNameResource(mCachedDevice.getDevice()));
-        pref.setPersistent(false);
-        pref.setOrder(getProfilePreferenceIndex(profile.getOrdinal()));
-        pref.setOnPreferenceChangeListener(this);
-
-        int iconResource = profile.getDrawableResource(mCachedDevice.getBtClass());
-        if (iconResource != 0) {
-            pref.setIcon(getActivity().getDrawable(iconResource));
-        }
+    private CheckBox createProfilePreference(LocalBluetoothProfile profile) {
+        CheckBox pref = new CheckBox(getActivity());
+        pref.setTag(profile.toString());
+        pref.setText(profile.getNameResource(mCachedDevice.getDevice()));
+        pref.setOnClickListener(this);
 
         refreshProfilePreference(pref, profile);
 
         return pref;
     }
 
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (preference == mDeviceNamePref) {
-            mCachedDevice.setName((String) newValue);
-        } else if (preference instanceof CheckBoxPreference) {
-            LocalBluetoothProfile prof = getProfileOf(preference);
-            onProfileClicked(prof, (CheckBoxPreference) preference);
-            return false;   // checkbox will update from onDeviceAttributesChanged() callback
-        } else {
-            return false;
+    @Override
+    public void onClick(View v) {
+        if (v instanceof CheckBox) {
+            LocalBluetoothProfile prof = getProfileOf(v);
+            onProfileClicked(prof, (CheckBox) v);
         }
-
-        return true;
     }
 
-    private void onProfileClicked(LocalBluetoothProfile profile, CheckBoxPreference profilePref) {
+    private void onProfileClicked(LocalBluetoothProfile profile, CheckBox profilePref) {
         BluetoothDevice device = mCachedDevice.getDevice();
 
-        if (profilePref.getKey().equals(KEY_PBAP_SERVER)) {
+        if (KEY_PBAP_SERVER.equals(profilePref.getTag())) {
             final int newPermission = mCachedDevice.getPhonebookPermissionChoice()
                 == CachedBluetoothDevice.ACCESS_ALLOWED ? CachedBluetoothDevice.ACCESS_REJECTED
                 : CachedBluetoothDevice.ACCESS_ALLOWED;
@@ -228,25 +247,26 @@ public final class DeviceProfilesSettings extends SettingsPreferenceFragment
             return;
         }
 
-        int status = profile.getConnectionStatus(device);
-        boolean isConnected =
-                status == BluetoothProfile.STATE_CONNECTED;
-
-        if (profilePref.isChecked()) {
+        if (!profilePref.isChecked()) {
+            // Recheck it, until the dialog is done.
+            profilePref.setChecked(true);
             askDisconnect(mManager.getForegroundActivity(), profile);
         } else {
             if (profile instanceof MapProfile) {
                 mCachedDevice.setMessagePermissionChoice(BluetoothDevice.ACCESS_ALLOWED);
-                refreshProfilePreference(profilePref, profile);
             }
             if (profile.isPreferred(device)) {
                 // profile is preferred but not connected: disable auto-connect
-                profile.setPreferred(device, false);
-                refreshProfilePreference(profilePref, profile);
+                if (profile instanceof PanProfile) {
+                    mCachedDevice.connectProfile(profile);
+                } else {
+                    profile.setPreferred(device, false);
+                }
             } else {
                 profile.setPreferred(device, true);
                 mCachedDevice.connectProfile(profile);
             }
+            refreshProfilePreference(profilePref, profile);
         }
     }
 
@@ -272,9 +292,8 @@ public final class DeviceProfilesSettings extends SettingsPreferenceFragment
                 profile.setPreferred(device.getDevice(), false);
                 if (profile instanceof MapProfile) {
                     device.setMessagePermissionChoice(BluetoothDevice.ACCESS_REJECTED);
-                    refreshProfilePreference(
-                            (CheckBoxPreference)findPreference(profile.toString()), profile);
                 }
+                refreshProfilePreference(findProfile(profile.toString()), profile);
             }
         };
 
@@ -288,7 +307,7 @@ public final class DeviceProfilesSettings extends SettingsPreferenceFragment
     }
 
     private void refresh() {
-        final EditText deviceNameField = (EditText) getView().findViewById(R.id.name);
+        final EditText deviceNameField = (EditText) mRootView.findViewById(R.id.name);
         if (deviceNameField != null) {
             deviceNameField.setText(mCachedDevice.getName());
         }
@@ -298,26 +317,30 @@ public final class DeviceProfilesSettings extends SettingsPreferenceFragment
 
     private void refreshProfiles() {
         for (LocalBluetoothProfile profile : mCachedDevice.getConnectableProfiles()) {
-            CheckBoxPreference profilePref = (CheckBoxPreference)findPreference(profile.toString());
+            CheckBox profilePref = findProfile(profile.toString());
             if (profilePref == null) {
                 profilePref = createProfilePreference(profile);
-                mProfileContainer.addPreference(profilePref);
+                mProfileContainer.addView(profilePref);
             } else {
                 refreshProfilePreference(profilePref, profile);
             }
         }
         for (LocalBluetoothProfile profile : mCachedDevice.getRemovedProfiles()) {
-            Preference profilePref = findPreference(profile.toString());
+            CheckBox profilePref = findProfile(profile.toString());
             if (profilePref != null) {
                 Log.d(TAG, "Removing " + profile.toString() + " from profile list");
-                mProfileContainer.removePreference(profilePref);
+                mProfileContainer.removeView(profilePref);
             }
         }
 
         showOrHideProfileGroup();
     }
 
-    private void refreshProfilePreference(CheckBoxPreference profilePref,
+    private CheckBox findProfile(String profile) {
+        return (CheckBox) mProfileContainer.findViewWithTag(profile);
+    }
+
+    private void refreshProfilePreference(CheckBox profilePref,
             LocalBluetoothProfile profile) {
         BluetoothDevice device = mCachedDevice.getDevice();
 
@@ -327,30 +350,31 @@ public final class DeviceProfilesSettings extends SettingsPreferenceFragment
         if (profile instanceof MapProfile) {
             profilePref.setChecked(mCachedDevice.getMessagePermissionChoice()
                     == CachedBluetoothDevice.ACCESS_ALLOWED);
+
         } else if (profile instanceof PbapServerProfile) {
-            // Handle PBAP specially.
             profilePref.setChecked(mCachedDevice.getPhonebookPermissionChoice()
                     == CachedBluetoothDevice.ACCESS_ALLOWED);
+
+        } else if (profile instanceof PanProfile) {
+            profilePref.setChecked(profile.getConnectionStatus(device) ==
+                    BluetoothProfile.STATE_CONNECTED);
+
         } else {
             profilePref.setChecked(profile.isPreferred(device));
         }
     }
 
-    private LocalBluetoothProfile getProfileOf(Preference pref) {
-        if (!(pref instanceof CheckBoxPreference)) {
+    private LocalBluetoothProfile getProfileOf(View v) {
+        if (!(v instanceof CheckBox)) {
             return null;
         }
-        String key = pref.getKey();
+        String key = (String) v.getTag();
         if (TextUtils.isEmpty(key)) return null;
 
         try {
-            return mProfileManager.getProfileByName(pref.getKey());
+            return mProfileManager.getProfileByName(key);
         } catch (IllegalArgumentException ignored) {
             return null;
         }
-    }
-
-    private int getProfilePreferenceIndex(int profIndex) {
-        return mProfileContainer.getOrder() + profIndex * 10;
     }
 }

@@ -18,6 +18,7 @@ package com.android.settings.applications;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.preference.PreferenceFrameLayout;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -27,9 +28,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.internal.logging.MetricsLogger;
+import com.android.settings.InstrumentedFragment;
 import com.android.settings.R;
 
-public class AppOpsSummary extends Fragment {
+public class AppOpsSummary extends InstrumentedFragment {
     // layout inflater object used to inflate views
     private LayoutInflater mInflater;
     
@@ -48,6 +51,11 @@ public class AppOpsSummary extends Fragment {
     };
 
     int mCurPos;
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.APP_OPS_SUMMARY;
+    }
 
     class MyPagerAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener {
 
@@ -104,7 +112,15 @@ public class AppOpsSummary extends Fragment {
         mViewPager.setAdapter(adapter);
         mViewPager.setOnPageChangeListener(adapter);
         PagerTabStrip tabs = (PagerTabStrip) rootView.findViewById(R.id.tabs);
-        tabs.setTabIndicatorColorResource(R.color.theme_accent);
+
+        // This should be set in the XML layout, but PagerTabStrip lives in
+        // support-v4 and doesn't have styleable attributes.
+        final TypedArray ta = tabs.getContext().obtainStyledAttributes(
+                new int[] { android.R.attr.colorAccent });
+        final int colorAccent = ta.getColor(0, 0);
+        ta.recycle();
+
+        tabs.setTabIndicatorColorResource(colorAccent);
 
         // We have to do this now because PreferenceFrameLayout looks at it
         // only when the view is added.

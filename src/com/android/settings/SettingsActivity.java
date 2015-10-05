@@ -16,6 +16,8 @@
 
 package com.android.settings;
 
+import static com.android.settings.dashboard.DashboardTile.TILE_ID_UNDEFINED;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
@@ -37,10 +39,7 @@ import android.content.res.XmlResourceParser;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.INetworkManagementService;
 import android.os.Message;
-import android.os.RemoteException;
-import android.os.ServiceManager;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.preference.Preference;
@@ -49,8 +48,10 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.text.TextUtils;
 import android.transition.TransitionManager;
+import android.util.ArrayMap;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.util.Xml;
 import android.view.Menu;
@@ -62,30 +63,34 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SearchView;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.util.ArrayUtils;
 import com.android.internal.util.XmlUtils;
 import com.android.settings.accessibility.AccessibilitySettings;
 import com.android.settings.accessibility.CaptionPropertiesFragment;
 import com.android.settings.accounts.AccountSettings;
 import com.android.settings.accounts.AccountSyncSettings;
+import com.android.settings.applications.DrawOverlayDetails;
 import com.android.settings.applications.InstalledAppDetails;
 import com.android.settings.applications.ManageApplications;
+import com.android.settings.applications.ManageAssist;
+import com.android.settings.applications.ProcessStatsSummary;
 import com.android.settings.applications.ProcessStatsUi;
+import com.android.settings.applications.UsageAccessDetails;
+import com.android.settings.applications.WriteSettingsDetails;
 import com.android.settings.bluetooth.BluetoothSettings;
 import com.android.settings.dashboard.DashboardCategory;
 import com.android.settings.dashboard.DashboardSummary;
 import com.android.settings.dashboard.DashboardTile;
 import com.android.settings.dashboard.NoHomeDialogFragment;
 import com.android.settings.dashboard.SearchResultsSummary;
-import com.android.settings.deviceinfo.Memory;
-import com.android.settings.deviceinfo.UsbSettings;
+import com.android.settings.deviceinfo.PrivateVolumeForget;
+import com.android.settings.deviceinfo.PrivateVolumeSettings;
+import com.android.settings.deviceinfo.PublicVolumeSettings;
+import com.android.settings.deviceinfo.StorageSettings;
 import com.android.settings.fuelgauge.BatterySaverSettings;
+import com.android.settings.fuelgauge.PowerUsageDetail;
 import com.android.settings.fuelgauge.PowerUsageSummary;
-import com.android.settings.notification.NotificationAppList;
-import com.android.settings.notification.OtherSoundSettings;
-import com.android.settings.quicklaunch.QuickLaunchSettings;
-import com.android.settings.search.DynamicIndexableContentMonitor;
-import com.android.settings.search.Index;
 import com.android.settings.inputmethod.InputMethodAndLanguageSettings;
 import com.android.settings.inputmethod.KeyboardLayoutPickerFragment;
 import com.android.settings.inputmethod.SpellCheckersSettings;
@@ -94,17 +99,24 @@ import com.android.settings.location.LocationSettings;
 import com.android.settings.nfc.AndroidBeam;
 import com.android.settings.nfc.PaymentSettings;
 import com.android.settings.notification.AppNotificationSettings;
-import com.android.settings.notification.ConditionProviderSettings;
 import com.android.settings.notification.NotificationAccessSettings;
 import com.android.settings.notification.NotificationSettings;
 import com.android.settings.notification.NotificationStation;
+import com.android.settings.notification.OtherSoundSettings;
+import com.android.settings.notification.ZenAccessSettings;
+import com.android.settings.notification.ZenModeAutomationSettings;
+import com.android.settings.notification.ZenModeEventRuleSettings;
+import com.android.settings.notification.ZenModeExternalRuleSettings;
+import com.android.settings.notification.ZenModePrioritySettings;
 import com.android.settings.notification.ZenModeSettings;
+import com.android.settings.notification.ZenModeScheduleRuleSettings;
 import com.android.settings.print.PrintJobSettingsFragment;
 import com.android.settings.print.PrintSettingsFragment;
+import com.android.settings.search.DynamicIndexableContentMonitor;
+import com.android.settings.search.Index;
 import com.android.settings.sim.SimSettings;
 import com.android.settings.tts.TextToSpeechSettings;
 import com.android.settings.users.UserSettings;
-import com.android.settings.voice.VoiceInputSettings;
 import com.android.settings.vpn2.VpnSettings;
 import com.android.settings.wfd.WifiDisplaySettings;
 import com.android.settings.widget.SwitchBar;
@@ -112,7 +124,6 @@ import com.android.settings.wifi.AdvancedWifiSettings;
 import com.android.settings.wifi.SavedAccessPointsWifiSettings;
 import com.android.settings.wifi.WifiSettings;
 import com.android.settings.wifi.p2p.WifiP2pSettings;
-import com.android.settings.WifiCallingSettings;
 
 import org.omnirom.omnigears.ButtonSettings;
 import com.brewcrewfoo.performance.activities.MainActivity;
@@ -126,9 +137,8 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-
-import static com.android.settings.dashboard.DashboardTile.TILE_ID_UNDEFINED;
 
 public class SettingsActivity extends Activity
         implements PreferenceManager.OnPreferenceTreeClickListener,
@@ -211,6 +221,35 @@ public class SettingsActivity extends Activity
 
     private static final String EMPTY_QUERY = "";
 
+    /**
+     * Settings will search for system activities of this action and add them as a top level
+     * settings tile using the following parameters.
+     *
+     * <p>A category must be specified in the meta-data for the activity named
+     * {@link #EXTRA_CATEGORY_KEY}
+     *
+     * <p>The title may be defined by meta-data named {@link Utils#META_DATA_PREFERENCE_TITLE}
+     * otherwise the label for the activity will be used.
+     *
+     * <p>The icon may be defined by meta-data named {@link Utils#META_DATA_PREFERENCE_ICON}
+     * otherwise the icon for the activity will be used.
+     *
+     * <p>A summary my be defined by meta-data named {@link Utils#META_DATA_PREFERENCE_SUMMARY}
+     */
+    private static final String EXTRA_SETTINGS_ACTION =
+            "com.android.settings.action.EXTRA_SETTINGS";
+
+    /**
+     * The key used to get the category from metadata of activities of action
+     * {@link #EXTRA_SETTINGS_ACTION}
+     * The value must be one of:
+     * <li>com.android.settings.category.wireless</li>
+     * <li>com.android.settings.category.device</li>
+     * <li>com.android.settings.category.personal</li>
+     * <li>com.android.settings.category.system</li>
+     */
+    private static final String EXTRA_CATEGORY_KEY = "com.android.settings.category";
+
     private static boolean sShowNoHomeNotice = false;
 
     private String mFragmentClass;
@@ -264,7 +303,6 @@ public class SettingsActivity extends Activity
             DateTimeSettings.class.getName(),
             LocalePicker.class.getName(),
             InputMethodAndLanguageSettings.class.getName(),
-            VoiceInputSettings.class.getName(),
             SpellCheckersSettings.class.getName(),
             UserDictionaryList.class.getName(),
             UserDictionarySettings.class.getName(),
@@ -272,20 +310,23 @@ public class SettingsActivity extends Activity
             DisplaySettings.class.getName(),
             DeviceInfoSettings.class.getName(),
             ManageApplications.class.getName(),
+            ManageAssist.class.getName(),
             ProcessStatsUi.class.getName(),
             NotificationStation.class.getName(),
             LocationSettings.class.getName(),
             SecuritySettings.class.getName(),
-            UsageAccessSettings.class.getName(),
+            UsageAccessDetails.class.getName(),
             PrivacySettings.class.getName(),
             DeviceAdminSettings.class.getName(),
             AccessibilitySettings.class.getName(),
             CaptionPropertiesFragment.class.getName(),
             com.android.settings.accessibility.ToggleDaltonizerPreferenceFragment.class.getName(),
             TextToSpeechSettings.class.getName(),
-            Memory.class.getName(),
+            StorageSettings.class.getName(),
+            PrivateVolumeForget.class.getName(),
+            PrivateVolumeSettings.class.getName(),
+            PublicVolumeSettings.class.getName(),
             DevelopmentSettings.class.getName(),
-            UsbSettings.class.getName(),
             AndroidBeam.class.getName(),
             WifiDisplaySettings.class.getName(),
             PowerUsageSummary.class.getName(),
@@ -296,7 +337,7 @@ public class SettingsActivity extends Activity
             DreamSettings.class.getName(),
             UserSettings.class.getName(),
             NotificationAccessSettings.class.getName(),
-            ConditionProviderSettings.class.getName(),
+            ZenAccessSettings.class.getName(),
             PrintSettingsFragment.class.getName(),
             PrintJobSettingsFragment.class.getName(),
             TrustedCredentialsSettings.class.getName(),
@@ -308,10 +349,8 @@ public class SettingsActivity extends Activity
             ChooseLockPattern.ChooseLockPatternFragment.class.getName(),
             InstalledAppDetails.class.getName(),
             BatterySaverSettings.class.getName(),
-            NotificationAppList.class.getName(),
             AppNotificationSettings.class.getName(),
             OtherSoundSettings.class.getName(),
-            QuickLaunchSettings.class.getName(),
             ApnSettings.class.getName(),
             WifiCallingSettings.class.getName(),
             ButtonSettings.class.getName(),
@@ -319,6 +358,16 @@ public class SettingsActivity extends Activity
             BatteryLightSettings.class.getName(),
             BarsSettings.class.getName(),
             ButtonBrightnessSettings.class.getName()
+            ZenModePrioritySettings.class.getName(),
+            ZenModeAutomationSettings.class.getName(),
+            ZenModeScheduleRuleSettings.class.getName(),
+            ZenModeEventRuleSettings.class.getName(),
+            ZenModeExternalRuleSettings.class.getName(),
+            ProcessStatsUi.class.getName(),
+            PowerUsageDetail.class.getName(),
+            ProcessStatsSummary.class.getName(),
+            DrawOverlayDetails.class.getName(),
+            WriteSettingsDetails.class.getName(),
     };
 
 
@@ -529,7 +578,7 @@ public class SettingsActivity extends Activity
         // This is a "Sub Settings" when:
         // - this is a real SubSettings
         // - or :settings:show_fragment_as_subsetting is passed to the Intent
-        final boolean isSubSettings = className.equals(SubSettings.class.getName()) ||
+        final boolean isSubSettings = this instanceof SubSettings ||
                 intent.getBooleanExtra(EXTRA_SHOW_FRAGMENT_AS_SUBSETTING, false);
 
         // If this is a sub settings, then apply the SubSettings Theme for the ActionBar content insets
@@ -550,7 +599,12 @@ public class SettingsActivity extends Activity
         getFragmentManager().addOnBackStackChangedListener(this);
 
         if (mIsShowingDashboard) {
-            Index.getInstance(getApplicationContext()).update();
+            // Run the Index update only if we have some space
+            if (!Utils.isLowStorage(this)) {
+                Index.getInstance(getApplicationContext()).update();
+            } else {
+                Log.w(LOG_TAG, "Cannot update the Indexer as we are running low on storage space!");
+            }
         }
 
         if (savedState != null) {
@@ -575,17 +629,14 @@ public class SettingsActivity extends Activity
                     1 /* one home activity by default */);
         } else {
             if (!mIsShowingDashboard) {
-                // Search is shown we are launched thru a Settings "shortcut". UP will be shown
-                // only if it is a sub settings
+                mDisplaySearch = false;
+                // UP will be shown only if it is a sub settings
                 if (mIsShortcut) {
                     mDisplayHomeAsUpEnabled = isSubSettings;
-                    mDisplaySearch = false;
                 } else if (isSubSettings) {
                     mDisplayHomeAsUpEnabled = true;
-                    mDisplaySearch = true;
                 } else {
                     mDisplayHomeAsUpEnabled = false;
-                    mDisplaySearch = false;
                 }
                 setTitleFromIntent(intent);
 
@@ -769,6 +820,9 @@ public class SettingsActivity extends Activity
     @Override
     public void onResume() {
         super.onResume();
+        if (mIsShowingDashboard) {
+            MetricsLogger.visible(this, MetricsLogger.MAIN_SETTINGS);
+        }
 
         final int newHomeActivityCount = getHomeActivitiesCount();
         if (newHomeActivityCount != mHomeActivitiesCount) {
@@ -797,7 +851,9 @@ public class SettingsActivity extends Activity
     @Override
     public void onPause() {
         super.onPause();
-
+        if (mIsShowingDashboard) {
+            MetricsLogger.hidden(this, MetricsLogger.MAIN_SETTINGS);
+        }
         unregisterReceiver(mBatteryInfoReceiver);
         mDynamicIndexableContentMonitor.unregister();
     }
@@ -910,17 +966,31 @@ public class SettingsActivity extends Activity
      */
     public void startPreferencePanelAsUser(String fragmentClass, Bundle args, int titleRes,
             CharSequence titleText, UserHandle userHandle) {
-        String title = null;
-        if (titleRes < 0) {
-            if (titleText != null) {
-                title = titleText.toString();
-            } else {
-                // There not much we can do in that case
-                title = "";
+        // This is a workaround.
+        //
+        // Calling startWithFragmentAsUser() without specifying FLAG_ACTIVITY_NEW_TASK to the intent
+        // starting the fragment could cause a native stack corruption. See b/17523189. However,
+        // adding that flag and start the preference panel with the same UserHandler will make it
+        // impossible to use back button to return to the previous screen. See b/20042570.
+        //
+        // We work around this issue by adding FLAG_ACTIVITY_NEW_TASK to the intent, while doing
+        // another check here to call startPreferencePanel() instead of startWithFragmentAsUser()
+        // when we're calling it as the same user.
+        if (userHandle.getIdentifier() == UserHandle.myUserId()) {
+            startPreferencePanel(fragmentClass, args, titleRes, titleText, null, 0);
+        } else {
+            String title = null;
+            if (titleRes < 0) {
+                if (titleText != null) {
+                    title = titleText.toString();
+                } else {
+                    // There not much we can do in that case
+                    title = "";
+                }
             }
+            Utils.startWithFragmentAsUser(this, fragmentClass, args,
+                    titleRes, title, mIsShortcut, userHandle);
         }
-        Utils.startWithFragmentAsUser(this, fragmentClass, args,
-                titleRes, title, mIsShortcut, userHandle);
     }
 
     /**
@@ -991,7 +1061,7 @@ public class SettingsActivity extends Activity
      */
     private void buildDashboardCategories(List<DashboardCategory> categories) {
         categories.clear();
-        loadCategoriesFromResource(R.xml.dashboard_categories, categories);
+        loadCategoriesFromResource(R.xml.dashboard_categories, categories, this);
         updateTilesList(categories);
     }
 
@@ -1002,10 +1072,11 @@ public class SettingsActivity extends Activity
      * @param resid The XML resource to load and parse.
      * @param target The list in which the parsed categories and tiles should be placed.
      */
-    private void loadCategoriesFromResource(int resid, List<DashboardCategory> target) {
+    public static void loadCategoriesFromResource(int resid, List<DashboardCategory> target,
+            Context context) {
         XmlResourceParser parser = null;
         try {
-            parser = getResources().getXml(resid);
+            parser = context.getResources().getXml(resid);
             AttributeSet attrs = Xml.asAttributeSet(parser);
 
             int type;
@@ -1034,7 +1105,7 @@ public class SettingsActivity extends Activity
                 if ("dashboard-category".equals(nodeName)) {
                     DashboardCategory category = new DashboardCategory();
 
-                    TypedArray sa = obtainStyledAttributes(
+                    TypedArray sa = context.obtainStyledAttributes(
                             attrs, com.android.internal.R.styleable.PreferenceHeader);
                     category.id = sa.getResourceId(
                             com.android.internal.R.styleable.PreferenceHeader_id,
@@ -1050,6 +1121,18 @@ public class SettingsActivity extends Activity
                         }
                     }
                     sa.recycle();
+                    sa = context.obtainStyledAttributes(attrs,
+                            com.android.internal.R.styleable.Preference);
+                    tv = sa.peekValue(
+                            com.android.internal.R.styleable.Preference_key);
+                    if (tv != null && tv.type == TypedValue.TYPE_STRING) {
+                        if (tv.resourceId != 0) {
+                            category.key = context.getString(tv.resourceId);
+                        } else {
+                            category.key = tv.string.toString();
+                        }
+                    }
+                    sa.recycle();
 
                     final int innerDepth = parser.getDepth();
                     while ((type=parser.next()) != XmlPullParser.END_DOCUMENT
@@ -1062,7 +1145,7 @@ public class SettingsActivity extends Activity
                         if (innerNodeName.equals("dashboard-tile")) {
                             DashboardTile tile = new DashboardTile();
 
-                            sa = obtainStyledAttributes(
+                            sa = context.obtainStyledAttributes(
                                     attrs, com.android.internal.R.styleable.PreferenceHeader);
                             tile.id = sa.getResourceId(
                                     com.android.internal.R.styleable.PreferenceHeader_id,
@@ -1104,11 +1187,13 @@ public class SettingsActivity extends Activity
 
                                 String innerNodeName2 = parser.getName();
                                 if (innerNodeName2.equals("extra")) {
-                                    getResources().parseBundleExtra("extra", attrs, curBundle);
+                                    context.getResources().parseBundleExtra("extra", attrs,
+                                            curBundle);
                                     XmlUtils.skipCurrentTag(parser);
 
                                 } else if (innerNodeName2.equals("intent")) {
-                                    tile.intent = Intent.parseIntent(getResources(), parser, attrs);
+                                    tile.intent = Intent.parseIntent(context.getResources(), parser,
+                                            attrs);
 
                                 } else {
                                     XmlUtils.skipCurrentTag(parser);
@@ -1121,10 +1206,12 @@ public class SettingsActivity extends Activity
                             }
 
                             // Show the SIM Cards setting if there are more than 2 SIMs installed.
-                            if(tile.id != R.id.sim_settings || Utils.showSimCardTile(this)){
+                            if(tile.id != R.id.sim_settings || Utils.showSimCardTile(context)){
                                 category.addTile(tile);
                             }
 
+                        } else if (innerNodeName.equals("external-tiles")) {
+                            category.externalIndex = category.getTilesCount();
                         } else {
                             XmlUtils.skipCurrentTag(parser);
                         }
@@ -1182,14 +1269,8 @@ public class SettingsActivity extends Activity
                     }
                 } else if (id == R.id.data_usage_settings) {
                     // Remove data usage when kernel module not enabled
-                    final INetworkManagementService netManager = INetworkManagementService.Stub
-                            .asInterface(ServiceManager.getService(Context.NETWORKMANAGEMENT_SERVICE));
-                    try {
-                        if (!netManager.isBandwidthControlEnabled()) {
-                            removeTile = true;
-                        }
-                    } catch (RemoteException e) {
-                        // ignored
+                    if (!Utils.isBandwidthControlEnabled()) {
+                        removeTile = true;
                     }
                 } else if (id == R.id.battery_settings) {
                     // Remove battery settings when battery is not available. (e.g. TV)
@@ -1206,8 +1287,7 @@ public class SettingsActivity extends Activity
                             ((UserManager) getSystemService(Context.USER_SERVICE))
                                     .getUserCount() > 1;
                     if (!UserHandle.MU_ENABLED
-                            || (!UserManager.supportsMultipleUsers()
-                                    && !hasMultipleUsers)
+                            || !UserManager.supportsMultipleUsers()
                             || Utils.isMonkeyRunning()) {
                         removeTile = true;
                     }
@@ -1267,6 +1347,73 @@ public class SettingsActivity extends Activity
                 n--;
             }
         }
+        addExternalTiles(target);
+    }
+
+    private void addExternalTiles(List<DashboardCategory> target) {
+        Map<Pair<String, String>, DashboardTile> addedCache =
+                new ArrayMap<Pair<String, String>, DashboardTile>();
+        UserManager userManager = UserManager.get(this);
+        for (UserHandle user : userManager.getUserProfiles()) {
+            addExternalTiles(target, user, addedCache);
+        }
+    }
+
+    private void addExternalTiles(List<DashboardCategory> target, UserHandle user,
+            Map<Pair<String, String>, DashboardTile> addedCache) {
+        PackageManager pm = getPackageManager();
+        Intent intent = new Intent(EXTRA_SETTINGS_ACTION);
+        List<ResolveInfo> results = pm.queryIntentActivitiesAsUser(intent,
+                PackageManager.GET_META_DATA, user.getIdentifier());
+        for (ResolveInfo resolved : results) {
+            if (!resolved.system) {
+                // Do not allow any app to add to settings, only system ones.
+                continue;
+            }
+            ActivityInfo activityInfo = resolved.activityInfo;
+            Bundle metaData = activityInfo.metaData;
+            if ((metaData == null) || !metaData.containsKey(EXTRA_CATEGORY_KEY)) {
+                Log.w(LOG_TAG, "Found " + resolved.activityInfo.name + " for action "
+                        + EXTRA_SETTINGS_ACTION + " missing metadata " +
+                        (metaData == null ? "" : EXTRA_CATEGORY_KEY));
+                continue;
+            }
+            String categoryKey = metaData.getString(EXTRA_CATEGORY_KEY);
+            DashboardCategory category = getCategory(target, categoryKey);
+            if (category == null) {
+                Log.w(LOG_TAG, "Activity " + resolved.activityInfo.name + " has unknown "
+                        + "category key " + categoryKey);
+                continue;
+            }
+            Pair<String, String> key = new Pair<String, String>(activityInfo.packageName,
+                    activityInfo.name);
+            DashboardTile tile = addedCache.get(key);
+            if (tile == null) {
+                tile = new DashboardTile();
+                tile.intent = new Intent().setClassName(
+                        activityInfo.packageName, activityInfo.name);
+                Utils.updateTileToSpecificActivityFromMetaDataOrRemove(this, tile);
+
+                if (category.externalIndex == -1) {
+                    // If no location for external tiles has been specified for this category,
+                    // then just put them at the end.
+                    category.addTile(tile);
+                } else {
+                    category.addTile(category.externalIndex, tile);
+                }
+                addedCache.put(key, tile);
+            }
+            tile.userHandle.add(user);
+        }
+    }
+
+    private DashboardCategory getCategory(List<DashboardCategory> target, String categoryKey) {
+        for (DashboardCategory category : target) {
+            if (categoryKey.equals(category.key)) {
+                return category;
+            }
+        }
+        return null;
     }
 
     private boolean updateHomeSettingTiles(DashboardTile tile) {

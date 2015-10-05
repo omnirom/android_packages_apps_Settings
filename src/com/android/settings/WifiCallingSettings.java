@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import com.android.ims.ImsConfig;
 import com.android.ims.ImsManager;
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.telephony.imsphone.ImsPhone;
 import com.android.settings.widget.SwitchBar;
 
@@ -55,6 +56,8 @@ public class WifiCallingSettings extends SettingsPreferenceFragment
     private Switch mSwitch;
     private ListPreference mButtonWfcMode;
     private TextView mEmptyView;
+
+    private boolean mValidListener = false;
 
     private final PhoneStateListener mPhoneStateListener = new PhoneStateListener() {
         /*
@@ -143,6 +146,11 @@ public class WifiCallingSettings extends SettingsPreferenceFragment
     };
 
     @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.WIFI_CALLING;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -166,6 +174,8 @@ public class WifiCallingSettings extends SettingsPreferenceFragment
             tm.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
 
             mSwitchBar.addOnSwitchChangeListener(this);
+
+            mValidListener = true;
         }
 
         // NOTE: Buttons will be enabled/disabled in mPhoneStateListener
@@ -190,7 +200,9 @@ public class WifiCallingSettings extends SettingsPreferenceFragment
 
         final Context context = getActivity();
 
-        if (ImsManager.isWfcEnabledByPlatform(getActivity())) {
+        if (mValidListener) {
+            mValidListener = false;
+
             TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
             tm.listen(mPhoneStateListener, PhoneStateListener.LISTEN_NONE);
 
@@ -211,6 +223,11 @@ public class WifiCallingSettings extends SettingsPreferenceFragment
 
         int wfcMode = ImsManager.getWfcMode(context);
         updateButtonWfcMode(context, isChecked, wfcMode);
+        if (isChecked) {
+            MetricsLogger.action(getActivity(), getMetricsCategory(), wfcMode);
+        } else {
+            MetricsLogger.action(getActivity(), getMetricsCategory(), -1);
+        }
     }
 
     private void updateButtonWfcMode(Context context, boolean wfcEnabled, int wfcMode) {
@@ -235,6 +252,7 @@ public class WifiCallingSettings extends SettingsPreferenceFragment
             if (buttonMode != currentMode) {
                 ImsManager.setWfcMode(context, buttonMode);
                 mButtonWfcMode.setSummary(getWfcModeSummary(context, buttonMode));
+                MetricsLogger.action(getActivity(), getMetricsCategory(), buttonMode);
             }
         }
         return true;

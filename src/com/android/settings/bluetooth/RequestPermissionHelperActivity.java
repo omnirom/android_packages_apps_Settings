@@ -19,15 +19,14 @@ package com.android.settings.bluetooth;
 import com.android.internal.app.AlertActivity;
 import com.android.internal.app.AlertController;
 import com.android.settings.R;
+import com.android.settingslib.bluetooth.LocalBluetoothAdapter;
+import com.android.settingslib.bluetooth.LocalBluetoothManager;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 /**
  * RequestPermissionHelperActivity asks the user whether to enable discovery.
@@ -146,7 +145,7 @@ public class RequestPermissionHelperActivity extends AlertActivity implements
             return true;
         }
 
-        LocalBluetoothManager manager = LocalBluetoothManager.getInstance(this);
+        LocalBluetoothManager manager = Utils.getLocalBtManager(this);
         if (manager == null) {
             Log.e(TAG, "Error: there's a problem starting Bluetooth");
             setResult(RESULT_CANCELED);

@@ -406,7 +406,7 @@ public class RunningProcessesView extends FrameLayout
 
     // utility method used to start sub activity
     private void startServiceDetailsActivity(RunningState.MergedItem mi) {
-        if (mOwner != null) {
+        if (mOwner != null && mi != null) {
             // start new fragment to display extended information
             Bundle args = new Bundle();
             if (mi.mProcess != null) {
@@ -431,7 +431,7 @@ public class RunningProcessesView extends FrameLayout
         mMyUserId = UserHandle.myUserId();
     }
     
-    public void doCreate(Bundle savedInstanceState) {
+    public void doCreate() {
         mAm = (ActivityManager)getContext().getSystemService(Context.ACTIVITY_SERVICE);
         mState = RunningState.getInstance(getContext());
         LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(
@@ -449,10 +449,10 @@ public class RunningProcessesView extends FrameLayout
         mHeader = inflater.inflate(R.layout.running_processes_header, null);
         mListView.addHeaderView(mHeader, null, false /* set as not selectable */);
         mColorBar = (LinearColorBar)mHeader.findViewById(R.id.color_bar);
-        Resources res = getResources();
-        mColorBar.setColors(res.getColor(R.color.running_processes_system_ram),
-                res.getColor(R.color.running_processes_apps_ram),
-                res.getColor(R.color.running_processes_free_ram));
+        final Context context = getContext();
+        mColorBar.setColors(context.getColor(R.color.running_processes_system_ram),
+                context.getColor(R.color.running_processes_apps_ram),
+                context.getColor(R.color.running_processes_free_ram));
         mBackgroundProcessPrefix = (TextView)mHeader.findViewById(R.id.freeSizePrefix);
         mAppsProcessPrefix = (TextView)mHeader.findViewById(R.id.appsSizePrefix);
         mForegroundProcessPrefix = (TextView)mHeader.findViewById(R.id.systemSizePrefix);

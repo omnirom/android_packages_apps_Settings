@@ -16,7 +16,6 @@
 
 package com.android.settings.applications;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.text.format.Formatter;
 import android.view.LayoutInflater;
@@ -25,11 +24,13 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.android.internal.app.ProcessStats;
+import com.android.internal.logging.MetricsLogger;
+import com.android.settings.InstrumentedFragment;
 import com.android.settings.R;
 
 import static com.android.settings.Utils.prepareCustomPreferencesList;
 
-public class ProcessStatsMemDetail extends Fragment {
+public class ProcessStatsMemDetail extends InstrumentedFragment {
     public static final String EXTRA_MEM_TIMES = "mem_times";
     public static final String EXTRA_MEM_STATE_WEIGHTS = "mem_state_weights";
     public static final String EXTRA_MEM_CACHED_WEIGHT = "mem_cached_weight";
@@ -84,6 +85,11 @@ public class ProcessStatsMemDetail extends Fragment {
     }
 
     @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.APPLICATIONS_PROCESS_STATS_MEM_DETAIL;
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
     }
@@ -99,8 +105,9 @@ public class ProcessStatsMemDetail extends Fragment {
     private void addDetailsItem(ViewGroup parent, CharSequence title,
             float level, CharSequence value) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        ViewGroup item = (ViewGroup) inflater.inflate(R.layout.app_percentage_item,
-                null);
+        ViewGroup item = (ViewGroup) inflater.inflate(R.layout.app_item, null);
+        inflater.inflate(R.layout.widget_progress_bar,
+                (ViewGroup) item.findViewById(android.R.id.widget_frame));
         parent.addView(item);
         item.findViewById(android.R.id.icon).setVisibility(View.GONE);
         TextView titleView = (TextView) item.findViewById(android.R.id.title);

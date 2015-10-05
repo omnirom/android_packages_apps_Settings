@@ -15,6 +15,7 @@
  */
 package com.android.settings.deviceinfo;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.telephony.Phone;
 import com.android.internal.telephony.PhoneConstants;
 import com.android.internal.telephony.PhoneFactory;
@@ -24,16 +25,13 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
-import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Log;
-
+import com.android.settings.InstrumentedPreferenceActivity;
 import com.android.settings.R;
-import java.util.List;
 
-public class ImeiInformation extends PreferenceActivity {
+public class ImeiInformation extends InstrumentedPreferenceActivity {
 
     private static final String KEY_PRL_VERSION = "prl_version";
     private static final String KEY_MIN_NUMBER = "min_number";
@@ -91,10 +89,8 @@ public class ImeiInformation extends PreferenceActivity {
                     removePreferenceFromScreen(KEY_ICC_ID);
                 }
             } else {
-                setSummaryText(KEY_IMEI, phone.getDeviceId());
-                setSummaryText(KEY_IMEI_SV,
-                        ((TelephonyManager) getSystemService(TELEPHONY_SERVICE))
-                        .getDeviceSoftwareVersion(phoneId));
+                setSummaryText(KEY_IMEI, phone.getImei());
+                setSummaryText(KEY_IMEI_SV, phone.getDeviceSvn());
                 // device is not CDMA, do not display CDMA features
                 // check Null in case no specified preference in overlay xml
                 removePreferenceFromScreen(KEY_PRL_VERSION);
@@ -155,4 +151,8 @@ public class ImeiInformation extends PreferenceActivity {
         }
     }
 
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.DEVICEINFO_IMEI_INFORMATION;
+    }
 }

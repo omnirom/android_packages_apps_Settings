@@ -34,7 +34,9 @@ import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
 import android.util.Log;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.util.CharSequences;
+import com.android.settings.InstrumentedPreferenceActivity;
 import com.android.settings.R;
 import com.android.settings.Utils;
 
@@ -54,7 +56,7 @@ import static android.content.Intent.EXTRA_USER;
  * An extra {@link UserHandle} can be specified in the intent as {@link EXTRA_USER}, if the user for
  * which the action needs to be performed is different to the one the Settings App will run in.
  */
-public class ChooseAccountActivity extends PreferenceActivity {
+public class ChooseAccountActivity extends InstrumentedPreferenceActivity {
 
     private static final String TAG = "ChooseAccountActivity";
     private String[] mAuthorities;
@@ -86,6 +88,11 @@ public class ChooseAccountActivity extends PreferenceActivity {
             }
             return CharSequences.compareToIgnoreCase(name, another.name);
         }
+    }
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.ACCOUNTS_CHOOSE_ACCOUNT_ACTIVITY;
     }
 
     @Override
@@ -207,7 +214,8 @@ public class ChooseAccountActivity extends PreferenceActivity {
     /**
      * Gets an icon associated with a particular account type. If none found, return null.
      * @param accountType the type of account
-     * @return a drawable for the icon or null if one cannot be found.
+     * @return a drawable for the icon or a default icon returned by
+     * {@link PackageManager#getDefaultActivityIcon} if one cannot be found.
      */
     protected Drawable getDrawableForType(final String accountType) {
         Drawable icon = null;
@@ -218,14 +226,16 @@ public class ChooseAccountActivity extends PreferenceActivity {
                 icon = getPackageManager().getUserBadgedIcon(
                         authContext.getDrawable(desc.iconId), mUserHandle);
             } catch (PackageManager.NameNotFoundException e) {
-                // TODO: place holder icon for missing account icons?
                 Log.w(TAG, "No icon name for account type " + accountType);
             } catch (Resources.NotFoundException e) {
-                // TODO: place holder icon for missing account icons?
                 Log.w(TAG, "No icon resource for account type " + accountType);
             }
         }
-        return icon;
+        if (icon != null) {
+            return icon;
+        } else {
+            return getPackageManager().getDefaultActivityIcon();
+        }
     }
 
     /**

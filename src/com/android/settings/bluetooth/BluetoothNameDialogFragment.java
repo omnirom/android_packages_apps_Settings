@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -40,6 +41,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.settings.R;
+import com.android.settingslib.bluetooth.LocalBluetoothAdapter;
+import com.android.settingslib.bluetooth.LocalBluetoothManager;
 
 /**
  * Dialog fragment for renaming the local Bluetooth device.
@@ -80,7 +83,7 @@ public final class BluetoothNameDialogFragment extends DialogFragment implements
     };
 
     public BluetoothNameDialogFragment() {
-        LocalBluetoothManager localManager = LocalBluetoothManager.getInstance(getActivity());
+        LocalBluetoothManager localManager = Utils.getLocalBtManager(getActivity());
         mLocalAdapter = localManager.getBluetoothAdapter();
     }
 
@@ -188,8 +191,15 @@ public final class BluetoothNameDialogFragment extends DialogFragment implements
         } else {
             mDeviceNameEdited = true;
             if (mOkButton != null) {
-                mOkButton.setEnabled(s.length() != 0);
+                mOkButton.setEnabled(s.toString().trim().length() != 0);
             }
+        }
+    }
+
+    public void onConfigurationChanged(Configuration newConfig, CharSequence s) {
+        super.onConfigurationChanged(newConfig);
+        if (mOkButton != null) {
+            mOkButton.setEnabled(s.length() != 0 && !(s.toString().trim().isEmpty()));
         }
     }
 

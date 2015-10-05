@@ -42,12 +42,10 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
 import android.widget.Toast;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.telephony.Phone;
 import com.android.internal.telephony.PhoneFactory;
 import com.android.internal.telephony.TelephonyIntents;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Implements the preference screen to enable/disable ICC lock and
@@ -58,7 +56,7 @@ import java.util.List;
  * these operations.
  *
  */
-public class IccLockSettings extends PreferenceActivity
+public class IccLockSettings extends InstrumentedPreferenceActivity
         implements EditPinPreference.OnPinEnteredListener {
     private static final String TAG = "IccLockSettings";
     private static final boolean DBG = true;
@@ -214,14 +212,15 @@ public class IccLockSettings extends PreferenceActivity
             mTabHost.setOnTabChangedListener(mTabListener);
             mTabHost.clearAllTabs();
 
+            SubscriptionManager sm = SubscriptionManager.from(this);
             for (int i = 0; i < numSims; ++i) {
-                final SubscriptionInfo subInfo = Utils.findRecordBySlotId(this, i);
+                final SubscriptionInfo subInfo = sm.getActiveSubscriptionInfoForSimSlotIndex(i);
                 mTabHost.addTab(buildTabSpec(String.valueOf(i),
                         String.valueOf(subInfo == null
                             ? context.getString(R.string.sim_editor_title, i + 1)
                             : subInfo.getDisplayName())));
             }
-            final SubscriptionInfo sir = Utils.findRecordBySlotId(getBaseContext(), 0);
+            final SubscriptionInfo sir = sm.getActiveSubscriptionInfoForSimSlotIndex(0);
 
             mPhone = (sir == null) ? null
                 : PhoneFactory.getPhone(SubscriptionManager.getPhoneId(sir.getSubscriptionId()));
@@ -239,6 +238,11 @@ public class IccLockSettings extends PreferenceActivity
         if (mPhone != null) {
             mPinToggle.setChecked(mPhone.getIccCard().getIccLockEnabled());
         }
+    }
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.ICC_LOCK;
     }
 
     @Override
@@ -473,7 +477,8 @@ public class IccLockSettings extends PreferenceActivity
         @Override
         public void onTabChanged(String tabId) {
             final int slotId = Integer.parseInt(tabId);
-            final SubscriptionInfo sir = Utils.findRecordBySlotId(getBaseContext(), slotId);
+            final SubscriptionInfo sir = SubscriptionManager.from(getBaseContext())
+                    .getActiveSubscriptionInfoForSimSlotIndex(slotId);
 
             mPhone = (sir == null) ? null
                 : PhoneFactory.getPhone(SubscriptionManager.getPhoneId(sir.getSubscriptionId()));

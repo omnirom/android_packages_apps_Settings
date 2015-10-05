@@ -38,12 +38,14 @@ public class Settings extends SettingsActivity {
     public static class VpnSettingsActivity extends SettingsActivity { /* empty */ }
     public static class DateTimeSettingsActivity extends SettingsActivity { /* empty */ }
     public static class StorageSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class PrivateVolumeForgetActivity extends SettingsActivity { /* empty */ }
+    public static class PrivateVolumeSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class PublicVolumeSettingsActivity extends SettingsActivity { /* empty */ }
     public static class WifiSettingsActivity extends SettingsActivity { /* empty */ }
     public static class WifiP2pSettingsActivity extends SettingsActivity { /* empty */ }
     public static class InputMethodAndLanguageSettingsActivity extends SettingsActivity { /* empty */ }
     public static class KeyboardLayoutPickerActivity extends SettingsActivity { /* empty */ }
     public static class InputMethodAndSubtypeEnablerActivity extends SettingsActivity { /* empty */ }
-    public static class VoiceInputSettingsActivity extends SettingsActivity { /* empty */ }
     public static class SpellCheckersSettingsActivity extends SettingsActivity { /* empty */ }
     public static class LocalePickerActivity extends SettingsActivity { /* empty */ }
     public static class UserDictionarySettingsActivity extends SettingsActivity { /* empty */ }
@@ -52,6 +54,9 @@ public class Settings extends SettingsActivity {
     public static class DeviceInfoSettingsActivity extends SettingsActivity { /* empty */ }
     public static class ApplicationSettingsActivity extends SettingsActivity { /* empty */ }
     public static class ManageApplicationsActivity extends SettingsActivity { /* empty */ }
+    public static class ManageAssistActivity extends SettingsActivity { /* empty */ }
+    public static class AllApplicationsActivity extends SettingsActivity { /* empty */ }
+    public static class HighPowerApplicationsActivity extends SettingsActivity { /* empty */ }
     public static class AppOpsSummaryActivity extends SettingsActivity {
         @Override
         public boolean isValidFragment(String className) {
@@ -91,6 +96,7 @@ public class Settings extends SettingsActivity {
     public static class NotificationStationActivity extends SettingsActivity { /* empty */ }
     public static class UserSettingsActivity extends SettingsActivity { /* empty */ }
     public static class NotificationAccessSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class ZenAccessSettingsActivity extends SettingsActivity { /* empty */ }
     public static class ConditionProviderSettingsActivity extends SettingsActivity { /* empty */ }
     public static class UsbSettingsActivity extends SettingsActivity { /* empty */ }
     public static class TrustedCredentialsSettingsActivity extends SettingsActivity { /* empty */ }
@@ -98,13 +104,24 @@ public class Settings extends SettingsActivity {
     public static class PrintSettingsActivity extends SettingsActivity { /* empty */ }
     public static class PrintJobSettingsActivity extends SettingsActivity { /* empty */ }
     public static class ZenModeSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class ZenModePrioritySettingsActivity extends SettingsActivity { /* empty */ }
+    public static class ZenModeAutomationSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class ZenModeScheduleRuleSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class ZenModeEventRuleSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class ZenModeExternalRuleSettingsActivity extends SettingsActivity { /* empty */ }
     public static class NotificationSettingsActivity extends SettingsActivity { /* empty */ }
     public static class NotificationAppListActivity extends SettingsActivity { /* empty */ }
     public static class AppNotificationSettingsActivity extends SettingsActivity { /* empty */ }
     public static class OtherSoundSettingsActivity extends SettingsActivity { /* empty */ }
     public static class QuickLaunchSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class DomainsURLsAppListActivity extends SettingsActivity { /* empty */ }
+
     public static class TopLevelSettings extends SettingsActivity { /* empty */ }
     public static class ApnSettingsActivity extends SettingsActivity { /* empty */ }
     public static class WifiCallingSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class MemorySettingsActivity extends SettingsActivity { /* empty */ }
+    public static class OverlaySettingsActivity extends SettingsActivity { /* empty */ }
+    public static class WriteSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class AppDrawOverlaySettingsActivity extends SettingsActivity { /* empty */ }
+    public static class AppWriteSettingsActivity extends SettingsActivity { /* empty */ }
 }
-

@@ -30,6 +30,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.MergeCursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.SearchIndexableData;
@@ -448,7 +449,8 @@ public class Index {
         final PackageManager pm = mContext.getPackageManager();
         try {
             PackageInfo packInfo = pm.getPackageInfo(packageName, 0);
-            return ((packInfo.applicationInfo.flags & ApplicationInfo.FLAG_PRIVILEGED) != 0);
+            return ((packInfo.applicationInfo.privateFlags
+                & ApplicationInfo.PRIVATE_FLAG_PRIVILEGED) != 0);
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
@@ -500,7 +502,12 @@ public class Index {
     }
 
     private SQLiteDatabase getWritableDatabase() {
-        return IndexDatabaseHelper.getInstance(mContext).getWritableDatabase();
+        try {
+            return IndexDatabaseHelper.getInstance(mContext).getWritableDatabase();
+        } catch (SQLiteException e) {
+            Log.e(LOG_TAG, "Cannot open writable database", e);
+            return null;
+        }
     }
 
     private static Uri buildUriForXmlResources(String authority) {
@@ -1171,6 +1178,10 @@ public class Index {
             final boolean forceUpdate = params[0].forceUpdate;
 
             final SQLiteDatabase database = getWritableDatabase();
+            if (database == null) {
+                Log.e(LOG_TAG, "Cannot update Index as I cannot get a writable database");
+                return null;
+            }
             final String localeStr = Locale.getDefault().toString();
 
             try {
@@ -1291,8 +1302,12 @@ public class Index {
             values.put(IndexDatabaseHelper.SavedQueriesColums.TIME_STAMP, now);
 
             final SQLiteDatabase database = getWritableDatabase();
+            if (database == null) {
+                Log.e(LOG_TAG, "Cannot save Search queries as I cannot get a writable database");
+                return -1L;
+            }
 
-            long lastInsertedRowId = -1;
+            long lastInsertedRowId = -1L;
             try {
                 // First, delete all saved queries that are the same
                 database.delete(Tables.TABLE_SAVED_QUERIES,

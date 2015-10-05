@@ -16,9 +16,7 @@
 
 package com.android.settings;
 
-import com.android.settings.notification.RedactionInterstitial;
-import com.android.setupwizard.navigationbar.SetupWizardNavBar;
-
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -27,6 +25,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.settings.notification.RedactionInterstitial;
+import com.android.setupwizardlib.SetupWizardLayout;
+import com.android.setupwizardlib.view.NavigationBar;
+
 /**
  * Setup Wizard's version of RedactionInterstitial screen. It inherits the logic and basic structure
  * from RedactionInterstitial class, and should remain similar to that behaviorally. This class
@@ -34,14 +36,15 @@ import android.view.ViewGroup;
  * Wizard. Other changes should be done to RedactionInterstitial class instead and let this class
  * inherit those changes.
  */
-public class SetupRedactionInterstitial extends RedactionInterstitial
-        implements SetupWizardNavBar.NavigationBarListener{
+public class SetupRedactionInterstitial extends RedactionInterstitial {
 
     public static Intent createStartIntent(Context ctx) {
         Intent startIntent = RedactionInterstitial.createStartIntent(ctx);
-        startIntent.setClass(ctx, SetupRedactionInterstitial.class);
-        startIntent.putExtra(EXTRA_PREFS_SHOW_BUTTON_BAR, false)
-                .putExtra(EXTRA_SHOW_FRAGMENT_TITLE_RESID, -1);
+        if (startIntent != null) {
+            startIntent.setClass(ctx, SetupRedactionInterstitial.class);
+            startIntent.putExtra(EXTRA_PREFS_SHOW_BUTTON_BAR, false)
+                    .putExtra(EXTRA_SHOW_FRAGMENT_TITLE_RESID, -1);
+        }
         return startIntent;
     }
 
@@ -60,44 +63,46 @@ public class SetupRedactionInterstitial extends RedactionInterstitial
 
     @Override
     protected void onApplyThemeResource(Resources.Theme theme, int resid, boolean first) {
-        resid = SetupWizardUtils.getTheme(getIntent(), resid);
+        resid = SetupWizardUtils.getTheme(getIntent());
         super.onApplyThemeResource(theme, resid, first);
     }
 
-    @Override
-    public void onNavigationBarCreated(SetupWizardNavBar bar) {
-        SetupWizardUtils.setImmersiveMode(this, bar);
-    }
-
-    @Override
-    public void onNavigateBack() {
-        onBackPressed();
-    }
-
-    @Override
-    public void onNavigateNext() {
-        setResult(RESULT_OK, getResultIntentData());
-        finish();
-    }
-
-    public static class SetupEncryptionInterstitialFragment extends RedactionInterstitialFragment {
+    public static class SetupEncryptionInterstitialFragment extends RedactionInterstitialFragment
+            implements NavigationBar.NavigationBarListener {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.setup_template, container, false);
-            ViewGroup setupContent = (ViewGroup) view.findViewById(R.id.setup_content);
-            View content = super.onCreateView(inflater, setupContent, savedInstanceState);
-            setupContent.addView(content);
-            return view;
+            return inflater.inflate(R.layout.setup_redaction_interstitial, container, false);
         }
 
         @Override
         public void onViewCreated(View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
-            SetupWizardUtils.setIllustration(getActivity(),
-                    R.drawable.setup_illustration_lock_screen);
-            SetupWizardUtils.setHeaderText(getActivity(), R.string.notification_section_header);
+            final SetupWizardLayout layout =
+                    (SetupWizardLayout) view.findViewById(R.id.setup_wizard_layout);
+
+            final NavigationBar navigationBar = layout.getNavigationBar();
+            navigationBar.setNavigationBarListener(this);
+            navigationBar.getBackButton().setVisibility(View.GONE);
+            SetupWizardUtils.setImmersiveMode(getActivity());
+        }
+
+        @Override
+        public void onNavigateBack() {
+            final Activity activity = getActivity();
+            if (activity != null) {
+                activity.onBackPressed();
+            }
+        }
+
+        @Override
+        public void onNavigateNext() {
+            final SetupRedactionInterstitial activity = (SetupRedactionInterstitial) getActivity();
+            if (activity != null) {
+                activity.setResult(RESULT_OK, activity.getResultIntentData());
+                finish();
+            }
         }
     }
 }

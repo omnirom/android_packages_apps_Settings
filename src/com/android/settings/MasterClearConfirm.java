@@ -21,9 +21,9 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.service.persistentdata.PersistentDataBlockManager;
-import com.android.internal.os.storage.ExternalStorageFormatter;
 
-import android.app.Fragment;
+import com.android.internal.logging.MetricsLogger;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.UserManager;
@@ -31,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * Confirm and execute a reset of the device to a clean "just out of the box"
@@ -42,7 +43,7 @@ import android.widget.Button;
  *
  * This is the confirmation screen.
  */
-public class MasterClearConfirm extends Fragment {
+public class MasterClearConfirm extends InstrumentedFragment {
 
     private View mContentView;
     private boolean mEraseSdCard;
@@ -64,14 +65,10 @@ public class MasterClearConfirm extends Fragment {
 
             if (pdbManager != null && !pdbManager.getOemUnlockEnabled()) {
                 // if OEM unlock is enabled, this will be wiped during FR process.
-                final ProgressDialog progressDialog = getProgressDialog();
-                progressDialog.show();
-
-                // need to prevent orientation changes as we're about to go into
-                // a long IO request, so we won't be able to access inflate resources on flash
-                final int oldOrientation = getActivity().getRequestedOrientation();
-                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
                 new AsyncTask<Void, Void, Void>() {
+                    int mOldOrientation;
+                    ProgressDialog mProgressDialog;
+
                     @Override
                     protected Void doInBackground(Void... params) {
                         pdbManager.wipe();
@@ -80,9 +77,20 @@ public class MasterClearConfirm extends Fragment {
 
                     @Override
                     protected void onPostExecute(Void aVoid) {
-                        progressDialog.hide();
-                        getActivity().setRequestedOrientation(oldOrientation);
+                        mProgressDialog.hide();
+                        getActivity().setRequestedOrientation(mOldOrientation);
                         doMasterClear();
+                    }
+
+                    @Override
+                    protected void onPreExecute() {
+                        mProgressDialog = getProgressDialog();
+                        mProgressDialog.show();
+
+                        // need to prevent orientation changes as we're about to go into
+                        // a long IO request, so we won't be able to access inflate resources on flash
+                        mOldOrientation = getActivity().getRequestedOrientation();
+                        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
                     }
                 }.execute();
             } else {
@@ -103,18 +111,12 @@ public class MasterClearConfirm extends Fragment {
     };
 
     private void doMasterClear() {
-        if (mEraseSdCard) {
-            Intent intent = new Intent(ExternalStorageFormatter.FORMAT_AND_FACTORY_RESET);
-            intent.putExtra(Intent.EXTRA_REASON, "MasterClearConfirm");
-            intent.setComponent(ExternalStorageFormatter.COMPONENT_NAME);
-            getActivity().startService(intent);
-        } else {
-            Intent intent = new Intent(Intent.ACTION_MASTER_CLEAR);
-            intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-            intent.putExtra(Intent.EXTRA_REASON, "MasterClearConfirm");
-            getActivity().sendBroadcast(intent);
-            // Intent handling is asynchronous -- assume it will happen soon.
-        }
+        Intent intent = new Intent(Intent.ACTION_MASTER_CLEAR);
+        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+        intent.putExtra(Intent.EXTRA_REASON, "MasterClearConfirm");
+        intent.putExtra(Intent.EXTRA_WIPE_EXTERNAL_STORAGE, mEraseSdCard);
+        getActivity().sendBroadcast(intent);
+        // Intent handling is asynchronous -- assume it will happen soon.
     }
 
     /**
@@ -134,7 +136,19 @@ public class MasterClearConfirm extends Fragment {
         }
         mContentView = inflater.inflate(R.layout.master_clear_confirm, null);
         establishFinalConfirmationState();
+        setAccessibilityTitle();
         return mContentView;
+    }
+
+    private void setAccessibilityTitle() {
+        CharSequence currentTitle = getActivity().getTitle();
+        TextView confirmationMessage =
+                (TextView) mContentView.findViewById(R.id.master_clear_confirm);
+        if (confirmationMessage != null) {
+            String accessibileText = new StringBuilder(currentTitle).append(",").append(
+                    confirmationMessage.getText()).toString();
+            getActivity().setTitle(Utils.createAccessibleSequence(currentTitle, accessibileText));
+        }
     }
 
     @Override
@@ -142,6 +156,12 @@ public class MasterClearConfirm extends Fragment {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        mEraseSdCard = args != null && args.getBoolean(MasterClear.ERASE_EXTERNAL_EXTRA);
+        mEraseSdCard = args != null
+                && args.getBoolean(MasterClear.ERASE_EXTERNAL_EXTRA);
+    }
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.MASTER_CLEAR_CONFIRM;
     }
 }

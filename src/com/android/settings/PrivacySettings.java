@@ -16,12 +16,9 @@
 
 package com.android.settings;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.backup.IBackupManager;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Process;
@@ -30,7 +27,6 @@ import android.os.ServiceManager;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.preference.Preference;
-import android.preference.PreferenceCategory;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
@@ -38,12 +34,14 @@ import android.provider.SearchIndexableResource;
 import android.provider.Settings;
 import android.util.Log;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.search.Indexable;
-import com.android.settings.search.Indexable.SearchIndexProvider;
-
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.search.Indexable.SearchIndexProvider;
@@ -54,27 +52,27 @@ import java.util.List;
 /**
  * Gesture lock pattern settings.
  */
-public class PrivacySettings extends SettingsPreferenceFragment implements
-        DialogInterface.OnClickListener, Indexable {
+public class PrivacySettings extends SettingsPreferenceFragment implements Indexable {
 
     // Vendor specific
     private static final String GSETTINGS_PROVIDER = "com.google.settings";
-    private static final String BACKUP_CATEGORY = "backup_category";
     private static final String BACKUP_DATA = "backup_data";
     private static final String AUTO_RESTORE = "auto_restore";
     private static final String CONFIGURE_ACCOUNT = "configure_account";
     private static final String BACKUP_INACTIVE = "backup_inactive";
-    private static final String PERSONAL_DATA_CATEGORY = "personal_data_category";
+    private static final String NETWORK_RESET = "network_reset";
+    private static final String FACTORY_RESET = "factory_reset";
     private static final String TAG = "PrivacySettings";
     private IBackupManager mBackupManager;
-    private SwitchPreference mBackup;
+    private PreferenceScreen mBackup;
     private SwitchPreference mAutoRestore;
-    private Dialog mConfirmDialog;
     private PreferenceScreen mConfigure;
     private boolean mEnabled;
 
-    private static final int DIALOG_ERASE_BACKUP = 2;
-    private int mDialogType;
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.PRIVACY;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,15 +88,15 @@ public class PrivacySettings extends SettingsPreferenceFragment implements
         mBackupManager = IBackupManager.Stub.asInterface(
                 ServiceManager.getService(Context.BACKUP_SERVICE));
 
-        mBackup = (SwitchPreference) screen.findPreference(BACKUP_DATA);
-        mBackup.setOnPreferenceChangeListener(preferenceChangeListener);
+        mBackup = (PreferenceScreen) screen.findPreference(BACKUP_DATA);
 
         mAutoRestore = (SwitchPreference) screen.findPreference(AUTO_RESTORE);
         mAutoRestore.setOnPreferenceChangeListener(preferenceChangeListener);
 
         mConfigure = (PreferenceScreen) screen.findPreference(CONFIGURE_ACCOUNT);
 
-        ArrayList<String> keysToRemove = getNonVisibleKeys(getActivity());
+        Set<String> keysToRemove = new HashSet<>();
+        getNonVisibleKeys(getActivity(), keysToRemove);
         final int screenPreferenceCount = screen.getPreferenceCount();
         for (int i = screenPreferenceCount - 1; i >= 0; --i) {
             Preference preference = screen.getPreference(i);
@@ -106,16 +104,7 @@ public class PrivacySettings extends SettingsPreferenceFragment implements
                 screen.removePreference(preference);
             }
         }
-        PreferenceCategory backupCategory = (PreferenceCategory) findPreference(BACKUP_CATEGORY);
-        if (backupCategory != null) {
-            final int backupCategoryPreferenceCount = backupCategory.getPreferenceCount();
-            for (int i = backupCategoryPreferenceCount - 1; i >= 0; --i) {
-                Preference preference = backupCategory.getPreference(i);
-                if (keysToRemove.contains(preference.getKey())) {
-                    backupCategory.removePreference(preference);
-                }
-            }
-        }
+
         updateToggles();
     }
 
@@ -129,16 +118,6 @@ public class PrivacySettings extends SettingsPreferenceFragment implements
         }
     }
 
-    @Override
-    public void onStop() {
-        if (mConfirmDialog != null && mConfirmDialog.isShowing()) {
-            mConfirmDialog.dismiss();
-        }
-        mConfirmDialog = null;
-        mDialogType = 0;
-        super.onStop();
-    }
-
     private OnPreferenceChangeListener preferenceChangeListener = new OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -147,16 +126,7 @@ public class PrivacySettings extends SettingsPreferenceFragment implements
             }
             boolean nextValue = (Boolean) newValue;
             boolean result = false;
-            if (preference == mBackup) {
-                if (nextValue == false) {
-                    // Don't change Switch status until user makes choice in dialog
-                    // so return false here.
-                    showEraseBackupDialog();
-                } else {
-                    setBackupEnabled(true);
-                    result = true;
-                }
-            } else if (preference == mAutoRestore) {
+            if (preference == mAutoRestore) {
                 try {
                     mBackupManager.setAutoRestore(nextValue);
                     result = true;
@@ -168,19 +138,9 @@ public class PrivacySettings extends SettingsPreferenceFragment implements
         }
     };
 
-    private void showEraseBackupDialog() {
-        mDialogType = DIALOG_ERASE_BACKUP;
-        CharSequence msg = getResources().getText(R.string.backup_erase_dialog_message);
-        // TODO: DialogFragment?
-        mConfirmDialog = new AlertDialog.Builder(getActivity()).setMessage(msg)
-                .setTitle(R.string.backup_erase_dialog_title)
-                .setPositiveButton(android.R.string.ok, this)
-                .setNegativeButton(android.R.string.cancel, this)
-                .show();
-    }
 
     /*
-     * Creates toggles for each available location provider
+     * Creates toggles for each backup/reset preference.
      */
     private void updateToggles() {
         ContentResolver res = getContentResolver();
@@ -193,11 +153,14 @@ public class PrivacySettings extends SettingsPreferenceFragment implements
             String transport = mBackupManager.getCurrentTransport();
             configIntent = mBackupManager.getConfigurationIntent(transport);
             configSummary = mBackupManager.getDestinationString(transport);
+
+            mBackup.setSummary(backupEnabled
+                    ? R.string.accessibility_feature_state_on
+                    : R.string.accessibility_feature_state_off);
         } catch (RemoteException e) {
             // leave it 'false' and disable the UI; there's no backup manager
             mBackup.setEnabled(false);
         }
-        mBackup.setChecked(backupEnabled);
 
         mAutoRestore.setChecked(Settings.Secure.getInt(res,
                 Settings.Secure.BACKUP_AUTO_RESTORE, 1) == 1);
@@ -215,54 +178,6 @@ public class PrivacySettings extends SettingsPreferenceFragment implements
         } else {
             mConfigure.setSummary(R.string.backup_configure_account_default_summary);
         }
-    }
-
-    private void updateConfigureSummary() {
-        try {
-            String transport = mBackupManager.getCurrentTransport();
-            String summary = mBackupManager.getDestinationString(transport);
-            setConfigureSummary(summary);
-        } catch (RemoteException e) {
-            // Not much we can do here
-        }
-    }
-
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-        // Dialog is triggered before Switch status change, that means marking the Switch to
-        // true in showEraseBackupDialog() method will be override by following status change.
-        // So we do manual switching here due to users' response.
-        if (mDialogType == DIALOG_ERASE_BACKUP) {
-            // Accept turning off backup
-            if (which == DialogInterface.BUTTON_POSITIVE) {
-                setBackupEnabled(false);
-            } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-                // Reject turning off backup
-                setBackupEnabled(true);
-            }
-            updateConfigureSummary();
-        }
-        mDialogType = 0;
-    }
-
-    /**
-     * Informs the BackupManager of a change in backup state - if backup is disabled,
-     * the data on the server will be erased.
-     * @param enable whether to enable backup
-     */
-    private void setBackupEnabled(boolean enable) {
-        if (mBackupManager != null) {
-            try {
-                mBackupManager.setBackupEnabled(enable);
-            } catch (RemoteException e) {
-                mBackup.setChecked(!enable);
-                mAutoRestore.setEnabled(!enable);
-                return;
-            }
-        }
-        mBackup.setChecked(enable);
-        mAutoRestore.setEnabled(enable);
-        mConfigure.setEnabled(enable);
     }
 
     @Override
@@ -306,12 +221,13 @@ public class PrivacySettings extends SettingsPreferenceFragment implements
 
         @Override
         public List<String> getNonIndexableKeys(Context context) {
-            return getNonVisibleKeys(context);
+            final List<String> nonVisibleKeys = new ArrayList<>();
+            getNonVisibleKeys(context, nonVisibleKeys);
+            return nonVisibleKeys;
         }
     }
 
-    private static ArrayList<String> getNonVisibleKeys(Context context) {
-        final ArrayList<String> nonVisibleKeys = new ArrayList<String>();
+    private static void getNonVisibleKeys(Context context, Collection<String> nonVisibleKeys) {
         final IBackupManager backupManager = IBackupManager.Stub.asInterface(
                 ServiceManager.getService(Context.BACKUP_SERVICE));
         boolean isServiceActive = false;
@@ -321,22 +237,23 @@ public class PrivacySettings extends SettingsPreferenceFragment implements
             Log.w(TAG, "Failed querying backup manager service activity status. " +
                     "Assuming it is inactive.");
         }
-        if (isServiceActive) {
+        boolean vendorSpecific = context.getPackageManager().
+                resolveContentProvider(GSETTINGS_PROVIDER, 0) == null;
+        if (vendorSpecific || isServiceActive) {
             nonVisibleKeys.add(BACKUP_INACTIVE);
-        } else {
+        }
+        if (vendorSpecific || !isServiceActive) {
+            nonVisibleKeys.add(BACKUP_DATA);
             nonVisibleKeys.add(AUTO_RESTORE);
             nonVisibleKeys.add(CONFIGURE_ACCOUNT);
-            nonVisibleKeys.add(BACKUP_DATA);
         }
         if (UserManager.get(context).hasUserRestriction(
                 UserManager.DISALLOW_FACTORY_RESET)) {
-            nonVisibleKeys.add(PERSONAL_DATA_CATEGORY);
+            nonVisibleKeys.add(FACTORY_RESET);
         }
-        // Vendor specific
-        if (context.getPackageManager().
-                resolveContentProvider(GSETTINGS_PROVIDER, 0) == null) {
-            nonVisibleKeys.add(BACKUP_CATEGORY);
+        if (UserManager.get(context).hasUserRestriction(
+                UserManager.DISALLOW_NETWORK_RESET)) {
+            nonVisibleKeys.add(NETWORK_RESET);
         }
-        return nonVisibleKeys;
     }
 }

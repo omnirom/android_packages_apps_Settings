@@ -22,6 +22,7 @@ import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.pm.UserInfo;
 import android.content.res.Resources;
 import android.os.AsyncTask;
@@ -105,6 +106,12 @@ public final class CredentialStorage extends Activity {
     private final KeyStore mKeyStore = KeyStore.getInstance();
 
     /**
+     * The UIDs that are used for system credential storage in keystore.
+     */
+    private static final int[] SYSTEM_CREDENTIAL_UIDS = {Process.WIFI_UID, Process.VPN_UID,
+        Process.ROOT_UID, Process.SYSTEM_UID};
+
+    /**
      * When non-null, the bundle containing credentials to install.
      */
     private Bundle mInstallBundle;
@@ -135,7 +142,13 @@ public final class CredentialStorage extends Activity {
                 handleUnlockOrInstall();
             }
         } else {
-            finish();
+            // Users can set a screen lock if there is none even if they can't modify the
+            // credentials store.
+            if (ACTION_UNLOCK.equals(action) && mKeyStore.state() == KeyStore.State.UNINITIALIZED) {
+                ensureKeyGuard();
+            } else {
+                finish();
+            }
         }
     }
 
@@ -194,7 +207,9 @@ public final class CredentialStorage extends Activity {
      * Returns true if the currently set key guard matches our minimum quality requirements.
      */
     private boolean checkKeyGuardQuality() {
-        int quality = new LockPatternUtils(this).getActivePasswordQuality();
+        UserInfo parent = UserManager.get(this).getProfileParent(UserHandle.myUserId());
+        int quality = new LockPatternUtils(this).getActivePasswordQuality(
+                parent != null ? parent.id : UserHandle.myUserId());
         return (quality >= MIN_PASSWORD_QUALITY);
     }
 
@@ -326,7 +341,14 @@ public final class CredentialStorage extends Activity {
 
         @Override protected Boolean doInBackground(Void... unused) {
 
-            mKeyStore.reset();
+            // Clear all the users credentials could have been installed in for this user.
+            final UserManager um = (UserManager) getSystemService(USER_SERVICE);
+            for (UserInfo pi : um.getProfiles(UserHandle.getUserId(Process.myUid()))) {
+                for (int uid : SYSTEM_CREDENTIAL_UIDS) {
+                    mKeyStore.clearUid(UserHandle.getUid(pi.id, uid));
+                }
+            }
+
 
             try {
                 KeyChainConnection keyChainConnection = KeyChain.bind(CredentialStorage.this);
@@ -396,8 +418,10 @@ public final class CredentialStorage extends Activity {
      */
     private boolean checkCallerIsCertInstallerOrSelfInProfile() {
         if (TextUtils.equals("com.android.certinstaller", getCallingPackage())) {
-            // CertInstaller is allowed to install credentials
-            return true;
+            // CertInstaller is allowed to install credentials if it has the same signature as
+            // Settings package.
+            return getPackageManager().checkSignatures(
+                    getCallingPackage(), getPackageName()) == PackageManager.SIGNATURE_MATCH;
         }
 
         final int launchedFromUserId;
@@ -433,9 +457,8 @@ public final class CredentialStorage extends Activity {
     private boolean confirmKeyGuard() {
         Resources res = getResources();
         boolean launched = new ChooseLockSettingsHelper(this)
-                .launchConfirmationActivity(CONFIRM_KEY_GUARD_REQUEST, null,
-                                            res.getText(R.string.credentials_install_gesture_explanation),
-                                            true);
+                .launchConfirmationActivity(CONFIRM_KEY_GUARD_REQUEST,
+                        res.getText(R.string.credentials_title), true);
         return launched;
     }
 
@@ -451,7 +474,7 @@ public final class CredentialStorage extends Activity {
                 String password = data.getStringExtra(ChooseLockSettingsHelper.EXTRA_KEY_PASSWORD);
                 if (!TextUtils.isEmpty(password)) {
                     // success
-                    mKeyStore.password(password);
+                    mKeyStore.unlock(password);
                     // return to onResume
                     return;
                 }

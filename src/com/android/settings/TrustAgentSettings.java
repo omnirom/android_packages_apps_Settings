@@ -18,6 +18,7 @@ package com.android.settings;
 
 import java.util.List;
 
+import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.UserHandle;
 import android.preference.Preference;
 import android.preference.PreferenceGroup;
 import android.preference.SwitchPreference;
@@ -32,14 +34,17 @@ import android.service.trust.TrustAgentService;
 import android.util.ArrayMap;
 import android.util.ArraySet;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.widget.LockPatternUtils;
 
 public class TrustAgentSettings extends SettingsPreferenceFragment implements
         Preference.OnPreferenceChangeListener {
     private static final String SERVICE_INTERFACE = TrustAgentService.SERVICE_INTERFACE;
+
     private ArrayMap<ComponentName, AgentInfo> mAvailableAgents;
     private final ArraySet<ComponentName> mActiveAgents = new ArraySet<ComponentName>();
     private LockPatternUtils mLockPatternUtils;
+    private DevicePolicyManager mDpm;
 
     public static final class AgentInfo {
         CharSequence label;
@@ -61,13 +66,20 @@ public class TrustAgentSettings extends SettingsPreferenceFragment implements
     }
 
     @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.TRUST_AGENT;
+    }
+
+    @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        mDpm = getActivity().getSystemService(DevicePolicyManager.class);
         addPreferencesFromResource(R.xml.trust_agent_settings);
     }
 
     public void onResume() {
         super.onResume();
+        removePreference("dummy_preference");
         updateAgents();
     };
 
@@ -83,6 +95,10 @@ public class TrustAgentSettings extends SettingsPreferenceFragment implements
         PreferenceGroup category =
                 (PreferenceGroup) getPreferenceScreen().findPreference("trust_agents");
         category.removeAll();
+
+        boolean disabledByDevicePolicy = (mDpm.getKeyguardDisabledFeatures(null)
+                & DevicePolicyManager.KEYGUARD_DISABLE_TRUST_AGENTS) != 0;
+
         final int count = mAvailableAgents.size();
         for (int i = 0; i < count; i++) {
             AgentInfo agent = mAvailableAgents.valueAt(i);
@@ -94,19 +110,29 @@ public class TrustAgentSettings extends SettingsPreferenceFragment implements
             preference.setPersistent(false);
             preference.setOnPreferenceChangeListener(this);
             preference.setChecked(mActiveAgents.contains(agent.component));
+
+            if (disabledByDevicePolicy
+                    && mDpm.getTrustAgentConfiguration(null, agent.component) == null) {
+                preference.setChecked(false);
+                preference.setEnabled(false);
+                preference.setSummary(R.string.trust_agent_disabled_device_admin);
+            }
+
             category.addPreference(agent.preference);
         }
     }
 
     private void loadActiveAgents() {
-        List<ComponentName> activeTrustAgents = mLockPatternUtils.getEnabledTrustAgents();
+        List<ComponentName> activeTrustAgents = mLockPatternUtils.getEnabledTrustAgents(
+                UserHandle.myUserId());
         if (activeTrustAgents != null) {
             mActiveAgents.addAll(activeTrustAgents);
         }
     }
 
     private void saveActiveAgents() {
-        mLockPatternUtils.setEnabledTrustAgents(mActiveAgents);
+        mLockPatternUtils.setEnabledTrustAgents(mActiveAgents,
+                UserHandle.myUserId());
     }
 
     ArrayMap<ComponentName, AgentInfo> findAvailableTrustAgents() {

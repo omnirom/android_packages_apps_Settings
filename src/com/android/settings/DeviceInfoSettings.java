@@ -22,11 +22,9 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.RemoteException;
+import android.os.PersistableBundle;
 import android.os.SELinux;
 import android.os.SystemClock;
 import android.os.SystemProperties;
@@ -37,9 +35,13 @@ import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
 import android.provider.SearchIndexableResource;
 import android.provider.Settings;
+import android.telephony.CarrierConfigManager;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.android.internal.logging.MetricsLogger;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.search.Index;
 import com.android.settings.search.Indexable;
@@ -47,9 +49,13 @@ import com.android.settings.search.Indexable;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,12 +65,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
     private static final String FILENAME_PROC_VERSION = "/proc/version";
     private static final String FILENAME_MSV = "/sys/board_properties/soc/msv";
 
-    private static final String KEY_CONTAINER = "container";
     private static final String KEY_REGULATORY_INFO = "regulatory_info";
-    private static final String KEY_TERMS = "terms";
-    private static final String KEY_LICENSE = "license";
-    private static final String KEY_COPYRIGHT = "copyright";
-    private static final String KEY_WEBVIEW_LICENSE = "webview_license";
     private static final String KEY_SYSTEM_UPDATE_SETTINGS = "system_update_settings";
     private static final String PROPERTY_URL_SAFETYLEGAL = "ro.url.safetylegal";
     private static final String PROPERTY_SELINUX_STATUS = "ro.build.selinux";
@@ -74,6 +75,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
     private static final String KEY_SELINUX_STATUS = "selinux_status";
     private static final String KEY_BASEBAND_VERSION = "baseband_version";
     private static final String KEY_FIRMWARE_VERSION = "firmware_version";
+    private static final String KEY_SECURITY_PATCH = "security_patch";
     private static final String KEY_UPDATE_SETTING = "additional_system_update_settings";
     private static final String KEY_EQUIPMENT_ID = "fcc_equipment_id";
     private static final String PROPERTY_EQUIPMENT_ID = "ro.ril.fccid";
@@ -89,6 +91,16 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
     Toast mDevHitToast;
 
     @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.DEVICEINFO;
+    }
+
+    @Override
+    protected int getHelpResource() {
+        return R.string.help_uri_about;
+    }
+
+    @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
@@ -96,6 +108,21 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
 
         setStringSummary(KEY_FIRMWARE_VERSION, Build.VERSION.RELEASE);
         findPreference(KEY_FIRMWARE_VERSION).setEnabled(true);
+        String patch = Build.VERSION.SECURITY_PATCH;
+        if (!"".equals(patch)) {
+            try {
+                SimpleDateFormat template = new SimpleDateFormat("yyyy-MM-dd");
+                Date patchDate = template.parse(patch);
+                String format = DateFormat.getBestDateTimePattern(Locale.getDefault(), "dMMMMyyyy");
+                patch = DateFormat.format(format, patchDate).toString();
+            } catch (ParseException e) {
+                // broken parse; fall through and use the raw string
+            }
+            setStringSummary(KEY_SECURITY_PATCH, patch);
+        } else {
+            getPreferenceScreen().removePreference(findPreference(KEY_SECURITY_PATCH));
+
+        }
         setValueSummary(KEY_BASEBAND_VERSION, "gsm.version.baseband");
         setStringSummary(KEY_DEVICE_MODEL, Build.MODEL + getMsvSuffix());
         setValueSummary(KEY_EQUIPMENT_ID, PROPERTY_EQUIPMENT_ID);
@@ -140,19 +167,9 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
          * info.
          */
         final Activity act = getActivity();
-        // These are contained in the "container" preference group
-        PreferenceGroup parentPreference = (PreferenceGroup) findPreference(KEY_CONTAINER);
-        Utils.updatePreferenceToSpecificActivityOrRemove(act, parentPreference, KEY_TERMS,
-                Utils.UPDATE_PREFERENCE_FLAG_SET_TITLE_TO_MATCHING_ACTIVITY);
-        Utils.updatePreferenceToSpecificActivityOrRemove(act, parentPreference, KEY_LICENSE,
-                Utils.UPDATE_PREFERENCE_FLAG_SET_TITLE_TO_MATCHING_ACTIVITY);
-        Utils.updatePreferenceToSpecificActivityOrRemove(act, parentPreference, KEY_COPYRIGHT,
-                Utils.UPDATE_PREFERENCE_FLAG_SET_TITLE_TO_MATCHING_ACTIVITY);
-        Utils.updatePreferenceToSpecificActivityOrRemove(act, parentPreference, KEY_WEBVIEW_LICENSE,
-                Utils.UPDATE_PREFERENCE_FLAG_SET_TITLE_TO_MATCHING_ACTIVITY);
 
         // These are contained by the root preference screen
-        parentPreference = getPreferenceScreen();
+        PreferenceGroup parentPreference = getPreferenceScreen();
         if (UserHandle.myUserId() == UserHandle.USER_OWNER) {
             Utils.updatePreferenceToSpecificActivityOrRemove(act, parentPreference,
                     KEY_SYSTEM_UPDATE_SETTINGS,
@@ -191,6 +208,12 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
             System.arraycopy(mHits, 1, mHits, 0, mHits.length-1);
             mHits[mHits.length-1] = SystemClock.uptimeMillis();
             if (mHits[0] >= (SystemClock.uptimeMillis()-500)) {
+                UserManager um = (UserManager) getActivity().getSystemService(Context.USER_SERVICE);
+                if (um.hasUserRestriction(UserManager.DISALLOW_FUN)) {
+                    Log.d(LOG_TAG, "Sorry, no fun for you!");
+                    return false;
+                }
+
                 Intent intent = new Intent(Intent.ACTION_MAIN);
                 intent.setClassName("android",
                         com.android.internal.app.PlatLogoActivity.class.getName());
@@ -248,8 +271,37 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
             }
         } else if (preference.getKey().equals(KEY_DEVICE_FEEDBACK)) {
             sendFeedback();
+        } else if(preference.getKey().equals(KEY_SYSTEM_UPDATE_SETTINGS)) {
+            CarrierConfigManager configManager =
+                    (CarrierConfigManager) getSystemService(Context.CARRIER_CONFIG_SERVICE);
+            PersistableBundle b = configManager.getConfig();
+            if (b.getBoolean(CarrierConfigManager.KEY_CI_ACTION_ON_SYS_UPDATE_BOOL)) {
+                ciActionOnSysUpdate(b);
+            }
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
+    }
+
+    /**
+     * Trigger client initiated action (send intent) on system update
+     */
+    private void ciActionOnSysUpdate(PersistableBundle b) {
+        String intentStr = b.getString(CarrierConfigManager.
+                KEY_CI_ACTION_ON_SYS_UPDATE_INTENT_STRING);
+        if (!TextUtils.isEmpty(intentStr)) {
+            String extra = b.getString(CarrierConfigManager.
+                    KEY_CI_ACTION_ON_SYS_UPDATE_EXTRA_STRING);
+            String extraVal = b.getString(CarrierConfigManager.
+                    KEY_CI_ACTION_ON_SYS_UPDATE_EXTRA_VAL_STRING);
+
+            Intent intent = new Intent(intentStr);
+            if (!TextUtils.isEmpty(extra)) {
+                intent.putExtra(extra, extraVal);
+            }
+            Log.d(LOG_TAG, "ciActionOnSysUpdate: broadcasting intent " + intentStr +
+                    " with extra " + extra + ", " + extraVal);
+            getActivity().getApplicationContext().sendBroadcast(intent);
+        }
     }
 
     private void removePreferenceIfPropertyMissing(PreferenceGroup preferenceGroup,
@@ -449,18 +501,6 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
                 if (TextUtils.isEmpty(getFeedbackReporterPackage(context))) {
                     keys.add(KEY_DEVICE_FEEDBACK);
                 }
-                if (!checkIntentAction(context, "android.settings.TERMS")) {
-                    keys.add(KEY_TERMS);
-                }
-                if (!checkIntentAction(context, "android.settings.LICENSE")) {
-                    keys.add(KEY_LICENSE);
-                }
-                if (!checkIntentAction(context, "android.settings.COPYRIGHT")) {
-                    keys.add(KEY_COPYRIGHT);
-                }
-                if (!checkIntentAction(context, "android.settings.WEBVIEW_LICENSE")) {
-                    keys.add(KEY_WEBVIEW_LICENSE);
-                }
                 if (UserHandle.myUserId() != UserHandle.USER_OWNER) {
                     keys.add(KEY_SYSTEM_UPDATE_SETTINGS);
                 }
@@ -473,25 +513,6 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
 
             private boolean isPropertyMissing(String property) {
                 return SystemProperties.get(property).equals("");
-            }
-
-            private boolean checkIntentAction(Context context, String action) {
-                final Intent intent = new Intent(action);
-
-                // Find the activity that is in the system image
-                final PackageManager pm = context.getPackageManager();
-                final List<ResolveInfo> list = pm.queryIntentActivities(intent, 0);
-                final int listSize = list.size();
-
-                for (int i = 0; i < listSize; i++) {
-                    ResolveInfo resolveInfo = list.get(i);
-                    if ((resolveInfo.activityInfo.applicationInfo.flags &
-                            ApplicationInfo.FLAG_SYSTEM) != 0) {
-                        return true;
-                    }
-                }
-
-                return false;
             }
         };
 

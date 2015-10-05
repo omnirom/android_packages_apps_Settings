@@ -56,11 +56,11 @@
         android:title="@string/oem_unlock_enable"
         android:summary="@string/oem_unlock_enable_summary"/>
 
-    <PreferenceScreen android:key="proc_stats"
-            android:title="@string/process_stats_summary_title"
-            android:summary="@string/process_stats_summary"
-            android:fragment="com.android.settings.applications.ProcessStatsUi">
-    </PreferenceScreen>
+    <PreferenceScreen
+        android:key="running_apps"
+        android:title="@string/runningservices_settings_title"
+        android:summary="@string/runningservices_settings_summary"
+        android:fragment="com.android.settings.applications.RunningServices" />
 
     <PreferenceCategory android:key="debug_debugging_category"
             android:title="@string/debug_debugging_category">
@@ -95,10 +95,8 @@
             android:title="@string/bugreport_in_power"
             android:summary="@string/bugreport_in_power_summary"/>-->
 
-        <SwitchPreference
-            android:key="allow_mock_location"
-            android:title="@string/allow_mock_location"
-            android:summary="@string/allow_mock_location_summary"/>
+        <PreferenceScreen android:key="mock_location_app"
+            android:title="@string/mock_location_app" />
 
         <SwitchPreference
                 android:key="debug_view_attributes"
@@ -117,6 +115,18 @@
             android:title="@string/verify_apps_over_usb_title"
             android:summary="@string/verify_apps_over_usb_summary"/>
 
+        <ListPreference
+            android:key="select_logd_size"
+            android:title="@string/select_logd_size_title"
+            android:dialogTitle="@string/select_logd_size_dialog_title"
+            android:entries="@array/select_logd_size_titles"
+            android:entryValues="@array/select_logd_size_values" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:key="debug_networking_category"
+            android:title="@string/debug_networking_category">
+
         <SwitchPreference
             android:key="wifi_display_certification"
             android:title="@string/wifi_display_certification"
@@ -124,25 +134,35 @@
 
         <SwitchPreference
             android:key="wifi_verbose_logging"
-            android:title="@string/wifi_verbose_logging" />
+            android:title="@string/wifi_verbose_logging"
             android:summary="@string/wifi_verbose_logging_summary"/>
 
         <SwitchPreference
             android:key="wifi_aggressive_handover"
-            android:title="@string/wifi_aggressive_handover" />
+            android:title="@string/wifi_aggressive_handover"
             android:summary="@string/wifi_aggressive_handover_summary"/>
 
-       <SwitchPreference
+        <SwitchPreference
             android:key="wifi_allow_scan_with_traffic"
-            android:title="@string/wifi_allow_scan_with_traffic" />
+            android:title="@string/wifi_allow_scan_with_traffic"
             android:summary="@string/wifi_allow_scan_with_traffic_summary"/>
 
+       <SwitchPreference
+            android:key="legacy_dhcp_client"
+            android:title="@string/legacy_dhcp_client"
+            android:summary="@string/legacy_dhcp_client_summary"/>
+
+       <SwitchPreference
+            android:key="mobile_data_always_on"
+            android:title="@string/mobile_data_always_on"
+            android:summary="@string/mobile_data_always_on_summary"/>
+
         <ListPreference
-            android:key="select_logd_size"
-            android:title="@string/select_logd_size_title"
-            android:dialogTitle="@string/select_logd_size_dialog_title"
-            android:entries="@array/select_logd_size_titles"
-            android:entryValues="@array/select_logd_size_values" />
+            android:key="select_usb_configuration"
+            android:title="@string/select_usb_configuration_title"
+            android:dialogTitle="@string/select_usb_configuration_dialog_title"
+            android:entries="@array/usb_configuration_titles"
+            android:entryValues="@array/usb_configuration_values" />
 
        <SwitchPreference
             android:key="show_unac_and_overcounted_stats"
@@ -213,6 +233,11 @@
             android:entries="@array/overlay_display_devices_entries"
             android:entryValues="@array/overlay_display_devices_values" />
 
+        <SwitchPreference
+            android:key="enable_multi_window"
+            android:title="@string/enable_multi_window"
+            android:summary="@string/enable_multi_window_summary"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:key="debug_hw_drawing_category"
@@ -269,11 +294,6 @@
 
     <PreferenceCategory android:key="media_category"
             android:title="@string/media_category">
-
-        <SwitchPreference
-                android:key="use_awesomeplayer"
-                android:title="@string/use_awesomeplayer"
-                android:summary="@string/use_awesomeplayer_summary"/>
 
         <SwitchPreference
                 android:key="usb_audio"
@@ -335,6 +355,10 @@
             android:key="show_all_anrs"
             android:title="@string/show_all_anrs"
             android:summary="@string/show_all_anrs_summary"/>
+
+        <Preference
+                android:key="inactive_apps"
+                android:title="@string/inactive_apps_title" />
 
      </PreferenceCategory>
 

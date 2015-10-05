@@ -16,20 +16,18 @@
 
 package com.android.settings.bluetooth;
 
+import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothUuid;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.ParcelUuid;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.InputFilter.LengthFilter;
 import android.util.Log;
@@ -43,6 +41,9 @@ import android.widget.TextView;
 import com.android.internal.app.AlertActivity;
 import com.android.internal.app.AlertController;
 import com.android.settings.R;
+import com.android.settingslib.bluetooth.CachedBluetoothDeviceManager;
+import com.android.settingslib.bluetooth.LocalBluetoothManager;
+
 import android.view.KeyEvent;
 
 import java.util.Locale;
@@ -103,7 +104,7 @@ public final class BluetoothPairingDialog extends AlertActivity implements
             return;
         }
 
-        mBluetoothManager = LocalBluetoothManager.getInstance(this);
+        mBluetoothManager = Utils.getLocalBtManager(this);
         if (mBluetoothManager == null) {
             Log.e(TAG, "Error: BluetoothAdapter not supported by system");
             finish();
@@ -116,6 +117,7 @@ public final class BluetoothPairingDialog extends AlertActivity implements
 
         switch (mType) {
             case BluetoothDevice.PAIRING_VARIANT_PIN:
+            case BluetoothDevice.PAIRING_VARIANT_PIN_16_DIGITS:
             case BluetoothDevice.PAIRING_VARIANT_PASSKEY:
                 createUserEntryDialog();
                 break;
@@ -166,7 +168,8 @@ public final class BluetoothPairingDialog extends AlertActivity implements
 
     private void createUserEntryDialog() {
         final AlertController.AlertParams p = mAlertParams;
-        p.mTitle = getString(R.string.bluetooth_pairing_request);
+        p.mTitle = getString(R.string.bluetooth_pairing_request,
+                mCachedDeviceManager.getName(mDevice));
         p.mView = createPinEntryView();
         p.mPositiveButtonText = getString(android.R.string.ok);
         p.mPositiveButtonListener = this;
@@ -180,28 +183,57 @@ public final class BluetoothPairingDialog extends AlertActivity implements
 
     private View createPinEntryView() {
         View view = getLayoutInflater().inflate(R.layout.bluetooth_pin_entry, null);
-        TextView messageViewCaption = (TextView) view.findViewById(R.id.message_caption);
-        TextView messageViewContent = (TextView) view.findViewById(R.id.message_subhead);
+        TextView messageViewCaptionHint = (TextView) view.findViewById(R.id.pin_values_hint);
         TextView messageView2 = (TextView) view.findViewById(R.id.message_below_pin);
         CheckBox alphanumericPin = (CheckBox) view.findViewById(R.id.alphanumeric_pin);
+        CheckBox contactSharing = (CheckBox) view.findViewById(
+                R.id.phonebook_sharing_message_entry_pin);
+        contactSharing.setText(getString(R.string.bluetooth_pairing_shares_phonebook,
+                mCachedDeviceManager.getName(mDevice)));
+        if (mDevice.getPhonebookAccessPermission() == BluetoothDevice.ACCESS_ALLOWED) {
+            contactSharing.setChecked(true);
+        } else if (mDevice.getPhonebookAccessPermission() == BluetoothDevice.ACCESS_REJECTED){
+            contactSharing.setChecked(false);
+        } else {
+            contactSharing.setChecked(true);
+            mDevice.setPhonebookAccessPermission(BluetoothDevice.ACCESS_ALLOWED);
+        }
+
+        contactSharing.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    mDevice.setPhonebookAccessPermission(BluetoothDevice.ACCESS_ALLOWED);
+                } else {
+                    mDevice.setPhonebookAccessPermission(BluetoothDevice.ACCESS_REJECTED);
+                }
+            }
+        });
+        if (mDevice.getBluetoothClass().getDeviceClass()
+                == BluetoothClass.Device.AUDIO_VIDEO_HANDSFREE) {
+            contactSharing.setVisibility(View.VISIBLE);
+        } else {
+            contactSharing.setVisibility(View.GONE);
+        }
         mPairingView = (EditText) view.findViewById(R.id.text);
         mPairingView.addTextChangedListener(this);
         alphanumericPin.setOnCheckedChangeListener(this);
 
-        int messageId1;
-        int messageId2;
+        int messageId;
+        int messageIdHint = R.string.bluetooth_pin_values_hint;
         int maxLength;
         switch (mType) {
+            case BluetoothDevice.PAIRING_VARIANT_PIN_16_DIGITS:
+                messageIdHint = R.string.bluetooth_pin_values_hint_16_digits;
+                // FALLTHROUGH
             case BluetoothDevice.PAIRING_VARIANT_PIN:
-                messageId1 = R.string.bluetooth_enter_pin_msg;
-                messageId2 = R.string.bluetooth_enter_pin_other_device;
+                messageId = R.string.bluetooth_enter_pin_other_device;
                 // Maximum of 16 characters in a PIN
                 maxLength = BLUETOOTH_PIN_MAX_LENGTH;
                 break;
 
             case BluetoothDevice.PAIRING_VARIANT_PASSKEY:
-                messageId1 = R.string.bluetooth_enter_pin_msg;
-                messageId2 = R.string.bluetooth_enter_passkey_other_device;
+                messageId = R.string.bluetooth_enter_passkey_other_device;
                 // Maximum of 6 digits for passkey
                 maxLength = BLUETOOTH_PASSKEY_MAX_LENGTH;
                 alphanumericPin.setVisibility(View.GONE);
@@ -212,9 +244,8 @@ public final class BluetoothPairingDialog extends AlertActivity implements
                 return null;
         }
 
-        messageViewCaption.setText(messageId1);
-        messageViewContent.setText(mCachedDeviceManager.getName(mDevice));
-        messageView2.setText(messageId2);
+        messageViewCaptionHint.setText(messageIdHint);
+        messageView2.setText(messageId);
         mPairingView.setInputType(InputType.TYPE_CLASS_NUMBER);
         mPairingView.setFilters(new InputFilter[] {
                 new LengthFilter(maxLength) });
@@ -224,13 +255,38 @@ public final class BluetoothPairingDialog extends AlertActivity implements
 
     private View createView() {
         View view = getLayoutInflater().inflate(R.layout.bluetooth_pin_confirm, null);
-        // Escape device name to avoid HTML injection.
-        String name = Html.escapeHtml(mCachedDeviceManager.getName(mDevice));
-        TextView messageViewCaption = (TextView) view.findViewById(R.id.message_caption);
-        TextView messageViewContent = (TextView) view.findViewById(R.id.message_subhead);
         TextView pairingViewCaption = (TextView) view.findViewById(R.id.pairing_caption);
         TextView pairingViewContent = (TextView) view.findViewById(R.id.pairing_subhead);
         TextView messagePairing = (TextView) view.findViewById(R.id.pairing_code_message);
+        CheckBox contactSharing = (CheckBox) view.findViewById(
+                R.id.phonebook_sharing_message_confirm_pin);
+        contactSharing.setText(getString(R.string.bluetooth_pairing_shares_phonebook,
+                mCachedDeviceManager.getName(mDevice)));
+        if (mDevice.getPhonebookAccessPermission() == BluetoothDevice.ACCESS_ALLOWED) {
+            contactSharing.setChecked(true);
+        } else if (mDevice.getPhonebookAccessPermission() == BluetoothDevice.ACCESS_REJECTED){
+            contactSharing.setChecked(false);
+        } else {
+            contactSharing.setChecked(true);
+            mDevice.setPhonebookAccessPermission(BluetoothDevice.ACCESS_ALLOWED);
+        }
+
+        contactSharing.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    mDevice.setPhonebookAccessPermission(BluetoothDevice.ACCESS_ALLOWED);
+                } else {
+                    mDevice.setPhonebookAccessPermission(BluetoothDevice.ACCESS_REJECTED);
+                }
+            }
+        });
+        if (mDevice.getBluetoothClass().getDeviceClass()
+                == BluetoothClass.Device.AUDIO_VIDEO_HANDSFREE) {
+            contactSharing.setVisibility(View.VISIBLE);
+        } else {
+            contactSharing.setVisibility(View.GONE);
+        }
 
         String messageCaption = null;
         String pairingContent = null;
@@ -239,24 +295,17 @@ public final class BluetoothPairingDialog extends AlertActivity implements
             case BluetoothDevice.PAIRING_VARIANT_DISPLAY_PIN:
                 messagePairing.setVisibility(View.VISIBLE);
             case BluetoothDevice.PAIRING_VARIANT_PASSKEY_CONFIRMATION:
-                messageCaption = getString(R.string.bluetooth_enter_pin_msg);
                 pairingContent = mPairingKey;
                 break;
 
             case BluetoothDevice.PAIRING_VARIANT_CONSENT:
             case BluetoothDevice.PAIRING_VARIANT_OOB_CONSENT:
                 messagePairing.setVisibility(View.VISIBLE);
-                messageCaption = getString(R.string.bluetooth_enter_pin_msg);
                 break;
 
             default:
                 Log.e(TAG, "Incorrect pairing type received, not creating view");
                 return null;
-        }
-
-        if (messageViewCaption != null) {
-            messageViewCaption.setText(messageCaption);
-            messageViewContent.setText(name);
         }
 
         if (pairingContent != null) {
@@ -270,7 +319,8 @@ public final class BluetoothPairingDialog extends AlertActivity implements
 
     private void createConfirmationDialog() {
         final AlertController.AlertParams p = mAlertParams;
-        p.mTitle = getString(R.string.bluetooth_pairing_request);
+        p.mTitle = getString(R.string.bluetooth_pairing_request,
+                mCachedDeviceManager.getName(mDevice));
         p.mView = createView();
         p.mPositiveButtonText = getString(R.string.bluetooth_pairing_accept);
         p.mPositiveButtonListener = this;
@@ -281,7 +331,8 @@ public final class BluetoothPairingDialog extends AlertActivity implements
 
     private void createConsentDialog() {
         final AlertController.AlertParams p = mAlertParams;
-        p.mTitle = getString(R.string.bluetooth_pairing_request);
+        p.mTitle = getString(R.string.bluetooth_pairing_request,
+                mCachedDeviceManager.getName(mDevice));
         p.mView = createView();
         p.mPositiveButtonText = getString(R.string.bluetooth_pairing_accept);
         p.mPositiveButtonListener = this;
@@ -292,7 +343,8 @@ public final class BluetoothPairingDialog extends AlertActivity implements
 
     private void createDisplayPasskeyOrPinDialog() {
         final AlertController.AlertParams p = mAlertParams;
-        p.mTitle = getString(R.string.bluetooth_pairing_request);
+        p.mTitle = getString(R.string.bluetooth_pairing_request,
+                mCachedDeviceManager.getName(mDevice));
         p.mView = createView();
         p.mNegativeButtonText = getString(android.R.string.cancel);
         p.mNegativeButtonListener = this;
@@ -316,13 +368,18 @@ public final class BluetoothPairingDialog extends AlertActivity implements
 
     public void afterTextChanged(Editable s) {
         if (mOkButton != null) {
-            mOkButton.setEnabled(s.length() > 0);
+            if (mType == BluetoothDevice.PAIRING_VARIANT_PIN_16_DIGITS) {
+                mOkButton.setEnabled(s.length() >= 16);
+            } else {
+                mOkButton.setEnabled(s.length() > 0);
+            }
         }
     }
 
     private void onPair(String value) {
         switch (mType) {
             case BluetoothDevice.PAIRING_VARIANT_PIN:
+            case BluetoothDevice.PAIRING_VARIANT_PIN_16_DIGITS:
                 byte[] pinBytes = BluetoothDevice.convertPinToBytes(value);
                 if (pinBytes == null) {
                     return;

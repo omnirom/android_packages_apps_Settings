@@ -41,11 +41,9 @@ import android.text.TextUtils;
 import android.text.TextUtils.SimpleStringSplitter;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.accessibility.AccessibilityManager;
-import android.widget.TextView;
-
 import com.android.internal.content.PackageMonitor;
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.view.RotationPolicy;
 import com.android.internal.view.RotationPolicy.RotationPolicyListener;
 import com.android.settings.DialogCreatable;
@@ -199,6 +197,16 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
     private int mLongPressTimeoutDefault;
 
     private DevicePolicyManager mDpm;
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.ACCESSIBILITY;
+    }
+
+    @Override
+    protected int getHelpResource() {
+        return R.string.help_uri_accessibility;
+    }
 
     @Override
     public void onCreate(Bundle icicle) {

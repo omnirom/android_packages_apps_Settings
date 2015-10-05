@@ -22,7 +22,6 @@ import android.app.Activity;
 import android.app.ActivityManagerNative;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -44,6 +43,7 @@ import android.os.UserManager;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceGroup;
+import android.preference.PreferenceScreen;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.util.Log;
@@ -55,7 +55,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.SimpleAdapter;
 
-import com.android.internal.util.UserIcons;
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.settings.ChooseLockGeneric;
 import com.android.settings.OwnerInfoSettings;
@@ -65,8 +65,12 @@ import com.android.settings.SettingsActivity;
 import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.Utils;
 import com.android.settings.drawable.CircleFramedDrawable;
+import com.android.settings.search.BaseSearchIndexProvider;
+import com.android.settings.search.Indexable;
+import com.android.settings.search.SearchIndexableRaw;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -81,7 +85,7 @@ import java.util.List;
 public class UserSettings extends SettingsPreferenceFragment
         implements OnPreferenceClickListener, OnClickListener, DialogInterface.OnDismissListener,
         Preference.OnPreferenceChangeListener,
-        EditUserInfoController.OnContentChangedCallback {
+        EditUserInfoController.OnContentChangedCallback, Indexable {
 
     private static final String TAG = "UserSettings";
 
@@ -123,20 +127,17 @@ public class UserSettings extends SettingsPreferenceFragment
     private static final String KEY_SUMMARY = "summary";
 
     private PreferenceGroup mUserListCategory;
-    private Preference mMePreference;
+    private UserPreference mMePreference;
     private SelectableEditTextPreference mNicknamePreference;
     private Preference mAddUser;
     private int mRemovingUserId = -1;
     private int mAddedUserId = 0;
     private boolean mAddingUser;
-    private boolean mEnabled = true;
-    private boolean mCanAddRestrictedProfile = true;
+    private UserCapabilities mUserCaps;
 
     private final Object mUserLock = new Object();
     private UserManager mUserManager;
     private SparseArray<Bitmap> mUserIcons = new SparseArray<Bitmap>();
-    private boolean mIsOwner = UserHandle.myUserId() == UserHandle.USER_OWNER;
-    private boolean mIsGuest;
 
     private EditUserInfoController mEditUserInfoController =
             new EditUserInfoController();
@@ -177,6 +178,11 @@ public class UserSettings extends SettingsPreferenceFragment
     };
 
     @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.USER;
+    }
+
+    @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
@@ -190,16 +196,13 @@ public class UserSettings extends SettingsPreferenceFragment
             mEditUserInfoController.onRestoreInstanceState(icicle);
         }
         final Context context = getActivity();
+        mUserCaps = UserCapabilities.create(context);
         mUserManager = (UserManager) context.getSystemService(Context.USER_SERVICE);
-        boolean hasMultipleUsers = mUserManager.getUserCount() > 1;
-        if ((!UserManager.supportsMultipleUsers() && !hasMultipleUsers)
-                || Utils.isMonkeyRunning()) {
-            mEnabled = false;
+        if (!mUserCaps.mEnabled) {
             return;
         }
 
         final int myUserId = UserHandle.myUserId();
-        mIsGuest = mUserManager.getUserInfo(myUserId).isGuest();
 
         addPreferencesFromResource(R.xml.user_settings);
         mUserListCategory = (PreferenceGroup) findPreference(KEY_USER_LIST);
@@ -208,21 +211,15 @@ public class UserSettings extends SettingsPreferenceFragment
                 null /* delete icon handler */);
         mMePreference.setKey(KEY_USER_ME);
         mMePreference.setOnPreferenceClickListener(this);
-        if (mIsOwner) {
+        if (mUserCaps.mIsOwner) {
             mMePreference.setSummary(R.string.user_owner);
         }
         mAddUser = findPreference(KEY_ADD_USER);
-        if (!mIsOwner || UserManager.getMaxSupportedUsers() < 2
-                || !UserManager.supportsMultipleUsers()
-                || mUserManager.hasUserRestriction(UserManager.DISALLOW_ADD_USER)) {
-            removePreference(KEY_ADD_USER);
-        } else {
+        // Determine if add user/profile button should be visible
+        if (mUserCaps.mCanAddUser) {
             mAddUser.setOnPreferenceClickListener(this);
-            DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(
-                    Context.DEVICE_POLICY_SERVICE);
-            // No restricted profiles for tablets with a device owner, or phones.
-            if (dpm.getDeviceOwner() != null || Utils.isVoiceCapable(context)) {
-                mCanAddRestrictedProfile = false;
+            // change label to only mention user, if restricted profiles are not supported
+            if (!mUserCaps.mCanAddRestrictedProfile) {
                 mAddUser.setTitle(R.string.user_add_user_menu);
             }
         }
@@ -238,7 +235,7 @@ public class UserSettings extends SettingsPreferenceFragment
     public void onResume() {
         super.onResume();
 
-        if (!mEnabled) return;
+        if (!mUserCaps.mEnabled) return;
 
         loadProfile();
         updateUserList();
@@ -248,7 +245,7 @@ public class UserSettings extends SettingsPreferenceFragment
     public void onDestroy() {
         super.onDestroy();
 
-        if (!mEnabled) return;
+        if (!mUserCaps.mEnabled) return;
 
         getActivity().unregisterReceiver(mUserChangeReceiver);
     }
@@ -271,13 +268,13 @@ public class UserSettings extends SettingsPreferenceFragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         int pos = 0;
         UserManager um = (UserManager) getActivity().getSystemService(Context.USER_SERVICE);
-        if (!mIsOwner && !um.hasUserRestriction(UserManager.DISALLOW_REMOVE_USER)) {
+        if (!mUserCaps.mIsOwner && !um.hasUserRestriction(UserManager.DISALLOW_REMOVE_USER)) {
             String nickname = mUserManager.getUserName();
             MenuItem removeThisUser = menu.add(0, MENU_REMOVE_USER, pos++,
                     getResources().getString(R.string.user_remove_user_menu, nickname));
             removeThisUser.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         }
-        if (mIsOwner && !um.hasUserRestriction(UserManager.DISALLOW_ADD_USER)) {
+        if (mUserCaps.mIsOwner && !um.hasUserRestriction(UserManager.DISALLOW_ADD_USER)) {
             MenuItem allowAddOnLockscreen = menu.add(0, MENU_ADD_ON_LOCKSCREEN, pos++,
                     R.string.user_add_on_lockscreen_menu);
             allowAddOnLockscreen.setCheckable(true);
@@ -308,7 +305,7 @@ public class UserSettings extends SettingsPreferenceFragment
      * Loads profile information for the current user.
      */
     private void loadProfile() {
-        if (mIsGuest) {
+        if (mUserCaps.mIsGuest) {
             // No need to load profile information
             mMePreference.setIcon(getEncircledDefaultIcon());
             mMePreference.setTitle(R.string.user_exit_guest_title);
@@ -345,7 +342,7 @@ public class UserSettings extends SettingsPreferenceFragment
 
     private boolean hasLockscreenSecurity() {
         LockPatternUtils lpu = new LockPatternUtils(getActivity());
-        return lpu.isLockPasswordEnabled() || lpu.isLockPatternEnabled();
+        return lpu.isSecure(UserHandle.myUserId());
     }
 
     private void launchChooseLockscreen() {
@@ -439,7 +436,7 @@ public class UserSettings extends SettingsPreferenceFragment
             return;
         }
         UserInfo info = mUserManager.getUserInfo(userId);
-        if (info.isRestricted() && mIsOwner) {
+        if (info.isRestricted() && mUserCaps.mIsOwner) {
             Bundle extras = new Bundle();
             extras.putInt(RestrictedProfileSettings.EXTRA_USER_ID, userId);
             extras.putBoolean(RestrictedProfileSettings.EXTRA_NEW_USER, newUser);
@@ -449,17 +446,8 @@ public class UserSettings extends SettingsPreferenceFragment
                     null, 0);
         } else if (info.id == UserHandle.myUserId()) {
             // Jump to owner info panel
-            Bundle extras = new Bundle();
-            if (!info.isRestricted()) {
-                extras.putBoolean(OwnerInfoSettings.EXTRA_SHOW_NICKNAME, true);
-            }
-            int titleResId = info.id == UserHandle.USER_OWNER ? R.string.owner_info_settings_title
-                    : (info.isRestricted() ? R.string.profile_info_settings_title
-                            : R.string.user_info_settings_title);
-            ((SettingsActivity) getActivity()).startPreferencePanel(
-                    OwnerInfoSettings.class.getName(),
-                    extras, titleResId, null, null, 0);
-        } else if (mIsOwner) {
+            OwnerInfoSettings.show(this);
+        } else if (mUserCaps.mIsOwner) {
             Bundle extras = new Bundle();
             extras.putInt(UserDetailsSettings.EXTRA_USER_ID, userId);
             ((SettingsActivity) getActivity()).startPreferencePanel(
@@ -495,7 +483,7 @@ public class UserSettings extends SettingsPreferenceFragment
         switch (dialogId) {
             case DIALOG_CONFIRM_REMOVE: {
                 Dialog dlg =
-                        Utils.createRemoveConfirmationDialog(getActivity(), mRemovingUserId,
+                        UserDialogs.createRemoveDialog(getActivity(), mRemovingUserId,
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         removeUserNow();
@@ -621,7 +609,7 @@ public class UserSettings extends SettingsPreferenceFragment
             }
             case DIALOG_USER_PROFILE_EDITOR: {
                 Dialog dlg = mEditUserInfoController.createDialog(
-                        (Fragment) this,
+                        this,
                         mMePreference.getIcon(),
                         mMePreference.getTitle(),
                         R.string.profile_info_settings_title,
@@ -665,7 +653,7 @@ public class UserSettings extends SettingsPreferenceFragment
             //updateUserList();
             new Thread() {
                 public void run() {
-                    UserInfo user = null;
+                    UserInfo user;
                     // Could take a few seconds
                     if (userType == USER_TYPE_USER) {
                         user = createTrustedUser();
@@ -701,7 +689,7 @@ public class UserSettings extends SettingsPreferenceFragment
      */
     private void exitGuest() {
         // Just to be safe
-        if (!mIsGuest) {
+        if (!mUserCaps.mIsGuest) {
             return;
         }
         removeThisUser();
@@ -712,18 +700,17 @@ public class UserSettings extends SettingsPreferenceFragment
         List<UserInfo> users = mUserManager.getUsers(true);
         final Context context = getActivity();
 
-        mUserListCategory.removeAll();
-        mUserListCategory.setOrderingAsAdded(false);
-        mUserListCategory.addPreference(mMePreference);
-
         final boolean voiceCapable = Utils.isVoiceCapable(context);
-        final ArrayList<Integer> missingIcons = new ArrayList<Integer>();
+        final ArrayList<Integer> missingIcons = new ArrayList<>();
+        final ArrayList<UserPreference> userPreferences = new ArrayList<>();
+        userPreferences.add(mMePreference);
+
         for (UserInfo user : users) {
             if (user.isManagedProfile()) {
                 // Managed profiles appear under Accounts Settings instead
                 continue;
             }
-            Preference pref;
+            UserPreference pref;
             if (user.id == UserHandle.myUserId()) {
                 pref = mMePreference;
             } else if (user.isGuest()) {
@@ -738,15 +725,16 @@ public class UserSettings extends SettingsPreferenceFragment
                 //   Secondary user: Delete
                 //   Guest: Nothing
                 //   Restricted Profile: Settings
-                final boolean showSettings = mIsOwner && (voiceCapable || user.isRestricted());
-                final boolean showDelete = mIsOwner
+                final boolean showSettings = mUserCaps.mIsOwner
+                        && (voiceCapable || user.isRestricted());
+                final boolean showDelete = mUserCaps.mIsOwner
                         && (!voiceCapable && !user.isRestricted() && !user.isGuest());
                 pref = new UserPreference(context, null, user.id,
                         showSettings ? this : null,
                         showDelete ? this : null);
                 pref.setOnPreferenceClickListener(this);
                 pref.setKey("id=" + user.id);
-                mUserListCategory.addPreference(pref);
+                userPreferences.add(pref);
                 if (user.id == UserHandle.USER_OWNER) {
                     pref.setSummary(R.string.user_owner);
                 }
@@ -777,37 +765,28 @@ public class UserSettings extends SettingsPreferenceFragment
 
         // Add a temporary entry for the user being created
         if (mAddingUser) {
-            Preference pref = new UserPreference(getActivity(), null, UserPreference.USERID_UNKNOWN,
-                    null, null);
+            UserPreference pref = new UserPreference(getActivity(), null,
+                    UserPreference.USERID_UNKNOWN, null, null);
             pref.setEnabled(false);
             pref.setTitle(R.string.user_new_user_name);
             pref.setIcon(getEncircledDefaultIcon());
-            mUserListCategory.addPreference(pref);
+            userPreferences.add(pref);
         }
 
-        boolean showGuestPreference = !mIsGuest;
-        // If user has DISALLOW_ADD_USER don't allow creating a guest either.
-        if (showGuestPreference && mUserManager.hasUserRestriction(UserManager.DISALLOW_ADD_USER)) {
-            showGuestPreference = false;
-            // If guest already exists, no user creation needed.
-            for (UserInfo user : users) {
-                if (user.isGuest()) {
-                    showGuestPreference = true;
-                    break;
-                }
-            }
-        }
-        if (showGuestPreference) {
+        if (!mUserCaps.mIsGuest && (mUserCaps.mCanAddGuest || findGuest() != null)) {
             // Add a virtual Guest user for guest defaults
-            Preference pref = new UserPreference(getActivity(), null,
+            UserPreference pref = new UserPreference(getActivity(), null,
                     UserPreference.USERID_GUEST_DEFAULTS,
-                    mIsOwner && voiceCapable? this : null /* settings icon handler */,
+                    mUserCaps.mIsOwner && voiceCapable? this : null /* settings icon handler */,
                     null /* delete icon handler */);
             pref.setTitle(R.string.user_guest);
             pref.setIcon(getEncircledDefaultIcon());
             pref.setOnPreferenceClickListener(this);
-            mUserListCategory.addPreference(pref);
+            userPreferences.add(pref);
         }
+
+        // Sort list of users by serialNum
+        Collections.sort(userPreferences, UserPreference.SERIAL_NUMBER_COMPARATOR);
 
         getActivity().invalidateOptionsMenu();
 
@@ -815,12 +794,56 @@ public class UserSettings extends SettingsPreferenceFragment
         if (missingIcons.size() > 0) {
             loadIconsAsync(missingIcons);
         }
-        boolean moreUsers = mUserManager.canAddMoreUsers();
-        mAddUser.setEnabled(moreUsers);
+
+        PreferenceScreen preferenceScreen = getPreferenceScreen();
+        preferenceScreen.removeAll();
+
+        // If profiles are supported, userPreferences will be added to the category labeled
+        // "User & Profiles", otherwise the category is skipped and elements are added directly
+        // to preferenceScreen
+        PreferenceGroup groupToAddUsers;
+        if (mUserCaps.mCanAddRestrictedProfile) {
+            mUserListCategory.removeAll();
+            mUserListCategory.setOrder(Preference.DEFAULT_ORDER);
+            preferenceScreen.addPreference(mUserListCategory);
+            groupToAddUsers = mUserListCategory;
+        } else {
+            groupToAddUsers = preferenceScreen;
+        }
+        for (UserPreference userPreference : userPreferences) {
+            userPreference.setOrder(Preference.DEFAULT_ORDER);
+            groupToAddUsers.addPreference(userPreference);
+        }
+
+        // Append Add user to the end of the list
+        if (mUserCaps.mCanAddUser) {
+            boolean moreUsers = mUserManager.canAddMoreUsers();
+            mAddUser.setOrder(Preference.DEFAULT_ORDER);
+            preferenceScreen.addPreference(mAddUser);
+            mAddUser.setEnabled(moreUsers);
+            if (!moreUsers) {
+                mAddUser.setSummary(getString(R.string.user_add_max_count, getMaxRealUsers()));
+            } else {
+                mAddUser.setSummary(null);
+            }
+        }
+    }
+
+    private int getMaxRealUsers() {
+        // guest is not counted against getMaxSupportedUsers() number
+        final int maxUsersAndGuest = UserManager.getMaxSupportedUsers() + 1;
+        final List<UserInfo> users = mUserManager.getUsers();
+        // managed profiles are counted against getMaxSupportedUsers()
+        int managedProfiles = 0;
+        for (UserInfo user : users) {
+            if (user.isManagedProfile()) {
+                managedProfiles++;
+            }
+        }
+        return maxUsersAndGuest - managedProfiles;
     }
 
     private void loadIconsAsync(List<Integer> missingIcons) {
-        final Resources resources = getResources();
         new AsyncTask<List<Integer>, Void, Void>() {
             @Override
             protected void onPostExecute(Void result) {
@@ -832,8 +855,7 @@ public class UserSettings extends SettingsPreferenceFragment
                 for (int userId : values[0]) {
                     Bitmap bitmap = mUserManager.getUserIcon(userId);
                     if (bitmap == null) {
-                        bitmap = UserIcons.convertToBitmap(UserIcons.getDefaultUserIcon(userId,
-                                /* light= */ false));
+                        bitmap = Utils.getDefaultUserIconAsBitmap(userId);
                     }
                     mUserIcons.append(userId, bitmap);
                 }
@@ -849,15 +871,13 @@ public class UserSettings extends SettingsPreferenceFragment
     }
 
     private void assignDefaultPhoto(UserInfo user) {
-        Bitmap bitmap = UserIcons.convertToBitmap(UserIcons.getDefaultUserIcon(user.id,
-                /* light= */ false));
+        Bitmap bitmap = Utils.getDefaultUserIconAsBitmap(user.id);
         mUserManager.setUserIcon(user.id, bitmap);
     }
 
     private Drawable getEncircledDefaultIcon() {
         if (mDefaultIconDrawable == null) {
-            mDefaultIconDrawable = encircle(UserIcons.convertToBitmap(
-                    UserIcons.getDefaultUserIcon(UserHandle.USER_NULL, /* light= */ false)));
+            mDefaultIconDrawable = encircle(Utils.getDefaultUserIconAsBitmap(UserHandle.USER_NULL));
         }
         return mDefaultIconDrawable;
     }
@@ -878,7 +898,7 @@ public class UserSettings extends SettingsPreferenceFragment
     @Override
     public boolean onPreferenceClick(Preference pref) {
         if (pref == mMePreference) {
-            if (mIsGuest) {
+            if (mUserCaps.mIsGuest) {
                 showDialog(DIALOG_CONFIRM_EXIT_GUEST);
                 return true;
             }
@@ -905,7 +925,7 @@ public class UserSettings extends SettingsPreferenceFragment
         } else if (pref == mAddUser) {
             // If we allow both types, show a picker, otherwise directly go to
             // flow for full user.
-            if (mCanAddRestrictedProfile) {
+            if (mUserCaps.mCanAddRestrictedProfile) {
                 showDialog(DIALOG_CHOOSE_USER_TYPE);
             } else {
                 onAddUserClicked(USER_TYPE_USER);
@@ -915,19 +935,9 @@ public class UserSettings extends SettingsPreferenceFragment
     }
 
     private void createAndSwitchToGuestUser() {
-        List<UserInfo> users = mUserManager.getUsers();
-        for (UserInfo user : users) {
-            if (user.isGuest()) {
-                switchUserNow(user.id);
-                return;
-            }
-        }
-        // No guest user. Create one, if there's no restriction.
-        // If it is not the primary user, then adding users from lockscreen must be enabled
-        if (mUserManager.hasUserRestriction(UserManager.DISALLOW_ADD_USER)
-                || (!mIsOwner && Settings.Global.getInt(getContentResolver(),
-                        Settings.Global.ADD_USERS_WHEN_LOCKED, 0) != 1)) {
-            Log.i(TAG, "Blocking guest creation because it is restricted");
+        final UserInfo guest = findGuest();
+        if (guest != null) {
+            switchUserNow(guest.id);
             return;
         }
         UserInfo guestUser = mUserManager.createGuest(getActivity(),
@@ -935,6 +945,16 @@ public class UserSettings extends SettingsPreferenceFragment
         if (guestUser != null) {
             switchUserNow(guestUser.id);
         }
+    }
+
+    private UserInfo findGuest() {
+        List<UserInfo> users = mUserManager.getUsers();
+        for (UserInfo user : users) {
+            if (user.isGuest()) {
+                return user;
+            }
+        }
+        return null;
     }
 
     private boolean isInitialized(UserInfo user) {
@@ -997,4 +1017,83 @@ public class UserSettings extends SettingsPreferenceFragment
     public void onLabelChanged(CharSequence label) {
         mMePreference.setTitle(label);
     }
+
+    private static class UserCapabilities {
+        boolean mEnabled = true;
+        boolean mCanAddUser = true;
+        boolean mCanAddRestrictedProfile = true;
+        boolean mIsOwner = UserHandle.myUserId() == UserHandle.USER_OWNER;
+        boolean mIsGuest;
+        boolean mCanAddGuest;
+
+        public static UserCapabilities create(Context context) {
+            UserManager userManager = (UserManager) context.getSystemService(Context.USER_SERVICE);
+            UserCapabilities caps = new UserCapabilities();
+            if (!UserManager.supportsMultipleUsers() || Utils.isMonkeyRunning()) {
+                caps.mEnabled = false;
+                return caps;
+            }
+
+            final boolean disallowAddUser = userManager.hasUserRestriction(
+                    UserManager.DISALLOW_ADD_USER);
+            if (!caps.mIsOwner || UserManager.getMaxSupportedUsers() < 2
+                    || !UserManager.supportsMultipleUsers()
+                    || disallowAddUser) {
+                caps.mCanAddUser = false;
+            }
+            DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(
+                    Context.DEVICE_POLICY_SERVICE);
+            // No restricted profiles for tablets with a device owner, or phones.
+            if (dpm.getDeviceOwner() != null || Utils.isVoiceCapable(context)) {
+                caps.mCanAddRestrictedProfile = false;
+            }
+            final int myUserId = UserHandle.myUserId();
+            caps.mIsGuest = userManager.getUserInfo(myUserId).isGuest();
+
+            final boolean canAddUsersWhenLocked = caps.mIsOwner || Settings.Global.getInt(
+                    context.getContentResolver(), Settings.Global.ADD_USERS_WHEN_LOCKED, 0) == 1;
+            caps.mCanAddGuest = !caps.mIsGuest && !disallowAddUser && canAddUsersWhenLocked;
+            return caps;
+        }
+
+        @Override
+        public String toString() {
+            return "UserCapabilities{" +
+                    "mEnabled=" + mEnabled +
+                    ", mCanAddUser=" + mCanAddUser +
+                    ", mCanAddRestrictedProfile=" + mCanAddRestrictedProfile +
+                    ", mIsOwner=" + mIsOwner +
+                    ", mIsGuest=" + mIsGuest +
+                    '}';
+        }
+    }
+
+    public static final Indexable.SearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider() {
+                @Override
+                public List<SearchIndexableRaw> getRawDataToIndex(Context context,
+                        boolean enabled) {
+                    final List<SearchIndexableRaw> result = new ArrayList<>();
+                    final UserCapabilities userCaps = UserCapabilities.create(context);
+                    if (!userCaps.mEnabled) {
+                        return result;
+                    }
+                    final Resources res = context.getResources();
+                    SearchIndexableRaw data = new SearchIndexableRaw(context);
+                    data.title = res.getString(R.string.user_settings_title);
+                    data.screenTitle = res.getString(R.string.user_settings_title);
+                    result.add(data);
+
+                    if (userCaps.mCanAddUser) {
+                        data = new SearchIndexableRaw(context);
+                        data.title = res.getString(userCaps.mCanAddRestrictedProfile ?
+                                R.string.user_add_user_or_profile_menu
+                                : R.string.user_add_user_menu);
+                        data.screenTitle = res.getString(R.string.user_settings_title);
+                        result.add(data);
+                    }
+                    return result;
+                }
+            };
+
 }

@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.SettingInjectorService;
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.os.UserManager;
@@ -29,11 +28,12 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
-import android.preference.SwitchPreference;
-import android.provider.Settings;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Switch;
-
+import com.android.internal.logging.MetricsLogger;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
 import com.android.settings.Utils;
@@ -44,7 +44,29 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Location access settings.
+ * System location settings (Settings &gt; Location). The screen has three parts:
+ * <ul>
+ *     <li>Platform location controls</li>
+ *     <ul>
+ *         <li>In switch bar: location master switch. Used to toggle
+ *         {@link android.provider.Settings.Secure#LOCATION_MODE} between
+ *         {@link android.provider.Settings.Secure#LOCATION_MODE_OFF} and another location mode.
+ *         </li>
+ *         <li>Mode preference: only available if the master switch is on, selects between
+ *         {@link android.provider.Settings.Secure#LOCATION_MODE} of
+ *         {@link android.provider.Settings.Secure#LOCATION_MODE_HIGH_ACCURACY},
+ *         {@link android.provider.Settings.Secure#LOCATION_MODE_BATTERY_SAVING}, or
+ *         {@link android.provider.Settings.Secure#LOCATION_MODE_SENSORS_ONLY}.</li>
+ *     </ul>
+ *     <li>Recent location requests: automatically populated by {@link RecentLocationApps}</li>
+ *     <li>Location services: multi-app settings provided from outside the Android framework. Each
+ *     is injected by a system-partition app via the {@link SettingInjectorService} API.</li>
+ * </ul>
+ * <p>
+ * Note that as of KitKat, the {@link SettingInjectorService} is the preferred method for OEMs to
+ * add their own settings to this page, rather than directly modifying the framework code. Among
+ * other things, this simplifies integration with future changes to the default (AOSP)
+ * implementation.
  */
 public class LocationSettings extends LocationSettingsBase
         implements SwitchBar.OnSwitchChangeListener {
@@ -69,6 +91,8 @@ public class LocationSettings extends LocationSettingsBase
     /** Key for preference category "Location services" */
     private static final String KEY_LOCATION_SERVICES = "location_services";
 
+    private static final int MENU_SCANNING = Menu.FIRST;
+
     private SwitchBar mSwitchBar;
     private Switch mSwitch;
     private boolean mValidListener = false;
@@ -80,6 +104,11 @@ public class LocationSettings extends LocationSettingsBase
     private BroadcastReceiver mReceiver;
     private SettingsInjector injector;
     private UserManager mUm;
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.LOCATION;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -249,6 +278,28 @@ public class LocationSettings extends LocationSettingsBase
         } else {
             // If there's no item to display, remove the whole category.
             root.removePreference(categoryLocationServices);
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.add(0, MENU_SCANNING, 0, R.string.location_menu_scanning);
+        // The super class adds "Help & Feedback" menu item.
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final SettingsActivity activity = (SettingsActivity) getActivity();
+        switch (item.getItemId()) {
+            case MENU_SCANNING:
+                activity.startPreferencePanel(
+                        ScanningSettings.class.getName(), null,
+                        R.string.location_scanning_screen_title, null, LocationSettings.this,
+                        0);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

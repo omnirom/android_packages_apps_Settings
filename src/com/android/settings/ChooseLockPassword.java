@@ -16,9 +16,12 @@
 
 package com.android.settings;
 
+import com.android.internal.logging.MetricsLogger;
+import com.android.internal.widget.LockPatternChecker;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.internal.widget.PasswordEntryKeyboardHelper;
 import com.android.internal.widget.PasswordEntryKeyboardView;
+import com.android.internal.widget.TextViewInputDisabler;
 import com.android.settings.notification.RedactionInterstitial;
 
 import android.app.Activity;
@@ -27,15 +30,18 @@ import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.Intent;
 import android.inputmethodservice.KeyboardView;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.UserHandle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +62,8 @@ public class ChooseLockPassword extends SettingsActivity {
     public static final String PASSWORD_MIN_SYMBOLS_KEY = "lockscreen.password_min_symbols";
     public static final String PASSWORD_MIN_NONLETTER_KEY = "lockscreen.password_min_nonletter";
 
+    private static final String TAG = "ChooseLockPassword";
+
     @Override
     public Intent getIntent() {
         Intent modIntent = new Intent(super.getIntent());
@@ -63,7 +71,7 @@ public class ChooseLockPassword extends SettingsActivity {
         return modIntent;
     }
 
-    public static Intent createIntent(Context context, int quality, final boolean isFallback,
+    public static Intent createIntent(Context context, int quality,
             int minLength, final int maxLength, boolean requirePasswordToDecrypt,
             boolean confirmCredentials) {
         Intent intent = new Intent().setClass(context, ChooseLockPassword.class);
@@ -71,8 +79,24 @@ public class ChooseLockPassword extends SettingsActivity {
         intent.putExtra(PASSWORD_MIN_KEY, minLength);
         intent.putExtra(PASSWORD_MAX_KEY, maxLength);
         intent.putExtra(ChooseLockGeneric.CONFIRM_CREDENTIALS, confirmCredentials);
-        intent.putExtra(LockPatternUtils.LOCKSCREEN_BIOMETRIC_WEAK_FALLBACK, isFallback);
         intent.putExtra(EncryptionInterstitial.EXTRA_REQUIRE_PASSWORD, requirePasswordToDecrypt);
+        return intent;
+    }
+
+    public static Intent createIntent(Context context, int quality,
+            int minLength, final int maxLength, boolean requirePasswordToDecrypt, String password) {
+        Intent intent = createIntent(context, quality, minLength, maxLength,
+                requirePasswordToDecrypt, false);
+        intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_PASSWORD, password);
+        return intent;
+    }
+
+    public static Intent createIntent(Context context, int quality,
+            int minLength, final int maxLength, boolean requirePasswordToDecrypt, long challenge) {
+        Intent intent = createIntent(context, quality, minLength, maxLength,
+                requirePasswordToDecrypt, false);
+        intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_HAS_CHALLENGE, true);
+        intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_CHALLENGE, challenge);
         return intent;
     }
 
@@ -97,12 +121,18 @@ public class ChooseLockPassword extends SettingsActivity {
         setTitle(msg);
     }
 
-    public static class ChooseLockPasswordFragment extends Fragment
+    public static class ChooseLockPasswordFragment extends InstrumentedFragment
             implements OnClickListener, OnEditorActionListener,  TextWatcher {
         private static final String KEY_FIRST_PIN = "first_pin";
         private static final String KEY_UI_STAGE = "ui_stage";
+        private static final String KEY_CURRENT_PASSWORD = "current_password";
+
+        private String mCurrentPassword;
+        private boolean mHasChallenge;
+        private long mChallenge;
         private TextView mPasswordEntry;
-        private int mPasswordMinLength = 4;
+        private TextViewInputDisabler mPasswordEntryInputDisabler;
+        private int mPasswordMinLength = LockPatternUtils.MIN_LOCK_PASSWORD_SIZE;
         private int mPasswordMaxLength = 16;
         private int mPasswordMinLetters = 0;
         private int mPasswordMinUpperCase = 0;
@@ -111,6 +141,7 @@ public class ChooseLockPassword extends SettingsActivity {
         private int mPasswordMinNumeric = 0;
         private int mPasswordMinNonLetter = 0;
         private LockPatternUtils mLockPatternUtils;
+        private AsyncTask<?, ?, ?> mPendingLockCheck;
         private int mRequestedQuality = DevicePolicyManager.PASSWORD_QUALITY_NUMERIC;
         private ChooseLockSettingsHelper mChooseLockSettingsHelper;
         private Stage mUiStage = Stage.Introduction;
@@ -178,23 +209,31 @@ public class ChooseLockPassword extends SettingsActivity {
                 throw new SecurityException("Fragment contained in wrong activity");
             }
             mRequestedQuality = Math.max(intent.getIntExtra(LockPatternUtils.PASSWORD_TYPE_KEY,
-                    mRequestedQuality), mLockPatternUtils.getRequestedPasswordQuality());
-            mPasswordMinLength = Math.max(
-                    intent.getIntExtra(PASSWORD_MIN_KEY, mPasswordMinLength), mLockPatternUtils
-                            .getRequestedMinimumPasswordLength());
+                    mRequestedQuality), mLockPatternUtils.getRequestedPasswordQuality(
+                    UserHandle.myUserId()));
+            mPasswordMinLength = Math.max(Math.max(
+                    LockPatternUtils.MIN_LOCK_PASSWORD_SIZE,
+                    intent.getIntExtra(PASSWORD_MIN_KEY, mPasswordMinLength)),
+                    mLockPatternUtils.getRequestedMinimumPasswordLength(UserHandle.myUserId()));
             mPasswordMaxLength = intent.getIntExtra(PASSWORD_MAX_KEY, mPasswordMaxLength);
             mPasswordMinLetters = Math.max(intent.getIntExtra(PASSWORD_MIN_LETTERS_KEY,
-                    mPasswordMinLetters), mLockPatternUtils.getRequestedPasswordMinimumLetters());
+                    mPasswordMinLetters), mLockPatternUtils.getRequestedPasswordMinimumLetters(
+                    UserHandle.myUserId()));
             mPasswordMinUpperCase = Math.max(intent.getIntExtra(PASSWORD_MIN_UPPERCASE_KEY,
-                    mPasswordMinUpperCase), mLockPatternUtils.getRequestedPasswordMinimumUpperCase());
+                    mPasswordMinUpperCase), mLockPatternUtils.getRequestedPasswordMinimumUpperCase(
+                    UserHandle.myUserId()));
             mPasswordMinLowerCase = Math.max(intent.getIntExtra(PASSWORD_MIN_LOWERCASE_KEY,
-                    mPasswordMinLowerCase), mLockPatternUtils.getRequestedPasswordMinimumLowerCase());
+                    mPasswordMinLowerCase), mLockPatternUtils.getRequestedPasswordMinimumLowerCase(
+                    UserHandle.myUserId()));
             mPasswordMinNumeric = Math.max(intent.getIntExtra(PASSWORD_MIN_NUMERIC_KEY,
-                    mPasswordMinNumeric), mLockPatternUtils.getRequestedPasswordMinimumNumeric());
+                    mPasswordMinNumeric), mLockPatternUtils.getRequestedPasswordMinimumNumeric(
+                    UserHandle.myUserId()));
             mPasswordMinSymbols = Math.max(intent.getIntExtra(PASSWORD_MIN_SYMBOLS_KEY,
-                    mPasswordMinSymbols), mLockPatternUtils.getRequestedPasswordMinimumSymbols());
+                    mPasswordMinSymbols), mLockPatternUtils.getRequestedPasswordMinimumSymbols(
+                    UserHandle.myUserId()));
             mPasswordMinNonLetter = Math.max(intent.getIntExtra(PASSWORD_MIN_NONLETTER_KEY,
-                    mPasswordMinNonLetter), mLockPatternUtils.getRequestedPasswordMinimumNonLetter());
+                    mPasswordMinNonLetter), mLockPatternUtils.getRequestedPasswordMinimumNonLetter(
+                    UserHandle.myUserId()));
 
             mChooseLockSettingsHelper = new ChooseLockSettingsHelper(getActivity());
         }
@@ -221,6 +260,7 @@ public class ChooseLockPassword extends SettingsActivity {
             mPasswordEntry = (TextView) view.findViewById(R.id.password_entry);
             mPasswordEntry.setOnEditorActionListener(this);
             mPasswordEntry.addTextChangedListener(this);
+            mPasswordEntryInputDisabler = new TextViewInputDisabler(mPasswordEntry);
 
             final Activity activity = getActivity();
             mKeyboardHelper = new PasswordEntryKeyboardHelper(activity,
@@ -237,19 +277,29 @@ public class ChooseLockPassword extends SettingsActivity {
                     : (InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD));
 
             Intent intent = getActivity().getIntent();
-            final boolean confirmCredentials = intent.getBooleanExtra("confirm_credentials", true);
+            final boolean confirmCredentials = intent.getBooleanExtra(
+                    ChooseLockGeneric.CONFIRM_CREDENTIALS, true);
+            mCurrentPassword = intent.getStringExtra(ChooseLockSettingsHelper.EXTRA_KEY_PASSWORD);
+            mHasChallenge = intent.getBooleanExtra(
+                    ChooseLockSettingsHelper.EXTRA_KEY_HAS_CHALLENGE, false);
+            mChallenge = intent.getLongExtra(ChooseLockSettingsHelper.EXTRA_KEY_CHALLENGE, 0);
             if (savedInstanceState == null) {
                 updateStage(Stage.Introduction);
                 if (confirmCredentials) {
                     mChooseLockSettingsHelper.launchConfirmationActivity(CONFIRM_EXISTING_REQUEST,
-                            null, null);
+                            getString(R.string.unlock_set_unlock_launch_picker_title), true);
                 }
             } else {
+                // restore from previous state
                 mFirstPin = savedInstanceState.getString(KEY_FIRST_PIN);
                 final String state = savedInstanceState.getString(KEY_UI_STAGE);
                 if (state != null) {
                     mUiStage = Stage.valueOf(state);
                     updateStage(mUiStage);
+                }
+
+                if (mCurrentPassword == null) {
+                    mCurrentPassword = savedInstanceState.getString(KEY_CURRENT_PASSWORD);
                 }
             }
             mDone = false;
@@ -263,15 +313,25 @@ public class ChooseLockPassword extends SettingsActivity {
         }
 
         @Override
+        protected int getMetricsCategory() {
+            return MetricsLogger.CHOOSE_LOCK_PASSWORD;
+        }
+
+        @Override
         public void onResume() {
             super.onResume();
             updateStage(mUiStage);
+            mPasswordEntryInputDisabler.setInputEnabled(true);
             mKeyboardView.requestFocus();
         }
 
         @Override
         public void onPause() {
             mHandler.removeMessages(MSG_SHOW_ERROR);
+            if (mPendingLockCheck != null) {
+                mPendingLockCheck.cancel(false);
+                mPendingLockCheck = null;
+            }
 
             super.onPause();
         }
@@ -281,6 +341,7 @@ public class ChooseLockPassword extends SettingsActivity {
             super.onSaveInstanceState(outState);
             outState.putString(KEY_UI_STAGE, mUiStage.name());
             outState.putString(KEY_FIRST_PIN, mFirstPin);
+            outState.putString(KEY_CURRENT_PASSWORD, mCurrentPassword);
         }
 
         @Override
@@ -292,6 +353,9 @@ public class ChooseLockPassword extends SettingsActivity {
                     if (resultCode != Activity.RESULT_OK) {
                         getActivity().setResult(RESULT_FINISHED);
                         getActivity().finish();
+                    } else {
+                        mCurrentPassword = data.getStringExtra(
+                                ChooseLockSettingsHelper.EXTRA_KEY_PASSWORD);
                     }
                     break;
             }
@@ -406,7 +470,7 @@ public class ChooseLockPassword extends SettingsActivity {
                     return getString(R.string.lockpassword_password_requires_digit);
                 }
             }
-            if(mLockPatternUtils.checkPasswordHistory(password)) {
+            if(mLockPatternUtils.checkPasswordHistory(password, UserHandle.myUserId())) {
                 return getString(mIsAlphaMode ? R.string.lockpassword_password_recently_used
                         : R.string.lockpassword_pin_recently_used);
             }
@@ -431,20 +495,20 @@ public class ChooseLockPassword extends SettingsActivity {
                 }
             } else if (mUiStage == Stage.NeedToConfirm) {
                 if (mFirstPin.equals(pin)) {
-                    final boolean isFallback = getActivity().getIntent().getBooleanExtra(
-                            LockPatternUtils.LOCKSCREEN_BIOMETRIC_WEAK_FALLBACK, false);
-                    boolean wasSecureBefore = mLockPatternUtils.isSecure();
-                    mLockPatternUtils.clearLock(isFallback);
+                    boolean wasSecureBefore = mLockPatternUtils.isSecure(UserHandle.myUserId());
                     final boolean required = getActivity().getIntent().getBooleanExtra(
                             EncryptionInterstitial.EXTRA_REQUIRE_PASSWORD, true);
                     mLockPatternUtils.setCredentialRequiredToDecrypt(required);
-                    mLockPatternUtils.saveLockPassword(pin, mRequestedQuality, isFallback);
-                    getActivity().setResult(RESULT_FINISHED);
-                    getActivity().finish();
-                    mDone = true;
-                    if (!wasSecureBefore) {
-                        startActivity(getRedactionInterstitialIntent(getActivity()));
+                    mLockPatternUtils.saveLockPassword(pin, mCurrentPassword, mRequestedQuality,
+                            UserHandle.myUserId());
+
+                    if (mHasChallenge) {
+                        startVerifyPassword(pin, wasSecureBefore);
+                        return;
+                    } else {
+                        getActivity().setResult(RESULT_FINISHED);
                     }
+                    finishConfirmStage(wasSecureBefore);
                 } else {
                     CharSequence tmp = mPasswordEntry.getText();
                     if (tmp != null) {
@@ -455,6 +519,50 @@ public class ChooseLockPassword extends SettingsActivity {
             }
             if (errorMsg != null) {
                 showError(errorMsg, mUiStage);
+            }
+        }
+
+        private void startVerifyPassword(final String pin, final boolean wasSecureBefore) {
+            mPasswordEntryInputDisabler.setInputEnabled(false);
+            setNextEnabled(false);
+            if (mPendingLockCheck != null) {
+                mPendingLockCheck.cancel(false);
+            }
+
+            mPendingLockCheck = LockPatternChecker.verifyPassword(
+                    mLockPatternUtils,
+                    pin,
+                    mChallenge,
+                    UserHandle.myUserId(),
+                    new LockPatternChecker.OnVerifyCallback() {
+                        @Override
+                        public void onVerified(byte[] token, int timeoutMs) {
+                            if (token == null) {
+                                Log.e(TAG, "critical: no token returned from known good password");
+                            }
+
+                            mPasswordEntryInputDisabler.setInputEnabled(true);
+                            setNextEnabled(true);
+                            mPendingLockCheck = null;
+
+                            Intent intent = new Intent();
+                            intent.putExtra(
+                                    ChooseLockSettingsHelper.EXTRA_KEY_CHALLENGE_TOKEN,
+                                    token);
+                            getActivity().setResult(RESULT_FINISHED, intent);
+                            finishConfirmStage(wasSecureBefore);
+                        }
+                    });
+        }
+
+        private void finishConfirmStage(boolean wasSecureBefore) {
+            getActivity().finish();
+            mDone = true;
+            if (!wasSecureBefore) {
+                Intent intent = getRedactionInterstitialIntent(getActivity());
+                if (intent != null) {
+                    startActivity(intent);
+                }
             }
         }
 
@@ -503,7 +611,7 @@ public class ChooseLockPassword extends SettingsActivity {
         private void updateUi() {
             String password = mPasswordEntry.getText().toString();
             final int length = password.length();
-            if (mUiStage == Stage.Introduction && length > 0) {
+            if (mUiStage == Stage.Introduction) {
                 if (length < mPasswordMinLength) {
                     String msg = getString(mIsAlphaMode ? R.string.lockpassword_password_too_short
                             : R.string.lockpassword_pin_too_short, mPasswordMinLength);

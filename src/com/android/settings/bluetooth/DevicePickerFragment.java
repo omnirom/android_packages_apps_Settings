@@ -17,6 +17,7 @@
 package com.android.settings.bluetooth;
 
 import static android.os.UserManager.DISALLOW_CONFIG_BLUETOOTH;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothDevicePicker;
@@ -28,7 +29,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.settings.R;
+import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 
 /**
  * BluetoothSettings is the Settings screen for Bluetooth configuration and
@@ -79,6 +82,11 @@ public final class DevicePickerFragment extends DeviceListPreferenceFragment {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.BLUETOOTH_DEVICE_PICKER;
     }
 
     @Override

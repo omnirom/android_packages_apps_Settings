@@ -16,23 +16,33 @@
 
 package com.android.settings;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.internal.widget.LockPatternView;
 import com.android.internal.widget.LinearLayoutWithDefaultTouchRecepient;
+import com.android.internal.widget.LockPatternChecker;
 import com.android.internal.widget.LockPatternView.Cell;
+import com.android.settingslib.animation.AppearAnimationCreator;
+import com.android.settingslib.animation.AppearAnimationUtils;
+import com.android.settingslib.animation.DisappearAnimationUtils;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.UserHandle;
 import android.os.storage.StorageManager;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
 import android.widget.TextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -41,34 +51,15 @@ import java.util.List;
  * Sets an activity result of {@link Activity#RESULT_OK} when the user
  * successfully confirmed their pattern.
  */
-public class ConfirmLockPattern extends SettingsActivity {
+public class ConfirmLockPattern extends ConfirmDeviceCredentialBaseActivity {
 
     public static class InternalActivity extends ConfirmLockPattern {
     }
-
-    /**
-     * Names of {@link CharSequence} fields within the originating {@link Intent}
-     * that are used to configure the keyguard confirmation view's labeling.
-     * The view will use the system-defined resource strings for any labels that
-     * the caller does not supply.
-     */
-    public static final String PACKAGE = "com.android.settings";
-    public static final String HEADER_TEXT = PACKAGE + ".ConfirmLockPattern.header";
-    public static final String FOOTER_TEXT = PACKAGE + ".ConfirmLockPattern.footer";
-    public static final String HEADER_WRONG_TEXT = PACKAGE + ".ConfirmLockPattern.header_wrong";
-    public static final String FOOTER_WRONG_TEXT = PACKAGE + ".ConfirmLockPattern.footer_wrong";
 
     private enum Stage {
         NeedToUnlock,
         NeedToUnlockWrong,
         LockedOut
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        CharSequence msg = getText(R.string.lockpassword_confirm_your_pattern_header);
-        setTitle(msg);
     }
 
     @Override
@@ -84,7 +75,8 @@ public class ConfirmLockPattern extends SettingsActivity {
         return false;
     }
 
-    public static class ConfirmLockPatternFragment extends Fragment {
+    public static class ConfirmLockPatternFragment extends ConfirmDeviceCredentialBaseFragment
+            implements AppearAnimationCreator<Object> {
 
         // how long we wait to clear a wrong pattern
         private static final int WRONG_PATTERN_CLEAR_TIMEOUT_MS = 2000;
@@ -93,17 +85,24 @@ public class ConfirmLockPattern extends SettingsActivity {
 
         private LockPatternView mLockPatternView;
         private LockPatternUtils mLockPatternUtils;
+        private AsyncTask<?, ?, ?> mPendingLockCheck;
         private int mNumWrongConfirmAttempts;
         private CountDownTimer mCountdownTimer;
 
         private TextView mHeaderTextView;
-        private TextView mFooterTextView;
+        private TextView mDetailsTextView;
+        private TextView mErrorTextView;
+        private View mLeftSpacerLandscape;
+        private View mRightSpacerLandscape;
 
         // caller-supplied text for various prompts
         private CharSequence mHeaderText;
-        private CharSequence mFooterText;
-        private CharSequence mHeaderWrongText;
-        private CharSequence mFooterWrongText;
+        private CharSequence mDetailsText;
+
+        private AppearAnimationUtils mAppearAnimationUtils;
+        private DisappearAnimationUtils mDisappearAnimationUtils;
+
+        private int mEffectiveUserId;
 
         // required constructor for fragments
         public ConfirmLockPatternFragment() {
@@ -114,6 +113,7 @@ public class ConfirmLockPattern extends SettingsActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             mLockPatternUtils = new LockPatternUtils(getActivity());
+            mEffectiveUserId = Utils.getEffectiveUserId(getActivity());
         }
 
         @Override
@@ -122,7 +122,10 @@ public class ConfirmLockPattern extends SettingsActivity {
             View view = inflater.inflate(R.layout.confirm_lock_pattern, null);
             mHeaderTextView = (TextView) view.findViewById(R.id.headerText);
             mLockPatternView = (LockPatternView) view.findViewById(R.id.lockPattern);
-            mFooterTextView = (TextView) view.findViewById(R.id.footerText);
+            mDetailsTextView = (TextView) view.findViewById(R.id.detailsText);
+            mErrorTextView = (TextView) view.findViewById(R.id.errorText);
+            mLeftSpacerLandscape = view.findViewById(R.id.leftSpacer);
+            mRightSpacerLandscape = view.findViewById(R.id.rightSpacer);
 
             // make it so unhandled touch events within the unlock screen go to the
             // lock pattern view.
@@ -132,13 +135,16 @@ public class ConfirmLockPattern extends SettingsActivity {
 
             Intent intent = getActivity().getIntent();
             if (intent != null) {
-                mHeaderText = intent.getCharSequenceExtra(HEADER_TEXT);
-                mFooterText = intent.getCharSequenceExtra(FOOTER_TEXT);
-                mHeaderWrongText = intent.getCharSequenceExtra(HEADER_WRONG_TEXT);
-                mFooterWrongText = intent.getCharSequenceExtra(FOOTER_WRONG_TEXT);
+                mHeaderText = intent.getCharSequenceExtra(
+                        ConfirmDeviceCredentialBaseFragment.HEADER_TEXT);
+                mDetailsText = intent.getCharSequenceExtra(
+                        ConfirmDeviceCredentialBaseFragment.DETAILS_TEXT);
             }
 
-            mLockPatternView.setTactileFeedbackEnabled(mLockPatternUtils.isTactileFeedbackEnabled());
+            mLockPatternView.setTactileFeedbackEnabled(
+                    mLockPatternUtils.isTactileFeedbackEnabled());
+            mLockPatternView.setInStealthMode(!mLockPatternUtils.isVisiblePatternEnabled(
+                    mEffectiveUserId));
             mLockPatternView.setOnPatternListener(mConfirmExistingLockPatternListener);
             updateStage(Stage.NeedToUnlock);
 
@@ -148,11 +154,26 @@ public class ConfirmLockPattern extends SettingsActivity {
                 // on first launch, if no lock pattern is set, then finish with
                 // success (don't want user to get stuck confirming something that
                 // doesn't exist).
-                if (!mLockPatternUtils.savedPatternExists()) {
+                if (!mLockPatternUtils.isLockPatternEnabled(mEffectiveUserId)) {
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
                 }
             }
+            mAppearAnimationUtils = new AppearAnimationUtils(getContext(),
+                    AppearAnimationUtils.DEFAULT_APPEAR_DURATION, 2f /* translationScale */,
+                    1.3f /* delayScale */, AnimationUtils.loadInterpolator(
+                    getContext(), android.R.interpolator.linear_out_slow_in));
+            mDisappearAnimationUtils = new DisappearAnimationUtils(getContext(),
+                    125, 4f /* translationScale */,
+                    0.3f /* delayScale */, AnimationUtils.loadInterpolator(
+                    getContext(), android.R.interpolator.fast_out_linear_in),
+                    new AppearAnimationUtils.RowTranslationScaler() {
+                        @Override
+                        public float getRowTranslationScale(int row, int numRows) {
+                            return (float)(numRows - row) / numRows;
+                        }
+                    });
+            setAccessibilityTitle(mHeaderTextView.getText());
             return view;
         }
 
@@ -169,6 +190,15 @@ public class ConfirmLockPattern extends SettingsActivity {
             if (mCountdownTimer != null) {
                 mCountdownTimer.cancel();
             }
+            if (mPendingLockCheck != null) {
+                mPendingLockCheck.cancel(false);
+                mPendingLockCheck = null;
+            }
+        }
+
+        @Override
+        protected int getMetricsCategory() {
+            return MetricsLogger.CONFIRM_LOCK_PATTERN;
         }
 
         @Override
@@ -176,15 +206,60 @@ public class ConfirmLockPattern extends SettingsActivity {
             super.onResume();
 
             // if the user is currently locked out, enforce it.
-            long deadline = mLockPatternUtils.getLockoutAttemptDeadline();
+            long deadline = mLockPatternUtils.getLockoutAttemptDeadline(mEffectiveUserId);
             if (deadline != 0) {
                 handleAttemptLockout(deadline);
             } else if (!mLockPatternView.isEnabled()) {
-                // The deadline has passed, but the timer was cancelled...
-                // Need to clean up.
+                // The deadline has passed, but the timer was cancelled. Or the pending lock
+                // check was cancelled. Need to clean up.
                 mNumWrongConfirmAttempts = 0;
                 updateStage(Stage.NeedToUnlock);
             }
+        }
+
+        @Override
+        public void prepareEnterAnimation() {
+            super.prepareEnterAnimation();
+            mHeaderTextView.setAlpha(0f);
+            mCancelButton.setAlpha(0f);
+            mLockPatternView.setAlpha(0f);
+            mDetailsTextView.setAlpha(0f);
+            mFingerprintIcon.setAlpha(0f);
+        }
+
+        private Object[][] getActiveViews() {
+            ArrayList<ArrayList<Object>> result = new ArrayList<>();
+            result.add(new ArrayList<Object>(Collections.singletonList(mHeaderTextView)));
+            result.add(new ArrayList<Object>(Collections.singletonList(mDetailsTextView)));
+            if (mCancelButton.getVisibility() == View.VISIBLE) {
+                result.add(new ArrayList<Object>(Collections.singletonList(mCancelButton)));
+            }
+            LockPatternView.CellState[][] cellStates = mLockPatternView.getCellStates();
+            for (int i = 0; i < cellStates.length; i++) {
+                ArrayList<Object> row = new ArrayList<>();
+                for (int j = 0; j < cellStates[i].length; j++) {
+                    row.add(cellStates[i][j]);
+                }
+                result.add(row);
+            }
+            if (mFingerprintIcon.getVisibility() == View.VISIBLE) {
+                result.add(new ArrayList<Object>(Collections.singletonList(mFingerprintIcon)));
+            }
+            Object[][] resultArr = new Object[result.size()][cellStates[0].length];
+            for (int i = 0; i < result.size(); i++) {
+                ArrayList<Object> row = result.get(i);
+                for (int j = 0; j < row.size(); j++) {
+                    resultArr[i][j] = row.get(j);
+                }
+            }
+            return resultArr;
+        }
+
+        @Override
+        public void startEnterAnimation() {
+            super.startEnterAnimation();
+            mLockPatternView.setAlpha(1f);
+            mAppearAnimationUtils.startAnimation2d(getActiveViews(), null, this);
         }
 
         private void updateStage(Stage stage) {
@@ -193,28 +268,22 @@ public class ConfirmLockPattern extends SettingsActivity {
                     if (mHeaderText != null) {
                         mHeaderTextView.setText(mHeaderText);
                     } else {
-                        mHeaderTextView.setText(R.string.lockpattern_need_to_unlock);
+                        mHeaderTextView.setText(R.string.lockpassword_confirm_your_pattern_header);
                     }
-                    if (mFooterText != null) {
-                        mFooterTextView.setText(mFooterText);
+                    if (mDetailsText != null) {
+                        mDetailsTextView.setText(mDetailsText);
                     } else {
-                        mFooterTextView.setText(R.string.lockpattern_need_to_unlock_footer);
+                        mDetailsTextView.setText(
+                                R.string.lockpassword_confirm_your_pattern_generic);
                     }
+                    mErrorTextView.setText("");
 
                     mLockPatternView.setEnabled(true);
                     mLockPatternView.enableInput();
+                    mLockPatternView.clearPattern();
                     break;
                 case NeedToUnlockWrong:
-                    if (mHeaderWrongText != null) {
-                        mHeaderTextView.setText(mHeaderWrongText);
-                    } else {
-                        mHeaderTextView.setText(R.string.lockpattern_need_to_unlock_wrong);
-                    }
-                    if (mFooterWrongText != null) {
-                        mFooterTextView.setText(mFooterWrongText);
-                    } else {
-                        mFooterTextView.setText(R.string.lockpattern_need_to_unlock_wrong_footer);
-                    }
+                    mErrorTextView.setText(R.string.lockpattern_need_to_unlock_wrong);
 
                     mLockPatternView.setDisplayMode(LockPatternView.DisplayMode.Wrong);
                     mLockPatternView.setEnabled(true);
@@ -246,6 +315,41 @@ public class ConfirmLockPattern extends SettingsActivity {
             mLockPatternView.postDelayed(mClearPatternRunnable, WRONG_PATTERN_CLEAR_TIMEOUT_MS);
         }
 
+        @Override
+        protected void authenticationSucceeded() {
+            startDisappearAnimation(new Intent());
+        }
+
+        private void startDisappearAnimation(final Intent intent) {
+            if (getActivity().getThemeResId() == R.style.Theme_ConfirmDeviceCredentialsDark) {
+                mLockPatternView.clearPattern();
+                mDisappearAnimationUtils.startAnimation2d(getActiveViews(),
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                getActivity().setResult(RESULT_OK, intent);
+                                getActivity().finish();
+                                getActivity().overridePendingTransition(
+                                        R.anim.confirm_credential_close_enter,
+                                        R.anim.confirm_credential_close_exit);
+                            }
+                        }, this);
+            } else {
+                getActivity().setResult(RESULT_OK, intent);
+                getActivity().finish();
+            }
+        }
+
+        @Override
+        public void onFingerprintIconVisibilityChanged(boolean visible) {
+            if (mLeftSpacerLandscape != null && mRightSpacerLandscape != null) {
+
+                // In landscape, adjust spacing depending on fingerprint icon visibility.
+                mLeftSpacerLandscape.setVisibility(visible ? View.GONE : View.VISIBLE);
+                mRightSpacerLandscape.setVisibility(visible ? View.GONE : View.VISIBLE);
+            }
+        }
+
         /**
          * The pattern listener that responds according to a user confirming
          * an existing lock pattern.
@@ -266,23 +370,95 @@ public class ConfirmLockPattern extends SettingsActivity {
             }
 
             public void onPatternDetected(List<LockPatternView.Cell> pattern) {
-                if (mLockPatternUtils.checkPattern(pattern)) {
+                mLockPatternView.setEnabled(false);
+                if (mPendingLockCheck != null) {
+                    mPendingLockCheck.cancel(false);
+                }
 
-                    Intent intent = new Intent();
-                    if (getActivity() instanceof ConfirmLockPattern.InternalActivity) {
-                        intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_TYPE,
-                                        StorageManager.CRYPT_TYPE_PATTERN);
-                        intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_PASSWORD,
-                                        LockPatternUtils.patternToString(pattern));
+                final boolean verifyChallenge = getActivity().getIntent().getBooleanExtra(
+                        ChooseLockSettingsHelper.EXTRA_KEY_HAS_CHALLENGE, false);
+                Intent intent = new Intent();
+                if (verifyChallenge) {
+                    if (isInternalActivity()) {
+                        startVerifyPattern(pattern, intent);
+                        return;
                     }
-
-                    getActivity().setResult(Activity.RESULT_OK, intent);
-                    getActivity().finish();
                 } else {
-                    if (pattern.size() >= LockPatternUtils.MIN_PATTERN_REGISTER_FAIL &&
-                            ++mNumWrongConfirmAttempts
-                            >= LockPatternUtils.FAILED_ATTEMPTS_BEFORE_TIMEOUT) {
-                        long deadline = mLockPatternUtils.setLockoutAttemptDeadline();
+                    startCheckPattern(pattern, intent);
+                    return;
+                }
+
+                onPatternChecked(pattern, false, intent, 0, mEffectiveUserId);
+            }
+
+            private boolean isInternalActivity() {
+                return getActivity() instanceof ConfirmLockPattern.InternalActivity;
+            }
+
+            private void startVerifyPattern(final List<LockPatternView.Cell> pattern,
+                    final Intent intent) {
+                final int localEffectiveUserId = mEffectiveUserId;
+                long challenge = getActivity().getIntent().getLongExtra(
+                        ChooseLockSettingsHelper.EXTRA_KEY_CHALLENGE, 0);
+                mPendingLockCheck = LockPatternChecker.verifyPattern(
+                        mLockPatternUtils,
+                        pattern,
+                        challenge,
+                        localEffectiveUserId,
+                        new LockPatternChecker.OnVerifyCallback() {
+                            @Override
+                            public void onVerified(byte[] token, int timeoutMs) {
+                                mPendingLockCheck = null;
+                                boolean matched = false;
+                                if (token != null) {
+                                    matched = true;
+                                    intent.putExtra(
+                                            ChooseLockSettingsHelper.EXTRA_KEY_CHALLENGE_TOKEN,
+                                            token);
+                                }
+                                onPatternChecked(pattern,
+                                        matched, intent, timeoutMs, localEffectiveUserId);
+                            }
+                        });
+            }
+
+            private void startCheckPattern(final List<LockPatternView.Cell> pattern,
+                    final Intent intent) {
+                if (pattern.size() < LockPatternUtils.MIN_PATTERN_REGISTER_FAIL) {
+                    onPatternChecked(pattern, false, intent, 0, mEffectiveUserId);
+                    return;
+                }
+
+                final int localEffectiveUserId = mEffectiveUserId;
+                mPendingLockCheck = LockPatternChecker.checkPattern(
+                        mLockPatternUtils,
+                        pattern,
+                        localEffectiveUserId,
+                        new LockPatternChecker.OnCheckCallback() {
+                            @Override
+                            public void onChecked(boolean matched, int timeoutMs) {
+                                mPendingLockCheck = null;
+                                if (matched && isInternalActivity()) {
+                                    intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_TYPE,
+                                                    StorageManager.CRYPT_TYPE_PATTERN);
+                                    intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_PASSWORD,
+                                                    LockPatternUtils.patternToString(pattern));
+                                }
+                                onPatternChecked(pattern, matched, intent, timeoutMs,
+                                        localEffectiveUserId);
+                            }
+                        });
+            }
+
+            private void onPatternChecked(List<LockPatternView.Cell> pattern,
+                    boolean matched, Intent intent, int timeoutMs, int effectiveUserId) {
+                mLockPatternView.setEnabled(true);
+                if (matched) {
+                    startDisappearAnimation(intent);
+                } else {
+                    if (timeoutMs > 0) {
+                        long deadline = mLockPatternUtils.setLockoutAttemptDeadline(
+                                effectiveUserId, timeoutMs);
                         handleAttemptLockout(deadline);
                     } else {
                         updateStage(Stage.NeedToUnlockWrong);
@@ -291,7 +467,6 @@ public class ConfirmLockPattern extends SettingsActivity {
                 }
             }
         };
-
 
         private void handleAttemptLockout(long elapsedRealtimeDeadline) {
             updateStage(Stage.LockedOut);
@@ -302,10 +477,9 @@ public class ConfirmLockPattern extends SettingsActivity {
 
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    mHeaderTextView.setText(R.string.lockpattern_too_many_failed_confirmation_attempts_header);
                     final int secondsCountdown = (int) (millisUntilFinished / 1000);
-                    mFooterTextView.setText(getString(
-                            R.string.lockpattern_too_many_failed_confirmation_attempts_footer,
+                    mErrorTextView.setText(getString(
+                            R.string.lockpattern_too_many_failed_confirmation_attempts,
                             secondsCountdown));
                 }
 
@@ -315,6 +489,25 @@ public class ConfirmLockPattern extends SettingsActivity {
                     updateStage(Stage.NeedToUnlock);
                 }
             }.start();
+        }
+
+        @Override
+        public void createAnimation(Object obj, long delay,
+                long duration, float translationY, final boolean appearing,
+                Interpolator interpolator,
+                final Runnable finishListener) {
+            if (obj instanceof LockPatternView.CellState) {
+                final LockPatternView.CellState animatedCell = (LockPatternView.CellState) obj;
+                mLockPatternView.startCellStateAnimation(animatedCell,
+                        1f, appearing ? 1f : 0f, /* alpha */
+                        appearing ? translationY : 0f, /* startTranslation */
+                        appearing ? 0f : translationY, /* endTranslation */
+                        appearing ? 0f : 1f, 1f /* scale */,
+                        delay, duration, interpolator, finishListener);
+            } else {
+                mAppearAnimationUtils.createAnimation((View) obj, delay, duration, translationY,
+                        appearing, interpolator, finishListener);
+            }
         }
     }
 }

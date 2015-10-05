@@ -16,62 +16,85 @@
 
 package com.android.settings.applications;
 
-import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.Fragment;
+import android.app.ActivityManager.RunningServiceInfo;
+import android.app.AlertDialog;
 import android.app.admin.DevicePolicyManager;
-import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.net.Uri;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ServiceInfo;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Process;
-import android.os.UserHandle;
+import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.text.format.Formatter;
-import android.view.LayoutInflater;
+import android.util.ArrayMap;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.android.internal.logging.MetricsLogger;
+import com.android.settings.AppHeader;
+import com.android.settings.CancellablePreference;
+import com.android.settings.CancellablePreference.OnCancelListener;
 import com.android.settings.R;
+import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.Utils;
+import com.android.settings.applications.ProcStatsEntry.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
-import static com.android.settings.Utils.prepareCustomPreferencesList;
+public class ProcessStatsDetail extends SettingsPreferenceFragment {
 
-public class ProcessStatsDetail extends Fragment implements Button.OnClickListener {
     private static final String TAG = "ProcessStatsDetail";
 
-    public static final int ACTION_FORCE_STOP = 1;
+    public static final int MENU_FORCE_STOP = 1;
 
-    public static final String EXTRA_ENTRY = "entry";
-    public static final String EXTRA_USE_USS = "use_uss";
-    public static final String EXTRA_MAX_WEIGHT = "max_weight";
+    public static final String EXTRA_PACKAGE_ENTRY = "package_entry";
+    public static final String EXTRA_WEIGHT_TO_RAM = "weight_to_ram";
     public static final String EXTRA_TOTAL_TIME = "total_time";
+    public static final String EXTRA_MAX_MEMORY_USAGE = "max_memory_usage";
+    public static final String EXTRA_TOTAL_SCALE = "total_scale";
+
+    private static final String KEY_DETAILS_HEADER = "status_header";
+
+    private static final String KEY_FREQUENCY = "frequency";
+    private static final String KEY_MAX_USAGE = "max_usage";
+
+    private static final String KEY_PROCS = "processes";
+
+    private final ArrayMap<ComponentName, CancellablePreference> mServiceMap = new ArrayMap<>();
 
     private PackageManager mPm;
     private DevicePolicyManager mDpm;
 
-    private ProcStatsEntry mEntry;
-    private boolean mUseUss;
-    private long mMaxWeight;
-    private long mTotalTime;
+    private MenuItem mForceStop;
 
-    private View mRootView;
-    private TextView mTitleView;
-    private ViewGroup mTwoButtonsPanel;
-    private Button mForceStopButton;
-    private Button mReportButton;
-    private ViewGroup mDetailsParent;
-    private ViewGroup mServicesParent;
+    private ProcStatsPackageEntry mApp;
+    private double mWeightToRam;
+    private long mTotalTime;
+    private long mOnePercentTime;
+
+    private LinearColorBar mColorBar;
+
+    private double mMaxMemoryUsage;
+
+    private double mTotalScale;
+
+    private PreferenceCategory mProcGroup;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -79,127 +102,193 @@ public class ProcessStatsDetail extends Fragment implements Button.OnClickListen
         mPm = getActivity().getPackageManager();
         mDpm = (DevicePolicyManager)getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
         final Bundle args = getArguments();
-        mEntry = (ProcStatsEntry)args.getParcelable(EXTRA_ENTRY);
-        mEntry.retrieveUiData(mPm);
-        mUseUss = args.getBoolean(EXTRA_USE_USS);
-        mMaxWeight = args.getLong(EXTRA_MAX_WEIGHT);
+        mApp = args.getParcelable(EXTRA_PACKAGE_ENTRY);
+        mApp.retrieveUiData(getActivity(), mPm);
+        mWeightToRam = args.getDouble(EXTRA_WEIGHT_TO_RAM);
         mTotalTime = args.getLong(EXTRA_TOTAL_TIME);
+        mMaxMemoryUsage = args.getDouble(EXTRA_MAX_MEMORY_USAGE);
+        mTotalScale = args.getDouble(EXTRA_TOTAL_SCALE);
+        mOnePercentTime = mTotalTime/100;
+
+        mServiceMap.clear();
+        createDetails();
+        setHasOptionsMenu(true);
     }
 
     @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.process_stats_details, container, false);
-        prepareCustomPreferencesList(container, view, view, false);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        mRootView = view;
-        createDetails();
-        return view;
+        AppHeader.createAppHeader(this,
+                mApp.mUiTargetApp != null ? mApp.mUiTargetApp.loadIcon(mPm) : new ColorDrawable(0),
+                mApp.mUiLabel, mApp.mPackage.equals(Utils.OS_PKG) ? null
+                        : AppInfoWithHeader.getInfoIntent(this, mApp.mPackage));
+    }
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.APPLICATIONS_PROCESS_STATS_DETAIL;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        checkForceStop();
+        updateRunningServices();
+    }
+
+    private void updateRunningServices() {
+        ActivityManager activityManager = (ActivityManager)
+                getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+        List<RunningServiceInfo> runningServices =
+                activityManager.getRunningServices(Integer.MAX_VALUE);
+
+        // Set all services as not running, then turn back on the ones we find.
+        int N = mServiceMap.size();
+        for (int i = 0; i < N; i++) {
+            mServiceMap.valueAt(i).setCancellable(false);
+        }
+
+        N = runningServices.size();
+        for (int i = 0; i < N; i++) {
+            RunningServiceInfo runningService = runningServices.get(i);
+            if (!runningService.started && runningService.clientLabel == 0) {
+                continue;
+            }
+            if ((runningService.flags & RunningServiceInfo.FLAG_PERSISTENT_PROCESS) != 0) {
+                continue;
+            }
+            final ComponentName service = runningService.service;
+            CancellablePreference pref = mServiceMap.get(service);
+            if (pref != null) {
+                pref.setOnCancelListener(new OnCancelListener() {
+                    @Override
+                    public void onCancel(CancellablePreference preference) {
+                        stopService(service.getPackageName(), service.getClassName());
+                    }
+                });
+                pref.setCancellable(true);
+            }
+        }
+    }
+
+    private void createDetails() {
+        addPreferencesFromResource(R.xml.app_memory_settings);
+
+        mProcGroup = (PreferenceCategory) findPreference(KEY_PROCS);
+        fillProcessesSection();
+
+        LayoutPreference headerLayout = (LayoutPreference) findPreference(KEY_DETAILS_HEADER);
+
+        // TODO: Find way to share this code with ProcessStatsPreference.
+        boolean statsForeground = mApp.mRunWeight > mApp.mBgWeight;
+        double avgRam = (statsForeground ? mApp.mRunWeight : mApp.mBgWeight) * mWeightToRam;
+        float avgRatio = (float) (avgRam / mMaxMemoryUsage);
+        float remainingRatio = 1 - avgRatio;
+        mColorBar = (LinearColorBar) headerLayout.findViewById(R.id.color_bar);
+        Context context = getActivity();
+        mColorBar.setColors( context.getColor(R.color.memory_max_use), 0,
+                context.getColor(R.color.memory_remaining));
+        mColorBar.setRatios(avgRatio, 0, remainingRatio);
+        ((TextView) headerLayout.findViewById(R.id.memory_state)).setText(
+                Formatter.formatShortFileSize(getContext(), (long) avgRam));
+
+        long duration = Math.max(mApp.mRunDuration, mApp.mBgDuration);
+        CharSequence frequency = ProcStatsPackageEntry.getFrequency(duration
+                / (float) mTotalTime, getActivity());
+        findPreference(KEY_FREQUENCY).setSummary(frequency);
+        double max = Math.max(mApp.mMaxBgMem, mApp.mMaxRunMem) * mTotalScale * 1024;
+        findPreference(KEY_MAX_USAGE).setSummary(
+                Formatter.formatShortFileSize(getContext(), (long) max));
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        mForceStop = menu.add(0, MENU_FORCE_STOP, 0, R.string.force_stop);
         checkForceStop();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    private void createDetails() {
-        final double percentOfWeight = (((double)mEntry.mWeight) / mMaxWeight) * 100;
-
-        int appLevel = (int) Math.ceil(percentOfWeight);
-        String appLevelText = Utils.formatPercentage(mEntry.mDuration, mTotalTime);
-
-        // Set all values in the header.
-        final TextView summary = (TextView) mRootView.findViewById(android.R.id.summary);
-        summary.setText(mEntry.mName);
-        summary.setVisibility(View.VISIBLE);
-        mTitleView = (TextView) mRootView.findViewById(android.R.id.title);
-        mTitleView.setText(mEntry.mUiBaseLabel);
-        final TextView text1 = (TextView)mRootView.findViewById(android.R.id.text1);
-        text1.setText(appLevelText);
-        final ProgressBar progress = (ProgressBar) mRootView.findViewById(android.R.id.progress);
-        progress.setProgress(appLevel);
-        final ImageView icon = (ImageView) mRootView.findViewById(android.R.id.icon);
-        if (mEntry.mUiTargetApp != null) {
-            icon.setImageDrawable(mEntry.mUiTargetApp.loadIcon(mPm));
-        }
-
-        mTwoButtonsPanel = (ViewGroup)mRootView.findViewById(R.id.two_buttons_panel);
-        mForceStopButton = (Button)mRootView.findViewById(R.id.right_button);
-        mReportButton = (Button)mRootView.findViewById(R.id.left_button);
-        mForceStopButton.setEnabled(false);
-        mReportButton.setVisibility(View.INVISIBLE);
-
-        mDetailsParent = (ViewGroup)mRootView.findViewById(R.id.details);
-        mServicesParent = (ViewGroup)mRootView.findViewById(R.id.services);
-
-        fillDetailsSection();
-        fillServicesSection();
-
-        if (mEntry.mUid >= android.os.Process.FIRST_APPLICATION_UID) {
-            mForceStopButton.setText(R.string.force_stop);
-            mForceStopButton.setTag(ACTION_FORCE_STOP);
-            mForceStopButton.setOnClickListener(this);
-            mTwoButtonsPanel.setVisibility(View.VISIBLE);
-        } else {
-            mTwoButtonsPanel.setVisibility(View.GONE);
-        }
-    }
-
-    public void onClick(View v) {
-        doAction((Integer) v.getTag());
-    }
-
-    private void doAction(int action) {
-        switch (action) {
-            case ACTION_FORCE_STOP:
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case MENU_FORCE_STOP:
                 killProcesses();
-                break;
+                return true;
+        }
+        return false;
+    }
+
+    final static Comparator<ProcStatsEntry> sEntryCompare = new Comparator<ProcStatsEntry>() {
+        @Override
+        public int compare(ProcStatsEntry lhs, ProcStatsEntry rhs) {
+            if (lhs.mRunWeight < rhs.mRunWeight) {
+                return 1;
+            } else if (lhs.mRunWeight > rhs.mRunWeight) {
+                return -1;
+            }
+            return 0;
+        }
+    };
+
+    private void fillProcessesSection() {
+        mProcGroup.removeAll();
+        final ArrayList<ProcStatsEntry> entries = new ArrayList<>();
+        for (int ie = 0; ie < mApp.mEntries.size(); ie++) {
+            ProcStatsEntry entry = mApp.mEntries.get(ie);
+            if (entry.mPackage.equals("os")) {
+                entry.mLabel = entry.mName;
+            } else {
+                entry.mLabel = getProcessName(mApp.mUiLabel, entry);
+            }
+            entries.add(entry);
+        }
+        Collections.sort(entries, sEntryCompare);
+        for (int ie = 0; ie < entries.size(); ie++) {
+            ProcStatsEntry entry = entries.get(ie);
+            Preference processPref = new Preference(getActivity());
+            processPref.setTitle(entry.mLabel);
+            processPref.setSelectable(false);
+
+            long duration = Math.max(entry.mRunDuration, entry.mBgDuration);
+            long memoryUse = Math.max((long) (entry.mRunWeight * mWeightToRam),
+                    (long) (entry.mBgWeight * mWeightToRam));
+            String memoryString = Formatter.formatShortFileSize(getActivity(), memoryUse);
+            CharSequence frequency = ProcStatsPackageEntry.getFrequency(duration
+                    / (float) mTotalTime, getActivity());
+            processPref.setSummary(
+                    getString(R.string.memory_use_running_format, memoryString, frequency));
+            mProcGroup.addPreference(processPref);
+        }
+        if (mProcGroup.getPreferenceCount() < 2) {
+            getPreferenceScreen().removePreference(mProcGroup);
         }
     }
 
-    private void addPackageHeaderItem(ViewGroup parent, String packageName) {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        ViewGroup item = (ViewGroup) inflater.inflate(R.layout.running_processes_item,
-                null);
-        parent.addView(item);
-        final ImageView icon = (ImageView) item.findViewById(R.id.icon);
-        TextView nameView = (TextView) item.findViewById(R.id.name);
-        TextView descriptionView = (TextView) item.findViewById(R.id.description);
-        try {
-            ApplicationInfo ai = mPm.getApplicationInfo(packageName, 0);
-            icon.setImageDrawable(ai.loadIcon(mPm));
-            nameView.setText(ai.loadLabel(mPm));
-        } catch (PackageManager.NameNotFoundException e) {
+    private static String capitalize(String processName) {
+        char c = processName.charAt(0);
+        if (!Character.isLowerCase(c)) {
+            return processName;
         }
-        descriptionView.setText(packageName);
+        return Character.toUpperCase(c) + processName.substring(1);
     }
 
-    private void addDetailsItem(ViewGroup parent, CharSequence label, CharSequence value) {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        ViewGroup item = (ViewGroup) inflater.inflate(R.layout.power_usage_detail_item_text,
-                null);
-        parent.addView(item);
-        TextView labelView = (TextView) item.findViewById(R.id.label);
-        TextView valueView = (TextView) item.findViewById(R.id.value);
-        labelView.setText(label);
-        valueView.setText(value);
-    }
-
-    private void fillDetailsSection() {
-        addDetailsItem(mDetailsParent, getResources().getText(R.string.process_stats_avg_ram_use),
-                Formatter.formatShortFileSize(getActivity(),
-                        (mUseUss ? mEntry.mAvgUss : mEntry.mAvgPss) * 1024));
-        addDetailsItem(mDetailsParent, getResources().getText(R.string.process_stats_max_ram_use),
-                Formatter.formatShortFileSize(getActivity(),
-                        (mUseUss ? mEntry.mMaxUss : mEntry.mMaxPss) * 1024));
-        addDetailsItem(mDetailsParent, getResources().getText(R.string.process_stats_run_time),
-                Utils.formatPercentage(mEntry.mDuration, mTotalTime));
+    private static String getProcessName(String appLabel, ProcStatsEntry entry) {
+        String processName = entry.mName;
+        if (processName.contains(":")) {
+            return capitalize(processName.substring(processName.lastIndexOf(':') + 1));
+        }
+        if (processName.startsWith(entry.mPackage)) {
+            if (processName.length() == entry.mPackage.length()) {
+                return appLabel;
+            }
+            int start = entry.mPackage.length();
+            if (processName.charAt(start) == '.') {
+                start++;
+            }
+            return capitalize(processName.substring(start));
+        }
+        return processName;
     }
 
     final static Comparator<ProcStatsEntry.Service> sServiceCompare
@@ -215,95 +304,153 @@ public class ProcessStatsDetail extends Fragment implements Button.OnClickListen
         }
     };
 
-    final static Comparator<ArrayList<ProcStatsEntry.Service>> sServicePkgCompare
-            = new Comparator<ArrayList<ProcStatsEntry.Service>>() {
+    final static Comparator<PkgService> sServicePkgCompare = new Comparator<PkgService>() {
         @Override
-        public int compare(ArrayList<ProcStatsEntry.Service> lhs,
-                ArrayList<ProcStatsEntry.Service> rhs) {
-            long topLhs = lhs.size() > 0 ? lhs.get(0).mDuration : 0;
-            long topRhs = rhs.size() > 0 ? rhs.get(0).mDuration : 0;
-            if (topLhs < topRhs) {
+        public int compare(PkgService lhs, PkgService rhs) {
+            if (lhs.mDuration < rhs.mDuration) {
                 return 1;
-            } else if (topLhs > topRhs) {
+            } else if (lhs.mDuration > rhs.mDuration) {
                 return -1;
             }
             return 0;
         }
     };
 
-    private void fillServicesSection() {
-        if (mEntry.mServices.size() > 0) {
-            boolean addPackageSections = false;
-            // Sort it all.
-            ArrayList<ArrayList<ProcStatsEntry.Service>> servicePkgs
-                    = new ArrayList<ArrayList<ProcStatsEntry.Service>>();
-            for (int ip=0; ip<mEntry.mServices.size(); ip++) {
-                ArrayList<ProcStatsEntry.Service> services =
-                        (ArrayList<ProcStatsEntry.Service>)mEntry.mServices.valueAt(ip).clone();
-                Collections.sort(services, sServiceCompare);
-                servicePkgs.add(services);
-            }
-            if (mEntry.mServices.size() > 1
-                    || !mEntry.mServices.valueAt(0).get(0).mPackage.equals(mEntry.mPackage)) {
-                addPackageSections = true;
-                // Sort these so that the one(s) with the longest run durations are on top.
-                Collections.sort(servicePkgs, sServicePkgCompare);
-            }
-            for (int ip=0; ip<servicePkgs.size(); ip++) {
-                ArrayList<ProcStatsEntry.Service> services = servicePkgs.get(ip);
-                if (addPackageSections) {
-                    addPackageHeaderItem(mServicesParent, services.get(0).mPackage);
-                }
-                for (int is=0; is<services.size(); is++) {
-                    ProcStatsEntry.Service service = services.get(is);
-                    String label = service.mName;
-                    int tail = label.lastIndexOf('.');
-                    if (tail >= 0 && tail < (label.length()-1)) {
-                        label = label.substring(tail+1);
+    static class PkgService {
+        final ArrayList<ProcStatsEntry.Service> mServices = new ArrayList<>();
+        long mDuration;
+    }
+
+    private void fillServicesSection(ProcStatsEntry entry, PreferenceCategory processPref) {
+        final HashMap<String, PkgService> pkgServices = new HashMap<>();
+        final ArrayList<PkgService> pkgList = new ArrayList<>();
+        for (int ip = 0; ip < entry.mServices.size(); ip++) {
+            String pkg = entry.mServices.keyAt(ip);
+            PkgService psvc = null;
+            ArrayList<ProcStatsEntry.Service> services = entry.mServices.valueAt(ip);
+            for (int is=services.size()-1; is>=0; is--) {
+                ProcStatsEntry.Service pent = services.get(is);
+                if (pent.mDuration >= mOnePercentTime) {
+                    if (psvc == null) {
+                        psvc = pkgServices.get(pkg);
+                        if (psvc == null) {
+                            psvc = new PkgService();
+                            pkgServices.put(pkg, psvc);
+                            pkgList.add(psvc);
+                        }
                     }
-                    String percentage = Utils.formatPercentage(service.mDuration, mTotalTime);
-                    addDetailsItem(mServicesParent, label, percentage);
+                    psvc.mServices.add(pent);
+                    psvc.mDuration += pent.mDuration;
                 }
             }
         }
+        Collections.sort(pkgList, sServicePkgCompare);
+        for (int ip = 0; ip < pkgList.size(); ip++) {
+            ArrayList<ProcStatsEntry.Service> services = pkgList.get(ip).mServices;
+            Collections.sort(services, sServiceCompare);
+            for (int is=0; is<services.size(); is++) {
+                final ProcStatsEntry.Service service = services.get(is);
+                CharSequence label = getLabel(service);
+                CancellablePreference servicePref = new CancellablePreference(getActivity());
+                servicePref.setSelectable(false);
+                servicePref.setTitle(label);
+                servicePref.setSummary(ProcStatsPackageEntry.getFrequency(
+                        service.mDuration / (float) mTotalTime, getActivity()));
+                processPref.addPreference(servicePref);
+                mServiceMap.put(new ComponentName(service.mPackage, service.mName), servicePref);
+            }
+        }
+    }
+
+    private CharSequence getLabel(Service service) {
+        // Try to get the service label, on the off chance that one exists.
+        try {
+            ServiceInfo serviceInfo = getPackageManager().getServiceInfo(
+                    new ComponentName(service.mPackage, service.mName), 0);
+            if (serviceInfo.labelRes != 0) {
+                return serviceInfo.loadLabel(getPackageManager());
+            }
+        } catch (NameNotFoundException e) {
+        }
+        String label = service.mName;
+        int tail = label.lastIndexOf('.');
+        if (tail >= 0 && tail < (label.length()-1)) {
+            label = label.substring(tail+1);
+        }
+        return label;
+    }
+
+    private void stopService(String pkg, String name) {
+        try {
+            ApplicationInfo appInfo = getActivity().getPackageManager().getApplicationInfo(pkg, 0);
+            if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
+                showStopServiceDialog(pkg, name);
+                return;
+            }
+        } catch (NameNotFoundException e) {
+            Log.e(TAG, "Can't find app " + pkg, e);
+            return;
+        }
+        doStopService(pkg, name);
+    }
+
+    private void showStopServiceDialog(final String pkg, final String name) {
+        new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.runningservicedetails_stop_dlg_title)
+                .setMessage(R.string.runningservicedetails_stop_dlg_text)
+                .setPositiveButton(R.string.dlg_ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        doStopService(pkg, name);
+                    }
+                })
+                .setNegativeButton(R.string.dlg_cancel, null)
+                .show();
+    }
+
+    private void doStopService(String pkg, String name) {
+        getActivity().stopService(new Intent().setClassName(pkg, name));
+        updateRunningServices();
     }
 
     private void killProcesses() {
         ActivityManager am = (ActivityManager)getActivity().getSystemService(
                 Context.ACTIVITY_SERVICE);
-        am.forceStopPackage(mEntry.mUiPackage);
-        checkForceStop();
+        for (int i=0; i< mApp.mEntries.size(); i++) {
+            ProcStatsEntry ent = mApp.mEntries.get(i);
+            for (int j=0; j<ent.mPackages.size(); j++) {
+                am.forceStopPackage(ent.mPackages.get(j));
+            }
+        }
     }
 
-    private final BroadcastReceiver mCheckKillProcessesReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            mForceStopButton.setEnabled(getResultCode() != Activity.RESULT_CANCELED);
-        }
-    };
-
     private void checkForceStop() {
-        if (mEntry.mUiPackage == null || mEntry.mUid < Process.FIRST_APPLICATION_UID) {
-            mForceStopButton.setEnabled(false);
+        if (mForceStop == null) {
             return;
         }
-        if (mDpm.packageHasActiveAdmins(mEntry.mUiPackage)) {
-            mForceStopButton.setEnabled(false);
+        if (mApp.mEntries.get(0).mUid < Process.FIRST_APPLICATION_UID) {
+            mForceStop.setVisible(false);
             return;
         }
-        try {
-            ApplicationInfo info = mPm.getApplicationInfo(mEntry.mUiPackage, 0);
-            if ((info.flags&ApplicationInfo.FLAG_STOPPED) == 0) {
-                mForceStopButton.setEnabled(true);
+        boolean isStarted = false;
+        for (int i=0; i< mApp.mEntries.size(); i++) {
+            ProcStatsEntry ent = mApp.mEntries.get(i);
+            for (int j=0; j<ent.mPackages.size(); j++) {
+                String pkg = ent.mPackages.get(j);
+                if (mDpm.packageHasActiveAdmins(pkg)) {
+                    mForceStop.setEnabled(false);
+                    return;
+                }
+                try {
+                    ApplicationInfo info = mPm.getApplicationInfo(pkg, 0);
+                    if ((info.flags&ApplicationInfo.FLAG_STOPPED) == 0) {
+                        isStarted = true;
+                    }
+                } catch (PackageManager.NameNotFoundException e) {
+                }
             }
-        } catch (PackageManager.NameNotFoundException e) {
         }
-        Intent intent = new Intent(Intent.ACTION_QUERY_PACKAGE_RESTART,
-                Uri.fromParts("package", mEntry.mUiPackage, null));
-        intent.putExtra(Intent.EXTRA_PACKAGES, new String[] { mEntry.mUiPackage });
-        intent.putExtra(Intent.EXTRA_UID, mEntry.mUid);
-        intent.putExtra(Intent.EXTRA_USER_HANDLE, UserHandle.getUserId(mEntry.mUid));
-        getActivity().sendOrderedBroadcast(intent, null, mCheckKillProcessesReceiver, null,
-                Activity.RESULT_CANCELED, null, null);
+        if (isStarted) {
+            mForceStop.setVisible(true);
+        }
     }
 }

@@ -29,6 +29,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.UserInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -46,9 +48,12 @@ import android.preference.PreferenceGroup;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 
+import com.android.internal.logging.MetricsLogger;
+import com.android.settings.AccessiblePreferenceCategory;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.Utils;
+import com.android.settings.users.UserDialogs;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -111,6 +116,11 @@ public class AccountSettings extends SettingsPreferenceFragment
          * The {@link UserInfo} of the profile.
          */
         public UserInfo userInfo;
+    }
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.ACCOUNT;
     }
 
     @Override
@@ -203,7 +213,7 @@ public class AccountSettings extends SettingsPreferenceFragment
             }
             if (preference == profileData.removeWorkProfilePreference) {
                 final int userId = profileData.userInfo.id;
-                Utils.createRemoveConfirmationDialog(getActivity(), userId,
+                UserDialogs.createRemoveDialog(getActivity(), userId,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -261,9 +271,20 @@ public class AccountSettings extends SettingsPreferenceFragment
         final ProfileData profileData = new ProfileData();
         profileData.userInfo = userInfo;
         if (addCategory) {
-            profileData.preferenceGroup = new PreferenceCategory(context);
-            profileData.preferenceGroup.setTitle(userInfo.isManagedProfile()
-                    ? R.string.category_work : R.string.category_personal);
+            profileData.preferenceGroup = new AccessiblePreferenceCategory(context);
+            if (userInfo.isManagedProfile()) {
+                profileData.preferenceGroup.setLayoutResource(R.layout.work_profile_category);
+                profileData.preferenceGroup.setTitle(R.string.category_work);
+                String workGroupSummary = getWorkGroupSummary(context, userInfo);
+                profileData.preferenceGroup.setSummary(workGroupSummary);
+                ((AccessiblePreferenceCategory) profileData.preferenceGroup).setContentDescription(
+                        getString(R.string.accessibility_category_work, workGroupSummary));
+                profileData.removeWorkProfilePreference = newRemoveWorkProfilePreference(context);
+            } else {
+                profileData.preferenceGroup.setTitle(R.string.category_personal);
+                ((AccessiblePreferenceCategory) profileData.preferenceGroup).setContentDescription(
+                        getString(R.string.accessibility_category_personal));
+            }
             parent.addPreference(profileData.preferenceGroup);
         } else {
             profileData.preferenceGroup = parent;
@@ -275,16 +296,13 @@ public class AccountSettings extends SettingsPreferenceFragment
                 profileData.addAccountPreference = newAddAccountPreference(context);
             }
         }
-        if (userInfo.isManagedProfile()) {
-            profileData.removeWorkProfilePreference = newRemoveWorkProfilePreference(context);
-        }
         mProfiles.put(userInfo.id, profileData);
     }
 
     private Preference newAddAccountPreference(Context context) {
         Preference preference = new Preference(context);
         preference.setTitle(R.string.add_account_label);
-        preference.setIcon(R.drawable.ic_menu_add_dark);
+        preference.setIcon(R.drawable.ic_menu_add);
         preference.setOnPreferenceClickListener(this);
         preference.setOrder(ORDER_NEXT_TO_LAST);
         return preference;
@@ -297,6 +315,16 @@ public class AccountSettings extends SettingsPreferenceFragment
         preference.setOnPreferenceClickListener(this);
         preference.setOrder(ORDER_LAST);
         return preference;
+    }
+
+    private String getWorkGroupSummary(Context context, UserInfo userInfo) {
+        PackageManager packageManager = context.getPackageManager();
+        ApplicationInfo adminApplicationInfo = Utils.getAdminApplicationInfo(context, userInfo.id);
+        if (adminApplicationInfo == null) {
+            return null;
+        }
+        CharSequence appLabel = packageManager.getApplicationLabel(adminApplicationInfo);
+        return getString(R.string.managing_admin, appLabel);
     }
 
     private void cleanUpPreferences() {

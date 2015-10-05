@@ -62,9 +62,9 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.UserInfo;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -112,6 +112,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -125,7 +126,9 @@ import android.widget.TabHost.TabContentFactory;
 import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.telephony.PhoneConstants;
 import com.android.settings.drawable.InsetBoundsDrawable;
 import com.android.settings.net.ChartData;
@@ -138,11 +141,9 @@ import com.android.settings.net.UidDetailProvider;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.search.Indexable;
 import com.android.settings.search.SearchIndexableRaw;
-import com.android.settings.sim.SimSettings;
 import com.android.settings.widget.ChartDataUsageView;
 import com.android.settings.widget.ChartDataUsageView.DataUsageChartListener;
 import com.android.settings.widget.ChartNetworkSeriesView;
-
 import com.google.android.collect.Lists;
 
 import libcore.util.Objects;
@@ -190,6 +191,8 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
     private static final String DATA_USAGE_DISABLE_MOBILE_LIMIT_KEY =
             "data_usage_disable_mobile_limit";
     private static final String DATA_USAGE_CYCLE_KEY = "data_usage_cycle";
+
+    public static final String EXTRA_SHOW_APP_IMMEDIATE_PKG = "showAppImmediatePkg";
 
     private static final int LOADER_CHART_DATA = 2;
     private static final int LOADER_SUMMARY = 3;
@@ -281,10 +284,18 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
 
     private UidDetailProvider mUidDetailProvider;
 
+    // Indicates request to show app immediately rather than list.
+    private String mShowAppImmediatePkg;
+
     /**
      * Local cache of data enabled for subId, used to work around delays.
      */
     private final Map<String, Boolean> mMobileDataEnabled = new HashMap<String, Boolean>();
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.DATA_USAGE_SUMMARY;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -332,6 +343,13 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
             mShowEthernet = true;
         }
 
+        mUidDetailProvider = new UidDetailProvider(context);
+
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mShowAppImmediatePkg = arguments.getString(EXTRA_SHOW_APP_IMMEDIATE_PKG);
+        }
+
         setHasOptionsMenu(true);
     }
 
@@ -342,7 +360,6 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
         final Context context = inflater.getContext();
         final View view = inflater.inflate(R.layout.data_usage_summary, container, false);
 
-        mUidDetailProvider = new UidDetailProvider(context);
 
         mTabHost = (TabHost) view.findViewById(android.R.id.tabhost);
         mTabsContainer = (ViewGroup) view.findViewById(R.id.tabs_container);
@@ -448,7 +465,33 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
         mListView.setOnItemClickListener(mListListener);
         mListView.setAdapter(mAdapter);
 
+        showRequestedAppIfNeeded(view);
+
         return view;
+    }
+
+    private void showRequestedAppIfNeeded(View rootView) {
+        if (mShowAppImmediatePkg == null) {
+            return;
+        }
+        try {
+            int uid = getActivity().getPackageManager().getPackageUid(mShowAppImmediatePkg,
+                UserHandle.myUserId());
+            AppItem app = new AppItem(uid);
+            app.addUid(uid);
+
+            final UidDetail detail = mUidDetailProvider.getUidDetail(app.key, true);
+            // When we are going straight to an app then we are coming from App Info and want
+            // a header at the top.
+            FrameLayout pinnedHeader = (FrameLayout) rootView.findViewById(R.id.pinned_header);
+            AppHeader.createAppHeader(getActivity(), detail.icon, detail.label, null, pinnedHeader);
+            AppDetailsFragment.show(DataUsageSummary.this, app, detail.label, true);
+        } catch (NameNotFoundException e) {
+            Log.w(TAG, "Could not find " + mShowAppImmediatePkg, e);
+            Toast.makeText(getActivity(), getString(R.string.unknown_app), Toast.LENGTH_LONG)
+                    .show();
+            getActivity().finish();
+        }
     }
 
     @Override
@@ -545,7 +588,7 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
         final MenuItem help = menu.findItem(R.id.data_usage_menu_help);
         String helpUrl;
         if (!TextUtils.isEmpty(helpUrl = getResources().getString(R.string.help_url_data_usage))) {
-            HelpUtils.prepareHelpMenuItem(context, help, helpUrl);
+            HelpUtils.prepareHelpMenuItem(getActivity(), help, helpUrl, getClass().getName());
         } else {
             help.setVisible(false);
         }
@@ -639,6 +682,10 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
      * only be assigned after initial layout is complete.
      */
     private void ensureLayoutTransitions() {
+        if (mShowAppImmediatePkg != null) {
+            // If we are skipping right to showing an app, we don't care about transitions.
+            return;
+        }
         // skip when already setup
         if (mChart.getLayoutTransition() != null) return;
 
@@ -672,9 +719,9 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
 
         int simCount = mTelephonyManager.getSimCount();
 
-        for (int i = 0; i < simCount; i++) {
-            final SubscriptionInfo sir = Utils.findRecordBySlotId(context, i);
-            if (sir != null) {
+        List<SubscriptionInfo> sirs = mSubscriptionManager.getActiveSubscriptionInfoList();
+        if (sirs != null) {
+            for (SubscriptionInfo sir : sirs) {
                 addMobileTab(context, sir, (simCount > 1));
             }
         }
@@ -820,6 +867,30 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
             throw new IllegalStateException("unknown tab: " + currentTab);
         }
 
+        mPolicyEditor.read();
+        final NetworkPolicy policy = mPolicyEditor.getPolicy(mTemplate);
+        if (policy != null) {
+            final long currentTime = System.currentTimeMillis();
+            final long start = computeLastCycleBoundary(currentTime, policy);
+            final long end = currentTime;
+            long totalBytes = 0;
+
+            try {
+                totalBytes = mStatsService.getNetworkTotalBytes(policy.template, start, end);
+            } catch (RuntimeException e) {
+            } catch (RemoteException e) {
+            }
+
+            if (policy.isOverLimit(totalBytes) && policy.lastLimitSnooze < start) {
+                setPreferenceSummary(mDataEnabledView,
+                        getString(R.string.data_usage_cellular_data_summary));
+            } else {
+                final TextView summary = (TextView) mDataEnabledView
+                        .findViewById(android.R.id.summary);
+                summary.setVisibility(View.GONE);
+            }
+        }
+
         // kick off loader for network history
         // TODO: consider chaining two loaders together instead of reloading
         // network history when showing app detail.
@@ -831,12 +902,12 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
 
         mBinding = false;
 
-        int seriesColor = resources.getColor(R.color.sim_noitification);
+        int seriesColor = context.getColor(R.color.sim_noitification);
         if (mCurrentTab != null && mCurrentTab.length() > TAB_MOBILE.length() ){
             final int slotId = Integer.parseInt(mCurrentTab.substring(TAB_MOBILE.length(),
                     mCurrentTab.length()));
-            final SubscriptionInfo sir = com.android.settings.Utils.findRecordBySlotId(context,
-                    slotId);
+            final SubscriptionInfo sir = mSubscriptionManager
+                    .getActiveSubscriptionInfoForSimSlotIndex(slotId);
 
             if (sir != null) {
                 seriesColor = sir.getIconTint();
@@ -865,9 +936,11 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
         if (isAppDetailMode()) {
             mAppDetail.setVisibility(View.VISIBLE);
             mCycleAdapter.setChangeVisible(false);
+            mChart.setVisibility(View.GONE);
         } else {
             mAppDetail.setVisibility(View.GONE);
             mCycleAdapter.setChangeVisible(true);
+            mChart.setVisibility(View.VISIBLE);
 
             // hide detail stats when not in detail mode
             mChart.bindDetailNetworkStats(null);
@@ -1170,10 +1243,11 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
         public void onClick(View v) {
             if (mBinding) return;
 
-            final boolean dataEnabled = !mDataEnabled.isChecked();
+            final boolean enabled = !mDataEnabled.isChecked();
             final String currentTab = mCurrentTab;
             if (isMobileTab(currentTab)) {
-                if (dataEnabled) {
+                MetricsLogger.action(getContext(), MetricsLogger.ACTION_CELL_DATA_TOGGLE, enabled);
+                if (enabled) {
                     // If we are showing the Sim Card tile then we are a Multi-Sim device.
                     if (Utils.showSimCardTile(getActivity())) {
                         handleMultiSimDataDialog();
@@ -1200,8 +1274,7 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
             return;
         }
 
-        final SubscriptionInfo nextSir = mSubscriptionManager.getActiveSubscriptionInfo(
-                mSubscriptionManager.getDefaultDataSubId());
+        final SubscriptionInfo nextSir = mSubscriptionManager.getDefaultDataSubscriptionInfo();
 
         // If the device is single SIM or is enabling data on the active data SIM then forgo
         // the pop-up.
@@ -1468,6 +1541,7 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
         @Override
         public void onLimitChanged() {
             setPolicyLimitBytes(mChart.getLimitBytes());
+            updateBody();
         }
 
         @Override
@@ -1835,10 +1909,10 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             final AppItem item = mItems.get(position);
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             if (getItemViewType(position) == 1) {
                 if (convertView == null) {
-                    convertView = inflateCategoryHeader(LayoutInflater.from(parent.getContext()),
-                            parent);
+                    convertView = Utils.inflateCategoryHeader(inflater, parent);
                 }
 
                 final TextView title = (TextView) convertView.findViewById(android.R.id.title);
@@ -1846,8 +1920,9 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
 
             } else {
                 if (convertView == null) {
-                    convertView = LayoutInflater.from(parent.getContext()).inflate(
-                            R.layout.data_usage_item, parent, false);
+                    convertView = inflater.inflate(R.layout.data_usage_item, parent, false);
+                    inflater.inflate(R.layout.widget_progress_bar,
+                            (ViewGroup) convertView.findViewById(android.R.id.widget_frame));
 
                     if (mInsetSide > 0) {
                         convertView.setPaddingRelative(mInsetSide, 0, mInsetSide, 0);
@@ -1856,7 +1931,7 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
 
                 final Context context = parent.getContext();
 
-                final TextView text1 = (TextView) convertView.findViewById(android.R.id.text1);
+                final TextView summary = (TextView) convertView.findViewById(android.R.id.summary);
                 final ProgressBar progress = (ProgressBar) convertView.findViewById(
                         android.R.id.progress);
 
@@ -1864,10 +1939,10 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
                 UidDetailTask.bindView(mProvider, item, convertView);
 
                 if (item.restricted && item.total <= 0) {
-                    text1.setText(R.string.data_usage_app_restricted);
+                    summary.setText(R.string.data_usage_app_restricted);
                     progress.setVisibility(View.GONE);
                 } else {
-                    text1.setText(Formatter.formatFileSize(context, item.total));
+                    summary.setText(Formatter.formatFileSize(context, item.total));
                     progress.setVisibility(View.VISIBLE);
                 }
 
@@ -1887,6 +1962,11 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
         private static final String EXTRA_APP = "app";
 
         public static void show(DataUsageSummary parent, AppItem app, CharSequence label) {
+            show(parent, app, label, true);
+        }
+
+        public static void show(DataUsageSummary parent, AppItem app, CharSequence label,
+                boolean addToBack) {
             if (!parent.isAdded()) return;
 
             final Bundle args = new Bundle();
@@ -1897,7 +1977,9 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
             fragment.setTargetFragment(parent, 0);
             final FragmentTransaction ft = parent.getFragmentManager().beginTransaction();
             ft.add(fragment, TAG_APP_DETAILS);
-            ft.addToBackStack(TAG_APP_DETAILS);
+            if (addToBack) {
+                ft.addToBackStack(TAG_APP_DETAILS);
+            }
             ft.setBreadCrumbTitle(
                     parent.getResources().getString(R.string.data_usage_app_summary_title));
             ft.commitAllowingStateLoss();
@@ -1917,6 +1999,16 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
             final DataUsageSummary target = (DataUsageSummary) getTargetFragment();
             target.mCurrentApp = null;
             target.updateBody();
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            switch (item.getItemId()) {
+            case android.R.id.home:
+                getFragmentManager().popBackStack();
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
         }
     }
 
@@ -2529,14 +2621,6 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
         return view;
     }
 
-    private static View inflateCategoryHeader(LayoutInflater inflater, ViewGroup root) {
-        final TypedArray a = inflater.getContext().obtainStyledAttributes(null,
-                com.android.internal.R.styleable.Preference,
-                com.android.internal.R.attr.preferenceCategoryStyle, 0);
-        final int resId = a.getResourceId(com.android.internal.R.styleable.Preference_layout, 0);
-        return inflater.inflate(resId, root, false);
-    }
-
     /**
      * Test if any networks are currently limited.
      */
@@ -2740,22 +2824,7 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
             return -1;
         }
 
-        //SUB SELECT
-        private boolean isMobileDataAvailable(long subId) {
-            int[] subIds = SubscriptionManager.getSubId(PhoneConstants.SUB1);
-            if (subIds != null && subIds[0] == subId) {
-                return true;
-            }
-
-            subIds = SubscriptionManager.getSubId(PhoneConstants.SUB2);
-            if (subIds != null && subIds[0] == subId) {
-                return true;
-            }
-
-            subIds = SubscriptionManager.getSubId(PhoneConstants.SUB3);
-            if (subIds != null && subIds[0] == subId) {
-                return true;
-            }
-            return false;
+        private boolean isMobileDataAvailable(int subId) {
+            return mSubscriptionManager.getActiveSubscriptionInfo(subId) != null;
         }
 }

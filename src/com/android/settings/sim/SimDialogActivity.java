@@ -19,7 +19,6 @@ package com.android.settings.sim;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -29,8 +28,7 @@ import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
-import android.text.TextUtils;
-import android.util.Log;
+import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,9 +41,6 @@ import android.widget.Toast;
 
 import com.android.settings.R;
 import com.android.settings.Utils;
-import com.android.internal.telephony.Phone;
-import com.android.internal.telephony.PhoneFactory;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -85,7 +80,8 @@ public class SimDialogActivity extends Activity {
     private void displayPreferredDialog(final int slotId) {
         final Resources res = getResources();
         final Context context = getApplicationContext();
-        final SubscriptionInfo sir = Utils.findRecordBySlotId(context, slotId);
+        final SubscriptionInfo sir = SubscriptionManager.from(context)
+                .getActiveSubscriptionInfoForSimSlotIndex(slotId);
 
         if (sir != null) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -138,17 +134,14 @@ public class SimDialogActivity extends Activity {
 
     private PhoneAccountHandle subscriptionIdToPhoneAccountHandle(final int subId) {
         final TelecomManager telecomManager = TelecomManager.from(this);
+        final TelephonyManager telephonyManager = TelephonyManager.from(this);
         final Iterator<PhoneAccountHandle> phoneAccounts =
                 telecomManager.getCallCapablePhoneAccounts().listIterator();
 
         while (phoneAccounts.hasNext()) {
             final PhoneAccountHandle phoneAccountHandle = phoneAccounts.next();
             final PhoneAccount phoneAccount = telecomManager.getPhoneAccount(phoneAccountHandle);
-            final String phoneAccountId = phoneAccountHandle.getId();
-
-            if (phoneAccount.hasCapabilities(PhoneAccount.CAPABILITY_SIM_SUBSCRIPTION)
-                    && TextUtils.isDigitsOnly(phoneAccountId)
-                    && Integer.parseInt(phoneAccountId) == subId){
+            if (subId == telephonyManager.getSubIdForPhoneAccount(phoneAccount)) {
                 return phoneAccountHandle;
             }
         }
@@ -210,6 +203,7 @@ public class SimDialogActivity extends Activity {
         ArrayList<SubscriptionInfo> callsSubInfoList = new ArrayList<SubscriptionInfo>();
         if (id == CALLS_PICK) {
             final TelecomManager telecomManager = TelecomManager.from(context);
+            final TelephonyManager telephonyManager = TelephonyManager.from(context);
             final Iterator<PhoneAccountHandle> phoneAccounts =
                     telecomManager.getCallCapablePhoneAccounts().listIterator();
 
@@ -219,13 +213,10 @@ public class SimDialogActivity extends Activity {
                 final PhoneAccount phoneAccount =
                         telecomManager.getPhoneAccount(phoneAccounts.next());
                 list.add((String)phoneAccount.getLabel());
-                // Added check to add entry into callsSubInforList only if phoneAccountId is int
-                // Todo : Might have to change it later based on b/18904714
-                if (phoneAccount.hasCapabilities(PhoneAccount.CAPABILITY_SIM_SUBSCRIPTION) &&
-                        TextUtils.isDigitsOnly(phoneAccount.getAccountHandle().getId())) {
-                    final String phoneAccountId = phoneAccount.getAccountHandle().getId();
-                    final SubscriptionInfo sir = Utils.findRecordBySubId(context,
-                            Integer.parseInt(phoneAccountId));
+                int subId = telephonyManager.getSubIdForPhoneAccount(phoneAccount);
+                if (subId != SubscriptionManager.INVALID_SUBSCRIPTION_ID) {
+                    final SubscriptionInfo sir = SubscriptionManager.from(context)
+                            .getActiveSubscriptionInfo(subId);
                     callsSubInfoList.add(sir);
                 } else {
                     callsSubInfoList.add(null);

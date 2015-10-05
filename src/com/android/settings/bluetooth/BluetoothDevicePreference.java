@@ -21,7 +21,6 @@ import static android.os.UserManager.DISALLOW_CONFIG_BLUETOOTH;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.UserManager;
@@ -37,6 +36,9 @@ import android.widget.ImageView;
 import com.android.settings.R;
 import com.android.settings.search.Index;
 import com.android.settings.search.SearchIndexableRaw;
+import com.android.settingslib.bluetooth.CachedBluetoothDevice;
+import com.android.settingslib.bluetooth.HidProfile;
+import com.android.settingslib.bluetooth.LocalBluetoothProfile;
 
 import java.util.List;
 
@@ -107,7 +109,7 @@ public final class BluetoothDevicePreference extends Preference implements
          */
         setTitle(mCachedDevice.getName());
 
-        int summaryResId = getConnectionSummary();
+        int summaryResId = mCachedDevice.getConnectionSummary();
         if (summaryResId != 0) {
             setSummary(summaryResId);
         } else {
@@ -220,64 +222,10 @@ public final class BluetoothDevicePreference extends Preference implements
             data.className = BluetoothSettings.class.getName();
             data.title = mCachedDevice.getName();
             data.screenTitle = context.getResources().getString(R.string.bluetooth_settings);
-            data.iconResId = R.drawable.ic_settings_bluetooth2;
+            data.iconResId = R.drawable.ic_settings_bluetooth;
             data.enabled = true;
 
             Index.getInstance(context).updateFromSearchIndexableData(data);
-        }
-    }
-
-    private int getConnectionSummary() {
-        final CachedBluetoothDevice cachedDevice = mCachedDevice;
-
-        boolean profileConnected = false;       // at least one profile is connected
-        boolean a2dpNotConnected = false;       // A2DP is preferred but not connected
-        boolean headsetNotConnected = false;    // Headset is preferred but not connected
-
-        for (LocalBluetoothProfile profile : cachedDevice.getProfiles()) {
-            int connectionStatus = cachedDevice.getProfileConnectionState(profile);
-
-            switch (connectionStatus) {
-                case BluetoothProfile.STATE_CONNECTING:
-                case BluetoothProfile.STATE_DISCONNECTING:
-                    return Utils.getConnectionStateSummary(connectionStatus);
-
-                case BluetoothProfile.STATE_CONNECTED:
-                    profileConnected = true;
-                    break;
-
-                case BluetoothProfile.STATE_DISCONNECTED:
-                    if (profile.isProfileReady()) {
-                        if (profile instanceof A2dpProfile) {
-                            a2dpNotConnected = true;
-                        } else if (profile instanceof HeadsetProfile) {
-                            headsetNotConnected = true;
-                        }
-                    }
-                    break;
-            }
-        }
-
-        if (profileConnected) {
-            if (a2dpNotConnected && headsetNotConnected) {
-                return R.string.bluetooth_connected_no_headset_no_a2dp;
-            } else if (a2dpNotConnected) {
-                return R.string.bluetooth_connected_no_a2dp;
-            } else if (headsetNotConnected) {
-                return R.string.bluetooth_connected_no_headset;
-            } else {
-                return R.string.bluetooth_connected;
-            }
-        }
-
-        switch (cachedDevice.getBondState()) {
-            case BluetoothDevice.BOND_BONDING:
-                return R.string.bluetooth_pairing;
-
-            case BluetoothDevice.BOND_BONDED:
-            case BluetoothDevice.BOND_NONE:
-            default:
-                return 0;
         }
     }
 
@@ -320,6 +268,6 @@ public final class BluetoothDevicePreference extends Preference implements
                 return R.drawable.ic_bt_headset_hfp;
             }
         }
-        return R.drawable.ic_settings_bluetooth2;
+        return R.drawable.ic_settings_bluetooth;
     }
 }

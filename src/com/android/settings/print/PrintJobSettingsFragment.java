@@ -16,7 +16,6 @@
 
 package com.android.settings.print;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -33,6 +32,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 
@@ -67,6 +67,11 @@ public class PrintJobSettingsFragment extends SettingsPreferenceFragment {
 
     private PrintJobId mPrintJobId;
     private PrintJob mPrintJob;
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.PRINT_JOB_SETTINGS;
+    }
 
     @Override
     public void onCreate(Bundle icicle) {

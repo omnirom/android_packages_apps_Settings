@@ -16,6 +16,7 @@
 
 package com.android.settings.accounts;
 
+import com.android.internal.logging.MetricsLogger;
 import com.google.android.collect.Lists;
 
 import android.accounts.Account;
@@ -34,7 +35,7 @@ import android.content.SyncAdapterType;
 import android.content.SyncInfo;
 import android.content.SyncStatusInfo;
 import android.content.pm.ProviderInfo;
-import android.net.ConnectivityManager;
+import android.content.pm.UserInfo;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.os.UserManager;
@@ -142,8 +143,16 @@ public class AccountSyncSettings extends AccountPreferenceBase {
     }
 
     @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.ACCOUNTS_ACCOUNT_SYNC;
+    }
+
+    @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        setPreferenceScreen(null);
+        addPreferencesFromResource(R.xml.account_sync_settings);
+        setAccessibilityTitle();
 
         setHasOptionsMenu(true);
     }
@@ -162,8 +171,6 @@ public class AccountSyncSettings extends AccountPreferenceBase {
     }
 
     protected void initializeUi(final View rootView) {
-        addPreferencesFromResource(R.xml.account_sync_settings);
-
         mErrorInfoView = (TextView) rootView.findViewById(R.id.sync_settings_error_info);
         mErrorInfoView.setVisibility(View.GONE);
 
@@ -195,8 +202,21 @@ public class AccountSyncSettings extends AccountPreferenceBase {
         mProviderId.setText(mAccount.type);
     }
 
+    private void setAccessibilityTitle() {
+        final UserManager um = (UserManager) getSystemService(Context.USER_SERVICE);
+        UserInfo user = um.getUserInfo(mUserHandle.getIdentifier());
+        boolean isWorkProfile = user != null ? user.isManagedProfile() : false;
+        CharSequence currentTitle = getActivity().getTitle();
+        String accessibilityTitle =
+                getString(isWorkProfile
+                        ? R.string.accessibility_work_account_title
+                        : R.string.accessibility_personal_account_title, currentTitle);
+        getActivity().setTitle(Utils.createAccessibleSequence(currentTitle, accessibilityTitle));
+    }
+
     @Override
     public void onResume() {
+        removePreference("dummy");
         mAuthenticatorHelper.listenToAccountUpdates();
         updateAuthDescriptions();
         onAccountsUpdate(UserHandle.getCallingUserHandle());
@@ -440,12 +460,8 @@ public class AccountSyncSettings extends AccountPreferenceBase {
                     !initialSync);
 
             syncPref.setFailed(lastSyncFailed);
-            ConnectivityManager connManager =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            final boolean masterSyncAutomatically =
-                    ContentResolver.getMasterSyncAutomaticallyAsUser(userId);
-            final boolean backgroundDataEnabled = connManager.getBackgroundDataSetting();
-            final boolean oneTimeSyncMode = !masterSyncAutomatically || !backgroundDataEnabled;
+            final boolean oneTimeSyncMode = !ContentResolver.getMasterSyncAutomaticallyAsUser(
+                userId);
             syncPref.setOneTimeSyncMode(oneTimeSyncMode);
             syncPref.setChecked(oneTimeSyncMode || syncEnabled);
         }
@@ -539,7 +555,6 @@ public class AccountSyncSettings extends AccountPreferenceBase {
             mProviderIcon.setImageDrawable(getDrawableForType(mAccount.type));
             mProviderId.setText(getLabelForType(mAccount.type));
         }
-        addPreferencesFromResource(R.xml.account_sync_settings);
     }
 
     @Override

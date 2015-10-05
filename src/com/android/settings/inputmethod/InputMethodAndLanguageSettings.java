@@ -51,6 +51,7 @@ import android.view.textservice.SpellCheckerInfo;
 import android.view.textservice.TextServicesManager;
 
 import com.android.internal.app.LocalePicker;
+import com.android.internal.logging.MetricsLogger;
 import com.android.settings.R;
 import com.android.settings.Settings.KeyboardLayoutPickerActivity;
 import com.android.settings.SettingsActivity;
@@ -102,6 +103,11 @@ public class InputMethodAndLanguageSettings extends SettingsPreferenceFragment
     private Intent mIntentWaitingForResult;
     private InputMethodSettingValuesWrapper mInputMethodSettingValues;
     private DevicePolicyManager mDpm;
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.INPUTMETHOD_LANGUAGE;
+    }
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -248,8 +254,9 @@ public class InputMethodAndLanguageSettings extends SettingsPreferenceFragment
         if (spellChecker != null) {
             final TextServicesManager tsm = (TextServicesManager) getSystemService(
                     Context.TEXT_SERVICES_MANAGER_SERVICE);
-            if (tsm.isSpellCheckerEnabled()) {
-                final SpellCheckerInfo sci = tsm.getCurrentSpellChecker();
+            final SpellCheckerInfo sci = tsm.getCurrentSpellChecker();
+            spellChecker.setEnabled(sci != null);
+            if (tsm.isSpellCheckerEnabled() && sci != null) {
                 spellChecker.setSummary(sci.loadLabel(getPackageManager()));
             } else {
                 spellChecker.setSummary(R.string.switch_off_text);
@@ -319,7 +326,7 @@ public class InputMethodAndLanguageSettings extends SettingsPreferenceFragment
             } else if (KEY_CURRENT_INPUT_METHOD.equals(preference.getKey())) {
                 final InputMethodManager imm = (InputMethodManager)
                         getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showInputMethodPicker();
+                imm.showInputMethodPicker(false /* showAuxiliarySubtypes */);
             }
         } else if (preference instanceof SwitchPreference) {
             final SwitchPreference pref = (SwitchPreference) preference;
@@ -783,14 +790,6 @@ public class InputMethodAndLanguageSettings extends SettingsPreferenceFragment
                 indexable.screenTitle = screenTitle;
                 indexables.add(indexable);
             }
-
-            // Voice input
-            indexable = new SearchIndexableRaw(context);
-            indexable.key = "voice_input_settings";
-            indexable.title = context.getString(R.string.voice_input_settings);
-            indexable.screenTitle = screenTitle;
-            indexable.keywords = context.getString(R.string.keywords_voice_input);
-            indexables.add(indexable);
 
             // Text-to-speech.
             TtsEngines ttsEngines = new TtsEngines(context);

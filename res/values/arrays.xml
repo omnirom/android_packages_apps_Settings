@@ -316,6 +316,35 @@
         <item>TTLS</item>
         <!-- Do not translate. -->
         <item>PWD</item>
+        <!-- Do not translate. -->
+        <item>SIM</item>
+        <!-- Do not translate. -->
+        <item>AKA</item>
+        <!-- Do not translate. -->
+        <item>AKA\'</item>
+    </string-array>
+
+    <!-- Type of EAP method when EAP SIM, AKA, AKA' are not supported -->
+    <string-array name="eap_method_without_sim_auth">
+        <!-- Do not translate. -->
+        <item>PEAP</item>
+        <!-- Do not translate. -->
+        <item>TLS</item>
+        <!-- Do not translate. -->
+        <item>TTLS</item>
+        <!-- Do not translate. -->
+        <item>PWD</item>
+    </string-array>
+
+   <!-- Wi-Fi AP band settings.  Either 2.4GHz or 5GHz. -->
+   <!-- Note that adding/removing/moving the items will need wifi settings code change. -->
+    <string-array name="wifi_ap_band_config_full">
+        <item>@string/wifi_ap_choose_2G</item>
+        <item>@string/wifi_ap_choose_5G</item>
+    </string-array>
+
+    <string-array name="wifi_ap_band_config_2G_only">
+        <item>@string/wifi_ap_choose_2G</item>
     </string-array>
 
    <!-- Wi-Fi WPS setup for p2p connections.  -->
@@ -509,23 +538,61 @@
 
     <!-- Bearer Info used in APN editor -->
     <string-array name="bearer_entries">
-        <item>LTE</item>
-        <item>eHRPD</item>
         <item>Unspecified</item>
+        <item>LTE</item>
+        <item>HSPAP</item>
+        <item>HSPA</item>
+        <item>HSUPA</item>
+        <item>HSDPA</item>
+        <item>UMTS</item>
+        <item>EDGE</item>
+        <item>GPRS</item>
+        <item>eHRPD</item>
+        <item>EVDO_B</item>
+        <item>EVDO_A</item>
+        <item>EVDO_0</item>
+        <item>1xRTT</item>
+        <item>IS95B</item>
+        <item>IS95A</item>
     </string-array>
 
     <string-array translatable="false" name="bearer_values">
         <!-- Do not translate. -->
+        <item>0</item>
+        <!-- Do not translate. -->
         <item>14</item>
+        <!-- Do not translate. -->
+        <item>15</item>
+        <!-- Do not translate. -->
+        <item>11</item>
+        <!-- Do not translate. -->
+        <item>10</item>
+        <!-- Do not translate. -->
+        <item>9</item>
+        <!-- Do not translate. -->
+        <item>3</item>
+        <!-- Do not translate. -->
+        <item>2</item>
+        <!-- Do not translate. -->
+        <item>1</item>
         <!-- Do not translate. -->
         <item>13</item>
         <!-- Do not translate. -->
-        <item>0</item>
+        <item>12</item>
+        <!-- Do not translate. -->
+        <item>8</item>
+        <!-- Do not translate. -->
+        <item>7</item>
+        <!-- Do not translate. -->
+        <item>6</item>
+        <!-- Do not translate. -->
+        <item>5</item>
+        <!-- Do not translate. -->
+        <item>4</item>
     </string-array>
 
     <!-- MVNO Info used in APN editor -->
     <string-array name="mvno_type_entries">
-        <!-- Do not translate. -->
         <item>None</item>
         <!-- Do not translate. -->
         <item>SPN</item>
@@ -618,6 +685,9 @@
         <item>mute/unmute microphone</item>
         <item>project media</item>
         <item>activate VPN</item>
+        <item>write wallpaper</item>
+        <item>assist structure</item>
+        <item>assist screenshot</item>
     </string-array>
 
     <!-- User display names for app ops codes -->
@@ -669,6 +739,9 @@
         <item>Mute/unmute microphone</item>
         <item>Project media</item>
         <item>Activate VPN</item>
+        <item>Write wallpaper</item>
+        <item>Assist structure</item>
+        <item>Assist screenshot</item>
     </string-array>
 
     <!-- Titles for the list of long press timeout options. -->
@@ -767,7 +840,7 @@
 
     <!-- Values for captioning color preference. -->
     <integer-array name="captioning_color_selector_values" translatable="false" >
-        <item>0x00000100</item>
+        <item>0x00FFFFFF</item>
         <item>0xFFFFFFFF</item>
         <item>0xFF000000</item>
         <item>0xFFFF0000</item>
@@ -928,9 +1001,7 @@
     <!-- Titles for window animation scale preference. [CHAR LIMIT=35] -->
     <string-array name="window_animation_scale_entries">
         <item>Animation off</item>
-        <item>Animation scale .25x</item>
         <item>Animation scale .5x</item>
-        <item>Animation scale .75x</item>
         <item>Animation scale 1x</item>
         <item>Animation scale 1.5x</item>
         <item>Animation scale 2x</item>
@@ -941,9 +1012,7 @@
     <!-- Values for window animation scale preference. -->
     <string-array name="window_animation_scale_values" translatable="false" >
         <item>0</item>
-        <item>.25</item>
         <item>.5</item>
-        <item>.75</item>
         <item>1</item>
         <item>1.5</item>
         <item>2</item>
@@ -954,9 +1023,7 @@
     <!-- Titles for transition animation scale preference. [CHAR LIMIT=35] -->
     <string-array name="transition_animation_scale_entries">
         <item>Animation off</item>
-        <item>Animation scale .25x</item>
         <item>Animation scale .5x</item>
-        <item>Animation scale .75x</item>
         <item>Animation scale 1x</item>
         <item>Animation scale 1.5x</item>
         <item>Animation scale 2x</item>
@@ -967,9 +1034,7 @@
     <!-- Values for transition animation scale preference. -->
     <string-array name="transition_animation_scale_values" translatable="false" >
         <item>0</item>
-        <item>.25</item>
         <item>.5</item>
-        <item>.75</item>
         <item>1</item>
         <item>1.5</item>
         <item>2</item>
@@ -980,9 +1045,7 @@
     <!-- Titles for animator duration scale preference. [CHAR LIMIT=35] -->
     <string-array name="animator_duration_scale_entries">
         <item>Animation off</item>
-        <item>Animation scale .25x</item>
         <item>Animation scale .5x</item>
-        <item>Animation scale .75x</item>
         <item>Animation scale 1x</item>
         <item>Animation scale 1.5x</item>
         <item>Animation scale 2x</item>
@@ -993,9 +1056,7 @@
     <!-- Values for animator duration scale preference. -->
     <string-array name="animator_duration_scale_values" translatable="false" >
         <item>0</item>
-        <item>.25</item>
         <item>.5</item>
-        <item>.75</item>
         <item>1</item>
         <item>1.5</item>
         <item>2</item>
@@ -1006,24 +1067,32 @@
     <!-- Titles for overlay display devices preference. [CHAR LIMIT=35] -->
     <string-array name="overlay_display_devices_entries">
         <item>None</item>
-        <item>720x480 mdpi</item>
-        <item>720x480 mdpi (secure)</item>
-        <item>1280x720 tvdpi</item>
-        <item>1280x720 tvdpi (secure)</item>
-        <item>1920x1080 xhdpi</item>
-        <item>1920x1080 xhdpi (secure)</item>
-        <item>1280x720 tvdpi and 1920x1080 xhdpi</item>
+        <item>480p</item>
+        <item>480p (secure)</item>
+        <item>720p</item>
+        <item>720p (secure)</item>
+        <item>1080p</item>
+        <item>1080p (secure)</item>
+        <item>4K</item>
+        <item>4K (secure)</item>
+        <item>4K (upscaled)</item>
+        <item>4K (upscaled, secure)</item>
+        <item>720p, 1080p (dual screen)</item>
     </string-array>
 
     <!-- Values for overlay display devices preference. -->
     <string-array name="overlay_display_devices_values" translatable="false" >
         <item></item>
-        <item>720x480/160</item>
-        <item>720x480/160,secure</item>
+        <item>720x480/142</item>
+        <item>720x480/142,secure</item>
         <item>1280x720/213</item>
         <item>1280x720/213,secure</item>
         <item>1920x1080/320</item>
         <item>1920x1080/320,secure</item>
+        <item>3840x2160/320</item>
+        <item>3840x2160/320,secure</item>
+        <item>1920x1080/320|3840x2160/640</item>
+        <item>1920x1080/320|3840x2160/640,secure</item>
         <item>1280x720/213;1920x1080/320</item>
     </string-array>
 
@@ -1172,17 +1241,26 @@
         <item>Always allow</item>
     </string-array>
 
-    <!-- [CHAR LIMIT=30] Labels for memory states -->
+    <!-- [CHAR LIMIT=40] Labels for memory states -->
     <string-array name="ram_states">
         <!-- Normal desired memory state. -->
-        <item>normal</item>
+        <item>Normal</item>
         <!-- Moderate memory state, not as good as normal. -->
-        <item>moderate</item>
+        <item>Moderate</item>
         <!-- Memory is running low. -->
-        <item>low</item>
+        <item>Low</item>
         <!-- Memory is critical. -->
-        <item>critical</item>
+        <item>Critical</item>
+        <!-- Unknown memory state -->
+        <item>\?</item>
     </string-array>
+
+    <array name="ram_colors">
+        <item>@color/memory_normal</item>
+        <item>@color/memory_moderate</item>
+        <item>@color/memory_low</item>
+        <item>@color/memory_critical</item>
+    </array>
 
     <!-- Display color space adjustment modes for accessibility -->
     <string-array name="daltonizer_type_entries" translatable="false">
@@ -1214,20 +1292,6 @@
         <item>2</item>
         <item>1</item>
         <item>3</item>
-    </string-array>
-
-    <!-- Setting display values for zen mode -->
-    <string-array name="entries_zen_mode">
-        <item>Off</item>
-        <item>Limited interruptions</item>
-        <item>Zero interruptions</item>
-    </string-array>
-
-    <!-- Setting values for zen mode, must match the Settings.Global.ZEN_MODE_ constants -->
-    <string-array name="entryvalues_zen_mode" translatable="false">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
     </string-array>
 
     <!-- Battery saver mode: allowable trigger threshold levels. -->
@@ -1272,4 +1336,57 @@
         <item>Pink</item>
         <item>Red</item>
     </string-array>
+
+    <!-- USB configuration names for Developer Settings.
+         This can be overridden by devices with additional USB configurations. -->
+    <string-array name="usb_configuration_titles">
+        <item>@string/usb_use_charging_only</item>
+        <item>MTP (Media Transfer Protocol)</item>
+        <item>PTP (Picture Transfer Protocol)</item>
+        <item>RNDIS (USB Ethernet)</item>
+        <item>Audio Source</item>
+        <item>MIDI</item>
+    </string-array>
+
+    <!-- USB configuration values for Developer Settings.
+         These are lists of USB functions passed to the USB Manager to change USB configuraton.
+         This can be overridden by devices with additional USB configurations.
+         Do not translate. -->
+    <string-array name="usb_configuration_values" translatable="false">
+        <!-- Do not translate. -->
+        <item>none</item>
+        <!-- Do not translate. -->
+        <item>mtp</item>
+        <!-- Do not translate. -->
+        <item>ptp</item>
+        <!-- Do not translate. -->
+        <item>rndis</item>
+        <!-- Do not translate. -->
+        <item>audio_source</item>
+        <!-- Do not translate. -->
+        <item>midi</item>
+    </string-array>
+
+    <!-- Possible values for user theme in Display Settings.
+         Do not translate. -->
+    <string-array name="night_mode_entries" translatable="false">
+        <!-- Do not translate. -->
+        <item>@string/night_mode_no</item>
+        <!-- Do not translate. -->
+        <item>@string/night_mode_yes</item>
+        <!-- Do not translate. -->
+        <item>@string/night_mode_auto</item>
+    </string-array>
+
+    <!-- These values should match up with the MODE_NIGHT constants in UiModeManager.
+         Do not translate. -->
+    <string-array name="night_mode_values" translatable="false">
+        <!-- Do not translate. -->
+        <item>1</item>
+        <!-- Do not translate. -->
+        <item>2</item>
+        <!-- Do not translate. -->
+        <item>0</item>
+    </string-array>
+
 </resources>

@@ -22,16 +22,13 @@ import android.content.Intent;
 import android.content.pm.UserInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.UserHandle;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.settings.R;
 import com.android.settings.Utils;
-
-import java.util.List;
 
 public class RestrictedProfileSettings extends AppRestrictionsFragment
         implements EditUserInfoController.OnContentChangedCallback {
@@ -61,17 +58,13 @@ public class RestrictedProfileSettings extends AppRestrictionsFragment
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        if (mHeaderView == null) {
-            mHeaderView = LayoutInflater.from(getActivity()).inflate(
-                    R.layout.user_info_header, null);
-            setPinnedHeaderView(mHeaderView);
-            mHeaderView.setOnClickListener(this);
-            mUserIconView = (ImageView) mHeaderView.findViewById(android.R.id.icon);
-            mUserNameView = (TextView) mHeaderView.findViewById(android.R.id.title);
-            mDeleteButton = (ImageView) mHeaderView.findViewById(R.id.delete);
-            mDeleteButton.setOnClickListener(this);
-            getListView().setFastScrollEnabled(true);
-        }
+        mHeaderView = setPinnedHeaderView(R.layout.user_info_header);
+        mHeaderView.setOnClickListener(this);
+        mUserIconView = (ImageView) mHeaderView.findViewById(android.R.id.icon);
+        mUserNameView = (TextView) mHeaderView.findViewById(android.R.id.title);
+        mDeleteButton = (ImageView) mHeaderView.findViewById(R.id.delete);
+        mDeleteButton.setOnClickListener(this);
+        getListView().setFastScrollEnabled(true);
         // This is going to bind the preferences.
         super.onActivityCreated(savedInstanceState);
     }
@@ -93,7 +86,7 @@ public class RestrictedProfileSettings extends AppRestrictionsFragment
         } else {
             ((TextView) mHeaderView.findViewById(android.R.id.title)).setText(info.name);
             ((ImageView) mHeaderView.findViewById(android.R.id.icon)).setImageDrawable(
-                    getCircularUserIcon());
+                    Utils.getUserIcon(getActivity(), mUserManager, info));
         }
     }
 
@@ -129,7 +122,7 @@ public class RestrictedProfileSettings extends AppRestrictionsFragment
                     this, mUser);
         } else if (dialogId == DIALOG_CONFIRM_REMOVE) {
             Dialog dlg =
-                    Utils.createRemoveConfirmationDialog(getActivity(), mUser.getIdentifier(),
+                    UserDialogs.createRemoveDialog(getActivity(), mUser.getIdentifier(),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     removeUser();

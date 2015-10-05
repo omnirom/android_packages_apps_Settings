@@ -39,6 +39,17 @@ public class ConfirmDeviceCredentialActivity extends Activity {
         return intent;
     }
 
+    public static Intent createIntent(CharSequence title, CharSequence details, long challenge) {
+        Intent intent = new Intent();
+        intent.setClassName("com.android.settings",
+                ConfirmDeviceCredentialActivity.class.getName());
+        intent.putExtra(KeyguardManager.EXTRA_TITLE, title);
+        intent.putExtra(KeyguardManager.EXTRA_DESCRIPTION, details);
+        intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_CHALLENGE, challenge);
+        intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_HAS_CHALLENGE, true);
+        return intent;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,11 +58,15 @@ public class ConfirmDeviceCredentialActivity extends Activity {
         String title = intent.getStringExtra(KeyguardManager.EXTRA_TITLE);
         String details = intent.getStringExtra(KeyguardManager.EXTRA_DESCRIPTION);
 
-        ChooseLockSettingsHelper helper = new ChooseLockSettingsHelper(this);
-        if (!helper.launchConfirmationActivity(0 /* request code */, title, details)) {
-            Log.d(TAG, "No pattern, password or PIN set.");
-            setResult(Activity.RESULT_OK);
-            finish();
+        // Ignore rotates and ensure we only launch this once
+        if (savedInstanceState == null) {
+            ChooseLockSettingsHelper helper = new ChooseLockSettingsHelper(this);
+            if (!helper.launchConfirmationActivity(0 /* request code */, null /* title */, title,
+                    details, false /* returnCredentials */, true /* isExternal */)) {
+                Log.d(TAG, "No pattern, password or PIN set.");
+                setResult(Activity.RESULT_OK);
+                finish();
+            }
         }
     }
 

@@ -20,11 +20,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.ServiceManager;
-import android.os.RemoteException;
-import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -36,14 +34,14 @@ import android.telephony.SignalStrength;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
-import android.provider.Telephony;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.android.internal.telephony.ITelephony;
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.telephony.DefaultPhoneNotifier;
 import com.android.internal.telephony.Phone;
 import com.android.internal.telephony.PhoneFactory;
+import com.android.settings.InstrumentedPreferenceActivity;
 import com.android.settings.R;
 import com.android.settings.Utils;
 
@@ -70,7 +68,7 @@ import java.util.List;
  * # Signal Strength
  *
  */
-public class SimStatus extends PreferenceActivity {
+public class SimStatus extends InstrumentedPreferenceActivity {
     private static final String TAG = "SimStatus";
 
     private static final String KEY_DATA_STATE = "data_state";
@@ -135,9 +133,9 @@ public class SimStatus extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        mTelephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 
-        mSelectableSubInfos = new ArrayList<SubscriptionInfo>();
-        mTelephonyManager = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+        mSelectableSubInfos = SubscriptionManager.from(this).getActiveSubscriptionInfoList();
 
         addPreferencesFromResource(R.xml.device_info_sim_status);
 
@@ -146,32 +144,34 @@ public class SimStatus extends PreferenceActivity {
         // Note - missing in zaku build, be careful later...
         mSignalStrength = findPreference(KEY_SIGNAL_STRENGTH);
 
-        for (int i = 0; i < mTelephonyManager.getSimCount(); i++) {
-            final SubscriptionInfo sir = Utils.findRecordBySlotId(this, i);
-            if (sir != null) {
-                mSelectableSubInfos.add(sir);
+        if (mSelectableSubInfos == null) {
+            mSir = null;
+        } else {
+            mSir = mSelectableSubInfos.size() > 0 ? mSelectableSubInfos.get(0) : null;
+
+            if (mSelectableSubInfos.size() > 1) {
+                setContentView(com.android.internal.R.layout.common_tab_settings);
+
+                mTabHost = (TabHost) findViewById(android.R.id.tabhost);
+                mTabWidget = (TabWidget) findViewById(android.R.id.tabs);
+                mListView = (ListView) findViewById(android.R.id.list);
+
+                mTabHost.setup();
+                mTabHost.setOnTabChangedListener(mTabListener);
+                mTabHost.clearAllTabs();
+
+                for (int i = 0; i < mSelectableSubInfos.size(); i++) {
+                    mTabHost.addTab(buildTabSpec(String.valueOf(i),
+                            String.valueOf(mSelectableSubInfos.get(i).getDisplayName())));
+                }
             }
         }
-
-        mSir = mSelectableSubInfos.size() > 0 ? mSelectableSubInfos.get(0) : null;
-        if (mSelectableSubInfos.size() > 1) {
-            setContentView(R.layout.sim_information);
-
-            mTabHost = (TabHost) findViewById(android.R.id.tabhost);
-            mTabWidget = (TabWidget) findViewById(android.R.id.tabs);
-            mListView = (ListView) findViewById(android.R.id.list);
-
-            mTabHost.setup();
-            mTabHost.setOnTabChangedListener(mTabListener);
-            mTabHost.clearAllTabs();
-
-            for (int i = 0; i < mSelectableSubInfos.size(); i++) {
-                mTabHost.addTab(buildTabSpec(String.valueOf(i),
-                        String.valueOf(mSelectableSubInfos.get(i).getDisplayName())));
-            }
-        }
-
         updatePhoneInfos();
+    }
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.DEVICEINFO_SIM_STATUS;
     }
 
     @Override
@@ -247,6 +247,19 @@ public class SimStatus extends PreferenceActivity {
             networktype = mTelephonyManager.getNetworkTypeName(actualVoiceNetworkType);
         }
 
+        boolean show4GForLTE = false;
+        try {
+            Context con = createPackageContext("com.android.systemui", 0);
+            int id = con.getResources().getIdentifier("config_show4GForLTE",
+                    "bool", "com.android.systemui");
+            show4GForLTE = con.getResources().getBoolean(id);
+        } catch (NameNotFoundException e) {
+            Log.e(TAG, "NameNotFoundException for show4GFotLTE");
+        }
+
+        if (networktype != null && networktype.equals("LTE") && show4GForLTE) {
+            networktype = "4G";
+        }
         setSummaryText(KEY_NETWORK_TYPE, networktype);
     }
 
@@ -283,11 +296,17 @@ public class SimStatus extends PreferenceActivity {
                 display = mRes.getString(R.string.radioInfo_service_in);
                 break;
             case ServiceState.STATE_OUT_OF_SERVICE:
+                // Set signal strength to 0 when service state is STATE_OUT_OF_SERVICE
+                mSignalStrength.setSummary("0");
             case ServiceState.STATE_EMERGENCY_ONLY:
+                // Set summary string of service state to radioInfo_service_out when
+                // service state is both STATE_OUT_OF_SERVICE & STATE_EMERGENCY_ONLY
                 display = mRes.getString(R.string.radioInfo_service_out);
                 break;
             case ServiceState.STATE_POWER_OFF:
                 display = mRes.getString(R.string.radioInfo_service_off);
+                // Also set signal strength to 0
+                mSignalStrength.setSummary("0");
                 break;
         }
 
@@ -315,6 +334,7 @@ public class SimStatus extends PreferenceActivity {
             if ((ServiceState.STATE_OUT_OF_SERVICE == state) ||
                     (ServiceState.STATE_POWER_OFF == state)) {
                 mSignalStrength.setSummary("0");
+                return;
             }
 
             int signalDbm = signalStrength.getDbm();
@@ -349,10 +369,8 @@ public class SimStatus extends PreferenceActivity {
         }
         // If formattedNumber is null or empty, it'll display as "Unknown".
         setSummaryText(KEY_PHONE_NUMBER, formattedNumber);
-        final String imei = mPhone.getPhoneType() == TelephonyManager.PHONE_TYPE_CDMA
-                ? mPhone.getImei() : mPhone.getDeviceId();
-        setSummaryText(KEY_IMEI, imei);
-        setSummaryText(KEY_IMEI_SV, mTelephonyManager.getDeviceSoftwareVersion(/*slotId*/));
+        setSummaryText(KEY_IMEI, mPhone.getImei());
+        setSummaryText(KEY_IMEI_SV, mPhone.getDeviceSvn());
 
         if (!mShowLatestAreaInfo) {
             removePreferenceFromScreen(KEY_LATEST_AREA_INFO);

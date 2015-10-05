@@ -16,28 +16,36 @@
 
 package com.android.settings.dashboard;
 
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.android.internal.logging.MetricsLogger;
+import com.android.settings.HelpUtils;
+import com.android.settings.InstrumentedFragment;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
 
 import java.util.List;
 
-public class DashboardSummary extends Fragment {
+public class DashboardSummary extends InstrumentedFragment {
     private static final String LOG_TAG = "DashboardSummary";
 
     private LayoutInflater mLayoutInflater;
@@ -63,6 +71,25 @@ public class DashboardSummary extends Fragment {
         }
     }
     private HomePackageReceiver mHomePackageReceiver = new HomePackageReceiver();
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.DASHBOARD_SUMMARY;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        HelpUtils.prepareHelpMenuItem(getActivity(), menu, R.string.help_uri_dashboard,
+                getClass().getName());
+    }
 
     @Override
     public void onResume() {
@@ -148,7 +175,23 @@ public class DashboardSummary extends Fragment {
     private void updateTileView(Context context, Resources res, DashboardTile tile,
             ImageView tileIcon, TextView tileTextView, TextView statusTextView) {
 
-        if (tile.iconRes > 0) {
+        if (!TextUtils.isEmpty(tile.iconPkg)) {
+            try {
+                Drawable drawable = context.getPackageManager()
+                        .getResourcesForApplication(tile.iconPkg).getDrawable(tile.iconRes, null);
+                if (!tile.iconPkg.equals(context.getPackageName()) && drawable != null) {
+                    // If this drawable is coming from outside Settings, tint it to match the color.
+                    TypedValue tintColor = new TypedValue();
+                    context.getTheme().resolveAttribute(com.android.internal.R.attr.colorAccent,
+                            tintColor, true);
+                    drawable.setTint(tintColor.data);
+                }
+                tileIcon.setImageDrawable(drawable);
+            } catch (NameNotFoundException | Resources.NotFoundException e) {
+                tileIcon.setImageDrawable(null);
+                tileIcon.setBackground(null);
+            }
+        } else if (tile.iconRes > 0) {
             tileIcon.setImageResource(tile.iconRes);
         } else {
             tileIcon.setImageDrawable(null);

@@ -17,21 +17,25 @@
 package com.android.settings.nfc;
 
 import android.app.ActionBar;
-import android.app.Fragment;
 import android.content.Context;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.UserManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
 
+import com.android.internal.logging.MetricsLogger;
+import com.android.settings.HelpUtils;
+import com.android.settings.InstrumentedFragment;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
 import com.android.settings.widget.SwitchBar;
 
-public class AndroidBeam extends Fragment
+public class AndroidBeam extends InstrumentedFragment
         implements SwitchBar.OnSwitchChangeListener {
     private View mView;
     private NfcAdapter mNfcAdapter;
@@ -51,6 +55,14 @@ public class AndroidBeam extends Fragment
         mNfcAdapter = NfcAdapter.getDefaultAdapter(getActivity());
         mBeamDisallowed = ((UserManager) getActivity().getSystemService(Context.USER_SERVICE))
                 .hasUserRestriction(UserManager.DISALLOW_OUTGOING_BEAM);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        HelpUtils.prepareHelpMenuItem(getActivity(), menu, R.string.help_uri_beam,
+                getClass().getName());
     }
 
     @Override
@@ -97,5 +109,10 @@ public class AndroidBeam extends Fragment
             mSwitchBar.setChecked(desiredState);
         }
         mSwitchBar.setEnabled(true);
+    }
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.NFC_BEAM;
     }
 }

@@ -19,6 +19,7 @@ package com.android.settings.tts;
 import static android.provider.Settings.Secure.TTS_DEFAULT_RATE;
 import static android.provider.Settings.Secure.TTS_DEFAULT_SYNTH;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
 import com.android.settings.SettingsPreferenceFragment;
@@ -28,7 +29,6 @@ import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -142,6 +142,11 @@ public class TextToSpeechSettings extends SettingsPreferenceFragment implements
             onUpdateEngine(status);
         }
     };
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.TTS_TEXT_TO_SPEECH;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

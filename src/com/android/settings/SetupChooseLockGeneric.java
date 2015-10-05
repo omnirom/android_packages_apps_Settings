@@ -16,19 +16,21 @@
 
 package com.android.settings;
 
-import com.android.setupwizard.navigationbar.SetupWizardNavBar;
+import com.android.internal.widget.LockPatternUtils;
+import com.android.setupwizardlib.SetupWizardListLayout;
+import com.android.setupwizardlib.view.NavigationBar;
 
+import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.UserHandle;
 import android.preference.PreferenceFragment;
-import android.util.MutableBoolean;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 /**
  * Setup Wizard's version of ChooseLockGeneric screen. It inherits the logic and basic structure
@@ -37,8 +39,7 @@ import android.widget.ListView;
  * Other changes should be done to ChooseLockGeneric class instead and let this class inherit
  * those changes.
  */
-public class SetupChooseLockGeneric extends ChooseLockGeneric
-        implements SetupWizardNavBar.NavigationBarListener {
+public class SetupChooseLockGeneric extends ChooseLockGeneric {
 
     @Override
     protected boolean isValidFragment(String fragmentName) {
@@ -52,46 +53,51 @@ public class SetupChooseLockGeneric extends ChooseLockGeneric
 
     @Override
     protected void onApplyThemeResource(Resources.Theme theme, int resid, boolean first) {
-        resid = SetupWizardUtils.getTheme(getIntent(), resid);
+        resid = SetupWizardUtils.getTheme(getIntent());
         super.onApplyThemeResource(theme, resid, first);
     }
 
-    @Override
-    public void onNavigationBarCreated(SetupWizardNavBar bar) {
-        SetupWizardUtils.setImmersiveMode(this, bar);
-        bar.getNextButton().setEnabled(false);
-    }
+    public static class SetupChooseLockGenericFragment extends ChooseLockGenericFragment
+            implements NavigationBar.NavigationBarListener {
 
-    @Override
-    public void onNavigateBack() {
-        onBackPressed();
-    }
-
-    @Override
-    public void onNavigateNext() {
-    }
-
-    public static class SetupChooseLockGenericFragment extends ChooseLockGenericFragment {
+        private static final String EXTRA_PASSWORD_QUALITY = ":settings:password_quality";
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            final View view = inflater.inflate(R.layout.setup_preference, container, false);
-            ListView list = (ListView) view.findViewById(android.R.id.list);
-            View title = view.findViewById(R.id.title);
-            if (title == null) {
-                final View header = inflater.inflate(R.layout.setup_wizard_header, list, false);
-                list.addHeaderView(header, null, false);
-            }
-            return view;
+            final SetupWizardListLayout layout = (SetupWizardListLayout) inflater.inflate(
+                    R.layout.setup_choose_lock_generic, container, false);
+            layout.setHeaderText(getActivity().getTitle());
+
+            final NavigationBar navigationBar = layout.getNavigationBar();
+            navigationBar.getNextButton().setEnabled(false);
+            navigationBar.setNavigationBarListener(this);
+
+            return layout;
         }
 
         @Override
         public void onViewCreated(View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
-            SetupWizardUtils.setIllustration(getActivity(),
-                    R.drawable.setup_illustration_lock_screen);
-            SetupWizardUtils.setHeaderText(getActivity(), getActivity().getTitle());
+            SetupWizardUtils.setImmersiveMode(getActivity());
+        }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (resultCode != RESULT_CANCELED) {
+                if (data == null) {
+                    data = new Intent();
+                }
+                // Add the password quality extra to the intent data that will be sent back for
+                // Setup Wizard.
+                LockPatternUtils lockPatternUtils = new LockPatternUtils(getActivity());
+                data.putExtra(EXTRA_PASSWORD_QUALITY,
+                        lockPatternUtils.getKeyguardStoredPasswordQuality(UserHandle.myUserId()));
+
+                super.onActivityResult(requestCode, resultCode, data);
+            }
+            // If the started activity was cancelled (e.g. the user presses back), then this
+            // activity will be resumed to foreground.
         }
 
         /***
@@ -99,11 +105,9 @@ public class SetupChooseLockGeneric extends ChooseLockGeneric
          * screen lock options here.
          *
          * @param quality the requested quality.
-         * @param allowBiometric whether to allow biometic screen lock
          */
         @Override
-        protected void disableUnusablePreferences(final int quality,
-                MutableBoolean allowBiometric) {
+        protected void disableUnusablePreferences(final int quality, boolean hideDisabled) {
             // At this part of the flow, the user has already indicated they want to add a pin,
             // pattern or password, so don't show "None" or "Slide". We disable them here and set
             // the HIDE_DISABLED flag to true to hide them. This only happens for setup wizard.
@@ -111,25 +115,61 @@ public class SetupChooseLockGeneric extends ChooseLockGeneric
             // installed with a policy we need to honor.
             final int newQuality = Math.max(quality,
                     DevicePolicyManager.PASSWORD_QUALITY_SOMETHING);
-            super.disableUnusablePreferencesImpl(newQuality, allowBiometric,
-                    true /* hideDisabled */);
+            super.disableUnusablePreferencesImpl(newQuality, true /* hideDisabled */);
         }
 
         @Override
-        protected Intent getLockPasswordIntent(Context context, int quality, boolean isFallback,
-                int minLength, int maxLength, boolean requirePasswordToDecrypt,
-                boolean confirmCredentials) {
-            final Intent intent = SetupChooseLockPassword.createIntent(context, quality,
-                    isFallback, minLength, maxLength, requirePasswordToDecrypt, confirmCredentials);
+        protected Intent getLockPasswordIntent(Context context, int quality,
+                int minLength, final int maxLength,
+                boolean requirePasswordToDecrypt, boolean confirmCredentials) {
+            final Intent intent = SetupChooseLockPassword.createIntent(context, quality, minLength,
+                    maxLength, requirePasswordToDecrypt, confirmCredentials);
             SetupWizardUtils.copySetupExtras(getActivity().getIntent(), intent);
             return intent;
         }
 
         @Override
-        protected Intent getLockPatternIntent(Context context, boolean isFallback,
-                boolean requirePassword, boolean confirmCredentials) {
-            final Intent intent = SetupChooseLockPattern.createIntent(context, isFallback,
-                    requirePassword, confirmCredentials);
+        protected Intent getLockPasswordIntent(Context context, int quality,
+                int minLength, final int maxLength,
+                boolean requirePasswordToDecrypt, long challenge) {
+            final Intent intent = SetupChooseLockPassword.createIntent(context, quality, minLength,
+                    maxLength, requirePasswordToDecrypt, challenge);
+            SetupWizardUtils.copySetupExtras(getActivity().getIntent(), intent);
+            return intent;
+        }
+
+        @Override
+        protected Intent getLockPasswordIntent(Context context, int quality, int minLength,
+                final int maxLength, boolean requirePasswordToDecrypt, String password) {
+            final Intent intent = SetupChooseLockPassword.createIntent(context, quality, minLength,
+                    maxLength, requirePasswordToDecrypt, password);
+            SetupWizardUtils.copySetupExtras(getActivity().getIntent(), intent);
+            return intent;
+        }
+
+        @Override
+        protected Intent getLockPatternIntent(Context context, final boolean requirePassword,
+                final boolean confirmCredentials) {
+            final Intent intent = SetupChooseLockPattern.createIntent(context, requirePassword,
+                    confirmCredentials);
+            SetupWizardUtils.copySetupExtras(getActivity().getIntent(), intent);
+            return intent;
+        }
+
+        @Override
+        protected Intent getLockPatternIntent(Context context, final boolean requirePassword,
+                long challenge) {
+            final Intent intent = SetupChooseLockPattern.createIntent(context, requirePassword,
+                    challenge);
+            SetupWizardUtils.copySetupExtras(getActivity().getIntent(), intent);
+            return intent;
+        }
+
+        @Override
+        protected Intent getLockPatternIntent(Context context, final boolean requirePassword,
+                final String pattern) {
+            final Intent intent = SetupChooseLockPattern.createIntent(context, requirePassword,
+                    pattern);
             SetupWizardUtils.copySetupExtras(getActivity().getIntent(), intent);
             return intent;
         }
@@ -141,6 +181,18 @@ public class SetupChooseLockGeneric extends ChooseLockGeneric
                     required);
             SetupWizardUtils.copySetupExtras(getActivity().getIntent(), intent);
             return intent;
+        }
+
+        @Override
+        public void onNavigateBack() {
+            Activity activity = getActivity();
+            if (activity != null) {
+                activity.onBackPressed();
+            }
+        }
+
+        @Override
+        public void onNavigateNext() {
         }
     }
 }

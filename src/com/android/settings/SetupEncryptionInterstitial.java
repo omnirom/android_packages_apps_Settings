@@ -16,9 +16,10 @@
 
 package com.android.settings;
 
-import com.android.setupwizard.navigationbar.SetupWizardNavBar;
+import com.android.setupwizardlib.SetupWizardLayout;
+import com.android.setupwizardlib.view.NavigationBar;
 
-import android.app.admin.DevicePolicyManager;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -34,8 +35,7 @@ import android.view.ViewGroup;
  * Setup Wizard. Other changes should be done to EncryptionInterstitial class instead and let this
  * class inherit those changes.
  */
-public class SetupEncryptionInterstitial extends EncryptionInterstitial
-        implements SetupWizardNavBar.NavigationBarListener{
+public class SetupEncryptionInterstitial extends EncryptionInterstitial {
 
     public static Intent createStartIntent(Context ctx, int quality,
             boolean requirePasswordDefault) {
@@ -62,59 +62,52 @@ public class SetupEncryptionInterstitial extends EncryptionInterstitial
 
     @Override
     protected void onApplyThemeResource(Resources.Theme theme, int resid, boolean first) {
-        resid = SetupWizardUtils.getTheme(getIntent(), resid);
+        resid = SetupWizardUtils.getTheme(getIntent());
         super.onApplyThemeResource(theme, resid, first);
     }
 
-    @Override
-    public void onNavigationBarCreated(SetupWizardNavBar bar) {
-        SetupWizardUtils.setImmersiveMode(this, bar);
-    }
-
-    @Override
-    public void onNavigateBack() {
-        onBackPressed();
-    }
-
-    @Override
-    public void onNavigateNext() {
-        setResult(RESULT_OK, getResultIntentData());
-        finish();
-    }
-
-    public static class SetupEncryptionInterstitialFragment extends EncryptionInterstitialFragment {
+    public static class SetupEncryptionInterstitialFragment extends EncryptionInterstitialFragment
+            implements NavigationBar.NavigationBarListener {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.setup_template, container, false);
-            ViewGroup setupContent = (ViewGroup) view.findViewById(R.id.setup_content);
-            View content = super.onCreateView(inflater, setupContent, savedInstanceState);
-            setupContent.addView(content);
-            return view;
-        }
-
-        private int getHeaderTextResource() {
-            final int quality = getActivity().getIntent().getIntExtra(EXTRA_PASSWORD_QUALITY, 0);
-            switch (quality) {
-                case DevicePolicyManager.PASSWORD_QUALITY_SOMETHING:
-                    return R.string.unlock_set_unlock_pattern_title;
-                case DevicePolicyManager.PASSWORD_QUALITY_NUMERIC:
-                case DevicePolicyManager.PASSWORD_QUALITY_NUMERIC_COMPLEX:
-                    return R.string.unlock_set_unlock_pin_title;
-                default:
-                    return R.string.unlock_set_unlock_password_title;
-            }
+            return inflater.inflate(R.layout.setup_encryption_interstitial, container, false);
         }
 
         @Override
         public void onViewCreated(View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
-            SetupWizardUtils.setIllustration(getActivity(),
-                    R.drawable.setup_illustration_lock_screen);
-            final int title = getHeaderTextResource();
-            getActivity().setTitle(title);
-            SetupWizardUtils.setHeaderText(getActivity(), title);
+
+            final SetupWizardLayout layout =
+                    (SetupWizardLayout) view.findViewById(R.id.setup_wizard_layout);
+
+            final NavigationBar navigationBar = layout.getNavigationBar();
+            navigationBar.setNavigationBarListener(this);
+
+            Activity activity = getActivity();
+            if (activity != null) {
+                activity.setTitle(R.string.encryption_interstitial_header);
+                SetupWizardUtils.setImmersiveMode(activity);
+            }
+        }
+
+        @Override
+        public void onNavigateBack() {
+            final Activity activity = getActivity();
+            if (activity != null) {
+                activity.onBackPressed();
+            }
+        }
+
+        @Override
+        public void onNavigateNext() {
+            final SetupEncryptionInterstitial activity =
+                    (SetupEncryptionInterstitial) getActivity();
+            if (activity != null) {
+                activity.setResult(RESULT_OK, activity.getResultIntentData());
+                finish();
+            }
         }
     }
 }

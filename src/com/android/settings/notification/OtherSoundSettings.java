@@ -33,6 +33,7 @@ import android.provider.Settings.Global;
 import android.provider.Settings.System;
 import android.telephony.TelephonyManager;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.Utils;
@@ -59,6 +60,7 @@ public class OtherSoundSettings extends SettingsPreferenceFragment implements In
 
     private static final String KEY_DIAL_PAD_TONES = "dial_pad_tones";
     private static final String KEY_SCREEN_LOCKING_SOUNDS = "screen_locking_sounds";
+    private static final String KEY_CHARGING_SOUNDS = "charging_sounds";
     private static final String KEY_DOCKING_SOUNDS = "docking_sounds";
     private static final String KEY_TOUCH_SOUNDS = "touch_sounds";
     private static final String KEY_VIBRATE_ON_TOUCH = "vibrate_on_touch";
@@ -77,6 +79,9 @@ public class OtherSoundSettings extends SettingsPreferenceFragment implements In
 
     private static final SettingPref PREF_SCREEN_LOCKING_SOUNDS = new SettingPref(
             TYPE_SYSTEM, KEY_SCREEN_LOCKING_SOUNDS, System.LOCKSCREEN_SOUNDS_ENABLED, DEFAULT_ON);
+
+    private static final SettingPref PREF_CHARGING_SOUNDS = new SettingPref(
+            TYPE_GLOBAL, KEY_CHARGING_SOUNDS, Global.CHARGING_SOUNDS_ENABLED, DEFAULT_ON);
 
     private static final SettingPref PREF_DOCKING_SOUNDS = new SettingPref(
             TYPE_GLOBAL, KEY_DOCKING_SOUNDS, Global.DOCK_SOUNDS_ENABLED, DEFAULT_ON) {
@@ -162,6 +167,7 @@ public class OtherSoundSettings extends SettingsPreferenceFragment implements In
     private static final SettingPref[] PREFS = {
         PREF_DIAL_PAD_TONES,
         PREF_SCREEN_LOCKING_SOUNDS,
+        PREF_CHARGING_SOUNDS,
         PREF_DOCKING_SOUNDS,
         PREF_TOUCH_SOUNDS,
         PREF_VIBRATE_ON_TOUCH,
@@ -174,6 +180,16 @@ public class OtherSoundSettings extends SettingsPreferenceFragment implements In
     private final SettingsObserver mSettingsObserver = new SettingsObserver();
 
     private Context mContext;
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.NOTIFICATION_OTHER_SOUND;
+    }
+
+    @Override
+    protected int getHelpResource() {
+        return R.string.help_uri_other_sounds;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
