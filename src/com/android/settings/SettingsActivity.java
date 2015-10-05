@@ -119,6 +119,7 @@ import com.brewcrewfoo.performance.activities.MainActivity;
 import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.brightness.ButtonBrightnessSettings;
+import org.omnirom.omnigears.interfacesettings.StatusbarBatterySettings;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -318,7 +319,8 @@ public class SettingsActivity extends Activity
             MainActivity.class.getName(),
             BatteryLightSettings.class.getName(),
             BarsSettings.class.getName(),
-            ButtonBrightnessSettings.class.getName()
+            ButtonBrightnessSettings.class.getName(),
+            StatusbarBatterySettings.class.getName()
     };
 
 
