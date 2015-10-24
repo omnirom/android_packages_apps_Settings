@@ -27,6 +27,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
 
+import com.android.internal.logging.MetricsLogger;
 import com.android.internal.view.RotationPolicy;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
@@ -60,6 +61,11 @@ public class DisplayRotation extends SettingsPreferenceFragment implements OnPre
             updateAccelerometerRotationCheckbox();
         }
     };
+
+    @Override
+    protected int getMetricsCategory() {
+        return MetricsLogger.OMNI_SETTINGS;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
