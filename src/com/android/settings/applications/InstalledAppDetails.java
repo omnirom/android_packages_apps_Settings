@@ -241,13 +241,6 @@ public class InstalledAppDetails extends AppInfoBase
             // Register listener
             mUninstallButton.setOnClickListener(this);
         }
-
-        // app ops button can be handled the same
-        final boolean isSystem = ((mAppEntry.info.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
-        mAppOpsButton.setEnabled(enabled && !isSystem);
-        if (enabled && !isSystem) {
-            mAppOpsButton.setOnClickListener(this);
-        }
     }
 
     /** Returns if the supplied package is device owner or profile owner of at least one user */

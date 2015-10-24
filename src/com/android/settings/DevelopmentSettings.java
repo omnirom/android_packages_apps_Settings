@@ -163,9 +163,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private static final String WIFI_VERBOSE_LOGGING_KEY = "wifi_verbose_logging";
     private static final String WIFI_AGGRESSIVE_HANDOVER_KEY = "wifi_aggressive_handover";
     private static final String WIFI_ALLOW_SCAN_WITH_TRAFFIC_KEY = "wifi_allow_scan_with_traffic";
-    private static final String SELECT_LOGD_SIZE_KEY = "select_logd_size";
-    private static final String SELECT_LOGD_SIZE_PROPERTY = "persist.logd.size";
-    private static final String SELECT_LOGD_DEFAULT_SIZE_PROPERTY = "ro.logd.size";
     private static final String ADVANCED_REBOOT_KEY = "advanced_reboot";
     private static final String USB_CONFIGURATION_KEY = "select_usb_configuration";
     private static final String WIFI_LEGACY_DHCP_CLIENT_KEY = "legacy_dhcp_client";
@@ -430,9 +427,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             removePreferenceForProduction(hdcpChecking);
         }
 
-        mProcessStats = (PreferenceScreen) findPreference(PROCESS_STATS);
-        mAllPrefs.add(mProcessStats);
-
         // make sure we dont leave an unremovable bugreport in power menu
         final ContentResolver cr = getActivity().getContentResolver();
         if (Settings.Secure.getInt(cr,
@@ -594,8 +588,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         }
 
         updateAdbOverNetwork();
-        updateSwitchPreference(mAllowMockLocation, Settings.Secure.getInt(cr,
-                Settings.Secure.ALLOW_MOCK_LOCATION, 0) != 0);
         updateSwitchPreference(mDebugViewAttributes, Settings.Global.getInt(cr,
                 Settings.Global.DEBUG_VIEW_ATTRIBUTES, 0) != 0);
         updateHdcpValues();
@@ -878,37 +870,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private void setEnableMultiWindow(boolean value) {
         SystemProperties.set(MULTI_WINDOW_SYSTEM_PROPERTY, String.valueOf(value));
         pokeSystemProperties();
-    }
-
-    private void updateBugreportOptions() {
-        final ComponentName bugreportStorageProviderComponentName =
-                new ComponentName("com.android.shell",
-                        "com.android.shell.BugreportStorageProvider");
-        if ("user".equals(Build.TYPE)) {
-            final ContentResolver resolver = getActivity().getContentResolver();
-            final boolean adbEnabled = Settings.Global.getInt(
-                    resolver, Settings.Global.ADB_ENABLED, 0) != 0;
-            if (adbEnabled) {
-                mBugreport.setEnabled(true);
-                mBugreportInPower.setEnabled(true);
-                getPackageManager().setComponentEnabledSetting(
-                        bugreportStorageProviderComponentName,
-                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED, 0);
-            } else {
-                mBugreport.setEnabled(false);
-                mBugreportInPower.setEnabled(false);
-                mBugreportInPower.setChecked(false);
-                Settings.Secure.putInt(resolver, Settings.Secure.BUGREPORT_IN_POWER_MENU, 0);
-                getPackageManager().setComponentEnabledSetting(
-                        bugreportStorageProviderComponentName,
-                        PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, 0);
-            }
-        } else {
-            mBugreportInPower.setEnabled(true);
-            getPackageManager().setComponentEnabledSetting(
-                    bugreportStorageProviderComponentName,
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED, 0);
-        }
     }
 
     // Returns the current state of the system property that controls
