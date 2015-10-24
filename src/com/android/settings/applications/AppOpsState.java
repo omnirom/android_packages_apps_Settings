@@ -56,8 +56,8 @@ public class AppOpsState {
         mContext = context;
         mAppOps = (AppOpsManager)context.getSystemService(Context.APP_OPS_SERVICE);
         mPm = context.getPackageManager();
-        mOpSummaries = context.getResources().getTextArray(R.array.app_ops_summaries_custom);
-        mOpLabels = context.getResources().getTextArray(R.array.app_ops_labels_custom);
+        mOpSummaries = context.getResources().getTextArray(R.array.app_ops_summaries);
+        mOpLabels = context.getResources().getTextArray(R.array.app_ops_labels);
     }
 
     public static class OpsTemplate implements Parcelable {
@@ -120,33 +120,29 @@ public class AppOpsState {
                     AppOpsManager.OP_WRITE_CALL_LOG,
                     AppOpsManager.OP_READ_CALENDAR,
                     AppOpsManager.OP_WRITE_CALENDAR,
-                    AppOpsManager.OP_DELETE_CONTACTS,
-                    AppOpsManager.OP_DELETE_CALL_LOG,
-                    AppOpsManager.OP_OTHER_ACCOUNTS },
+                    AppOpsManager.OP_READ_CLIPBOARD,
+                    AppOpsManager.OP_WRITE_CLIPBOARD },
             new boolean[] { true,
                     true,
                     true,
                     true,
                     true,
                     true,
-                    true,
-                    true,
-                    true }
+                    false,
+                    false }
             );
 
     public static final OpsTemplate MESSAGING_TEMPLATE = new OpsTemplate(
             new int[] { AppOpsManager.OP_READ_SMS,
-                    AppOpsManager.OP_READ_MMS,
+                    AppOpsManager.OP_RECEIVE_SMS,
+                    AppOpsManager.OP_RECEIVE_EMERGECY_SMS,
+                    AppOpsManager.OP_RECEIVE_MMS,
+                    AppOpsManager.OP_RECEIVE_WAP_PUSH,
                     AppOpsManager.OP_WRITE_SMS,
-                    AppOpsManager.OP_WRITE_MMS,
                     AppOpsManager.OP_SEND_SMS,
-                    AppOpsManager.OP_SEND_MMS,
                     AppOpsManager.OP_READ_ICC_SMS,
-                    AppOpsManager.OP_WRITE_ICC_SMS,
-                    AppOpsManager.OP_DELETE_SMS,
-                    AppOpsManager.OP_DELETE_MMS },
+                    AppOpsManager.OP_WRITE_ICC_SMS },
             new boolean[] { true,
-                    true,
                     true,
                     true,
                     true,
@@ -158,10 +154,33 @@ public class AppOpsState {
             );
 
     public static final OpsTemplate MEDIA_TEMPLATE = new OpsTemplate(
-            new int[] { AppOpsManager.OP_CAMERA,
-                    AppOpsManager.OP_RECORD_AUDIO },
-            new boolean[] { true,
-                    true }
+            new int[] { AppOpsManager.OP_VIBRATE,
+                    AppOpsManager.OP_CAMERA,
+                    AppOpsManager.OP_RECORD_AUDIO,
+                    AppOpsManager.OP_PLAY_AUDIO,
+                    AppOpsManager.OP_TAKE_MEDIA_BUTTONS,
+                    AppOpsManager.OP_TAKE_AUDIO_FOCUS,
+                    AppOpsManager.OP_AUDIO_MASTER_VOLUME,
+                    AppOpsManager.OP_AUDIO_VOICE_VOLUME,
+                    AppOpsManager.OP_AUDIO_RING_VOLUME,
+                    AppOpsManager.OP_AUDIO_MEDIA_VOLUME,
+                    AppOpsManager.OP_AUDIO_ALARM_VOLUME,
+                    AppOpsManager.OP_AUDIO_NOTIFICATION_VOLUME,
+                    AppOpsManager.OP_AUDIO_BLUETOOTH_VOLUME,
+                    AppOpsManager.OP_MUTE_MICROPHONE},
+            new boolean[] { false,
+                    true,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false }
             );
 
     public static final OpsTemplate DEVICE_TEMPLATE = new OpsTemplate(
@@ -189,7 +208,7 @@ public class AppOpsState {
 
     public static final OpsTemplate[] ALL_TEMPLATES = new OpsTemplate[] {
             LOCATION_TEMPLATE, PERSONAL_TEMPLATE, MESSAGING_TEMPLATE,
-            MEDIA_TEMPLATE, DEVICE_TEMPLATE, BOOTUP_TEMPLATE
+            MEDIA_TEMPLATE, DEVICE_TEMPLATE
     };
 
     /**
@@ -508,12 +527,8 @@ public class AppOpsState {
                 }
                 for (int j=0; j<pkgOps.getOps().size(); j++) {
                     AppOpsManager.OpEntry opEntry = pkgOps.getOps().get(j);
-                    if (mAppOps.isControlAllowed(opEntry.getOp(),
-                            pkgOps.getPackageName())) {
-                        addOp(entries, pkgOps, appEntry, opEntry,
-                                packageName == null, packageName == null ? 0
-                                        : opToOrder[opEntry.getOp()]);
-                    }
+                    addOp(entries, pkgOps, appEntry, opEntry, packageName == null,
+                            packageName == null ? 0 : opToOrder[opEntry.getOp()]);
                 }
             }
         }
@@ -533,14 +548,6 @@ public class AppOpsState {
         }
         for (int i=0; i<apps.size(); i++) {
             PackageInfo appInfo = apps.get(i);
-            if (packageName == null && appInfo.packageName != null) {
-                try {
-                    appInfo = mPm.getPackageInfo(appInfo.packageName, PackageManager.GET_PERMISSIONS);
-                } catch (NameNotFoundException e) {
-                    if (DEBUG) Log.w(TAG, "Exception: " + e.toString());
-                    appInfo = apps.get(i);
-                }
-            }
             AppEntry appEntry = getAppEntry(context, appEntries, appInfo.packageName,
                     appInfo.applicationInfo);
             if (appEntry == null) {

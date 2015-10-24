@@ -357,7 +357,7 @@ public class SettingsActivity extends Activity
             MainActivity.class.getName(),
             BatteryLightSettings.class.getName(),
             BarsSettings.class.getName(),
-            ButtonBrightnessSettings.class.getName()
+            ButtonBrightnessSettings.class.getName(),
             ZenModePrioritySettings.class.getName(),
             ZenModeAutomationSettings.class.getName(),
             ZenModeScheduleRuleSettings.class.getName(),
