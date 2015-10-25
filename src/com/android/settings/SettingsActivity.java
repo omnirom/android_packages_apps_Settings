@@ -285,7 +285,7 @@ public class SettingsActivity extends Activity
             R.id.print_settings,
             R.id.nfc_payment_settings,
             R.id.home_settings,
-            R.id.button_settings,
+            //R.id.button_settings,
             R.id.dashboard,
             R.id.interface_bars
     };
@@ -353,7 +353,7 @@ public class SettingsActivity extends Activity
             OtherSoundSettings.class.getName(),
             ApnSettings.class.getName(),
             WifiCallingSettings.class.getName(),
-            ButtonSettings.class.getName(),
+            //ButtonSettings.class.getName(),
             MainActivity.class.getName(),
             BatteryLightSettings.class.getName(),
             BarsSettings.class.getName(),
