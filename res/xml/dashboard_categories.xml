@@ -125,12 +125,12 @@
                 />
 
         <!-- Buttons -->
-        <dashboard-tile
+        <!--<dashboard-tile
                 android:id="@+id/button_settings"
                 android:title="@string/button_settings"
                 android:fragment="org.omnirom.omnigears.ButtonSettings"
                 android:icon="@drawable/ic_buttons"
-                />
+                />-->
 
         <!-- Notifications -->
         <dashboard-tile
