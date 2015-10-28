@@ -27,7 +27,6 @@ import com.android.settings.password.ChooseLockGeneric;
  * Top-level Settings activity
  */
 public class Settings extends SettingsActivity {
-
     /*
     * Settings subclasses for launching independently.
     */
