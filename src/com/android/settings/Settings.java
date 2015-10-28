@@ -28,6 +28,7 @@ import com.android.settings.password.ChooseLockGeneric;
  */
 public class Settings extends SettingsActivity {
 
+public static int DEVICE_GESTURE_FEEDBACK_ENABLED;
     /*
     * Settings subclasses for launching independently.
     */
