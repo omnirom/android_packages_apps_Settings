@@ -1029,7 +1029,7 @@ public class UserSettings extends SettingsPreferenceFragment
         public static UserCapabilities create(Context context) {
             UserManager userManager = (UserManager) context.getSystemService(Context.USER_SERVICE);
             UserCapabilities caps = new UserCapabilities();
-            if (!UserManager.supportsMultipleUsers() || Utils.isMonkeyRunning()) {
+            if (!UserManager.supportsMultipleUsersWithGuest() || Utils.isMonkeyRunning()) {
                 caps.mEnabled = false;
                 return caps;
             }

@@ -1283,11 +1283,8 @@ public class SettingsActivity extends Activity
                         removeTile = true;
                     }
                 } else if (id == R.id.user_settings) {
-                    boolean hasMultipleUsers =
-                            ((UserManager) getSystemService(Context.USER_SERVICE))
-                                    .getUserCount() > 1;
                     if (!UserHandle.MU_ENABLED
-                            || !UserManager.supportsMultipleUsers()
+                            || !UserManager.supportsMultipleUsersWithGuest()
                             || Utils.isMonkeyRunning()) {
                         removeTile = true;
                     }
