@@ -82,7 +82,7 @@
                android:id="@+id/interface_bars"
                android:title="@string/interface_bars_title"
                android:fragment="org.omnirom.omnigears.interfacesettings.BarsSettings"
-               android:icon="@drawable/ic_bars"
+               android:icon="@drawable/ic_bars_tile"
                />
 
         <!-- Menus
@@ -90,7 +90,7 @@
                android:id="@+id/interface_menus"
                android:title="@string/interface_menus_title"
                android:fragment="org.omnirom.omnigears.interfacesettings.MenusSettings"
-               android:icon="@drawable/ic_menus"
+               android:icon="@drawable/ic_menus_tile"
                /> -->
 
         <!-- More
@@ -98,7 +98,7 @@
                android:id="@+id/interface_more"
                android:title="@string/radio_controls_title"
                android:fragment="org.omnirom.omnigears.interfacesettings.MoreInterfaceSettings"
-               android:icon="@drawable/ic_settings_more"
+               android:icon="@drawable/ic_settings_more_tile"
                /> -->
     </dashboard-category>
 
@@ -129,7 +129,7 @@
                 android:id="@+id/button_settings"
                 android:title="@string/button_settings"
                 android:fragment="org.omnirom.omnigears.ButtonSettings"
-                android:icon="@drawable/ic_buttons"
+                android:icon="@drawable/ic_buttons_tile"
                 />
 
         <!-- Notifications -->
@@ -199,7 +199,7 @@
         <dashboard-tile
             android:id="@+id/advanced_settings"
             android:title="@string/advanced_settings_title"
-            android:icon="@drawable/ic_settings_advanced">
+            android:icon="@drawable/ic_settings_advanced_tile">
             <intent
                     android:action="android.intent.action.MAIN"
                     android:targetClass="org.omnirom.device.DeviceSettings"
@@ -300,8 +300,8 @@
         <!-- SuperSU -->
         <dashboard-tile
             android:id="@+id/supersu_settings"
-            android:icon="@drawable/ic_settings_supersu"
-            android:title="@string/supersu_title">
+            android:title="@string/supersu_title"
+            android:icon="@drawable/ic_settings_supersu_tile">
             <intent
                 android:action="android.intent.action.MAIN"
                 android:targetPackage="eu.chainfire.supersu"
@@ -311,9 +311,9 @@
         <!-- PerformanceControl -->
         <dashboard-tile
                 android:id="@+id/performance_controls"
+                android:title="@string/performance_settings"
                 android:fragment="com.brewcrewfoo.performance.activities.MainActivity"
-                android:icon="@drawable/ic_settings_performance"
-                android:title="@string/performance_settings" />
+                android:icon="@drawable/ic_settings_performance_tile" />
 
         <!-- About Device -->
         <dashboard-tile
