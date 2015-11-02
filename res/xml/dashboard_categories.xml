@@ -82,7 +82,7 @@
                android:id="@+id/interface_bars"
                android:title="@string/interface_bars_title"
                android:fragment="org.omnirom.omnigears.interfacesettings.BarsSettings"
-               android:icon="@drawable/ic_bars"
+               android:icon="@drawable/ic_bars_tile"
                />
 
         <!-- Menus
@@ -129,7 +129,7 @@
                 android:id="@+id/button_settings"
                 android:title="@string/button_settings"
                 android:fragment="org.omnirom.omnigears.ButtonSettings"
-                android:icon="@drawable/ic_buttons"
+                android:icon="@drawable/ic_buttons_tile"
                 />
 
         <!-- Notifications -->
@@ -199,7 +199,7 @@
         <dashboard-tile
             android:id="@+id/advanced_settings"
             android:title="@string/advanced_settings_title"
-            android:icon="@drawable/ic_settings_advanced">
+            android:icon="@drawable/ic_settings_advanced_tile">
             <intent
                     android:action="android.intent.action.MAIN"
                     android:targetClass="org.omnirom.device.DeviceSettings"
@@ -300,7 +300,7 @@
         <!-- SuperSU -->
         <dashboard-tile
             android:id="@+id/supersu_settings"
-            android:icon="@drawable/ic_settings_supersu"
+            android:icon="@drawable/ic_settings_supersu_tile"
             android:title="@string/supersu_title">
             <intent
                 android:action="android.intent.action.MAIN"
@@ -312,7 +312,7 @@
         <dashboard-tile
                 android:id="@+id/performance_controls"
                 android:fragment="com.brewcrewfoo.performance.activities.MainActivity"
-                android:icon="@drawable/ic_settings_performance"
+                android:icon="@drawable/ic_settings_performance_tile"
                 android:title="@string/performance_settings" />
 
         <!-- About Device -->
