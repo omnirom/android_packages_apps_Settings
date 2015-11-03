@@ -49,11 +49,11 @@
             android:key="power_button_instantly_locks"
             android:title="@string/lockpattern_settings_enable_power_button_instantly_locks"/>
 
-        <SwitchPreference
+        <!--<SwitchPreference
             android:key="quick_unlock"
             android:title="@string/keyguard_quick_unlock"
             android:summary="@string/keyguard_quick_unlock_summary_pin"
-            android:persistent="false" />
+            android:persistent="false" />-->
 
         <com.android.settings.SingleLineSummaryPreference
             android:key="owner_info_settings"
