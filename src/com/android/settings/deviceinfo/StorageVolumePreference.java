@@ -61,6 +61,10 @@ public class StorageVolumePreference extends Preference {
         context.getTheme().resolveAttribute(android.R.attr.textColorSecondary, typedValue, true);
         mSecondaryColor = context.getResources().getColor(typedValue.resourceId);
 
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(android.R.attr.textColorSecondary, typedValue, true);
+        mSecondaryColor = context.getResources().getColor(typedValue.resourceId);
+
         setLayoutResource(R.layout.storage_volume);
 
         setKey(volume.getId());
