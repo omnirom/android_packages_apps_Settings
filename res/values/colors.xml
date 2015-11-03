@@ -102,4 +102,6 @@
     <!-- Accent color that matches the settings launcher icon -->
     <color name="icon_accent">#ffabffec</color>
 
+    <color name="storage_summary_title_color">#ff607d8b</color>
+
 </resources>
