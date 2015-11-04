@@ -18,6 +18,7 @@ package com.android.settings;
 
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.AppOpsManager;
 import android.app.admin.DevicePolicyManager;
@@ -228,9 +229,9 @@ public class SecuritySettings extends SettingsPreferenceFragment
             });
         }
 
-        /* if (!mLockPatternUtils.isLockScreenDisabled()) {
+        if (!mLockPatternUtils.isLockScreenDisabled(ActivityManager.getCurrentUser())) {
             addPreferencesFromResource(R.xml.security_settings_more);
-        } */
+        }
 
         if (mIsPrimary) {
             if (LockPatternUtils.isDeviceEncryptionEnabled()) {
