@@ -317,7 +317,7 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
     }
 
     private void handleLockScreenRotationPreferenceClick() {
-        RotationPolicy.setRotationLockForAccessibility(getActivity(),
+        RotationPolicy.setRotationLock(getActivity(),
                 !mToggleLockScreenRotationPreference.isChecked());
     }
 
