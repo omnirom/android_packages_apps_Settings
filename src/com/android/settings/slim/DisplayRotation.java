@@ -130,7 +130,6 @@ public class DisplayRotation extends SettingsPreferenceFragment implements OnPre
 
     private void updateAccelerometerRotationCheckbox() {
         mAccelerometer.setChecked(!RotationPolicy.isRotationLocked(getActivity()));
-        mAccelerometer.setEnabled(RotationPolicy.isRotationLockToggleVisible(getActivity()));
     }
 
     public boolean onPreferenceChange(Preference preference, Object newValue) {
