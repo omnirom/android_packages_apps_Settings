@@ -104,10 +104,6 @@
                 android:entryValues="@array/entryvalues_font_size"
                 android:dialogTitle="@string/dialog_title_font_size" />
 
-        <com.android.settings.DropDownPreference
-                android:key="auto_rotate"
-                android:title="@string/display_auto_rotate_title" />
-
         <PreferenceScreen
                 android:key="wifi_display"
                 android:title="@string/wifi_display_settings_title"
