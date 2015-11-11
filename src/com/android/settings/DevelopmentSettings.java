@@ -430,19 +430,17 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             removePreferenceForProduction(hdcpChecking);
         }
 
-<<<<<<< HEAD
         // make sure we dont leave an unremovable bugreport in power menu
         final ContentResolver cr = getActivity().getContentResolver();
         if (Settings.Secure.getInt(cr,
                 Settings.Secure.BUGREPORT_IN_POWER_MENU, 0) == 1) {
             Settings.Secure.putInt(cr, Settings.Secure.BUGREPORT_IN_POWER_MENU, 0);
-=======
+
         mColorModePreference = (ColorModePreference) findPreference(KEY_COLOR_MODE);
         mColorModePreference.updateCurrentAndSupported();
         if (mColorModePreference.getTransformsCount() < 2) {
             removePreference(KEY_COLOR_MODE);
             mColorModePreference = null;
->>>>>>> android-6.0.0_r26
         }
     }
 
