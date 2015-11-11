@@ -108,7 +108,8 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private SwitchPreference mDozePreference;
     private SwitchPreference mTapToWakePreference;
     private SwitchPreference mAutoBrightnessPreference;
-<<<<<<< HEAD
+    private SwitchPreference mCameraGesturePreference;
+    private SwitchPreference mCameraDoubleTapPowerGesturePreference;
     private PreferenceScreen mDozeFragement;
 
     private ContentObserver mAccelerometerRotationObserver =
@@ -118,10 +119,6 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             updateDisplayRotationPreferenceDescription();
         }
     };
-=======
-    private SwitchPreference mCameraGesturePreference;
-    private SwitchPreference mCameraDoubleTapPowerGesturePreference;
->>>>>>> android-6.0.0_r26
 
     @Override
     protected int getMetricsCategory() {
