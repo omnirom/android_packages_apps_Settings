@@ -2680,11 +2680,7 @@
     <string name="encrypt_dont_require_pin" msgid="1082444817726247368">"Non, merci"</string>
     <string name="encrypt_dont_require_pattern" msgid="6668299362640433843">"Non, merci"</string>
     <string name="encrypt_dont_require_password" msgid="2580403214917009046">"Non, merci"</string>
-<<<<<<< HEAD
-    <string name="encrypt_talkback_dialog_require_pin" msgid="8299960550048989807">"Exiger le code PIN ?"</string>
-=======
     <string name="encrypt_talkback_dialog_require_pin" msgid="8299960550048989807">"Exiger le code ?"</string>
->>>>>>> android-6.0.0_r26
     <string name="encrypt_talkback_dialog_require_pattern" msgid="1499790256154146639">"Exiger le schéma ?"</string>
     <string name="encrypt_talkback_dialog_require_password" msgid="8841994614218049215">"Exiger le mot de passe ?"</string>
     <string name="encrypt_talkback_dialog_message_pin" msgid="7582096542997635316">"Lorsque vous saisissez votre code PIN pour démarrer cet appareil, les services d\'accessibilité comme <xliff:g id="SERVICE">%1$s</xliff:g> ne sont pas disponibles."</string>

@@ -322,10 +322,7 @@
       <item quantity="other"><xliff:g id="COUNT_1">%1$d</xliff:g> impronte digitali configurate</item>
       <item quantity="one"><xliff:g id="COUNT_0">%1$d</xliff:g> impronta digitale configurata</item>
     </plurals>
-<<<<<<< HEAD
-=======
     <string name="security_settings_fingerprint_preference_summary_none" msgid="1507739327565151923"></string>
->>>>>>> android-6.0.0_r26
     <string name="security_settings_fingerprint_enroll_onboard_title" msgid="4735546436672054254">"Configura impronta digitale"</string>
     <string name="security_settings_fingerprint_enroll_onboard_message" msgid="2655449737443418341">"Per sbloccare lo schermo o confermare acquisti con l\'impronta digitale, devi:"</string>
     <string name="security_settings_fingerprint_enroll_onboard_message_1" msgid="2799884038398627882">"Impostare il metodo di blocco schermo dello sfondo"</string>
@@ -356,12 +353,9 @@
     <string name="security_settings_fingerprint_enroll_done" msgid="4014607378328187567">"Fine"</string>
     <string name="security_settings_fingerprint_enroll_touch_dialog_title" msgid="1863561601428695160">"Ops, questo non è il sensore"</string>
     <string name="security_settings_fingerprint_enroll_touch_dialog_message" msgid="5053971232594165142">"Usa sensore impronte digitali su dispositivo."</string>
-<<<<<<< HEAD
-=======
     <string name="security_settings_fingerprint_enroll_error_dialog_title" msgid="3618021988442639280">"L\'iscrizione non è stata completata"</string>
     <string name="security_settings_fingerprint_enroll_error_timeout_dialog_message" msgid="2942551158278899627">"Timeout iscrizione mediante impronta digitale. Riprova."</string>
     <string name="security_settings_fingerprint_enroll_error_generic_dialog_message" msgid="3624760637222239293">"Iscrizione mediante impronta digitale non riuscita. Riprova o utilizza un dito diverso."</string>
->>>>>>> android-6.0.0_r26
     <string name="fingerprint_enroll_button_add" msgid="6317978977419045463">"Aggiungine un\'altra"</string>
     <string name="fingerprint_enroll_button_next" msgid="6247009337616342759">"Avanti"</string>
     <string name="security_settings_fingerprint_enroll_disclaimer" msgid="2624905914239271751">"Oltre che per sbloccare il telefono, puoi utilizzare la tua impronta digitale per autorizzare acquisti e accessi alle app. "<annotation id="url">"Ulteriori informazioni"</annotation></string>

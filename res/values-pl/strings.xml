@@ -326,10 +326,7 @@
       <item quantity="other">Ustawiono <xliff:g id="COUNT_1">%1$d</xliff:g> odcisku palca</item>
       <item quantity="one">Ustawiono <xliff:g id="COUNT_0">%1$d</xliff:g> odcisk palca</item>
     </plurals>
-<<<<<<< HEAD
-=======
     <string name="security_settings_fingerprint_preference_summary_none" msgid="1507739327565151923"></string>
->>>>>>> android-6.0.0_r26
     <string name="security_settings_fingerprint_enroll_onboard_title" msgid="4735546436672054254">"Ustaw odcisk palca"</string>
     <string name="security_settings_fingerprint_enroll_onboard_message" msgid="2655449737443418341">"Aby odblokowywać ekran lub potwierdzać zakupy przy użyciu odcisku palca, musisz:"</string>
     <string name="security_settings_fingerprint_enroll_onboard_message_1" msgid="2799884038398627882">"Skonfiguruj dodatkową metodę blokowania ekranu"</string>
