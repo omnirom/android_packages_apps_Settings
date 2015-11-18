@@ -404,7 +404,7 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
             entriesList.add(getResources().getString(R.string.wifi_setting_countrycode_default) + " (" + simCountryCode + ")");
         }
         entriesList.addAll(Arrays.asList(entries));
-        if (!getAlKnownCountryCodes().contains(savedCountryCode)) {
+        if (savedCountryCode != null && !getAlKnownCountryCodes().contains(savedCountryCode)) {
             entriesList.add(savedCountryCode);
         }
         return entriesList.toArray(new String[entriesList.size()]);
@@ -414,7 +414,7 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
         final String savedCountryCode = mWifiManager.getCountryCode();
         List<String> valuesList = new ArrayList<String>();
         valuesList.addAll(getAlKnownCountryCodes());
-        if (!valuesList.contains(savedCountryCode)) {
+        if (savedCountryCode != null && !valuesList.contains(savedCountryCode)) {
             valuesList.add(savedCountryCode);
         }
         return valuesList.toArray(new String[valuesList.size()]);
