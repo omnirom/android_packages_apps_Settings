@@ -158,8 +158,8 @@ public class OtherSoundSettings extends SettingsPreferenceFragment implements In
         }
     };
 
-    //private static final SettingPref PREF_VOLUME_ADJUST_SOUND = new SettingPref(
-    //        TYPE_SYSTEM, KEY_VOLUME_ADJUST_SOUND, System.VOLUME_ADJUST_SOUND, DEFAULT_ON);
+    private static final SettingPref PREF_VOLUME_ADJUST_SOUND = new SettingPref(
+            TYPE_SYSTEM, KEY_VOLUME_ADJUST_SOUND, System.VOLUME_ADJUST_SOUND, DEFAULT_ON);
 
     private static final SettingPref PREF_SCREENSHOT_SHUTTER_SOUND = new SettingPref(
             TYPE_SYSTEM, KEY_SCREENSHOT_SHUTTER_SOUND, System.SCREENSHOT_SHUTTER_SOUND, DEFAULT_ON);
@@ -173,7 +173,7 @@ public class OtherSoundSettings extends SettingsPreferenceFragment implements In
         PREF_VIBRATE_ON_TOUCH,
         PREF_DOCK_AUDIO_MEDIA,
         PREF_EMERGENCY_TONE,
-        //PREF_VOLUME_ADJUST_SOUND,
+        PREF_VOLUME_ADJUST_SOUND,
         PREF_SCREENSHOT_SHUTTER_SOUND
     };
 
