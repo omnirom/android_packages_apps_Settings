@@ -82,9 +82,9 @@
     <string name="zen_mode_alarms">Allow alarms</string>
 
     <!-- Linked / unlinked notification volume -->
-    <string name="link_volume_option_title">Link ring and notification volumes</string>
+    <string name="link_volume_option_title">Link ring and notification volume</string>
     <string name="notification_volume_option_title">Notification volume</string>
-    <string name="ring_notification_volume_option_tile">Ring and notification volume</string>
+    <string name="ring_notification_volume_option_title">Ring and notification volume</string>
 
     <!-- Unaccounted and overcounted battery stats -->
     <string name="show_unac_and_overcounted_stats_title">Show unaccounted/overcounted stats</string>
