@@ -129,6 +129,7 @@ import org.omnirom.omnigears.ButtonSettings;
 import com.brewcrewfoo.performance.activities.MainActivity;
 import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
+import org.omnirom.omnigears.interfacesettings.LockscreenSettings;
 import org.omnirom.omnigears.interfacesettings.NetworkTraffic;
 import org.omnirom.omnigears.brightness.ButtonBrightnessSettings;
 
@@ -288,7 +289,8 @@ public class SettingsActivity extends Activity
             R.id.home_settings,
             //R.id.button_settings,
             R.id.dashboard,
-            R.id.interface_bars
+            R.id.interface_bars,
+            R.id.interface_lockscreen,
     };
 
     private static final String[] ENTRY_FRAGMENTS = {
@@ -370,6 +372,7 @@ public class SettingsActivity extends Activity
             DrawOverlayDetails.class.getName(),
             WriteSettingsDetails.class.getName(),
             NetworkTraffic.class.getName(),
+            LockscreenSettings.class.getName(),
     };
 
 
