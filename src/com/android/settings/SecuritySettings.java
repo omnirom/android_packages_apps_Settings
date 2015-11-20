@@ -35,6 +35,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.os.UserHandle;
 import android.os.UserManager;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -109,11 +110,12 @@ public class SecuritySettings extends SettingsPreferenceFragment
     private static final String PACKAGE_MIME_TYPE = "application/vnd.android.package-archive";
     private static final String KEY_TRUST_AGENT = "trust_agent";
     private static final String KEY_SCREEN_PINNING = "screen_pinning_settings";
+    private static final String KEY_LOCKSCREEN_VOICE_SHORTCUT = "lockscreen_voice_shortcut";
 
     // These switch preferences need special handling since they're not all stored in Settings.
     private static final String SWITCH_PREFERENCE_KEYS[] = { KEY_LOCK_AFTER_TIMEOUT,
             KEY_VISIBLE_PATTERN, KEY_POWER_INSTANTLY_LOCKS, KEY_SHOW_PASSWORD,
-            /*KEY_QUICK_UNLOCK,*/ KEY_TOGGLE_INSTALL_APPLICATIONS };
+            /*KEY_QUICK_UNLOCK,*/ KEY_TOGGLE_INSTALL_APPLICATIONS, KEY_LOCKSCREEN_VOICE_SHORTCUT };
 
     // Only allow one trust agent on the platform.
     private static final boolean ONLY_ONE_TRUST_AGENT = true;
@@ -140,6 +142,7 @@ public class SecuritySettings extends SettingsPreferenceFragment
     private DialogInterface mWarnInstallApps;
     private SwitchPreference mPowerButtonInstantlyLocks;
     //private SwitchPreference mQuickUnlock;
+    private CheckBoxPreference mVoiceShortcutEnabled;
 
     private boolean mIsPrimary;
 
@@ -277,6 +280,14 @@ public class SecuritySettings extends SettingsPreferenceFragment
                     Settings.Secure.KEYGUARD_QUICK_UNLOCK, 0) == 1);
             mQuickUnlock.setOnPreferenceChangeListener(this);
         }*/
+
+        // Voice Lockscreen Shortcut
+        mVoiceShortcutEnabled = (CheckboxPreference) root.findPreference(KEY_LOCKSCREEN_VOICE_SHORTCUT);
+        if (mVoiceShortcutEnabled != null) {
+            mVoiceShortcutEnabled.setChecked(Settings.System.getInt(getContentResolver(),
+                    Settings.System.LOCKSCREEN_VOICE_SHORTCUT, 0) == 1);
+            mVoiceShortcutEnabled.setOnPreferenceChangeListener(this);
+        }
 
         // Lock Numpad Random
         mLockNumpadRandom = (ListPreference) root.findPreference(KEY_LOCK_NUMPAD_RANDOM);
