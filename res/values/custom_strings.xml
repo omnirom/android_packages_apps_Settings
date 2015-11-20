@@ -235,6 +235,7 @@
 
     <!-- dashboard categories -->
     <string name="interface_bars_title">Bars</string>
+    <string name="interface_lockscreen_title">Lock screen</string>
     <string name="interface_more_title">More</string>
 
     <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
@@ -247,9 +248,6 @@
 
     <!-- Lock screen rotation -->
     <string name="display_lockscreen_rotation_title">Lock screen</string>
-
-    <!-- Lock screen settings -->
-    <string name="lockscreen_settings_title">Lock screen</string>
 
     <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
     <string name="bluetooth_accept_all_files">Accept all file types</string>

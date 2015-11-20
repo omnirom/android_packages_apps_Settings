@@ -49,12 +49,6 @@
                 android:fragment="com.android.settings.WallpaperTypeSettings" />
 
         <PreferenceScreen
-                android:key="lockscreen_settings"
-                android:title="@string/lockscreen_settings_title"
-                android:persistent="false"
-                android:fragment="org.omnirom.omnigears.LockscreenSettings" />
-
-        <PreferenceScreen
                 android:key="display_rotation"
                 android:fragment="com.android.settings.slim.DisplayRotation"
                 android:title="@string/display_rotation_title" />
