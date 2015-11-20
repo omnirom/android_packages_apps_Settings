@@ -35,6 +35,11 @@
             android:title="@string/owner_info_settings_title"
             android:summary="@string/owner_info_settings_summary"/>
 
+        <CheckBoxPreference
+            android:key="lockscreen_voice_unlock"
+            android:enabled="false"
+            android:title="@string/lockscreen_voice_unlock" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
