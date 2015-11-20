@@ -248,6 +248,7 @@
 
     <!-- Lock screen settings -->
     <string name="lockscreen_settings_title">Lock screen</string>
+    <string name="lockscreen_voice_shortcut">Enable voice lockscreen shortcut</string>
 
     <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
     <string name="bluetooth_accept_all_files">Accept all file types</string>
