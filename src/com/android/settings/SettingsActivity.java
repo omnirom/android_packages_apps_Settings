@@ -130,9 +130,9 @@ import org.omnirom.omnigears.ButtonSettings;
 import com.brewcrewfoo.performance.activities.MainActivity;
 import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
+import org.omnirom.omnigears.interfacesettings.LockscreenSettings;
 import org.omnirom.omnigears.interfacesettings.NetworkTraffic;
 import org.omnirom.omnigears.brightness.ButtonBrightnessSettings;
-import org.omnirom.omnigears.LockscreenSettings;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -291,6 +291,7 @@ public class SettingsActivity extends Activity
             R.id.dashboard,
             R.id.button_settings,
             R.id.interface_bars,
+            R.id.interface_lockscreen,
             R.id.interface_more
     };
 
