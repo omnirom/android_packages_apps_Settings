@@ -85,6 +85,13 @@
                android:icon="@drawable/ic_bars_tile"
                />
 
+        <!-- Lockscreen -->
+        <dashboard-tile
+               android:key="lockscreen_settings"
+               android:title="@string/lockscreen_settings_title"
+               android:fragment="org.omnirom.omnigears.LockscreenSettings"
+               />
+
         <!-- Menus
         <dashboard-tile
                android:id="@+id/interface_menus"
