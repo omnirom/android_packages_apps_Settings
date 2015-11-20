@@ -234,6 +234,7 @@
     <string name="app_ops_permissions_always_ask">Always ask</string>
 
     <string name="interface_bars_title">Bars</string>
+    <string name="interface_lockscreen_title">Lock screen</string>
 
     <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
     <string name="wifi_setting_countrycode_title">Wi-Fi region code</string>
@@ -245,9 +246,6 @@
 
     <!-- Lock screen rotation -->
     <string name="display_lockscreen_rotation_title">Lock screen</string>
-
-    <!-- Lock screen settings -->
-    <string name="lockscreen_settings_title">Lock screen</string>
 
     <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
     <string name="bluetooth_accept_all_files">Accept all file types</string>
