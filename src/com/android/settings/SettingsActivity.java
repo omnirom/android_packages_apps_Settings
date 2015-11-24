@@ -129,6 +129,7 @@ import org.omnirom.omnigears.ButtonSettings;
 import com.brewcrewfoo.performance.activities.MainActivity;
 import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
+import org.omnirom.omnigears.interfacesettings.NetworkTraffic;
 import org.omnirom.omnigears.brightness.ButtonBrightnessSettings;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -368,6 +369,7 @@ public class SettingsActivity extends Activity
             ProcessStatsSummary.class.getName(),
             DrawOverlayDetails.class.getName(),
             WriteSettingsDetails.class.getName(),
+            NetworkTraffic.class.getName(),
     };
 
 
