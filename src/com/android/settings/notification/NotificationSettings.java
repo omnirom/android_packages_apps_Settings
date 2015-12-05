@@ -255,13 +255,9 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
         if (mNotificationPreference != null) {
             final boolean muted = mAudioManager.isStreamMute(AudioManager.STREAM_NOTIFICATION)
                     || mAudioManager.getStreamVolume(AudioSystem.STREAM_NOTIFICATION) == 0;
-            mNotificationPreference.showIcon(mSuppressor != null || mRingerMode == AudioManager.RINGER_MODE_SILENT
-                    ? com.android.internal.R.drawable.ic_audio_notification_mute_new
-                    : mRingerMode == AudioManager.RINGER_MODE_VIBRATE
-                    ? com.android.internal.R.drawable.ic_audio_ring_notif_vibrate
-                    : muted
-                    ? com.android.internal.R.drawable.ic_audio_notification_mute_new
-                    : com.android.internal.R.drawable.ic_audio_notification_new);
+            int iconId = getNotificationStreamIcon(mSuppressor != null || mRingerMode == AudioManager.RINGER_MODE_SILENT,
+                    mRingerMode == AudioManager.RINGER_MODE_VIBRATE, muted);
+            mNotificationPreference.showIcon(iconId);
             mNotificationPreference.setEnabled(mRingerMode != AudioManager.RINGER_MODE_SILENT
                     && mRingerMode != AudioManager.RINGER_MODE_VIBRATE);
         }
@@ -765,6 +761,25 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
             } else if (AudioManager.INTERNAL_RINGER_MODE_CHANGED_ACTION.equals(action)) {
                 mHandler.sendEmptyMessage(H.UPDATE_RINGER_MODE);
             }
+        }
+    }
+
+    private int getNotificationStreamIcon(boolean silent, boolean vibrate, boolean muted) {
+        if (!mVoiceCapable) {
+            return vibrate ? com.android.internal.R.drawable.ic_audio_ring_notif_vibrate
+                : (silent || muted) ? com.android.internal.R.drawable.ic_audio_ring_notif_mute
+                : com.android.internal.R.drawable.ic_audio_ring_notif;
+        }
+        final boolean linkEnabled = Settings.System.getInt(getContentResolver(),
+                    Settings.System.VOLUME_LINK_NOTIFICATION, 1) == 1;
+        if (!linkEnabled) {
+            return vibrate ? com.android.internal.R.drawable.ic_audio_ring_notif_vibrate
+                : (silent || muted) ? com.android.internal.R.drawable.ic_audio_notification_mute_new
+                : com.android.internal.R.drawable.ic_audio_notification_new;
+        } else {
+            return vibrate ? com.android.internal.R.drawable.ic_audio_ring_notif_vibrate
+                : (silent || muted) ? com.android.internal.R.drawable.ic_audio_ring_notif_mute
+                : com.android.internal.R.drawable.ic_audio_ring_notif;
         }
     }
 
