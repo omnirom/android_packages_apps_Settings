@@ -233,7 +233,9 @@
     <string name="app_ops_permissions_ignored">Ignored</string>
     <string name="app_ops_permissions_always_ask">Always ask</string>
 
+    <!-- dashboard categories -->
     <string name="interface_bars_title">Bars</string>
+    <string name="interface_more_title">More</string>
 
     <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
     <string name="wifi_setting_countrycode_title">Wi-Fi region code</string>

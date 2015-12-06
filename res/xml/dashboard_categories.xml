@@ -93,13 +93,13 @@
                android:icon="@drawable/ic_menus"
                /> -->
 
-        <!-- More
+        <!-- More -->
         <dashboard-tile
                android:id="@+id/interface_more"
-               android:title="@string/radio_controls_title"
+               android:title="@string/interface_more_title"
                android:fragment="org.omnirom.omnigears.interfacesettings.MoreInterfaceSettings"
                android:icon="@drawable/ic_settings_more"
-               /> -->
+               />
     </dashboard-category>
 
     <!-- DEVICE -->
