@@ -704,6 +704,10 @@ public class InstalledAppDetails extends AppInfoBase
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     public void onClick(View v) {
+        if (mAppEntry == null) {
+            setIntentAndFinish(true, true);
+            return;
+        }
         String packageName = mAppEntry.info.packageName;
         if(v == mUninstallButton) {
             if ((mAppEntry.info.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
@@ -961,7 +965,6 @@ public class InstalledAppDetails extends AppInfoBase
             mPermissionReceiver = null;
             final Resources res = getResources();
             CharSequence summary = null;
-            boolean enabled = false;
             if (counts != null) {
                 int totalCount = counts[1];
                 int additionalCounts = counts[2];
@@ -970,8 +973,6 @@ public class InstalledAppDetails extends AppInfoBase
                     summary = res.getString(
                             R.string.runtime_permissions_summary_no_permissions_requested);
                 } else {
-                    enabled = true;
-
                     final ArrayList<CharSequence> list = new ArrayList(Arrays.asList(groupLabels));
                     if (additionalCounts > 0) {
                         // N additional permissions.
@@ -988,7 +989,6 @@ public class InstalledAppDetails extends AppInfoBase
                 }
             }
             mPermissionsPreference.setSummary(summary);
-            mPermissionsPreference.setEnabled(enabled);
         }
     };
 }
