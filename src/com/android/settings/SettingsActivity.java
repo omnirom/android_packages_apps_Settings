@@ -114,6 +114,7 @@ import com.android.settings.print.PrintJobSettingsFragment;
 import com.android.settings.print.PrintSettingsFragment;
 import com.android.settings.search.DynamicIndexableContentMonitor;
 import com.android.settings.search.Index;
+import com.android.settings.slim.DisplayRotation;
 import com.android.settings.sim.SimSettings;
 import com.android.settings.tts.TextToSpeechSettings;
 import com.android.settings.users.UserSettings;
@@ -131,6 +132,7 @@ import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.interfacesettings.NetworkTraffic;
 import org.omnirom.omnigears.brightness.ButtonBrightnessSettings;
+import org.omnirom.omnigears.LockscreenSettings;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -286,9 +288,10 @@ public class SettingsActivity extends Activity
             R.id.print_settings,
             R.id.nfc_payment_settings,
             R.id.home_settings,
-            //R.id.button_settings,
             R.id.dashboard,
-            R.id.interface_bars
+            R.id.button_settings,
+            R.id.interface_bars,
+            R.id.interface_more
     };
 
     private static final String[] ENTRY_FRAGMENTS = {
@@ -354,7 +357,7 @@ public class SettingsActivity extends Activity
             OtherSoundSettings.class.getName(),
             ApnSettings.class.getName(),
             WifiCallingSettings.class.getName(),
-            //ButtonSettings.class.getName(),
+            ButtonSettings.class.getName(),
             MainActivity.class.getName(),
             BatteryLightSettings.class.getName(),
             BarsSettings.class.getName(),
@@ -370,6 +373,8 @@ public class SettingsActivity extends Activity
             DrawOverlayDetails.class.getName(),
             WriteSettingsDetails.class.getName(),
             NetworkTraffic.class.getName(),
+            LockscreenSettings.class.getName(),
+            DisplayRotation.class.getName()
     };
 
 
