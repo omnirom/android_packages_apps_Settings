@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b8f5b13e_5a7947c1",
+        "filename": "res/drawable/ic_lockscreen_tile.xml",
+        "patchSetId": 16
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-12-10T16:07:02Z",
+      "side": 1,
+      "message": "where is this file?",
+      "revId": "699f95e130276c7e2ad4c8f4290651d9aa73f5ba",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b8f5b13e_7a740bcb",
+        "filename": "res/xml/dashboard_categories.xml",
+        "patchSetId": 16
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-12-10T16:07:02Z",
+      "side": 1,
+      "message": "name it correctly please",
+      "revId": "699f95e130276c7e2ad4c8f4290651d9aa73f5ba",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
