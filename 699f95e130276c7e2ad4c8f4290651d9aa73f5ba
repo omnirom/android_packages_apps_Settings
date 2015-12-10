@@ -33,6 +33,24 @@
       "revId": "699f95e130276c7e2ad4c8f4290651d9aa73f5ba",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b8f5b13e_1a83bf9f",
+        "filename": "res/xml/dashboard_categories.xml",
+        "patchSetId": 16
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-12-10T16:07:57Z",
+      "side": 1,
+      "message": "and add it to SETTINGS_FOR_RESTRICTED",
+      "parentUuid": "b8f5b13e_7a740bcb",
+      "revId": "699f95e130276c7e2ad4c8f4290651d9aa73f5ba",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
