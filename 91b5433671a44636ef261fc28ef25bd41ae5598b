@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b8f5b13e_052ec48b",
+        "filename": "res/values/colors.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-12-10T21:45:51Z",
+      "side": 1,
+      "message": "actually this should be in custom_colors.xml - but I will allow this for now",
+      "revId": "91b5433671a44636ef261fc28ef25bd41ae5598b",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
