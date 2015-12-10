@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b8f5b13e_5a8707bd",
+        "filename": "src/com/android/settings/deviceinfo/StorageSummaryPreference.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-12-10T15:09:35Z",
+      "side": 1,
+      "message": "no tabs please!",
+      "revId": "b23fea26b1b7ccfee15fcf575d7c2aa54b8556b8",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b8f5b13e_3a8443b6",
+        "filename": "src/com/android/settings/deviceinfo/StorageVolumePreference.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-12-10T15:09:35Z",
+      "side": 1,
+      "message": "no tabs",
+      "revId": "b23fea26b1b7ccfee15fcf575d7c2aa54b8556b8",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
