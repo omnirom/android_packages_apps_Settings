@@ -184,6 +184,7 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
 
         initRingtones(mSoundCategory);
         initVibrateWhenRinging(mSoundCategory);
+        initVolumeLinkNotification();
 
         final PreferenceCategory notification = (PreferenceCategory)
                 findPreference(KEY_NOTIFICATION);
@@ -191,25 +192,20 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
         initLockscreenNotifications(notification);
 
         mNotificationAccess = findPreference(KEY_NOTIFICATION_ACCESS);
-        refreshNotificationListeners();
         mZenAccess = findPreference(KEY_ZEN_ACCESS);
-        refreshZenAccess();
-        updateRingerMode();
-        updateEffectsSuppressor();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        updateRingerMode();
         refreshNotificationListeners();
         refreshZenAccess();
         lookupRingtoneNames();
-        initVolumeLinkNotification();
         mSettingsObserver.register(true);
         mReceiver.register(true);
-        updateRingPreference();
-        updateNotificationPreference();
         updateEffectsSuppressor();
+        updateVolumeLinkNotification();
         for (VolumeSeekBarPreference volumePref : mVolumePrefs) {
             volumePref.onActivityResume();
         }
@@ -574,17 +570,7 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
     }
 
     private void initVolumeLinkNotification() {
-        if (mVoiceCapable) {
-            final boolean linkEnabled = Settings.System.getInt(getContentResolver(),
-                    Settings.System.VOLUME_LINK_NOTIFICATION, 1) == 1;
-
-            updateRingPreference();
-            if (!linkEnabled) {
-                mSoundCategory.addPreference(mNotificationPreference);
-            } else {
-                mSoundCategory.removePreference(mNotificationPreference);
-            }
-            mVolumeLinkNotification.setChecked(linkEnabled);
+        if (mVolumeLinkNotification != null) {
             mVolumeLinkNotification.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -598,28 +584,33 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
                     }
                     Settings.System.putInt(getContentResolver(),
                             Settings.System.VOLUME_LINK_NOTIFICATION, val ? 1 : 0);
-                    updateSlidersAndMutedStates();
+                    // update all that depends on that setting
+                    updateNotificationPreference();
+                    updateVolumeLinkNotification();
                     return true;
                 }
             });
         }
     }
 
-    private void updateSlidersAndMutedStates() {
-        final boolean linkEnabled = Settings.System.getInt(getContentResolver(),
-                Settings.System.VOLUME_LINK_NOTIFICATION, 1) == 1;
-        updateRingPreference();
-        if (!linkEnabled) {
-            updateNotificationPreference();
-            mNotificationPreference.onActivityResume();
-            mSoundCategory.addPreference(mNotificationPreference);
-            if (mRingPreference != null) {
-                mRingPreference.setTitle(R.string.ring_volume_option_title);
-            }
-        } else {
-            mSoundCategory.removePreference(mNotificationPreference);
-            if (mRingPreference != null) {
-                mRingPreference.setTitle(R.string.ring_notification_volume_option_title);
+    private void updateVolumeLinkNotification() {
+        if (mVolumeLinkNotification != null) {
+            final boolean linkEnabled = Settings.System.getInt(getContentResolver(),
+                    Settings.System.VOLUME_LINK_NOTIFICATION, 1) == 1;
+
+            mVolumeLinkNotification.setChecked(linkEnabled);
+
+            if (!linkEnabled) {
+                mNotificationPreference.onActivityResume();
+                mSoundCategory.addPreference(mNotificationPreference);
+                if (mRingPreference != null) {
+                    mRingPreference.setTitle(R.string.ring_volume_option_title);
+                }
+            } else {
+                mSoundCategory.removePreference(mNotificationPreference);
+                if (mRingPreference != null) {
+                    mRingPreference.setTitle(R.string.ring_notification_volume_option_title);
+                }
             }
         }
     }
