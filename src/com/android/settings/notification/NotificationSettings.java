@@ -125,7 +125,7 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
     private int mLockscreenSelectedValue;
     private Preference mAlarmRingtonePreference;
     private ComponentName mSuppressor;
-    private int mRingerMode = -1;
+    private int mRingerMode = AudioManager.RINGER_MODE_NORMAL;
     private CheckBoxPreference mVolumeLinkNotification;
     private PreferenceCategory mSoundCategory;
     private Preference mChargingLight;
@@ -254,8 +254,9 @@ public class NotificationSettings extends SettingsPreferenceFragment implements 
             int iconId = getNotificationStreamIcon(mSuppressor != null || mRingerMode == AudioManager.RINGER_MODE_SILENT,
                     mRingerMode == AudioManager.RINGER_MODE_VIBRATE, muted);
             mNotificationPreference.showIcon(iconId);
-            mNotificationPreference.setEnabled(mRingerMode != AudioManager.RINGER_MODE_SILENT
-                    && mRingerMode != AudioManager.RINGER_MODE_VIBRATE);
+            if (mVoiceCapable) {
+                mNotificationPreference.setEnabled(mRingerMode == AudioManager.RINGER_MODE_NORMAL);
+            }
         }
     }
 
