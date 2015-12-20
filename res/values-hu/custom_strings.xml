@@ -199,4 +199,7 @@
   <string name="wifi_setting_countrycode_summary">Adja meg a Wi-Fi régiókódját</string>
   <string name="wifi_setting_countrycode_error">Hiba történt a régiókód beállítása közben.</string>
   <string name="wifi_setting_countrycode_default">Alapértelmezett</string>
+  <string name="display_lockscreen_rotation_title">Zárképernyő</string>
+  <string name="lockscreen_settings_title">Zárképernyő</string>
+  <string name="bluetooth_accept_all_files">Minden fájltípus elfogadása</string>
 </resources>

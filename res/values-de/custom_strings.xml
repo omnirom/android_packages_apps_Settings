@@ -199,4 +199,7 @@
   <string name="wifi_setting_countrycode_summary">WLAN-Ländercode festlegen</string>
   <string name="wifi_setting_countrycode_error">Beim Festlegen des Ländercodes ist ein Problem aufgetreten.</string>
   <string name="wifi_setting_countrycode_default">Standard</string>
+  <string name="display_lockscreen_rotation_title">Sperrbildschirm</string>
+  <string name="lockscreen_settings_title">Sperrbildschirm</string>
+  <string name="bluetooth_accept_all_files">Alle Dateitypen akzeptieren</string>
 </resources>

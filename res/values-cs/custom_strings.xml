@@ -199,4 +199,7 @@
   <string name="wifi_setting_countrycode_summary">Zvolte kód regionu Wi-Fi</string>
   <string name="wifi_setting_countrycode_error">Při nastavování kódu regionu došlo k chybě.</string>
   <string name="wifi_setting_countrycode_default">Výchozí</string>
+  <string name="display_lockscreen_rotation_title">Zámek displeje</string>
+  <string name="lockscreen_settings_title">Zámek displeje</string>
+  <string name="bluetooth_accept_all_files">Přijmout všechny typy souborů</string>
 </resources>
