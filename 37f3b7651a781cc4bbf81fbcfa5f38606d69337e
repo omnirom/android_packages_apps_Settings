@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b8f5b13e_ab07e786",
+        "filename": "src/com/android/settings/SettingsActivity.java",
+        "patchSetId": 22
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2015-12-20T16:36:55Z",
+      "side": 1,
+      "message": "you want this to work without dependencies? if not this will not compile",
+      "revId": "37f3b7651a781cc4bbf81fbcfa5f38606d69337e",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
