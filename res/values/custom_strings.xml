@@ -253,4 +253,6 @@
     <string name="bluetooth_accept_all_files">Accept all file types</string>
 
     <string name="system_ui_tuner">System UI Tuner</string>
+    <string name="camera_gesture_vibrate_title">Vibrate for camera</string>
+    <string name="camera_gesture_vibrate_summary"></string>
 </resources>

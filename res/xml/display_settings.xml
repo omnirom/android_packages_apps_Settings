@@ -73,6 +73,12 @@
                 android:summary="@string/camera_double_tap_power_gesture_desc"
                 android:persistent="false" />
 
+        <com.android.settings.preference.SystemCheckBoxPreference
+                android:key="camera_gesture_vibrate"
+                android:title="@string/camera_gesture_vibrate_title"
+                android:summary="@string/camera_gesture_vibrate_summary"
+                android:defaultValue="true"/>
+
         <PreferenceScreen
                 android:key="screensaver"
                 android:title="@string/screensaver_settings_title"
