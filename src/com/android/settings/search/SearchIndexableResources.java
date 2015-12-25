@@ -58,6 +58,7 @@ import org.omnirom.omnigears.AmbientSettings;
 import org.omnirom.omnigears.ButtonSettings;
 import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
+import org.omnirom.omnigears.interfacesettings.MoreInterfaceSettings;
 import org.omnirom.omnigears.interfacesettings.NetworkTraffic;
 import org.omnirom.omnigears.brightness.ButtonBrightnessSettings;
 
@@ -352,6 +353,14 @@ public final class SearchIndexableResources {
                         NO_DATA_RES_ID,
                         NetworkTraffic.class.getName(),
                         R.drawable.ic_bars));
+
+        sResMap.put(MoreInterfaceSettings.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(MoreInterfaceSettings.class.getName()),
+                        NO_DATA_RES_ID,
+                        MoreInterfaceSettings.class.getName(),
+                        R.drawable.ic_settings_more));
+
     }
 
     private SearchIndexableResources() {

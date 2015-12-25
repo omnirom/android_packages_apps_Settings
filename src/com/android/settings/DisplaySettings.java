@@ -85,6 +85,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private static final String KEY_CAMERA_GESTURE = "camera_gesture";
     private static final String KEY_CAMERA_DOUBLE_TAP_POWER_GESTURE
             = "camera_double_tap_power_gesture";
+    private static final String KEY_CAMERA_GESTURE_VIBRATE = "camera_gesture_vibrate";
 
     private static final String KEY_DOZE_FRAGMENT = "doze_fragment";
 
@@ -195,6 +196,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             mCameraDoubleTapPowerGesturePreference.setOnPreferenceChangeListener(this);
         } else {
             removePreference(KEY_CAMERA_DOUBLE_TAP_POWER_GESTURE);
+            removePreference(KEY_CAMERA_GESTURE_VIBRATE);
         }
 
         mNightModePreference = (ListPreference) findPreference(KEY_NIGHT_MODE);
