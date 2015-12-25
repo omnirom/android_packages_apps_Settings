@@ -130,6 +130,7 @@ import org.omnirom.omnigears.ButtonSettings;
 import com.brewcrewfoo.performance.activities.MainActivity;
 import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
+import org.omnirom.omnigears.interfacesettings.MoreInterfaceSettings;
 import org.omnirom.omnigears.interfacesettings.NetworkTraffic;
 import org.omnirom.omnigears.brightness.ButtonBrightnessSettings;
 import org.omnirom.omnigears.LockscreenSettings;
@@ -374,7 +375,8 @@ public class SettingsActivity extends Activity
             WriteSettingsDetails.class.getName(),
             NetworkTraffic.class.getName(),
             LockscreenSettings.class.getName(),
-            DisplayRotation.class.getName()
+            DisplayRotation.class.getName(),
+            MoreInterfaceSettings.class.getName()
     };
 
 
