@@ -83,4 +83,10 @@
             android:title="@string/emergency_tone_title"
             android:persistent="false" />
 
+    <!-- camera gesture vibrate -->
+    <com.android.settings.preference.SystemSettingSwitchPreference
+            android:key="camera_gesture_vibrate"
+            android:title="@string/camera_gesture_vibrate_title"
+            android:defaultValue="true"/>
+
 </PreferenceScreen>

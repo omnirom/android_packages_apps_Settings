@@ -261,4 +261,5 @@
     <string name="notifications_no_keyguard">Hidden when locked</string>
     <string name="notifications_four_items"><xliff:g id="notif_state" example="Priority">%1$s</xliff:g> / <xliff:g id="notif_state" example="Priority">%2$s</xliff:g> / <xliff:g id="notif_state" example="Priority">%3$s</xliff:g> / <xliff:g id="notif_state" example="Priority">%4$s</xliff:g></string>
 
+    <string name="camera_gesture_vibrate_title">Vibrate on camera gesture</string>
 </resources>
