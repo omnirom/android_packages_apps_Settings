@@ -253,4 +253,11 @@
     <string name="bluetooth_accept_all_files">Accept all file types</string>
 
     <string name="system_ui_tuner">System UI Tuner</string>
+
+    <!-- app notifications hide on lockscreen -->
+    <string name="app_notification_no_keyguard_title">Hide when locked</string>
+    <string name="app_notification_no_keyguard_summary">Hide notifications of this app when device is locked</string>
+    <string name="filter_notif_no_keyguard">Hidden when locked</string>
+    <string name="notifications_no_keyguard">Hidden when locked</string>
+
 </resources>
