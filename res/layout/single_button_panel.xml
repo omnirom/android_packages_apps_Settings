@@ -33,9 +33,7 @@
             android:layout_width="120dip"
             android:layout_weight="0.4"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:backgroundTint="?android:attr/colorAccent"
-            android:textColor="@android:color/white" />
+            android:layout_gravity="center_vertical" />
         <Space
             android:layout_width="0dip"
             android:layout_height="wrap_content"
