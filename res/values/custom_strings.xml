@@ -262,4 +262,18 @@
     <string name="notifications_four_items" translatable="false"><xliff:g id="notif_state" example="Priority">%1$s</xliff:g> / <xliff:g id="notif_state" example="Priority">%2$s</xliff:g> / <xliff:g id="notif_state" example="Priority">%3$s</xliff:g> / <xliff:g id="notif_state" example="Priority">%4$s</xliff:g></string>
 
     <string name="camera_gesture_vibrate_title">Vibrate on camera gesture</string>
+
+    <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
+    <string name="wifi_countrycode_us">United States</string>
+    <string name="wifi_countrycode_ca">Canada, Taiwan</string>
+    <string name="wifi_countrycode_de">Germany</string>
+    <string name="wifi_countrycode_gb">Europe</string>
+    <string name="wifi_countrycode_jp">Japan, Russia</string>
+    <string name="wifi_countrycode_au">Australia</string>
+    <string name="wifi_countrycode_id">Indonesia</string>
+    <string name="wifi_countrycode_cn">China</string>
+    <string name="wifi_countrycode_kr">Korea</string>
+    <string name="wifi_countrycode_tr">Turkey</string>
+    <string name="wifi_countrycode_sg">Singapore</string>
+    <string name="wifi_countrycode_br">Brazil</string>
 </resources>
