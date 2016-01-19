@@ -60,9 +60,7 @@
   <string name="mount_notification_summary">Wyświetl powiadomienie o zamontowanym nośniku</string>
   <string name="zen_mode_none_category">Bez przerw</string>
   <string name="zen_mode_alarms">Zezwalaj na alarmy</string>
-  <string name="link_volume_option_title">Połącz głośność dzwonka i powiadomień</string>
   <string name="notification_volume_option_title">Głośność powiadomień</string>
-  <string name="ring_notification_volume_option_tile">Głośność dzwonka i powiadomień</string>
   <string name="show_unac_and_overcounted_stats_title">Pokazuj zbyt małe/nadmierne statystyki</string>
   <string name="show_unac_and_overcounted_stats_summary">Pokazuj w statystykach baterii bardzo małe i nadmierne zużycia.</string>
   <string name="keyguard_quick_unlock">Szybkie odblokowanie</string>

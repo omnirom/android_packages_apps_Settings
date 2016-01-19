@@ -62,7 +62,7 @@
   <string name="zen_mode_alarms">Riasztás engedélyezése</string>
   <string name="link_volume_option_title">Csengő és értesítési hangok összekötése</string>
   <string name="notification_volume_option_title">Értesítési hangerő</string>
-  <string name="ring_notification_volume_option_tile">Csengő és értesítési hangerő</string>
+  <string name="ring_notification_volume_option_title">Csengő és értesítési hangerő</string>
   <string name="show_unac_and_overcounted_stats_title">Nem hozzárendelhető statisztika megjelenítése</string>
   <string name="show_unac_and_overcounted_stats_summary">Az akkumulátor statisztikában a közvetlenül nem társítható akkumulátor használat megjelenítése.</string>
   <string name="keyguard_quick_unlock">Gyors feloldás</string>
@@ -195,8 +195,12 @@
   <string name="app_ops_permissions_ignored">Figyelmen kívül hagyott</string>
   <string name="app_ops_permissions_always_ask">Mindig kérdezze meg</string>
   <string name="interface_bars_title">Bárok</string>
+  <string name="interface_more_title">Több</string>
   <string name="wifi_setting_countrycode_title">Wi-Fi régiókód</string>
   <string name="wifi_setting_countrycode_summary">Adja meg a Wi-Fi régiókódját</string>
   <string name="wifi_setting_countrycode_error">Hiba történt a régiókód beállítása közben.</string>
   <string name="wifi_setting_countrycode_default">Alapértelmezett</string>
+  <string name="display_lockscreen_rotation_title">Zárképernyő</string>
+  <string name="bluetooth_accept_all_files">Minden fájltípus elfogadása</string>
+  <string name="system_ui_tuner">Rendszer felhasználói felület hangoló</string>
 </resources>

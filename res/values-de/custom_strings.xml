@@ -62,7 +62,7 @@
   <string name="zen_mode_alarms">Alarme erlauben</string>
   <string name="link_volume_option_title">Klingel- und Benachrichtigungslautstärken verbinden</string>
   <string name="notification_volume_option_title">Benachrichtigungslautstärke</string>
-  <string name="ring_notification_volume_option_tile">Klingel- und Benachrichtigungslautstärke</string>
+  <string name="ring_notification_volume_option_title">Klingel- und Benachrichtigungslautstärke</string>
   <string name="show_unac_and_overcounted_stats_title">Nicht zuweisbaren Batterieverbrauch anzeigen</string>
   <string name="show_unac_and_overcounted_stats_summary">In der Verbrauchsstatistik nicht direkt zuweisbare Akku-Nutzung anzeigen.</string>
   <string name="keyguard_quick_unlock">Schnelles Entsperren</string>
@@ -195,8 +195,12 @@
   <string name="app_ops_permissions_ignored">Ignoriert</string>
   <string name="app_ops_permissions_always_ask">Immer nachfragen</string>
   <string name="interface_bars_title">Leisten</string>
+  <string name="interface_more_title">Mehr</string>
   <string name="wifi_setting_countrycode_title">WLAN-Ländercode</string>
   <string name="wifi_setting_countrycode_summary">WLAN-Ländercode festlegen</string>
   <string name="wifi_setting_countrycode_error">Beim Festlegen des Ländercodes ist ein Problem aufgetreten.</string>
   <string name="wifi_setting_countrycode_default">Standard</string>
+  <string name="display_lockscreen_rotation_title">Sperrbildschirm</string>
+  <string name="bluetooth_accept_all_files">Alle Dateitypen akzeptieren</string>
+  <string name="system_ui_tuner">System Benutzeroberfläche optimieren</string>
 </resources>

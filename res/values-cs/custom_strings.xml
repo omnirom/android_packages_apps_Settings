@@ -62,7 +62,7 @@
   <string name="zen_mode_alarms">Povolit budík</string>
   <string name="link_volume_option_title">Spojit hlasitost upozornění a vyzvánění</string>
   <string name="notification_volume_option_title">Hlasitost oznámení</string>
-  <string name="ring_notification_volume_option_tile">Hlasitost vyzvánění a upozornění</string>
+  <string name="ring_notification_volume_option_title">Hlasitost vyzvánění a upozornění</string>
   <string name="show_unac_and_overcounted_stats_title">Zobrazit statistiky</string>
   <string name="show_unac_and_overcounted_stats_summary">Zobrazit statistiky využití baterie.</string>
   <string name="keyguard_quick_unlock">Rychlé odemknutí</string>
@@ -195,8 +195,12 @@
   <string name="app_ops_permissions_ignored">Ignorováno</string>
   <string name="app_ops_permissions_always_ask">Vždy se zeptat</string>
   <string name="interface_bars_title">Lišty</string>
+  <string name="interface_more_title">Více</string>
   <string name="wifi_setting_countrycode_title">Kód regionu Wi-Fi</string>
   <string name="wifi_setting_countrycode_summary">Zvolte kód regionu Wi-Fi</string>
   <string name="wifi_setting_countrycode_error">Při nastavování kódu regionu došlo k chybě.</string>
   <string name="wifi_setting_countrycode_default">Výchozí</string>
+  <string name="display_lockscreen_rotation_title">Zámek displeje</string>
+  <string name="bluetooth_accept_all_files">Přijmout všechny typy souborů</string>
+  <string name="system_ui_tuner">Nastavení rozhraní systému</string>
 </resources>

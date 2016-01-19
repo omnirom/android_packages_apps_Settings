@@ -60,9 +60,7 @@
   <string name="mount_notification_summary">Показывать уведомление при подключении накопителя</string>
   <string name="zen_mode_none_category">Без прерывания</string>
   <string name="zen_mode_alarms">Разрешить будильники</string>
-  <string name="link_volume_option_title">Связать громкость звонка и уведомлений</string>
   <string name="notification_volume_option_title">Громкость уведомления</string>
-  <string name="ring_notification_volume_option_tile">Громокость звонка и уведомлений</string>
   <string name="show_unac_and_overcounted_stats_title">Показывать неучтенные (прочие) данные статистики батареи</string>
   <string name="show_unac_and_overcounted_stats_summary">Показывать данные статистики батареи, которые не относятся ни к чему конкретному и обычно попадают в прочее.</string>
   <string name="keyguard_quick_unlock">Быстрая разблокировка</string>

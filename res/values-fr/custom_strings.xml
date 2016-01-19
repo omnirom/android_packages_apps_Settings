@@ -60,9 +60,7 @@
   <string name="mount_notification_summary">Afficher une notification pour le périphériques montés</string>
   <string name="zen_mode_none_category">Sans interruption</string>
   <string name="zen_mode_alarms">Autoriser les alarmes</string>
-  <string name="link_volume_option_title">Lier les volumes de la sonnerie et des notifications</string>
   <string name="notification_volume_option_title">Volume des notifications</string>
-  <string name="ring_notification_volume_option_tile">Volume sonnerie et notifications</string>
   <string name="show_unac_and_overcounted_stats_title">Afficher les statistiques sous/sur estimées</string>
   <string name="show_unac_and_overcounted_stats_summary">Afficher dans les statistiques de la batterie les consommation non prises en compte et sur-pondérés.</string>
   <string name="keyguard_quick_unlock">Déverrouillage rapide</string>
