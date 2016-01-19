@@ -349,7 +349,7 @@ public class AppOpsCategory extends ListFragment implements
             if (!isSystem) {
                 startApplicationDetailsActivity();
             } else {
-                Toast.makeText(getActivity(), getString(R.string.appops_sys_app), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.app_ops_sys_app), Toast.LENGTH_SHORT).show();
             }
         }
     }
