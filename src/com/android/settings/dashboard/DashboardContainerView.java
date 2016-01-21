@@ -17,27 +17,43 @@
 package com.android.settings.dashboard;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import com.android.settings.R;
 
+import com.android.internal.util.omni.DeviceUtils;
+
 public class DashboardContainerView extends ViewGroup {
 
+    public static final String PREF_DASHBOARD_COLUMNS = "dashboard_columns";
     private float mCellGapX;
     private float mCellGapY;
 
     private int mNumRows;
     private int mNumColumns;
+    private boolean mCompactMode;
 
     public DashboardContainerView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         final Resources res = context.getResources();
-        mCellGapX = res.getDimension(R.dimen.dashboard_cell_gap_x);
+        final int dashboardValue = res.getInteger(R.integer.dashboard_num_columns);
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        // dont use a vale smaller then what the config said
+        // special case for layout-land which has a default of 2
+        mNumColumns = Math.max(dashboardValue, Integer.valueOf(prefs.getString(PREF_DASHBOARD_COLUMNS,
+                Integer.toString(dashboardValue))));
+        final boolean isLandsacpe = res.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        mCompactMode = (DeviceUtils.isPhone(context) && (isLandsacpe ? mNumColumns > 2 : mNumColumns > 1))
+                || (DeviceUtils.isTablet(context) && mNumColumns > 2);
+        mCellGapX = res.getDimension(mCompactMode ? R.dimen.dashboard_cell_gap_x_compact : R.dimen.dashboard_cell_gap_x);
         mCellGapY = res.getDimension(R.dimen.dashboard_cell_gap_y);
-        mNumColumns = res.getInteger(R.integer.dashboard_num_columns);
     }
 
     @Override
@@ -138,5 +154,9 @@ public class DashboardContainerView extends ViewGroup {
                 y += childHeight + mCellGapY;
             }
         }
+    }
+
+    protected boolean isCompactMode() {
+        return mCompactMode;
     }
 }
