@@ -149,14 +149,15 @@ public class DashboardSummary extends InstrumentedFragment {
             TextView categoryLabel = (TextView) categoryView.findViewById(R.id.category_title);
             categoryLabel.setText(category.getTitle(res));
 
-            ViewGroup categoryContent =
-                    (ViewGroup) categoryView.findViewById(R.id.category_content);
+            DashboardContainerView categoryContent =
+                    (DashboardContainerView) categoryView.findViewById(R.id.category_content);
+            final boolean compactMode = categoryContent.isCompactMode();
 
             final int tilesCount = category.getTilesCount();
             for (int i = 0; i < tilesCount; i++) {
                 DashboardTile tile = category.getTile(i);
 
-                DashboardTileView tileView = new DashboardTileView(context);
+                DashboardTileView tileView = new DashboardTileView(context, compactMode);
                 updateTileView(context, res, tile, tileView.getImageView(),
                         tileView.getTitleTextView(), tileView.getStatusTextView());
 
