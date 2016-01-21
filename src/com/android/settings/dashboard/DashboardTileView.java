@@ -42,14 +42,15 @@ public class DashboardTileView extends FrameLayout implements View.OnClickListen
 
     private DashboardTile mTile;
 
-    public DashboardTileView(Context context) {
-        this(context, null);
+    public DashboardTileView(Context context, boolean compactMode) {
+        this(context, null, compactMode);
     }
 
-    public DashboardTileView(Context context, AttributeSet attrs) {
+    public DashboardTileView(Context context, AttributeSet attrs, boolean compactMode) {
         super(context, attrs);
 
-        final View view = LayoutInflater.from(context).inflate(R.layout.dashboard_tile, this);
+        final View view = LayoutInflater.from(mContext).inflate(compactMode ?
+                R.layout.dashboard_tile_compact : R.layout.dashboard_tile, this);
 
         mImageView = (ImageView) view.findViewById(R.id.icon);
         mTitleTextView = (TextView) view.findViewById(R.id.title);
