@@ -37,6 +37,7 @@ import android.hardware.fingerprint.FingerprintManager.RemovalCallback;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.Handler;
+import android.os.UserHandle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceGroup;
@@ -149,6 +150,7 @@ public class FingerprintSettings extends SubSettings {
         private byte[] mToken;
         private boolean mLaunchedConfirm;
         private Drawable mHighlightDrawable;
+        private int mUserId;
 
         private AuthenticationCallback mAuthCallback = new AuthenticationCallback() {
             @Override
@@ -256,7 +258,7 @@ public class FingerprintSettings extends SubSettings {
             if (!mInFingerprintLockout) {
                 mFingerprintCancel = new CancellationSignal();
                 mFingerprintManager.authenticate(null, mFingerprintCancel, 0 /* flags */,
-                        mAuthCallback, null);
+                        mAuthCallback, null, mUserId);
             }
         }
 
@@ -274,6 +276,9 @@ public class FingerprintSettings extends SubSettings {
                 mLaunchedConfirm = savedInstanceState.getBoolean(
                         KEY_LAUNCHED_CONFIRM, false);
             }
+            mUserId = getActivity().getIntent().getIntExtra(
+                    Intent.EXTRA_USER_ID, UserHandle.myUserId());
+
 
             Activity activity = getActivity();
             mFingerprintManager = (FingerprintManager) activity.getSystemService(
@@ -342,7 +347,7 @@ public class FingerprintSettings extends SubSettings {
 
         private void addFingerprintItemPreferences(PreferenceGroup root) {
             root.removeAll();
-            final List<Fingerprint> items = mFingerprintManager.getEnrolledFingerprints();
+            final List<Fingerprint> items = mFingerprintManager.getEnrolledFingerprints(mUserId);
             final int fingerprintCount = items.size();
             for (int i = 0; i < fingerprintCount; i++) {
                 final Fingerprint item = items.get(i);
@@ -367,7 +372,7 @@ public class FingerprintSettings extends SubSettings {
             /* Disable preference if too many fingerprints added */
             final int max = getContext().getResources().getInteger(
                     com.android.internal.R.integer.config_fingerprintMaxTemplatesPerUser);
-            boolean tooMany = mFingerprintManager.getEnrolledFingerprints().size() >= max;
+            boolean tooMany = mFingerprintManager.getEnrolledFingerprints(mUserId).size() >= max;
             CharSequence maxSummary = tooMany ?
                     getContext().getString(R.string.fingerprint_add_max, max) : "";
             Preference addPreference = findPreference(KEY_FINGERPRINT_ADD);
@@ -412,6 +417,7 @@ public class FingerprintSettings extends SubSettings {
                 Intent intent = new Intent();
                 intent.setClassName("com.android.settings",
                         FingerprintEnrollEnrolling.class.getName());
+                intent.putExtra(Intent.EXTRA_USER_ID, mUserId);
                 intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_CHALLENGE_TOKEN, mToken);
                 startActivityForResult(intent, ADD_FINGERPRINT_REQUEST);
             } else if (pref instanceof FingerprintPreference) {
@@ -523,13 +529,14 @@ public class FingerprintSettings extends SubSettings {
             ChooseLockSettingsHelper helper = new ChooseLockSettingsHelper(getActivity(), this);
             if (!helper.launchConfirmationActivity(CONFIRM_REQUEST,
                     getString(R.string.security_settings_fingerprint_preference_title),
-                    null, null, challenge)) {
+                    null, null, challenge, mUserId)) {
                 intent.setClassName("com.android.settings", ChooseLockGeneric.class.getName());
                 intent.putExtra(ChooseLockGeneric.ChooseLockGenericFragment.MINIMUM_QUALITY_KEY,
                         DevicePolicyManager.PASSWORD_QUALITY_SOMETHING);
                 intent.putExtra(ChooseLockGeneric.ChooseLockGenericFragment.HIDE_DISABLED_PREFS,
                         true);
                 intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_HAS_CHALLENGE, true);
+                intent.putExtra(Intent.EXTRA_USER_ID, mUserId);
                 intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_CHALLENGE, challenge);
                 startActivityForResult(intent, CHOOSE_LOCK_GENERIC_REQUEST);
             }
