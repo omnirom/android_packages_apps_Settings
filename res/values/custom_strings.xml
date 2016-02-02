@@ -141,4 +141,7 @@
     <string name="wifi_countrycode_tr">Turkey</string>
     <string name="wifi_countrycode_sg">Singapore</string>
     <string name="wifi_countrycode_br">Brazil</string>
+
+    <string name="heads_up_notifications_enabled_title">Allow peeking</string>
+    <string name="heads_up_notifications_enabled_summary">Allow or disable peeking for all notifications</string>
 </resources>
