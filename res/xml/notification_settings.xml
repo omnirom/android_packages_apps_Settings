@@ -123,10 +123,12 @@
                 android:title="@string/lock_screen_notifications_title"
                 android:persistent="false" />
 
-        <PreferenceScreen
-                android:key="battery_light"
-                android:title="@string/battery_light_settings"
-                android:fragment="org.omnirom.omnigears.batterylight.BatteryLightSettings" />
+        <!-- global heads-up enable/disable -->
+        <com.android.settings.preference.GlobalSettingSwitchPreference
+                android:key="heads_up_notifications_enabled"
+                android:title="@string/heads_up_notifications_enabled_title"
+                android:summary="@string/heads_up_notifications_enabled_summary"
+                android:defaultValue="true" />
 
         <!-- App notifications -->
         <PreferenceScreen
@@ -137,6 +139,11 @@
                     android:name="classname"
                     android:value="com.android.settings.Settings$NotificationAppListActivity" />
         </PreferenceScreen>
+
+        <PreferenceScreen
+                android:key="battery_light"
+                android:title="@string/battery_light_settings"
+                android:fragment="org.omnirom.omnigears.batterylight.BatteryLightSettings" />
 
     </PreferenceCategory>
 
