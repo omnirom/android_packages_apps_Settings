@@ -32,12 +32,14 @@ import com.android.internal.util.omni.DeviceUtils;
 public class DashboardContainerView extends ViewGroup {
 
     public static final String PREF_DASHBOARD_COLUMNS = "dashboard_columns";
+    public static final String PREF_DASHBOARD_COLUMNS_RESIZE = "dashboard_columns_resize";
     private float mCellGapX;
     private float mCellGapY;
 
     private int mNumRows;
     private int mNumColumns;
     private boolean mCompactMode;
+    private boolean mColumnsResize;
 
     public DashboardContainerView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -47,11 +49,27 @@ public class DashboardContainerView extends ViewGroup {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         // dont use a vale smaller then what the config said
         // special case for layout-land which has a default of 2
-        mNumColumns = Math.max(dashboardValue, Integer.valueOf(prefs.getString(PREF_DASHBOARD_COLUMNS,
-                Integer.toString(dashboardValue))));
-        final boolean isLandsacpe = res.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        //mNumColumns = Math.max(dashboardValue, Integer.valueOf(prefs.getString(PREF_DASHBOARD_COLUMNS,
+        //        Integer.toString(dashboardValue))));
+        mNumColumns = Integer.valueOf(prefs.getString(PREF_DASHBOARD_COLUMNS,Integer.toString(dashboardValue)));
+        mColumnsResize = prefs.getBoolean(PREF_DASHBOARD_COLUMNS_RESIZE, false);
+        final boolean isLandscape = res.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
         final boolean isPhone = DeviceUtils.isPhone(context);
-        mCompactMode = (isPhone && (isLandsacpe ? mNumColumns > 2 : mNumColumns > 1))
+        final boolean isTablet = DeviceUtils.isTablet(context);
+
+        if (mColumnsResize) {
+            if (isTablet && !isLandscape) {
+                if (mNumColumns > 1) {
+                    mNumColumns = mNumColumns - 1;
+                }
+            } else {
+                if (isPhone && isLandscape) {
+                   mNumColumns = mNumColumns + 1;
+                }
+            }
+        }
+
+        mCompactMode = (isPhone && (isLandscape ? mNumColumns > 2 : mNumColumns > 1))
                 || (!isPhone && mNumColumns > 2);
         mCellGapX = res.getDimension(mCompactMode ? R.dimen.dashboard_cell_gap_x_compact : R.dimen.dashboard_cell_gap_x);
         mCellGapY = res.getDimension(R.dimen.dashboard_cell_gap_y);
