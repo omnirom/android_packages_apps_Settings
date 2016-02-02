@@ -49,9 +49,17 @@ public class DashboardContainerView extends ViewGroup {
         // special case for layout-land which has a default of 2
         mNumColumns = Math.max(dashboardValue, Integer.valueOf(prefs.getString(PREF_DASHBOARD_COLUMNS,
                 Integer.toString(dashboardValue))));
-        final boolean isLandsacpe = res.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        final boolean isLandscape = res.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
         final boolean isPhone = DeviceUtils.isPhone(context);
-        mCompactMode = (isPhone && (isLandsacpe ? mNumColumns > 2 : mNumColumns > 1))
+
+        
+        if (!isPhone && !isLandscape) {
+            if (mNumColumns > 1) {
+                mNumColumns = mNumColumns - 1;
+            }
+        }
+
+        mCompactMode = (isPhone && (isLandscape ? mNumColumns > 2 : mNumColumns > 1))
                 || (!isPhone && mNumColumns > 2);
         mCellGapX = res.getDimension(mCompactMode ? R.dimen.dashboard_cell_gap_x_compact : R.dimen.dashboard_cell_gap_x);
         mCellGapY = res.getDimension(R.dimen.dashboard_cell_gap_y);
