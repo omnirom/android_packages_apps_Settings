@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "98faad2e_58184584",
+        "filename": "src/com/android/settings/dashboard/DashboardContainerView.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2016-02-02T23:37:08Z",
+      "side": 1,
+      "message": "phones:\ndefault: prefs value \u003d 1  -\u003e 1 po 2 ls -\u003e (Math.max in line 50 is selecting 2 in ls)\nprefs value \u003d 2 -\u003e 2 po 2 ls\npref value \u003d 3 -\u003e 3 po 3 ls\n\nIf that mode is enabled it should use\n1/2 (unchanged)\n2/3\n3/4\n\ntablets are actually the same only the default \nis 2/2 3/3 4/4 should become 2/3 3/4 4/5 in that mode",
+      "revId": "7942b3942858fb04225ad41a5eafe9dd825593ff",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
