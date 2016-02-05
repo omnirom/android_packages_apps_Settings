@@ -32,13 +32,6 @@
         <item>2</item>
     </string-array>
 
-    <!-- App ops permissions -->
-    <string-array name="app_ops_permissions" translatable="false">
-        <item>@string/app_ops_permissions_allowed</item>
-        <item>@string/app_ops_permissions_ignored</item>
-        <item>@string/app_ops_permissions_always_ask</item>
-    </string-array>
-
     <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code. -->
     <string-array name="wifi_countrycode_entries" translatable="false">
         <item>@string/wifi_countrycode_us</item>
