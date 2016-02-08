@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "98faad2e_a8ba5469",
+        "filename": "src/com/android/settings/dashboard/DashboardContainerView.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2016-02-08T11:31:54Z",
+      "side": 1,
+      "message": "wondering if there is a way to get preferred orientation for a device. Or if its just save to assume all \"pseudo-tablets\" like flo fall into the portrait default case?\nElse that would help http://code4reference.com/2012/06/android-default-screen-orientation/\nGet current rotation and compare with width/height\nBut I am fine with this solution also as it seems to works for all our supported devices",
+      "revId": "7477cdbbf627b75b8d81c1490b26088da8a499c1",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
