@@ -144,4 +144,6 @@
 
     <string name="heads_up_notifications_enabled_title">Allow peeking</string>
     <string name="heads_up_notifications_enabled_summary">Allow or disable peeking for all notifications</string>
+
+    <string name="font_sample_text">Lorem ipsum 4711</string>
 </resources>
