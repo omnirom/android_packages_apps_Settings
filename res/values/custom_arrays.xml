@@ -62,4 +62,21 @@
         <item>SG</item>
         <item>BR</item>
     </string-array>
+
+    <!--<string-array name="font_picker_values" translatable="false">
+        <item>serif</item>
+        <item>serif-monospace</item>
+        <item>sans-serif</item>
+        <item>sans-serif-thin</item>
+        <item>sans-serif-light</item>
+        <item>sans-serif-condensed</item>
+        <item>sans-serif-condensed-light</item>
+        <item>sans-serif-medium</item>
+        <item>sans-serif-black</item>
+        <item>sans-serif-monospace</item>
+        <item>sans-serif-smallcaps</item>
+        <item>Droid Sans</item>
+        <item>casual</item>
+        <item>cursive</item>
+    </string-array>-->
 </resources>
