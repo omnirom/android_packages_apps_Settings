@@ -60,6 +60,7 @@ import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.interfacesettings.GlobalActionsSettings;
 import org.omnirom.omnigears.interfacesettings.MoreInterfaceSettings;
+import org.omnirom.omnigears.interfacesettings.LockscreenSettings;
 import org.omnirom.omnigears.interfacesettings.NetworkTraffic;
 import org.omnirom.omnigears.brightness.ButtonBrightnessSettings;
 
@@ -369,6 +370,12 @@ public final class SearchIndexableResources {
                         GlobalActionsSettings.class.getName(),
                         R.drawable.ic_settings_more));
 
+        sResMap.put(LockscreenSettings.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(LockscreenSettings.class.getName()),
+                        NO_DATA_RES_ID,
+                        LockscreenSettings.class.getName(),
+                        R.drawable.ic_lockscreen_tile));
     }
 
     private SearchIndexableResources() {
