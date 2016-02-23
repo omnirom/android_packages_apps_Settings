@@ -87,7 +87,7 @@
 
         <!-- Lockscreen -->
         <dashboard-tile
-               android:key="@+id/interface_lockscreen"
+               android:id="@+id/interface_lockscreen"
                android:title="@string/interface_lockscreen_title"
                android:fragment="org.omnirom.omnigears.interfacesettings.LockscreenSettings"
                android:icon="@drawable/ic_lockscreen_tile"
