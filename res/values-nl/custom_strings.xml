@@ -19,24 +19,33 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- About phone screen,  setting option name-->
   <string name="mod_version">Omni-versie</string>
   <string name="mod_version_default">Onbekend</string>
+  <!-- Main list strings -->
   <string name="header_category_interface">Interface</string>
   <string name="performance_settings">Prestaties</string>
   <string name="advanced_settings_title">Uitgebreid</string>
   <string name="button_settings">Knoppen</string>
   <string name="battery_light_settings">Accu-LED</string>
+  <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">USB-foutopsporingsmodus notificatie</string>
   <string name="adb_notify_summary">Melding tonen indien USB-foutopsporingmodus is ingeschakeld</string>
   <string name="volume_adjust_sound_title">Geluid bij aanpassen volume</string>
   <string name="screenshot_shutter_sound_title">Schermopname sluitergeluid</string>
+  <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Geavanceerd herstarten</string>
   <string name="advanced_reboot_summary">Opties in het power menu toevoegen voor herstarten in recovery of bootloader</string>
+  <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
   <string name="show_cpu_info">Toon CPU info</string>
+  <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
   <string name="show_cpu_info_summary">Scherm-overlay met huidige CPU gebruik</string>
+  <!-- Android debugging over WiFi -->
   <string name="adb_over_network">ADB over netwerk</string>
   <string name="adb_over_network_summary">TCP/IP-foutopsporing inschakelen over netwerkinterfaces (Wi-Fi, USB-netwerken etc.). Deze instelling wordt hersteld bij een herstart</string>
+  <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">WAAARSCHUWING: Als ADB over het netwerk is ingeschakeld, is je telefoon open voor inbraken van alle verbonden netwerken, Ook het GSM datanetwerk!\n\nGebruiken deze optie alleen als je verbonden bent met een vertrouwd netwerk.\n\nWeet u zeker dat u deze funtie wilt inschakelen?</string>
+  <!-- Display : Rotation -->
   <string name="display_rotation_title">Schermrotatie</string>
   <string name="display_rotation_disabled">Uitgeschakeld</string>
   <string name="display_rotation_unit">graden</string>
@@ -45,6 +54,7 @@
   <string name="display_rotation_90_title">90 graden</string>
   <string name="display_rotation_180_title">180 graden</string>
   <string name="display_rotation_270_title">270 graden</string>
+  <!-- Lockscreen pin shuffle -->
   <string name="lock_numpad_random_title">Verander de volgorde van de PIN-code nummers</string>
   <string name="lock_numpad_random_dialog_title">PIN-code willekeurige volgorde</string>
   <string name="lock_numpad_random_off">Uitgeschakeld</string>
@@ -60,30 +70,42 @@
   <string name="mount_notification_summary">Melding blijven weergeven als opslag is gekoppeld</string>
   <string name="zen_mode_none_category">Geen onderbrekingen</string>
   <string name="zen_mode_alarms">Alarmen toestaan</string>
+  <!-- Linked / unlinked notification volume -->
   <string name="link_volume_option_title">Volumes van beltoon en meldingen koppelen</string>
   <string name="notification_volume_option_title">Meldingsvolume</string>
   <string name="ring_notification_volume_option_title">Volume beltoon en meldingen</string>
+  <!-- Unaccounted and overcounted battery stats -->
   <string name="show_unac_and_overcounted_stats_title">Niet verklaarbaar accu verbruik tonen</string>
   <string name="show_unac_and_overcounted_stats_summary">Toon niet verklaarbaar accu-verbruik in de verbruiksstatistieken.</string>
+  <!-- Keyguard: quick unlock -->
   <string name="keyguard_quick_unlock">Snel ontgrendelen</string>
   <string name="keyguard_quick_unlock_summary_pin">Automatisch ontgrendelen wanner juiste PIN code is ingevoerd</string>
   <string name="keyguard_quick_unlock_summary_password">Automatisch ontgrendelen wanner juiste wachtwoord is ingevoerd</string>
+  <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
   <string name="supersu_title">SuperSU</string>
+  <!-- dashboard categories -->
   <string name="interface_bars_title">Balken</string>
   <string name="interface_lockscreen_title">Vergrendelscherm</string>
   <string name="interface_more_title">Meer</string>
+  <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
   <string name="wifi_setting_countrycode_title">Wi-Fi regiocode</string>
+  <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->
   <string name="wifi_setting_countrycode_summary">Regiocode opgeven voor Wi-Fi</string>
+  <!-- Wi-Fi settings screen, error message when the region code could not be set [CHAR LIMIT=50]. -->
   <string name="wifi_setting_countrycode_error">Er was een probleem met het instellen van de regiocode.</string>
   <string name="wifi_setting_countrycode_default">Standaard</string>
+  <!-- Lock screen rotation -->
   <string name="display_lockscreen_rotation_title">Vergrendelscherm</string>
+  <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
   <string name="bluetooth_accept_all_files">Accepteer alle bestandstypen</string>
   <string name="system_ui_tuner">Systeem UI Tuner</string>
+  <!-- app notifications hide on lockscreen -->
   <string name="app_notification_no_keyguard_title">Verbergen wanneer vergrendeld</string>
   <string name="app_notification_no_keyguard_summary">Meldingen van deze app verbergen als het apparaat is vergrendeld</string>
   <string name="filter_notif_no_keyguard">Verborgen wanneer vergrendeld</string>
   <string name="notifications_no_keyguard">Verborgen wanneer vergrendeld</string>
   <string name="camera_gesture_vibrate_title">Trillen op camera gebaar</string>
+  <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
   <string name="wifi_countrycode_us">Verenigde Staten</string>
   <string name="wifi_countrycode_ca">Canada, Taiwan</string>
   <string name="wifi_countrycode_de">Duitsland</string>

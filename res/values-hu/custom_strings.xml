@@ -19,24 +19,33 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- About phone screen,  setting option name-->
   <string name="mod_version">Omni verzió</string>
   <string name="mod_version_default">Ismeretlen</string>
+  <!-- Main list strings -->
   <string name="header_category_interface">Felhasználói felület</string>
   <string name="performance_settings">Teljesítmény</string>
   <string name="advanced_settings_title">Haladó</string>
   <string name="button_settings">Gombok</string>
   <string name="battery_light_settings">Akkumulátor jelzés</string>
+  <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">USB hibakeresés értesítései</string>
   <string name="adb_notify_summary">Értesítések megjelenítése az USB hibakereső módban való csatlakozáskor</string>
   <string name="volume_adjust_sound_title">Hangerő állítási hang</string>
   <string name="screenshot_shutter_sound_title">Képernyőmentés zárhang</string>
+  <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Speciális újraindítás</string>
   <string name="advanced_reboot_summary">A bekapcsoló menüben a speciális újraindítási lehetőségek is felvehetők</string>
+  <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
   <string name="show_cpu_info">CPU info megjelenítése</string>
+  <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
   <string name="show_cpu_info_summary">Jelenlegi CPU info mutatása képernyő átfedésben</string>
+  <!-- Android debugging over WiFi -->
   <string name="adb_over_network">ADB hálózaton keresztül</string>
   <string name="adb_over_network_summary">Engedélyezi a TCP/IP hibakeresést hálózati eszközön keresztül (Wi-Fi, USB hálózatok). Újraindítás után alaphelyzetbe áll vissza</string>
+  <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">VIGYÁZAT: Ha a funkció engedélyezve van, az eszköz nyitva áll bármilyen behatolásra az összes kapcsolódó hálózaton keresztül!\n\nCsak biztonságos hálózatra csatlakozva érdemes engedélyezni.\n\nBiztosan engedélyezni szeretné?</string>
+  <!-- Display : Rotation -->
   <string name="display_rotation_title">Elforgatás</string>
   <string name="display_rotation_disabled">Kikapcsolva</string>
   <string name="display_rotation_unit">fok</string>
@@ -45,6 +54,7 @@
   <string name="display_rotation_90_title">90 fok</string>
   <string name="display_rotation_180_title">180 fok</string>
   <string name="display_rotation_270_title">270 fok</string>
+  <!-- Lockscreen pin shuffle -->
   <string name="lock_numpad_random_title">PIN pad számok sorrendjének módosítása</string>
   <string name="lock_numpad_random_dialog_title">PIN pad véletlen sorrend</string>
   <string name="lock_numpad_random_off">Kikapcsolva</string>
@@ -60,30 +70,42 @@
   <string name="mount_notification_summary">Folyamatos értesítés megjelenítése csatlakoztatott tároló esetén</string>
   <string name="zen_mode_none_category">Megszakítások nélkül</string>
   <string name="zen_mode_alarms">Riasztás engedélyezése</string>
+  <!-- Linked / unlinked notification volume -->
   <string name="link_volume_option_title">Csengő és értesítési hangok összekötése</string>
   <string name="notification_volume_option_title">Értesítési hangerő</string>
   <string name="ring_notification_volume_option_title">Csengő és értesítési hangerő</string>
+  <!-- Unaccounted and overcounted battery stats -->
   <string name="show_unac_and_overcounted_stats_title">Nem hozzárendelhető statisztika megjelenítése</string>
   <string name="show_unac_and_overcounted_stats_summary">Az akkumulátor statisztikában a közvetlenül nem társítható akkumulátor használat megjelenítése.</string>
+  <!-- Keyguard: quick unlock -->
   <string name="keyguard_quick_unlock">Gyors feloldás</string>
   <string name="keyguard_quick_unlock_summary_pin">Automatikus feloldás a helyes PIN-kód beütése után</string>
   <string name="keyguard_quick_unlock_summary_password">Automatikus feloldás a helyes jelszó megadása után</string>
+  <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
   <string name="supersu_title">SuperSU</string>
+  <!-- dashboard categories -->
   <string name="interface_bars_title">Bárok</string>
   <string name="interface_lockscreen_title">Zárképernyő</string>
   <string name="interface_more_title">Több</string>
+  <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
   <string name="wifi_setting_countrycode_title">Wi-Fi régiókód</string>
+  <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->
   <string name="wifi_setting_countrycode_summary">Adja meg a Wi-Fi régiókódját</string>
+  <!-- Wi-Fi settings screen, error message when the region code could not be set [CHAR LIMIT=50]. -->
   <string name="wifi_setting_countrycode_error">Hiba történt a régiókód beállítása közben.</string>
   <string name="wifi_setting_countrycode_default">Alapértelmezett</string>
+  <!-- Lock screen rotation -->
   <string name="display_lockscreen_rotation_title">Zárképernyő</string>
+  <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
   <string name="bluetooth_accept_all_files">Minden fájltípus elfogadása</string>
   <string name="system_ui_tuner">Rendszer felhasználói felület hangoló</string>
+  <!-- app notifications hide on lockscreen -->
   <string name="app_notification_no_keyguard_title">Elrejtés zárolásnál</string>
   <string name="app_notification_no_keyguard_summary">Ezen alkalmazás értesítéseinek elrejtése, ha a készülék zárolva van</string>
   <string name="filter_notif_no_keyguard">Rejtett zárt állapotban</string>
   <string name="notifications_no_keyguard">Rejtett zárt állapotban</string>
   <string name="camera_gesture_vibrate_title">Kamera gesztusra rezeg</string>
+  <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
   <string name="wifi_countrycode_us">Amerikai Egyesült Államok</string>
   <string name="wifi_countrycode_ca">Kanada, Tajvan</string>
   <string name="wifi_countrycode_de">Németország</string>
@@ -96,4 +118,6 @@
   <string name="wifi_countrycode_tr">Törökország</string>
   <string name="wifi_countrycode_sg">Szingapúr</string>
   <string name="wifi_countrycode_br">Brazília</string>
+  <string name="heads_up_notifications_enabled_title">Lebegő értesítések</string>
+  <string name="heads_up_notifications_enabled_summary">Lebegő értesítések engedélyezése vagy tiltása</string>
 </resources>

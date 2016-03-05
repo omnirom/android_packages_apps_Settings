@@ -19,22 +19,31 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- About phone screen,  setting option name-->
   <string name="mod_version">Omni 版本</string>
   <string name="mod_version_default">未知</string>
+  <!-- Main list strings -->
   <string name="header_category_interface">界面</string>
   <string name="performance_settings">性能</string>
   <string name="advanced_settings_title">高级设置</string>
   <string name="button_settings">按钮</string>
+  <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">USB 调试提醒</string>
   <string name="adb_notify_summary">当 USB 调试接入时显示通知图标</string>
   <string name="volume_adjust_sound_title">音量调整声</string>
+  <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">高级重启</string>
   <string name="advanced_reboot_summary">包括选择电源菜单进入还原或重新启动引导程序</string>
+  <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
   <string name="show_cpu_info">显示 CPU 信息</string>
+  <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
   <string name="show_cpu_info_summary">屏幕上方显示当前 CPU 信息</string>
+  <!-- Android debugging over WiFi -->
   <string name="adb_over_network">网络 ADB 调试</string>
   <string name="adb_over_network_summary">通过网络接口 (WLAN, USB 网络) 启用 TCP/IP 调试。 该设置重启后失效</string>
+  <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">警告：网络 ADB 调试启用后，您的设备将会在已连接的网络上被视为是开放的，，包括 GSM 数据网络，并有可能被侵入！\n\n请仅在您所信任的网络上使用此功能。\n\n您确实要启用该功能吗？</string>
+  <!-- Display : Rotation -->
   <string name="display_rotation_title">旋转</string>
   <string name="display_rotation_disabled">禁用</string>
   <string name="display_rotation_unit">度</string>
@@ -43,6 +52,7 @@
   <string name="display_rotation_90_title">90 度</string>
   <string name="display_rotation_180_title">180 度</string>
   <string name="display_rotation_270_title">270 度</string>
+  <!-- Lockscreen pin shuffle -->
   <string name="lock_numpad_random_title">改变 PIN 输入面板上数字的位置</string>
   <string name="lock_numpad_random_dialog_title">随机排列 PIN 输入面板上的按键位置</string>
   <string name="lock_numpad_random_off">禁用</string>
@@ -58,4 +68,16 @@
   <string name="mount_notification_summary">为已挂载的存储显示持续性通知</string>
   <string name="zen_mode_none_category">禁止打扰</string>
   <string name="zen_mode_alarms">允许闹铃</string>
+  <!-- Linked / unlinked notification volume -->
+  <!-- Unaccounted and overcounted battery stats -->
+  <!-- Keyguard: quick unlock -->
+  <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
+  <!-- dashboard categories -->
+  <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
+  <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->
+  <!-- Wi-Fi settings screen, error message when the region code could not be set [CHAR LIMIT=50]. -->
+  <!-- Lock screen rotation -->
+  <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
+  <!-- app notifications hide on lockscreen -->
+  <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
 </resources>

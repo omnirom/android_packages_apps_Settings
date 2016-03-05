@@ -20,32 +20,15 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- About phone screen,  setting option name-->
-  <string name="mod_version">Versione Omni</string>
   <!-- Main list strings -->
-  <string name="header_category_interface">Interfaccia</string>
-  <string name="advanced_settings_title">Avanzate</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
-  <string name="adb_notify_summary">Mostra una notifica quando il debug USB è connesso</string>
-  <string name="volume_adjust_sound_title">Suono di regolazione volume</string>
   <!-- Advanced reboot options -->
-  <string name="advanced_reboot_title">Riavvio avanzato</string>
-  <string name="advanced_reboot_summary">Includi opzioni nel menu power per il riavvio in recovery o bootloader</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
   <!-- Android debugging over WiFi -->
   <!-- Warning for Adb over Network -->
   <!-- Display : Rotation -->
-  <string name="display_rotation_title">Rotazione</string>
-  <string name="display_rotation_category_title">Modalità di rotazione</string>
-  <string name="display_rotation_90_title">90 gradi</string>
-  <string name="display_rotation_180_title">180 gradi</string>
   <!-- Lockscreen pin shuffle -->
-  <string name="lock_numpad_random_title">Cambia l\'ordine dei numeri del tastierino numerico</string>
-  <string name="lock_numpad_random_dialog_title">Ordine casuale dei numeri sul tastierino numerico del PIN</string>
-  <string name="lock_numpad_random_off">Disattivato</string>
-  <string name="lock_numpad_random_on_request">Su richiesta</string>
-  <string name="storage_options_category">Notifiche</string>
-  <string name="storage_menu_options">Avanzate</string>
   <!-- Linked / unlinked notification volume -->
   <!-- Unaccounted and overcounted battery stats -->
   <!-- Keyguard: quick unlock -->

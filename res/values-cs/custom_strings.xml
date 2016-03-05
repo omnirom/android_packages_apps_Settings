@@ -19,24 +19,33 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- About phone screen,  setting option name-->
   <string name="mod_version">Verze Omni</string>
   <string name="mod_version_default">Neznámý</string>
+  <!-- Main list strings -->
   <string name="header_category_interface">Rozhraní</string>
   <string name="performance_settings">Výkon</string>
   <string name="advanced_settings_title">Rozšířené</string>
   <string name="button_settings">Tlačítka</string>
   <string name="battery_light_settings">Podsvětlení na baterii</string>
+  <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">Upozornění na ladění USB</string>
   <string name="adb_notify_summary">Zobrazit upozornění při připojení k USB v režimu ladění</string>
   <string name="volume_adjust_sound_title">Zvuk při změně hlasitosti</string>
   <string name="screenshot_shutter_sound_title">Zvuk závěrky při sejmutí displeje</string>
+  <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Rozšířený restart</string>
   <string name="advanced_reboot_summary">Povolit v hlavní nabídce restartování do recovery nebo bootloaderu</string>
+  <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
   <string name="show_cpu_info">Zobrazit informace o CPU</string>
+  <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
   <string name="show_cpu_info_summary">Překrytí displeje zobrazující aktuální informace CPU</string>
+  <!-- Android debugging over WiFi -->
   <string name="adb_over_network">ADB přes síť</string>
   <string name="adb_over_network_summary">Povolit ladění přes síťové připojení (např. Wi-Fi nebo síť USB). Toto nastavení bude obnoveno po restartu</string>
+  <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">UPOZORNĚNÍ: Pokud je povoleno ADB přes síťové připojení, zařízení je otevřené pro pokusy o průniky na všech připojených sítích, včetně GSM datové sítě!\n\nPoužijte tuto vlastnost pouze pokud jste připojeni k důvěryhodné síti.\n\nOpravdu chcete povolit tuto funkci?</string>
+  <!-- Display : Rotation -->
   <string name="display_rotation_title">Otočení</string>
   <string name="display_rotation_disabled">Zakázano</string>
   <string name="display_rotation_unit">stupně</string>
@@ -45,6 +54,7 @@
   <string name="display_rotation_90_title">90 stupňů</string>
   <string name="display_rotation_180_title">180 stupňů</string>
   <string name="display_rotation_270_title">270 stupňů</string>
+  <!-- Lockscreen pin shuffle -->
   <string name="lock_numpad_random_title">Změna pořadí kláves tlačítek PIN</string>
   <string name="lock_numpad_random_dialog_title">Náhodné rozložení klávesnice PIN</string>
   <string name="lock_numpad_random_off">Zakázano</string>
@@ -60,30 +70,42 @@
   <string name="mount_notification_summary">Zobrazit upozornění pro připojené úložiště</string>
   <string name="zen_mode_none_category">Bez přerušení</string>
   <string name="zen_mode_alarms">Povolit budík</string>
+  <!-- Linked / unlinked notification volume -->
   <string name="link_volume_option_title">Spojit hlasitost upozornění a vyzvánění</string>
   <string name="notification_volume_option_title">Hlasitost oznámení</string>
   <string name="ring_notification_volume_option_title">Hlasitost vyzvánění a upozornění</string>
+  <!-- Unaccounted and overcounted battery stats -->
   <string name="show_unac_and_overcounted_stats_title">Zobrazit statistiky</string>
   <string name="show_unac_and_overcounted_stats_summary">Zobrazit statistiky využití baterie.</string>
+  <!-- Keyguard: quick unlock -->
   <string name="keyguard_quick_unlock">Rychlé odemknutí</string>
   <string name="keyguard_quick_unlock_summary_pin">Automatické odemknutí při správném zadání PIN</string>
   <string name="keyguard_quick_unlock_summary_password">Automatické odemknutí při správném zadání hesla</string>
+  <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
   <string name="supersu_title">SuperSU</string>
+  <!-- dashboard categories -->
   <string name="interface_bars_title">Lišty</string>
   <string name="interface_lockscreen_title">Zámek displeje</string>
   <string name="interface_more_title">Více</string>
+  <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
   <string name="wifi_setting_countrycode_title">Kód regionu Wi-Fi</string>
+  <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->
   <string name="wifi_setting_countrycode_summary">Zvolte kód regionu Wi-Fi</string>
+  <!-- Wi-Fi settings screen, error message when the region code could not be set [CHAR LIMIT=50]. -->
   <string name="wifi_setting_countrycode_error">Při nastavování kódu regionu došlo k chybě.</string>
   <string name="wifi_setting_countrycode_default">Výchozí</string>
+  <!-- Lock screen rotation -->
   <string name="display_lockscreen_rotation_title">Zámek displeje</string>
+  <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
   <string name="bluetooth_accept_all_files">Přijmout všechny typy souborů</string>
   <string name="system_ui_tuner">Nastavení rozhraní systému</string>
+  <!-- app notifications hide on lockscreen -->
   <string name="app_notification_no_keyguard_title">Skrýt při uzamčení</string>
   <string name="app_notification_no_keyguard_summary">Skrytí upozornění této aplikace, když je zařízení uzamčeno</string>
   <string name="filter_notif_no_keyguard">Skrytá při uzamčení</string>
   <string name="notifications_no_keyguard">Skrytá při uzamčení</string>
   <string name="camera_gesture_vibrate_title">Vibrovat při gestu spuštění fotoaparátu</string>
+  <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
   <string name="wifi_countrycode_us">Spojené státy</string>
   <string name="wifi_countrycode_ca">Kanada, Taiwan</string>
   <string name="wifi_countrycode_de">Německo</string>
@@ -96,4 +118,6 @@
   <string name="wifi_countrycode_tr">Turecko</string>
   <string name="wifi_countrycode_sg">Singapur</string>
   <string name="wifi_countrycode_br">Brazílie</string>
+  <string name="heads_up_notifications_enabled_title">Povolit prohlížení</string>
+  <string name="heads_up_notifications_enabled_summary">Povolit nebo zakázat prohlížení pro všechna oznámení</string>
 </resources>

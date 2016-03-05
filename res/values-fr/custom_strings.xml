@@ -19,24 +19,33 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- About phone screen,  setting option name-->
   <string name="mod_version">Version d\'Omni</string>
   <string name="mod_version_default">Inconnue</string>
+  <!-- Main list strings -->
   <string name="header_category_interface">Interface</string>
   <string name="performance_settings">Performance</string>
   <string name="advanced_settings_title">Paramètres Avancés</string>
   <string name="button_settings">Boutons</string>
   <string name="battery_light_settings">Voyant batterie</string>
+  <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">Notification de débogage USB</string>
   <string name="adb_notify_summary">Afficher une notification lorsque le débogage USB est actif</string>
   <string name="volume_adjust_sound_title">Son au réglage du volume</string>
   <string name="screenshot_shutter_sound_title">Son lors d\'une capture d\'écran</string>
+  <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Redémarrage avancé</string>
   <string name="advanced_reboot_summary">Inclure dans le menu marche/arrêt les options de redémarrage en mode recovery ou bootloader</string>
+  <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
   <string name="show_cpu_info">Affichage infos CPU</string>
+  <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
   <string name="show_cpu_info_summary">Superposition écran indiquant la mémoire CPU utilisée</string>
+  <!-- Android debugging over WiFi -->
   <string name="adb_over_network">ADB sur TCP/IP</string>
   <string name="adb_over_network_summary">Activer le débogage TCP/IP sur toutes les interfaces réseau (USB, Wi-Fi et Bluetooth). Ce paramètre est réinitialisé au redémarrage</string>
+  <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">ATTENTION : Lorsque cette fonction est activée, votre appareil est ouvert aux intrusions sur tous les réseaux connectés, y compris via le réseau mobile\u00A0!\n\nN\'utilisez cette fonctionnalité que sur des réseaux de confiance.\n\nContinuer\u00A0?</string>
+  <!-- Display : Rotation -->
   <string name="display_rotation_title">Rotation</string>
   <string name="display_rotation_disabled">Désactivée</string>
   <string name="display_rotation_unit">degrés</string>
@@ -45,6 +54,7 @@
   <string name="display_rotation_90_title">90 degrés</string>
   <string name="display_rotation_180_title">180 degrés</string>
   <string name="display_rotation_270_title">270 degrés</string>
+  <!-- Lockscreen pin shuffle -->
   <string name="lock_numpad_random_title">Disposer aléatoirement les touches lors du déverrouillage</string>
   <string name="lock_numpad_random_dialog_title">Disposition aléatoire</string>
   <string name="lock_numpad_random_off">Désactivée</string>
@@ -60,30 +70,42 @@
   <string name="mount_notification_summary">Afficher une notification pour le périphériques montés</string>
   <string name="zen_mode_none_category">Sans interruption</string>
   <string name="zen_mode_alarms">Autoriser les alarmes</string>
+  <!-- Linked / unlinked notification volume -->
   <string name="link_volume_option_title">Lier les volumes de la sonnerie et des notifications</string>
   <string name="notification_volume_option_title">Volume des notifications</string>
   <string name="ring_notification_volume_option_title">Volume de la sonnerie et des notifications</string>
+  <!-- Unaccounted and overcounted battery stats -->
   <string name="show_unac_and_overcounted_stats_title">Afficher les statistiques sous/sur estimées</string>
   <string name="show_unac_and_overcounted_stats_summary">Afficher dans les statistiques de la batterie les consommation non prises en compte et sur-pondérés.</string>
+  <!-- Keyguard: quick unlock -->
   <string name="keyguard_quick_unlock">Déverrouillage rapide</string>
   <string name="keyguard_quick_unlock_summary_pin">Déverrouiller automatiquement lorsque le code PIN est correct</string>
   <string name="keyguard_quick_unlock_summary_password">Déverrouiller automatiquement lorsque le mot de passe est correct</string>
+  <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
   <string name="supersu_title">SuperSU</string>
+  <!-- dashboard categories -->
   <string name="interface_bars_title">Barre de statut</string>
   <string name="interface_lockscreen_title">Écran de verrouillage</string>
   <string name="interface_more_title">Plus</string>
+  <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
   <string name="wifi_setting_countrycode_title">Code région du Wi-Fi</string>
+  <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->
   <string name="wifi_setting_countrycode_summary">Indiquer le code région pour le Wi-Fi</string>
+  <!-- Wi-Fi settings screen, error message when the region code could not be set [CHAR LIMIT=50]. -->
   <string name="wifi_setting_countrycode_error">Il y a eu un problème lors de la modification du code région.</string>
   <string name="wifi_setting_countrycode_default">Défaut</string>
+  <!-- Lock screen rotation -->
   <string name="display_lockscreen_rotation_title">Écran de verrouillage</string>
+  <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
   <string name="bluetooth_accept_all_files">Accepter tous les types de fichiers</string>
   <string name="system_ui_tuner">System UI Tuner</string>
+  <!-- app notifications hide on lockscreen -->
   <string name="app_notification_no_keyguard_title">Masquer lorsque verrouillé</string>
   <string name="app_notification_no_keyguard_summary">Masquer les notifications de cette application lorsque l\'appareil est verrouillé</string>
   <string name="filter_notif_no_keyguard">Masquer lorsque verrouillé</string>
   <string name="notifications_no_keyguard">Masquer lorsque verrouillé</string>
   <string name="camera_gesture_vibrate_title">Vibrer avec les gestes de camera</string>
+  <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
   <string name="wifi_countrycode_us">États-Unis</string>
   <string name="wifi_countrycode_ca">Canada, Taiwan</string>
   <string name="wifi_countrycode_de">Allemagne</string>
@@ -96,4 +118,6 @@
   <string name="wifi_countrycode_tr">Turquie</string>
   <string name="wifi_countrycode_sg">Singapour</string>
   <string name="wifi_countrycode_br">Brésil</string>
+  <string name="heads_up_notifications_enabled_title">Notifications flottantes</string>
+  <string name="heads_up_notifications_enabled_summary">Activer ou désactiver les notifications flottantes</string>
 </resources>

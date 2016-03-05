@@ -19,24 +19,33 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- About phone screen,  setting option name-->
   <string name="mod_version">Версія Omni</string>
   <string name="mod_version_default">Невідомо</string>
+  <!-- Main list strings -->
   <string name="header_category_interface">Інтерфейс</string>
   <string name="performance_settings">Продуктивність</string>
   <string name="advanced_settings_title">Розширені</string>
   <string name="button_settings">Кнопки</string>
   <string name="battery_light_settings">Підсвічування батареї</string>
+  <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">Сповіщення про відладку по USB</string>
   <string name="adb_notify_summary">Показувати сповіщення про увімкнений режим відладки по USB</string>
   <string name="volume_adjust_sound_title">Звук налаштування гучності</string>
   <string name="screenshot_shutter_sound_title">Звук затвору зняття скріншота</string>
+  <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Варіанти перезавантаження</string>
   <string name="advanced_reboot_summary">Увімкнути варіанти перезавантаження (recovery та bootloader) в меню \"Параметри пристрою\"</string>
+  <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
   <string name="show_cpu_info">Показати інформацію про процесор</string>
+  <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
   <string name="show_cpu_info_summary">Відображати поточний стан процесора поверх зображення</string>
+  <!-- Android debugging over WiFi -->
   <string name="adb_over_network">Налагодження по мережі</string>
   <string name="adb_over_network_summary">Увімкнути налагодження TCP/IP через мережеві інтерфейси (Wi-Fi, USB мережі). Це налаштування скидається при перезавантаженні</string>
+  <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">УВАГА! Увімкнення функції налагодження ADB по мережі призведе до надання можливості здійснення неконтрольованого доступу до пристрою з усіх підключених мереж, у том числі мережі передачі даних GSM!\n\nВикористовуйте цю функцію тільки тоді, коли ви підключені до мереж, яким ви довіряєте.\n\nВи справді бажаєте увімкнути цю функцію?</string>
+  <!-- Display : Rotation -->
   <string name="display_rotation_title">Поворот екрану</string>
   <string name="display_rotation_disabled">Вимкнено</string>
   <string name="display_rotation_unit">градусів</string>
@@ -45,6 +54,7 @@
   <string name="display_rotation_90_title">90 градусів</string>
   <string name="display_rotation_180_title">180 градусів</string>
   <string name="display_rotation_270_title">270 градусів</string>
+  <!-- Lockscreen pin shuffle -->
   <string name="lock_numpad_random_title">Змінити порядок цифр на екрані вводу PIN</string>
   <string name="lock_numpad_random_dialog_title">Випадковий порядок кнопок екрану PIN</string>
   <string name="lock_numpad_random_off">Вимкнено</string>
@@ -60,18 +70,30 @@
   <string name="mount_notification_summary">Показувати сповіщення при під\'єднанні накопичувача</string>
   <string name="zen_mode_none_category">Жодних розривів</string>
   <string name="zen_mode_alarms">Дозволити будильники</string>
+  <!-- Linked / unlinked notification volume -->
   <string name="notification_volume_option_title">Гучність сповіщень</string>
+  <!-- Unaccounted and overcounted battery stats -->
   <string name="show_unac_and_overcounted_stats_title">Показувати невраховані (інші) дані статистики батареї</string>
   <string name="show_unac_and_overcounted_stats_summary">Показувати дані статистики батареї, які не відносяться ні до чого конкретного і зазвичай потрапляють в інше.</string>
+  <!-- Keyguard: quick unlock -->
   <string name="keyguard_quick_unlock">Швидке розблокування</string>
   <string name="keyguard_quick_unlock_summary_pin">Розблокувати автоматично, коли введено правильний ПІН-код</string>
   <string name="keyguard_quick_unlock_summary_password">Розблокувати автоматично, коли введено правильний пароль</string>
+  <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
   <string name="supersu_title">SuperSU</string>
+  <!-- dashboard categories -->
   <string name="interface_bars_title">Панелі</string>
+  <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
   <string name="wifi_setting_countrycode_title">Код регіону Wi-Fi</string>
+  <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->
   <string name="wifi_setting_countrycode_summary">Вкажіть код регіону Wi-Fi</string>
+  <!-- Wi-Fi settings screen, error message when the region code could not be set [CHAR LIMIT=50]. -->
   <string name="wifi_setting_countrycode_error">При налаштуванні коду регіону Wi-Fi виникла неполадка.</string>
   <string name="wifi_setting_countrycode_default">За промовчанням</string>
+  <!-- Lock screen rotation -->
   <string name="display_lockscreen_rotation_title">Екран блокування</string>
+  <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
   <string name="bluetooth_accept_all_files">Приймати всі типи файлів</string>
+  <!-- app notifications hide on lockscreen -->
+  <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
 </resources>
