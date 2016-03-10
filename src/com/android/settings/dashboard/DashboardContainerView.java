@@ -31,8 +31,8 @@ import com.android.internal.util.omni.DeviceUtils;
 
 public class DashboardContainerView extends ViewGroup {
 
-    public static final String PREF_DASHBOARD_COLUMNS = "dashboard_columns";
-    public static final String PREF_DASHBOARD_COLUMNS_RESIZE = "dashboard_columns_resize";
+    private static final String PREF_DASHBOARD_COLUMNS = "dashboard_columns";
+    private static final String PREF_DASHBOARD_COLUMNS_RESIZE = "dashboard_columns_resize";
     private float mCellGapX;
     private float mCellGapY;
 
