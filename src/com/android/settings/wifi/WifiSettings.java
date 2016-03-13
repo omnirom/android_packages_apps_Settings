@@ -720,7 +720,7 @@ public class WifiSettings extends RestrictedSettingsFragment
 
     protected TextView initEmptyView() {
         TextView emptyView = (TextView) getActivity().findViewById(android.R.id.empty);
-        emptyView.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+        emptyView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
         getListView().setEmptyView(emptyView);
         return emptyView;
     }
