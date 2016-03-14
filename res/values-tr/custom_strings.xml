@@ -19,15 +19,24 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- About phone screen,  setting option name-->
   <string name="mod_version">Omni sürümü</string>
+  <!-- Main list strings -->
   <string name="header_category_interface">Arayüz</string>
   <string name="performance_settings">Performans</string>
   <string name="advanced_settings_title">Gelişmiş</string>
   <string name="battery_light_settings">Pil ışığı</string>
+  <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">USB hata ayıklama bildirimi</string>
   <string name="adb_notify_summary">USB hata ayıklama bağlandığında bir bildirim göster</string>
   <string name="screenshot_shutter_sound_title">Ekran görüntüsü deklanşör sesi</string>
+  <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Gelişmiş yeniden başlatma</string>
+  <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+  <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+  <!-- Android debugging over WiFi -->
+  <!-- Warning for Adb over Network -->
+  <!-- Display : Rotation -->
   <string name="display_rotation_title">Döndürme</string>
   <string name="display_rotation_unit">derece</string>
   <string name="display_rotation_category_title">Döndürme modları</string>
@@ -35,6 +44,7 @@
   <string name="display_rotation_90_title">90 derece</string>
   <string name="display_rotation_180_title">180 derece</string>
   <string name="display_rotation_270_title">270 derece</string>
+  <!-- Lockscreen pin shuffle -->
   <string name="lock_numpad_random_title">PIN giriş numaralarının sırasını değiştir</string>
   <string name="lock_numpad_random_dialog_title">PIN giriş tuşlarını rastgele sırala</string>
   <string name="lock_numpad_random_off">Devre dışı</string>
@@ -44,6 +54,18 @@
   <string name="storage_options_category">Bildirimler</string>
   <string name="storage_menu_options">Gelişmiş</string>
   <string name="storage_title_options">Depolama seçenekleri</string>
+  <!-- Linked / unlinked notification volume -->
+  <!-- Unaccounted and overcounted battery stats -->
+  <!-- Keyguard: quick unlock -->
   <string name="keyguard_quick_unlock">Hızlı kilit açma</string>
+  <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
   <string name="supersu_title">SuperSU</string>
+  <!-- dashboard categories -->
+  <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
+  <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->
+  <!-- Wi-Fi settings screen, error message when the region code could not be set [CHAR LIMIT=50]. -->
+  <!-- Lock screen rotation -->
+  <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
+  <!-- app notifications hide on lockscreen -->
+  <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
 </resources>
