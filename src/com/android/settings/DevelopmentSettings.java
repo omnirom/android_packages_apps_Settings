@@ -74,6 +74,7 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.internal.logging.MetricsLogger;
 import com.android.settings.fuelgauge.InactiveApps;
@@ -125,6 +126,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private static final String MSAA_PROPERTY = "debug.egl.force_msaa";
     private static final String OPENGL_TRACES_PROPERTY = "debug.egl.trace";
     private static final String TUNER_UI_KEY = "tuner_ui";
+    private static final String COLOR_TEMPERATURE_PROPERTY = "persist.sys.debug.color_temp";
 
     private static final String DEBUG_APP_KEY = "debug_app";
     private static final String WAIT_FOR_DEBUGGER_KEY = "wait_for_debugger";
@@ -168,6 +170,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private static final String WIFI_LEGACY_DHCP_CLIENT_KEY = "legacy_dhcp_client";
     private static final String MOBILE_DATA_ALWAYS_ON = "mobile_data_always_on";
     private static final String KEY_COLOR_MODE = "color_mode";
+    private static final String COLOR_TEMPERATURE_KEY = "color_temperature";
 
     private static final String INACTIVE_APPS_KEY = "inactive_apps";
 
@@ -269,6 +272,8 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private SwitchPreference mAdvancedReboot;
 
     private ColorModePreference mColorModePreference;
+
+    private SwitchPreference mColorTemperaturePreference;
 
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
 
@@ -446,6 +451,15 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         if (mColorModePreference.getTransformsCount() < 2) {
             removePreference(KEY_COLOR_MODE);
             mColorModePreference = null;
+        }
+
+        mColorTemperaturePreference = (SwitchPreference) findPreference(COLOR_TEMPERATURE_KEY);
+        if (getResources().getBoolean(R.bool.config_enableColorTemperature)) {
+            mAllPrefs.add(mColorTemperaturePreference);
+            mResetSwitchPrefs.add(mColorTemperaturePreference);
+        } else {
+            removePreference(COLOR_TEMPERATURE_KEY);
+            mColorTemperaturePreference = null;
         }
     }
 
@@ -656,6 +670,9 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateMobileDataAlwaysOnOptions();
         updateSimulateColorSpace();
         updateUSBAudioOptions();
+        if (mColorTemperaturePreference != null) {
+            updateColorTemperature();
+        }
         updateAdvancedRebootOptions();
     }
 
@@ -1186,6 +1203,18 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             Settings.Secure.putInt(cr, Settings.Secure.ACCESSIBILITY_DISPLAY_DALTONIZER_ENABLED, 1);
             Settings.Secure.putInt(cr, Settings.Secure.ACCESSIBILITY_DISPLAY_DALTONIZER, newMode);
         }
+    }
+
+    private void updateColorTemperature() {
+        updateSwitchPreference(mColorTemperaturePreference,
+                SystemProperties.getBoolean(COLOR_TEMPERATURE_PROPERTY, false));
+    }
+
+    private void writeColorTemperature() {
+        SystemProperties.set(COLOR_TEMPERATURE_PROPERTY,
+                mColorTemperaturePreference.isChecked() ? "1" : "0");
+        pokeSystemProperties();
+        Toast.makeText(getActivity(), R.string.color_temperature_toast, Toast.LENGTH_LONG).show();
     }
 
     private void updateUSBAudioOptions() {
@@ -1759,6 +1788,8 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             writeLegacyDhcpClientOptions();
         } else if (preference == mMobileDataAlwaysOn) {
             writeMobileDataAlwaysOnOptions();
+        } else if (preference == mColorTemperaturePreference) {
+            writeColorTemperature();
         } else if (preference == mUSBAudio) {
             writeUSBAudioOptions();
         } else if (preference == mAdvancedReboot) {
