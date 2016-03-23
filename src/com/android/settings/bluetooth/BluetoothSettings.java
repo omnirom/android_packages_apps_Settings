@@ -425,7 +425,7 @@ public final class BluetoothSettings extends DeviceListPreferenceFragment implem
         getPreferenceScreen().removeAll();
         Spannable boldSpan = (Spannable) mEmptyView.getText();
         boldSpan.setSpan(
-                new TextAppearanceSpan(getActivity(), android.R.style.TextAppearance_Medium), 0,
+                new TextAppearanceSpan(getActivity(), android.R.style.TextAppearance_Small), 0,
                 briefText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
