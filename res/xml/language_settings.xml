@@ -52,6 +52,23 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+            android:title="@string/input_method_category">
+
+        <com.android.settings.preference.SystemCheckBoxPreference
+                android:key="status_bar_ime_notification"
+                android:title="@string/status_bar_ime_notification_title"
+                android:summary="@string/status_bar_ime_notification_summary"
+                android:defaultValue="true"/>
+
+        <com.android.settings.preference.SystemCheckBoxPreference
+                android:key="navigation_bar_ime_button"
+                android:title="@string/navigation_bar_ime_button_title"
+                android:summary="@string/navigation_bar_ime_button_summary"
+                android:defaultValue="true"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
             android:key="hard_keyboard"
             android:title="@string/builtin_keyboard_settings_title"
             android:persistent="false">
