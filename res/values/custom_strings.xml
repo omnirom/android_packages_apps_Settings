@@ -144,4 +144,10 @@
 
     <string name="heads_up_notifications_enabled_title">Allow peeking</string>
     <string name="heads_up_notifications_enabled_summary">Allow or disable peeking for all notifications</string>
+
+    <string name="status_bar_ime_notification_title">Show input method notification</string>
+    <string name="status_bar_ime_notification_summary">If navigation bar is not available</string>
+    <string name="navigation_bar_ime_button_title">Show navigation bar input method button</string>
+    <string name="navigation_bar_ime_button_summary"></string>
+
 </resources>
