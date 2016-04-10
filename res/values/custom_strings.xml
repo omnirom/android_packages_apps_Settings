@@ -140,4 +140,12 @@
     <string name="usb_paranoia_connect_title">USB secure connect</string>
     <string name="usb_paranoia_connect_summary">Only enable charging when USB plugged on secure lock screens</string>
     <string name="usb_category_title">USB</string>
+
+    <!-- Doze battery options -->
+    <string name="ambient_display_show_battery_cat">Battery Status</string>
+    <string name="ambient_display_show_battery_icon">Enable</string>
+    <string name="ambient_display_show_battery_icon_summary">Show battery indicator during pulse</string>
+    <string name="ambient_display_show_battery_percent">Percent</string>
+    <string name="ambient_display_show_battery_percent_summary">Show battery percent during pulse</string>
+
 </resources>

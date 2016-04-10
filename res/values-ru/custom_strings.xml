@@ -74,4 +74,9 @@
   <string name="ramp_up_time_twenty">20 сек.</string>
   <string name="ramp_up_time_thirty">30 сек.</string>
   <string name="ramp_up_time_sixty">60 сек.</string>
+  <string name="ambient_display_show_battery_cat">Заряд батареи</string>
+  <string name="ambient_display_show_battery_icon">Включить</string>
+  <string name="ambient_display_show_battery_icon_summary">Показывать индикатор батареи на активном экране</string>
+  <string name="ambient_display_show_battery_percent">Проценты</string>
+  <string name="ambient_display_show_battery_percent_summary">Показывать процент заряда на активном экране</string>
 </resources>
