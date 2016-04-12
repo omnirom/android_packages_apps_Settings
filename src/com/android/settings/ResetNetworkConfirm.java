@@ -101,7 +101,8 @@ public class ResetNetworkConfirm extends InstrumentedFragment {
                 btManager.getAdapter().factoryReset();
             }
 
-            ImsManager.factoryReset(context);
+            // maxwen TODO
+            //ImsManager.factoryReset(context);
 
             Toast.makeText(context, R.string.reset_network_complete_toast, Toast.LENGTH_SHORT)
                     .show();
