@@ -20,25 +20,104 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- About phone screen,  setting option name-->
+  <string name="mod_version">Versão Omni</string>
+  <string name="mod_version_default">Desconhecido</string>
   <!-- Main list strings -->
+  <string name="header_category_interface">Interface</string>
+  <string name="performance_settings">Desempenho</string>
+  <string name="advanced_settings_title">Avançado</string>
+  <string name="button_settings">Botões</string>
+  <string name="battery_light_settings">Luz da bateria</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
+  <string name="adb_notify">Notificação de depuração USB</string>
+  <string name="adb_notify_summary">Mostrar uma notificação quando a depuração USB estiver conectada</string>
+  <string name="volume_adjust_sound_title">Ajuste do volume de som</string>
+  <string name="screenshot_shutter_sound_title">Som da captura de tela</string>
   <!-- Advanced reboot options -->
+  <string name="advanced_reboot_title">Reinicialização avançada</string>
+  <string name="advanced_reboot_summary">Incluem opções no menu para reiniciar o computador no Gerenciador de inicialização e recuperação de energia</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+  <string name="show_cpu_info">Mostrar info da CPU</string>
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+  <string name="show_cpu_info_summary">Sobreposição de tela mostrando informações atuais de CPU</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">ADB pela rede</string>
+  <string name="adb_over_network_summary">Habilita depuração por interfaces de rede TCP/IP (Wi-Fi, redes USB). Esta configuração é perdida ao reiniciar</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">Aviso: Quando ADB sobre rede estiver ativado, o seu telefone fica desprotegido e pode facilitar invasões em todas as redes conectadas, incluindo rede de dados GSM! Usar esta funcionalidade apenas quando estiver conectado a redes fiáveis. Quer mesmo ativar esta função?</string>
   <!-- Display : Rotation -->
+  <string name="display_rotation_title">Rotação</string>
+  <string name="display_rotation_disabled">Desabilitar</string>
+  <string name="display_rotation_unit">graus</string>
+  <string name="display_rotation_category_title">Modos de rotação</string>
+  <string name="display_rotation_0_title">0 graus</string>
+  <string name="display_rotation_90_title">90 graus</string>
+  <string name="display_rotation_180_title">180 graus</string>
+  <string name="display_rotation_270_title">270 graus</string>
   <!-- Lockscreen pin shuffle -->
+  <string name="lock_numpad_random_title">Alterar a ordem dos números PIN Pad</string>
+  <string name="lock_numpad_random_dialog_title">Ordem aleatória dos números do teclado do PIN</string>
+  <string name="lock_numpad_random_off">Desabilitar</string>
+  <string name="lock_numpad_random_always">Sempre</string>
+  <string name="lock_numpad_random_on_request">A pedido</string>
+  <string name="alarm_ringtone_title">Ringtone de alarme padrão</string>
+  <string name="storage_options_category">Notificações</string>
+  <string name="storage_menu_options">Avançado</string>
+  <string name="storage_title_options">Opções de armazenamento</string>
+  <string name="no_media_notification_title">Notificação de armazenamento removido</string>
+  <string name="no_media_notification_summary">Mostrar notificação quando a mídia de armazenamento é removida</string>
+  <string name="mount_notification_title">Notificação de montagem</string>
+  <string name="mount_notification_summary">Exibir notificação em curso para armazenamento montado</string>
+  <string name="zen_mode_none_category">Sem interrupções</string>
+  <string name="zen_mode_alarms">Permitir os alarmes</string>
   <!-- Linked / unlinked notification volume -->
+  <string name="link_volume_option_title">Volumes de anel e notificação de ligação</string>
+  <string name="notification_volume_option_title">Volume de notificação</string>
+  <string name="ring_notification_volume_option_title">Volume do anel e notificação</string>
   <!-- Unaccounted and overcounted battery stats -->
+  <string name="show_unac_and_overcounted_stats_title">Mostrar estatísticas desaparecidos/sobre contados</string>
+  <string name="show_unac_and_overcounted_stats_summary">Mostrar estatísticas de bateria desaparecidos e dados de uso.</string>
   <!-- Keyguard: quick unlock -->
+  <string name="keyguard_quick_unlock">Desbloqueio rápido</string>
+  <string name="keyguard_quick_unlock_summary_pin">Desbloquear automaticamente quando correto que PIN for inserido</string>
+  <string name="keyguard_quick_unlock_summary_password">Desbloquear automaticamente quando uma senha correta for digitada</string>
   <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
+  <string name="supersu_title">Super usuário</string>
   <!-- dashboard categories -->
+  <string name="interface_bars_title">Barras</string>
+  <string name="interface_lockscreen_title">Tela de bloqueio</string>
+  <string name="interface_more_title">Mais</string>
   <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
+  <string name="wifi_setting_countrycode_title">Código de região de Wi-Fi</string>
   <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->
+  <string name="wifi_setting_countrycode_summary">Especificar o código de região para Wi-Fi</string>
   <!-- Wi-Fi settings screen, error message when the region code could not be set [CHAR LIMIT=50]. -->
+  <string name="wifi_setting_countrycode_error">Houve um problema de configuração do código de região.</string>
+  <string name="wifi_setting_countrycode_default">Padrão</string>
   <!-- Lock screen rotation -->
+  <string name="display_lockscreen_rotation_title">Tela de Bloqueio</string>
   <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
+  <string name="bluetooth_accept_all_files">Aceitar todos os tipos de arquivo</string>
+  <string name="system_ui_tuner">Ajustes do IU do sistema</string>
   <!-- app notifications hide on lockscreen -->
+  <string name="app_notification_no_keyguard_title">Esconder quando bloqueado</string>
+  <string name="app_notification_no_keyguard_summary">Esconder as notificações deste app quando o dispositivo estiver bloqueado</string>
+  <string name="filter_notif_no_keyguard">Esconder quando bloqueado</string>
+  <string name="notifications_no_keyguard">Esconder quando bloqueado</string>
+  <string name="camera_gesture_vibrate_title">Vibrar em gesto de câmera</string>
   <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
+  <string name="wifi_countrycode_us">Estados Unidos da América</string>
+  <string name="wifi_countrycode_ca">Canadá, Taiwan</string>
+  <string name="wifi_countrycode_de">Alemanha</string>
+  <string name="wifi_countrycode_gb">Europa</string>
+  <string name="wifi_countrycode_jp">Japão, Rússia</string>
+  <string name="wifi_countrycode_au">Austrália</string>
+  <string name="wifi_countrycode_id">Indonésia</string>
+  <string name="wifi_countrycode_cn">China</string>
+  <string name="wifi_countrycode_kr">Coréia</string>
+  <string name="wifi_countrycode_tr">Turquia</string>
+  <string name="wifi_countrycode_sg">Singapura</string>
+  <string name="wifi_countrycode_br">Brasil</string>
+  <string name="heads_up_notifications_enabled_title">Permitir notificações flutuantes</string>
+  <string name="heads_up_notifications_enabled_summary">Ativar ou desativar as notificações flutuantes</string>
 </resources>

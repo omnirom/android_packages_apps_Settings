@@ -120,4 +120,9 @@
   <string name="wifi_countrycode_br">Brazilija</string>
   <string name="heads_up_notifications_enabled_title">Dovoli kukanje</string>
   <string name="heads_up_notifications_enabled_summary">Dovoli ali onemogoči kukanje za vsa obvestila</string>
+  <string name="status_bar_ime_notification_title">Prikaži obvestilo</string>
+  <string name="status_bar_ime_notification_summary">Če vrstica za krmarjenje ni na voljo</string>
+  <string name="navigation_bar_ime_button_title">Prikaži gumb vrstice za krmarjenje</string>
+  <string name="navigation_bar_ime_button_summary">Preklopnik vnosov v vrstici za krmarjenje</string>
+  <string name="input_method_category">Preklopnik načinov vnosa</string>
 </resources>

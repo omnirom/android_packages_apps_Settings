@@ -120,4 +120,9 @@
   <string name="wifi_countrycode_br">Brazília</string>
   <string name="heads_up_notifications_enabled_title">Lebegő értesítések</string>
   <string name="heads_up_notifications_enabled_summary">Lebegő értesítések engedélyezése vagy tiltása</string>
+  <string name="status_bar_ime_notification_title">Értesítés megjelenítése</string>
+  <string name="status_bar_ime_notification_summary">Ha a navigációs sáv nem elérhető</string>
+  <string name="navigation_bar_ime_button_title">Navigációs sáv gomb megjelenítése</string>
+  <string name="navigation_bar_ime_button_summary">Beviteli váltó a navigációs sávon</string>
+  <string name="input_method_category">Beviteli módszer váltó</string>
 </resources>

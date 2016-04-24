@@ -120,4 +120,9 @@
   <string name="wifi_countrycode_br">Brazília</string>
   <string name="heads_up_notifications_enabled_title">Plávajúce oznámenia</string>
   <string name="heads_up_notifications_enabled_summary">Povoliť alebo zakázať všetky plávajúce oznámenia</string>
+  <string name="status_bar_ime_notification_title">Zobraziť oznámenie</string>
+  <string name="status_bar_ime_notification_summary">Ak nie je dostupná navigačná lišta</string>
+  <string name="navigation_bar_ime_button_title">Zobraziť tlačidlo navigačnej lišty</string>
+  <string name="navigation_bar_ime_button_summary">Prepínač vstupu v navigačnej lište</string>
+  <string name="input_method_category">Výber metódy vstupu</string>
 </resources>

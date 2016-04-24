@@ -120,4 +120,9 @@
   <string name="wifi_countrycode_br">Brésil</string>
   <string name="heads_up_notifications_enabled_title">Notifications flottantes</string>
   <string name="heads_up_notifications_enabled_summary">Activer ou désactiver les notifications flottantes</string>
+  <string name="status_bar_ime_notification_title">Afficher les notifications</string>
+  <string name="status_bar_ime_notification_summary">Si la barre de navigation n\'est pas disponible</string>
+  <string name="navigation_bar_ime_button_title">Afficher la barre de navigation</string>
+  <string name="navigation_bar_ime_button_summary">Mode de saisie dans la barre de navigation</string>
+  <string name="input_method_category">Sélection du mode de saisie</string>
 </resources>
