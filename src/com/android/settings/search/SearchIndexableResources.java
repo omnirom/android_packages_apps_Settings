@@ -108,7 +108,7 @@ public final class SearchIndexableResources {
         addIndex(SavedAccessPointsWifiSettings.class, NO_DATA_RES_ID,
                 R.drawable.ic_settings_wireless);
         addIndex(BluetoothSettings.class, NO_DATA_RES_ID, R.drawable.ic_settings_bluetooth);
-        addIndex(SimSettings.class, NO_DATA_RES_ID, R.drawable.ic_sim_sd);
+        addIndex(SimSettings.class, NO_DATA_RES_ID, R.drawable.ic_settings_sim);
         addIndex(DataUsageSummary.class, NO_DATA_RES_ID, R.drawable.ic_settings_data_usage);
         addIndex(DataUsageMeteredSettings.class, NO_DATA_RES_ID, R.drawable.ic_settings_data_usage);
         addIndex(ScreenZoomSettings.class, NO_DATA_RES_ID, R.drawable.ic_settings_display);
