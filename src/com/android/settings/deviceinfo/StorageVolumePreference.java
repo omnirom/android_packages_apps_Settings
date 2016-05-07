@@ -61,7 +61,8 @@ public class StorageVolumePreference extends Preference {
         setLayoutResource(R.layout.storage_volume);
 
         setKey(volume.getId());
-        setTitle(mStorageManager.getBestVolumeDescription(volume));
+        final String fsType = volume.fsType;
+        setTitle(mStorageManager.getBestVolumeDescription(volume) + (TextUtils.isEmpty(vol.fsType) ? "" : " / " + fsType));
 
         Drawable icon;
         if (VolumeInfo.ID_PRIVATE_INTERNAL.equals(volume.getId())) {
