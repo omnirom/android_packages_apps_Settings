@@ -28,6 +28,8 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.text.style.RelativeSizeSpan;
+import android.util.Log;
+import android.view.MenuItem;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
