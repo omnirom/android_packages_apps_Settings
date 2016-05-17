@@ -19,6 +19,7 @@ import static android.os.UserHandle.myUserId;
 import static android.os.UserManager.DISALLOW_CONFIG_MOBILE_NETWORKS;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -32,9 +33,9 @@ import android.telephony.ServiceState;
 import android.telephony.TelephonyManager;
 
 import com.android.settings.core.PreferenceControllerMixin;
+import com.android.settings.Utils;
 import com.android.settingslib.RestrictedLockUtils;
 import com.android.settingslib.RestrictedPreference;
-import com.android.settingslib.Utils;
 import com.android.settingslib.core.AbstractPreferenceController;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnStart;
@@ -136,5 +137,18 @@ public class MobileNetworkPreferenceController extends AbstractPreferenceControl
     @Override
     public CharSequence getSummary() {
         return mTelephonyManager.getNetworkOperatorName();
+    }
+
+    @Override
+    public boolean handlePreferenceTreeClick(Preference preference) {
+        if (KEY_MOBILE_NETWORK_SETTINGS.equals(preference.getKey()) &&
+                Utils.isNetworkSettingsApkAvailable()) {
+            final Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.setComponent(new ComponentName("com.qualcomm.qti.networksetting",
+                    "com.qualcomm.qti.networksetting.MobileNetworkSettings"));
+            mContext.startActivity(intent);
+            return true;
+        }
+        return false;
     }
 }
