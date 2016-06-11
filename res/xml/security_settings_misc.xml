@@ -123,6 +123,11 @@
                 android:value="com.android.settings.Settings$UsageAccessSettingsActivity" />
         </Preference>
 
+        <com.android.settings.preferences.SecureSettingSwitchPreference
+            android:key="lock_screen_qs_disabled"
+            android:title="@string/lock_screen_qs_disabled_title"
+            android:summary="@string/lock_screen_qs_disabled_summary"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -154,4 +154,6 @@
     <!-- Hostname setting -->
     <string name="device_hostname">Device hostname</string>
 
+    <string name="lock_screen_qs_disabled_title">Disable quick settings when locked</string>
+    <string name="lock_screen_qs_disabled_summary">On secure lockscreen disable expanding the quick settings</string>
 </resources>
