@@ -5918,6 +5918,9 @@
     <!-- Text to describe the dashboard fragment title [CHAR LIMIT=16] -->
     <string name="dashboard_title">Settings</string>
 
+    <!--Substratum dashboard strings-->
+    <string name="substratum_title">Substratum</string>
+
     <!-- Search strings -->
     <!-- Text to describe the search results fragment title [CHAR LIMIT=16] -->
     <string name="search_results_title">Settings</string>
