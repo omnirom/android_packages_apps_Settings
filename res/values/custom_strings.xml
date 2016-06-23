@@ -63,4 +63,14 @@
     <string name="custom_encryption_and_credential_settings_summary_off">Device is decrypted</string>
 
     <string name="select_sim_for_sms">Select a SIM for SMS</string>
+
+    <!-- Format string for fingerprint location message -->
+    <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Locate the fingerprint sensor on the <xliff:g id="sensor_location">%1$s</xliff:g> of your phone.</string>
+
+    <!-- Fingerprint sensor locations -->
+    <string name="security_settings_fingerprint_sensor_location_back">back</string>
+    <string name="security_settings_fingerprint_sensor_location_front">front</string>
+    <string name="security_settings_fingerprint_sensor_location_left">left side</string>
+    <string name="security_settings_fingerprint_sensor_location_right">right side</string>
+
 </resources>
