@@ -120,4 +120,10 @@
   <string name="wifi_countrycode_br">Brazylia</string>
   <string name="heads_up_notifications_enabled_title">Zezwól na podgląd</string>
   <string name="heads_up_notifications_enabled_summary">Zezwól lub wyłącz podgląd dla wszystkich powiadomień</string>
+  <string name="status_bar_ime_notification_title">Pokaż powiadomienie</string>
+  <string name="status_bar_ime_notification_summary">Jeśli pasek nawigacyjny nie jest dostępny</string>
+  <string name="navigation_bar_ime_button_title">Pokaż przycisk paska nawigacyjnego</string>
+  <string name="navigation_bar_ime_button_summary">Przełącznik klawiatury w pasku nawigacyjnym</string>
+  <string name="input_method_category">Przełącznik wprowadzania tekstu</string>
+  <!-- Hostname setting -->
 </resources>

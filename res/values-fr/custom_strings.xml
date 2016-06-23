@@ -125,4 +125,5 @@
   <string name="navigation_bar_ime_button_title">Afficher la barre de navigation</string>
   <string name="navigation_bar_ime_button_summary">Mode de saisie dans la barre de navigation</string>
   <string name="input_method_category">Sélection du mode de saisie</string>
+  <!-- Hostname setting -->
 </resources>

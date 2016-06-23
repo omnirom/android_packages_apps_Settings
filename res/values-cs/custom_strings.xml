@@ -120,4 +120,11 @@
   <string name="wifi_countrycode_br">Brazílie</string>
   <string name="heads_up_notifications_enabled_title">Povolit prohlížení</string>
   <string name="heads_up_notifications_enabled_summary">Povolit nebo zakázat prohlížení pro všechna oznámení</string>
+  <string name="status_bar_ime_notification_title">Zobrazit upozornění</string>
+  <string name="status_bar_ime_notification_summary">Není-li navigační panel k dispozici</string>
+  <string name="navigation_bar_ime_button_title">Zobrazit tlačítko navigačního panelu</string>
+  <string name="navigation_bar_ime_button_summary">Vstupní přepínač v navigačním panelu</string>
+  <string name="input_method_category">Výběr metody zadávání</string>
+  <!-- Hostname setting -->
+  <string name="device_hostname">Jméno zařízení</string>
 </resources>

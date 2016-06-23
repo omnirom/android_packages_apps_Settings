@@ -125,4 +125,6 @@
   <string name="navigation_bar_ime_button_title">Zobraziť tlačidlo navigačnej lišty</string>
   <string name="navigation_bar_ime_button_summary">Prepínač vstupu v navigačnej lište</string>
   <string name="input_method_category">Výber metódy vstupu</string>
+  <!-- Hostname setting -->
+  <string name="device_hostname">Názov zariadenia</string>
 </resources>

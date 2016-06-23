@@ -120,4 +120,5 @@
   <string name="wifi_countrycode_br">Brasil</string>
   <string name="heads_up_notifications_enabled_title">Avisos flotants</string>
   <string name="heads_up_notifications_enabled_summary">Permet o inhabilita els avisos flotants</string>
+  <!-- Hostname setting -->
 </resources>
