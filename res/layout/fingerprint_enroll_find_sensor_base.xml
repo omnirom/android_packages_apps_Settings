@@ -40,6 +40,7 @@
             android:clipChildren="false">
 
             <TextView
+                android:id="@+id/find_sensor_message"
                 style="@style/SuwDescription.Glif"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
