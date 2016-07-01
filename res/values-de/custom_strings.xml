@@ -120,4 +120,11 @@
   <string name="wifi_countrycode_br">Brasilien</string>
   <string name="heads_up_notifications_enabled_title">Anzeigen gestatten</string>
   <string name="heads_up_notifications_enabled_summary">Gestatte oder blockiere Anzeigen für alle Benachrichtigungen</string>
+  <string name="status_bar_ime_notification_title">Benachrichtigung zeigen</string>
+  <string name="status_bar_ime_notification_summary">Wenn die Navigationsleiste nicht zur Verfügung steht</string>
+  <string name="navigation_bar_ime_button_title">Navigationsleistentasten anzeigen</string>
+  <string name="navigation_bar_ime_button_summary">Eingabemethode Umschalter in Navigationsleiste</string>
+  <string name="input_method_category">Eingabemethoden Umschalter</string>
+  <!-- Hostname setting -->
+  <string name="device_hostname">Hostname des Geräts</string>
 </resources>

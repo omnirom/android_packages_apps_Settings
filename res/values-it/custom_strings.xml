@@ -21,31 +21,53 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- About phone screen,  setting option name-->
   <string name="mod_version">Versione Omni</string>
+  <string name="mod_version_default">Sconosciuto</string>
   <!-- Main list strings -->
   <string name="header_category_interface">Interfaccia</string>
+  <string name="performance_settings">Prestazioni</string>
   <string name="advanced_settings_title">Avanzate</string>
+  <string name="button_settings">Pulsanti</string>
+  <string name="battery_light_settings">LED batteria</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
+  <string name="adb_notify">Notifica debug USB</string>
   <string name="adb_notify_summary">Mostra una notifica quando il debug USB è connesso</string>
   <string name="volume_adjust_sound_title">Suono di regolazione volume</string>
+  <string name="screenshot_shutter_sound_title">Suono cattura schermata</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Riavvio avanzato</string>
   <string name="advanced_reboot_summary">Includi opzioni nel menu power per il riavvio in recovery o bootloader</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+  <string name="show_cpu_info">Mostra info CPU</string>
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+  <string name="show_cpu_info_summary">Mostra in sovraimpressione info CPU</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">ADB sulla rete</string>
+  <string name="adb_over_network_summary">Attiva il debug TCP/IP tramite interfacce di rete (Wi-Fi, reti USB). Questa impostazione si ripristina al riavvio</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">Attenzione: Quando ADB sulla rete è attivo, il tuo telefono è aperto alle intrusioni su tutte le reti a cui è connesso, comprese la rete dati GSM!\n\nUsare questa funzionalità solo se connessi a reti affidabili.\n\nVuoi veramente attivare questa funzione?</string>
   <!-- Display : Rotation -->
   <string name="display_rotation_title">Rotazione</string>
+  <string name="display_rotation_disabled">Disattivato</string>
+  <string name="display_rotation_unit">gradi</string>
   <string name="display_rotation_category_title">Modalità di rotazione</string>
+  <string name="display_rotation_0_title">0 gradi</string>
   <string name="display_rotation_90_title">90 gradi</string>
   <string name="display_rotation_180_title">180 gradi</string>
+  <string name="display_rotation_270_title">270 gradi</string>
   <!-- Lockscreen pin shuffle -->
   <string name="lock_numpad_random_title">Cambia l\'ordine dei numeri del tastierino numerico</string>
   <string name="lock_numpad_random_dialog_title">Ordine casuale dei numeri sul tastierino numerico del PIN</string>
   <string name="lock_numpad_random_off">Disattivato</string>
+  <string name="lock_numpad_random_always">Sempre</string>
   <string name="lock_numpad_random_on_request">Su richiesta</string>
+  <string name="alarm_ringtone_title">Suoneria predefinita</string>
   <string name="storage_options_category">Notifiche</string>
   <string name="storage_menu_options">Avanzate</string>
+  <string name="storage_title_options">Opzioni archiviazione</string>
+  <string name="no_media_notification_title">Notifica rimozione archiviazione</string>
+  <string name="no_media_notification_summary">Visualizza notifica quando viene rimosso il supporto di memorizzazione</string>
+  <string name="mount_notification_title">Notifica montaggio</string>
+  <string name="mount_notification_summary">Visualizza notifica persistente per l\'archiviazione montanta</string>
   <!-- Linked / unlinked notification volume -->
   <!-- Unaccounted and overcounted battery stats -->
   <!-- Keyguard: quick unlock -->
@@ -53,9 +75,20 @@
   <!-- dashboard categories -->
   <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
   <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->
+  <string name="wifi_setting_countrycode_summary">Specifica il codice regione per il Wi-Fi</string>
   <!-- Wi-Fi settings screen, error message when the region code could not be set [CHAR LIMIT=50]. -->
+  <string name="wifi_setting_countrycode_error">C\'è stato un probelma nell\'impostare il codice regione.</string>
+  <string name="wifi_setting_countrycode_default">Predefinito</string>
   <!-- Lock screen rotation -->
+  <string name="display_lockscreen_rotation_title">Schermata di blocco</string>
   <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
+  <string name="bluetooth_accept_all_files">Accetta tutti i tipi di file</string>
+  <string name="system_ui_tuner">System UI Tuner</string>
   <!-- app notifications hide on lockscreen -->
+  <string name="app_notification_no_keyguard_title">Nascondi quando bloccato</string>
+  <string name="app_notification_no_keyguard_summary">Nascondi le notifiche di questa app quando il dispositivo è bloccato</string>
+  <string name="filter_notif_no_keyguard">Nascosto quando bloccato</string>
+  <string name="notifications_no_keyguard">Nascosto quando bloccato</string>
   <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
+  <!-- Hostname setting -->
 </resources>

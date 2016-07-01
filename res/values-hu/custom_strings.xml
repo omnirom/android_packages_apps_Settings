@@ -125,4 +125,6 @@
   <string name="navigation_bar_ime_button_title">Navigációs sáv gomb megjelenítése</string>
   <string name="navigation_bar_ime_button_summary">Beviteli váltó a navigációs sávon</string>
   <string name="input_method_category">Beviteli módszer váltó</string>
+  <!-- Hostname setting -->
+  <string name="device_hostname">Eszköz elérési neve</string>
 </resources>

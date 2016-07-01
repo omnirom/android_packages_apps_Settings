@@ -27,6 +27,7 @@
   <string name="performance_settings">性能</string>
   <string name="advanced_settings_title">高级设置</string>
   <string name="button_settings">按钮</string>
+  <string name="battery_light_settings">电池指示灯</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">USB 调试提醒</string>
   <string name="adb_notify_summary">当 USB 调试接入时显示通知图标</string>
@@ -69,15 +70,38 @@
   <string name="zen_mode_none_category">禁止打扰</string>
   <string name="zen_mode_alarms">允许闹铃</string>
   <!-- Linked / unlinked notification volume -->
+  <string name="ring_notification_volume_option_title">铃声和通知的音量</string>
   <!-- Unaccounted and overcounted battery stats -->
+  <string name="show_unac_and_overcounted_stats_summary">在电池状态中显示不明的和超出计数范围的使用情况。</string>
   <!-- Keyguard: quick unlock -->
+  <string name="keyguard_quick_unlock">快速解锁</string>
+  <string name="keyguard_quick_unlock_summary_pin">当输入正确的PIN时，自动解锁。</string>
+  <string name="keyguard_quick_unlock_summary_password">当输入正确的密码时，自动解锁。</string>
   <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
+  <string name="supersu_title">SuperSU</string>
   <!-- dashboard categories -->
   <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
   <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->
+  <string name="wifi_setting_countrycode_summary">指定 Wi-Fi 使用的区域码</string>
   <!-- Wi-Fi settings screen, error message when the region code could not be set [CHAR LIMIT=50]. -->
+  <string name="wifi_setting_countrycode_error">设置区域码时遇到了问题。</string>
+  <string name="wifi_setting_countrycode_default">默认</string>
   <!-- Lock screen rotation -->
+  <string name="display_lockscreen_rotation_title">锁屏</string>
   <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
+  <string name="bluetooth_accept_all_files">接受所有文件</string>
+  <string name="system_ui_tuner">系统界面调谐器</string>
   <!-- app notifications hide on lockscreen -->
+  <string name="app_notification_no_keyguard_title">当锁定时隐藏</string>
+  <string name="filter_notif_no_keyguard">当锁定时隐藏</string>
+  <string name="notifications_no_keyguard">当锁定时隐藏</string>
   <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
+  <string name="wifi_countrycode_us">美国</string>
+  <string name="wifi_countrycode_ca">加拿大, 台湾</string>
+  <string name="wifi_countrycode_de">德国</string>
+  <string name="status_bar_ime_notification_title">显示通知</string>
+  <string name="status_bar_ime_notification_summary">如果导航栏不可用</string>
+  <string name="navigation_bar_ime_button_title">显示导航栏按钮</string>
+  <string name="input_method_category">输入法切换</string>
+  <!-- Hostname setting -->
 </resources>
