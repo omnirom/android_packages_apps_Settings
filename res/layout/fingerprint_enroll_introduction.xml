@@ -37,7 +37,8 @@
             style="@style/SuwDescription.Glif"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/security_settings_fingerprint_enroll_introduction_message" />
+            android:text="@string/security_settings_fingerprint_enroll_introduction_message"
+            android:visibility="gone" />
 
         <com.android.setupwizardlib.view.RichTextView
             android:id="@+id/error_text"
