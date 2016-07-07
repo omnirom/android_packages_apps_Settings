@@ -102,7 +102,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
 
         addPreferencesFromResource(R.xml.device_info_settings);
 
-        setStringSummary(KEY_FIRMWARE_VERSION, Build.VERSION.RELEASE);
+        setStringSummary(KEY_FIRMWARE_VERSION, Build.VERSION.RELEASE + " " + Build.ID);
         findPreference(KEY_FIRMWARE_VERSION).setEnabled(true);
 
         final String patch = DeviceInfoUtils.getSecurityPatch();
