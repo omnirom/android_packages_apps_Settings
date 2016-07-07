@@ -84,6 +84,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
     private static final String KEY_SAFETY_LEGAL = "safetylegal";
 
     private static final String KEY_MOD_VERSION = "mod_version";
+    private static final String KEY_ANDROID_REVISION = "aosp_revision";
 
     static final int TAPS_TO_BE_A_DEVELOPER = 7;
 
@@ -132,6 +133,8 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
         findPreference(KEY_BUILD_NUMBER).setEnabled(true);
         findPreference(KEY_KERNEL_VERSION).setSummary(getFormattedKernelVersion());
         setValueSummary(KEY_MOD_VERSION, "ro.omni.version");
+        setValueSummary(KEY_AOSP_REVISION, "ro.build.id");
+        findPreference(KEY_AOSP_REVISION).setEnabled(true);
 
         if (!SELinux.isSELinuxEnabled()) {
             String status = getResources().getString(R.string.selinux_status_disabled);
