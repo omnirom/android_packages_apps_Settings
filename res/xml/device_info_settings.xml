@@ -84,6 +84,12 @@
                 android:title="@string/firmware_version"
                 android:summary="@string/device_info_default"/>
 
+        <!-- Android revision -->
+        <Preference android:key="aosp_revision"
+                style="?android:preferenceInformationStyle"
+                android:title="@string/aosp_revision"
+                android:summary="@string/aosp_revision_default"/>
+
         <!-- Security patch level -->
         <Preference android:key="security_patch"
                 style="?android:preferenceInformationStyle"
