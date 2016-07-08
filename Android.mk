@@ -34,8 +34,7 @@ LOCAL_JAVA_LIBRARIES := \
     core-oj \
     telephony-common \
     ims-common \
-    telephony-ext \
-    izat.xt.srv
+    telephony-ext
 
 LOCAL_STATIC_JAVA_LIBRARIES := \
     jsr305 \
