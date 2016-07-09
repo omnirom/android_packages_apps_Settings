@@ -163,4 +163,7 @@
     <string name="security_settings_fingerprint_sensor_location_left">left side</string>
     <string name="security_settings_fingerprint_sensor_location_right">right side</string>
 
+    <string name="security_settings_fingerprint_enroll_disclaimer_plain">In addition to unlocking your phone, you can also use your fingerprint to authorize purchases and app access.</string>
+    <string name="security_settings_fingerprint_enroll_disclaimer_lockscreen_disabled_plain">Screen lock option disabled. You can still use your fingerprint to authorize purchases and app access.</string>
+
 </resources>

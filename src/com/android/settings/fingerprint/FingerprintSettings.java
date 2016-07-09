@@ -47,6 +47,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -290,10 +291,16 @@ public class FingerprintSettings extends SubSettings {
             super.onViewCreated(view, savedInstanceState);
             TextView v = (TextView) LayoutInflater.from(view.getContext()).inflate(
                     R.layout.fingerprint_settings_footer, null);
-            v.setText(LearnMoreSpan.linkify(getText(isFingerprintDisabled()
+            if (TextUtils.isEmpty(getString(getHelpResource()))) {
+                v.setText(getText(isFingerprintDisabled()
+                            ? R.string.security_settings_fingerprint_enroll_disclaimer_lockscreen_disabled_plain
+                            : R.string.security_settings_fingerprint_enroll_disclaimer_plain));
+            } else {
+                v.setText(LearnMoreSpan.linkify(getText(isFingerprintDisabled()
                             ? R.string.security_settings_fingerprint_enroll_disclaimer_lockscreen_disabled
                             : R.string.security_settings_fingerprint_enroll_disclaimer),
-                    getString(getHelpResource())));
+                        getString(getHelpResource())));
+            }
             v.setMovementMethod(new LinkMovementMethod());
             getListView().addFooterView(v);
             getListView().setFooterDividersEnabled(false);
