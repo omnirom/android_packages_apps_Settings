@@ -47,6 +47,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -753,6 +754,9 @@ public class FingerprintSettings extends SubSettings {
         }
 
         public static CharSequence linkify(CharSequence rawText, String uri) {
+            if (TextUtils.isEmpty(uri)) {
+                return rawText.toString().replaceAll("<annotation.*>.*</annotation>", "");
+            }
             SpannableString msg = new SpannableString(rawText);
             Annotation[] spans = msg.getSpans(0, msg.length(), Annotation.class);
             SpannableStringBuilder builder = new SpannableStringBuilder(msg);
