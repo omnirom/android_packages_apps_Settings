@@ -16,6 +16,24 @@
       "revId": "a66a0799a56bc8ee5e25489146b8cb16f77087ac",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5804b501_f1df2a69",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2016-07-14T20:52:05Z",
+      "side": 1,
+      "message": "Just an idea - why not combine with Android version - so append with space or \"-\"",
+      "parentUuid": "5804b501_d1baee1c",
+      "revId": "a66a0799a56bc8ee5e25489146b8cb16f77087ac",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
