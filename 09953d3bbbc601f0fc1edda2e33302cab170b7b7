@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5804b501_31ac72ed",
+        "filename": "src/com/android/settings/DeviceInfoSettings.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2016-07-14T20:12:43Z",
+      "side": 1,
+      "message": "KEY_AOSP_REVISION is missing :)",
+      "revId": "09953d3bbbc601f0fc1edda2e33302cab170b7b7",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
