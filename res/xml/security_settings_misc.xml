@@ -46,6 +46,11 @@
             android:title="@string/device_admin_title"
             android:persistent="false">
 
+        <Preference android:title="@string/app_ops_settings"
+                android:summary="@string/app_ops_settings_summary"
+                android:persistent="false"
+                android:fragment="com.android.settings.applications.AppOpsSummary"/>
+
         <Preference android:key="manage_device_admin"
                 android:title="@string/manage_device_admin"
                 android:summary="@string/manage_device_admin_summary"
