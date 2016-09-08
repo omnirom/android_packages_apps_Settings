@@ -231,7 +231,7 @@
     <style name="Theme.SubSettingsDialogWhenLarge" parent="Theme.DialogWhenLarge">
         <item name="preferenceTheme">@style/PreferenceTheme</item>
         <item name="android:actionBarWidgetTheme">@null</item>
-        <item name="android:actionBarTheme">@android:style/ThemeOverlay.Material.Dark.ActionBar</item>
+        <item name="android:actionBarTheme">@android:style/Theme.Material.DayNight.DarkActionBar</item>
 
         <item name="preferenceBackgroundColor">@drawable/preference_background</item>
     </style>
