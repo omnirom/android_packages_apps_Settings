@@ -28,6 +28,7 @@ import android.os.UserManager;
 import android.provider.Settings;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
+import android.support.v7.preference.PreferenceCategory;
 import android.support.v7.preference.TwoStatePreference;
 import android.util.Log;
 import com.android.internal.logging.MetricsProto.MetricsEvent;
@@ -64,6 +65,9 @@ public class ConfigureNotificationSettings extends SettingsPreferenceFragment {
     private int mLockscreenSelectedValue;
     private int mLockscreenSelectedValueProfile;
     private int mProfileChallengeUserId;
+    // Omni
+    private PreferenceCategory mChargingLedsCategory;
+    private Preference mChargingLeds;
 
     @Override
     protected int getMetricsCategory() {
@@ -93,6 +97,14 @@ public class ConfigureNotificationSettings extends SettingsPreferenceFragment {
         if (mProfileChallengeUserId != UserHandle.USER_NULL) {
             addPreferencesFromResource(R.xml.configure_notification_settings_profile);
             initLockscreenNotificationsForProfile();
+        }
+        mChargingLedsCategory = (PreferenceCategory) findPreference("leds");
+        mChargingLeds = (Preference) findPreference("charging_light");
+        if (mChargingLeds != null
+                && !getResources().getBoolean(
+                        com.android.internal.R.bool.config_intrusiveBatteryLed)) {
+            mChargingLedsCategory.removePreference(mChargingLeds);
+            getPreferenceScreen().removePreference(mChargingLedsCategory);
         }
 
     }
