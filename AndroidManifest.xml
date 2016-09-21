@@ -2382,9 +2382,9 @@
         />
 
         <!-- Custom settings activity. -->
-        <activity android:name="Settings$OmniGearsActivity"
-                android:label="@string/omnigears_title"
-                android:icon="@drawable/ic_settings_omnigears">
+        <activity android:name="Settings$ButtonSettingsActivity"
+                android:label="@string/button_settings"
+                android:icon="@drawable/ic_settings_buttons">
             <intent-filter android:priority="1">
                 <action android:name="com.android.settings.action.SETTINGS" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -2392,7 +2392,7 @@
             <meta-data android:name="com.android.settings.category"
                 android:value="com.android.settings.category.omnigears" />
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="org.omnirom.omnigears.OmniGearsSettings" />
+                android:value="org.omnirom.omnigears.ButtonSettings" />
         </activity>
 
         <!-- Pseudo-activity used to provide an intent-filter entry point to encryption settings -->
