@@ -136,7 +136,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.omnirom.omnigears.OmniGearsSettings;
+import org.omnirom.omnigears.ButtonSettings;
 
 public class SettingsActivity extends SettingsDrawerActivity
         implements PreferenceManager.OnPreferenceTreeClickListener,
@@ -356,6 +356,7 @@ public class SettingsActivity extends SettingsDrawerActivity
             MasterClear.class.getName(),
             NightDisplaySettings.class.getName(),
             OmniGearsSettings.class.getName(),
+            ButtonSettings.class.getName(),
     };
 
 
@@ -547,7 +548,7 @@ public class SettingsActivity extends SettingsDrawerActivity
 
         mIsShowingDashboard = className.equals(Settings.class.getName())
                 || className.equals(Settings.WirelessSettings.class.getName())
-                || className.equals(Settings.OmniGearsSettings.class.getName())
+                || className.equals(Settings.ButtonSettings.class.getName())
                 || className.equals(Settings.DeviceSettings.class.getName())
                 || className.equals(Settings.PersonalSettings.class.getName())
                 || className.equals(Settings.WirelessSettings.class.getName());
