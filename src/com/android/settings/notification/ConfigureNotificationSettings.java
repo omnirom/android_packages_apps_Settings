@@ -62,12 +62,15 @@ public class ConfigureNotificationSettings extends SettingsPreferenceFragment {
     private RestrictedDropDownPreference mLockscreenProfile;
     private boolean mSecure;
     private boolean mSecureProfile;
+    private boolean mChargingLedsEnabled;
+    private boolean mNotificationLedsEnabled;
     private int mLockscreenSelectedValue;
     private int mLockscreenSelectedValueProfile;
     private int mProfileChallengeUserId;
     // Omni
     private PreferenceCategory mChargingLedsCategory;
     private Preference mChargingLeds;
+    private Preference mNotificationLeds;
 
     @Override
     protected int getMetricsCategory() {
@@ -91,20 +94,28 @@ public class ConfigureNotificationSettings extends SettingsPreferenceFragment {
 
         addPreferencesFromResource(R.xml.configure_notification_settings);
 
+        mChargingLedsEnabled = (getResources().getBoolean(
+                        com.android.internal.R.bool.config_intrusiveBatteryLed));
+        mNotificationLedsEnabled = (getResources().getBoolean(
+                        com.android.internal.R.bool.config_intrusiveNotificationLed));
+        mChargingLedsCategory = (PreferenceCategory) findPreference("leds");
+        mChargingLeds = (Preference) findPreference("charging_light");
+        mNotificationLeds = (Preference) findPreference("notification_light");
+        if (mChargingLeds != null && mNotificationLeds != null) {
+            if (!mChargingLedsEnabled) {
+                mChargingLedsCategory.removePreference(mChargingLeds);
+            } else if (!mNotificationLedsEnabled) {
+                mChargingLedsCategory.removePreference(mNotificationLeds);
+            } else if (!mChargingLedsEnabled && !mNotificationLedsEnabled) {
+                getPreferenceScreen().removePreference(mChargingLedsCategory);
+            }
+        }
         initPulse();
         initLockscreenNotifications();
 
         if (mProfileChallengeUserId != UserHandle.USER_NULL) {
             addPreferencesFromResource(R.xml.configure_notification_settings_profile);
             initLockscreenNotificationsForProfile();
-        }
-        mChargingLedsCategory = (PreferenceCategory) findPreference("leds");
-        mChargingLeds = (Preference) findPreference("charging_light");
-        if (mChargingLeds != null
-                && !getResources().getBoolean(
-                        com.android.internal.R.bool.config_intrusiveBatteryLed)) {
-            mChargingLedsCategory.removePreference(mChargingLeds);
-            getPreferenceScreen().removePreference(mChargingLedsCategory);
         }
 
     }
@@ -131,7 +142,8 @@ public class ConfigureNotificationSettings extends SettingsPreferenceFragment {
             return;
         }
         if (!getResources()
-                .getBoolean(com.android.internal.R.bool.config_intrusiveNotificationLed)) {
+                .getBoolean(com.android.internal.R.bool.config_intrusiveNotificationLed)
+                || (mChargingLedsEnabled && mNotificationLedsEnabled)) {
             getPreferenceScreen().removePreference(mNotificationPulse);
         } else {
             updatePulse();

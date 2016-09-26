@@ -38,5 +38,11 @@
                 android:key="charging_light"
                 android:title="@string/omni_battery_light_settings"
                 android:fragment="org.omnirom.omnigears.batterylight.BatteryLightSettings" />
+
+        <PreferenceScreen
+                android:key="notification_light"
+                android:title="@string/omni_notification_light_settings"
+                android:fragment="org.omnirom.omnigears.batterylight.NotificationLightSettings" />
+
     </PreferenceCategory>
 </PreferenceScreen>
