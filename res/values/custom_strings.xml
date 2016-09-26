@@ -34,7 +34,7 @@
     <string name="omni_notification_light_settings">Applications LED notifications</string>
     <string name="omni_leds">LED Lights</string>
     <string name="supersu_title">SuperSU</string>
-
+    <string name="superuser_title">Superuser</string>
 
     <!-- Setting checkbox summary for displaying USB debugging notification -->
     <string name="adb_notify">USB debugging notify</string>
