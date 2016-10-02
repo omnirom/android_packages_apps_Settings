@@ -23,6 +23,7 @@
     <string name="mod_version_default">Unknown</string>
 
     <!-- Main list strings -->
+    <string name="interface_bars_title">Bars</string>
     <string name="omnigears_category_title">Custom</string>
     <string name="omnigears_title">OmniGears</string>
     <string name="header_category_interface">Interface</string>
