@@ -133,6 +133,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.omnirom.omnigears.ButtonSettings;
+import org.omnirom.omnigears.interfacesettings.BarsSettings;
 
 public class SettingsActivity extends SettingsDrawerActivity
         implements PreferenceManager.OnPreferenceTreeClickListener,
@@ -348,6 +349,7 @@ public class SettingsActivity extends SettingsDrawerActivity
             WifiAPITest.class.getName(),
             WifiInfo.class.getName(),
             ButtonSettings.class.getName(),
+            BarsSettings.class.getName(),
     };
 
 
@@ -545,6 +547,7 @@ public class SettingsActivity extends SettingsDrawerActivity
 
         mIsShowingDashboard = className.equals(Settings.class.getName())
                 || className.equals(Settings.WirelessSettings.class.getName())
+                || className.equals(Settings.BarsSettings.class.getName())
                 || className.equals(Settings.ButtonSettings.class.getName())
                 || className.equals(Settings.DeviceSettings.class.getName())
                 || className.equals(Settings.PersonalSettings.class.getName())
