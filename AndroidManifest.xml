@@ -2395,6 +2395,19 @@
                 android:value="org.omnirom.omnigears.ButtonSettings" />
         </activity>
 
+        <activity android:name="Settings$BarsSettingsActivity"
+                android:label="@string/interface_bars_title"
+                android:icon="@drawable/ic_bars_tile">
+            <intent-filter android:priority="2">
+                <action android:name="com.android.settings.action.SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.category"
+                android:value="com.android.settings.category.omnigears" />
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="org.omnirom.omnigears.interfacesettings.BarsSettings" />
+        </activity>
+
         <!-- Pseudo-activity used to provide an intent-filter entry point to encryption settings -->
         <activity android:name="Settings$CryptKeeperSettingsActivity"
                 android:label="@string/crypt_keeper_encrypt_title">
