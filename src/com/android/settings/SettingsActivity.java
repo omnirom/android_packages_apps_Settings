@@ -134,6 +134,7 @@ import java.util.Set;
 
 import org.omnirom.omnigears.ButtonSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
+import org.omnirom.omnigears.moresettings.MoreSettings;
 
 public class SettingsActivity extends SettingsDrawerActivity
         implements PreferenceManager.OnPreferenceTreeClickListener,
@@ -350,6 +351,7 @@ public class SettingsActivity extends SettingsDrawerActivity
             WifiInfo.class.getName(),
             ButtonSettings.class.getName(),
             BarsSettings.class.getName(),
+            MoreSettings.class.getName(),
     };
 
 
@@ -549,6 +551,7 @@ public class SettingsActivity extends SettingsDrawerActivity
                 || className.equals(Settings.WirelessSettings.class.getName())
                 || className.equals(Settings.BarsSettings.class.getName())
                 || className.equals(Settings.ButtonSettings.class.getName())
+                || className.equals(Settings.MoreSettings.class.getName())
                 || className.equals(Settings.DeviceSettings.class.getName())
                 || className.equals(Settings.PersonalSettings.class.getName())
                 || className.equals(Settings.WirelessSettings.class.getName());
