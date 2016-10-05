@@ -151,11 +151,13 @@ public class Settings extends SettingsActivity {
     public static class WifiInfoActivity extends SettingsActivity { /* empty */ }
     public static class ButtonSettingsActivity extends SettingsActivity { /* empty */ }
     public static class BarsSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class MoreSettingsActivity extends SettingsActivity { /* empty */ }
 
     // Categories.
     public static class WirelessSettings extends SettingsActivity { /* empty */ }
     public static class ButtonSettings extends SettingsActivity { /* empty */ }
     public static class BarsSettings extends SettingsActivity { /* empty */ }
+    public static class MoreSettings extends SettingsActivity { /* empty */ }
     public static class DeviceSettings extends SettingsActivity { /* empty */ }
     public static class PersonalSettings extends SettingsActivity { /* empty */ }
     public static class SystemSettings extends SettingsActivity { /* empty */ }
