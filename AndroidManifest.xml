@@ -2382,10 +2382,23 @@
         />
 
         <!-- Custom settings activity. -->
+        <activity android:name="Settings$BarsSettingsActivity"
+                android:label="@string/interface_bars_title"
+                android:icon="@drawable/ic_bars_tile">
+            <intent-filter android:priority="3">
+                <action android:name="com.android.settings.action.SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.category"
+                android:value="com.android.settings.category.omnigears" />
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="org.omnirom.omnigears.interfacesettings.BarsSettings" />
+        </activity>
+
         <activity android:name="Settings$ButtonSettingsActivity"
                 android:label="@string/button_settings"
                 android:icon="@drawable/ic_settings_buttons">
-            <intent-filter android:priority="1">
+            <intent-filter android:priority="2">
                 <action android:name="com.android.settings.action.SETTINGS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -2395,17 +2408,17 @@
                 android:value="org.omnirom.omnigears.ButtonSettings" />
         </activity>
 
-        <activity android:name="Settings$BarsSettingsActivity"
-                android:label="@string/interface_bars_title"
-                android:icon="@drawable/ic_bars_tile">
-            <intent-filter android:priority="2">
+        <activity android:name="Settings$MoreSettingsActivity"
+                android:label="@string/more_settings_title"
+                android:icon="@drawable/ic_settings_more">
+            <intent-filter android:priority="1">
                 <action android:name="com.android.settings.action.SETTINGS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.category"
                 android:value="com.android.settings.category.omnigears" />
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="org.omnirom.omnigears.interfacesettings.BarsSettings" />
+                android:value="org.omnirom.omnigears.moresettings.MoreSettings" />
         </activity>
 
         <!-- Pseudo-activity used to provide an intent-filter entry point to encryption settings -->
