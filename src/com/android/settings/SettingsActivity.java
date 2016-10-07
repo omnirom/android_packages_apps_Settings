@@ -138,6 +138,7 @@ import java.util.Set;
 
 import org.omnirom.omnigears.ButtonSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
+import org.omnirom.omnigears.interfacesettings.LockscreenSettings;
 import org.omnirom.omnigears.moresettings.MoreSettings;
 
 public class SettingsActivity extends SettingsDrawerActivity
@@ -364,6 +365,7 @@ public class SettingsActivity extends SettingsDrawerActivity
             ButtonSettings.class.getName(),
             BarsSettings.class.getName(),
             MoreSettings.class.getName(),
+            LockscreenSettings.class.getName(),
     };
 
 
@@ -558,6 +560,7 @@ public class SettingsActivity extends SettingsDrawerActivity
                 || className.equals(Settings.BarsSettings.class.getName())
                 || className.equals(Settings.ButtonSettings.class.getName())
                 || className.equals(Settings.MoreSettings.class.getName())
+                || className.equals(Settings.LockscreenSettings.class.getName())
                 || className.equals(Settings.DeviceSettings.class.getName())
                 || className.equals(Settings.PersonalSettings.class.getName())
                 || className.equals(Settings.WirelessSettings.class.getName());

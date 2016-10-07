@@ -2458,6 +2458,21 @@
         />
 
         <!-- Custom settings activity. -->
+        <activity android:name="Settings$LockscreenSettingsActivity"
+                android:label="@string/interface_lockscreen_title"
+                android:icon="@drawable/ic_lockscreen_tile">
+            <intent-filter android:priority="4">
+                <action android:name="com.android.settings.action.SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.VOICE_LAUNCH" />
+                <category android:name="com.android.settings.SHORTCUT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.category"
+                android:value="com.android.settings.category.omnigears" />
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="org.omnirom.omnigears.interfacesettings.LockscreenSettings" />
+        </activity>
+
         <activity android:name="Settings$BarsSettingsActivity"
                 android:label="@string/interface_bars_title"
                 android:icon="@drawable/ic_bars_tile">
