@@ -3,10 +3,11 @@
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
-    android:viewportHeight="24">
+    android:viewportHeight="24"
+    android:tint="?android:attr/colorAccent">
 
     <path
-        android:fillColor="?android:attr/colorAccent"
+        android:fillColor="#FFFFFFFF"
         android:pathData="M9.87446,16.3636 L14.1255,16.3636
 C14.7632,16.3636,15.1883,15.9273,15.1883,15.2727 L15.1883,12
 C15.1883,11.3455,14.7632,10.9091,14.1255,10.9091 L14.1255,9.81818
