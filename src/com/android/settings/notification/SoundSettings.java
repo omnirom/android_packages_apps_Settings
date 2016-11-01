@@ -381,7 +381,11 @@ public class SoundSettings extends SettingsPreferenceFragment implements Indexab
                 final boolean linkEnabled = Settings.System.getInt(getContentResolver(),
                         Settings.System.VOLUME_LINK_NOTIFICATION, 1) == 1;
                 if (!linkEnabled) {
-                    updateNotificationPreference();
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            updateNotificationPreference();
+                        }
+                    });
                 }
             }
         }
