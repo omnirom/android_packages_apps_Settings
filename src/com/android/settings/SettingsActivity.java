@@ -230,6 +230,7 @@ public class SettingsActivity extends SettingsDrawerActivity
 
     private static final String SUPERSU_FRAGMENT = "com.android.settings.SuperSU";
     private static final String SUPERUSER_FRAGMENT = "com.android.settings.SuperUser";
+    private static final String DEVICE_PARTS_FRAGMENT = "org.omnirom.device.DeviceParts";
 
     private String mFragmentClass;
 
@@ -1032,6 +1033,13 @@ public class SettingsActivity extends SettingsDrawerActivity
             finish();
             return null;
         }
+        if (DEVICE_PARTS_FRAGMENT.equals(fragmentName)) {
+            Intent devicePartsIntent = new Intent();
+            devicePartsIntent.setClassName("org.omnirom.device", "org.omnirom.device.DeviceSettings");
+            startActivity(devicePartsIntent);
+            finish();
+            return null;
+        }
         if (validate && !isValidFragment(fragmentName)) {
             throw new IllegalArgumentException("Invalid fragment for this activity: "
                     + fragmentName);
@@ -1141,6 +1149,16 @@ public class SettingsActivity extends SettingsDrawerActivity
         setTileEnabled(new ComponentName(packageName,
                         Settings.SuperUserActivity.class.getName()),
                 phhSupported, isAdmin, pm);
+
+        // Omni DeviceParts
+        boolean devicePartsSupported = false;
+        try {
+            devicePartsSupported = (getPackageManager().getPackageInfo("org.omnirom.device", 0).versionCode > 0);
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+        setTileEnabled(new ComponentName(packageName,
+                        Settings.DevicePartsActivity.class.getName()),
+                devicePartsSupported, isAdmin, pm);
 
         // Reveal development-only quick settings tiles
         DevelopmentTiles.setTilesEnabled(this, showDev);
