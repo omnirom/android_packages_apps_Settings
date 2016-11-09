@@ -120,5 +120,12 @@
   <string name="wifi_countrycode_br">Brasil</string>
   <string name="heads_up_notifications_enabled_title">Avisos flotants</string>
   <string name="heads_up_notifications_enabled_summary">Permet o inhabilita els avisos flotants</string>
+  <string name="status_bar_ime_notification_title">Mostra un avís</string>
+  <string name="status_bar_ime_notification_summary">Si la barra de navegació no està disponible</string>
+  <string name="navigation_bar_ime_button_title">Mostra el botó de la barra de navegació</string>
+  <string name="navigation_bar_ime_button_summary">Commutador d\'entrada a la barra d\'estat</string>
+  <string name="input_method_category">Commutador de mètode d\'entrada</string>
   <!-- Hostname setting -->
+  <!-- Format string for fingerprint location message -->
+  <!-- Fingerprint sensor locations -->
 </resources>

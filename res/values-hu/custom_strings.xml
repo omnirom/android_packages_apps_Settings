@@ -127,4 +127,13 @@
   <string name="input_method_category">Beviteli módszer váltó</string>
   <!-- Hostname setting -->
   <string name="device_hostname">Eszköz elérési neve</string>
+  <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Keresse meg az ujjlenyomat érzékelőt a telefonon: <xliff:g id="sensor_location">%1$s</xliff:g>.</string>
+  <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">hátul</string>
+  <string name="security_settings_fingerprint_sensor_location_front">elől</string>
+  <string name="security_settings_fingerprint_sensor_location_left">bal oldalon</string>
+  <string name="security_settings_fingerprint_sensor_location_right">jobb oldalon</string>
+  <string name="toggle_package_install_overlay_check_title">Átfedés ellenőrzés engedélyének tiltása</string>
+  <string name="toggle_package_install_overlay_check_summary">FIGYELMEZTETÉS\u003A ez letiltja a biztonság ellenőrzést, mely megakadályozza a lehetséges tapjacking-ot! Csak akkor használja, ha érti a következményeket.</string>
 </resources>

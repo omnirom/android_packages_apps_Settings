@@ -118,6 +118,20 @@
   <string name="wifi_countrycode_tr">Türkiye</string>
   <string name="wifi_countrycode_sg">Singapur</string>
   <string name="wifi_countrycode_br">Brezilya</string>
+  <string name="heads_up_notifications_enabled_title">Gözatmaya izin ver</string>
   <string name="heads_up_notifications_enabled_summary">Tüm bildirimler için göz atmaya izin ver veya devre dışı bırak</string>
+  <string name="status_bar_ime_notification_title">Bildirim göster</string>
+  <string name="status_bar_ime_notification_summary">Gezinti çubuğu kullanılabilir değilse</string>
+  <string name="navigation_bar_ime_button_title">Gezinti çubuğu düğmesini göster</string>
+  <string name="navigation_bar_ime_button_summary">Gezinti çubuğu giriş yöntemi seçicisi</string>
+  <string name="input_method_category">Giriş yöntemi seçicisi</string>
   <!-- Hostname setting -->
+  <string name="device_hostname">Cihaz ana bilgisayar adı</string>
+  <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Telefonunuzun <xliff:g id="sensor_location">%1$s</xliff:g> bölümünde bulunan parmakizi sensörünü bulun.</string>
+  <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">arka</string>
+  <string name="security_settings_fingerprint_sensor_location_front">ön</string>
+  <string name="security_settings_fingerprint_sensor_location_left">sol yan</string>
+  <string name="security_settings_fingerprint_sensor_location_right">sağ yan</string>
 </resources>

@@ -20,9 +20,20 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- About phone screen,  setting option name-->
+  <string name="mod_version">Έκδοση Omni</string>
+  <string name="mod_version_default">Άγνωστο</string>
   <!-- Main list strings -->
+  <string name="header_category_interface">Διεπαφή</string>
+  <string name="performance_settings">Επιδόσεις</string>
+  <string name="advanced_settings_title">Σύνθετες επιλογές</string>
+  <string name="button_settings">Πλήκτρα</string>
+  <string name="battery_light_settings">Ένδειξη LED μπαταρίας</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
+  <string name="adb_notify">Ειδοποίηση εντοπισμού σφαλμάτων USB</string>
+  <string name="adb_notify_summary">Εμφάνιση ειδοποίησης όταν ο εντοπισμός σφαλμάτων μέσω USB είναι ενεργοποιημένος</string>
+  <string name="volume_adjust_sound_title">Προσαρμογή έντασης ήχου</string>
   <!-- Advanced reboot options -->
+  <string name="advanced_reboot_title">Προηγμένη επανεκκίνηση</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
   <!-- Android debugging over WiFi -->
@@ -42,4 +53,6 @@
   <!-- app notifications hide on lockscreen -->
   <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
   <!-- Hostname setting -->
+  <!-- Format string for fingerprint location message -->
+  <!-- Fingerprint sensor locations -->
 </resources>

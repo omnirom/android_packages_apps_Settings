@@ -127,4 +127,13 @@
   <string name="input_method_category">Preklopnik načinov vnosa</string>
   <!-- Hostname setting -->
   <string name="device_hostname">Ime gostujoče naprave</string>
+  <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Na <xliff:g id="sensor_location">%1$s</xliff:g> vašega telefona poiščite tipalo prstnih odtisov.</string>
+  <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">zadnji strani</string>
+  <string name="security_settings_fingerprint_sensor_location_front">sprednji strani</string>
+  <string name="security_settings_fingerprint_sensor_location_left">levi strani</string>
+  <string name="security_settings_fingerprint_sensor_location_right">desni strani</string>
+  <string name="toggle_package_install_overlay_check_title">Onemogoči preverjanje dovoljenj</string>
+  <string name="toggle_package_install_overlay_check_summary">OPOZORLO\u003A to onemogoči varnostno preverjanje za preprečitev kraje dotikov!  Uporabljajte samo, če se zavedate posledic.</string>
 </resources>

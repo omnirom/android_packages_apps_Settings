@@ -20,8 +20,17 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- About phone screen,  setting option name-->
+  <string name="mod_version">Omni バージョン</string>
+  <string name="mod_version_default">不明</string>
   <!-- Main list strings -->
+  <string name="header_category_interface">インターフェース</string>
+  <string name="performance_settings">パフォーマンス</string>
+  <string name="advanced_settings_title">高度な設定</string>
+  <string name="button_settings">ボタン</string>
+  <string name="battery_light_settings">バッテリー通知LED</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
+  <string name="adb_notify">USBデバッグの通知</string>
+  <string name="adb_notify_summary">USB デバッグが接続されたときに通知を表示する</string>
   <!-- Advanced reboot options -->
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
@@ -42,4 +51,6 @@
   <!-- app notifications hide on lockscreen -->
   <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
   <!-- Hostname setting -->
+  <!-- Format string for fingerprint location message -->
+  <!-- Fingerprint sensor locations -->
 </resources>

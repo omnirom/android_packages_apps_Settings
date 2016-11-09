@@ -71,7 +71,9 @@
   <string name="zen_mode_none_category">Без прерывания</string>
   <string name="zen_mode_alarms">Разрешить будильники</string>
   <!-- Linked / unlinked notification volume -->
+  <string name="link_volume_option_title">Связать громкость звонка и уведомлений</string>
   <string name="notification_volume_option_title">Громкость уведомления</string>
+  <string name="ring_notification_volume_option_title">Громокость звонка и уведомлений</string>
   <!-- Unaccounted and overcounted battery stats -->
   <string name="show_unac_and_overcounted_stats_title">Показывать неучтенные (прочие) данные статистики батареи</string>
   <string name="show_unac_and_overcounted_stats_summary">Показывать данные статистики батареи, которые не относятся ни к чему конкретному и обычно попадают в прочее.</string>
@@ -83,6 +85,8 @@
   <string name="supersu_title">SuperSU</string>
   <!-- dashboard categories -->
   <string name="interface_bars_title">Панели</string>
+  <string name="interface_lockscreen_title">Экран блокировки</string>
+  <string name="interface_more_title">Ещё</string>
   <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
   <string name="wifi_setting_countrycode_title">Код региона Wi-Fi</string>
   <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->
@@ -91,8 +95,36 @@
   <string name="wifi_setting_countrycode_error">При настройке кода региона Wi-Fi возникла неполадка.</string>
   <string name="wifi_setting_countrycode_default">По умолчанию</string>
   <!-- Lock screen rotation -->
+  <string name="display_lockscreen_rotation_title">Экран блокировки</string>
   <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
+  <string name="bluetooth_accept_all_files">Принимать все типы файлов</string>
+  <string name="system_ui_tuner">System UI Tuner</string>
   <!-- app notifications hide on lockscreen -->
+  <string name="app_notification_no_keyguard_title">Скрывать при блокировке</string>
+  <string name="app_notification_no_keyguard_summary">Скрыть уведомления этого приложения, когда устройство заблокировано</string>
+  <string name="filter_notif_no_keyguard">Скрывать при блокировке</string>
+  <string name="notifications_no_keyguard">Скрывать при блокировке</string>
+  <string name="camera_gesture_vibrate_title">Вибрировать на жест камеры</string>
   <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
+  <string name="wifi_countrycode_us">США</string>
+  <string name="wifi_countrycode_ca">Канада, Тайвань</string>
+  <string name="wifi_countrycode_de">Германия</string>
+  <string name="wifi_countrycode_gb">Европа</string>
+  <string name="wifi_countrycode_jp">Япония, Россия</string>
+  <string name="wifi_countrycode_au">Австралия</string>
+  <string name="wifi_countrycode_id">Индонезия</string>
+  <string name="wifi_countrycode_cn">Китай</string>
+  <string name="wifi_countrycode_kr">Корея</string>
+  <string name="wifi_countrycode_tr">Турция</string>
+  <string name="wifi_countrycode_sg">Сингапур</string>
+  <string name="wifi_countrycode_br">Бразилия</string>
+  <string name="status_bar_ime_notification_title">Показать уведомление</string>
+  <string name="status_bar_ime_notification_summary">Если панель навигации не доступна</string>
+  <string name="navigation_bar_ime_button_title">Показывать панель навигации</string>
+  <string name="navigation_bar_ime_button_summary">Переколючатель ввода на панели навигации</string>
+  <string name="input_method_category">Выбор способа ввода</string>
   <!-- Hostname setting -->
+  <string name="device_hostname">Имя хоста устройства</string>
+  <!-- Format string for fingerprint location message -->
+  <!-- Fingerprint sensor locations -->
 </resources>

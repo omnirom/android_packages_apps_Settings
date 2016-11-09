@@ -127,4 +127,13 @@
   <string name="input_method_category">Výber metódy vstupu</string>
   <!-- Hostname setting -->
   <string name="device_hostname">Názov zariadenia</string>
+  <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Nájdite snímač odtlačkov prstov na<xliff:g id="sensor_location">%1$s</xliff:g> vášho zariadenia.</string>
+  <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">zadnej strane</string>
+  <string name="security_settings_fingerprint_sensor_location_front">prednej strane</string>
+  <string name="security_settings_fingerprint_sensor_location_left">ľavej strane</string>
+  <string name="security_settings_fingerprint_sensor_location_right">pravej strane</string>
+  <string name="toggle_package_install_overlay_check_title">Vypnút kontrolu prekrytia obrazovky</string>
+  <string name="toggle_package_install_overlay_check_summary">UPOZORNENIE:\u003A vypne kontrolu zabezpečenia proti tapjackingu! Kontrolu vypnite len v prípade, že ste si vedomí možných následkov.</string>
 </resources>

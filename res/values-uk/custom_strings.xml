@@ -97,4 +97,6 @@
   <!-- app notifications hide on lockscreen -->
   <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
   <!-- Hostname setting -->
+  <!-- Format string for fingerprint location message -->
+  <!-- Fingerprint sensor locations -->
 </resources>

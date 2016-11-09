@@ -20,26 +20,102 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- About phone screen,  setting option name-->
+  <string name="mod_version">Versiune Omni</string>
+  <string name="mod_version_default">Necunoscut</string>
   <!-- Main list strings -->
+  <string name="header_category_interface">Interfață</string>
+  <string name="performance_settings">Performanţă</string>
+  <string name="advanced_settings_title">Preferințe avansate</string>
+  <string name="button_settings">Butoane</string>
+  <string name="battery_light_settings">LED baterie</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
+  <string name="adb_notify">Notificare Depanare USB</string>
+  <string name="adb_notify_summary">Arătați o notificare atunci când depanarea USB este conectată</string>
+  <string name="volume_adjust_sound_title">Ajustare volum sunet</string>
+  <string name="screenshot_shutter_sound_title">Sunet de captură a ecranului</string>
   <!-- Advanced reboot options -->
+  <string name="advanced_reboot_title">Repornire avansată</string>
+  <string name="advanced_reboot_summary">Include opţiuni în meniul de stingere pentru repornirea în recovery sau bootloader</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+  <string name="show_cpu_info">Afișează informații CPU</string>
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+  <string name="show_cpu_info_summary">Afișează informații CPU suprapuse pe ecran</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">ADB prin reţea</string>
+  <string name="adb_over_network_summary">Activaţi depanare TCP/IP prin interfeţe de reţea (Wi-Fi, reţele USB). Această setare este resetată la repornire</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">AVERTISMENT: Atunci când ADB prin reţea este activat, telefonul este deschis pentru intruziunile prin toate reţelele conectate, inclusiv reţeaua de date GSM!\n\nUtilizaţi această funcţie numai atunci când sunteţi conectat la reţelele de încredere.\n\nSigur doriţi să activaţi această funcţie?</string>
   <!-- Display : Rotation -->
+  <string name="display_rotation_title">Rotire</string>
+  <string name="display_rotation_disabled">Dezactivat</string>
+  <string name="display_rotation_unit">grade</string>
+  <string name="display_rotation_category_title">Moduri de rotire</string>
+  <string name="display_rotation_0_title">0 grade</string>
+  <string name="display_rotation_90_title">90 de grade</string>
+  <string name="display_rotation_180_title">180 de grade</string>
+  <string name="display_rotation_270_title">270 de grade</string>
   <!-- Lockscreen pin shuffle -->
+  <string name="lock_numpad_random_title">Schimbă ordinea numerelor în tastatura pentru PIN</string>
+  <string name="lock_numpad_random_dialog_title">Ordine cazuală a tastaturii pentru PIN</string>
+  <string name="lock_numpad_random_off">Dezactivat</string>
+  <string name="lock_numpad_random_always">Mereu</string>
+  <string name="lock_numpad_random_on_request">La cerere</string>
+  <string name="alarm_ringtone_title">Sonerie alarma prestabilită</string>
+  <string name="storage_options_category">Notificări</string>
+  <string name="storage_menu_options">Preferințe avansate</string>
+  <string name="storage_title_options">Opţiuni de stocare</string>
+  <string name="no_media_notification_title">Notificare memorie detașată</string>
+  <string name="no_media_notification_summary">Afișare notificare când suportul de stocare este detașat</string>
+  <string name="mount_notification_title">Notificare montaj</string>
+  <string name="mount_notification_summary">Notificare permanentă pentru memoria atașată</string>
+  <string name="zen_mode_none_category">Fără întreruperi</string>
+  <string name="zen_mode_alarms">Permite alarme</string>
   <!-- Linked / unlinked notification volume -->
+  <string name="link_volume_option_title">Conectează volumul soneriei și a notificării</string>
+  <string name="notification_volume_option_title">Volum notificare</string>
+  <string name="ring_notification_volume_option_title">Volum sonerie si notificare</string>
   <!-- Unaccounted and overcounted battery stats -->
   <!-- Keyguard: quick unlock -->
+  <string name="keyguard_quick_unlock">Deblocare rapidă</string>
+  <string name="keyguard_quick_unlock_summary_pin">Deblocare automată atunci când este introdus codul PIN corect</string>
+  <string name="keyguard_quick_unlock_summary_password">Deblocare automată atunci când este introdusă parola corectă</string>
   <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
+  <string name="supersu_title">SueperSU</string>
   <!-- dashboard categories -->
+  <string name="interface_bars_title">Bars</string>
+  <string name="interface_lockscreen_title">Ecran de deblocare</string>
+  <string name="interface_more_title">Mai multe</string>
   <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
+  <string name="wifi_setting_countrycode_title">Cod regiune Wi-Fi</string>
   <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->
+  <string name="wifi_setting_countrycode_summary">Specificaţi codul de regiune pentru Wi-Fi</string>
   <!-- Wi-Fi settings screen, error message when the region code could not be set [CHAR LIMIT=50]. -->
+  <string name="wifi_setting_countrycode_error">A intervenit o problemă la setarea codului de regiune.</string>
+  <string name="wifi_setting_countrycode_default">Prestabilit</string>
   <!-- Lock screen rotation -->
+  <string name="display_lockscreen_rotation_title">Ecran de deblocare</string>
   <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
+  <string name="bluetooth_accept_all_files">Accepta toate tipurile de fişiere</string>
+  <string name="system_ui_tuner">Syestem UI Tuner</string>
   <!-- app notifications hide on lockscreen -->
+  <string name="app_notification_no_keyguard_title">Ascunde atunci când ecranul e blocat</string>
+  <string name="app_notification_no_keyguard_summary">Ascunde notificări de la aplicația aceasta atunci când dispozitivul este blocat</string>
+  <string name="filter_notif_no_keyguard">Ascunse când ecranul e blocat</string>
+  <string name="notifications_no_keyguard">Ascunse când ecranul e blocat</string>
   <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
+  <string name="wifi_countrycode_us">Statele Unite</string>
+  <string name="wifi_countrycode_ca">Canada, Taiwan</string>
+  <string name="wifi_countrycode_de">Germania</string>
+  <string name="wifi_countrycode_gb">Europa</string>
+  <string name="wifi_countrycode_jp">Japonia, Rusia</string>
+  <string name="wifi_countrycode_au">Australia</string>
+  <string name="wifi_countrycode_id">Indonezia</string>
+  <string name="wifi_countrycode_cn">China</string>
+  <string name="wifi_countrycode_kr">Coreea</string>
+  <string name="wifi_countrycode_tr">Turcia</string>
+  <string name="wifi_countrycode_sg">Singapore</string>
+  <string name="wifi_countrycode_br">Brazilia</string>
   <!-- Hostname setting -->
+  <!-- Format string for fingerprint location message -->
+  <!-- Fingerprint sensor locations -->
 </resources>

@@ -126,4 +126,7 @@
   <string name="navigation_bar_ime_button_summary">Mostrar ícone de seleção do método de entrada na barra de navegação</string>
   <string name="input_method_category">Selecionar o método de entrada</string>
   <!-- Hostname setting -->
+  <string name="device_hostname">Nome do dispositivo</string>
+  <!-- Format string for fingerprint location message -->
+  <!-- Fingerprint sensor locations -->
 </resources>

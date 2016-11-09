@@ -118,5 +118,22 @@
   <string name="wifi_countrycode_tr">Turkije</string>
   <string name="wifi_countrycode_sg">Singapore</string>
   <string name="wifi_countrycode_br">Brazilië</string>
+  <string name="heads_up_notifications_enabled_title">Gluren toestaan</string>
+  <string name="heads_up_notifications_enabled_summary">Gluren toestaan in- of uitschakelen voor alle meldingen</string>
+  <string name="status_bar_ime_notification_title">Melding weergeven</string>
+  <string name="status_bar_ime_notification_summary">Als de navigatiebalk niet beschikbaar is</string>
+  <string name="navigation_bar_ime_button_title">Toon navigatiebalkknop</string>
+  <string name="navigation_bar_ime_button_summary">Toetsenbordwisselaar in navigatiebalk</string>
+  <string name="input_method_category">Invoermethode wisselaar</string>
   <!-- Hostname setting -->
+  <string name="device_hostname">Hostnaam apparaat</string>
+  <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Vind de vingerafdruk sensor op de <xliff:g id="sensor_location">%1$s</xliff:g> van uw telefoon.</string>
+  <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">achterkant</string>
+  <string name="security_settings_fingerprint_sensor_location_front">voorkant</string>
+  <string name="security_settings_fingerprint_sensor_location_left">linker kant</string>
+  <string name="security_settings_fingerprint_sensor_location_right">rechter kant</string>
+  <string name="toggle_package_install_overlay_check_title">Overlay toestemming uitschakelen</string>
+  <string name="toggle_package_install_overlay_check_summary">WARNING\u003A dit schakelt een beveiligingscontrole uit om te voorkomen dat mogelijke tapjacking! Alleen gebruiken als je de gevolgen begrijpt.</string>
 </resources>

@@ -20,26 +20,112 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- About phone screen,  setting option name-->
+  <string name="mod_version">Omni 버전</string>
+  <string name="mod_version_default">알 수 없음</string>
   <!-- Main list strings -->
+  <string name="header_category_interface">인터페이스</string>
+  <string name="performance_settings">성능</string>
+  <string name="advanced_settings_title">고급 설정</string>
+  <string name="button_settings">버튼</string>
+  <string name="battery_light_settings">배터리 표시등</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
+  <string name="adb_notify">USB 디버깅 알림</string>
+  <string name="adb_notify_summary">USB 디버깅으로 연결할 때 알림 표시</string>
+  <string name="volume_adjust_sound_title">음량 조절 소리</string>
+  <string name="screenshot_shutter_sound_title">스크린샷 셔터 소리</string>
   <!-- Advanced reboot options -->
+  <string name="advanced_reboot_title">고급 재시작</string>
+  <string name="advanced_reboot_summary">전원 메뉴의 다시 시작 항목에 복구 모드와 부트로더로 진입할 수 있는 옵션을 추가합니다.</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+  <string name="show_cpu_info">CPU 정보 표시</string>
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+  <string name="show_cpu_info_summary">현재 CPU 정보를 화면에 오버레이로 표시</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">네트워크를 통한 ADB</string>
+  <string name="adb_over_network_summary">네트워크 인터페이스(Wi-Fi, USB 네트워크)를 통한 TCP/IP 디버깅을 사용합니다. 이 설정은 재시작하면 초기화됩니다.</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">경고: 네트워크를 통한 ADB를 사용하게 되면, 당신의 기기는 모바일 데이터 네트워크를 포함한 모든 연결된 네트워크로부터의 공격에 취약해집니다.\n\n이 기능은 신뢰할 수 있는 네트워크에 연결된 상태에서만 사용하세요.\n\n이 기능을 사용할까요?</string>
   <!-- Display : Rotation -->
+  <string name="display_rotation_title">회전</string>
+  <string name="display_rotation_disabled">비활성화</string>
+  <string name="display_rotation_unit">도</string>
+  <string name="display_rotation_category_title">회전 모드</string>
+  <string name="display_rotation_0_title">0도</string>
+  <string name="display_rotation_90_title">90도</string>
+  <string name="display_rotation_180_title">180도</string>
+  <string name="display_rotation_270_title">270도</string>
   <!-- Lockscreen pin shuffle -->
+  <string name="lock_numpad_random_title">PIN 숫자판 번호의 순서를 무작위로 변경</string>
+  <string name="lock_numpad_random_dialog_title">PIN 숫자판 번호 순서 섞기</string>
+  <string name="lock_numpad_random_off">비활성화</string>
+  <string name="lock_numpad_random_always">항상</string>
+  <string name="lock_numpad_random_on_request">요청 시</string>
+  <string name="alarm_ringtone_title">기본 알람 소리</string>
+  <string name="storage_options_category">알림</string>
+  <string name="storage_menu_options">고급 설정</string>
+  <string name="storage_title_options">저장소 옵션</string>
+  <string name="no_media_notification_title">저장소 제거 알림</string>
+  <string name="no_media_notification_summary">저장소 미디어가 제거되면 알림 표시</string>
+  <string name="mount_notification_title">장착 알림</string>
+  <string name="mount_notification_summary">장착된 저장소 알림 표시</string>
+  <string name="zen_mode_none_category">방해 금지</string>
+  <string name="zen_mode_alarms">알람 허용</string>
   <!-- Linked / unlinked notification volume -->
+  <string name="link_volume_option_title">벨소리와 알림 음량을 같게</string>
+  <string name="notification_volume_option_title">알림 음량</string>
+  <string name="ring_notification_volume_option_title">벨소리와 알림 음량</string>
   <!-- Unaccounted and overcounted battery stats -->
+  <string name="show_unac_and_overcounted_stats_title">알 수 없거나 더 많이 측정된 사용량 표시</string>
+  <string name="show_unac_and_overcounted_stats_summary">알 수 없거나 더 많이 측정된 사용량을 배터리 통계에 표시</string>
   <!-- Keyguard: quick unlock -->
+  <string name="keyguard_quick_unlock">빠른 잠금 해제</string>
+  <string name="keyguard_quick_unlock_summary_pin">정확한 PIN을 입력했을 경우 자동으로 잠금 해제</string>
+  <string name="keyguard_quick_unlock_summary_password">정확한 암호를 입력했을 경우 자동으로 잠금 해제</string>
   <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
+  <string name="supersu_title">SuperSU</string>
   <!-- dashboard categories -->
+  <string name="interface_bars_title">상태 표시줄</string>
+  <string name="interface_lockscreen_title">잠금 화면</string>
+  <string name="interface_more_title">기타</string>
   <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
+  <string name="wifi_setting_countrycode_title">Wi-Fi 지역 코드</string>
   <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->
+  <string name="wifi_setting_countrycode_summary">Wi-Fi에 사용할 지역 코드 지정</string>
   <!-- Wi-Fi settings screen, error message when the region code could not be set [CHAR LIMIT=50]. -->
+  <string name="wifi_setting_countrycode_error">지역 코드 설정에 문제가 발생했습니다.</string>
+  <string name="wifi_setting_countrycode_default">기본값</string>
   <!-- Lock screen rotation -->
+  <string name="display_lockscreen_rotation_title">잠금 화면</string>
   <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
+  <string name="bluetooth_accept_all_files">모든 파일 형식을 수락합니다</string>
+  <string name="system_ui_tuner">시스템 UI 튜너</string>
   <!-- app notifications hide on lockscreen -->
+  <string name="app_notification_no_keyguard_title">잠겼을 때 숨기기</string>
+  <string name="app_notification_no_keyguard_summary">장치가 잠겨 있을 때 이 앱의 알림 숨기기</string>
+  <string name="filter_notif_no_keyguard">잠겼을 때 숨김</string>
+  <string name="notifications_no_keyguard">잠겼을 때 숨김</string>
+  <string name="camera_gesture_vibrate_title">카메라 제스처에 진동</string>
   <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
+  <string name="wifi_countrycode_us">미국</string>
+  <string name="wifi_countrycode_ca">캐나다, 대만</string>
+  <string name="wifi_countrycode_de">독일</string>
+  <string name="wifi_countrycode_gb">유럽</string>
+  <string name="wifi_countrycode_jp">일본, 러시아</string>
+  <string name="wifi_countrycode_au">호주</string>
+  <string name="wifi_countrycode_id">인도네시아</string>
+  <string name="wifi_countrycode_cn">중국</string>
+  <string name="wifi_countrycode_kr">대한민국</string>
+  <string name="wifi_countrycode_tr">터키</string>
+  <string name="wifi_countrycode_sg">싱가포르</string>
+  <string name="wifi_countrycode_br">브라질</string>
+  <string name="heads_up_notifications_enabled_title">엿보기 허용</string>
+  <string name="heads_up_notifications_enabled_summary">모든 알림에 대한 엿보기 허용 또는 비활성화</string>
+  <string name="status_bar_ime_notification_title">알림 표시</string>
+  <string name="status_bar_ime_notification_summary">탐색 모음을 사용할 수 없는 경우</string>
+  <string name="navigation_bar_ime_button_title">네비게이션 바 보기</string>
+  <string name="navigation_bar_ime_button_summary">탐색 모음에서 입력된 스위처</string>
+  <string name="input_method_category">입력 방법 선택기</string>
   <!-- Hostname setting -->
+  <!-- Format string for fingerprint location message -->
+  <!-- Fingerprint sensor locations -->
 </resources>

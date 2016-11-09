@@ -127,4 +127,13 @@
   <string name="input_method_category">Eingabemethoden Umschalter</string>
   <!-- Hostname setting -->
   <string name="device_hostname">Hostname des Geräts</string>
+  <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Suchen Sie den Fingerprint-Sensor auf der <xliff:g id="sensor_location">%1$s </xliff:g> des Telefons.</string>
+  <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">zurück</string>
+  <string name="security_settings_fingerprint_sensor_location_front">Vorderseite</string>
+  <string name="security_settings_fingerprint_sensor_location_left">linken Seite</string>
+  <string name="security_settings_fingerprint_sensor_location_right">rechten Seite</string>
+  <string name="toggle_package_install_overlay_check_title">Deaktivieren Sie die Berechtigungen des Overlay-Check</string>
+  <string name="toggle_package_install_overlay_check_summary">Achtung\u003A Dies deaktiviert einen Sicherheits-Check, um mögliche Tapjacking zu vermeiden! Verwenden Sie dies nur, wenn Sie die Konsequenzen verstehen.</string>
 </resources>

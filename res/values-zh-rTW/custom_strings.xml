@@ -20,26 +20,112 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- About phone screen,  setting option name-->
+  <string name="mod_version">Omni Rom 版本</string>
+  <string name="mod_version_default">不明</string>
   <!-- Main list strings -->
+  <string name="header_category_interface">介面</string>
+  <string name="performance_settings">效能</string>
+  <string name="advanced_settings_title">高級選項</string>
+  <string name="button_settings">按鈕</string>
+  <string name="battery_light_settings">電池通知燈</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
+  <string name="adb_notify">USB 偵錯通知</string>
+  <string name="adb_notify_summary">當USB偵錯連接時顯示通知</string>
+  <string name="volume_adjust_sound_title">音量調整提示音</string>
+  <string name="screenshot_shutter_sound_title">螢幕截圖音效</string>
   <!-- Advanced reboot options -->
+  <string name="advanced_reboot_title">進階重新開機</string>
+  <string name="advanced_reboot_summary">在重開機選項增加進入 Recovery 和 Bootloader 模式</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+  <string name="show_cpu_info">顯示 CPU 資訊</string>
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+  <string name="show_cpu_info_summary">在螢幕上方顯示目前的 CPU 使用量</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">無線 ADB 偵錯</string>
+  <string name="adb_over_network_summary">通過網路連接 (WiFi, USB 網路) 啟用 TCP/IP 调偵錯。 重新開機後回復預設值</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">警告：無線 ADB 偵錯啟用後，你的裝置將會被已連線上的網路視為開放的，包括行動網路，並有可能遭到入侵！\n\n請只在信任的網路使用此功能。\n\n確定要開啟此功能嗎？</string>
   <!-- Display : Rotation -->
+  <string name="display_rotation_title">螢幕旋轉</string>
+  <string name="display_rotation_disabled">停用</string>
+  <string name="display_rotation_unit">度</string>
+  <string name="display_rotation_category_title">旋轉模式</string>
+  <string name="display_rotation_0_title">0度</string>
+  <string name="display_rotation_90_title">90度</string>
+  <string name="display_rotation_180_title">180度</string>
+  <string name="display_rotation_270_title">270度</string>
   <!-- Lockscreen pin shuffle -->
+  <string name="lock_numpad_random_title">打亂PIN碼輸入鍵盤的數字排列</string>
+  <string name="lock_numpad_random_dialog_title">隨機排列 PIN 輸入鍵盤上的數字位置</string>
+  <string name="lock_numpad_random_off">停用</string>
+  <string name="lock_numpad_random_always">總是</string>
+  <string name="lock_numpad_random_on_request">要求時</string>
+  <string name="alarm_ringtone_title">預設鬧鐘鈴聲</string>
+  <string name="storage_options_category">通知</string>
+  <string name="storage_menu_options">高級選項</string>
+  <string name="storage_title_options">儲存選項</string>
+  <string name="no_media_notification_title">儲存移除通知</string>
+  <string name="no_media_notification_summary">儲存媒體移除時顯示通知</string>
+  <string name="mount_notification_title">掛載通知</string>
+  <string name="mount_notification_summary">為已掛載的儲存裝置顯示持續性通知</string>
+  <string name="zen_mode_none_category">請勿打擾</string>
+  <string name="zen_mode_alarms">允許鬧鐘</string>
   <!-- Linked / unlinked notification volume -->
+  <string name="link_volume_option_title">連結鈴聲和通知鈴聲音量</string>
+  <string name="notification_volume_option_title">通知音量</string>
+  <string name="ring_notification_volume_option_title">鈴聲和通知的音量</string>
   <!-- Unaccounted and overcounted battery stats -->
+  <string name="show_unac_and_overcounted_stats_title">顯示未解釋和超出計算範圍的統計資料</string>
+  <string name="show_unac_and_overcounted_stats_summary">在電池狀態中顯示未知和超出計算範圍的使用情況。</string>
   <!-- Keyguard: quick unlock -->
+  <string name="keyguard_quick_unlock">快速解鎖</string>
+  <string name="keyguard_quick_unlock_summary_pin">當輸入正確PIN碼時。自動解鎖。</string>
+  <string name="keyguard_quick_unlock_summary_password">當輸入正確的密碼時自動解鎖。</string>
   <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
+  <string name="supersu_title">SuperSU</string>
   <!-- dashboard categories -->
+  <string name="interface_bars_title">狀態欄</string>
+  <string name="interface_lockscreen_title">鎖定螢幕</string>
+  <string name="interface_more_title">更多</string>
   <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
+  <string name="wifi_setting_countrycode_title">Wi-Fi 區域碼</string>
   <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->
+  <string name="wifi_setting_countrycode_summary">指定 Wi-Fi 使用的區域碼</string>
   <!-- Wi-Fi settings screen, error message when the region code could not be set [CHAR LIMIT=50]. -->
+  <string name="wifi_setting_countrycode_error">設定區域碼時遇到問題。</string>
+  <string name="wifi_setting_countrycode_default">預設</string>
   <!-- Lock screen rotation -->
+  <string name="display_lockscreen_rotation_title">鎖定螢幕</string>
   <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
+  <string name="bluetooth_accept_all_files">同意所有檔案</string>
+  <string name="system_ui_tuner">系統介面調諧器</string>
   <!-- app notifications hide on lockscreen -->
+  <string name="app_notification_no_keyguard_title">當鎖定時隱藏</string>
+  <string name="app_notification_no_keyguard_summary">裝置鎖定時隱藏這個應用程式通知</string>
+  <string name="filter_notif_no_keyguard">當鎖定時隱藏</string>
+  <string name="notifications_no_keyguard">當鎖定時隱藏</string>
+  <string name="camera_gesture_vibrate_title">使用手勢啟動相機時震動</string>
   <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
+  <string name="wifi_countrycode_us">美國</string>
+  <string name="wifi_countrycode_ca">加拿大，臺灣</string>
+  <string name="wifi_countrycode_de">德國</string>
+  <string name="wifi_countrycode_gb">歐洲</string>
+  <string name="wifi_countrycode_jp">日本， 俄羅斯</string>
+  <string name="wifi_countrycode_au">澳洲</string>
+  <string name="wifi_countrycode_id">印尼</string>
+  <string name="wifi_countrycode_cn">中國</string>
+  <string name="wifi_countrycode_kr">韓國</string>
+  <string name="wifi_countrycode_tr">土耳其</string>
+  <string name="wifi_countrycode_sg">新加坡</string>
+  <string name="wifi_countrycode_br">巴西</string>
+  <string name="heads_up_notifications_enabled_title">啟用漂浮通知</string>
+  <string name="heads_up_notifications_enabled_summary">啟用或關閉所有漂浮通知</string>
+  <string name="status_bar_ime_notification_title">顯示通知</string>
+  <string name="status_bar_ime_notification_summary">如果海苔條不可用</string>
+  <string name="navigation_bar_ime_button_title">顯示海苔條按鈕</string>
+  <string name="navigation_bar_ime_button_summary">海苔條中顯示輸入法切換按鈕</string>
+  <string name="input_method_category">輸入法切換</string>
   <!-- Hostname setting -->
+  <!-- Format string for fingerprint location message -->
+  <!-- Fingerprint sensor locations -->
 </resources>

@@ -126,4 +126,6 @@
   <string name="navigation_bar_ime_button_summary">Przełącznik klawiatury w pasku nawigacyjnym</string>
   <string name="input_method_category">Przełącznik wprowadzania tekstu</string>
   <!-- Hostname setting -->
+  <!-- Format string for fingerprint location message -->
+  <!-- Fingerprint sensor locations -->
 </resources>

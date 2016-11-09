@@ -127,4 +127,13 @@
   <string name="input_method_category">Výběr metody zadávání</string>
   <!-- Hostname setting -->
   <string name="device_hostname">Jméno zařízení</string>
+  <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Snímač otisků prstů najdete na <xliff:g id="sensor_location">%1$s </xliff:g> telefonu.</string>
+  <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">zadní části</string>
+  <string name="security_settings_fingerprint_sensor_location_front">přední části</string>
+  <string name="security_settings_fingerprint_sensor_location_left">levé straně</string>
+  <string name="security_settings_fingerprint_sensor_location_right">pravé straně</string>
+  <string name="toggle_package_install_overlay_check_title">Zakázat kontrolu překrytí oprávnění</string>
+  <string name="toggle_package_install_overlay_check_summary">VAROVÁNÍ:\u003A zakáže kontrolu zabezpečení, aby se zabránilo možné tapjackingu! Používejte pouze v případě, že jste pochopili důsledky.</string>
 </resources>

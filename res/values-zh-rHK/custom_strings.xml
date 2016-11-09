@@ -20,26 +20,70 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- About phone screen,  setting option name-->
+  <string name="mod_version">Omni 版本</string>
+  <string name="mod_version_default">未知</string>
   <!-- Main list strings -->
+  <string name="header_category_interface">介面</string>
+  <string name="performance_settings">效能</string>
+  <string name="advanced_settings_title">進階</string>
+  <string name="button_settings">按鈕</string>
+  <string name="battery_light_settings">電量指示燈</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
+  <string name="adb_notify">USB 調試通知</string>
+  <string name="adb_notify_summary">當 USB 調試連綫時顯示通知</string>
+  <string name="volume_adjust_sound_title">音量調整聲</string>
+  <string name="screenshot_shutter_sound_title">擷取畫面聲</string>
   <!-- Advanced reboot options -->
+  <string name="advanced_reboot_title">進階重新啟動</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+  <string name="show_cpu_info">顯示 CPU 資訊</string>
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
   <!-- Android debugging over WiFi -->
   <!-- Warning for Adb over Network -->
   <!-- Display : Rotation -->
+  <string name="display_rotation_disabled">已停用</string>
+  <string name="display_rotation_category_title">旋轉模式</string>
+  <string name="display_rotation_0_title">0 度</string>
+  <string name="display_rotation_90_title">90 度</string>
+  <string name="display_rotation_180_title">180 度</string>
+  <string name="display_rotation_270_title">270 度</string>
   <!-- Lockscreen pin shuffle -->
+  <string name="lock_numpad_random_off">已停用</string>
+  <string name="storage_options_category">通知</string>
+  <string name="storage_menu_options">進階</string>
+  <string name="storage_title_options">儲存選項</string>
   <!-- Linked / unlinked notification volume -->
+  <string name="notification_volume_option_title">通知音量</string>
   <!-- Unaccounted and overcounted battery stats -->
   <!-- Keyguard: quick unlock -->
+  <string name="keyguard_quick_unlock">快速解鎖</string>
   <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
+  <string name="supersu_title">SuperSU</string>
   <!-- dashboard categories -->
+  <string name="interface_lockscreen_title">鎖定畫面</string>
+  <string name="interface_more_title">更多...</string>
   <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
   <!-- Wi-Fi settings screen, setting summary for setting the wifi region code [CHAR LIMIT=50]-->
   <!-- Wi-Fi settings screen, error message when the region code could not be set [CHAR LIMIT=50]. -->
+  <string name="wifi_setting_countrycode_default">預設</string>
   <!-- Lock screen rotation -->
+  <string name="display_lockscreen_rotation_title">鎖定畫面</string>
   <!-- Bluetooth settings. A checkbox to set if we should accept all the file types regardless of their presence in MIME type whitelist -->
   <!-- app notifications hide on lockscreen -->
   <!-- Wi-Fi settings. Presented as a list dialog to the user to choose the Wi-Fi region code -->
+  <string name="wifi_countrycode_us">美國</string>
+  <string name="wifi_countrycode_ca">加拿大，臺灣</string>
+  <string name="wifi_countrycode_de">德國</string>
+  <string name="wifi_countrycode_gb">歐洲</string>
+  <string name="wifi_countrycode_jp">日本， 俄羅斯</string>
+  <string name="wifi_countrycode_au">澳洲</string>
+  <string name="wifi_countrycode_id">印尼</string>
+  <string name="wifi_countrycode_cn">中國</string>
+  <string name="wifi_countrycode_kr">韓國</string>
+  <string name="wifi_countrycode_tr">土耳其</string>
+  <string name="wifi_countrycode_sg">新加坡</string>
+  <string name="wifi_countrycode_br">巴西</string>
   <!-- Hostname setting -->
+  <!-- Format string for fingerprint location message -->
+  <!-- Fingerprint sensor locations -->
 </resources>
