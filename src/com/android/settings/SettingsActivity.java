@@ -361,7 +361,6 @@ public class SettingsActivity extends SettingsDrawerActivity
             WifiInfo.class.getName(),
             MasterClear.class.getName(),
             NightDisplaySettings.class.getName(),
-            OmniGearsSettings.class.getName(),
             ButtonSettings.class.getName(),
             BarsSettings.class.getName(),
             MoreSettings.class.getName(),

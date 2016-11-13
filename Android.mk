@@ -1,16 +1,6 @@
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
-LOCAL_SRC_FILES := \
-        $(call all-logtags-files-under, src)
-
-LOCAL_MODULE := settings-logtags
-
-include $(BUILD_STATIC_JAVA_LIBRARY)
-
-# Build the Settings APK
-include $(CLEAR_VARS)
-
 LOCAL_JAVA_LIBRARIES := bouncycastle core-oj telephony-common ims-common
 LOCAL_STATIC_JAVA_LIBRARIES := \
     android-support-v4 \
@@ -19,13 +9,13 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
     android-support-v7-preference \
     android-support-v7-appcompat \
     android-support-v14-preference \
-    jsr305 \
-    settings-logtags
+    jsr305
 
 LOCAL_MODULE_TAGS := optional
 
 LOCAL_SRC_FILES := \
-        $(call all-java-files-under, src)
+        $(call all-java-files-under, src) \
+        src/com/android/settings/EventLogTags.logtags
 
 LOCAL_SRC_FILES += $(call all-java-files-under, ../OmniGears/src)
 
