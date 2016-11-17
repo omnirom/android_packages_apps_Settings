@@ -355,7 +355,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
         setIfOnlyAvailableForAdmins(true);
-        if (isUiRestricted() || !Utils.isDeviceProvisioned(getActivity())) {
+        if (isUiRestricted() /*|| !Utils.isDeviceProvisioned(getActivity())*/) {
             // Block access to developer options if the user is not the owner, if user policy
             // restricts it, or if the device has not been provisioned
             mUnavailable = true;
