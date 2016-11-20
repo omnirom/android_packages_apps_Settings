@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2010 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+    <style name="SetupWizardTheme" parent="SuwThemeGlif">
+        <!-- For all Alert Dialogs -->
+        <item name="android:alertDialogTheme">@style/ThemeOverlay.AlertDialog</item>
+        <item name="android:colorPrimary">@color/suw_color_accent_dark</item>
+        <item name="android:windowBackground">?android:attr/colorBackground</item>
+        <item name="@*android:preferencePanelStyle">@*android:style/PreferencePanel.Dialog</item>
+        <item name="fingerprint_layout_theme">@style/FingerprintLayoutTheme</item>
+        <item name="fingerprint_progress_bar_size">@dimen/setup_fingerprint_progress_bar_size</item>
+        <item name="fingerprint_ring_radius">@dimen/setup_fingerprint_ring_radius</item>
+        <item name="ic_menu_moreoverflow">@*android:drawable/ic_menu_moreoverflow_material</item>
+        <item name="ic_wps">@drawable/ic_wps_dark</item>
+        <item name="setup_divider_color">@color/setup_divider_color_dark</item>
+        <item name="side_margin">0dip</item>
+        <item name="wifi_signal_color">@color/setup_wizard_wifi_color_dark</item>
+        <item name="wifi_signal">@drawable/wifi_signal</item>
+        <item name="preferenceBackgroundColor">?android:attr/colorBackground</item>
+        <item name="preferenceTheme">@style/PreferenceTheme.SetupWizard</item>
+
+        <!-- LockPatternView colors -->
+        <item name="@*android:regularColor">@color/setup_lock_pattern_view_regular_color_dark</item>
+        <item name="@*android:successColor">@color/setup_lock_pattern_view_success_color_dark</item>
+        <item name="@*android:errorColor">@color/setup_lock_pattern_view_error_color_dark</item>
+    </style>
+
+</resources>
