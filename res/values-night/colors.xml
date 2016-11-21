@@ -4,4 +4,14 @@
     <color name="card_background_grey">#333333</color>
     <color name="lock_pattern_view_regular_color">@*android:color/secondary_text_default_material_dark</color>
 
+    <color name="lock_settings_primary">@*android:color/black</color>
+    <color name="lock_settings_background">@*android:color/material_grey_850</color>
+    <color name="lock_settings_text">@*android:color/white</color>
+    <color name="lock_settings_pass">@*android:color/material_grey_50</color>
+
+    <color name="fingerprint_message_color">#deffffff</color>
+    <color name="fingerprint_progress_ring">?android:attr/colorAccent</color>
+    <color name="fingerprint_progress_ring_bg">@*android:color/material_grey_300</color>
+    <color name="fingerprint_indicator_background_resting">@*android:color/material_grey_600</color>
+
 </resources>

@@ -58,7 +58,9 @@
     <style name="SetupWizardTheme.Light" parent="SuwThemeGlif.Light">
         <!-- For all Alert Dialogs -->
         <item name="android:alertDialogTheme">@style/ThemeOverlay.AlertDialog</item>
-        <item name="android:colorPrimary">@color/suw_color_accent_light</item>
+        <item name="android:colorPrimary">@color/lock_settings_primary</item>
+        <item name="android:background">@color/lock_settings_background</item>
+        <item name="android:textColor">@color/lock_settings_text</item>
         <item name="android:windowBackground">?android:attr/colorBackground</item>
         <item name="@*android:preferencePanelStyle">@*android:style/PreferencePanel.Dialog</item>
         <item name="fingerprint_layout_theme">@style/FingerprintLayoutTheme</item>
@@ -72,6 +74,7 @@
         <item name="wifi_signal">@drawable/wifi_signal</item>
         <item name="preferenceBackgroundColor">?android:attr/colorBackground</item>
         <item name="preferenceTheme">@style/PreferenceTheme.SetupWizard.Light</item>
+        <item name="suwHeaderColor">@color/lock_settings_blue</item>
 
         <!-- LockPatternView colors -->
         <item name="@*android:regularColor">@color/setup_lock_pattern_view_regular_color_light</item>
@@ -276,9 +279,12 @@
 
     <style name="Theme.FingerprintEnroll" parent="SuwThemeGlif.Light">
         <item name="android:textAppearanceListItemSmall">@android:style/TextAppearance.Material.Body1</item>
+        <item name="android:colorPrimary">@color/lock_settings_primary</item>
+        <item name="android:textColor">@color/lock_settings_text</item>
 
         <item name="suwDividerCondition">both</item>
         <item name="suwListItemIconColor">?android:attr/colorAccent</item>
+        <item name="suwHeaderColor">@color/lock_settings_blue</item>
     </style>
 
     <style name="FallbackHome" parent="@android:style/Theme.DeviceDefault.NoActionBar">

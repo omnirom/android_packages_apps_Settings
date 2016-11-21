@@ -350,6 +350,7 @@
     <style name="TextAppearance.FingerprintMessage"
         parent="android:TextAppearance.Material.Subhead">
         <item name="android:lineSpacingExtra">@dimen/suw_description_line_spacing_extra</item>
+        <item name="android:textColor">@color/lock_settings_text</item>
     </style>
 
     <style name="Button.FingerprintButton"
@@ -385,6 +386,7 @@
 
     <style name="FingerprintLayoutTheme">
         <item name="android:icon">@drawable/ic_fingerprint_header</item>
+        <item name="android:background">@color/lock_settings_background</item>
     </style>
 
     <style name="TextAppearance.ConfirmDeviceCredentialsErrorText"
