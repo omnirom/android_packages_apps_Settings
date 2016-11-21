@@ -45,6 +45,7 @@
                 android:layout_weight="1"
                 android:minLines="2"
                 android:gravity="center"
+                android:textColor="?android:attr/colorAccent"
                 android:textSize="18sp" />
 
             <com.android.internal.widget.LockPatternView android:id="@+id/lockPattern"
