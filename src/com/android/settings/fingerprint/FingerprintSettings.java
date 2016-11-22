@@ -771,6 +771,10 @@ public class FingerprintSettings extends SubSettings {
                 RestrictedLockUtils.sendShowAdminSupportDetailsIntent(ctx, mEnforcedAdmin);
             } else {
                 Intent intent = HelpUtils.getHelpIntent(ctx, getURL(), ctx.getClass().getName());
+                if (intent == null) {
+                    Log.w(TAG, "Null help intent.");
+                    return;
+                }
                 try {
                     widget.startActivityForResult(intent, 0);
                 } catch (ActivityNotFoundException e) {
