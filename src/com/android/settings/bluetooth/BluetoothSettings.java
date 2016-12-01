@@ -35,6 +35,7 @@ import android.text.BidiFormatter;
 import android.text.Spannable;
 import android.text.style.TextAppearanceSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -401,6 +402,7 @@ public final class BluetoothSettings extends DeviceListPreferenceFragment implem
             return;
         }
         final CharSequence briefText = getText(R.string.bluetooth_empty_list_bluetooth_off);
+        emptyView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 
         final ContentResolver resolver = getActivity().getContentResolver();
         final boolean bleScanningMode = Settings.Global.getInt(
