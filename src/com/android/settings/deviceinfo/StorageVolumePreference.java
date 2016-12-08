@@ -95,7 +95,7 @@ public class StorageVolumePreference extends Preference {
             }
 
             if (freeBytes < mStorageManager.getStorageLowBytes(path)) {
-                mColor = StorageSettings.COLOR_WARNING;
+                mColor = StorageSettings.getColorWarning(context.getResources());
                 icon = context.getDrawable(R.drawable.ic_warning_24dp);
             }
 
