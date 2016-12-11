@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="16dp"
-                android:tint="?android:attr/textColorPrimaryInverse"/>
+                android:tint="@color/condition_card_text_color"/>
 
         </LinearLayout>
 
@@ -107,7 +107,7 @@
                     android:paddingStart="0dp"
                     android:alpha=".8"
                     android:textAlignment="viewStart"
-                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textColor="@color/condition_card_text_color"
                     style="?android:attr/buttonBarButtonStyle" />
 
                 <Button
@@ -117,7 +117,7 @@
                     android:layout_weight="1"
                     android:alpha=".8"
                     android:textAlignment="viewStart"
-                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textColor="@color/condition_card_text_color"
                     style="?android:attr/buttonBarButtonStyle" />
 
             </com.android.internal.widget.ButtonBarLayout>
