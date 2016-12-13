@@ -121,9 +121,7 @@ public class AppOpsSummary extends InstrumentedFragment {
         Resources.Theme theme = tabs.getContext().getTheme();
         TypedValue typedValue = new TypedValue();
         theme.resolveAttribute(android.R.attr.colorAccent, typedValue, true);
-        final int colorAccent = typedValue.resourceId != 0
-                ? getContext().getColor(typedValue.resourceId)
-                : getContext().getColor(R.color.switch_accent_color);
+        final int colorAccent = getContext().getColor(typedValue.resourceId);
         tabs.setTabIndicatorColor(colorAccent);
 
         // We have to do this now because PreferenceFrameLayout looks at it
