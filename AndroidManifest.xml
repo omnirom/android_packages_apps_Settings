@@ -2525,7 +2525,7 @@
         </activity>
 
         <activity android:name="Settings$MoreSettingsActivity"
-                android:label="@string/more_settings_title"
+                android:label="@string/omnigears_category_title"
                 android:icon="@drawable/ic_settings_more">
             <intent-filter android:priority="1">
                 <action android:name="com.android.settings.action.SETTINGS" />
@@ -2533,6 +2533,8 @@
             </intent-filter>
             <meta-data android:name="com.android.settings.category"
                 android:value="com.android.settings.category.omnigears" />
+            <meta-data android:name="com.android.settings.title"
+                android:resource="@string/more_settings_title" />
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="org.omnirom.omnigears.moresettings.MoreSettings" />
         </activity>
