@@ -56,6 +56,6 @@
     <bool name="config_gesture_settings_enabled">false</bool>
 
     <!-- If the Storage Manager settings are enabled. -->
-    <bool name="config_storage_manager_settings_enabled">false</bool>
+    <bool name="config_storage_manager_settings_enabled">true</bool>
 
 </resources>
