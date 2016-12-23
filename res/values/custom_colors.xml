@@ -25,4 +25,7 @@
     <color name="lock_settings_blue">#ff4285f4</color>
     <color name="lock_settings_pass">@*android:color/material_grey_850</color>
 
+    <!-- External Icon Tint -->
+    <color name="external_icon_tint">@*android:color/material_deep_teal_500</color>
+
 </resources>
