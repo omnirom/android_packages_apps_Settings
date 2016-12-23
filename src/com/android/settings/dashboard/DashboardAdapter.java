@@ -120,10 +120,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         mSuggestions = suggestions;
         mCategories = categories;
 
-        // TODO: Better place for tinting?
-        TypedValue tintColor = new TypedValue();
-        mContext.getTheme().resolveAttribute(com.android.internal.R.attr.colorAccent,
-                tintColor, true);
+        TypedValue tintColorValue = new TypedValue();
+        mContext.getResources().getValue(R.color.external_tile_icon_tint_color,
+                tintColorValue, true);
+
         for (int i = 0; i < categories.size(); i++) {
             for (int j = 0; j < categories.get(i).tiles.size(); j++) {
                 Tile tile = categories.get(i).tiles.get(j);
