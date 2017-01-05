@@ -217,7 +217,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
 
     private static final String KEY_CONVERT_FBE = "convert_to_file_encryption";
 
-    private static final String OTA_DISABLE_AUTOMATIC_UPDATE_KEY = "ota_disable_automatic_update";
+    //private static final String OTA_DISABLE_AUTOMATIC_UPDATE_KEY = "ota_disable_automatic_update";
 
     private static final int RESULT_DEBUG_APP = 1000;
     private static final int RESULT_MOCK_LOCATION_APP = 1001;
@@ -271,7 +271,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     private SwitchPreference mWifiAggressiveHandover;
     private SwitchPreference mMobileDataAlwaysOn;
     private SwitchPreference mBluetoothDisableAbsVolume;
-    private SwitchPreference mOtaDisableAutomaticUpdate;
+    //private SwitchPreference mOtaDisableAutomaticUpdate;
 
     private SwitchPreference mWifiAllowScansWithTraffic;
     private SwitchPreference mStrictMode;
@@ -504,7 +504,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             removePreference(KEY_CONVERT_FBE);
         }
 
-        mOtaDisableAutomaticUpdate = findAndInitSwitchPref(OTA_DISABLE_AUTOMATIC_UPDATE_KEY);
+        //mOtaDisableAutomaticUpdate = findAndInitSwitchPref(OTA_DISABLE_AUTOMATIC_UPDATE_KEY);
 
         mColorModePreference = (ColorModePreference) findPreference(KEY_COLOR_MODE);
         mColorModePreference.updateCurrentAndSupported();
@@ -992,6 +992,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
                 mVerifyAppsOverUsb.isChecked() ? 1 : 0);
     }
 
+/*
     private void updateOtaDisableAutomaticUpdateOptions() {
         // We use the "disabled status" in code, but show the opposite text
         // "Automatic system updates" on screen. So a value 0 indicates the
@@ -1009,7 +1010,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
                 Settings.Global.OTA_DISABLE_AUTOMATIC_UPDATE,
                 mOtaDisableAutomaticUpdate.isChecked() ? 0 : 1);
     }
-
+*/
     private boolean enableVerifierSetting() {
         final ContentResolver cr = getActivity().getContentResolver();
         if (Settings.Global.getInt(cr, Settings.Global.ADB_ENABLED, 0) == 0) {
@@ -2023,8 +2024,8 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             writeDebuggerOptions();
         } else if (preference == mVerifyAppsOverUsb) {
             writeVerifyAppsOverUsbOptions();
-        } else if (preference == mOtaDisableAutomaticUpdate) {
-            writeOtaDisableAutomaticUpdateOptions();
+        //} else if (preference == mOtaDisableAutomaticUpdate) {
+        //    writeOtaDisableAutomaticUpdateOptions();
         } else if (preference == mStrictMode) {
             writeStrictModeVisualOptions();
         } else if (preference == mPointerLocation) {
