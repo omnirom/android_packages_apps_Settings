@@ -89,11 +89,11 @@
         android:key="color_temperature"
         android:title="@string/color_temperature"
         android:summary="@string/color_temperature_desc" />
-
+    <!--
     <SwitchPreference
         android:key="ota_disable_automatic_update"
         android:title="@string/ota_disable_automatic_update" />
-
+    -->
     <PreferenceScreen
         android:key="demo_mode"
         android:title="@string/demo_mode">
