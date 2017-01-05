@@ -250,6 +250,8 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
                     getActivity().getSharedPreferences(DevelopmentSettings.PREF_FILE,
                             Context.MODE_PRIVATE).edit().putBoolean(
                                     DevelopmentSettings.PREF_SHOW, true).apply();
+                    Settings.Secure.putInt(getActivity().getContentResolver(),
+                            Settings.Secure.DEVELOPER_OPTIONS_ENABLED, 1);
                     if (mDevHitToast != null) {
                         mDevHitToast.cancel();
                     }

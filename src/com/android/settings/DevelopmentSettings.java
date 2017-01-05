@@ -121,6 +121,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     private static final String ENABLE_TERMINAL = "enable_terminal";
 
     private static final String KEEP_SCREEN_ON = "keep_screen_on";
+    private static final String ADVANCED_REBOOT_KEY = "advanced_reboot";
     private static final String BT_HCI_SNOOP_LOG = "bt_hci_snoop_log";
     private static final String WEBVIEW_PROVIDER_KEY = "select_webview_provider";
     private static final String WEBVIEW_MULTIPROCESS_KEY = "enable_webview_multiprocess";
@@ -252,6 +253,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     private SwitchPreference mBugreportInPower;
     private SwitchPreference mAdbOverNetwork;
     private RestrictedSwitchPreference mKeepScreenOn;
+    private SwitchPreference mAdvancedReboot;
     private SwitchPreference mBtHciSnoopLog;
     private RestrictedSwitchPreference mEnableOemUnlock;
     private SwitchPreference mDebugViewAttributes;
@@ -390,6 +392,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         mBugreportInPower = findAndInitSwitchPref(BUGREPORT_IN_POWER_KEY);
         mAdbOverNetwork = findAndInitSwitchPref(ADB_TCPIP);
         mKeepScreenOn = (RestrictedSwitchPreference) findAndInitSwitchPref(KEEP_SCREEN_ON);
+        mAdvancedReboot = findAndInitCheckboxPref(ADVANCED_REBOOT_KEY);
         mBtHciSnoopLog = findAndInitSwitchPref(BT_HCI_SNOOP_LOG);
         mEnableOemUnlock = (RestrictedSwitchPreference) findAndInitSwitchPref(ENABLE_OEM_UNLOCK);
         if (!showEnableOemUnlockPreference()) {
@@ -407,6 +410,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             disableForUser(mClearAdbKeys);
             disableForUser(mEnableTerminal);
             disableForUser(mPassword);
+            disableForUser(mAdvancedReboot);
         }
 
         mDebugAppPref = findPreference(DEBUG_APP_KEY);
@@ -741,7 +745,24 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             updateColorTemperature();
         }
         updateBluetoothDisableAbsVolumeOptions();
+        updateAdvancedRebootOptions();
     }
+
+    private void resetAdvancedRebootOptions() {
+        Settings.Secure.putInt(getActivity().getContentResolver(),
+                Settings.Secure.ADVANCED_REBOOT, 0);
+    }
+
+    private void writeAdvancedRebootOptions() {
+        Settings.Secure.putInt(getActivity().getContentResolver(),
+                Settings.Secure.ADVANCED_REBOOT,
+                mAdvancedReboot.isChecked() ? 1 : 0);
+    }
+
+    private void updateAdvancedRebootOptions() {
+        mAdvancedReboot.setChecked(Settings.Secure.getInt(getActivity().getContentResolver(),
+                Settings.Secure.ADVANCED_REBOOT, 1) != 0);
+     }
 
     private void resetDangerousOptions() {
         mDontPokeProperties = true;
@@ -753,6 +774,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             }
         }
         resetDebuggerOptions();
+        resetAdvancedRebootOptions();
         writeLogpersistOption(null, true);
         writeLogdSizeOption(null);
         writeAnimationScaleOption(0, mWindowAnimationScale, null);
@@ -2077,6 +2099,8 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             writeWebViewMultiprocessOptions();
         } else if (SHORTCUT_MANAGER_RESET_KEY.equals(preference.getKey())) {
             resetShortcutManagerThrottling();
+        } else if (preference == mAdvancedReboot) {
+            writeAdvancedRebootOptions();
         } else {
             return super.onPreferenceTreeClick(preference);
         }
