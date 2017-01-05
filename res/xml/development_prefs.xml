@@ -33,6 +33,11 @@
                 android:targetClass="com.android.settings.SetFullBackupPassword" />
     </PreferenceScreen>
 
+    <SwitchPreference
+        android:key="advanced_reboot"
+        android:title="@string/advanced_reboot_title"
+        android:summary="@string/advanced_reboot_summary" />
+
     <com.android.settingslib.RestrictedSwitchPreference
         android:key="keep_screen_on"
         android:title="@string/keep_screen_on"
