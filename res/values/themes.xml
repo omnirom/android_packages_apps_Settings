@@ -134,7 +134,7 @@
          layouts against a remote context using our local theme colors. Due to the implementation
          details of Theme, we can't reference any local resources and MUST instead use the values
          directly. So use #ff263238 instead of @color/theme_primary and so on. -->
-    <style name="Theme.SettingsBase" parent="@android:style/Theme.DeviceDefault.Settings" />
+    <style name="Theme.SettingsBase" parent="@android:style/Theme.Material.Settings" />
 
     <style name="Theme.Settings" parent="Theme.SettingsBase">
         <item name="preferenceTheme">@style/PreferenceTheme</item>
@@ -239,7 +239,7 @@
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
-    <style name="Theme.AlertDialog" parent="@*android:style/Theme.DeviceDefault.Settings.Dialog.Alert">
+    <style name="Theme.AlertDialog" parent="@*android:style/Theme.Material.DayNight.Dialog.Alert">
         <item name="android:windowSoftInputMode">adjustResize</item>
 
         <!-- Redefine the ActionBar style for contentInsetStart -->
