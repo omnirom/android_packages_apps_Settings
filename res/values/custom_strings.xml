@@ -110,4 +110,5 @@
     <string name="security_settings_fingerprint_sensor_location_left">left side</string>
     <string name="security_settings_fingerprint_sensor_location_right">right side</string>
 
+    <string name="reset_wallpaper_notice">Default wallpaper restored</string>
 </resources>
