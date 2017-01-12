@@ -157,16 +157,14 @@ public class Settings extends SettingsActivity {
     public static class BarsSettingsActivity extends SettingsActivity { /* empty */ }
     public static class MoreSettingsActivity extends SettingsActivity { /* empty */ }
     public static class LockscreenSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class StyleSettingsActivity extends SettingsActivity { /* empty */ }
 
     // Categories.
     public static class WirelessSettings extends SettingsActivity { /* empty */ }
-    public static class ButtonSettings extends SettingsActivity { /* empty */ }
-    public static class BarsSettings extends SettingsActivity { /* empty */ }
-    public static class MoreSettings extends SettingsActivity { /* empty */ }
-    public static class LockscreenSettings extends SettingsActivity { /* empty */ }
     public static class DeviceSettings extends SettingsActivity { /* empty */ }
     public static class PersonalSettings extends SettingsActivity { /* empty */ }
     public static class SystemSettings extends SettingsActivity { /* empty */ }
+    public static class OmniGears extends SettingsActivity { /* empty */ }
 
     public static class SuperSUActivity extends SettingsActivity { /* empty */ }
     public static class SuperUserActivity extends SettingsActivity { /* empty */ }

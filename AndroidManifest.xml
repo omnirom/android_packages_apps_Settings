@@ -2466,7 +2466,7 @@
         <activity android:name="Settings$BarsSettingsActivity"
                 android:label="@string/interface_bars_title"
                 android:icon="@drawable/ic_bars_tile">
-            <intent-filter android:priority="5">
+            <intent-filter android:priority="6">
                 <action android:name="com.android.settings.action.SETTINGS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -2479,7 +2479,7 @@
         <activity android:name="Settings$ButtonSettingsActivity"
                 android:label="@string/button_settings"
                 android:icon="@drawable/ic_settings_buttons">
-            <intent-filter android:priority="4">
+            <intent-filter android:priority="5">
                 <action android:name="com.android.settings.action.SETTINGS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -2493,7 +2493,7 @@
             android:label="@string/omni_device_parts"
             android:icon="@drawable/ic_settings_omnigears"
             android:taskAffinity="">
-            <intent-filter android:priority="3">
+            <intent-filter android:priority="4">
                 <action android:name="com.android.settings.action.SETTINGS" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.VOICE_LAUNCH" />
@@ -2510,7 +2510,7 @@
         <activity android:name="Settings$LockscreenSettingsActivity"
                 android:label="@string/interface_lockscreen_title"
                 android:icon="@drawable/ic_lockscreen_tile">
-            <intent-filter android:priority="2">
+            <intent-filter android:priority="3">
                 <action android:name="com.android.settings.action.SETTINGS" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.VOICE_LAUNCH" />
@@ -2520,6 +2520,19 @@
                 android:value="com.android.settings.category.omnigears" />
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="org.omnirom.omnigears.interfacesettings.LockscreenSettings" />
+        </activity>
+
+        <activity android:name="Settings$StyleSettingsActivity"
+                  android:label="@string/interface_style_title"
+                  android:icon="@drawable/ic_settings_style">
+            <intent-filter android:priority="2">
+                <action android:name="com.android.settings.action.SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.category"
+                       android:value="com.android.settings.category.omnigears" />
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                       android:value="org.omnirom.omnigears.interfacesettings.StyleSettings" />
         </activity>
 
         <activity android:name="Settings$MoreSettingsActivity"

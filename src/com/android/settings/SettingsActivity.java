@@ -142,6 +142,7 @@ import java.util.Set;
 import org.omnirom.omnigears.ButtonSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.interfacesettings.LockscreenSettings;
+import org.omnirom.omnigears.interfacesettings.StyleSettings;
 import org.omnirom.omnigears.moresettings.MoreSettings;
 
 public class SettingsActivity extends SettingsDrawerActivity
@@ -370,7 +371,8 @@ public class SettingsActivity extends SettingsDrawerActivity
             MoreSettings.class.getName(),
             LockscreenSettings.class.getName(),
             ManageDomainUrls.class.getName(),
-            AutomaticStorageManagerSettings.class.getName()
+            AutomaticStorageManagerSettings.class.getName(),
+            StyleSettings.class.getName(),
     };
 
 
@@ -562,13 +564,10 @@ public class SettingsActivity extends SettingsDrawerActivity
 
         mIsShowingDashboard = className.equals(Settings.class.getName())
                 || className.equals(Settings.WirelessSettings.class.getName())
-                || className.equals(Settings.BarsSettings.class.getName())
-                || className.equals(Settings.ButtonSettings.class.getName())
-                || className.equals(Settings.MoreSettings.class.getName())
-                || className.equals(Settings.LockscreenSettings.class.getName())
                 || className.equals(Settings.DeviceSettings.class.getName())
                 || className.equals(Settings.PersonalSettings.class.getName())
-                || className.equals(Settings.WirelessSettings.class.getName());
+                || className.equals(Settings.SystemSettings.class.getName())
+                || className.equals(Settings.OmniGears.class.getName());
 
         // This is a "Sub Settings" when:
         // - this is a real SubSettings
