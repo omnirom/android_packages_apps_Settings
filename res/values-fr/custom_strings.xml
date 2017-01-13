@@ -126,6 +126,14 @@
   <string name="navigation_bar_ime_button_summary">Mode de saisie dans la barre de navigation</string>
   <string name="input_method_category">Sélection du mode de saisie</string>
   <!-- Hostname setting -->
+  <string name="device_hostname">Nom d’hôte de l’appareil</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Localiser le capteur d’empreintes digitales sur le <xliff:g id="sensor_location">%1$s </xliff:g> de votre téléphone.</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">dos</string>
+  <string name="security_settings_fingerprint_sensor_location_front">devant</string>
+  <string name="security_settings_fingerprint_sensor_location_left">côté gauche</string>
+  <string name="security_settings_fingerprint_sensor_location_right">côté droit</string>
+  <string name="toggle_package_install_overlay_check_title">Désactiver le contrôle de superposition d’écran</string>
+  <string name="toggle_package_install_overlay_check_summary">ATTENTION\u003A ceci désactive un contrôlé de sécurité pour empêcher le tapjacking&nbsp;! À n’utiliser qu’en connaissance des conséquences.</string>
 </resources>
