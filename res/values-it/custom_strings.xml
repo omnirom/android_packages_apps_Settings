@@ -84,7 +84,7 @@
   <!-- SuperSU header name - the app hides itself from launcher based on this resource name being present in com.android.settings -->
   <string name="supersu_title">SuperSu</string>
   <!-- dashboard categories -->
-  <string name="interface_bars_title">Bare di stato</string>
+  <string name="interface_bars_title">Barra di stato</string>
   <string name="interface_lockscreen_title">Schermata di blocco</string>
   <string name="interface_more_title">Altro</string>
   <!-- Wi-Fi settings screen, advanced, title for setting the wifi region code. -->
@@ -128,5 +128,12 @@
   <!-- Hostname setting -->
   <string name="device_hostname">Hostname dispositivo</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Individuare il sensore di impronte digitali sul <xliff:g id="sensor_location">%1$s </xliff:g> del telefono.</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">retro</string>
+  <string name="security_settings_fingerprint_sensor_location_front">fronte</string>
+  <string name="security_settings_fingerprint_sensor_location_left">lato sinistro</string>
+  <string name="security_settings_fingerprint_sensor_location_right">lato destro</string>
+  <string name="toggle_package_install_overlay_check_title">Disabilita overlay check dei permessi</string>
+  <string name="toggle_package_install_overlay_check_summary">ATTENZIONE\u003A consente di disattivare un controllo di sicurezza per evitare possibili tapjacking! Utilizza solo se ne capisci le conseguenze.</string>
 </resources>

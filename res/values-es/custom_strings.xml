@@ -134,4 +134,6 @@
   <string name="security_settings_fingerprint_sensor_location_front">frontal</string>
   <string name="security_settings_fingerprint_sensor_location_left">lado izquierdo</string>
   <string name="security_settings_fingerprint_sensor_location_right">lado derecho</string>
+  <string name="toggle_package_install_overlay_check_title">Deshabilitar la verificación de la superposición de permisos</string>
+  <string name="toggle_package_install_overlay_check_summary">WARNING\u003A esto inhabilita la comprobación de seguridad para evitar posibles tapjacking! Use solamente si sabe las consecuencias.</string>
 </resources>

@@ -134,4 +134,6 @@
   <string name="security_settings_fingerprint_sensor_location_front">ön</string>
   <string name="security_settings_fingerprint_sensor_location_left">sol yan</string>
   <string name="security_settings_fingerprint_sensor_location_right">sağ yan</string>
+  <string name="toggle_package_install_overlay_check_title">İzin çakışması denetlemesini devre dışı bırak</string>
+  <string name="toggle_package_install_overlay_check_summary">UYARI\u003A bu muhtemel bir tapjacking\'i engellemek için bir güvenlik denetimini devre dışı bırakır! Neticelerini anladıysanız kullanın.</string>
 </resources>
