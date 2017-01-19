@@ -31,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
@@ -63,6 +64,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
     private final SuggestionFeatureProvider mSuggestionFeatureProvider;
     private final ArrayList<String> mSuggestionsShownLogged;
     private boolean mFirstFrameDrawn;
+
+    // omni additions start
+    private int mNumColumns = 1;
+    private boolean mHideSummary;
 
     @VisibleForTesting
     DashboardData mDashboardData;
@@ -407,12 +412,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
     private void onBindTile(DashboardItemHolder holder, Tile tile) {
         holder.icon.setImageDrawable(mCache.getIcon(tile.icon));
         holder.title.setText(tile.title);
-        if (!TextUtils.isEmpty(tile.summary)) {
+        if (!TextUtils.isEmpty(tile.summary) && !mHideSummary) {
             holder.summary.setText(tile.summary);
             holder.summary.setVisibility(View.VISIBLE);
         } else {
             holder.summary.setVisibility(View.GONE);
         }
+        int minHeight = mContext.getResources().getDimensionPixelSize(mHideSummary ?
+                R.dimen.dashboard_category_height :
+                R.dimen.dashboard_tile_minimum_height);
+        holder.itemView.setMinimumHeight(minHeight);
     }
 
     private void onBindCategory(DashboardItemHolder holder, DashboardCategory category) {
@@ -430,6 +439,19 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         }
         outState.putInt(STATE_SUGGESTION_MODE, mDashboardData.getSuggestionMode());
         outState.putStringArrayList(STATE_SUGGESTIONS_SHOWN_LOGGED, mSuggestionsShownLogged);
+    }
+
+    public boolean isPositionFullSpan(int position) {
+        final int type = mDashboardData.getItemTypeByPosition(position);
+        return type != R.layout.dashboard_tile;
+    }
+
+    public void setNumColumns(int numColumns) {
+        mNumColumns = numColumns;
+    }
+
+    public void setHideSummary(boolean hideSummary) {
+        mHideSummary = hideSummary;
     }
 
     private static class IconCache {
