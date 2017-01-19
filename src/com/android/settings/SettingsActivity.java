@@ -46,6 +46,8 @@ import android.text.TextUtils;
 import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -171,6 +173,7 @@ public class SettingsActivity extends SettingsDrawerActivity
 
     private SharedPreferences mDevelopmentPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener mDevelopmentPreferencesListener;
+    private SharedPreferences mAppPreferences;
 
     private boolean mBatteryPresent = true;
     private BroadcastReceiver mBatteryInfoReceiver = new BroadcastReceiver() {
@@ -216,6 +219,9 @@ public class SettingsActivity extends SettingsDrawerActivity
 
     // omni additions start
     private static final String DEVICE_PARTS_FRAGMENT = "org.omnirom.device.DeviceParts";
+    public static final String KEY_HIDE_SUMMARY = "hide_summary";
+    public static final String KEY_COLUMNS_COUNT = "columns_count";
+    public static final String APP_PREFERENCES_NAME = "app_settings";
 
     public SwitchBar getSwitchBar() {
         return mSwitchBar;
@@ -239,6 +245,8 @@ public class SettingsActivity extends SettingsDrawerActivity
             return false;
         }
         mSearchFeatureProvider.setUpSearchMenu(menu, this);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
         return true;
     }
 
@@ -297,6 +305,8 @@ public class SettingsActivity extends SettingsDrawerActivity
         }
 
         mDevelopmentPreferences = getSharedPreferences(DevelopmentSettings.PREF_FILE,
+                Context.MODE_PRIVATE);
+        mAppPreferences = getSharedPreferences(APP_PREFERENCES_NAME,
                 Context.MODE_PRIVATE);
 
         // Getting Intent properties can only be done after the super.onCreate(...)
@@ -957,5 +967,39 @@ public class SettingsActivity extends SettingsDrawerActivity
         drawable.draw(canvas);
 
         return bitmap;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.columns_menu:
+                int columnsCount = mAppPreferences.getInt(KEY_COLUMNS_COUNT, 1);
+                if (columnsCount == 1) {
+                    mAppPreferences.edit().putInt(KEY_COLUMNS_COUNT, 2).commit();
+                } else {
+                    mAppPreferences.edit().putInt(KEY_COLUMNS_COUNT, 1).commit();
+                }
+                return true;
+            case R.id.hide_summary_menu:
+                boolean hideSummary = mAppPreferences.getBoolean(KEY_HIDE_SUMMARY, false);
+                mAppPreferences.edit().putBoolean(KEY_HIDE_SUMMARY, !hideSummary).commit();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem columnMenuItem = menu.findItem(R.id.columns_menu);
+        if (columnMenuItem != null) {
+            int columnsCount = mAppPreferences.getInt(KEY_COLUMNS_COUNT, 1);
+            columnMenuItem.setChecked(columnsCount != 1);
+        }
+        MenuItem hideSummaryMenu = menu.findItem(R.id.hide_summary_menu);
+        if (hideSummaryMenu != null) {
+            boolean hideSummary = mAppPreferences.getBoolean(KEY_HIDE_SUMMARY, false);
+            hideSummaryMenu.setChecked(hideSummary);
+        }
+        return true;
     }
 }
