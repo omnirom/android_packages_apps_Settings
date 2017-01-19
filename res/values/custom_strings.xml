@@ -112,4 +112,6 @@
     <string name="security_settings_fingerprint_sensor_location_right">right side</string>
 
     <string name="reset_wallpaper_notice">Default wallpaper restored</string>
+    <string name="columns_menu">Columns</string>
+    <string name="hide_summary_menu">Hide summary</string>
 </resources>
