@@ -68,6 +68,21 @@
         android:breadCrumbTitle="@string/bars_and_menus_settings"
         android:fragment="org.omnirom.omnigears.BarsAndMenusSettings"
         android:icon="@drawable/empty_icon" />
+        
+<!-- xpe -->
+    <header android:id="@+id/interface_section2"
+        android:title="@string/header_category_xperience" />
+
+<header
+        android:id="@+id/system_settings2"
+        android:icon="@drawable/ic_settings_system"
+        android:title="@string/xpe_settings_title" >
+<intent
+        android:fragment="com.android.settings.Settings$AppOpsSummaryActivity"
+        android:targetPackage="com.android.settings"
+        android:targetClass="com.android.settings.Settings$AppOpsSummaryActivity" />	
+
+ </header>        
 
     <!-- DEVICE -->
     <header android:id="@+id/device_section"
