@@ -465,7 +465,7 @@
             android:exported="true"
             android:permission="android.permission.TETHER_PRIVILEGED" />
 
-        <activity android:name="TetherProvisioningActivity"
+        <activity android:name=".TetherProvisioningActivity"
             android:exported="true"
             android:permission="android.permission.TETHER_PRIVILEGED"
             android:theme="@style/Theme.ProvisioningActivity">
