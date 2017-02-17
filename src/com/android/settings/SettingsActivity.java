@@ -273,6 +273,13 @@ public class SettingsActivity extends SettingsDrawerActivity
             Settings.AccessibilitySettingsActivity.class.getName(),
             Settings.PrintSettingsActivity.class.getName(),
             Settings.PaymentSettingsActivity.class.getName(),
+            // OmniGears
+            Settings.DevicePartsActivity.class.getName(),
+            Settings.ButtonSettingsActivity.class.getName(),
+            Settings.BarsSettingsActivity.class.getName(),
+            Settings.MoreSettingsActivity.class.getName(),
+            Settings.LockscreenSettingsActivity.class.getName(),
+            Settings.StyleSettingsActivity.class.getName(),
     };
 
     private static final String[] ENTRY_FRAGMENTS = {
@@ -1176,6 +1183,23 @@ public class SettingsActivity extends SettingsDrawerActivity
         setTileEnabled(new ComponentName(packageName,
                         Settings.DevicePartsActivity.class.getName()),
                 devicePartsSupported, isAdmin, pm);
+
+        // OmniGears
+        setTileEnabled(new ComponentName(packageName,
+                        Settings.ButtonSettingsActivity.class.getName()),
+                true, isAdmin, pm);
+        setTileEnabled(new ComponentName(packageName,
+                        Settings.BarsSettingsActivity.class.getName()),
+                true, isAdmin, pm);
+        setTileEnabled(new ComponentName(packageName,
+                        Settings.MoreSettingsActivity.class.getName()),
+                true, isAdmin, pm);
+        setTileEnabled(new ComponentName(packageName,
+                        Settings.LockscreenSettingsActivity.class.getName()),
+                true, isAdmin, pm);
+        setTileEnabled(new ComponentName(packageName,
+                        Settings.StyleSettingsActivity.class.getName()),
+                true, isAdmin, pm);
 
         // Reveal development-only quick settings tiles
         DevelopmentTiles.setTilesEnabled(this, showDev);
