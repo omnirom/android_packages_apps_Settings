@@ -30,7 +30,7 @@
             android:title="@string/lock_screen_notifications_title"
             android:summary="%s" />
 
-    <PreferenceCategory
+    <!--<PreferenceCategory
         android:key="leds"
         android:title="@string/omni_leds" >
 
@@ -43,6 +43,5 @@
                 android:key="notification_light"
                 android:title="@string/omni_notification_light_settings"
                 android:fragment="org.omnirom.omnigears.batterylight.NotificationLightSettings" />
-
-    </PreferenceCategory>
+    </PreferenceCategory>-->
 </PreferenceScreen>
