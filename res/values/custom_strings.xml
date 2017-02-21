@@ -32,9 +32,9 @@
     <string name="performance_settings">Performance</string>
     <string name="advanced_settings_title">Advanced</string>
     <string name="button_settings">Buttons</string>
-    <string name="omni_battery_light_settings">Battery charging</string>
+    <!--<string name="omni_battery_light_settings">Battery charging</string>
     <string name="omni_notification_light_settings">Applications LED notifications</string>
-    <string name="omni_leds">LED Lights</string>
+    <string name="omni_leds">LED Lights</string>-->
     <string name="supersu_title">SuperSU</string>
     <string name="su_dashboard_summary">Manage root access</string>
     <string name="superuser_title">Superuser</string>
