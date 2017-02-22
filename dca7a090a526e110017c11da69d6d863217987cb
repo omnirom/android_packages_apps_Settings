@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "78209991_16a71fa8",
+        "filename": "AndroidManifest.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 2531,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2017-02-22T22:08:05Z",
+      "side": 1,
+      "message": "whitespaces and tabs - only spaces allowed",
+      "revId": "dca7a090a526e110017c11da69d6d863217987cb",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "78209991_d6b087db",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2017-02-22T22:08:05Z",
+      "side": 1,
+      "message": "move to OG",
+      "revId": "dca7a090a526e110017c11da69d6d863217987cb",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "78209991_b6b50bcb",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2017-02-22T22:08:05Z",
+      "side": 1,
+      "message": "move to OG",
+      "revId": "dca7a090a526e110017c11da69d6d863217987cb",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "78209991_96aa0f6a",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2017-02-22T22:08:05Z",
+      "side": 1,
+      "message": "move to OG",
+      "revId": "dca7a090a526e110017c11da69d6d863217987cb",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "78209991_76af737b",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2017-02-22T22:08:05Z",
+      "side": 1,
+      "message": "move to OG",
+      "revId": "dca7a090a526e110017c11da69d6d863217987cb",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "78209991_56c47747",
+        "filename": "src/com/android/settings/Settings.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2017-02-22T22:08:05Z",
+      "side": 1,
+      "message": "no tabs",
+      "revId": "dca7a090a526e110017c11da69d6d863217987cb",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "78209991_36c1fb36",
+        "filename": "src/com/android/settings/SettingsActivity.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2017-02-22T22:08:05Z",
+      "side": 1,
+      "message": "dumdidum - tabs :)",
+      "revId": "dca7a090a526e110017c11da69d6d863217987cb",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "78209991_16beffa9",
+        "filename": "src/com/android/settings/notification/ConfigureNotificationSettings.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2017-02-22T22:08:05Z",
+      "side": 1,
+      "message": "whitespaces",
+      "revId": "dca7a090a526e110017c11da69d6d863217987cb",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
