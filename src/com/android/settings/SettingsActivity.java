@@ -144,6 +144,7 @@ import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.interfacesettings.LockscreenSettings;
 import org.omnirom.omnigears.interfacesettings.StyleSettings;
 import org.omnirom.omnigears.moresettings.MoreSettings;
+import org.omnirom.omnigears.lightssettings.LightsSettings;
 
 public class SettingsActivity extends SettingsDrawerActivity
         implements PreferenceManager.OnPreferenceTreeClickListener,
@@ -280,6 +281,7 @@ public class SettingsActivity extends SettingsDrawerActivity
             Settings.MoreSettingsActivity.class.getName(),
             Settings.LockscreenSettingsActivity.class.getName(),
             Settings.StyleSettingsActivity.class.getName(),
+			Settings.LightsSettingsActivity.class.getName(),
     };
 
     private static final String[] ENTRY_FRAGMENTS = {
@@ -384,6 +386,7 @@ public class SettingsActivity extends SettingsDrawerActivity
             ManageDomainUrls.class.getName(),
             AutomaticStorageManagerSettings.class.getName(),
             StyleSettings.class.getName(),
+			LightsSettings.class.getName(),
     };
 
 
