@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "78209991_76b9b372",
+        "filename": "src/com/android/settings/SettingsActivity.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2017-02-23T11:48:06Z",
+      "side": 1,
+      "message": "you missed one :)\n\nand you must add the enable/disable code\nsee below for DevicePartsActivity or StyleSettingsActivity how to do that\n\nin that case it must be hidden if both the config_ values are false\n\nsee the old code \n\n...\nmChargingLedsEnabled \u003d (getResources().getBoolean(\n                       com.android.internal.R.bool.config_intrusiveBatteryLed));\n\nmNotificationLedsEnabled \u003d (getResources().getBoolean(\n                        com.android.internal.R.bool.config_intrusiveNotificationLed));",
+      "revId": "0ed532c884896358fb4f7325a6541c184b2ea993",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
