@@ -144,6 +144,7 @@ import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.interfacesettings.LockscreenSettings;
 import org.omnirom.omnigears.interfacesettings.StyleSettings;
 import org.omnirom.omnigears.moresettings.MoreSettings;
+import org.omnirom.omnigears.moresettings.OmniJawsSettings;
 import org.omnirom.omnigears.lightssettings.LightsSettings;
 
 public class SettingsActivity extends SettingsDrawerActivity
@@ -387,6 +388,7 @@ public class SettingsActivity extends SettingsDrawerActivity
             AutomaticStorageManagerSettings.class.getName(),
             StyleSettings.class.getName(),
             LightsSettings.class.getName(),
+            OmniJawsSettings.class.getName(),
     };
 
 
