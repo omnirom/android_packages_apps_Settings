@@ -135,6 +135,7 @@ import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.interfacesettings.StyleSettings;
 import org.omnirom.omnigears.interfacesettings.GlobalActionsSettings;
 import org.omnirom.omnigears.moresettings.MoreSettings;
+import org.omnirom.omnigears.moresettings.OmniJawsSettings;
 
 public class SettingsGateway {
 
@@ -262,6 +263,7 @@ public class SettingsGateway {
             MoreSettings.class.getName(),
             DisplayRotation.class.getName(),
             BatteryLightSettings.class.getName(),
+            OmniJawsSettings.class.getName(),
     };
 
     public static final String[] SETTINGS_FOR_RESTRICTED = {
