@@ -74,4 +74,7 @@
     <string name="security_settings_fingerprint_sensor_location_right">right side</string>
 
     <string name="screenshot_shutter_sound_title">Screenshot shutter sound</string>
+
+    <string name="heads_up_notifications_enabled_title">Allow peeking</string>
+    <string name="heads_up_notifications_enabled_summary">Allow or disable peeking for all notifications</string>
 </resources>
