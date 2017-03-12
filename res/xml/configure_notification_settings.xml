@@ -29,4 +29,11 @@
             android:key="lock_screen_notifications"
             android:title="@string/lock_screen_notifications_title"
             android:summary="%s" />
+
+    <!-- global heads-up enable/disable -->
+    <org.omnirom.omnigears.preference.SystemSettingSwitchPreference
+        android:key="heads_up_notifications_user_enabled"
+        android:title="@string/heads_up_notifications_enabled_title"
+        android:summary="@string/heads_up_notifications_enabled_summary"
+        android:defaultValue="true" />
 </PreferenceScreen>
