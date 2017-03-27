@@ -3,7 +3,7 @@
 <!--
 /*
 **
-** Copyright 2014 The OmniROM Project
+** Copyright 2017 The OmniROM Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -23,17 +23,24 @@
   <string name="mod_version">Omni sürümü</string>
   <string name="mod_version_default">Bilinmiyor</string>
   <!-- Main list strings -->
+  <string name="more_settings_title">Daha Fazla</string>
   <string name="interface_bars_title">Çubuklar</string>
   <string name="interface_lockscreen_title">Kilit ekranı</string>
+  <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">Cihaz Özellikleri</string>
   <string name="header_category_interface">Arayüz</string>
   <string name="performance_settings">Performans</string>
   <string name="advanced_settings_title">Gelişmiş</string>
   <string name="button_settings">Tuşlar</string>
   <string name="supersu_title">SuperSU</string>
+  <string name="su_dashboard_summary">Root erişimini yönet</string>
+  <string name="superuser_title">Superuser</string>
+  <string name="interface_style_title">Tarz</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">USB hata ayıklama bildirimi</string>
   <string name="adb_notify_summary">USB hata ayıklama bağlandığında bir bildirim göster</string>
   <string name="volume_adjust_sound_title">Ses ayarlama uyarı sesi</string>
+  <string name="screenshot_shutter_sound_title">Ekran görüntüsü deklanşör sesi</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Gelişmiş yeniden başlatma</string>
   <string name="advanced_reboot_summary">Recovery ve bootloader moduna yeniden başlatmak için seçenekleri güç menüsüne ekler</string>
@@ -77,7 +84,9 @@
   <string name="ring_notification_volume_option_title">Zil ve bildirim sesi</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings">Uygulama işlemleri</string>
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings_summary">Uygulama izinlerini görüntüle veya değiştir</string>
   <!-- Format string for fingerprint location message -->
   <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Telefonunuzun <xliff:g id="sensor_location">%1$s</xliff:g> bölümünde bulunan parmakizi sensörünü bulun.</string>
   <!-- Fingerprint sensor locations -->
@@ -85,4 +94,5 @@
   <string name="security_settings_fingerprint_sensor_location_front">ön</string>
   <string name="security_settings_fingerprint_sensor_location_left">sol yan</string>
   <string name="security_settings_fingerprint_sensor_location_right">sağ yan</string>
+  <string name="reset_wallpaper_notice">Varsayılan duvar kağıdı geri yüklendi</string>
 </resources>

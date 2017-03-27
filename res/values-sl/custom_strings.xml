@@ -3,7 +3,7 @@
 <!--
 /*
 **
-** Copyright 2014 The OmniROM Project
+** Copyright 2017 The OmniROM Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -23,20 +23,27 @@
   <string name="mod_version">Različica Omni</string>
   <string name="mod_version_default">Neznano</string>
   <!-- Main list strings -->
+  <string name="more_settings_title">Več</string>
   <string name="interface_bars_title">Vrstice</string>
   <string name="interface_lockscreen_title">Zaklenjen zaslon</string>
+  <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">Značilnosti naprave</string>
   <string name="header_category_interface">Vmesnik</string>
   <string name="performance_settings">Zmogljivost</string>
   <string name="advanced_settings_title">Napredno</string>
   <string name="button_settings">Gumbi</string>
   <string name="supersu_title">SuperSU</string>
+  <string name="su_dashboard_summary">Upravljanje skrbniškega dostopa</string>
+  <string name="superuser_title">Skrbnik</string>
+  <string name="interface_style_title">Slog</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">Obvesti o razhroščevanju</string>
   <string name="adb_notify_summary">Prikaži obvestilo. ko je omogočeno razhroščevanje na omrežju ali USB-ju</string>
   <string name="volume_adjust_sound_title">Zvok prilagoditve glasnosti</string>
+  <string name="screenshot_shutter_sound_title">Zvok sprožilca zaslonske slike</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Napredni ponovni zagon</string>
-  <string name="advanced_reboot_summary">Ko je odklenjeno, v meni za izklop vključi možnosti za ponovni zagon v obnovitev, zagonski nalagalnik ali opravi mehki ponovni zagon</string>
+  <string name="advanced_reboot_summary">Ko je odklenjeno, v meni gumba za vklop/izklop vključi možnosti za ponovni zagon v obnovitev, zagonski nalagalnik ali opravi mehki ponovni zagon</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
   <string name="show_cpu_info">Prikaži podatke o CPE-ju</string>
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
@@ -77,7 +84,9 @@
   <string name="ring_notification_volume_option_title">Glasnost zvonjenja in obvestil</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings">Prog. opravila</string>
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings_summary">Pokaži ali spremeni dovoljenja programov</string>
   <!-- Format string for fingerprint location message -->
   <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Na <xliff:g id="sensor_location">%1$s</xliff:g> vašega telefona poiščite tipalo prstnih odtisov.</string>
   <!-- Fingerprint sensor locations -->
@@ -85,4 +94,7 @@
   <string name="security_settings_fingerprint_sensor_location_front">sprednji strani</string>
   <string name="security_settings_fingerprint_sensor_location_left">levi strani</string>
   <string name="security_settings_fingerprint_sensor_location_right">desni strani</string>
+  <string name="reset_wallpaper_notice">Privzeta slika ozadja obnovljena</string>
+  <string name="columns_menu">Razporeditev stolpcev</string>
+  <string name="hide_summary_menu">Skrij povzetek</string>
 </resources>

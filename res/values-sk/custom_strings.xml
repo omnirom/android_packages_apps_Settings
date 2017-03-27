@@ -3,7 +3,7 @@
 <!--
 /*
 **
-** Copyright 2014 The OmniROM Project
+** Copyright 2017 The OmniROM Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -23,13 +23,19 @@
   <string name="mod_version">Verzia Omni</string>
   <string name="mod_version_default">Neznáma</string>
   <!-- Main list strings -->
+  <string name="more_settings_title">Viac</string>
   <string name="interface_bars_title">Lišty</string>
   <string name="interface_lockscreen_title">Zámok obrazovky</string>
+  <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">Funkcie prístroja</string>
   <string name="header_category_interface">Rozhranie</string>
   <string name="performance_settings">Výkon</string>
   <string name="advanced_settings_title">Rozšírené</string>
   <string name="button_settings">Tlačidlá</string>
   <string name="supersu_title">SuperSU</string>
+  <string name="su_dashboard_summary">Spravovať root prístup</string>
+  <string name="superuser_title">Superuser</string>
+  <string name="interface_style_title">Štýl</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">Upozornenie na ladenie USB</string>
   <string name="adb_notify_summary">Zobraziť upozornenie pri pripojení k USB v režime ladenia</string>
@@ -77,7 +83,9 @@
   <string name="ring_notification_volume_option_title">Hlasitosť zvonenia a upozornení</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings">App ops</string>
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings_summary">Zobraziť alebo zmeniť povolenia aplikácií</string>
   <!-- Format string for fingerprint location message -->
   <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Nájdite snímač odtlačkov prstov na<xliff:g id="sensor_location">%1$s</xliff:g> vášho zariadenia.</string>
   <!-- Fingerprint sensor locations -->
@@ -85,4 +93,5 @@
   <string name="security_settings_fingerprint_sensor_location_front">prednej strane</string>
   <string name="security_settings_fingerprint_sensor_location_left">ľavej strane</string>
   <string name="security_settings_fingerprint_sensor_location_right">pravej strane</string>
+  <string name="reset_wallpaper_notice">Predvolená tapeta obnovená</string>
 </resources>

@@ -3,7 +3,7 @@
 <!--
 /*
 **
-** Copyright 2014 The OmniROM Project
+** Copyright 2017 The OmniROM Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -23,29 +23,36 @@
   <string name="mod_version">Version d\'Omni</string>
   <string name="mod_version_default">Inconnue</string>
   <!-- Main list strings -->
-  <string name="interface_bars_title">Barre de statut</string>
+  <string name="more_settings_title">Plus</string>
+  <string name="interface_bars_title">Barre d\'état</string>
   <string name="interface_lockscreen_title">Écran de verrouillage</string>
+  <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">Caractéristiques du périphérique</string>
   <string name="header_category_interface">Interface</string>
   <string name="performance_settings">Performance</string>
   <string name="advanced_settings_title">Paramètres Avancés</string>
   <string name="button_settings">Boutons</string>
   <string name="supersu_title">SuperSU</string>
+  <string name="su_dashboard_summary">Gérer les accès super-utilisateur</string>
+  <string name="superuser_title">Super-utilisateur</string>
+  <string name="interface_style_title">Style</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">Notification de débogage USB</string>
-  <string name="adb_notify_summary">Afficher une notification lorsque le débogage USB est actif</string>
-  <string name="volume_adjust_sound_title">Son au réglage du volume</string>
+  <string name="adb_notify_summary">Affiche une notification lorsque le débogage USB est actif</string>
+  <string name="volume_adjust_sound_title">Émettre un son lors du réglage du volume</string>
+  <string name="screenshot_shutter_sound_title">Émettre un son lors d\'une capture d\'écran</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Redémarrage avancé</string>
   <string name="advanced_reboot_summary">Inclure dans le menu marche/arrêt les options de redémarrage en mode recovery ou bootloader</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
-  <string name="show_cpu_info">Affichage infos CPU</string>
+  <string name="show_cpu_info">Afficher les infos CPU</string>
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
-  <string name="show_cpu_info_summary">Superposition écran indiquant la mémoire CPU utilisée</string>
+  <string name="show_cpu_info_summary">Affiche les ressources utilisées par le CPU</string>
   <!-- Android debugging over WiFi -->
   <string name="adb_over_network">ADB sur TCP/IP</string>
   <string name="adb_over_network_summary">Activer le débogage TCP/IP sur toutes les interfaces réseau (USB, Wi-Fi et Bluetooth). Ce paramètre est réinitialisé au redémarrage</string>
   <!-- Warning for Adb over Network -->
-  <string name="adb_over_network_warning">ATTENTION : Lorsque cette fonction est activée, votre appareil est ouvert aux intrusions sur tous les réseaux connectés, y compris via le réseau mobile\u00A0!\n\nN\'utilisez cette fonctionnalité que sur des réseaux de confiance.\n\nContinuer\u00A0?</string>
+  <string name="adb_over_network_warning">ATTENTION : Lorsque cette fonction est activée, votre appareil est ouvert aux intrusions sur tous les réseaux connectés, y compris via le réseau mobile\u00A0!\n\nN\'utiliser cette fonctionnalité que sur des réseaux de confiance.\n\nContinuer\u00A0?</string>
   <!-- Display : Rotation -->
   <string name="display_rotation_title">Rotation</string>
   <string name="display_rotation_disabled">Désactivée</string>
@@ -57,7 +64,7 @@
   <string name="display_rotation_270_title">270 degrés</string>
   <!-- Lockscreen pin shuffle -->
   <string name="lock_numpad_random_title">Disposer aléatoirement les touches lors du déverrouillage</string>
-  <string name="lock_numpad_random_dialog_title">Disposition aléatoire</string>
+  <string name="lock_numpad_random_dialog_title">Disposition aléatoire des touches</string>
   <string name="lock_numpad_random_off">Désactivée</string>
   <string name="lock_numpad_random_always">Toujours</string>
   <string name="lock_numpad_random_on_request">Sur demande</string>
@@ -68,7 +75,7 @@
   <string name="no_media_notification_title">Notification de déconnexion du périphérique de stockage</string>
   <string name="no_media_notification_summary">Afficher une notification quand le périphérique de stockage est retiré</string>
   <string name="mount_notification_title">Notification de montage</string>
-  <string name="mount_notification_summary">Afficher une notification pour le périphériques montés</string>
+  <string name="mount_notification_summary">Affiche une notification pour le périphérique monté</string>
   <string name="zen_mode_none_category">Sans interruption</string>
   <string name="zen_mode_alarms">Autoriser les alarmes</string>
   <!-- Linked / unlinked notification volume -->
@@ -77,12 +84,17 @@
   <string name="ring_notification_volume_option_title">Volume de la sonnerie et des notifications</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings">App Ops</string>
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings_summary">Voir ou changer les autorisations des applications</string>
   <!-- Format string for fingerprint location message -->
   <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Localiser le capteur d’empreintes digitales sur le <xliff:g id="sensor_location">%1$s </xliff:g> de votre téléphone.</string>
   <!-- Fingerprint sensor locations -->
-  <string name="security_settings_fingerprint_sensor_location_back">dos</string>
+  <string name="security_settings_fingerprint_sensor_location_back">derrière</string>
   <string name="security_settings_fingerprint_sensor_location_front">devant</string>
   <string name="security_settings_fingerprint_sensor_location_left">côté gauche</string>
   <string name="security_settings_fingerprint_sensor_location_right">côté droit</string>
+  <string name="reset_wallpaper_notice">Fond d’écran par défaut restauré</string>
+  <string name="columns_menu">Disposition des colonnes</string>
+  <string name="hide_summary_menu">Masquer le résumé</string>
 </resources>

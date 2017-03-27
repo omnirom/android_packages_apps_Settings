@@ -3,7 +3,7 @@
 <!--
 /*
 **
-** Copyright 2014 The OmniROM Project
+** Copyright 2017 The OmniROM Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -23,21 +23,33 @@
   <string name="mod_version">Omni バージョン</string>
   <string name="mod_version_default">不明</string>
   <!-- Main list strings -->
+  <string name="omnigears_category_title">OmniGears</string>
   <string name="header_category_interface">インターフェース</string>
   <string name="performance_settings">パフォーマンス</string>
   <string name="advanced_settings_title">高度な設定</string>
   <string name="button_settings">ボタン</string>
+  <string name="supersu_title">SuperSU</string>
+  <string name="interface_style_title">スタイル</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">USBデバッグの通知</string>
   <string name="adb_notify_summary">USB デバッグが接続されたときに通知を表示する</string>
+  <string name="volume_adjust_sound_title">音量調節の音</string>
   <!-- Advanced reboot options -->
+  <string name="advanced_reboot_title">高度な再起動</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+  <string name="show_cpu_info">CPU情報を表示</string>
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+  <string name="show_cpu_info_summary">現在のCPU使用状況をオーバーレイ表示する</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">ネットワーク経由のADB</string>
+  <string name="adb_over_network_summary">ネットワークインタフェース(Wi-FiやUSB)越しのTCP/IPデバッグを有効にする(この設定は再起動でリセットされます)</string>
   <!-- Warning for Adb over Network -->
   <!-- Display : Rotation -->
   <!-- Lockscreen pin shuffle -->
   <!-- Linked / unlinked notification volume -->
+  <string name="link_volume_option_title">着信音と通知音をリンクさせる</string>
+  <string name="notification_volume_option_title">通知の音量</string>
+  <string name="ring_notification_volume_option_title">着信音と通知音の音量</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->

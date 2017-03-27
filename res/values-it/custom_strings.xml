@@ -3,7 +3,7 @@
 <!--
 /*
 **
-** Copyright 2014 The OmniROM Project
+** Copyright 2017 The OmniROM Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -23,13 +23,17 @@
   <string name="mod_version">Versione Omni</string>
   <string name="mod_version_default">Sconosciuto</string>
   <!-- Main list strings -->
+  <string name="more_settings_title">Altro</string>
   <string name="interface_bars_title">Barra di stato</string>
   <string name="interface_lockscreen_title">Schermata di blocco</string>
+  <string name="omni_device_parts">Caratteristiche del dispositivo</string>
   <string name="header_category_interface">Interfaccia</string>
   <string name="performance_settings">Prestazioni</string>
   <string name="advanced_settings_title">Avanzate</string>
   <string name="button_settings">Pulsanti</string>
   <string name="supersu_title">SuperSu</string>
+  <string name="su_dashboard_summary">Gestione accessi amministratore</string>
+  <string name="interface_style_title">Stile</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">Notifica debug USB</string>
   <string name="adb_notify_summary">Mostra una notifica quando il debug USB è connesso</string>
@@ -85,4 +89,5 @@
   <string name="security_settings_fingerprint_sensor_location_front">fronte</string>
   <string name="security_settings_fingerprint_sensor_location_left">lato sinistro</string>
   <string name="security_settings_fingerprint_sensor_location_right">lato destro</string>
+  <string name="reset_wallpaper_notice">Ripristino wallpaper predefinito</string>
 </resources>

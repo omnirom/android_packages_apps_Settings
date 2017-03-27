@@ -3,7 +3,7 @@
 <!--
 /*
 **
-** Copyright 2014 The OmniROM Project
+** Copyright 2017 The OmniROM Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -23,13 +23,19 @@
   <string name="mod_version">Versión de Omni</string>
   <string name="mod_version_default">Desconocido</string>
   <!-- Main list strings -->
+  <string name="more_settings_title">Más</string>
   <string name="interface_bars_title">Barras</string>
   <string name="interface_lockscreen_title">Pantalla de bloqueo</string>
+  <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">Características del dispositivo</string>
   <string name="header_category_interface">Interfaz</string>
   <string name="performance_settings">Rendimiento</string>
   <string name="advanced_settings_title">Opciones avanzadas</string>
   <string name="button_settings">Botones</string>
   <string name="supersu_title">SuperSU</string>
+  <string name="su_dashboard_summary">Administrar acceso root</string>
+  <string name="superuser_title">Superusuario</string>
+  <string name="interface_style_title">Estilo</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">Notificar depuración USB</string>
   <string name="adb_notify_summary">Mostrar una notificación cuando la depuración USB esté activada</string>
@@ -78,6 +84,7 @@
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings_summary">Ver o cambiar los permisos de la aplicación</string>
   <!-- Format string for fingerprint location message -->
   <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Localice el sensor de huella digital en el <xliff:g id="sensor_location">%1$s </xliff:g> de su teléfono.</string>
   <!-- Fingerprint sensor locations -->

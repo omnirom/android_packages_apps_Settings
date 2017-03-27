@@ -3,7 +3,7 @@
 <!--
 /*
 **
-** Copyright 2014 The OmniROM Project
+** Copyright 2017 The OmniROM Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -23,13 +23,19 @@
   <string name="mod_version">Omni 버전</string>
   <string name="mod_version_default">알 수 없음</string>
   <!-- Main list strings -->
+  <string name="more_settings_title">기타</string>
   <string name="interface_bars_title">상태 표시줄</string>
   <string name="interface_lockscreen_title">잠금 화면</string>
+  <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">기기 기능</string>
   <string name="header_category_interface">인터페이스</string>
   <string name="performance_settings">성능</string>
   <string name="advanced_settings_title">고급 설정</string>
   <string name="button_settings">버튼</string>
   <string name="supersu_title">SuperSU</string>
+  <string name="su_dashboard_summary">루트 접근 관리</string>
+  <string name="superuser_title">슈퍼유저</string>
+  <string name="interface_style_title">스타일</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">USB 디버깅 알림</string>
   <string name="adb_notify_summary">USB 디버깅으로 연결할 때 알림 표시</string>
@@ -77,7 +83,10 @@
   <string name="ring_notification_volume_option_title">벨소리와 알림 음량</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings">App ops</string>
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings_summary">앱 권한을 보거나 변경</string>
   <!-- Format string for fingerprint location message -->
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">뒤로 가기</string>
 </resources>

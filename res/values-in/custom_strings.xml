@@ -3,7 +3,7 @@
 <!--
 /*
 **
-** Copyright 2014 The OmniROM Project
+** Copyright 2017 The OmniROM Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -20,8 +20,15 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- About phone screen,  setting option name-->
+  <string name="mod_version">Versi Omni</string>
+  <string name="mod_version_default">Tidak dikenal</string>
   <!-- Main list strings -->
+  <string name="interface_lockscreen_title">Kunci Layar</string>
+  <string name="omni_device_parts">Fitur perangkat</string>
+  <string name="button_settings">Tombol</string>
   <string name="supersu_title">SuperSU</string>
+  <string name="su_dashboard_summary">Kelola akses root</string>
+  <string name="interface_style_title">Gaya</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <!-- Advanced reboot options -->
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
@@ -29,11 +36,22 @@
   <!-- Android debugging over WiFi -->
   <!-- Warning for Adb over Network -->
   <!-- Display : Rotation -->
+  <string name="display_rotation_title">Rotasi</string>
+  <string name="display_rotation_unit">derajat</string>
+  <string name="display_rotation_category_title">Mode rotasi</string>
+  <string name="display_rotation_0_title">0 derajat</string>
+  <string name="display_rotation_90_title">90 derajat</string>
+  <string name="display_rotation_180_title">180 derajat</string>
+  <string name="display_rotation_270_title">270 derajat</string>
   <!-- Lockscreen pin shuffle -->
+  <string name="lock_numpad_random_always">Selalu</string>
+  <string name="storage_options_category">Pemberitahuan</string>
   <!-- Linked / unlinked notification volume -->
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
   <!-- Format string for fingerprint location message -->
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_left">sisi kiri</string>
+  <string name="security_settings_fingerprint_sensor_location_right">sisi kanan</string>
 </resources>

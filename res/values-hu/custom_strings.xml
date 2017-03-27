@@ -3,7 +3,7 @@
 <!--
 /*
 **
-** Copyright 2014 The OmniROM Project
+** Copyright 2017 The OmniROM Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -23,17 +23,24 @@
   <string name="mod_version">Omni verzió</string>
   <string name="mod_version_default">Ismeretlen</string>
   <!-- Main list strings -->
+  <string name="more_settings_title">Egyebek</string>
   <string name="interface_bars_title">Bárok</string>
   <string name="interface_lockscreen_title">Zárképernyő</string>
+  <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">Eszközfunkciók</string>
   <string name="header_category_interface">Felhasználói felület</string>
   <string name="performance_settings">Teljesítmény</string>
   <string name="advanced_settings_title">Haladó</string>
   <string name="button_settings">Gombok</string>
   <string name="supersu_title">SuperSU</string>
+  <string name="su_dashboard_summary">Root hozzáférés kezelése</string>
+  <string name="superuser_title">Superuser</string>
+  <string name="interface_style_title">Stílus</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">USB hibakeresés értesítései</string>
   <string name="adb_notify_summary">Értesítések megjelenítése az USB hibakereső módban való csatlakozáskor</string>
   <string name="volume_adjust_sound_title">Hangerő állítási hang</string>
+  <string name="screenshot_shutter_sound_title">Képernyőmentés zárhang</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Speciális újraindítás</string>
   <string name="advanced_reboot_summary">A bekapcsoló menüben a speciális újraindítási lehetőségek is felvehetők</string>
@@ -77,7 +84,9 @@
   <string name="ring_notification_volume_option_title">Csengő és értesítési hangerő</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings">App ops</string>
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings_summary">Alkalmazás engedélyek megtekintése vagy megváltoztatása</string>
   <!-- Format string for fingerprint location message -->
   <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Keresse meg az ujjlenyomat érzékelőt a telefonon: <xliff:g id="sensor_location">%1$s</xliff:g>.</string>
   <!-- Fingerprint sensor locations -->
@@ -85,4 +94,9 @@
   <string name="security_settings_fingerprint_sensor_location_front">elől</string>
   <string name="security_settings_fingerprint_sensor_location_left">bal oldalon</string>
   <string name="security_settings_fingerprint_sensor_location_right">jobb oldalon</string>
+  <string name="reset_wallpaper_notice">Alapértelmezett háttérkép visszaállítva</string>
+  <string name="columns_menu">Oszlop elrendezés</string>
+  <string name="hide_summary_menu">Összefoglaló elrejtése</string>
+  <string name="heads_up_notifications_enabled_title">Lebegő értesítések</string>
+  <string name="heads_up_notifications_enabled_summary">Lebegő értesítések engedélyezése vagy tiltása</string>
 </resources>
