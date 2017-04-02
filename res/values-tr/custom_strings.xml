@@ -95,4 +95,8 @@
   <string name="security_settings_fingerprint_sensor_location_left">sol yan</string>
   <string name="security_settings_fingerprint_sensor_location_right">sağ yan</string>
   <string name="reset_wallpaper_notice">Varsayılan duvar kağıdı geri yüklendi</string>
+  <string name="columns_menu">Sütun düzeni</string>
+  <string name="hide_summary_menu">Özetİ gizle</string>
+  <string name="heads_up_notifications_enabled_title">Gözatmaya izin ver</string>
+  <string name="heads_up_notifications_enabled_summary">Tüm bildirimler için göz atmaya izin ver veya devre dışı bırak</string>
 </resources>

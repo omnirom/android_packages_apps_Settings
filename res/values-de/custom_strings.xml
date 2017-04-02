@@ -27,7 +27,7 @@
   <string name="interface_bars_title">Leisten</string>
   <string name="interface_lockscreen_title">Sperrbildschirm</string>
   <string name="omnigears_category_title">OmniGears</string>
-  <string name="omni_device_parts">Gerätefunktionen</string>
+  <string name="omni_device_parts">Erweiterte Funktionen</string>
   <string name="header_category_interface">Benutzeroberfläche</string>
   <string name="performance_settings">Leistung</string>
   <string name="advanced_settings_title">Erweitert</string>
@@ -97,4 +97,6 @@
   <string name="reset_wallpaper_notice">Standard-Hintergrundbild wiederhergestellt</string>
   <string name="columns_menu">Spalten-Layout</string>
   <string name="hide_summary_menu">Zusammenfassung verbergen</string>
+  <string name="heads_up_notifications_enabled_title">Anzeigen gestatten</string>
+  <string name="heads_up_notifications_enabled_summary">Gestatte oder blockiere Anzeigen für alle Benachrichtigungen</string>
 </resources>

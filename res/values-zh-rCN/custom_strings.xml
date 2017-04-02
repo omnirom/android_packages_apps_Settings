@@ -97,4 +97,6 @@
   <string name="reset_wallpaper_notice">已恢复默认壁纸</string>
   <string name="columns_menu">列布局</string>
   <string name="hide_summary_menu">隐藏摘要</string>
+  <string name="heads_up_notifications_enabled_title">开启悬浮通知</string>
+  <string name="heads_up_notifications_enabled_summary">开启或关闭所有悬浮通知</string>
 </resources>
