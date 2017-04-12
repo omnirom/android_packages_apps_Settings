@@ -3230,6 +3230,11 @@
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="org.omnirom.omnigears.moresettings.OmniJawsSettings" />
-            </activity>
+        </activity>
+        <receiver android:name="org.omnirom.omnigears.Startup" >
+            <intent-filter android:priority="100" >
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>
