@@ -25,4 +25,6 @@
         multiple="true" />
     <step category="com.android.settings.suggested.category.SETTINGS_ONLY"
         multiple="true" />
+    <step category="com.android.settings.suggested.category.FUN"
+        multiple="true" />
 </optional-steps>

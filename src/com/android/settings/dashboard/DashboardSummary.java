@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.logging.MetricsProto.MetricsEvent;
+import com.android.settings.EasterFunActivity;
 import com.android.settings.InstrumentedFragment;
 import com.android.settings.R;
 import com.android.settings.Settings;
@@ -46,6 +47,7 @@ import com.android.settingslib.drawer.SettingsDrawerActivity;
 import com.android.settingslib.drawer.Tile;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class DashboardSummary extends InstrumentedFragment
@@ -286,8 +288,13 @@ public class DashboardSummary extends InstrumentedFragment
             List<Tile> suggestions = mSuggestionParser.getSuggestions();
             for (int i = 0; i < suggestions.size(); i++) {
                 Tile suggestion = suggestions.get(i);
+                String className = suggestion.intent.getComponent().getClassName();
                 if (mSuggestionsChecks.isSuggestionComplete(suggestion)) {
-                    mAdapter.disableSuggestion(suggestion);
+                    if (!className.equals(EasterFunActivity.class.getName())) {
+                        mAdapter.disableSuggestion(suggestion);
+                    } else if (isEasterPeriodOver()) {
+                        mAdapter.disableSuggestion(suggestion);
+                    }
                     suggestions.remove(i--);
                 } else if (context != null) {
                     String id = DashboardAdapter.getSuggestionIdentifier(context, suggestion);
@@ -311,5 +318,18 @@ public class DashboardSummary extends InstrumentedFragment
                     ((SettingsActivity) activity).getDashboardCategories();
             mAdapter.setCategoriesAndSuggestions(categories, tiles);
         }
+    }
+
+    private boolean isEasterPeriodOver() {
+        // easter sunday and monday 2017
+        long now = System.currentTimeMillis();
+        Calendar cal = Calendar.getInstance();
+        cal.set(2017, 3, 17);
+        long endTime = cal.getTimeInMillis();
+
+        if (now > endTime) {
+            return true;
+        }
+        return false;
     }
 }
