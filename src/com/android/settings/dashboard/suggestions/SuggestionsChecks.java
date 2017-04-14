@@ -23,8 +23,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.hardware.fingerprint.FingerprintManager;
 import android.support.annotation.VisibleForTesting;
+import android.util.Log;
 
 import com.android.ims.ImsManager;
+import com.android.settings.EasterFunActivity;
 import com.android.settings.Settings.FingerprintEnrollSuggestionActivity;
 import com.android.settings.Settings.ScreenLockSuggestionActivity;
 import com.android.settings.Settings.WifiCallingSuggestionActivity;
@@ -33,6 +35,8 @@ import com.android.settings.fingerprint.FingerprintSuggestionActivity;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.wallpaper.WallpaperSuggestionActivity;
 import com.android.settingslib.drawer.Tile;
+
+import java.util.Calendar;
 
 /**
  * The Home of all stupidly dynamic Settings Suggestions checks.
@@ -68,6 +72,9 @@ public class SuggestionsChecks {
                 return true;
             }
             return manager.hasEnrolledFingerprints();
+        } else if (className.equals(EasterFunActivity.class.getName())) {
+            Log.d(TAG, "isSuggestionComplete className = " + className + " " + isEasterPeriod());
+            return !isEasterPeriod();
         }
 
         final SuggestionFeatureProvider provider =
@@ -106,5 +113,20 @@ public class SuggestionsChecks {
         final int dpmFlags = dpManager.getKeyguardDisabledFeatures(null, /* admin */
                 mContext.getUserId());
         return (dpmFlags & DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT) == 0;
+    }
+
+    private boolean isEasterPeriod() {
+        // easter sunday and monday 2018
+        long now = System.currentTimeMillis();
+        Calendar cal = Calendar.getInstance();
+        cal.set(2018, 2, 31);
+        long startTime = cal.getTimeInMillis();
+        cal.set(2018, 3, 03);
+        long endTime = cal.getTimeInMillis();
+
+        if (now >= startTime && now <= endTime) {
+            return true;
+        }
+        return false;
     }
 }
