@@ -392,7 +392,10 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         }
 
         mBugreport = findPreference(BUGREPORT);
+        removePreference(mBugreport);
         mBugreportInPower = findAndInitSwitchPref(BUGREPORT_IN_POWER_KEY);
+        debugDebuggingCategory.removePreference(mBugreportInPower);
+
         mAdbOverNetwork = findAndInitSwitchPref(ADB_TCPIP);
         mKeepScreenOn = (RestrictedSwitchPreference) findAndInitSwitchPref(KEEP_SCREEN_ON);
         mBtHciSnoopLog = findAndInitSwitchPref(BT_HCI_SNOOP_LOG);
