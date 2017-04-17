@@ -115,6 +115,4 @@
 
     <string name="heads_up_notifications_enabled_title">Allow peeking</string>
     <string name="heads_up_notifications_enabled_summary">Allow or disable peeking for all notifications</string>
-
-    <string name="easter_settings_title">Happy Easter</string>
 </resources>

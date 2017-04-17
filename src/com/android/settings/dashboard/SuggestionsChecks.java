@@ -30,7 +30,6 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 
 import com.android.ims.ImsManager;
-import com.android.settings.EasterFunActivity;
 import com.android.settings.Settings.FingerprintEnrollSuggestionActivity;
 import com.android.settings.Settings.FingerprintSuggestionActivity;
 import com.android.settings.Settings.ScreenLockSuggestionActivity;
@@ -40,7 +39,6 @@ import com.android.settings.WallpaperSuggestionActivity;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settingslib.drawer.Tile;
 
-import java.util.Calendar;
 import java.util.Collection;
 
 /**
@@ -68,8 +66,6 @@ public class SuggestionsChecks {
             return isDeviceSecured();
         } else if (className.equals(FingerprintEnrollSuggestionActivity.class.getName())) {
             return isDeviceSecured() || !isFingerprintEnabled();
-        } else if (className.equals(EasterFunActivity.class.getName())) {
-            return !isEasterPeriod();
         }
 
         SuggestionFeatureProvider provider =
@@ -137,19 +133,4 @@ public class SuggestionsChecks {
              // Don't care.
         }
     };
-
-    private boolean isEasterPeriod() {
-        // easter sunday and monday 2017
-        long now = System.currentTimeMillis();
-        Calendar cal = Calendar.getInstance();
-        cal.set(2017, 3, 16);
-        long startTime = cal.getTimeInMillis();
-        cal.set(2017, 3, 17);
-        long endTime = cal.getTimeInMillis();
-
-        if (now >= startTime && now <= endTime) {
-            return true;
-        }
-        return false;
-    }
 }
