@@ -3236,15 +3236,5 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <activity android:name="EasterFunActivity"
-                  android:icon="@drawable/easter_egg"
-                  android:theme="@android:style/Theme.NoDisplay" >
-            <intent-filter android:priority="1">
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="com.android.settings.suggested.category.FUN" />
-            </intent-filter>
-            <meta-data android:name="com.android.settings.title"
-                       android:resource="@string/easter_settings_title" />
-        </activity>
     </application>
 </manifest>
