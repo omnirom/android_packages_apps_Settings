@@ -27,7 +27,6 @@
   <string name="interface_bars_title">状态栏</string>
   <string name="interface_lockscreen_title">锁屏界面</string>
   <string name="omnigears_category_title">Omni配置</string>
-  <string name="omni_device_parts">设备特性</string>
   <string name="header_category_interface">界面</string>
   <string name="performance_settings">性能</string>
   <string name="advanced_settings_title">高级设置</string>

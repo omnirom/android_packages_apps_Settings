@@ -27,7 +27,6 @@
   <string name="interface_bars_title">Barras</string>
   <string name="interface_lockscreen_title">Tela de bloqueio</string>
   <string name="omnigears_category_title">Configurações Omni</string>
-  <string name="omni_device_parts">Recursos do dispositivo</string>
   <string name="header_category_interface">Interface</string>
   <string name="performance_settings">Desempenho</string>
   <string name="advanced_settings_title">Avançado</string>
@@ -40,6 +39,7 @@
   <string name="adb_notify">Notificação de depuração USB</string>
   <string name="adb_notify_summary">Mostrar uma notificação quando a depuração USB estiver conectada</string>
   <string name="volume_adjust_sound_title">Ajuste do volume de som</string>
+  <string name="screenshot_shutter_sound_title">Tocar som quando capturar tela</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Reinicialização avançada</string>
   <string name="advanced_reboot_summary">Incluem opções no menu para reiniciar o computador no Gerenciador de inicialização e recuperação de energia</string>
@@ -94,4 +94,8 @@
   <string name="security_settings_fingerprint_sensor_location_left">no lado esquerdo</string>
   <string name="security_settings_fingerprint_sensor_location_right">no lado direito</string>
   <string name="reset_wallpaper_notice">Papel de parede padrão restaurado</string>
+  <string name="columns_menu">Layout da coluna</string>
+  <string name="hide_summary_menu">Ocultar sumário</string>
+  <string name="heads_up_notifications_enabled_title">Permitir notificações flutuantes</string>
+  <string name="heads_up_notifications_enabled_summary">Ativar ou desativar as notificações flutuantes</string>
 </resources>

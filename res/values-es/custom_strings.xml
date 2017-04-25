@@ -27,7 +27,6 @@
   <string name="interface_bars_title">Barras</string>
   <string name="interface_lockscreen_title">Pantalla de bloqueo</string>
   <string name="omnigears_category_title">OmniGears</string>
-  <string name="omni_device_parts">Características del dispositivo</string>
   <string name="header_category_interface">Interfaz</string>
   <string name="performance_settings">Rendimiento</string>
   <string name="advanced_settings_title">Opciones avanzadas</string>
@@ -40,6 +39,7 @@
   <string name="adb_notify">Notificar depuración USB</string>
   <string name="adb_notify_summary">Mostrar una notificación cuando la depuración USB esté activada</string>
   <string name="volume_adjust_sound_title">Ajustar el volumen de sonido</string>
+  <string name="screenshot_shutter_sound_title">Sonido al capturar la pantalla</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Reinicio avanzado</string>
   <string name="advanced_reboot_summary">Incluir opciones en el menú de apagado para reiniciar en modo recuperación o bootloader</string>
@@ -83,6 +83,7 @@
   <string name="ring_notification_volume_option_title">Volumen de llamada y notificación</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings">Apps Ops</string>
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
   <string name="app_ops_settings_summary">Ver o cambiar los permisos de la aplicación</string>
   <!-- Format string for fingerprint location message -->
@@ -92,4 +93,9 @@
   <string name="security_settings_fingerprint_sensor_location_front">frontal</string>
   <string name="security_settings_fingerprint_sensor_location_left">lado izquierdo</string>
   <string name="security_settings_fingerprint_sensor_location_right">lado derecho</string>
+  <string name="reset_wallpaper_notice">Fondo de pantalla por defecto restaurado</string>
+  <string name="columns_menu">Diseño de columnas</string>
+  <string name="hide_summary_menu">Ocultar Resumen</string>
+  <string name="heads_up_notifications_enabled_title">Permitir vistazo</string>
+  <string name="heads_up_notifications_enabled_summary">Permitir o desactivar vistazo para todas las notificaciones</string>
 </resources>

@@ -23,16 +23,22 @@
   <string name="mod_version">Версія Omni</string>
   <string name="mod_version_default">Невідомо</string>
   <!-- Main list strings -->
+  <string name="more_settings_title">Більше</string>
   <string name="interface_bars_title">Панелі</string>
+  <string name="interface_lockscreen_title">Екран блокування</string>
+  <string name="omnigears_category_title">OmniGears</string>
   <string name="header_category_interface">Інтерфейс</string>
   <string name="performance_settings">Продуктивність</string>
   <string name="advanced_settings_title">Розширені</string>
   <string name="button_settings">Кнопки</string>
   <string name="supersu_title">SuperSU</string>
+  <string name="superuser_title">Суперкористувач</string>
+  <string name="interface_style_title">Стиль</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">Сповіщення про відладку по USB</string>
   <string name="adb_notify_summary">Показувати сповіщення про увімкнений режим відладки по USB</string>
   <string name="volume_adjust_sound_title">Звук налаштування гучності</string>
+  <string name="screenshot_shutter_sound_title">Звук затвору зняття скріншота</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Варіанти перезавантаження</string>
   <string name="advanced_reboot_summary">Увімкнути варіанти перезавантаження (recovery та bootloader) в меню \"Параметри пристрою\"</string>
@@ -72,6 +78,7 @@
   <string name="zen_mode_alarms">Дозволити будильники</string>
   <!-- Linked / unlinked notification volume -->
   <string name="notification_volume_option_title">Гучність сповіщень</string>
+  <string name="ring_notification_volume_option_title">Гучність дзвінка та сповіщень</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->

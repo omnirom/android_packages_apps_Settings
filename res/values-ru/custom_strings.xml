@@ -34,10 +34,12 @@
   <string name="supersu_title">SuperSU</string>
   <string name="su_dashboard_summary">Управление правами суперпользователя</string>
   <string name="superuser_title">Суперпользователь</string>
+  <string name="interface_style_title">Стиль</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">Уведомление об отладке USB</string>
   <string name="adb_notify_summary">Показывать уведомление о включённом режиме отладки по USB</string>
   <string name="volume_adjust_sound_title">Звук при регулировке громкости</string>
+  <string name="screenshot_shutter_sound_title">Звук затвора снятия скриншота</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Варианты перезагрузки</string>
   <string name="advanced_reboot_summary">Показывать дополнительные опции перезагрузки устройства (загрузчик и режим восстановления) в меню кнопки питания</string>
@@ -82,7 +84,15 @@
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings_summary">Посмотреть или изменить разрешения для приложений</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Найдите датчик отпечатков пальцев <xliff:g id="sensor_location">%1$s </xliff:g> телефона.</string>
   <!-- Fingerprint sensor locations -->
   <string name="security_settings_fingerprint_sensor_location_back">Назад</string>
+  <string name="security_settings_fingerprint_sensor_location_front">спереди</string>
+  <string name="security_settings_fingerprint_sensor_location_left">слева</string>
+  <string name="security_settings_fingerprint_sensor_location_right">справа</string>
+  <string name="reset_wallpaper_notice">Обои по умолчанию восстановлены</string>
+  <string name="columns_menu">Макет столбцов</string>
+  <string name="hide_summary_menu">Скрыть содержание</string>
 </resources>

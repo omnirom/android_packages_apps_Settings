@@ -27,7 +27,6 @@
   <string name="interface_bars_title">Barre d\'état</string>
   <string name="interface_lockscreen_title">Écran de verrouillage</string>
   <string name="omnigears_category_title">OmniGears</string>
-  <string name="omni_device_parts">Caractéristiques du périphérique</string>
   <string name="header_category_interface">Interface</string>
   <string name="performance_settings">Performance</string>
   <string name="advanced_settings_title">Paramètres Avancés</string>
@@ -97,4 +96,6 @@
   <string name="reset_wallpaper_notice">Fond d’écran par défaut restauré</string>
   <string name="columns_menu">Disposition des colonnes</string>
   <string name="hide_summary_menu">Masquer le résumé</string>
+  <string name="heads_up_notifications_enabled_title">Notifications flottantes</string>
+  <string name="heads_up_notifications_enabled_summary">Activer ou désactiver les notifications flottantes</string>
 </resources>

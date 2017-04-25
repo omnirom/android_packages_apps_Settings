@@ -26,18 +26,20 @@
   <string name="more_settings_title">Altro</string>
   <string name="interface_bars_title">Barra di stato</string>
   <string name="interface_lockscreen_title">Schermata di blocco</string>
-  <string name="omni_device_parts">Caratteristiche del dispositivo</string>
+  <string name="omnigears_category_title">OmniGears</string>
   <string name="header_category_interface">Interfaccia</string>
   <string name="performance_settings">Prestazioni</string>
   <string name="advanced_settings_title">Avanzate</string>
   <string name="button_settings">Pulsanti</string>
   <string name="supersu_title">SuperSu</string>
   <string name="su_dashboard_summary">Gestione accessi amministratore</string>
+  <string name="superuser_title">Superuser</string>
   <string name="interface_style_title">Stile</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">Notifica debug USB</string>
   <string name="adb_notify_summary">Mostra una notifica quando il debug USB è connesso</string>
   <string name="volume_adjust_sound_title">Suono di regolazione volume</string>
+  <string name="screenshot_shutter_sound_title">Suono screenshot</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Riavvio avanzato</string>
   <string name="advanced_reboot_summary">Includi opzioni nel menu power per il riavvio in recovery o bootloader</string>
@@ -81,7 +83,9 @@
   <string name="ring_notification_volume_option_title">Volume suoneria e notifiche</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings">App ops</string>
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings_summary">Visualizza o modifica le autorizzazioni delle app</string>
   <!-- Format string for fingerprint location message -->
   <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Individuare il sensore di impronte digitali sul <xliff:g id="sensor_location">%1$s </xliff:g> del telefono.</string>
   <!-- Fingerprint sensor locations -->
@@ -90,4 +94,8 @@
   <string name="security_settings_fingerprint_sensor_location_left">lato sinistro</string>
   <string name="security_settings_fingerprint_sensor_location_right">lato destro</string>
   <string name="reset_wallpaper_notice">Ripristino wallpaper predefinito</string>
+  <string name="columns_menu">Layout colonne</string>
+  <string name="hide_summary_menu">Nascondi sommario</string>
+  <string name="heads_up_notifications_enabled_title">Permetti controllo</string>
+  <string name="heads_up_notifications_enabled_summary">Abilita/disabilita controllo di tutte le notifiche</string>
 </resources>

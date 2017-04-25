@@ -23,13 +23,17 @@
   <string name="mod_version">Wersja Omni</string>
   <string name="mod_version_default">Nieznana</string>
   <!-- Main list strings -->
+  <string name="more_settings_title">Więcej</string>
   <string name="interface_bars_title">Paski</string>
   <string name="interface_lockscreen_title">Ekran blokady</string>
+  <string name="omnigears_category_title">OmniGears</string>
   <string name="header_category_interface">Interfejs</string>
   <string name="performance_settings">Wydajność</string>
   <string name="advanced_settings_title">Zaawansowane</string>
   <string name="button_settings">Przyciski</string>
   <string name="supersu_title">SuperSU</string>
+  <string name="su_dashboard_summary">Zarządzaj prawami Root\'a</string>
+  <string name="superuser_title">Użytkownik Root\'a</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">Powiadomienie trybu debugowania</string>
   <string name="adb_notify_summary">Wyświetl powiadomienie, gdy urządzenie jest połączone w trybie debugowania</string>

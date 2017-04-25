@@ -20,19 +20,74 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- About phone screen,  setting option name-->
+  <string name="mod_version">Omni versjon</string>
+  <string name="mod_version_default">Ukjent</string>
   <!-- Main list strings -->
+  <string name="more_settings_title">Mer</string>
+  <string name="interface_lockscreen_title">Låseskjerm</string>
+  <string name="omnigears_category_title">OmniGears</string>
+  <string name="header_category_interface">Grensesnitt</string>
+  <string name="performance_settings">Ytelse</string>
+  <string name="advanced_settings_title">Avansert</string>
+  <string name="button_settings">Knapper</string>
+  <string name="supersu_title">SuperSU</string>
+  <string name="su_dashboard_summary">Administrere root-tilgang</string>
+  <string name="superuser_title">Superbruker</string>
+  <string name="interface_style_title">Stil</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
+  <string name="adb_notify">USB debug-varsling</string>
+  <string name="adb_notify_summary">Vis en melding når USB-debug er tilkoblet</string>
+  <string name="volume_adjust_sound_title">Lyd ved volumjustering</string>
+  <string name="screenshot_shutter_sound_title">Skjermbilde lyd</string>
   <!-- Advanced reboot options -->
+  <string name="advanced_reboot_title">Avansert omstart</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+  <string name="show_cpu_info">Vis CPU-info</string>
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+  <string name="show_cpu_info_summary">Skjermoverlegg viser gjeldende CPU-info</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">ADB over nettverk</string>
+  <string name="adb_over_network_summary">Aktiver TCP/IP-feilsøking over nettverksgrensesnitt (Wi-Fi, USB-nettverk). Denne innstillingen tilbakestilles ved omstart</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">Advarsel: Når ADB over nettverk er aktivert, er telefonen åpen for inntrenging på alle tilkoblede nettverk, inkludert GSM datanettverk! \n\nBare bruk denne funksjonen når du er koblet på klarerte nettverk.\n\nVil du aktivere denne funksjonen?</string>
   <!-- Display : Rotation -->
+  <string name="display_rotation_title">Rotasjon</string>
+  <string name="display_rotation_disabled">Deaktivert</string>
+  <string name="display_rotation_unit">grader</string>
+  <string name="display_rotation_category_title">Rotasjonsmodi</string>
+  <string name="display_rotation_0_title">0 grader</string>
+  <string name="display_rotation_90_title">90 grader</string>
+  <string name="display_rotation_180_title">180 grader</string>
+  <string name="display_rotation_270_title">270 grader</string>
   <!-- Lockscreen pin shuffle -->
+  <string name="lock_numpad_random_title">Endre rekkefølgen på PIN-tall</string>
+  <string name="lock_numpad_random_dialog_title">Pin-tall i tilfeldig rekkefølge</string>
+  <string name="lock_numpad_random_off">Deaktivert</string>
+  <string name="lock_numpad_random_always">Alltid</string>
+  <string name="lock_numpad_random_on_request">På forespørsel</string>
+  <string name="alarm_ringtone_title">Standard alarm ringetone</string>
+  <string name="storage_options_category">Varsler</string>
+  <string name="storage_menu_options">Avansert</string>
+  <string name="storage_title_options">Lagringsalternativer</string>
+  <string name="no_media_notification_title">Lagring fjernet varsel</string>
+  <string name="no_media_notification_summary">Vis varsling når lagringsmedier fjernes</string>
+  <string name="mount_notification_title">Montert varsel</string>
+  <string name="mount_notification_summary">Pågående varsel for montert lagring</string>
+  <string name="zen_mode_none_category">Ikke forstyrr</string>
+  <string name="zen_mode_alarms">Tillat alarmer</string>
   <!-- Linked / unlinked notification volume -->
+  <string name="notification_volume_option_title">Varslingsvolum</string>
+  <string name="ring_notification_volume_option_title">Ringe- og varslingsvolum</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings_summary">Vise eller endre app-tillatelser</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Finn fingeravtrykksleser på <xliff:g id="sensor_location">%1$s </xliff:g> på telefonen.</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">bak</string>
+  <string name="security_settings_fingerprint_sensor_location_front">foran</string>
+  <string name="security_settings_fingerprint_sensor_location_left">venstre side</string>
+  <string name="security_settings_fingerprint_sensor_location_right">høyre side</string>
+  <string name="reset_wallpaper_notice">Standard bakgrunnsbilde gjenopprettet</string>
 </resources>

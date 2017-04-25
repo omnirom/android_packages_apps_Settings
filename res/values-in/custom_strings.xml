@@ -23,15 +23,23 @@
   <string name="mod_version">Versi Omni</string>
   <string name="mod_version_default">Tidak dikenal</string>
   <!-- Main list strings -->
+  <string name="more_settings_title">Lainnya</string>
+  <string name="interface_bars_title">Bar</string>
   <string name="interface_lockscreen_title">Kunci Layar</string>
-  <string name="omni_device_parts">Fitur perangkat</string>
+  <string name="omnigears_category_title">OmniGears</string>
+  <string name="performance_settings">Kinerja</string>
+  <string name="advanced_settings_title">Tingkat Lanjut</string>
   <string name="button_settings">Tombol</string>
   <string name="supersu_title">SuperSU</string>
   <string name="su_dashboard_summary">Kelola akses root</string>
+  <string name="superuser_title">Superuser</string>
   <string name="interface_style_title">Gaya</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
+  <string name="adb_notify">Pemberitahuan USB debugging</string>
   <!-- Advanced reboot options -->
+  <string name="advanced_reboot_title">Reboot lanjutan</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+  <string name="show_cpu_info">Tampilkan info CPU</string>
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
   <!-- Android debugging over WiFi -->
   <!-- Warning for Adb over Network -->

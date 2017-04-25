@@ -25,7 +25,6 @@
   <!-- Main list strings -->
   <string name="more_settings_title">Mer</string>
   <string name="interface_lockscreen_title">Låsskärm</string>
-  <string name="omni_device_parts">Enhetsfunktioner</string>
   <string name="header_category_interface">Gränssnitt</string>
   <string name="performance_settings">Prestanda</string>
   <string name="advanced_settings_title">Avancerad</string>

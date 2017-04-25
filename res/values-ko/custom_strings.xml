@@ -27,7 +27,6 @@
   <string name="interface_bars_title">상태 표시줄</string>
   <string name="interface_lockscreen_title">잠금 화면</string>
   <string name="omnigears_category_title">OmniGears</string>
-  <string name="omni_device_parts">기기 기능</string>
   <string name="header_category_interface">인터페이스</string>
   <string name="performance_settings">성능</string>
   <string name="advanced_settings_title">고급 설정</string>
