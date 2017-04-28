@@ -56,6 +56,21 @@ import com.android.settings.wifi.AdvancedWifiSettings;
 import com.android.settings.wifi.SavedAccessPointsWifiSettings;
 import com.android.settings.wifi.WifiSettings;
 
+//Omni
+import org.omnirom.omnigears.ButtonBrightnessSettings;
+import org.omnirom.omnigears.ButtonSettings;
+import org.omnirom.omnigears.DisplayRotation;
+import org.omnirom.omnigears.batterylight.BatteryLightSettings;
+import org.omnirom.omnigears.batterylight.NotificationLightSettings;
+import org.omnirom.omnigears.interfacesettings.BarsSettings;
+import org.omnirom.omnigears.interfacesettings.GlobalActionsSettings;
+import org.omnirom.omnigears.interfacesettings.LockscreenSettings;
+import org.omnirom.omnigears.interfacesettings.NetworkTraffic;
+import org.omnirom.omnigears.interfacesettings.StatusbarBatterySettings;
+import org.omnirom.omnigears.interfacesettings.StyleSettings;
+import org.omnirom.omnigears.lightssettings.LightsSettings;
+import org.omnirom.omnigears.moresettings.MoreSettings;
+
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -326,6 +341,105 @@ public final class SearchIndexableResources {
                         R.xml.zen_mode_visual_interruptions_settings,
                         ZenModeVisualInterruptionSettings.class.getName(),
                         R.drawable.ic_settings_notifications));
+
+        //Omni
+        sResMap.put(BarsSettings.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(
+                                BarsSettings.class.getName()),
+                        R.xml.bars_settings,
+                        BarsSettings.class.getName(),
+                        R.drawable.ic_bars_tile));
+
+        sResMap.put(NetworksTraffic.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(
+                                NetworksTraffic.class.getName()),
+                        R.xml.network_traffic,
+                        NetworksTraffic.class.getName(),
+                        R.drawable.ic_bars_tile));
+
+
+        sResMap.put(ButtonSettings.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(
+                                ButtonSettings.class.getName()),
+                        R.xml.button_settings,
+                        ButtonSettings.class.getName(),
+                        R.drawable.ic_settings_buttons));
+
+        sResMap.put(ButtonBrightnessSettings.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(
+                                ButtonBrightnessSettings.class.getName()),
+                        R.xml.button_brightness_settings,
+                        ButtonBrightnessSettings.class.getName(),
+                        R.drawable.ic_settings_buttons));
+
+        sResMap.put(GlobalActionsSettings.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(
+                                GlobalActionsSettings.class.getName()),
+                        R.xml.global_actions,
+                        GlobalActionsSettings.class.getName(),
+                        R.drawable.ic_settings_buttons));
+
+        sResMap.put(LockscreenSettings.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(
+                                LockscreenSettings.class.getName()),
+                        R.xml.lockscreen_settings,
+                        LockscreenSettings.class.getName(),
+                        R.drawable.ic_lockscreen_tile));
+
+        sResMap.put(LightsSettings.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(
+                                LightsSettings.class.getName()),
+                        R.xml.lights_settings,
+                        LightsSettings.class.getName(),
+                        R.drawable.ic_settings_lights));
+
+        sResMap.put(BatteryLightSettings.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(
+                                BatteryLightSettings.class.getName()),
+                        R.xml.battery_light_settings,
+                        BatteryLightSettings.class.getName(),
+                        R.drawable.ic_settings_lights));
+
+        sResMap.put(NotificationLightSettings.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(
+                                NotificationLightSettings.class.getName()),
+                        R.xml.notification_light_settings,
+                        NotificationLightSettings.class.getName(),
+                        R.drawable.ic_settings_lights));
+
+        sResMap.put(StyleSettings.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(
+                                StyleSettings.class.getName()),
+                        R.xml.style_settings,
+                        StyleSettings.class.getName(),
+                        R.drawable.ic_settings_style));
+
+        sResMap.put(StatusbarBatterySettings.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(
+                                StatusbarBatterySettings.class.getName()),
+                        R.xml.statusbar_battery_settings,
+                        StatusbarBatterySettings.class.getName(),
+                        R.drawable.ic_settings_style));
+
+        sResMap.put(MoreSettings.class.getName(),
+                new SearchIndexableResource(
+                        Ranking.getRankForClassName(
+                                MoreSettings.class.getName()),
+                        R.xml.more_settings,
+                        MoreSettings.class.getName(),
+                        R.drawable.ic_settings_more));
+
     }
 
     private SearchIndexableResources() {

@@ -56,6 +56,21 @@ import com.android.settings.wifi.AdvancedWifiSettings;
 import com.android.settings.wifi.SavedAccessPointsWifiSettings;
 import com.android.settings.wifi.WifiSettings;
 
+//Omni
+import org.omnirom.omnigears.ButtonBrightnessSettings;
+import org.omnirom.omnigears.ButtonSettings;
+import org.omnirom.omnigears.DisplayRotation;
+import org.omnirom.omnigears.batterylight.BatteryLightSettings;
+import org.omnirom.omnigears.batterylight.NotificationLightSettings;
+import org.omnirom.omnigears.interfacesettings.BarsSettings;
+import org.omnirom.omnigears.interfacesettings.GlobalActionsSettings;
+import org.omnirom.omnigears.interfacesettings.LockscreenSettings;
+import org.omnirom.omnigears.interfacesettings.NetworkTraffic;
+import org.omnirom.omnigears.interfacesettings.StatusbarBatterySettings;
+import org.omnirom.omnigears.interfacesettings.StyleSettings;
+import org.omnirom.omnigears.lightssettings.LightsSettings;
+import org.omnirom.omnigears.moresettings.MoreSettings;
+
 import java.util.HashMap;
 
 /**
@@ -87,6 +102,7 @@ public final class Ranking {
     public static final int RANK_DEVELOPEMENT = 22;
     public static final int RANK_DEVICE_INFO = 23;
     public static final int RANK_GESTURE = 24;
+    public static final int RANK_OMNI = 25;
 
     public static final int RANK_UNDEFINED = -1;
     public static final int RANK_OTHERS = 1024;
@@ -184,6 +200,21 @@ public final class Ranking {
         // Device infos
         sRankMap.put(DeviceInfoSettings.class.getName(), RANK_DEVICE_INFO);
         sRankMap.put(LegalSettings.class.getName(), RANK_DEVICE_INFO);
+
+        // OmniGears
+        sRankMap.put(ButtonBrightnessSetting.class.getName(), RANK_OMNI);
+        sRankMap.put(ButtonSettings.class.getName(), RANK_OMNI);
+        sRankMap.put(DisplayRotation.class.getName(), RANK_OMNI);
+        sRankMap.put(BatteryLightSettings.class.getName(), RANK_OMNI);
+        sRankMap.put(NotificationLightSettings.class.getName(), RANK_OMNI);
+        sRankMap.put(BarsSettings.class.getName(), RANK_OMNI);
+        sRankMap.put(GlobalActionsSettings.class.getName(), RANK_OMNI);
+        sRankMap.put(LockscreenSettings.class.getName(), RANK_OMNI);
+        sRankMap.put(NetworkTraffic.class.getName(), RANK_OMNI);
+        sRankMap.put(StatusbarBatterySetting.class.getName(), RANK_OMNI);
+        sRankMap.put(StyleSettings.class.getName(), RANK_OMNI);
+        sRankMap.put(LightsSettings.class.getName(), RANK_OMNI);
+        sRankMap.put(MoreSettings.class.getName(), RANK_OMNI);
 
         sBaseRankMap.put("com.android.settings", 0);
     }
