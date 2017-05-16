@@ -27,6 +27,7 @@
   <string name="interface_bars_title">Paski</string>
   <string name="interface_lockscreen_title">Ekran blokady</string>
   <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">Funkcje urządzenia</string>
   <string name="header_category_interface">Interfejs</string>
   <string name="performance_settings">Wydajność</string>
   <string name="advanced_settings_title">Zaawansowane</string>
@@ -34,10 +35,12 @@
   <string name="supersu_title">SuperSU</string>
   <string name="su_dashboard_summary">Zarządzaj prawami Root\'a</string>
   <string name="superuser_title">Użytkownik Root\'a</string>
+  <string name="interface_style_title">Styl</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">Powiadomienie trybu debugowania</string>
   <string name="adb_notify_summary">Wyświetl powiadomienie, gdy urządzenie jest połączone w trybie debugowania</string>
   <string name="volume_adjust_sound_title">Dźwięk regulacji głośności</string>
+  <string name="screenshot_shutter_sound_title">Dźwięk migawki zrzutu ekranu</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Zaawansowany restart</string>
   <string name="advanced_reboot_summary">Dołącz funkcje ponownego uruchomienia w trybie recovery lub bootloadera w menu zasilania</string>
@@ -81,7 +84,19 @@
   <string name="ring_notification_volume_option_title">Głośność dzwonka i powiadomień</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings">App ops</string>
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings_summary">Wyświetl lub zmień uprawnienia aplikacji</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Określ lokalizację czujnika odcisków palców na <xliff:g id="sensor_location">%1$s</xliff:g> telefonu.</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">tył</string>
+  <string name="security_settings_fingerprint_sensor_location_front">przód</string>
+  <string name="security_settings_fingerprint_sensor_location_left">lewa strona</string>
+  <string name="security_settings_fingerprint_sensor_location_right">prawa strona</string>
+  <string name="reset_wallpaper_notice">Domyślna tapeta przywrócona</string>
+  <string name="columns_menu">Układ kolumn</string>
+  <string name="hide_summary_menu">Ukryj podsumowanie</string>
+  <string name="heads_up_notifications_enabled_title">Zezwól na podgląd</string>
+  <string name="heads_up_notifications_enabled_summary">Zezwól lub wyłącz podgląd dla wszystkich powiadomień</string>
 </resources>

@@ -27,6 +27,7 @@
   <string name="interface_bars_title">Leisten</string>
   <string name="interface_lockscreen_title">Sperrbildschirm</string>
   <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">Gerätefunktionen</string>
   <string name="header_category_interface">Benutzeroberfläche</string>
   <string name="performance_settings">Leistung</string>
   <string name="advanced_settings_title">Erweitert</string>
@@ -87,12 +88,12 @@
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
   <string name="app_ops_settings_summary">Anzeigen oder Ändern von App-Berechtigungen</string>
   <!-- Format string for fingerprint location message -->
-  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Suchen Sie den Fingerprint-Sensor auf der <xliff:g id="sensor_location">%1$s </xliff:g> des Telefons.</string>
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Suchen Sie den Fingerabdruck-Sensor auf der <xliff:g id="sensor_location">%1$s </xliff:g> des Telefons.</string>
   <!-- Fingerprint sensor locations -->
   <string name="security_settings_fingerprint_sensor_location_back">Rückseite</string>
   <string name="security_settings_fingerprint_sensor_location_front">Vorderseite</string>
   <string name="security_settings_fingerprint_sensor_location_left">linke Seite</string>
-  <string name="security_settings_fingerprint_sensor_location_right">rechten Seite</string>
+  <string name="security_settings_fingerprint_sensor_location_right">rechte Seite</string>
   <string name="reset_wallpaper_notice">Standard-Hintergrundbild wiederhergestellt</string>
   <string name="columns_menu">Spalten-Layout</string>
   <string name="hide_summary_menu">Zusammenfassung verbergen</string>

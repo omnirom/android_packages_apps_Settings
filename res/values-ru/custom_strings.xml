@@ -27,6 +27,7 @@
   <string name="interface_bars_title">Панели</string>
   <string name="interface_lockscreen_title">Экран блокировки</string>
   <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">Возможности устройства</string>
   <string name="header_category_interface">Интерфейс</string>
   <string name="performance_settings">Производительность</string>
   <string name="advanced_settings_title">Расширенные настройки</string>
@@ -83,6 +84,7 @@
   <string name="ring_notification_volume_option_title">Громокость звонка и уведомлений</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings">Операции в приложениях</string>
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
   <string name="app_ops_settings_summary">Посмотреть или изменить разрешения для приложений</string>
   <!-- Format string for fingerprint location message -->
@@ -95,4 +97,6 @@
   <string name="reset_wallpaper_notice">Обои по умолчанию восстановлены</string>
   <string name="columns_menu">Макет столбцов</string>
   <string name="hide_summary_menu">Скрыть содержание</string>
+  <string name="heads_up_notifications_enabled_title">Разрешить всплывающие уведомления</string>
+  <string name="heads_up_notifications_enabled_summary">Разрешить или запретить всплывающие уведомления</string>
 </resources>

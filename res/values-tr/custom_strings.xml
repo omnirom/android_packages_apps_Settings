@@ -27,6 +27,7 @@
   <string name="interface_bars_title">Çubuklar</string>
   <string name="interface_lockscreen_title">Kilit ekranı</string>
   <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">Cihaz özellikleri</string>
   <string name="header_category_interface">Arayüz</string>
   <string name="performance_settings">Performans</string>
   <string name="advanced_settings_title">Gelişmiş</string>
@@ -95,7 +96,7 @@
   <string name="security_settings_fingerprint_sensor_location_right">sağ yan</string>
   <string name="reset_wallpaper_notice">Varsayılan duvar kağıdı geri yüklendi</string>
   <string name="columns_menu">Sütun düzeni</string>
-  <string name="hide_summary_menu">Özetİ gizle</string>
-  <string name="heads_up_notifications_enabled_title">Gözatmaya izin ver</string>
-  <string name="heads_up_notifications_enabled_summary">Tüm bildirimler için göz atmaya izin ver veya devre dışı bırak</string>
+  <string name="hide_summary_menu">Özeti gizle</string>
+  <string name="heads_up_notifications_enabled_title">Ekran üstü bildirimlerine izin ver</string>
+  <string name="heads_up_notifications_enabled_summary">Bütün ekran üstü bildirimlerine izin ver veya devre dışı bırak</string>
 </resources>

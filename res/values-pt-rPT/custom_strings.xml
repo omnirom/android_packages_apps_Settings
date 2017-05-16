@@ -23,17 +23,24 @@
   <string name="mod_version">Versão Omni</string>
   <string name="mod_version_default">Desconhecido</string>
   <!-- Main list strings -->
+  <string name="more_settings_title">Mais</string>
   <string name="interface_bars_title">Barras</string>
   <string name="interface_lockscreen_title">Ecrã de Bloqueio</string>
+  <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">Características do dispositivo</string>
   <string name="header_category_interface">Personalização</string>
   <string name="performance_settings">Desempenho</string>
   <string name="advanced_settings_title">Preferências Avançadas</string>
   <string name="button_settings">Botões</string>
   <string name="supersu_title">SuperSU</string>
+  <string name="su_dashboard_summary">Gerir o acesso root</string>
+  <string name="superuser_title">Root</string>
+  <string name="interface_style_title">Estilo</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">Notificação de depuração USB</string>
   <string name="adb_notify_summary">Mostrar uma notificação quando a depuração USB estiver activada</string>
   <string name="volume_adjust_sound_title">Som de ajuste do volume</string>
+  <string name="screenshot_shutter_sound_title">Som da captura de ecrã</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Reinicialização avançada</string>
   <string name="advanced_reboot_summary">Incluir opções no menu de energia para reiniciar nos modos de recuperação ou bootloader</string>
@@ -77,7 +84,19 @@
   <string name="ring_notification_volume_option_title">Volume de toque e notificação</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings">App Ops</string>
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings_summary">Ver ou modificar as permissões das aplicações</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Localize o sensor de impressão digital na <xliff:g id="sensor_location">%1$s</xliff:g> do seu equipamento.</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">traseira</string>
+  <string name="security_settings_fingerprint_sensor_location_front">frente</string>
+  <string name="security_settings_fingerprint_sensor_location_left">no lado esquerdo</string>
+  <string name="security_settings_fingerprint_sensor_location_right">no lado direito</string>
+  <string name="reset_wallpaper_notice">O papel de parede padrão foi restaurado</string>
+  <string name="columns_menu">Layout de coluna</string>
+  <string name="hide_summary_menu">Esconder o sumário</string>
+  <string name="heads_up_notifications_enabled_title">Permitir notificações flutuantes</string>
+  <string name="heads_up_notifications_enabled_summary">Activar ou desactivar as notificações flutuantes</string>
 </resources>
