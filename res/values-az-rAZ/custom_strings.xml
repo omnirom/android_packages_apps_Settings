@@ -20,15 +20,37 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- About phone screen,  setting option name-->
+  <string name="mod_version">Omni versiyası</string>
+  <string name="mod_version_default">Naməlum</string>
   <!-- Main list strings -->
+  <string name="more_settings_title">Daha çox</string>
+  <string name="interface_bars_title">Barlar</string>
+  <string name="interface_lockscreen_title">Kilid ekranı</string>
+  <string name="omnigears_category_title">OmniMatorları</string>
+  <string name="omni_device_parts">Cihaz xüsusiyyətləri</string>
+  <string name="header_category_interface">Görünüş</string>
+  <string name="performance_settings">Performans</string>
+  <string name="advanced_settings_title">Ətraflı</string>
+  <string name="button_settings">Düymələr</string>
+  <string name="supersu_title">SuperSU</string>
+  <string name="su_dashboard_summary">Root icazəsini idarə et</string>
+  <string name="superuser_title">Superuser</string>
+  <string name="interface_style_title">Stil</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
+  <string name="adb_notify">USB xəta ayrışdırıcısını bildir</string>
+  <string name="adb_notify_summary">USB debaq qoşulanda ekrana bildiriş gəlsin</string>
+  <string name="volume_adjust_sound_title">Səs tənzimləmə səsi</string>
+  <string name="screenshot_shutter_sound_title">Ss düymə səsi</string>
   <!-- Advanced reboot options -->
+  <string name="advanced_reboot_title">Qabaqcıl yenidən başlatma</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
   <!-- Android debugging over WiFi -->
   <!-- Warning for Adb over Network -->
   <!-- Display : Rotation -->
   <!-- Lockscreen pin shuffle -->
+  <string name="lock_numpad_random_off">Deaktivdir</string>
+  <string name="lock_numpad_random_always">Həmişə</string>
   <!-- Linked / unlinked notification volume -->
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->

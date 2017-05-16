@@ -27,6 +27,7 @@
   <string name="interface_bars_title">Barra di stato</string>
   <string name="interface_lockscreen_title">Schermata di blocco</string>
   <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">Caratteristiche del dispositivo</string>
   <string name="header_category_interface">Interfaccia</string>
   <string name="performance_settings">Prestazioni</string>
   <string name="advanced_settings_title">Avanzate</string>
