@@ -29,7 +29,7 @@
         android:singleLine="true"
         android:ellipsize="marquee"
         android:gravity="center_vertical"
-        android:textAppearance="@style/TextAppearance.CategoryTitle"
+        android:textAppearance="@style/TextAppearance.CategoryTitleHeader"
         android:textAlignment="viewStart"
         />
 

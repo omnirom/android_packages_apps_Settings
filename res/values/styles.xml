@@ -336,6 +336,10 @@
         <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
 
+    <style name="TextAppearance.CategoryTitleHeader" parent="@android:style/TextAppearance.Material.Body2">
+        <item name="android:textColor">?android:attr/colorAccent</item>
+    </style>
+
     <style name="TextAppearance.TileTitle" parent="@android:style/TextAppearance.Material.Subhead" />
     <style name="TextAppearance.TileSubTitle" parent="@android:style/TextAppearance.Material.Body1" />
     <style name="TextAppearance.RecentsTitle" parent="TextAppearance.CategoryTitle" />
