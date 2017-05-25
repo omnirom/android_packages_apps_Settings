@@ -1353,16 +1353,7 @@ public class ManageApplications extends InstrumentedPreferenceFragment
 
         @Override
         public boolean isEnabled(int position) {
-            if (position == mEntries.size() && mExtraViewController != null &&
-                    mExtraViewController.shouldShow()) {
-                return true;
-            }
-
-            if (mManageApplications.mListType != LIST_TYPE_HIGH_POWER) {
-                return true;
-            }
-            ApplicationsState.AppEntry entry = mEntries.get(position);
-            return !PowerWhitelistBackend.getInstance().isSysWhitelisted(entry.info.packageName);
+            return true;
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
