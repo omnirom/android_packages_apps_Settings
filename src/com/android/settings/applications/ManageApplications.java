@@ -412,7 +412,8 @@ public class ManageApplications extends InstrumentedFragment
             case LIST_TYPE_STORAGE:
                 return mSortOrder == R.id.sort_order_alpha;
             default:
-                return false;
+                return mSortOrder == R.id.sort_order_alpha;
+                //return false;
         }
     }
 
