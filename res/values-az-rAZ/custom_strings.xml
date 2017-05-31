@@ -43,18 +43,60 @@
   <string name="screenshot_shutter_sound_title">Ss düymə səsi</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Qabaqcıl yenidən başlatma</string>
+  <string name="advanced_reboot_summary">Recovery və bootloader modunda yenidən başlatmaq üçün parametrləri güc menyusuna əlavə edir</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+  <string name="show_cpu_info">CPU məlumatlarını göstər</string>
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+  <string name="show_cpu_info_summary">Ekranın üstündəki CPU məlumatını göstərmə</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">Şəbəkədən ADB</string>
+  <string name="adb_over_network_summary">Şəbəkə interfeyslərində (Wi-Fi, USB şəbəkələri) TCP/IP xəta aşkarlamanı aktivləşdir. Bu parametr yenidən başladıldıqda sıfırlanır</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">XƏBƏRDARLIQ: Şəbəkədə ADB aktiv olanda telefonunuz GSM məlumat şəbəkəsi də olmaqla bütün qoşulu şəbəkələrdən sui-istifadəyə açıq olacaq!\n\nBu xüsusiyyəti yalnız təhlükəsiz şəbəkələrə qoşulu olanda istifadə edin.\n\nBu xüsusiyyət aktivləşdirilsin?</string>
   <!-- Display : Rotation -->
+  <string name="display_rotation_title">Ekranı Fırlatmaq</string>
+  <string name="display_rotation_disabled">Qeyri-Aktiv</string>
+  <string name="display_rotation_unit">dərəcə</string>
+  <string name="display_rotation_category_title">Fırlanma modları</string>
+  <string name="display_rotation_0_title">0 dərəcə</string>
+  <string name="display_rotation_90_title">90 dərəcə</string>
+  <string name="display_rotation_180_title">180 dərəcə</string>
+  <string name="display_rotation_270_title">270 dərəcə</string>
   <!-- Lockscreen pin shuffle -->
+  <string name="lock_numpad_random_title">PIN daxil etmə nömrələrinin sırasını dəyişdir</string>
+  <string name="lock_numpad_random_dialog_title">PIN daxil etmə düymələrini təsadüfi sırala</string>
   <string name="lock_numpad_random_off">Deaktivdir</string>
   <string name="lock_numpad_random_always">Həmişə</string>
+  <string name="lock_numpad_random_on_request">Tələb əsasında</string>
+  <string name="alarm_ringtone_title">Standart alarm zəng səsi</string>
+  <string name="storage_options_category">Bildirişlər</string>
+  <string name="storage_menu_options">Qabaqcıl</string>
+  <string name="storage_title_options">Yaddaş parametrləri</string>
+  <string name="no_media_notification_title">Yaddaş silindi bildirişi</string>
+  <string name="no_media_notification_summary">Yaddaş yeri silinəndə bildiriş gəlsin</string>
+  <string name="mount_notification_title">Qoşulma bildirişi</string>
+  <string name="mount_notification_summary">Qoşulu yaddaş üçün davam edən bildirişi göstər</string>
+  <string name="zen_mode_none_category">Kəsilmə yoxdur</string>
+  <string name="zen_mode_alarms">Alarmları aktivləşdir</string>
   <!-- Linked / unlinked notification volume -->
+  <string name="link_volume_option_title">Zəng və bildiriş səslərini birləşdir</string>
+  <string name="notification_volume_option_title">Bildiriş səsi</string>
+  <string name="ring_notification_volume_option_title">Zəng və bildiriş səsi</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings">Tətbiqetmə imkanları</string>
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings_summary">Tətbiqetmə icazələrini göstər və ya dəyişdir</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Telefonunuzun <xliff:g id="sensor_location">%1$s</xliff:g> bölməsində yerləşən barmaq izi sensorunu tapın.</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">arxa</string>
+  <string name="security_settings_fingerprint_sensor_location_front">ön</string>
+  <string name="security_settings_fingerprint_sensor_location_left">sol tərəf</string>
+  <string name="security_settings_fingerprint_sensor_location_right">sağ tərəf</string>
+  <string name="reset_wallpaper_notice">Standart divar kağızı geri qaytarıldı</string>
+  <string name="columns_menu">Sütun tərtibatı</string>
+  <string name="hide_summary_menu">Qısa məzmunu gizlət</string>
+  <string name="heads_up_notifications_enabled_title">Ekran üstü bildirişlərə icazə ver</string>
+  <string name="heads_up_notifications_enabled_summary">Bütün ekran üstü bildirişlərə icazə ver və ya qeyri-aktiv et</string>
 </resources>

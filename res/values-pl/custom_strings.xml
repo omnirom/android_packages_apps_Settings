@@ -34,8 +34,8 @@
   <string name="button_settings">Przyciski</string>
   <string name="supersu_title">SuperSU</string>
   <string name="su_dashboard_summary">Zarządzaj prawami Root\'a</string>
-  <string name="superuser_title">Użytkownik Root\'a</string>
-  <string name="interface_style_title">Styl</string>
+  <string name="superuser_title">Użytkownik Root</string>
+  <string name="interface_style_title">Wygląd</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">Powiadomienie trybu debugowania</string>
   <string name="adb_notify_summary">Wyświetl powiadomienie, gdy urządzenie jest połączone w trybie debugowania</string>

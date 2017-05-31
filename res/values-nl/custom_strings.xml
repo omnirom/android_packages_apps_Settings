@@ -23,17 +23,24 @@
   <string name="mod_version">Omni-versie</string>
   <string name="mod_version_default">Onbekend</string>
   <!-- Main list strings -->
+  <string name="more_settings_title">Meer</string>
   <string name="interface_bars_title">Balken</string>
   <string name="interface_lockscreen_title">Vergrendelscherm</string>
+  <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">Apparaat functies</string>
   <string name="header_category_interface">Interface</string>
   <string name="performance_settings">Prestaties</string>
   <string name="advanced_settings_title">Uitgebreid</string>
   <string name="button_settings">Knoppen</string>
   <string name="supersu_title">SuperSU</string>
+  <string name="su_dashboard_summary">Root-toegang beheren</string>
+  <string name="superuser_title">Superuser</string>
+  <string name="interface_style_title">Stijl</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">USB-foutopsporingsmodus notificatie</string>
   <string name="adb_notify_summary">Melding tonen indien USB-foutopsporingmodus is ingeschakeld</string>
   <string name="volume_adjust_sound_title">Geluid bij aanpassen volume</string>
+  <string name="screenshot_shutter_sound_title">Schermopname sluitergeluid</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Geavanceerd herstarten</string>
   <string name="advanced_reboot_summary">Opties in het power menu toevoegen voor herstarten in recovery of bootloader</string>
@@ -77,7 +84,9 @@
   <string name="ring_notification_volume_option_title">Volume beltoon en meldingen</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings">App ops</string>
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings_summary">App machtigingen bekijken of wijzigen</string>
   <!-- Format string for fingerprint location message -->
   <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Vind de vingerafdruk sensor op de <xliff:g id="sensor_location">%1$s</xliff:g> van uw telefoon.</string>
   <!-- Fingerprint sensor locations -->
@@ -85,4 +94,9 @@
   <string name="security_settings_fingerprint_sensor_location_front">voorkant</string>
   <string name="security_settings_fingerprint_sensor_location_left">linker kant</string>
   <string name="security_settings_fingerprint_sensor_location_right">rechter kant</string>
+  <string name="reset_wallpaper_notice">Standaardachtergrond hersteld</string>
+  <string name="columns_menu">Kolommen lay-out</string>
+  <string name="hide_summary_menu">Verberg samenvatting</string>
+  <string name="heads_up_notifications_enabled_title">Gluren toestaan</string>
+  <string name="heads_up_notifications_enabled_summary">Gluren toestaan in- of uitschakelen voor alle meldingen</string>
 </resources>
