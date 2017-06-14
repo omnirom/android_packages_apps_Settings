@@ -1349,7 +1349,7 @@ public class SettingsActivity extends SettingsDrawerActivity
             setContentHeaderView(null);
             mSearchResultsFragment = (SearchResultsSummary) switchToFragment(
                     SearchResultsSummary.class.getName(), null, false, true,
-                    R.string.search_results_title, null, true);
+                    R.string.search_results_title, null, false);
         }
         mSearchResultsFragment.setSearchView(mSearchView);
         mSearchMenuItemExpanded = true;
