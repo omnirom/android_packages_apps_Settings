@@ -23,6 +23,11 @@
   <string name="mod_version">Έκδοση Omni</string>
   <string name="mod_version_default">Άγνωστο</string>
   <!-- Main list strings -->
+  <string name="more_settings_title">Περισσότερα</string>
+  <string name="interface_bars_title">Γραμμές</string>
+  <string name="interface_lockscreen_title">Κλείδωμα οθόνης</string>
+  <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">Δυνατότητες συσκευής</string>
   <string name="header_category_interface">Διεπαφή</string>
   <string name="performance_settings">Επιδόσεις</string>
   <string name="advanced_settings_title">Σύνθετες επιλογές</string>
@@ -31,14 +36,29 @@
   <string name="adb_notify">Ειδοποίηση εντοπισμού σφαλμάτων USB</string>
   <string name="adb_notify_summary">Εμφάνιση ειδοποίησης όταν ο εντοπισμός σφαλμάτων μέσω USB είναι ενεργοποιημένος</string>
   <string name="volume_adjust_sound_title">Προσαρμογή έντασης ήχου</string>
+  <string name="screenshot_shutter_sound_title">Ήχος κλείστρου στιγμιότυπου οθόνης</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Προηγμένη επανεκκίνηση</string>
+  <string name="advanced_reboot_summary">Περιλαμβάνει επιλογές στο μενού λειτουργίας για επανεκκίνηση σε λειτουργίες recovery και bootloader</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+  <string name="show_cpu_info">Εμφάνιση πληροφοριών CPU</string>
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+  <string name="show_cpu_info_summary">Επικάλυψη οθόνης με τρέχουσες πληροφορίες για CPU</string>
   <!-- Android debugging over WiFi -->
   <!-- Warning for Adb over Network -->
   <!-- Display : Rotation -->
+  <string name="display_rotation_0_title">0 μοίρες</string>
+  <string name="display_rotation_90_title">90 μοίρες</string>
+  <string name="display_rotation_180_title">180 μοίρες</string>
+  <string name="display_rotation_270_title">270 μοίρες</string>
   <!-- Lockscreen pin shuffle -->
+  <string name="lock_numpad_random_title">Αλλαγή σειράς αριθμών πληκτρολογίου PIN</string>
+  <string name="lock_numpad_random_dialog_title">Τυχαία σειρά πληκτρολογίου PIN</string>
+  <string name="lock_numpad_random_off">Ανενεργό</string>
+  <string name="lock_numpad_random_always">Πάντα</string>
+  <string name="mount_notification_title">Ειδοποίηση προσάρτησης</string>
+  <string name="mount_notification_summary">Εμφάνιση ειδοποίησης προόδου για την προσάρτηση χώρου αποθήκευσης</string>
+  <string name="zen_mode_none_category">Χωρίς παρεμβολές</string>
   <!-- Linked / unlinked notification volume -->
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->

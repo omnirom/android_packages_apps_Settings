@@ -37,8 +37,8 @@
   <string name="superuser_title">Superbruker</string>
   <string name="interface_style_title">Stil</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
-  <string name="adb_notify">USB debug-varsling</string>
-  <string name="adb_notify_summary">Vis en melding når USB-debug er tilkoblet</string>
+  <string name="adb_notify">USB-feilsøkingsvarsel</string>
+  <string name="adb_notify_summary">Vis en melding når USB-feilsøking er tilkoblet</string>
   <string name="volume_adjust_sound_title">Lyd ved volumjustering</string>
   <string name="screenshot_shutter_sound_title">Skjermbilde lyd</string>
   <!-- Advanced reboot options -->
