@@ -23,14 +23,14 @@
   <string name="mod_version">Omni sürümü</string>
   <string name="mod_version_default">Bilinmiyor</string>
   <!-- Main list strings -->
-  <string name="more_settings_title">Daha Fazla</string>
+  <string name="more_settings_title">Daha fazla</string>
   <string name="interface_bars_title">Çubuklar</string>
   <string name="interface_lockscreen_title">Kilit ekranı</string>
   <string name="omnigears_category_title">OmniGears</string>
   <string name="omni_device_parts">Cihaz özellikleri</string>
   <string name="header_category_interface">Arayüz</string>
   <string name="performance_settings">Performans</string>
-  <string name="advanced_settings_title">Gelişmiş</string>
+  <string name="advanced_settings_title">İleri seviye</string>
   <string name="button_settings">Tuşlar</string>
   <string name="supersu_title">SuperSU</string>
   <string name="su_dashboard_summary">Root erişimini yönet</string>
@@ -39,20 +39,20 @@
   <!-- Setting checkbox summary for displaying USB debugging notification -->
   <string name="adb_notify">USB hata ayıklama bildirimi</string>
   <string name="adb_notify_summary">USB hata ayıklama bağlandığında bir bildirim göster</string>
-  <string name="volume_adjust_sound_title">Ses ayarlama uyarı sesi</string>
+  <string name="volume_adjust_sound_title">Ses seviyesini ayarlama sesi</string>
   <string name="screenshot_shutter_sound_title">Ekran görüntüsü deklanşör sesi</string>
   <!-- Advanced reboot options -->
-  <string name="advanced_reboot_title">Gelişmiş yeniden başlatma</string>
-  <string name="advanced_reboot_summary">Recovery ve bootloader moduna yeniden başlatmak için seçenekleri güç menüsüne ekler</string>
+  <string name="advanced_reboot_title">İleri seviye yeniden başlatma</string>
+  <string name="advanced_reboot_summary">Recovery veyâ bootloader moduna geçmenize imkân sağlayan seçenekleri güç menüsüne dâhil edin</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
-  <string name="show_cpu_info">CPU bilgilerini göster</string>
+  <string name="show_cpu_info">İşlemci bilgisini göster</string>
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
-  <string name="show_cpu_info_summary">Ekran üzerinde CPU bilgisi görüntüleme</string>
+  <string name="show_cpu_info_summary">Ekran üzerinde işlemci bilgisi görüntüleme</string>
   <!-- Android debugging over WiFi -->
   <string name="adb_over_network">Ağ üzerinden ADB</string>
-  <string name="adb_over_network_summary">Ağ arayüzleri (Wi-Fi, USB ağları) üzerinde TCP/IP hata ayıklamayı etkinleştir. Bu ayar yeniden başlatılmada sıfırlanır</string>
+  <string name="adb_over_network_summary">Ağ arayüzleri (Wi-Fi, USB ağları) üzerinde TCP/IP hata ayıklamayı etkinleştirin. Bu ayar telefonu yeniden başlattığınızda sıfırlanır</string>
   <!-- Warning for Adb over Network -->
-  <string name="adb_over_network_warning">UYARI: Ağ üzerinden ADB aktifken telefonunuz GSM veri ağı dahil tüm bağlı ağlar üzerinden kötüye kullanımlara açık olacaktır!\n\nBu özelliği sadece güvenlir ağlara bağlıyken kullanın.\n\nBu özellik açılsın mı?</string>
+  <string name="adb_over_network_warning">UYARI: Ağ üzerinden ADB etkinleştirildiğinde, telefonunuz GSM veri ağı dâhil tüm bağlı ağlar üzerinde güvenlik ihlâline açık olacaktır!\n\nBu özelliği sadece güvenilir ağlara bağlıyken kullanın.\n\nBu özelliği gerçekten etkinleştirmek istiyor musunuz?</string>
   <!-- Display : Rotation -->
   <string name="display_rotation_title">Döndürme</string>
   <string name="display_rotation_disabled">Devre dışı</string>
@@ -66,34 +66,34 @@
   <string name="lock_numpad_random_title">PIN giriş numaralarının sırasını değiştir</string>
   <string name="lock_numpad_random_dialog_title">PIN giriş tuşlarını rastgele sırala</string>
   <string name="lock_numpad_random_off">Devre dışı</string>
-  <string name="lock_numpad_random_always">Her zaman</string>
-  <string name="lock_numpad_random_on_request">İstek üzerine</string>
+  <string name="lock_numpad_random_always">Daimâ</string>
+  <string name="lock_numpad_random_on_request">Talep üzerine</string>
   <string name="alarm_ringtone_title">Varsayılan alarm zil sesi</string>
   <string name="storage_options_category">Bildirimler</string>
-  <string name="storage_menu_options">Gelişmiş</string>
+  <string name="storage_menu_options">İleri seviye</string>
   <string name="storage_title_options">Depolama seçenekleri</string>
   <string name="no_media_notification_title">Depolama kaldırıldı bildirimi</string>
   <string name="no_media_notification_summary">Depolama ortamı kaldırıldığında bildirim göster</string>
   <string name="mount_notification_title">Bağlama bildirimi</string>
-  <string name="mount_notification_summary">Bağlı depolama için devam eden bildirim görüntüle</string>
-  <string name="zen_mode_none_category">Kesinti yok</string>
+  <string name="mount_notification_summary">Bağlı depolama için daimî bildirim görüntüle</string>
+  <string name="zen_mode_none_category">Sekte yok</string>
   <string name="zen_mode_alarms">Alarmlara izin ver</string>
   <!-- Linked / unlinked notification volume -->
-  <string name="link_volume_option_title">Zil ve bildirim seslerini birleştir</string>
-  <string name="notification_volume_option_title">Bildirim sesi</string>
-  <string name="ring_notification_volume_option_title">Zil ve bildirim sesi</string>
+  <string name="link_volume_option_title">Zil ve bildirim sesi seviyesini birleştir</string>
+  <string name="notification_volume_option_title">Bildirim sesi seviyesi</string>
+  <string name="ring_notification_volume_option_title">Zil ve bildirim sesi seviyesi</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
   <string name="app_ops_settings">Uygulama işlemleri</string>
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
   <string name="app_ops_settings_summary">Uygulama izinlerini görüntüle veya değiştir</string>
   <!-- Format string for fingerprint location message -->
-  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Telefonunuzun <xliff:g id="sensor_location">%1$s</xliff:g> bölümünde bulunan parmakizi sensörünü bulun.</string>
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Telefonunuzun <xliff:g id="sensor_location">%1$s</xliff:g> bulunan parmak izi sensörünü bulun.</string>
   <!-- Fingerprint sensor locations -->
-  <string name="security_settings_fingerprint_sensor_location_back">arka</string>
-  <string name="security_settings_fingerprint_sensor_location_front">ön</string>
-  <string name="security_settings_fingerprint_sensor_location_left">sol yan</string>
-  <string name="security_settings_fingerprint_sensor_location_right">sağ yan</string>
+  <string name="security_settings_fingerprint_sensor_location_back">arkasında</string>
+  <string name="security_settings_fingerprint_sensor_location_front">önünde</string>
+  <string name="security_settings_fingerprint_sensor_location_left">sol tarafında</string>
+  <string name="security_settings_fingerprint_sensor_location_right">sağ tarafında</string>
   <string name="reset_wallpaper_notice">Varsayılan duvar kağıdı geri yüklendi</string>
   <string name="columns_menu">Sütun düzeni</string>
   <string name="hide_summary_menu">Özeti gizle</string>
