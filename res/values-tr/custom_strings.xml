@@ -31,28 +31,28 @@
   <string name="header_category_interface">Arayüz</string>
   <string name="performance_settings">Performans</string>
   <string name="advanced_settings_title">İleri seviye</string>
-  <string name="button_settings">Tuşlar</string>
+  <string name="button_settings">Düğmeler</string>
   <string name="supersu_title">SuperSU</string>
   <string name="su_dashboard_summary">Root erişimini yönet</string>
   <string name="superuser_title">Superuser</string>
   <string name="interface_style_title">Tarz</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
-  <string name="adb_notify">USB hata ayıklama bildirimi</string>
-  <string name="adb_notify_summary">USB hata ayıklama bağlandığında bir bildirim göster</string>
+  <string name="adb_notify">USB hatâ ayıklama bildirimi</string>
+  <string name="adb_notify_summary">USB hata ayıklama bağlandığında bir bildirim görüntüle</string>
   <string name="volume_adjust_sound_title">Ses seviyesini ayarlama sesi</string>
-  <string name="screenshot_shutter_sound_title">Ekran görüntüsü deklanşör sesi</string>
+  <string name="screenshot_shutter_sound_title">Ekran görüntüsü alınırken deklanşör sesi</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">İleri seviye yeniden başlatma</string>
   <string name="advanced_reboot_summary">Recovery veyâ bootloader moduna geçmenize imkân sağlayan seçenekleri güç menüsüne dâhil edin</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
   <string name="show_cpu_info">İşlemci bilgisini göster</string>
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
-  <string name="show_cpu_info_summary">Ekran üzerinde işlemci bilgisi görüntüleme</string>
+  <string name="show_cpu_info_summary">Mevcud işlemci bilgisini gösteren yardımcı grafik</string>
   <!-- Android debugging over WiFi -->
   <string name="adb_over_network">Ağ üzerinden ADB</string>
-  <string name="adb_over_network_summary">Ağ arayüzleri (Wi-Fi, USB ağları) üzerinde TCP/IP hata ayıklamayı etkinleştirin. Bu ayar telefonu yeniden başlattığınızda sıfırlanır</string>
+  <string name="adb_over_network_summary">Ağ arayüzleri (Wi-Fi, USB ağları) üzerinde TCP/IP hatâ ayıklamayı etkinleştirin. Bu ayar telefonu yeniden başlattığınızda sıfırlanır</string>
   <!-- Warning for Adb over Network -->
-  <string name="adb_over_network_warning">UYARI: Ağ üzerinden ADB etkinleştirildiğinde, telefonunuz GSM veri ağı dâhil tüm bağlı ağlar üzerinde güvenlik ihlâline açık olacaktır!\n\nBu özelliği sadece güvenilir ağlara bağlıyken kullanın.\n\nBu özelliği gerçekten etkinleştirmek istiyor musunuz?</string>
+  <string name="adb_over_network_warning">UYARI: Ağ üzerinden ADB etkinleştirildiğinde, telefonunuz GSM veri ağı dâhil bütün bağlandığınız ağlar üzerinde güvenlik ihlâline açık olur!\n\nBu özelliği sadece güvenilir ağlara bağlıyken kullanın.\n\nBu özelliği sahiden etkinleştirmek istiyor musunuz?</string>
   <!-- Display : Rotation -->
   <string name="display_rotation_title">Döndürme</string>
   <string name="display_rotation_disabled">Devre dışı</string>
@@ -63,10 +63,10 @@
   <string name="display_rotation_180_title">180 derece</string>
   <string name="display_rotation_270_title">270 derece</string>
   <!-- Lockscreen pin shuffle -->
-  <string name="lock_numpad_random_title">PIN giriş numaralarının sırasını değiştir</string>
-  <string name="lock_numpad_random_dialog_title">PIN giriş tuşlarını rastgele sırala</string>
+  <string name="lock_numpad_random_title">PIN girme numaralarının sırasını değiştir</string>
+  <string name="lock_numpad_random_dialog_title">PIN girme düğmelerini rastgele sırala</string>
   <string name="lock_numpad_random_off">Devre dışı</string>
-  <string name="lock_numpad_random_always">Daimâ</string>
+  <string name="lock_numpad_random_always">Dâimâ</string>
   <string name="lock_numpad_random_on_request">Talep üzerine</string>
   <string name="alarm_ringtone_title">Varsayılan alarm zil sesi</string>
   <string name="storage_options_category">Bildirimler</string>
@@ -75,7 +75,7 @@
   <string name="no_media_notification_title">Depolama kaldırıldı bildirimi</string>
   <string name="no_media_notification_summary">Depolama ortamı kaldırıldığında bildirim göster</string>
   <string name="mount_notification_title">Bağlama bildirimi</string>
-  <string name="mount_notification_summary">Bağlı depolama için daimî bildirim görüntüle</string>
+  <string name="mount_notification_summary">Bağlı depolama için dâimî bildirim görüntüle</string>
   <string name="zen_mode_none_category">Sekte yok</string>
   <string name="zen_mode_alarms">Alarmlara izin ver</string>
   <!-- Linked / unlinked notification volume -->
@@ -86,7 +86,7 @@
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
   <string name="app_ops_settings">Uygulama işlemleri</string>
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
-  <string name="app_ops_settings_summary">Uygulama izinlerini görüntüle veya değiştir</string>
+  <string name="app_ops_settings_summary">Uygulama izinlerini görüntüle veyâ değiştir</string>
   <!-- Format string for fingerprint location message -->
   <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Telefonunuzun <xliff:g id="sensor_location">%1$s</xliff:g> bulunan parmak izi sensörünü bulun.</string>
   <!-- Fingerprint sensor locations -->
@@ -98,5 +98,5 @@
   <string name="columns_menu">Sütun düzeni</string>
   <string name="hide_summary_menu">Özeti gizle</string>
   <string name="heads_up_notifications_enabled_title">Ekran üstü bildirimlerine izin ver</string>
-  <string name="heads_up_notifications_enabled_summary">Bütün ekran üstü bildirimlerine izin ver veya devre dışı bırak</string>
+  <string name="heads_up_notifications_enabled_summary">Bütün ekran üstü bildirimlerine izin ver veyâ devre dışı bırak</string>
 </resources>

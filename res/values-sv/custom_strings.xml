@@ -25,6 +25,8 @@
   <!-- Main list strings -->
   <string name="more_settings_title">Mer</string>
   <string name="interface_lockscreen_title">Låsskärm</string>
+  <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">Enhetsfunktioner</string>
   <string name="header_category_interface">Gränssnitt</string>
   <string name="performance_settings">Prestanda</string>
   <string name="advanced_settings_title">Avancerad</string>
@@ -34,12 +36,14 @@
   <string name="superuser_title">Superuser</string>
   <string name="interface_style_title">Stil</string>
   <!-- Setting checkbox summary for displaying USB debugging notification -->
+  <string name="volume_adjust_sound_title">Volymändringsljud</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Avancerad omstart</string>
   <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
   <string name="show_cpu_info">Visa CPU-information</string>
   <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">ADB över nätverk</string>
   <!-- Warning for Adb over Network -->
   <!-- Display : Rotation -->
   <string name="display_rotation_title">Rotation</string>
@@ -57,14 +61,21 @@
   <string name="storage_options_category">Notifikationer</string>
   <string name="storage_menu_options">Avancerad</string>
   <string name="storage_title_options">Lagringsalternativ</string>
+  <string name="no_media_notification_title">Lagring borttagen-aviseringar</string>
   <string name="zen_mode_none_category">Inga avbrott</string>
   <string name="zen_mode_alarms">Tillåt alarm</string>
   <!-- Linked / unlinked notification volume -->
+  <string name="ring_notification_volume_option_title">Ring och aviseringsvolym</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
+  <string name="app_ops_settings_summary">Visa eller ändra appbehörigheter</string>
   <!-- Format string for fingerprint location message -->
   <!-- Fingerprint sensor locations -->
   <string name="security_settings_fingerprint_sensor_location_back">tillbaka</string>
   <string name="security_settings_fingerprint_sensor_location_left">vänster sida</string>
+  <string name="security_settings_fingerprint_sensor_location_right">höger sida</string>
+  <string name="reset_wallpaper_notice">Standardbakgrundsbild återställd</string>
+  <string name="hide_summary_menu">Dölj sammanfattning</string>
+  <string name="heads_up_notifications_enabled_title">Tillåt tjuvkikande</string>
 </resources>

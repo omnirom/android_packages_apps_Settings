@@ -27,6 +27,7 @@
   <string name="interface_bars_title">Lišty</string>
   <string name="interface_lockscreen_title">Zámok obrazovky</string>
   <string name="omnigears_category_title">OmniGears</string>
+  <string name="omni_device_parts">Funkcie zariadenia</string>
   <string name="header_category_interface">Rozhranie</string>
   <string name="performance_settings">Výkon</string>
   <string name="advanced_settings_title">Rozšírené</string>
@@ -39,6 +40,7 @@
   <string name="adb_notify">Upozornenie na ladenie USB</string>
   <string name="adb_notify_summary">Zobraziť upozornenie pri pripojení k USB v režime ladenia</string>
   <string name="volume_adjust_sound_title">Zvuk pri zmene hlasitosti</string>
+  <string name="screenshot_shutter_sound_title">Zvuk uzávierky pre snímku obrazovky</string>
   <!-- Advanced reboot options -->
   <string name="advanced_reboot_title">Rozšírený reštart</string>
   <string name="advanced_reboot_summary">V hlavnej ponuke povoliť reštartovanie do recovery alebo bootloaderu</string>
@@ -82,7 +84,7 @@
   <string name="ring_notification_volume_option_title">Hlasitosť zvonenia a upozornení</string>
   <!-- App Ops Settings, move to custom strings when ready -->
   <!-- [CHAR LIMIT=NONE] App ops settings title, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
-  <string name="app_ops_settings">App ops</string>
+  <string name="app_ops_settings">Operácie aplikácií</string>
   <!-- [CHAR LIMIT=NONE] App ops settings summary, on main settings screen. If clicked, the user is taken to a settings screen for app operations -->
   <string name="app_ops_settings_summary">Zobraziť alebo zmeniť povolenia aplikácií</string>
   <!-- Format string for fingerprint location message -->
@@ -93,4 +95,8 @@
   <string name="security_settings_fingerprint_sensor_location_left">ľavej strane</string>
   <string name="security_settings_fingerprint_sensor_location_right">pravej strane</string>
   <string name="reset_wallpaper_notice">Predvolená tapeta obnovená</string>
+  <string name="columns_menu">Rozloženie stĺpcov</string>
+  <string name="hide_summary_menu">Skryť súhrn</string>
+  <string name="heads_up_notifications_enabled_title">Povoliť plávajúce oznámenia</string>
+  <string name="heads_up_notifications_enabled_summary">Povoliť alebo zakázať všetky plávajúce oznámenia</string>
 </resources>
