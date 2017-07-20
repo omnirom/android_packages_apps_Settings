@@ -26,6 +26,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
 import android.content.res.Resources;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -117,8 +118,10 @@ public class AppOpsDetails extends InstrumentedFragment {
                             lastPermGroup = pi.group;
                             PermissionGroupInfo pgi = mPm.getPermissionGroupInfo(pi.group, 0);
                             if (pgi.icon != 0) {
-                                ((ImageView)view.findViewById(R.id.op_icon)).setImageDrawable(
-                                        pgi.loadIcon(mPm));
+                                Drawable d = pgi.loadIcon(mPm);
+                                d.mutate();
+                                d.setColorFilter(Utils.getColorAccent(getActivity()), Mode.SRC_ATOP);
+                                ((ImageView)view.findViewById(R.id.op_icon)).setImageDrawable(d);
                             }
                         }
                     } catch (NameNotFoundException e) {
