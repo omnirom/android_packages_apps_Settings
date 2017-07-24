@@ -117,6 +117,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
 
     private static final String ENABLE_ADB = "enable_adb";
     private static final String ADB_TCPIP  = "adb_over_network";
+    private static final String DISABLE_ADB_NETWORK_ON_DISCONNECT = "disable_adb_network_on_disconnect";
     private static final String CLEAR_ADB_KEYS = "clear_adb_keys";
     private static final String ENABLE_TERMINAL = "enable_terminal";
 
@@ -256,6 +257,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     private Preference mBugreport;
     private SwitchPreference mBugreportInPower;
     private SwitchPreference mAdbOverNetwork;
+    private SwitchPreference mDisableAdbNetworkOnDisconnect;
     private RestrictedSwitchPreference mKeepScreenOn;
     private SwitchPreference mBtHciSnoopLog;
     private RestrictedSwitchPreference mEnableOemUnlock;
@@ -397,6 +399,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         debugDebuggingCategory.removePreference(mBugreportInPower);
 
         mAdbOverNetwork = findAndInitSwitchPref(ADB_TCPIP);
+        mDisableAdbNetworkOnDisconnect = findAndInitSwitchPref(DISABLE_ADB_NETWORK_ON_DISCONNECT);
         mKeepScreenOn = (RestrictedSwitchPreference) findAndInitSwitchPref(KEEP_SCREEN_ON);
         mBtHciSnoopLog = findAndInitSwitchPref(BT_HCI_SNOOP_LOG);
         mEnableOemUnlock = (RestrictedSwitchPreference) findAndInitSwitchPref(ENABLE_OEM_UNLOCK);
@@ -715,6 +718,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         }
 
         updateAdbOverNetwork();
+        updateDisableAdbNetworkOnDisconnectOptions();
         updateSwitchPreference(mDebugViewAttributes, Settings.Global.getInt(cr,
                 Settings.Global.DEBUG_VIEW_ATTRIBUTES, 0) != 0);
         updateSwitchPreference(mForceAllowOnExternal, Settings.Global.getInt(cr,
@@ -762,6 +766,17 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         }
         updateBluetoothDisableAbsVolumeOptions();
         updateForceAuthorizeSubstratumPackagesOptions();
+    }
+
+    private void writeDisableAdbNetworkOnDisconnectOptions() {
+        Settings.System.putInt(getActivity().getContentResolver(),
+                Settings.System.DISABLE_ADB_NETWORK_ON_DISCONNECT,
+                mDisableAdbNetworkOnDisconnect.isChecked() ? 1 : 0);
+    }
+
+    private void updateDisableAdbNetworkOnDisconnectOptions() {
+        mDisableAdbNetworkOnDisconnect.setChecked(Settings.System.getInt(getActivity().getContentResolver(),
+                Settings.System.DISABLE_ADB_NETWORK_ON_DISCONNECT, 0) != 0);
     }
 
     private void writeForceAuthorizeSubstratumPackagesOptions() {
@@ -2002,6 +2017,8 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
                         Settings.Secure.ADB_PORT, -1);
                 updateAdbOverNetwork();
             }
+        } else if (preference == mDisableAdbNetworkOnDisconnect) {
+            writeDisableAdbNetworkOnDisconnectOptions();
         } else if (preference == mClearAdbKeys) {
             if (mAdbKeysDialog != null) dismissDialogs();
             mAdbKeysDialog = new AlertDialog.Builder(getActivity())
