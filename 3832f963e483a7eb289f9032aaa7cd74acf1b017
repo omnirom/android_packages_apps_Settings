@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9eddd6c8_50a71200",
+        "filename": "res/xml/development_prefs.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2017-07-25T23:39:34Z",
+      "side": 1,
+      "message": "But if you want to stick with the complicated solution you should add persistent\u003dfalse - dont continue the same errors we always did before :)",
+      "parentUuid": "63d8849f_64646196",
+      "revId": "3832f963e483a7eb289f9032aaa7cd74acf1b017",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2e720a24_c556235e",
         "filename": "src/com/android/settings/DevelopmentSettings.java",
         "patchSetId": 1
