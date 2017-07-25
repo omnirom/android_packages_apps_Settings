@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "63d8849f_64646196",
+        "filename": "res/xml/development_prefs.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2017-07-25T23:35:46Z",
+      "side": 1,
+      "message": "if you would use org.omnirom.omnigears.preference.SystemSettingSwitchPreference you would not need to change ANYTHING in java :)",
+      "revId": "3832f963e483a7eb289f9032aaa7cd74acf1b017",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2e720a24_c556235e",
+        "filename": "src/com/android/settings/DevelopmentSettings.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 721,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2017-07-25T23:35:46Z",
+      "side": 1,
+      "message": "who can come up with an even longer function name? :)",
+      "revId": "3832f963e483a7eb289f9032aaa7cd74acf1b017",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
