@@ -51,6 +51,23 @@
       "revId": "3832f963e483a7eb289f9032aaa7cd74acf1b017",
       "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "499f8d48_054de1c8",
+        "filename": "src/com/android/settings/DevelopmentSettings.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2017-07-26T10:25:20Z",
+      "side": 1,
+      "message": "first place already held by this method :)",
+      "revId": "3832f963e483a7eb289f9032aaa7cd74acf1b017",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
     }
   ]
 }
