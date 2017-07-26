@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c6e10683_e887df4b",
+        "filename": "res/values/custom_strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2017-07-26T20:52:48Z",
+      "side": 1,
+      "message": "in all other strings here its written as Wi-Fi",
+      "revId": "9f549563cc6065ba7944583a8c793719d05f65c8",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
