@@ -155,6 +155,7 @@ public class SimDialogActivity extends Activity {
         final List<SubscriptionInfo> subInfoList =
             subscriptionManager.getActiveSubscriptionInfoList();
         final int selectableSubInfoLength = subInfoList == null ? 0 : subInfoList.size();
+        final ArrayList<SubscriptionInfo> callsSubInfoList = new ArrayList<SubscriptionInfo>();
 
         final DialogInterface.OnClickListener selectionListener =
                 new DialogInterface.OnClickListener() {
@@ -174,7 +175,7 @@ public class SimDialogActivity extends Activity {
                                 final List<PhoneAccountHandle> phoneAccountsList =
                                         telecomManager.getCallCapablePhoneAccounts();
                                 setUserSelectedOutgoingPhoneAccount(
-                                        value < 1 ? null : phoneAccountsList.get(value - 1));
+                                        value == (callsSubInfoList.size() - 1)  ? null : phoneAccountsList.get(value));
                                 break;
                             case SMS_PICK:
                                 sir = subInfoList.get(value);
@@ -200,15 +201,12 @@ public class SimDialogActivity extends Activity {
                 }
             };
 
-        ArrayList<SubscriptionInfo> callsSubInfoList = new ArrayList<SubscriptionInfo>();
         if (id == CALLS_PICK) {
             final TelecomManager telecomManager = TelecomManager.from(context);
             final TelephonyManager telephonyManager = TelephonyManager.from(context);
             final Iterator<PhoneAccountHandle> phoneAccounts =
                     telecomManager.getCallCapablePhoneAccounts().listIterator();
 
-            list.add(getResources().getString(R.string.sim_calls_ask_first_prefs_title));
-            callsSubInfoList.add(null);
             while (phoneAccounts.hasNext()) {
                 final PhoneAccount phoneAccount =
                         telecomManager.getPhoneAccount(phoneAccounts.next());
@@ -222,6 +220,8 @@ public class SimDialogActivity extends Activity {
                     callsSubInfoList.add(null);
                 }
             }
+            list.add(getResources().getString(R.string.sim_calls_ask_first_prefs_title));
+            callsSubInfoList.add(null);
         } else {
             for (int i = 0; i < selectableSubInfoLength; ++i) {
                 final SubscriptionInfo sir = subInfoList.get(i);
@@ -312,12 +312,14 @@ public class SimDialogActivity extends Activity {
             if (sir == null) {
                 holder.title.setText(getItem(position));
                 holder.summary.setText("");
+                holder.summary.setVisibility(View.GONE);
                 holder.icon.setImageDrawable(getResources()
                         .getDrawable(R.drawable.ic_live_help));
                 holder.icon.setAlpha(OPACITY);
             } else {
                 holder.title.setText(sir.getDisplayName());
                 holder.summary.setText(sir.getNumber());
+                holder.summary.setVisibility(View.VISIBLE);
                 holder.icon.setImageBitmap(sir.createIconBitmap(mContext));
             }
             return rowView;
