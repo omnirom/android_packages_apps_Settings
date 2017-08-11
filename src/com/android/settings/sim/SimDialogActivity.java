@@ -322,9 +322,14 @@ public class SimDialogActivity extends Activity {
             if (sir == null) {
                 holder.title.setText(getItem(position));
                 holder.summary.setVisibility(View.GONE);
-                holder.icon.setImageDrawable(getResources()
-                        .getDrawable(R.drawable.ic_live_help));
-                holder.icon.setAlpha(OPACITY);
+                if (position == mSubInfoList.size() - 1) {
+                    holder.icon.setImageDrawable(getResources()
+                            .getDrawable(R.drawable.ic_live_help_new));
+                } else {
+                    holder.icon.setImageDrawable(getResources()
+                            .getDrawable(R.drawable.ic_phone_normal));
+                }
+                //holder.icon.setAlpha(OPACITY);
             } else {
                 holder.title.setText(getSubscriptionDisplayName(sir));
                 holder.summary.setVisibility(View.VISIBLE);
