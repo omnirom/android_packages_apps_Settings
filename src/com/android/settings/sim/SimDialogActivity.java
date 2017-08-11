@@ -313,9 +313,14 @@ public class SimDialogActivity extends Activity {
                 holder.title.setText(getItem(position));
                 holder.summary.setText("");
                 holder.summary.setVisibility(View.GONE);
-                holder.icon.setImageDrawable(getResources()
-                        .getDrawable(R.drawable.ic_live_help));
-                holder.icon.setAlpha(OPACITY);
+                if (position == mSubInfoList.size() - 1) {
+                    holder.icon.setImageDrawable(getResources()
+                            .getDrawable(R.drawable.ic_live_help_new));
+                } else {
+                    holder.icon.setImageDrawable(getResources()
+                            .getDrawable(R.drawable.ic_phone_normal));
+                }
+                //holder.icon.setAlpha(OPACITY);
             } else {
                 holder.title.setText(sir.getDisplayName());
                 holder.summary.setText(sir.getNumber());
