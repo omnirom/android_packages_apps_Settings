@@ -32,7 +32,7 @@ public class TintablePreference extends Preference {
         super(context, attrs);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TintablePreference);
-        mTintColor = a.getColor(R.styleable.TintablePreference_android_tint, 0);
+        mTintColor = a.getColor(R.styleable.TintablePreference_preferenceTint, 0);
         a.recycle();
     }
 

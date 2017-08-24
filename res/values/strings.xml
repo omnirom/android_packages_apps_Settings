@@ -6699,7 +6699,7 @@
     <string name="picture_in_picture_app_detail_switch">Allow picture-in-picture</string>
 
     <!-- Apps > App Details > Picture-in-picture > Description. [CHAR LIMIT=NONE] -->
-    <string name="picture_in_picture_app_detail_summary">Allow this app to create a picture-in-picture window while the app is open or after you leave it (for example, to continue watching a video).  This window displays on top of other apps you're using.</string>
+    <string name="picture_in_picture_app_detail_summary">Allow this app to create a picture-in-picture window while the app is open or after you leave it (for example, to continue watching a video).  This window displays on top of other apps you\'re using.</string>
 
     <!-- Summary of app allowed to enter picture-in-picture. [CHAR LIMIT=60] -->
     <string name="picture_in_picture_on">Yes</string>
