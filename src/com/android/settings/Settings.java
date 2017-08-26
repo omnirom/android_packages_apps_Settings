@@ -171,6 +171,7 @@ public class Settings extends SettingsActivity {
 
     // OmniGears
     public static class StyleSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class DevicePartsActivity extends SettingsActivity { /* empty */ }
 
     // Top level categories for new IA
     public static class NetworkDashboardActivity extends SettingsActivity {}

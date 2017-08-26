@@ -22,4 +22,5 @@
     <string name="header_category_omni">OmniGears</string>
     <string name="omni_dashboard_summary">Omnify your device</string>
     <string name="style_settings_summary">Wallpapers and other swag</string>
+    <string name="omni_device_parts">Device features</string>
 </resources>

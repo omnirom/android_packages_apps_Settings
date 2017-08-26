@@ -1,0 +1,48 @@
+<!--
+    Copyright (C) 2016 The Android Open Source Project
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24.0dp"
+        android:height="24.0dp"
+        android:viewportWidth="24.0"
+        android:viewportHeight="24.0"
+        android:tint="?android:attr/colorControlNormal">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M 13.718139,12.639251 l 0.876876,-0.918352 -0.342399,-0.362968
+-0.964564,1.010188 c -0.388331,-0.205536 -0.826769,-0.327983 -1.290261,-0.327983
+-0.467667,0 -0.90193,0.122447 -1.290261,0.327983 L 9.7429664,11.357931
+9.4005671,11.720899 10.277443,12.639251 C 9.5508888,13.194636 9.0748702,14.08675
+9.0748702,15.10131 l 0,0.437311 5.8458418,0 0,-0.437311 c 0,-1.01456
+-0.476019,-1.906674 -1.202573,-2.462059 M 10.74511,14.664 a
+0.41756015,0.43731066 0 0 1 -0.41756,-0.437311 0.41756015,0.43731066 0 0 1
+0.41756,-0.437311 0.41756015,0.43731066 0 0 1 0.41756,0.437311
+0.41756015,0.43731066 0 0 1 -0.41756,0.437311 m 2.505361,0 a
+0.41756015,0.43731066 0 0 1 -0.41756,-0.437311 0.41756015,0.43731066 0 0 1
+0.41756,-0.437311 0.41756015,0.43731066 0 0 1 0.417561,0.437311 A
+0.41756015,0.43731066 0 0 1 13.250471,14.664 M 12,15.5 A 3.5,3.5 0 0 1 8.5,12
+3.5,3.5 0 0 1 12,8.5 3.5,3.5 0 0 1 15.5,12 3.5,3.5 0 0 1 12,15.5 m 7.43,-2.53 c
+0.04,-0.32 0.07,-0.64 0.07,-0.97 0,-0.33 -0.03,-0.66 -0.07,-1 l 2.11,-1.63 c
+0.19,-0.15 0.24,-0.42 0.12,-0.64 l -2,-3.46 C 19.54,5.05 19.27,4.96 19.05,5.05 l
+-2.49,1 C 16.04,5.66 15.5,5.32 14.87,5.07 L 14.5,2.42 C 14.46,2.18 14.25,2 14,2
+L 10,2 C 9.75,2 9.54,2.18 9.5,2.42 L 9.13,5.07 C 8.5,5.32 7.96,5.66 7.44,6.05 l
+-2.49,-1 C 4.73,4.96 4.46,5.05 4.34,5.27 l -2,3.46 C 2.21,8.95 2.27,9.22
+2.46,9.37 L 4.57,11 c -0.04,0.34 -0.07,0.67 -0.07,1 0,0.33 0.03,0.65 0.07,0.97 l
+-2.11,1.66 c -0.19,0.15 -0.25,0.42 -0.12,0.64 l 2,3.46 c 0.12,0.22 0.39,0.3
+0.61,0.22 l 2.49,-1.01 c 0.52,0.4 1.06,0.74 1.69,0.99 L 9.5,21.58 C 9.54,21.82
+9.75,22 10,22 l 4,0 c 0.25,0 0.46,-0.18 0.5,-0.42 l 0.37,-2.65 c 0.63,-0.26
+1.17,-0.59 1.69,-0.99 l 2.49,1.01 c 0.22,0.08 0.49,0 0.61,-0.22 l 2,-3.46 c
+0.12,-0.22 0.07,-0.49 -0.12,-0.64 l -2.11,-1.66 z" />
+</vector>
