@@ -18,11 +18,12 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="interface_style_title">Style</string>
+    <string name="style_settings_title">Style</string>
     <string name="header_category_omni">OmniGears</string>
     <string name="omni_dashboard_summary">Omnify your device</string>
     <string name="style_settings_summary">Wallpapers and other swag</string>
     <string name="omni_device_parts">Device features</string>
     <string name="columns_menu">Columns layout</string>
     <string name="hide_summary_menu">Hide summary</string>
+    <string name="global_actions_title">Power menu</string>
 </resources>
