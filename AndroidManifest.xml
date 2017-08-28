@@ -3124,7 +3124,7 @@
         </activity>
 
         <activity android:name=".Settings$StyleSettingsActivity"
-                  android:label="@string/interface_style_title"
+                  android:label="@string/style_settings_title"
                   android:icon="@drawable/ic_settings_style"
                   android:taskAffinity="com.android.settings"
                   android:parentActivityName="Settings" >
@@ -3156,4 +3156,23 @@
                        android:value="org.omnirom.device.DeviceParts" />
         </activity>
     </application>
-</manifest>
+    <activity android:name=".Settings$GlobalActionSettingsActivity"
+              android:label="@string/global_actions_title"
+              android:icon="@drawable/ic_settings_buttons"
+              android:taskAffinity="com.android.settings"
+              android:parentActivityName="Settings" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+        <intent-filter android:priority="3">
+            <action android:name="com.android.settings.action.SETTINGS" />
+        </intent-filter>
+        <meta-data android:name="com.android.settings.category"
+                   android:value="com.android.settings.category.ia.omni"/>
+        <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                   android:value="org.omnirom.omnigears.interfacesettings.GlobalActionsSettings" />
+        <meta-data android:name="com.android.settings.summary"
+                   android:resource="@string/global_actions_summary"/>
+        </activity>
+    </manifest>
