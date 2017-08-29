@@ -72,6 +72,7 @@ abstract public class NotificationSettingsBase extends SettingsPreferenceFragmen
     protected static final int ORDER_FIRST = -500;
     protected static final int ORDER_LAST = 1000;
 
+    private static final String FOREGROUND_SERVICE = "FOREGROUND_SERVICE";
     protected static final String KEY_APP_LINK = "app_link";
     protected static final String KEY_HEADER = "header";
     protected static final String KEY_BLOCK = "block";
@@ -456,7 +457,9 @@ abstract public class NotificationSettingsBase extends SettingsPreferenceFragmen
             return true;
         }
 
-        return channel.isBlockableSystem()
+        String id = channel.getId();
+        boolean isBackgroundAppChannel = id.equals(FOREGROUND_SERVICE);
+        return isBackgroundAppChannel || channel.isBlockableSystem()
                 || channel.getImportance() == NotificationManager.IMPORTANCE_NONE;
     }
 }
