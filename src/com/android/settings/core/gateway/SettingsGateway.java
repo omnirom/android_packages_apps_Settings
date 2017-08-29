@@ -128,6 +128,7 @@ import com.android.settings.wifi.WifiSettings;
 import com.android.settings.wifi.p2p.WifiP2pSettings;
 
 import org.omnirom.omnigears.OmniDashboardFragment;
+import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.interfacesettings.StyleSettings;
 import org.omnirom.omnigears.interfacesettings.GlobalActionsSettings;
 
@@ -252,6 +253,7 @@ public class SettingsGateway {
             OmniDashboardFragment.class.getName(),
             StyleSettings.class.getName(),
             GlobalActionsSettings.class.getName(),
+            BarsSettings.class.getName(),
     };
 
     public static final String[] SETTINGS_FOR_RESTRICTED = {

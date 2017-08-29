@@ -26,4 +26,5 @@
     <string name="columns_menu">Columns layout</string>
     <string name="hide_summary_menu">Hide summary</string>
     <string name="global_actions_title">Power menu</string>
+    <string name="bars_settings_title">Bars</string>
 </resources>

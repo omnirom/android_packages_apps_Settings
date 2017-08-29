@@ -183,4 +183,5 @@ public class Settings extends SettingsActivity {
     public static class StyleSettingsActivity extends SettingsActivity { /* empty */ }
     public static class DevicePartsActivity extends SettingsActivity { /* empty */ }
     public static class GlobalActionsSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class BarsSettingsActivity extends SettingsActivity { /* empty */ }
 }
