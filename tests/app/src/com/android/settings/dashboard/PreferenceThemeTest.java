@@ -55,7 +55,7 @@ public class PreferenceThemeTest {
         mTargetPackage = mTargetContext.getPackageName();
     }
 
-    @Test
+    /*@Test
     public void startPhoneStatus_preferenceIconSpaceReserved() throws InterruptedException {
         launchPhoneStatus();
         onView(withId(R.id.icon_frame)).check(doesNotExist());
@@ -69,7 +69,7 @@ public class PreferenceThemeTest {
         onView(allOf(withId(R.id.icon_frame), withEffectiveVisibility(Visibility.VISIBLE)))
                 .check(doesNotExist());
         onView(withId(R.id.icon_container)).check(doesNotExist());
-    }
+    }*/
 
     private void launchPhoneStatus() {
         final Intent settingsIntent = new Intent("android.settings.DEVICE_INFO_SETTINGS")
