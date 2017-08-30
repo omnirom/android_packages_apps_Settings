@@ -30,7 +30,7 @@
     <LinearLayout
         android:layout_width="216dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:paddingStart="@dimen/preference_no_icon_padding_start"
         android:layout_marginEnd="12dp"
         android:orientation="vertical">
 

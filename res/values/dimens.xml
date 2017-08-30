@@ -81,7 +81,7 @@
 
     <!-- ActionBar contentInsetStart -->
     <dimen name="actionbar_contentInsetStart">16dp</dimen>
-    <dimen name="actionbar_subsettings_contentInsetStart">72dp</dimen>
+    <dimen name="actionbar_subsettings_contentInsetStart">@dimen/icon_space_reserved_padding</dimen>
 
     <!-- Dashboard padding in its container -->
     <dimen name="dashboard_padding_start">0dp</dimen>
@@ -117,7 +117,7 @@
     <dimen name="switchbar_margin_end">16dp</dimen>
 
     <!-- SwitchBar sub settings margin start / end -->
-    <dimen name="switchbar_subsettings_margin_start">72dp</dimen>
+    <dimen name="switchbar_subsettings_margin_start">@dimen/icon_space_reserved_padding</dimen>
     <dimen name="switchbar_subsettings_margin_end">16dp</dimen>
 
     <!-- Search Panel elevation -->
@@ -320,4 +320,6 @@
     <!-- Battery meter view size -->
     <dimen name="battery_meter_width">66dp</dimen>
     <dimen name="battery_meter_height">100dp</dimen>
+
+    <dimen name="icon_space_reserved_padding">72dp</dimen>
 </resources>

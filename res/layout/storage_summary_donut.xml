@@ -18,19 +18,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/colorSecondary"
-    android:gravity="center_vertical"
+    android:gravity="center"
     android:orientation="horizontal" >
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="216dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:enabled="false"
         android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:orientation="vertical"
         android:paddingStart="@dimen/preference_no_icon_padding_start"
-        android:paddingEnd="@dimen/storage_summary_padding_end"
+        android:layout_marginEnd="@dimen/storage_summary_padding_end"
         android:paddingTop="32dp"
         android:paddingBottom="32dp" >
 
@@ -71,8 +70,6 @@
         android:layout_height="112dp"
         android:layout_marginEnd="32dp"
         android:gravity="end|center_vertical"
-        android:minWidth="58dp"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd" />
+        android:minWidth="58dp" />
 
 </LinearLayout>
