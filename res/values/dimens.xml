@@ -81,7 +81,7 @@
 
     <!-- ActionBar contentInsetStart -->
     <dimen name="actionbar_contentInsetStart">16dp</dimen>
-    <dimen name="actionbar_subsettings_contentInsetStart">72dp</dimen>
+    <dimen name="actionbar_subsettings_contentInsetStart">16dp</dimen>
 
     <!-- Dashboard padding in its container -->
     <dimen name="dashboard_padding_start">0dp</dimen>

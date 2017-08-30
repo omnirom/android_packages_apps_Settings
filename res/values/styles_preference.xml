@@ -19,7 +19,7 @@
 <!-- Things unrelated to preference framework UI customization should go to other styles files -->
 <resources>
 
-    <dimen name="preference_no_icon_padding_start">72dp</dimen>
+    <dimen name="preference_no_icon_padding_start">0dp</dimen>
 
     <!-- Fragment style -->
     <style name="PreferenceFragmentStyle" parent="@*android:style/PreferenceFragment.Material">
