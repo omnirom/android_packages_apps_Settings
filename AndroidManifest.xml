@@ -3160,12 +3160,12 @@
             <meta-data android:name="com.android.settings.summary"
                        android:resource="@string/summary_empty"/>
         </activity>
-        <activity android:name=".Settings$GlobalActionsSettingsActivity"
-              android:label="@string/global_actions_title"
-              android:icon="@drawable/ic_settings_buttons"
-              android:taskAffinity="com.android.settings"
-              android:parentActivityName="Settings"
-              android:exported="true" >
+        <activity android:name=".Settings$ButtonSettingsActivity"
+                  android:label="@string/button_settings_title"
+                  android:icon="@drawable/ic_settings_buttons"
+                  android:taskAffinity="com.android.settings"
+                  android:parentActivityName="Settings"
+                  android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -3174,9 +3174,9 @@
                 <action android:name="com.android.settings.action.SETTINGS" />
             </intent-filter>
             <meta-data android:name="com.android.settings.category"
-                        android:value="com.android.settings.category.ia.omni"/>
+                       android:value="com.android.settings.category.ia.omni"/>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                        android:value="org.omnirom.omnigears.interfacesettings.GlobalActionsSettings" />
+                       android:value="org.omnirom.omnigears.ButtonSettings" />
             <meta-data android:name="com.android.settings.summary"
                        android:resource="@string/summary_empty"/>
         </activity>
