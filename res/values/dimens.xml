@@ -321,5 +321,5 @@
     <dimen name="battery_meter_width">66dp</dimen>
     <dimen name="battery_meter_height">100dp</dimen>
 
-    <dimen name="icon_space_reserved_padding">72dp</dimen>
+    <dimen name="icon_space_reserved_padding">24dp</dimen>
 </resources>
