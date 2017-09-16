@@ -39,6 +39,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Switch;
 
+import com.abc.settings.preferences.CustomSeekBarPreference;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.settings.AppHeader;
 import com.android.settings.R;
@@ -52,16 +53,24 @@ import com.android.settings.widget.FooterPreference;
 import com.android.settings.widget.SwitchBar;
 import com.android.settingslib.RestrictedSwitchPreference;
 
+import net.margaritov.preference.colorpicker.ColorPickerPreference;
+
 public class ChannelNotificationSettings extends NotificationSettingsBase {
     private static final String TAG = "ChannelSettings";
 
     private static final String KEY_LIGHTS = "lights";
+    private static final String KEY_CUSTOM_LIGHT = "custom_light";
+    private static final String KEY_LIGHTS_ON_TIME = "custom_light_on_time";
+    private static final String KEY_LIGHTS_OFF_TIME = "custom_light_off_time";
     private static final String KEY_VIBRATE = "vibrate";
     private static final String KEY_RINGTONE = "ringtone";
     private static final String KEY_IMPORTANCE = "importance";
 
     private Preference mImportance;
     private RestrictedSwitchPreference mLights;
+    private ColorPickerPreference mCustomLight;
+    private CustomSeekBarPreference mLightOnTime;
+    private CustomSeekBarPreference mLightOffTime;
     private RestrictedSwitchPreference mVibrate;
     private NotificationSoundPreference mRingtone;
     private FooterPreference mFooter;
@@ -93,6 +102,8 @@ public class ChannelNotificationSettings extends NotificationSettingsBase {
 
         if (NotificationChannel.DEFAULT_CHANNEL_ID.equals(mChannel.getId())) {
             populateDefaultChannelPrefs();
+            //setup lights for uncategorized channel
+            setupLights();
             mShowLegacyChannelConfig = true;
         } else {
             populateUpgradedChannelPrefs();
@@ -127,6 +138,7 @@ public class ChannelNotificationSettings extends NotificationSettingsBase {
         setupBadge();
         setupPriorityPref(mChannel.canBypassDnd());
         setupVisOverridePref(mChannel.getLockscreenVisibility());
+        //setup lights for categorized channel
         setupLights();
         setupVibrate();
         setupRingtone();
@@ -196,15 +208,65 @@ public class ChannelNotificationSettings extends NotificationSettingsBase {
     }
 
     private void setupLights() {
+        //find light prefs
         mLights = (RestrictedSwitchPreference) findPreference(KEY_LIGHTS);
+        mCustomLight = (ColorPickerPreference) findPreference(KEY_CUSTOM_LIGHT);
+        mLightOnTime =(CustomSeekBarPreference) findPreference(KEY_LIGHTS_ON_TIME);
+        mLightOffTime = (CustomSeekBarPreference) findPreference(KEY_LIGHTS_OFF_TIME);
         mLights.setDisabledByAdmin(mSuspendedAppsAdmin);
         mLights.setChecked(mChannel.shouldShowLights());
+        //enable custom light prefs is light is enabled
+        mCustomLight.setEnabled(!mLights.isDisabledByAdmin() && mChannel.shouldShowLights());
+        mLightOnTime.setEnabled(!mLights.isDisabledByAdmin() && mChannel.shouldShowLights());
+        mLightOffTime.setEnabled(!mLights.isDisabledByAdmin() && mChannel.shouldShowLights());
+
+        //light pref
         mLights.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 final boolean lights = (Boolean) newValue;
                 mChannel.enableLights(lights);
                 mChannel.lockFields(NotificationChannel.USER_LOCKED_LIGHTS);
+                mBackend.updateChannel(mPkg, mUid, mChannel);
+                mCustomLight.setEnabled(lights);
+                mLightOnTime.setEnabled(lights);
+                mLightOffTime.setEnabled(lights);
+                return true;
+            }
+        });
+        //light color pref
+        int color = (mChannel.getLightColor() != 0 ? mChannel.getLightColor() : 0X00FFFFFF);
+        mCustomLight.setAlphaSliderEnabled(true);
+        mCustomLight.setNewPreviewColor(color);
+        mCustomLight.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                int color = ((Integer) newValue).intValue();
+                mChannel.setLightColor(color);
+                mBackend.updateChannel(mPkg, mUid, mChannel);
+                return true;
+            }
+        });
+        //light on time pref
+        int lightOn = mChannel.getLightOnTime();
+        mLightOnTime.setValue(lightOn);
+        mLightOnTime.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                int val = (Integer) newValue;
+                mChannel.setLightOnTime(val);
+                mBackend.updateChannel(mPkg, mUid, mChannel);
+                return true;
+            }
+        });
+        //light off time pref
+        int lightOff = mChannel.getLightOffTime();
+        mLightOffTime.setValue(lightOff);
+        mLightOffTime.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                int val = (Integer) newValue;
+                mChannel.setLightOffTime(val);
                 mBackend.updateChannel(mPkg, mUid, mChannel);
                 return true;
             }
