@@ -258,6 +258,7 @@ public class SettingsGateway {
             BarsSettings.class.getName(),
             ButtonSettings.class.getName(),
             MoreSettings.class.getName(),
+            DisplayRotation.class.getName(),
     };
 
     public static final String[] SETTINGS_FOR_RESTRICTED = {

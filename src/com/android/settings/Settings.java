@@ -186,4 +186,5 @@ public class Settings extends SettingsActivity {
     public static class ButtonSettingsActivity extends SettingsActivity { /* empty */ }
     public static class BarsSettingsActivity extends SettingsActivity { /* empty */ }
     public static class MoreSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class DisplayRotationActivity extends SettingsActivity { /* empty */ }
 }

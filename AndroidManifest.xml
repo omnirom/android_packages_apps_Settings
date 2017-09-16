@@ -3132,7 +3132,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
                 </intent-filter>
-            <intent-filter android:priority="5">
+            <intent-filter android:priority="6">
                 <action android:name="com.android.settings.action.SETTINGS" />
             </intent-filter>
             <meta-data android:name="com.android.settings.category"
@@ -3150,7 +3150,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <intent-filter android:priority="4">
+            <intent-filter android:priority="5">
                 <action android:name="com.android.settings.action.SETTINGS" />
             </intent-filter>
             <meta-data android:name="com.android.settings.category"
@@ -3170,7 +3170,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <intent-filter android:priority="3">
+            <intent-filter android:priority="4">
                 <action android:name="com.android.settings.action.SETTINGS" />
             </intent-filter>
             <meta-data android:name="com.android.settings.category"
@@ -3189,13 +3189,32 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <intent-filter android:priority="2">
+            <intent-filter android:priority="3">
                 <action android:name="com.android.settings.action.SETTINGS" />
             </intent-filter>
             <meta-data android:name="com.android.settings.category"
                        android:value="com.android.settings.category.ia.omni"/>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                        android:value="org.omnirom.omnigears.interfacesettings.BarsSettings" />
+            <meta-data android:name="com.android.settings.summary"
+                       android:resource="@string/summary_empty"/>
+        </activity>
+        <activity android:name=".Settings$DisplayRotationActivity"
+                  android:label="@string/display_rotation_title"
+                  android:icon="@drawable/ic_display_rotation_tile"
+                  android:taskAffinity="com.android.settings"
+                  android:parentActivityName="Settings" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter android:priority="2">
+                <action android:name="com.android.settings.action.SETTINGS" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.category"
+                       android:value="com.android.settings.category.ia.omni"/>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                       android:value="org.omnirom.omnigears.DisplayRotation" />
             <meta-data android:name="com.android.settings.summary"
                        android:resource="@string/summary_empty"/>
         </activity>
