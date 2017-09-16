@@ -47,12 +47,6 @@
             settings:useAdditionalSummary="true"
             settings:restrictedSwitchSummary="@string/enabled_by_admin" />
 
-        <!-- Lights -->
-        <com.android.settingslib.RestrictedSwitchPreference
-            android:key="lights"
-            android:title="@string/notification_show_lights_title"
-            settings:useAdditionalSummary="true" />
-
         <!-- Visibility Override -->
         <com.android.settings.notification.RestrictedDropDownPreference
             android:key="visibility_override"
@@ -64,7 +58,42 @@
             android:title="@string/app_notification_override_dnd_title"
             android:summary="@string/app_notification_override_dnd_summary"
             settings:useAdditionalSummary="true" />
-
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="light_customization"
+        android:title="@string/light_customization">
+        <!-- Lights -->
+        <com.android.settingslib.RestrictedSwitchPreference
+            android:key="lights"
+            android:title="@string/notification_show_lights_title"/>
+
+        <SwitchPreference
+            android:key="show_light_on_zen"
+            android:title="@string/show_light_on_zen_title" />
+
+        <org.omnirom.omnigears.batterylight.BatteryLightPreference
+            android:key="custom_light"
+            android:title="@string/custom_light_title" />
+
+        <org.omnirom.omnigears.preference.SeekBarPreference
+            android:key="custom_light_on_time"
+            android:title="@string/custom_light_on_time_title"
+            android:summary="@string/value_equals_default"
+            android:max="3000"
+            settings:min="0"
+            settings:interval="100"
+            settings:unitsLeft=""
+            settings:unitsRight="@string/unit_msec" />
+
+        <org.omnirom.omnigears.preference.SeekBarPreference
+            android:key="custom_light_off_time"
+            android:title="@string/custom_light_off_time_title"
+            android:summary="@string/value_equals_default"
+            android:max="3000"
+            settings:min="0"
+            settings:interval="100"
+            settings:unitsLeft=""
+            settings:unitsRight="@string/unit_msec" />
+    </PreferenceCategory>
 </PreferenceScreen>
