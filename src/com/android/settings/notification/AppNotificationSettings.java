@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 import android.text.TextUtils;
@@ -51,6 +52,11 @@ import com.android.settings.widget.MasterSwitchPreference;
 import com.android.settings.widget.SwitchBar;
 import com.android.settingslib.RestrictedSwitchPreference;
 
+import org.omnirom.omnigears.preference.SeekBarPreference;
+import org.omnirom.omnigears.batterylight.BatteryLightPreference;
+
+import static android.provider.Settings.System.NOTIFICATION_LIGHT_PULSE;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -64,9 +70,23 @@ public class AppNotificationSettings extends NotificationSettingsBase {
     private static String KEY_GENERAL_CATEGORY = "categories";
     private static String KEY_DELETED = "deleted";
 
+    private static final String KEY_INFO_DESC = "info_desc";
+    private static final String KEY_LIGHTS = "lights";
+    private static final String KEY_CUSTOM_LIGHT = "custom_light";
+    private static final String KEY_LIGHTS_ON_TIME = "custom_light_on_time";
+    private static final String KEY_LIGHTS_OFF_TIME = "custom_light_off_time";
+    private static final String KEY_LIGHT_ON_ZEN = "show_light_on_zen";
+
     private List<NotificationChannelGroup> mChannelGroupList;
     private List<PreferenceCategory> mChannelGroups = new ArrayList();
     private FooterPreference mDeletedChannels;
+
+    private PreferenceCategory mLightCategory;
+    private RestrictedSwitchPreference mLights;
+    private BatteryLightPreference mCustomLight;
+    private SeekBarPreference mLightOnTime;
+    private SeekBarPreference mLightOffTime;
+    private SwitchPreference mLightOnZen;
 
     @Override
     public int getMetricsCategory() {
@@ -100,6 +120,9 @@ public class AppNotificationSettings extends NotificationSettingsBase {
             mChannel = mBackend.getChannel(
                     mAppRow.pkg, mAppRow.uid, NotificationChannel.DEFAULT_CHANNEL_ID);
             populateDefaultChannelPrefs();
+            mLightCategory = (PreferenceCategory) findPreference("light_customization");
+            //setup lights for legacy app default channel
+            setupLights();
         } else {
             addPreferencesFromResource(R.xml.upgraded_app_notification_settings);
             setupBadge();
@@ -119,11 +142,102 @@ public class AppNotificationSettings extends NotificationSettingsBase {
                     }
                     populateChannelList();
                     addAppLinkPref();
+                    setupInfoDesc(R.string.app_notifications_info_desc);
                 }
             }.execute();
         }
 
         updateDependents(mAppRow.banned);
+    }
+
+    private void setupLights() {
+        //find light prefs
+        mLights = (RestrictedSwitchPreference) findPreference(KEY_LIGHTS);
+        boolean multiColorLed = getResources().getBoolean(com.android.internal.R.bool.config_multiColorNotificationLed);
+        mCustomLight = (BatteryLightPreference) findPreference(KEY_CUSTOM_LIGHT);
+        if (!multiColorLed) {
+            mLightCategory.removePreference(mCustomLight);
+        }
+        mLightOnTime =(SeekBarPreference) findPreference(KEY_LIGHTS_ON_TIME);
+        mLightOffTime = (SeekBarPreference) findPreference(KEY_LIGHTS_OFF_TIME);
+        mLightOnZen = (SwitchPreference) findPreference(KEY_LIGHT_ON_ZEN);
+        mLights.setDisabledByAdmin(mSuspendedAppsAdmin);
+        mLights.setChecked(mChannel.shouldShowLights());
+        //enable custom light prefs is light is enabled
+        mCustomLight.setEnabled(!mLights.isDisabledByAdmin() && mChannel.shouldShowLights());
+        mLightOnTime.setEnabled(!mLights.isDisabledByAdmin() && mChannel.shouldShowLights());
+        mLightOffTime.setEnabled(!mLights.isDisabledByAdmin() && mChannel.shouldShowLights());
+        mLightOnZen.setEnabled(!mLights.isDisabledByAdmin() && mChannel.shouldShowLights());
+
+        //light pref
+        mLights.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final boolean lights = (Boolean) newValue;
+                mChannel.enableLights(lights);
+                mChannel.lockFields(NotificationChannel.USER_LOCKED_LIGHTS);
+                mBackend.updateChannel(mPkg, mUid, mChannel);
+                mCustomLight.setEnabled(lights);
+                mLightOnTime.setEnabled(lights);
+                mLightOffTime.setEnabled(lights);
+                mLightOnZen.setEnabled(lights);
+                //enable NOTIFICATION_LIGHT_PULSE if the user wants to enable notification light for an app
+                //if he disables mLights, don't do anything (other apps may have it still enabled)
+                if (lights && Settings.System.getInt(mContext.getContentResolver(),
+                        NOTIFICATION_LIGHT_PULSE, 1) == 0) {
+                    Settings.System.putInt(mContext.getContentResolver(),
+                        NOTIFICATION_LIGHT_PULSE, 1);
+                }
+                return true;
+            }
+        });
+        //light color pref
+        int color = (mChannel.getLightColor() != 0 ? mChannel.getLightColor() : 0X00FFFFFF);
+        mCustomLight.setColor(color);
+        mCustomLight.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                int color = ((Integer) newValue).intValue();
+                mChannel.setLightColor(color);
+                mBackend.updateChannel(mPkg, mUid, mChannel);
+                return true;
+            }
+        });
+        //light on time pref
+        int lightOn = mChannel.getLightOnTime();
+        mLightOnTime.setValue(lightOn);
+        mLightOnTime.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                int val = (Integer) newValue;
+                mChannel.setLightOnTime(val);
+                mBackend.updateChannel(mPkg, mUid, mChannel);
+                return true;
+            }
+        });
+        //light off time pref
+        int lightOff = mChannel.getLightOffTime();
+        mLightOffTime.setValue(lightOff);
+        mLightOffTime.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                int val = (Integer) newValue;
+                mChannel.setLightOffTime(val);
+                mBackend.updateChannel(mPkg, mUid, mChannel);
+                return true;
+            }
+        });
+        //light on zen pref
+        mLightOnZen.setChecked(mChannel.shouldLightOnZen());
+        mLightOnZen.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final boolean show = (Boolean) newValue;
+                mChannel.setLightOnZen(show);
+                mBackend.updateChannel(mPkg, mUid, mChannel);
+                return true;
+            }
+        });
     }
 
     private void addHeaderPref() {
@@ -307,6 +421,17 @@ public class AppNotificationSettings extends NotificationSettingsBase {
         setupBlockDesc(R.string.app_notifications_off_desc);
     }
 
+    protected void setupInfoDesc(int summaryResId) {
+        FooterPreference infoDesc = (FooterPreference) getPreferenceScreen().findPreference(
+                KEY_INFO_DESC);
+        infoDesc = new FooterPreference(getPrefContext());
+        infoDesc.setSelectable(false);
+        infoDesc.setTitle(summaryResId);
+        infoDesc.setEnabled(false);
+        infoDesc.setOrder(50);
+        getPreferenceScreen().addPreference(infoDesc);
+    }
+
     protected void updateDependents(boolean banned) {
         for (PreferenceCategory category : mChannelGroups) {
             setVisible(category, !banned);
@@ -323,6 +448,7 @@ public class AppNotificationSettings extends NotificationSettingsBase {
                     && mDndVisualEffectsSuppressed));
             setVisible(mVisibilityOverride, !banned &&
                     checkCanBeVisible(NotificationManager.IMPORTANCE_LOW) && isLockScreenSecure());
+            setVisible(mLightCategory, !banned);
         }
         if (mAppLink != null) {
             setVisible(mAppLink, !banned);
