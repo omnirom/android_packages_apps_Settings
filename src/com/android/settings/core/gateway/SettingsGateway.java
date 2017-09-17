@@ -130,6 +130,7 @@ import com.android.settings.wifi.p2p.WifiP2pSettings;
 import org.omnirom.omnigears.OmniDashboardFragment;
 import org.omnirom.omnigears.ButtonSettings;
 import org.omnirom.omnigears.DisplayRotation;
+import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.interfacesettings.StyleSettings;
 import org.omnirom.omnigears.interfacesettings.GlobalActionsSettings;
@@ -260,6 +261,7 @@ public class SettingsGateway {
             ButtonSettings.class.getName(),
             MoreSettings.class.getName(),
             DisplayRotation.class.getName(),
+            BatteryLightSettings.class.getName(),
     };
 
     public static final String[] SETTINGS_FOR_RESTRICTED = {
