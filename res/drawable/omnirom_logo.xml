@@ -20,14 +20,14 @@
     android:width="48dp"
     android:height="48dp"
     android:viewportWidth="512.000000"
-    android:viewportHeight="512.000000">
-
+    android:viewportHeight="512.000000"
+    android:tint="?android:attr/colorControlNormal">
     <group
         android:translateY="512.000000"
         android:scaleX="0.100000"
         android:scaleY="-0.100000">
         <path
-            android:fillColor="#a1c729"
+            android:fillColor="#FFFFFFFF"
             android:strokeWidth="1"
             android:pathData="M1425 4703 c-526 -71 -929 -439 -1041 -953 -18 -80 -19 -149 -19 -1200 0 -1051 1
 -1120 19 -1200 104 -475 461 -832 936 -936 80 -18 150 -19 1230 -19 1080 0 1150 1
