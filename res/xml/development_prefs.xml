@@ -124,11 +124,6 @@
             android:summary="@string/adb_over_network_summary"
             android:dependency="enable_adb"/>
 
-        <SwitchPreference
-            android:key="bugreport_in_power"
-            android:title="@string/bugreport_in_power"
-            android:summary="@string/bugreport_in_power_summary"/>
-
         <Preference android:key="mock_location_app"
             android:title="@string/mock_location_app" />
 
