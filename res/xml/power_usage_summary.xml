@@ -54,6 +54,11 @@
             android:title="@string/battery_percentage"
             android:summary="@string/battery_percentage_description"/>
 
+        <SwitchPreference
+            android:key="battery_image"
+            android:title="@string/battery_image"
+            android:summary="@string/battery_image_description"/>
+
         <!-- Cross-listed item, if you change this, also change it in ia_display_settings.xml -->
         <SwitchPreference
             android:key="auto_brightness_battery"
