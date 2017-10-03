@@ -49,6 +49,10 @@
         android:title="@string/battery_percentage"
         android:summary="@string/battery_percentage_description" />
 
+    <SwitchPreference
+        android:key="battery_image"
+        android:title="@string/battery_image"
+        android:summary="@string/battery_image_description"/>
 
     <com.android.settings.fuelgauge.PowerGaugePreference
         android:key="last_full_charge"
