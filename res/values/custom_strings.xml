@@ -29,4 +29,7 @@
     <string name="mod_version">Omni version</string>
     <string name="mod_version_default">Unknown</string>
 
+    <string name="battery_image">Battery image</string>
+    <string name="battery_image_description">Show battery image in status bar</string>
+
 </resources>
