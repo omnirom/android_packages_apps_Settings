@@ -60,8 +60,8 @@ public class DeviceModelPreferenceController extends PreferenceController {
         if (!TextUtils.equals(preference.getKey(), KEY_DEVICE_MODEL)) {
             return false;
         }
-        final HardwareInfoDialogFragment fragment = HardwareInfoDialogFragment.newInstance();
-        fragment.show(mHost.getFragmentManager(), HardwareInfoDialogFragment.TAG);
+        //final HardwareInfoDialogFragment fragment = HardwareInfoDialogFragment.newInstance();
+        //fragment.show(mHost.getFragmentManager(), HardwareInfoDialogFragment.TAG);
         return true;
     }
 
