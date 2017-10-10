@@ -18,6 +18,10 @@
 package com.android.settings.deviceinfo;
 
 import android.content.Context;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.SystemProperties;
 import android.support.v7.preference.Preference;
 import android.text.TextUtils;
@@ -47,5 +51,17 @@ public class OmniVersionPreferenceController extends PreferenceController {
     @Override
     public String getPreferenceKey() {
         return KEY_OMNI_VERSION;
+    }
+
+    @Override
+    public boolean handlePreferenceTreeClick(Preference preference) {
+        try {
+            final Intent intent = new Intent();
+            ComponentName cn = new ComponentName("org.omnirom.games.eggs", "org.omnirom.games.eggs.StartingActivity");
+            intent.setComponent(cn);
+            mContext.startActivity(intent);
+        } catch (Resources.NotFoundException | ActivityNotFoundException e) {
+        }
+        return false;
     }
 }
