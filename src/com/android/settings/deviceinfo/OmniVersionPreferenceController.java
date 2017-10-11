@@ -55,12 +55,14 @@ public class OmniVersionPreferenceController extends PreferenceController {
 
     @Override
     public boolean handlePreferenceTreeClick(Preference preference) {
-        try {
-            final Intent intent = new Intent();
-            ComponentName cn = new ComponentName("org.omnirom.games.eggs", "org.omnirom.games.eggs.StartingActivity");
-            intent.setComponent(cn);
-            mContext.startActivity(intent);
-        } catch (Resources.NotFoundException | ActivityNotFoundException e) {
+        if (preference.getKey().equals(KEY_OMNI_VERSION)) {
+            try {
+                final Intent intent = new Intent();
+                ComponentName cn = new ComponentName("org.omnirom.games.eggs", "org.omnirom.games.eggs.StartingActivity");
+                intent.setComponent(cn);
+                mContext.startActivity(intent);
+            } catch (Resources.NotFoundException | ActivityNotFoundException e) {
+            }
         }
         return false;
     }
