@@ -25,7 +25,7 @@
     <string name="omni_device_parts">Device features</string>
     <string name="columns_menu">Columns layout</string>
     <string name="hide_summary_menu">Hide summary</string>
-    <string name="bars_settings_title">Bars</string>
+    <string name="bars_settings_title">Bars and lock screen</string>
     <string name="button_settings_title">Buttons</string>
     <string name="mod_version">Omni version</string>
     <string name="mod_version_default">Unknown</string>
