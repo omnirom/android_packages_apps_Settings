@@ -16,10 +16,14 @@
 
 package com.android.settings.display;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.preference.DropDownPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.TwoStatePreference;
@@ -228,7 +232,11 @@ public class NightDisplaySettings extends SettingsPreferenceFragment
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (preference == mAutoModePreference) {
-            return mController.setAutoMode(Integer.parseInt((String) newValue));
+            Integer value = Integer.parseInt((String) newValue);
+            if (value == NightDisplayController.AUTO_MODE_TWILIGHT && !checkLocationEnabled()) {
+                showLocationDisabledDialog();
+            }
+            return mController.setAutoMode(value);
         } else if (preference == mActivatedPreference) {
             return mController.setActivated((Boolean) newValue);
         } else if (preference == mTemperaturePreference) {
@@ -240,5 +248,27 @@ public class NightDisplaySettings extends SettingsPreferenceFragment
     @Override
     public int getMetricsCategory() {
         return MetricsEvent.NIGHT_DISPLAY_SETTINGS;
+    }
+
+    private boolean checkLocationEnabled() {
+        return Settings.Secure.getInt(getContext().getContentResolver(), Settings.Secure.LOCATION_MODE, -1) != Settings.Secure.LOCATION_MODE_OFF;
+    }
+
+    private void showLocationDisabledDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.twilight_mode_location_dialog);
+        builder.setMessage(R.string.twilight_mode_location_disabled);
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.twilight_mode_location_enable,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                });
+        builder.setNegativeButton(android.R.string.cancel, null);
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 }
