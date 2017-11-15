@@ -32,7 +32,6 @@
         android:layout_height="wrap_content"
         android:ellipsize="marquee"
         android:fadingEdge="horizontal"
-        android:paddingStart="56dp"
         android:paddingEnd="8dp"
         android:singleLine="true"
         android:textAppearance="@android:style/TextAppearance.Material.Subhead"
@@ -45,7 +44,6 @@
         android:layout_alignStart="@android:id/title"
         android:layout_below="@android:id/title"
         android:maxLines="4"
-        android:paddingStart="56dp"
         android:paddingEnd="8dp"
         android:textAppearance="?android:attr/textAppearanceListItemSecondary"
         android:textColor="?android:attr/textColorSecondary" />
@@ -57,7 +55,6 @@
         android:layout_height="48dp"
         android:layout_alignParentEnd="true"
         android:layout_below="@android:id/summary"
-        android:paddingStart="56dp"
         android:paddingEnd="8dp" />
 
 </RelativeLayout>
