@@ -18,22 +18,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/tts_settings_title">
 
-    <PreferenceCategory android:key="tts_engine_section">
+    <com.android.settings.widget.GearPreference
+        android:key="tts_engine_preference"
+        android:title="@string/tts_engine_preference_title"
+        android:fragment="com.android.settings.tts.TtsEnginePreferenceFragment"/>
 
-        <com.android.settings.widget.GearPreference
-            android:key="tts_engine_preference"
-            android:title="@string/tts_engine_preference_title"
-            android:fragment="com.android.settings.tts.TtsEnginePreferenceFragment"/>
+    <ListPreference
+        android:key="tts_default_lang"
+        android:title="@string/tts_default_lang_title"
+        android:summary="@string/tts_default_lang_summary"
+        android:persistent="false" />
 
-        <ListPreference
-            android:key="tts_default_lang"
-            android:title="@string/tts_default_lang_title"
-            android:summary="@string/tts_default_lang_summary"
-            android:persistent="false" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:key="tts_general_section">
+    <PreferenceCategory
+        android:key="tts_general_section"
+        android:title="@string/sound_category_sound_title">
 
         <!-- The max value for seek bars here should be kept in sync
              with the max value specified in TextToSpeechSettings class. -->
