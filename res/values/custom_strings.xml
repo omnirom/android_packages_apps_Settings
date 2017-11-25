@@ -44,4 +44,6 @@
 
     <string name="screenshot_shutter_sound_title">Screenshot sound</string>
 
+    <string name="select_sim_for_sms">Select a SIM for SMS</string>
+
 </resources>
