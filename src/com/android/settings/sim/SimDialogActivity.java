@@ -29,6 +29,7 @@ import android.telecom.TelecomManager;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -271,6 +272,16 @@ public class SimDialogActivity extends Activity {
 
     }
 
+    private String getSubscriptionDisplayName(SubscriptionInfo sir) {
+        return sir.getDisplayName() + " - " + getSubscriptionCarrierName(sir);
+    }
+
+    private String getSubscriptionCarrierName(SubscriptionInfo sir) {
+        CharSequence simCarrierName = sir.getCarrierName();
+        return !TextUtils.isEmpty(simCarrierName) ? simCarrierName.toString() :
+                this.getString(com.android.internal.R.string.unknownName);
+    }
+
     private class SelectAccountListAdapter extends ArrayAdapter<String> {
         private Context mContext;
         private int mResId;
@@ -315,7 +326,7 @@ public class SimDialogActivity extends Activity {
                         .getDrawable(R.drawable.ic_live_help));
                 holder.icon.setAlpha(OPACITY);
             } else {
-                holder.title.setText(sir.getDisplayName());
+                holder.title.setText(getSubscriptionDisplayName(sir));
                 holder.summary.setText(sir.getNumber());
                 holder.icon.setImageBitmap(sir.createIconBitmap(mContext));
             }
