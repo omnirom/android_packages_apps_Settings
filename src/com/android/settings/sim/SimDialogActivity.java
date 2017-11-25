@@ -29,6 +29,7 @@ import android.telecom.TelecomManager;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -154,6 +155,7 @@ public class SimDialogActivity extends Activity {
         final List<SubscriptionInfo> subInfoList =
             subscriptionManager.getActiveSubscriptionInfoList();
         final int selectableSubInfoLength = subInfoList == null ? 0 : subInfoList.size();
+        final ArrayList<SubscriptionInfo> callsSubInfoList = new ArrayList<SubscriptionInfo>();
 
         final DialogInterface.OnClickListener selectionListener =
                 new DialogInterface.OnClickListener() {
@@ -173,7 +175,7 @@ public class SimDialogActivity extends Activity {
                                 final List<PhoneAccountHandle> phoneAccountsList =
                                         telecomManager.getCallCapablePhoneAccounts();
                                 setUserSelectedOutgoingPhoneAccount(
-                                        value < 1 ? null : phoneAccountsList.get(value - 1));
+                                        value == (callsSubInfoList.size() - 1) ? null : phoneAccountsList.get(value));
                                 break;
                             case SMS_PICK:
                                 sir = subInfoList.get(value);
@@ -199,15 +201,12 @@ public class SimDialogActivity extends Activity {
                 }
             };
 
-        ArrayList<SubscriptionInfo> callsSubInfoList = new ArrayList<SubscriptionInfo>();
         if (id == CALLS_PICK) {
             final TelecomManager telecomManager = TelecomManager.from(context);
             final TelephonyManager telephonyManager = TelephonyManager.from(context);
             final Iterator<PhoneAccountHandle> phoneAccounts =
                     telecomManager.getCallCapablePhoneAccounts().listIterator();
 
-            list.add(getResources().getString(R.string.sim_calls_ask_first_prefs_title));
-            callsSubInfoList.add(null);
             while (phoneAccounts.hasNext()) {
                 final PhoneAccount phoneAccount =
                         telecomManager.getPhoneAccount(phoneAccounts.next());
@@ -221,6 +220,8 @@ public class SimDialogActivity extends Activity {
                     callsSubInfoList.add(null);
                 }
             }
+            list.add(getResources().getString(R.string.sim_calls_ask_first_prefs_title));
+            callsSubInfoList.add(null);
         } else {
             for (int i = 0; i < selectableSubInfoLength; ++i) {
                 final SubscriptionInfo sir = subInfoList.get(i);
@@ -250,7 +251,7 @@ public class SimDialogActivity extends Activity {
                 builder.setTitle(R.string.select_sim_for_calls);
                 break;
             case SMS_PICK:
-                builder.setTitle(R.string.sim_card_select_title);
+                builder.setTitle(R.string.select_sim_for_sms);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid dialog type "
@@ -271,11 +272,20 @@ public class SimDialogActivity extends Activity {
 
     }
 
+    private String getSubscriptionDisplayName(SubscriptionInfo sir) {
+        return sir.getDisplayName() + " - " + getSubscriptionCarrierName(sir);
+    }
+
+    private String getSubscriptionCarrierName(SubscriptionInfo sir) {
+        CharSequence simCarrierName = sir.getCarrierName();
+        return !TextUtils.isEmpty(simCarrierName) ? simCarrierName.toString() :
+                this.getString(com.android.internal.R.string.unknownName);
+    }
+
     private class SelectAccountListAdapter extends ArrayAdapter<String> {
         private Context mContext;
         private int mResId;
         private int mDialogId;
-        private final float OPACITY = 0.54f;
         private List<SubscriptionInfo> mSubInfoList;
 
         public SelectAccountListAdapter(List<SubscriptionInfo> subInfoList,
@@ -310,12 +320,12 @@ public class SimDialogActivity extends Activity {
             final SubscriptionInfo sir = mSubInfoList.get(position);
             if (sir == null) {
                 holder.title.setText(getItem(position));
-                holder.summary.setText("");
+                holder.summary.setVisibility(View.GONE);
                 holder.icon.setImageDrawable(getResources()
                         .getDrawable(R.drawable.ic_live_help));
-                holder.icon.setAlpha(OPACITY);
             } else {
-                holder.title.setText(sir.getDisplayName());
+                holder.title.setText(getSubscriptionDisplayName(sir));
+                holder.summary.setVisibility(View.VISIBLE);
                 holder.summary.setText(sir.getNumber());
                 holder.icon.setImageBitmap(sir.createIconBitmap(mContext));
             }
