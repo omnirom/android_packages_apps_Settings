@@ -31,8 +31,8 @@ import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 
 import com.android.settings.Settings;
-import com.android.settings.SettingsRobolectricTestRunner;
 import com.android.settings.TestConfig;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
 import com.android.settingslib.drawer.Tile;
 
 import org.junit.Before;
@@ -78,6 +78,7 @@ public class SuggestionsChecksTest {
     public void testFingerprintEnrollmentIntroductionIsCompleteWhenFingerprintAdded() {
         stubFingerprintSupported(true);
         when(mFingerprintManager.hasEnrolledFingerprints()).thenReturn(true);
+        when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
         Tile tile = createFingerprintTile();
         assertThat(mSuggestionsChecks.isSuggestionComplete(tile)).isTrue();
     }
@@ -86,10 +87,19 @@ public class SuggestionsChecksTest {
     public void testFingerprintEnrollmentIntroductionIsNotCompleteWhenNoFingerprintAdded() {
         stubFingerprintSupported(true);
         when(mFingerprintManager.hasEnrolledFingerprints()).thenReturn(false);
+        when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
         Tile tile = createFingerprintTile();
         assertThat(mSuggestionsChecks.isSuggestionComplete(tile)).isFalse();
     }
 
+    @Test
+    public void testFingerprintEnrollmentIntroductionIsCompleteWhenHardwareNotDetected() {
+        stubFingerprintSupported(true);
+        when(mFingerprintManager.hasEnrolledFingerprints()).thenReturn(false);
+        when(mFingerprintManager.isHardwareDetected()).thenReturn(false);
+        Tile tile = createFingerprintTile();
+        assertThat(mSuggestionsChecks.isSuggestionComplete(tile)).isTrue();
+    }
 
     @Test
     public void testFingerprintEnrollmentIntroductionIsCompleteWhenFingerprintNotSupported() {
@@ -102,6 +112,7 @@ public class SuggestionsChecksTest {
     public void testFingerprintEnrollmentIntroductionIsCompleteWhenFingerprintDisabled() {
         stubFingerprintSupported(true);
         when(mFingerprintManager.hasEnrolledFingerprints()).thenReturn(false);
+        when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
         when(mDevicePolicyManager.getKeyguardDisabledFeatures(any(), anyInt()))
                 .thenReturn(DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT);
 
@@ -115,7 +126,7 @@ public class SuggestionsChecksTest {
     }
 
     private Tile createFingerprintTile() {
-        Tile tile = new Tile();
+        final Tile tile = new Tile();
         tile.intent = new Intent();
         tile.intent.setComponent(new ComponentName(mContext,
                 Settings.FingerprintEnrollSuggestionActivity.class));

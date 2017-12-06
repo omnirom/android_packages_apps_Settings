@@ -23,7 +23,6 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.UserInfo;
 import android.graphics.drawable.Drawable;
 import android.net.INetworkStatsSession;
 import android.net.NetworkPolicy;
@@ -33,25 +32,27 @@ import android.net.TrafficStats;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.os.UserHandle;
-import android.os.UserManager;
+import android.support.annotation.VisibleForTesting;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 import android.text.format.Formatter;
 import android.util.ArraySet;
 import android.util.IconDrawableFactory;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.settings.R;
-import com.android.settings.applications.AppHeaderController;
 import com.android.settings.applications.AppInfoBase;
-import com.android.settings.overlay.FeatureFactory;
+import com.android.settings.applications.PackageManagerWrapper;
+import com.android.settings.applications.PackageManagerWrapperImpl;
+import com.android.settings.widget.EntityHeaderController;
 import com.android.settingslib.AppItem;
-import com.android.settingslib.Utils;
 import com.android.settingslib.net.ChartData;
 import com.android.settingslib.net.ChartDataLoader;
+import com.android.settingslib.net.UidDetail;
 import com.android.settingslib.net.UidDetailProvider;
 
 public class AppDataUsage extends DataUsageBase implements Preference.OnPreferenceChangeListener,
@@ -74,6 +75,7 @@ public class AppDataUsage extends DataUsageBase implements Preference.OnPreferen
     private static final int LOADER_CHART_DATA = 2;
     private static final int LOADER_APP_PREF = 3;
 
+    private PackageManagerWrapper mPackageManagerWrapper;
     private final ArraySet<String> mPackages = new ArraySet<>();
     private Preference mTotalUsage;
     private Preference mForegroundUsage;
@@ -102,6 +104,7 @@ public class AppDataUsage extends DataUsageBase implements Preference.OnPreferen
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        mPackageManagerWrapper = new PackageManagerWrapperImpl(getPackageManager());
         final Bundle args = getArguments();
 
         try {
@@ -115,8 +118,8 @@ public class AppDataUsage extends DataUsageBase implements Preference.OnPreferen
                 : null;
         if (mTemplate == null) {
             Context context = getContext();
-            mTemplate = DataUsageSummary.getDefaultTemplate(context,
-                    DataUsageSummary.getDefaultSubscriptionId(context));
+            mTemplate = DataUsageUtils.getDefaultTemplate(context,
+                    DataUsageUtils.getDefaultSubscriptionId(context));
         }
         if (mAppItem == null) {
             int uid = (args != null) ? args.getInt(AppInfoBase.ARG_PACKAGE_UID, -1)
@@ -145,11 +148,11 @@ public class AppDataUsage extends DataUsageBase implements Preference.OnPreferen
 
         if (mAppItem.key > 0) {
             if (mPackages.size() != 0) {
-                PackageManager pm = getPackageManager();
                 try {
-                    ApplicationInfo info = pm.getApplicationInfo(mPackages.valueAt(0), 0);
+                    ApplicationInfo info = mPackageManagerWrapper.getApplicationInfoAsUser(
+                            mPackages.valueAt(0), 0, UserHandle.getUserId(mAppItem.key));
                     mIcon = IconDrawableFactory.newInstance(getActivity()).getBadgedIcon(info);
-                    mLabel = info.loadLabel(pm);
+                    mLabel = info.loadLabel(mPackageManagerWrapper.getPackageManager());
                     mPackageName = info.packageName;
                 } catch (PackageManager.NameNotFoundException e) {
                 }
@@ -190,22 +193,12 @@ public class AppDataUsage extends DataUsageBase implements Preference.OnPreferen
                 removePreference(KEY_APP_LIST);
             }
         } else {
-            if (mAppItem.key == TrafficStats.UID_REMOVED) {
-                mLabel = getContext().getString(R.string.data_usage_uninstalled_apps_users);
-            } else if (mAppItem.key == TrafficStats.UID_TETHERING) {
-                mLabel = getContext().getString(R.string.tether_settings_title_all);
-            } else {
-                final int userId = UidDetailProvider.getUserIdForKey(mAppItem.key);
-                final UserManager um = UserManager.get(getActivity());
-                final UserInfo info = um.getUserInfo(userId);
-                if (info != null) {
-                    mIcon = Utils.getUserIcon(getActivity(), um, info);
-                    mLabel = Utils.getUserLabel(getActivity(), info);
-                } else {
-                    mLabel = getContext().getString(R.string.data_usage_uninstalled_apps_users);
-                }
-                mPackageName = getActivity().getPackageName();
-            }
+            final Context context = getActivity();
+            UidDetail uidDetail = new UidDetailProvider(context).getUidDetail(mAppItem.key, true);
+            mIcon = uidDetail.icon;
+            mLabel = uidDetail.label;
+            mPackageName = context.getPackageName();
+
             removePreference(KEY_UNRESTRICTED_DATA);
             removePreference(KEY_APP_SETTINGS);
             removePreference(KEY_RESTRICT_BACKGROUND);
@@ -243,6 +236,7 @@ public class AppDataUsage extends DataUsageBase implements Preference.OnPreferen
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (preference == mRestrictBackground) {
             mDataSaverBackend.setIsBlacklisted(mAppItem.key, mPackageName, !(Boolean) newValue);
+            updatePrefs();
             return true;
         } else if (preference == mUnrestrictedData) {
             mDataSaverBackend.setIsWhitelisted(mAppItem.key, mPackageName, (Boolean) newValue);
@@ -262,7 +256,8 @@ public class AppDataUsage extends DataUsageBase implements Preference.OnPreferen
         return super.onPreferenceTreeClick(preference);
     }
 
-    private void updatePrefs() {
+    @VisibleForTesting
+    void updatePrefs() {
         updatePrefs(getAppRestrictBackground(), getUnrestrictData());
     }
 
@@ -330,22 +325,29 @@ public class AppDataUsage extends DataUsageBase implements Preference.OnPreferen
 
         String pkg = mPackages.size() != 0 ? mPackages.valueAt(0) : null;
         int uid = 0;
-        try {
-            uid = pkg != null ? getPackageManager().getPackageUid(pkg, 0) : 0;
-        } catch (PackageManager.NameNotFoundException e) {
+        if (pkg != null) {
+            try {
+                uid = mPackageManagerWrapper.getPackageUidAsUser(pkg,
+                        UserHandle.getUserId(mAppItem.key));
+            } catch (PackageManager.NameNotFoundException e) {
+                Log.w(TAG, "Skipping UID because cannot find package " + pkg);
+            }
         }
 
+        final boolean showInfoButton = mAppItem.key > 0;
+
         final Activity activity = getActivity();
-        final Preference pref = FeatureFactory.getFactory(activity)
-            .getApplicationFeatureProvider(activity)
-            .newAppHeaderController(this, null /* appHeader */)
-            .setIcon(mIcon)
-            .setLabel(mLabel)
-            .setPackageName(pkg)
-            .setUid(uid)
-            .setButtonActions(AppHeaderController.ActionType.ACTION_APP_INFO,
-                AppHeaderController.ActionType.ACTION_NONE)
-            .done(activity, getPrefContext());
+        final Preference pref = EntityHeaderController
+                .newInstance(activity, this, null /* header */)
+                .setRecyclerView(getListView(), getLifecycle())
+                .setUid(uid)
+                .setHasAppInfoLink(showInfoButton)
+                .setButtonActions(EntityHeaderController.ActionType.ACTION_NONE,
+                        EntityHeaderController.ActionType.ACTION_NONE)
+                .setIcon(mIcon)
+                .setLabel(mLabel)
+                .setPackageName(pkg)
+                .done(activity, getPrefContext());
         getPreferenceScreen().addPreference(pref);
     }
 

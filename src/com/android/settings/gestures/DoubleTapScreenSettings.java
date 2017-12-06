@@ -17,16 +17,19 @@
 package com.android.settings.gestures;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.UserHandle;
 import android.provider.SearchIndexableResource;
 
 import com.android.internal.hardware.AmbientDisplayConfiguration;
 import com.android.internal.logging.nano.MetricsProto;
 import com.android.settings.R;
-import com.android.settings.core.PreferenceController;
-import com.android.settings.core.lifecycle.Lifecycle;
 import com.android.settings.dashboard.DashboardFragment;
+import com.android.settings.dashboard.suggestions.SuggestionFeatureProvider;
+import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.search.BaseSearchIndexProvider;
+import com.android.settingslib.core.AbstractPreferenceController;
+import com.android.settingslib.core.lifecycle.Lifecycle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +39,18 @@ public class DoubleTapScreenSettings extends DashboardFragment {
 
     private static final String TAG = "DoubleTapScreen";
     private static final String KEY_DOUBLE_TAP_SCREEN = "gesture_double_tap_screen";
+
+    public static final String PREF_KEY_SUGGESTION_COMPLETE =
+            "pref_double_tap_screen_suggestion_complete";
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        SuggestionFeatureProvider suggestionFeatureProvider = FeatureFactory.getFactory(context)
+                .getSuggestionFeatureProvider(context);
+        SharedPreferences prefs = suggestionFeatureProvider.getSharedPrefs(context);
+        prefs.edit().putBoolean(PREF_KEY_SUGGESTION_COMPLETE, true).apply();
+    }
 
     @Override
     public int getMetricsCategory() {
@@ -53,13 +68,18 @@ public class DoubleTapScreenSettings extends DashboardFragment {
     }
 
     @Override
-    protected List<PreferenceController> getPreferenceControllers(Context context) {
+    protected int getHelpResource() {
+        return R.string.help_url_double_tap_screen;
+    }
+
+    @Override
+    protected List<AbstractPreferenceController> getPreferenceControllers(Context context) {
         return buildPreferenceControllers(context, getLifecycle());
     }
 
-    private static List<PreferenceController> buildPreferenceControllers(Context context,
+    private static List<AbstractPreferenceController> buildPreferenceControllers(Context context,
             Lifecycle lifecycle) {
-        final List<PreferenceController> controllers = new ArrayList<>();
+        final List<AbstractPreferenceController> controllers = new ArrayList<>();
         controllers.add(new DoubleTapScreenPreferenceController(context, lifecycle,
                 new AmbientDisplayConfiguration(context), UserHandle.myUserId(),
                 KEY_DOUBLE_TAP_SCREEN));
@@ -77,7 +97,7 @@ public class DoubleTapScreenSettings extends DashboardFragment {
                 }
 
                 @Override
-                public List<PreferenceController> getPreferenceControllers(Context context) {
+                public List<AbstractPreferenceController> getPreferenceControllers(Context context) {
                     return buildPreferenceControllers(context, null /* lifecycle */);
                 }
             };

@@ -25,12 +25,17 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.provider.Settings;
 import android.support.v14.preference.SwitchPreference;
+import android.text.BidiFormatter;
 
 import com.android.settings.R;
 import com.android.settings.datausage.DataSaverBackend;
 
 import java.util.ArrayList;
 
+/**
+ * @deprecated in favor of WifiTetherPreferenceController and WifiTetherSettings
+ */
+@Deprecated
 public class WifiApEnabler {
     private final Context mContext;
     private final SwitchPreference mSwitch;
@@ -76,7 +81,7 @@ public class WifiApEnabler {
         mContext = context;
         mDataSaverBackend = dataSaverBackend;
         mSwitch = switchPreference;
-        mOriginalSummary = switchPreference.getSummary();
+        mOriginalSummary = context.getText(R.string.wifi_hotspot_off_subtext);
         switchPreference.setPersistent(false);
 
         mWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
@@ -109,12 +114,13 @@ public class WifiApEnabler {
         }
     }
 
-    public void updateConfigSummary(WifiConfiguration wifiConfig) {
+    private void updateConfigSummary(WifiConfiguration wifiConfig) {
         String s = mContext.getString(
                 com.android.internal.R.string.wifi_tether_configure_ssid_default);
-        mSwitch.setSummary(String.format(
-                    mContext.getString(R.string.wifi_tether_enabled_subtext),
-                    (wifiConfig == null) ? s : wifiConfig.SSID));
+
+        mSwitch.setSummary(mContext.getString(R.string.wifi_tether_enabled_subtext,
+                BidiFormatter.getInstance().unicodeWrap(
+                        (wifiConfig == null) ? s : wifiConfig.SSID)));
     }
 
     private void updateTetherState(Object[] available, Object[] tethered, Object[] errored) {

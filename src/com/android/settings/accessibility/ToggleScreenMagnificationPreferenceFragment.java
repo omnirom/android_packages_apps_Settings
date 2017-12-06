@@ -107,6 +107,8 @@ public class ToggleScreenMagnificationPreferenceFragment extends
                     videoView.setLayoutParams(videoLp);
                     videoView.invalidate();
                     videoView.start();
+                    mVideoBackgroundView.getViewTreeObserver()
+                            .removeOnGlobalLayoutListener(mLayoutListener);
                 }
             };
 
@@ -144,7 +146,6 @@ public class ToggleScreenMagnificationPreferenceFragment extends
         final PreferenceScreen preferenceScreen = getPreferenceManager().getPreferenceScreen();
         preferenceScreen.setOrderingAsAdded(false);
         mVideoPreference.setOrder(0);
-        mSummaryPreference.setOrder(1);
         mConfigWarningPreference.setOrder(2);
         preferenceScreen.addPreference(mVideoPreference);
         preferenceScreen.addPreference(mConfigWarningPreference);

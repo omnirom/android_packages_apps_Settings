@@ -18,17 +18,25 @@ package com.android.settings.bluetooth;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.util.Log;
 
 import com.android.settings.R;
-import com.android.settings.SettingsRobolectricTestRunner;
 import com.android.settings.TestConfig;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
 import com.android.settings.widget.SummaryUpdater.OnSummaryChangeListener;
-import com.android.settingslib.bluetooth.CachedBluetoothDevice;
-import com.android.settingslib.bluetooth.LocalBluetoothManager;
 import com.android.settingslib.bluetooth.LocalBluetoothAdapter;
+import com.android.settingslib.bluetooth.LocalBluetoothManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,16 +47,8 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(SettingsRobolectricTestRunner.class)
 @Config(manifest = TestConfig.MANIFEST_PATH, sdk = TestConfig.SDK_VERSION)
@@ -68,16 +68,33 @@ public class BluetoothSummaryUpdaterTest {
     @Mock
     private SummaryListener mListener;
 
+    // Disabled by default
+    private final boolean[] mAdapterEnabled = {false};
+    // Not connected by default
+    private final int[] mAdapterConnectionState = {BluetoothAdapter.STATE_DISCONNECTED};
+    // Not connected by default
+    private final boolean[] mDeviceConnected = {false, false};
+    private final Set<BluetoothDevice> mBondedDevices = new HashSet<>();
     private BluetoothSummaryUpdater mSummaryUpdater;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        when(mBluetoothManager.getBluetoothAdapter()).thenReturn(mBtAdapter);
-        when(mBtAdapter.isEnabled()).thenReturn(true);
-        when(mBtAdapter.getConnectionState()).thenReturn(BluetoothAdapter.STATE_CONNECTED);
         mContext = RuntimeEnvironment.application.getApplicationContext();
+        doCallRealMethod().when(mListener).onSummaryChanged(anyString());
+        // Setup mock adapter
+        when(mBluetoothManager.getBluetoothAdapter()).thenReturn(mBtAdapter);
+        doAnswer(invocation -> mAdapterEnabled[0]).when(mBtAdapter).isEnabled();
+        doAnswer(invocation -> mAdapterConnectionState[0]).when(mBtAdapter).getConnectionState();
         mSummaryUpdater = new BluetoothSummaryUpdater(mContext, mListener, mBluetoothManager);
+        // Setup first device
+        doReturn(DEVICE_NAME).when(mConnectedDevice).getName();
+        doAnswer(invocation -> mDeviceConnected[0]).when(mConnectedDevice).isConnected();
+        // Setup second device
+        doReturn(DEVICE_KEYBOARD_NAME).when(mConnectedKeyBoardDevice).getName();
+        doAnswer(invocation -> mDeviceConnected[1]).when(mConnectedKeyBoardDevice)
+                .isConnected();
+        doReturn(mBondedDevices).when(mBtAdapter).getBondedDevices();
     }
 
     @Test
@@ -96,7 +113,10 @@ public class BluetoothSummaryUpdaterTest {
 
     @Test
     public void register_true_shouldSendSummaryChange() {
-        prepareConnectedDevice(false);
+        mAdapterEnabled[0] = true;
+        mAdapterConnectionState[0] = BluetoothAdapter.STATE_CONNECTED;
+        mBondedDevices.add(mConnectedDevice);
+        mDeviceConnected[0] = true;
 
         mSummaryUpdater.register(true);
 
@@ -106,7 +126,11 @@ public class BluetoothSummaryUpdaterTest {
 
     @Test
     public void onBluetoothStateChanged_btDisabled_shouldSendDisabledSummary() {
-        mSummaryUpdater.register(true);
+        // These states should be ignored
+        mAdapterConnectionState[0] = BluetoothAdapter.STATE_CONNECTED;
+        mBondedDevices.add(mConnectedDevice);
+        mDeviceConnected[0] = true;
+
         mSummaryUpdater.onBluetoothStateChanged(BluetoothAdapter.STATE_OFF);
 
         verify(mListener).onSummaryChanged(mContext.getString(R.string.bluetooth_disabled));
@@ -114,9 +138,11 @@ public class BluetoothSummaryUpdaterTest {
 
     @Test
     public void onBluetoothStateChanged_btEnabled_connected_shouldSendConnectedSummary() {
-        prepareConnectedDevice(false);
+        mAdapterEnabled[0] = true;
+        mAdapterConnectionState[0] = BluetoothAdapter.STATE_CONNECTED;
+        mBondedDevices.add(mConnectedDevice);
+        mDeviceConnected[0] = true;
 
-        mSummaryUpdater.register(true);
         mSummaryUpdater.onBluetoothStateChanged(BluetoothAdapter.STATE_ON);
 
         verify(mListener).onSummaryChanged(
@@ -124,28 +150,71 @@ public class BluetoothSummaryUpdaterTest {
     }
 
     @Test
+    public void onBluetoothStateChanged_btEnabled_connectedMisMatch_shouldSendNotConnected() {
+        mAdapterEnabled[0] = true;
+        mAdapterConnectionState[0] = BluetoothAdapter.STATE_CONNECTED;
+        mBondedDevices.add(mConnectedDevice);
+        // State mismatch
+        mDeviceConnected[0] = false;
+
+        mSummaryUpdater.onBluetoothStateChanged(BluetoothAdapter.STATE_ON);
+
+        verify(mListener).onSummaryChanged(mContext.getString(R.string.disconnected));
+    }
+
+    @Test
     public void onBluetoothStateChanged_btEnabled_notConnected_shouldSendDisconnectedMessage() {
-        when(mBtAdapter.getConnectionState()).thenReturn(BluetoothAdapter.STATE_DISCONNECTED);
-        mSummaryUpdater.register(true);
+        mAdapterEnabled[0] = true;
+        mAdapterConnectionState[0] = BluetoothAdapter.STATE_DISCONNECTED;
+        mBondedDevices.add(mConnectedDevice);
+        // This should be ignored
+        mDeviceConnected[0] = true;
+
         mSummaryUpdater.onBluetoothStateChanged(BluetoothAdapter.STATE_TURNING_ON);
 
+        verify(mListener).onSummaryChanged(mContext.getString(R.string.disconnected));
+    }
+
+    @Test
+    public void onBluetoothStateChanged_ConnectedDisabledEnabled_shouldSendDisconnectedSummary() {
+        mAdapterEnabled[0] = true;
+        mAdapterConnectionState[0] = BluetoothAdapter.STATE_DISCONNECTED;
+        mBondedDevices.add(mConnectedDevice);
+        mDeviceConnected[0] = false;
+
+        mSummaryUpdater.register(true);
+        verify(mListener).onSummaryChanged(mContext.getString(R.string.disconnected));
+
+        mAdapterConnectionState[0] = BluetoothAdapter.STATE_CONNECTED;
+        mDeviceConnected[0] = true;
+        mSummaryUpdater.onConnectionStateChanged(null /* device */,
+                BluetoothAdapter.STATE_CONNECTED);
         verify(mListener).onSummaryChanged(
-                mContext.getString(R.string.disconnected));
+                mContext.getString(R.string.bluetooth_connected_summary, DEVICE_NAME));
+
+        mAdapterEnabled[0] = false;
+        mSummaryUpdater.onBluetoothStateChanged(BluetoothAdapter.STATE_OFF);
+        verify(mListener).onSummaryChanged(mContext.getString(R.string.bluetooth_disabled));
+
+        // Turning ON means not enabled
+        mSummaryUpdater.onBluetoothStateChanged(BluetoothAdapter.STATE_TURNING_ON);
+        // There should still be only one invocation of disabled message
+        verify(mListener).onSummaryChanged(mContext.getString(R.string.bluetooth_disabled));
+
+        mAdapterEnabled[0] = true;
+        mDeviceConnected[0] = false;
+        mSummaryUpdater.onBluetoothStateChanged(BluetoothAdapter.STATE_ON);
+        verify(mListener, times(2)).onSummaryChanged(mContext.getString(R.string.disconnected));
+        verify(mListener, times(4)).onSummaryChanged(anyString());
     }
 
     @Test
     public void onConnectionStateChanged_connected_shouldSendConnectedMessage() {
-        final List<CachedBluetoothDevice> devices = new ArrayList<>();
-        devices.add(mock(CachedBluetoothDevice.class));
-        when(devices.get(0).isConnected()).thenReturn(true);
-        when(mBluetoothManager.getCachedDeviceManager().getCachedDevicesCopy())
-                .thenReturn(devices);
-        when(mBtAdapter.getConnectionState()).thenReturn(BluetoothAdapter.STATE_DISCONNECTED);
-        prepareConnectedDevice(false);
+        mAdapterEnabled[0] = true;
+        mAdapterConnectionState[0] = BluetoothAdapter.STATE_CONNECTED;
+        mBondedDevices.add(mConnectedDevice);
+        mDeviceConnected[0] = true;
 
-        mSummaryUpdater.register(true);
-
-        when(mBtAdapter.getConnectionState()).thenReturn(BluetoothAdapter.STATE_CONNECTED);
         mSummaryUpdater.onConnectionStateChanged(null /* device */,
                 BluetoothAdapter.STATE_CONNECTED);
 
@@ -155,7 +224,22 @@ public class BluetoothSummaryUpdaterTest {
 
     @Test
     public void onConnectionStateChanged_inconsistentState_shouldSendDisconnectedMessage() {
-        mSummaryUpdater.register(true);
+        mAdapterEnabled[0] = true;
+        mAdapterConnectionState[0] = BluetoothAdapter.STATE_DISCONNECTED;
+        mBondedDevices.add(mConnectedDevice);
+        mDeviceConnected[0] = false;
+
+        mSummaryUpdater.onConnectionStateChanged(null /* device */,
+                BluetoothAdapter.STATE_CONNECTED);
+
+        verify(mListener).onSummaryChanged(mContext.getString(R.string.disconnected));
+    }
+
+    @Test
+    public void onConnectionStateChanged_noBondedDevice_shouldSendDisconnectedMessage() {
+        mAdapterEnabled[0] = true;
+        mAdapterConnectionState[0] = BluetoothAdapter.STATE_CONNECTED;
+
         mSummaryUpdater.onConnectionStateChanged(null /* device */,
                 BluetoothAdapter.STATE_CONNECTED);
 
@@ -165,8 +249,10 @@ public class BluetoothSummaryUpdaterTest {
 
     @Test
     public void onConnectionStateChanged_connecting_shouldSendConnectingMessage() {
-        mSummaryUpdater.register(true);
-        when(mBtAdapter.getConnectionState()).thenReturn(BluetoothAdapter.STATE_CONNECTING);
+        // No need for bonded devices
+        mAdapterEnabled[0] = true;
+        mAdapterConnectionState[0] = BluetoothAdapter.STATE_CONNECTING;
+
         mSummaryUpdater.onConnectionStateChanged(null /* device */,
                 BluetoothAdapter.STATE_CONNECTING);
 
@@ -175,8 +261,10 @@ public class BluetoothSummaryUpdaterTest {
 
     @Test
     public void onConnectionStateChanged_disconnecting_shouldSendDisconnectingMessage() {
-        mSummaryUpdater.register(true);
-        when(mBtAdapter.getConnectionState()).thenReturn(BluetoothAdapter.STATE_DISCONNECTING);
+        // No need for bonded devices
+        mAdapterEnabled[0] = true;
+        mAdapterConnectionState[0] = BluetoothAdapter.STATE_DISCONNECTING;
+
         mSummaryUpdater.onConnectionStateChanged(null /* device */,
                 BluetoothAdapter.STATE_DISCONNECTING);
 
@@ -185,7 +273,8 @@ public class BluetoothSummaryUpdaterTest {
 
     @Test
     public void getConnectedDeviceSummary_hasConnectedDevice_returnOneDeviceSummary() {
-        prepareConnectedDevice(false);
+        mBondedDevices.add(mConnectedDevice);
+        mDeviceConnected[0] = true;
         final String expectedSummary = mContext.getString(R.string.bluetooth_connected_summary,
                 DEVICE_NAME);
 
@@ -194,26 +283,14 @@ public class BluetoothSummaryUpdaterTest {
 
     @Test
     public void getConnectedDeviceSummary_multipleDevices_returnMultipleDevicesSummary() {
-        prepareConnectedDevice(true);
+        mBondedDevices.add(mConnectedDevice);
+        mBondedDevices.add(mConnectedKeyBoardDevice);
+        mDeviceConnected[0] = true;
+        mDeviceConnected[1] = true;
         final String expectedSummary = mContext.getString(
                 R.string.bluetooth_connected_multiple_devices_summary);
 
         assertThat(mSummaryUpdater.getConnectedDeviceSummary()).isEqualTo(expectedSummary);
-    }
-
-    private void prepareConnectedDevice(boolean multipleDevices) {
-        final Set<BluetoothDevice> devices = new HashSet<>();
-        doReturn(DEVICE_NAME).when(mConnectedDevice).getName();
-        doReturn(true).when(mConnectedDevice).isConnected();
-        devices.add(mConnectedDevice);
-        if (multipleDevices) {
-            // Add one more device if we need to test multiple devices
-            doReturn(DEVICE_KEYBOARD_NAME).when(mConnectedKeyBoardDevice).getName();
-            doReturn(true).when(mConnectedKeyBoardDevice).isConnected();
-            devices.add(mConnectedKeyBoardDevice);
-        }
-
-        doReturn(devices).when(mBtAdapter).getBondedDevices();
     }
 
     private class SummaryListener implements OnSummaryChangeListener {

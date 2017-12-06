@@ -36,13 +36,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
-import com.android.settings.ChooseLockSettingsHelper;
 import com.android.settings.R;
 import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
+import com.android.settings.password.ChooseLockSettingsHelper;
 
 /**
  * Activity which handles the actual enrolling for fingerprint.
@@ -93,11 +94,15 @@ public class FingerprintEnrollEnrolling extends FingerprintEnrollBase
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fingerprint_enroll_enrolling);
-        setHeaderText(R.string.security_settings_fingerprint_enroll_start_title);
+        setHeaderText(R.string.security_settings_fingerprint_enroll_repeat_title);
         mStartMessage = (TextView) findViewById(R.id.start_message);
         mRepeatMessage = (TextView) findViewById(R.id.repeat_message);
         mErrorText = (TextView) findViewById(R.id.error_text);
         mProgressBar = (ProgressBar) findViewById(R.id.fingerprint_progress_bar);
+
+        Button skipButton = findViewById(R.id.skip_button);
+        skipButton.setOnClickListener(this);
+
         final LayerDrawable fingerprintDrawable = (LayerDrawable) mProgressBar.getBackground();
         mIconAnimationDrawable = (AnimatedVectorDrawable)
                 fingerprintDrawable.findDrawableByLayerId(R.id.fingerprint_animation);
@@ -211,6 +216,18 @@ public class FingerprintEnrollEnrolling extends FingerprintEnrollBase
         super.onBackPressed();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.skip_button:
+                setResult(RESULT_SKIP);
+                finish();
+                break;
+            default:
+                super.onClick(v);
+        }
+    }
+
     private void animateProgress(int progress) {
         if (mProgressAnim != null) {
             mProgressAnim.cancel();
@@ -271,12 +288,9 @@ public class FingerprintEnrollEnrolling extends FingerprintEnrollBase
 
     private void updateDescription() {
         if (mSidecar.getEnrollmentSteps() == -1) {
-            setHeaderText(R.string.security_settings_fingerprint_enroll_start_title);
             mStartMessage.setVisibility(View.VISIBLE);
             mRepeatMessage.setVisibility(View.INVISIBLE);
         } else {
-            setHeaderText(R.string.security_settings_fingerprint_enroll_repeat_title,
-                    true /* force */);
             mStartMessage.setVisibility(View.INVISIBLE);
             mRepeatMessage.setVisibility(View.VISIBLE);
         }
@@ -324,6 +338,9 @@ public class FingerprintEnrollEnrolling extends FingerprintEnrollBase
             animateProgress(progress);
         } else {
             mProgressBar.setProgress(progress);
+            if (progress >= PROGRESS_BAR_MAX) {
+                mDelayedFinishRunnable.run();
+            }
         }
     }
 

@@ -25,7 +25,7 @@ import android.view.LayoutInflater;
 import android.widget.ProgressBar;
 
 import com.android.settings.R;
-import com.android.settings.SettingsRobolectricTestRunner;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
 import com.android.settings.TestConfig;
 
 import org.junit.Before;
@@ -55,7 +55,7 @@ public class StorageItemPreferenceTest {
     @Test
     public void testAfterLoad() {
         mPreference.setStorageSize(MEGABYTE_IN_BYTES * 10, MEGABYTE_IN_BYTES * 100);
-        assertThat(((String) mPreference.getSummary())).isEqualTo("0.01GB");
+        assertThat(((String) mPreference.getSummary())).isEqualTo("0.01 GB");
     }
 
     @Test

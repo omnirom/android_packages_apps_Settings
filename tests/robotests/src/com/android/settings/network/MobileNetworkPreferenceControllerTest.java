@@ -24,9 +24,10 @@ import android.support.v7.preference.PreferenceScreen;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
-import com.android.settings.SettingsRobolectricTestRunner;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
 import com.android.settings.TestConfig;
-import com.android.settings.core.lifecycle.Lifecycle;
+import com.android.settings.testutils.shadow.ShadowRestrictedLockUtilsWrapper;
+import com.android.settingslib.core.lifecycle.Lifecycle;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +47,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(SettingsRobolectricTestRunner.class)
-@Config(manifest = TestConfig.MANIFEST_PATH, sdk = TestConfig.SDK_VERSION)
+@Config(
+    manifest = TestConfig.MANIFEST_PATH,
+    sdk = TestConfig.SDK_VERSION,
+    shadows = ShadowRestrictedLockUtilsWrapper.class
+)
 public class MobileNetworkPreferenceControllerTest {
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)

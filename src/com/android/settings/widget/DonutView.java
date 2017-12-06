@@ -17,17 +17,23 @@ package com.android.settings.widget;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.Typeface;
+import android.support.annotation.ColorRes;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.android.settings.R;
 import com.android.settings.Utils;
+
+import java.util.Locale;
 
 /**
  * DonutView represents a donut graph. It visualizes a certain percentage of fullness with a
@@ -38,14 +44,16 @@ public class DonutView extends View {
     // From manual testing, this is the longest we can go without visual errors.
     private static final int LINE_CHARACTER_LIMIT = 10;
     private float mStrokeWidth;
-    private float mDeviceDensity;
-    private int mPercent;
+    private double mPercent;
     private Paint mBackgroundCircle;
     private Paint mFilledArc;
     private TextPaint mTextPaint;
     private TextPaint mBigNumberPaint;
     private String mPercentString;
     private String mFullString;
+    private boolean mShowPercentString = true;
+    private int mMeterBackgroundColor;
+    private int mMeterConsumedColor;
 
     public DonutView(Context context) {
         super(context);
@@ -53,36 +61,63 @@ public class DonutView extends View {
 
     public DonutView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mDeviceDensity = getResources().getDisplayMetrics().density;
-        mStrokeWidth = 6f * mDeviceDensity;
-        final ColorFilter mAccentColorFilter =
-                new PorterDuffColorFilter(
-                        Utils.getColorAttr(context, android.R.attr.colorAccent),
-                        PorterDuff.Mode.SRC_IN);
+        mMeterBackgroundColor = context.getColor(R.color.meter_background_color);
+        mMeterConsumedColor = Utils.getDefaultColor(mContext, R.color.meter_consumed_color);
+        boolean applyColorAccent = true;
+        Resources resources = context.getResources();
+        mStrokeWidth = resources.getDimension(R.dimen.storage_donut_thickness);
+
+        if (attrs != null) {
+            TypedArray styledAttrs = context.obtainStyledAttributes(attrs, R.styleable.DonutView);
+            mMeterBackgroundColor = styledAttrs.getColor(R.styleable.DonutView_meterBackgroundColor,
+                    mMeterBackgroundColor);
+            mMeterConsumedColor = styledAttrs.getColor(R.styleable.DonutView_meterConsumedColor,
+                    mMeterConsumedColor);
+            applyColorAccent = styledAttrs.getBoolean(R.styleable.DonutView_applyColorAccent,
+                    true);
+            mShowPercentString = styledAttrs.getBoolean(R.styleable.DonutView_showPercentString,
+                    true);
+            mStrokeWidth = styledAttrs.getDimensionPixelSize(R.styleable.DonutView_thickness,
+                    (int) mStrokeWidth);
+            styledAttrs.recycle();
+        }
 
         mBackgroundCircle = new Paint();
         mBackgroundCircle.setAntiAlias(true);
         mBackgroundCircle.setStrokeCap(Paint.Cap.BUTT);
         mBackgroundCircle.setStyle(Paint.Style.STROKE);
         mBackgroundCircle.setStrokeWidth(mStrokeWidth);
-        mBackgroundCircle.setColorFilter(mAccentColorFilter);
-        mBackgroundCircle.setColor(context.getColor(R.color.meter_background_color));
+        mBackgroundCircle.setColor(mMeterBackgroundColor);
 
         mFilledArc = new Paint();
         mFilledArc.setAntiAlias(true);
         mFilledArc.setStrokeCap(Paint.Cap.BUTT);
         mFilledArc.setStyle(Paint.Style.STROKE);
         mFilledArc.setStrokeWidth(mStrokeWidth);
-        mFilledArc.setColor(Utils.getDefaultColor(mContext, R.color.meter_consumed_color));
-        mFilledArc.setColorFilter(mAccentColorFilter);
+        mFilledArc.setColor(mMeterConsumedColor);
 
-        Resources resources = context.getResources();
+        if (applyColorAccent) {
+            final ColorFilter mAccentColorFilter =
+                    new PorterDuffColorFilter(
+                            Utils.getColorAttr(context, android.R.attr.colorAccent),
+                            PorterDuff.Mode.SRC_IN);
+            mBackgroundCircle.setColorFilter(mAccentColorFilter);
+            mFilledArc.setColorFilter(mAccentColorFilter);
+        }
+
+        final Locale locale = resources.getConfiguration().locale;
+        final int layoutDirection = TextUtils.getLayoutDirectionFromLocale(locale);
+        final int bidiFlags = (layoutDirection == LAYOUT_DIRECTION_LTR)
+                ? Paint.BIDI_LTR
+                : Paint.BIDI_RTL;
+
         mTextPaint = new TextPaint();
         mTextPaint.setColor(Utils.getColorAccent(getContext()));
         mTextPaint.setAntiAlias(true);
         mTextPaint.setTextSize(
                 resources.getDimension(R.dimen.storage_donut_view_label_text_size));
         mTextPaint.setTextAlign(Paint.Align.CENTER);
+        mTextPaint.setBidiFlags(bidiFlags);
 
         mBigNumberPaint = new TextPaint();
         mBigNumberPaint.setColor(Utils.getColorAccent(getContext()));
@@ -90,13 +125,19 @@ public class DonutView extends View {
         mBigNumberPaint.setTextSize(
                 resources.getDimension(R.dimen.storage_donut_view_percent_text_size));
         mBigNumberPaint.setTextAlign(Paint.Align.CENTER);
+        mBigNumberPaint.setTypeface(Typeface.create(
+                context.getString(com.android.internal.R.string.config_headlineFontFamily),
+                Typeface.NORMAL));
+        mBigNumberPaint.setBidiFlags(bidiFlags);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         drawDonut(canvas);
-        drawInnerText(canvas);
+        if (mShowPercentString) {
+            drawInnerText(canvas);
+        }
     }
 
     private void drawDonut(Canvas canvas) {
@@ -116,7 +157,7 @@ public class DonutView extends View {
                 getWidth() - mStrokeWidth,
                 getHeight() - mStrokeWidth,
                 TOP,
-                (360 * mPercent / 100),
+                (360 *  (float) mPercent),
                 false,
                 mFilledArc);
     }
@@ -138,7 +179,7 @@ public class DonutView extends View {
     /**
      * Set a percentage full to have the donut graph.
      */
-    public void setPercentage(int percent) {
+    public void setPercentage(double percent) {
         mPercent = percent;
         mPercentString = Utils.formatPercentage(mPercent);
         mFullString = getContext().getString(R.string.storage_percent_full);
@@ -149,6 +190,28 @@ public class DonutView extends View {
                             .getDimension(
                                     R.dimen.storage_donut_view_shrunken_label_text_size));
         }
+        invalidate();
+    }
+
+    @ColorRes
+    public int getMeterBackgroundColor() {
+        return mMeterBackgroundColor;
+    }
+
+    public void setMeterBackgroundColor(@ColorRes int meterBackgroundColor) {
+        mMeterBackgroundColor = meterBackgroundColor;
+        mBackgroundCircle.setColor(meterBackgroundColor);
+        invalidate();
+    }
+
+    @ColorRes
+    public int getMeterConsumedColor() {
+        return mMeterConsumedColor;
+    }
+
+    public void setMeterConsumedColor(@ColorRes int meterConsumedColor) {
+        mMeterConsumedColor = meterConsumedColor;
+        mFilledArc.setColor(meterConsumedColor);
         invalidate();
     }
 

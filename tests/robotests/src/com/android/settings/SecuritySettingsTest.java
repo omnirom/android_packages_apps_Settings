@@ -30,6 +30,7 @@ import com.android.internal.widget.LockPatternUtils;
 import com.android.settings.dashboard.SummaryLoader;
 import com.android.settings.notification.LockScreenNotificationPreferenceController;
 import com.android.settings.testutils.FakeFeatureFactory;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
 import com.android.settings.testutils.XmlTestUtils;
 import com.android.settings.testutils.shadow.ShadowLockPatternUtils;
 import com.android.settingslib.drawer.DashboardCategory;
@@ -59,7 +60,11 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(SettingsRobolectricTestRunner.class)
-@Config(manifest = TestConfig.MANIFEST_PATH, sdk = TestConfig.SDK_VERSION)
+@Config(
+    manifest = TestConfig.MANIFEST_PATH,
+    sdk = TestConfig.SDK_VERSION,
+    shadows = {ShadowLockPatternUtils.class}
+)
 public class SecuritySettingsTest {
 
     private static final String MOCK_SUMMARY = "summary";
@@ -180,9 +185,6 @@ public class SecuritySettingsTest {
     }
 
     @Test
-    @Config (shadows = {
-            ShadowLockPatternUtils.class,
-    })
     public void testNonIndexableKeys_existInXmlLayout() {
         final Context context = spy(RuntimeEnvironment.application);
         UserManager manager = mock(UserManager.class);

@@ -103,13 +103,18 @@ public class ProcessStatsSummary extends ProcessStatsBase implements OnPreferenc
     }
 
     @Override
+    protected int getHelpResource() {
+        return R.string.help_uri_process_stats_summary;
+    }
+
+    @Override
     public boolean onPreferenceClick(Preference preference) {
         if (preference == mAppListPreference) {
             Bundle args = new Bundle();
             args.putBoolean(ARG_TRANSFER_STATS, true);
             args.putInt(ARG_DURATION_INDEX, mDurationIndex);
             mStatsManager.xferStats();
-            startFragment(this, ProcessStatsUi.class.getName(), R.string.app_list_memory_use, 0,
+            startFragment(this, ProcessStatsUi.class.getName(), R.string.memory_usage_apps, 0,
                     args);
             return true;
         }

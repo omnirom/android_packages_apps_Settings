@@ -16,7 +16,6 @@
 
 package com.android.settings.network;
 
-
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothPan;
 import android.bluetooth.BluetoothProfile;
@@ -30,7 +29,7 @@ import android.provider.Settings;
 import android.support.v7.preference.Preference;
 
 import com.android.settings.R;
-import com.android.settings.SettingsRobolectricTestRunner;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
 import com.android.settings.TestConfig;
 
 import org.junit.Before;
@@ -75,6 +74,14 @@ public class TetherPreferenceControllerTest {
         ReflectionHelpers.setField(mController, "mConnectivityManager", mConnectivityManager);
         ReflectionHelpers.setField(mController, "mBluetoothAdapter", mBluetoothAdapter);
         ReflectionHelpers.setField(mController, "mPreference", mPreference);
+    }
+
+    @Test
+    public void lifeCycle_onCreate_shouldInitBluetoothPan() {
+        mController.onCreate(null);
+
+        verify(mBluetoothAdapter).getProfileProxy(mContext, mController.mBtProfileServiceListener,
+                BluetoothProfile.PAN);
     }
 
     @Test
@@ -161,7 +168,8 @@ public class TetherPreferenceControllerTest {
         mController.onResume();
 
         verify(mContext).registerReceiver(
-            any(TetherPreferenceController.TetherBroadcastReceiver.class), any(IntentFilter.class));
+                any(TetherPreferenceController.TetherBroadcastReceiver.class),
+                any(IntentFilter.class));
     }
 
     @Test
@@ -172,7 +180,7 @@ public class TetherPreferenceControllerTest {
         mController.onPause();
 
         verify(mContext).unregisterReceiver(
-            any(TetherPreferenceController.TetherBroadcastReceiver.class));
+                any(TetherPreferenceController.TetherBroadcastReceiver.class));
     }
 
     @Test

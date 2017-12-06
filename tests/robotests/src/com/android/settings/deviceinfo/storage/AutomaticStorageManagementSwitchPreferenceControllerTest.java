@@ -17,9 +17,7 @@
 package com.android.settings.deviceinfo.storage;
 
 import static com.google.common.truth.Truth.assertThat;
-
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -34,17 +32,15 @@ import android.content.Context;
 import android.provider.Settings;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceScreen;
-
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
-import com.android.settings.SettingsRobolectricTestRunner;
 import com.android.settings.TestConfig;
 import com.android.settings.core.instrumentation.MetricsFeatureProvider;
 import com.android.settings.deletionhelper.ActivationWarningFragment;
+import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.testutils.FakeFeatureFactory;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
 import com.android.settings.testutils.shadow.SettingsShadowSystemProperties;
 import com.android.settings.widget.MasterSwitchPreference;
-import com.android.settings.overlay.FeatureFactory;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,7 +52,11 @@ import org.robolectric.annotation.Config;
 
 
 @RunWith(SettingsRobolectricTestRunner.class)
-@Config(manifest = TestConfig.MANIFEST_PATH, sdk = TestConfig.SDK_VERSION)
+@Config(
+    manifest = TestConfig.MANIFEST_PATH,
+    sdk = TestConfig.SDK_VERSION,
+    shadows = {SettingsShadowSystemProperties.class}
+)
 public class AutomaticStorageManagementSwitchPreferenceControllerTest {
 
     @Mock
@@ -85,8 +85,15 @@ public class AutomaticStorageManagementSwitchPreferenceControllerTest {
     }
 
     @Test
-    public void isAvailable_shouldAlwaysReturnTrue() {
+    public void isAvailable_shouldReturnTrue_forHighRamDevice() {
         assertThat(mController.isAvailable()).isTrue();
+    }
+
+    @Test
+    public void isAvailable_shouldAlwaysReturnFalse_forLowRamDevice() {
+        SettingsShadowSystemProperties.set("ro.config.low_ram", "true");
+        assertThat(mController.isAvailable()).isFalse();
+        SettingsShadowSystemProperties.clear();
     }
 
     @Test
@@ -156,7 +163,6 @@ public class AutomaticStorageManagementSwitchPreferenceControllerTest {
     }
 
 
-    @Config(shadows = {SettingsShadowSystemProperties.class})
     @Test
     public void togglingOnShouldNotTriggerWarningFragmentIfEnabledByDefault() {
         FragmentTransaction transaction = mock(FragmentTransaction.class);
@@ -168,5 +174,23 @@ public class AutomaticStorageManagementSwitchPreferenceControllerTest {
         mController.onSwitchToggled(true);
 
         verify(transaction, never()).add(any(), eq(ActivationWarningFragment.TAG));
+    }
+
+    @Test
+    public void togglingOnShouldTriggerWarningFragmentIfEnabledByDefaultAndDisabledByPolicy() {
+        FragmentTransaction transaction = mock(FragmentTransaction.class);
+        when(mFragmentManager.beginTransaction()).thenReturn(transaction);
+        SettingsShadowSystemProperties.set(
+                AutomaticStorageManagementSwitchPreferenceController
+                        .STORAGE_MANAGER_ENABLED_BY_DEFAULT_PROPERTY,
+                "true");
+        Settings.Secure.putInt(
+                mContext.getContentResolver(),
+                Settings.Secure.AUTOMATIC_STORAGE_MANAGER_TURNED_OFF_BY_POLICY,
+                1);
+
+        mController.onSwitchToggled(true);
+
+        verify(transaction).add(any(), eq(ActivationWarningFragment.TAG));
     }
 }

@@ -22,8 +22,8 @@ import com.android.settings.DisplaySettings;
 import com.android.settings.SecuritySettings;
 import com.android.settings.accounts.AccountDetailDashboardFragment;
 import com.android.settings.accounts.UserAndAccountDashboardFragment;
-import com.android.settings.applications.AdvancedAppSettings;
 import com.android.settings.applications.AppAndNotificationDashboardFragment;
+import com.android.settings.applications.DefaultAppSettings;
 import com.android.settings.connecteddevice.ConnectedDeviceDashboardFragment;
 import com.android.settings.development.DevelopmentSettings;
 import com.android.settings.deviceinfo.StorageDashboardFragment;
@@ -32,6 +32,7 @@ import com.android.settings.language.LanguageAndInputSettings;
 import com.android.settings.network.NetworkDashboardFragment;
 import com.android.settings.notification.ConfigureNotificationSettings;
 import com.android.settings.notification.SoundSettings;
+import com.android.settings.security.LockscreenDashboardFragment;
 import com.android.settings.system.SystemDashboardFragment;
 import com.android.settingslib.drawer.CategoryKey;
 
@@ -66,7 +67,7 @@ public class DashboardFragmentRegistry {
                 CategoryKey.CATEGORY_APPS);
         PARENT_TO_CATEGORY_KEY_MAP.put(PowerUsageSummary.class.getName(),
                 CategoryKey.CATEGORY_BATTERY);
-        PARENT_TO_CATEGORY_KEY_MAP.put(AdvancedAppSettings.class.getName(),
+        PARENT_TO_CATEGORY_KEY_MAP.put(DefaultAppSettings.class.getName(),
                 CategoryKey.CATEGORY_APPS_DEFAULT);
         PARENT_TO_CATEGORY_KEY_MAP.put(DisplaySettings.class.getName(),
                 CategoryKey.CATEGORY_DISPLAY);
@@ -77,7 +78,7 @@ public class DashboardFragmentRegistry {
         PARENT_TO_CATEGORY_KEY_MAP.put(SecuritySettings.class.getName(),
                 CategoryKey.CATEGORY_SECURITY);
         PARENT_TO_CATEGORY_KEY_MAP.put(AccountDetailDashboardFragment.class.getName(),
-                CategoryKey.CATEGORY_ACCOUNT);
+                CategoryKey.CATEGORY_ACCOUNT_DETAIL);
         PARENT_TO_CATEGORY_KEY_MAP.put(UserAndAccountDashboardFragment.class.getName(),
                 CategoryKey.CATEGORY_ACCOUNT);
         PARENT_TO_CATEGORY_KEY_MAP.put(
@@ -90,6 +91,9 @@ public class DashboardFragmentRegistry {
                 CategoryKey.CATEGORY_NOTIFICATIONS);
         PARENT_TO_CATEGORY_KEY_MAP.put(OmniDashboardFragment.class.getName(),
                 OmniDashboardFragment.CATEGORY_OMNI);
+        PARENT_TO_CATEGORY_KEY_MAP.put(LockscreenDashboardFragment.class.getName(),
+                CategoryKey.CATEGORY_SECURITY_LOCKSCREEN);
+
         CATEGORY_KEY_TO_PARENT_MAP = new ArrayMap<>(PARENT_TO_CATEGORY_KEY_MAP.size());
 
         for (Map.Entry<String, String> parentToKey : PARENT_TO_CATEGORY_KEY_MAP.entrySet()) {

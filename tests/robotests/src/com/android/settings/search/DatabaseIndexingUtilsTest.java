@@ -17,34 +17,26 @@
 
 package com.android.settings.search;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import android.content.Context;
-
 import android.util.ArrayMap;
-import com.android.internal.hardware.AmbientDisplayConfiguration;
-import com.android.settings.SettingsRobolectricTestRunner;
-import com.android.settings.TestConfig;
-import com.android.settings.core.PreferenceController;
-import com.android.settings.display.AutoBrightnessPreferenceController;
-import com.android.settings.gestures.DoubleTapPowerPreferenceController;
-import com.android.settings.gestures.DoubleTapScreenPreferenceController;
-import com.android.settings.gestures.DoubleTwistPreferenceController;
-import com.android.settings.gestures.PickupGesturePreferenceController;
-import com.android.settings.gestures.SwipeToNotificationPreferenceController;
-import com.android.settings.search2.DatabaseIndexingUtils;
 
-import com.android.settings.search2.IntentPayload;
-import com.android.settings.search2.ResultPayload;
+import com.android.internal.hardware.AmbientDisplayConfiguration;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
+import com.android.settings.TestConfig;
+import com.android.settings.core.PreferenceControllerMixin;
+import com.android.settings.deviceinfo.SystemUpdatePreferenceController;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowApplication;
 
 import java.util.Map;
-
-import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(SettingsRobolectricTestRunner.class)
 @Config(manifest = TestConfig.MANIFEST_PATH, sdk = TestConfig.SDK_VERSION)
@@ -57,7 +49,7 @@ public class DatabaseIndexingUtilsTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        mContext = ShadowApplication.getInstance().getApplicationContext();
+        mContext = RuntimeEnvironment.application;
     }
 
     @Test
@@ -74,11 +66,11 @@ public class DatabaseIndexingUtilsTest {
 
     @Test
     public void testGetPreferenceControllerUriMap_CompatibleClass_ReturnsValidMap() {
-        String className = "com.android.settings.DisplaySettings";
-
-        Map map = DatabaseIndexingUtils.getPreferenceControllerUriMap(className, mContext);
-        assertThat(map.get("auto_brightness"))
-                .isInstanceOf(AutoBrightnessPreferenceController.class);
+        final String className = "com.android.settings.system.SystemDashboardFragment";
+        final Map<String, PreferenceControllerMixin> map =
+                DatabaseIndexingUtils.getPreferenceControllerUriMap(className, mContext);
+        assertThat(map.get("system_update_settings"))
+                .isInstanceOf(SystemUpdatePreferenceController.class);
     }
 
     @Test
@@ -90,26 +82,16 @@ public class DatabaseIndexingUtilsTest {
     @Test
     public void testGetPayloadFromMap_MatchingKey_ReturnsPayload() {
         final String key = "key";
-        PreferenceController prefController = new PreferenceController(mContext) {
-            @Override
-            public boolean isAvailable() {
-                return false;
-            }
-
-            @Override
-            public String getPreferenceKey() {
-                return key;
-            }
-
+        PreferenceControllerMixin prefController = new PreferenceControllerMixin() {
             @Override
             public ResultPayload getResultPayload() {
-                return new IntentPayload(null);
+                return new ResultPayload(null);
             }
         };
-        ArrayMap<String,PreferenceController> map = new ArrayMap<>();
+        ArrayMap<String, PreferenceControllerMixin> map = new ArrayMap<>();
         map.put(key, prefController);
 
         ResultPayload payload = DatabaseIndexingUtils.getPayloadFromUriMap(map, key);
-        assertThat(payload).isInstanceOf(IntentPayload.class);
+        assertThat(payload).isInstanceOf(ResultPayload.class);
     }
 }

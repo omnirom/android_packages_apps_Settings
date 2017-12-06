@@ -25,6 +25,11 @@
         android:selectable="true"
         android:layout="@layout/battery_header"/>
 
+    <Preference
+        android:key="high_usage"
+        android:icon="@drawable/ic_battery_alert_24dp"
+        android:title="@string/power_high_usage_title"/>
+
     <com.android.settings.fuelgauge.PowerGaugePreference
         android:key="last_full_charge"
         android:title="@string/battery_last_full_charge"
@@ -68,6 +73,12 @@
             android:summary="@string/screen_timeout_summary"
             android:entries="@array/screen_timeout_entries"
             android:entryValues="@array/screen_timeout_values"/-->
+
+        <!-- Cross-listed item, if you change this, also change it in display_settings.xml -->
+        <Preference
+            android:key="ambient_display_battery"
+            android:title="@string/ambient_display_screen_title"
+            android:fragment="com.android.settings.display.AmbientDisplaySettings" />
 
     </PreferenceCategory>
 

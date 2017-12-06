@@ -16,15 +16,18 @@
 
 package com.android.settings.applications;
 
+import android.app.Activity;
+import android.app.Application;
+import android.app.Fragment;
 import android.content.Context;
 import android.provider.SearchIndexableResource;
 
 import com.android.internal.logging.nano.MetricsProto;
 import com.android.settings.R;
-import com.android.settings.core.PreferenceController;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.notification.EmergencyBroadcastPreferenceController;
 import com.android.settings.search.BaseSearchIndexProvider;
+import com.android.settingslib.core.AbstractPreferenceController;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +50,12 @@ public class AppAndNotificationDashboardFragment extends DashboardFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mProgressiveDisclosureMixin.setTileLimit(3);
+        mProgressiveDisclosureMixin.setTileLimit(4);
+    }
+
+    @Override
+    protected int getHelpResource() {
+        return R.string.help_url_apps_and_notifications;
     }
 
     @Override
@@ -56,15 +64,25 @@ public class AppAndNotificationDashboardFragment extends DashboardFragment {
     }
 
     @Override
-    protected List<PreferenceController> getPreferenceControllers(Context context) {
-        return buildPreferenceControllers(context);
+    protected List<AbstractPreferenceController> getPreferenceControllers(Context context) {
+        final Activity activity = getActivity();
+        final Application app;
+        if (activity != null) {
+            app = activity.getApplication();
+        } else {
+            app = null;
+        }
+        return buildPreferenceControllers(context, app, this);
     }
 
-    private static List<PreferenceController> buildPreferenceControllers(Context context) {
-        final List<PreferenceController> controllers = new ArrayList<>();
+    private static List<AbstractPreferenceController> buildPreferenceControllers(Context context,
+            Application app, Fragment host) {
+        final List<AbstractPreferenceController> controllers = new ArrayList<>();
         controllers.add(new EmergencyBroadcastPreferenceController(context,
                 "app_and_notif_cell_broadcast_settings"));
         controllers.add(new SpecialAppAccessPreferenceController(context));
+        controllers.add(new AppPermissionsPreferenceController(context));
+        controllers.add(new RecentAppsPreferenceController(context, app, host));
         return controllers;
     }
 
@@ -79,8 +97,9 @@ public class AppAndNotificationDashboardFragment extends DashboardFragment {
                 }
 
                 @Override
-                public List<PreferenceController> getPreferenceControllers(Context context) {
-                    return buildPreferenceControllers(context);
+                public List<AbstractPreferenceController> getPreferenceControllers(
+                        Context context) {
+                    return buildPreferenceControllers(context, null, null /* host */);
                 }
 
                 @Override

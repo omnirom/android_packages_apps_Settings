@@ -15,6 +15,17 @@
  */
 package com.android.settings.accounts;
 
+import static org.mockito.Answers.RETURNS_DEEP_STUBS;
+import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
@@ -23,20 +34,20 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.UserHandle;
-import android.support.v7.preference.PreferenceScreen;
+import android.os.UserManager;
 import android.support.v14.preference.PreferenceFragment;
+import android.support.v7.preference.PreferenceScreen;
 import android.widget.Button;
 
-import com.android.settings.AccessiblePreferenceCategory;
 import com.android.settings.R;
-import com.android.settings.SettingsRobolectricTestRunner;
 import com.android.settings.TestConfig;
 import com.android.settings.applications.LayoutPreference;
-import com.android.settings.search.SearchIndexableRaw;
-import com.android.settings.testutils.FakeFeatureFactory;
+import com.android.settings.enterprise.DevicePolicyManagerWrapper;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
 import com.android.settings.testutils.shadow.ShadowAccountManager;
 import com.android.settings.testutils.shadow.ShadowContentResolver;
 
@@ -48,16 +59,6 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
-import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Answers.RETURNS_DEEP_STUBS;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @RunWith(SettingsRobolectricTestRunner.class)
 @Config(manifest = TestConfig.MANIFEST_PATH, sdk = TestConfig.SDK_VERSION)
 public class RemoveAccountPreferenceControllerTest {
@@ -67,6 +68,8 @@ public class RemoveAccountPreferenceControllerTest {
 
     @Mock(answer = RETURNS_DEEP_STUBS)
     private AccountManager mAccountManager;
+    @Mock
+    private DevicePolicyManagerWrapper mDevicePolicyManager;
     @Mock(answer = RETURNS_DEEP_STUBS)
     private PreferenceFragment mFragment;
     @Mock
@@ -95,7 +98,8 @@ public class RemoveAccountPreferenceControllerTest {
         when(mAccountManager.getAuthenticatorTypesAsUser(anyInt())).thenReturn(
             new AuthenticatorDescription[0]);
         when(mAccountManager.getAccountsAsUser(anyInt())).thenReturn(new Account[0]);
-        mController = new RemoveAccountPreferenceController(mContext, mFragment);
+        mController = new RemoveAccountPreferenceController(mContext, mFragment,
+            mDevicePolicyManager);
     }
 
     @Test
@@ -120,6 +124,18 @@ public class RemoveAccountPreferenceControllerTest {
     }
 
     @Test
+    public void onClick_shouldNotStartConfirmDialogWhenModifyAccountsIsDisallowed() {
+        when(mFragment.isAdded()).thenReturn(true);
+        when(mDevicePolicyManager.createAdminSupportIntent(UserManager.DISALLOW_MODIFY_ACCOUNTS))
+            .thenReturn(new Intent());
+        mController.onClick(null);
+
+        verify(mFragmentTransaction, never()).add(
+            any(RemoveAccountPreferenceController.ConfirmRemoveAccountDialog.class),
+            eq(TAG_REMOVE_ACCOUNT_DIALOG));
+    }
+
+    @Test
     @Config(shadows = {ShadowAccountManager.class, ShadowContentResolver.class})
     public void confirmRemove_shouldRemoveAccount() {
         when(mFragment.isAdded()).thenReturn(true);
@@ -134,7 +150,7 @@ public class RemoveAccountPreferenceControllerTest {
                     mFragment, account, userHandle);
         dialog.onCreate(new Bundle());
         dialog.onClick(null, 0);
-        verify(mAccountManager).removeAccountAsUser(eq(account), any(Activity.class),
-            any(AccountManagerCallback.class), any(Handler.class), eq(userHandle));
+        verify(mAccountManager).removeAccountAsUser(eq(account), nullable(Activity.class),
+            nullable(AccountManagerCallback.class), nullable(Handler.class), eq(userHandle));
     }
 }

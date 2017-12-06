@@ -22,12 +22,15 @@ import android.os.Bundle;
 import android.os.UserHandle;
 import android.view.View;
 import android.widget.TextView;
+import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.Button;
 
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
-import com.android.settings.ChooseLockSettingsHelper;
 import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.fingerprint.FingerprintEnrollSidecar.Listener;
+import com.android.settings.password.ChooseLockSettingsHelper;
 
 /**
  * Activity explaining the fingerprint sensor location for fingerprint enrollment.
@@ -42,6 +45,7 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
     private static final int SENSOR_LOCATION_RIGHT = 3;
     public static final String EXTRA_KEY_LAUNCHED_CONFIRM = "launched_confirm_lock";
 
+    @Nullable
     private FingerprintFindSensorAnimation mAnimation;
     private boolean mLaunchedConfirmLock;
     private FingerprintEnrollSidecar mSidecar;
@@ -51,6 +55,9 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
+        Button skipButton = findViewById(R.id.skip_button);
+        skipButton.setOnClickListener(this);
+
         setHeaderText(R.string.security_settings_fingerprint_enroll_find_sensor_title);
         if (savedInstanceState != null) {
             mLaunchedConfirmLock = savedInstanceState.getBoolean(EXTRA_KEY_LAUNCHED_CONFIRM);
@@ -62,8 +69,6 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
         } else if (mToken != null) {
             startLookingForFingerprint(); // already confirmed, so start looking for fingerprint
         }
-        mAnimation = (FingerprintFindSensorAnimation) findViewById(
-                R.id.fingerprint_sensor_location_animation);
 
         int sensorLocation = getResources().getInteger(R.integer.config_fingerprintSensorLocation);
         if (sensorLocation < SENSOR_LOCATION_BACK || sensorLocation > SENSOR_LOCATION_RIGHT) {
@@ -78,6 +83,13 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
         if (sensorLocation != SENSOR_LOCATION_BACK) {
             findViewById(R.id.fingerprint_sensor_location_front_overlay)
                     .setVisibility(View.VISIBLE);
+	}
+
+        View animationView = findViewById(R.id.fingerprint_sensor_location_animation);
+        if (animationView instanceof FingerprintFindSensorAnimation) {
+            mAnimation = (FingerprintFindSensorAnimation) animationView;
+        } else {
+            mAnimation = null;
         }
     }
 
@@ -88,7 +100,9 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
     @Override
     protected void onStart() {
         super.onStart();
-        mAnimation.startAnimation();
+        if (mAnimation != null) {
+            mAnimation.startAnimation();
+        }
     }
 
     private void startLookingForFingerprint() {
@@ -123,13 +137,17 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
     @Override
     protected void onStop() {
         super.onStop();
-        mAnimation.pauseAnimation();
+        if (mAnimation != null) {
+            mAnimation.pauseAnimation();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mAnimation.stopAnimation();
+        if (mAnimation != null) {
+            mAnimation.stopAnimation();
+        }
     }
 
     @Override
@@ -140,9 +158,19 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
     }
 
     @Override
-    protected void onNextButtonClick() {
-        mNextClicked = true;
-        proceedToEnrolling(true /* cancelEnrollment */);
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.skip_button:
+                onSkipButtonClick();
+                break;
+            default:
+                super.onClick(v);
+        }
+    }
+
+    protected void onSkipButtonClick() {
+        setResult(RESULT_SKIP);
+        finish();
     }
 
     private void proceedToEnrolling(boolean cancelEnrollment) {

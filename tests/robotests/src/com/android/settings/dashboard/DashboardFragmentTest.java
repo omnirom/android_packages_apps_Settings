@@ -15,20 +15,34 @@
  */
 package com.android.settings.dashboard;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.preference.PreferenceScreen;
 
-import com.android.settings.SettingsRobolectricTestRunner;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
 import com.android.settings.TestConfig;
-import com.android.settings.core.PreferenceController;
+import com.android.settings.core.PreferenceControllerMixin;
 import com.android.settings.core.instrumentation.VisibilityLoggerMixin;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.testutils.FakeFeatureFactory;
+import com.android.settingslib.core.AbstractPreferenceController;
 import com.android.settingslib.drawer.DashboardCategory;
 import com.android.settingslib.drawer.Tile;
+import com.android.settingslib.drawer.TileUtils;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -42,15 +56,6 @@ import org.robolectric.util.ReflectionHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(SettingsRobolectricTestRunner.class)
 @Config(manifest = TestConfig.MANIFEST_PATH, sdk = TestConfig.SDK_VERSION)
@@ -75,9 +80,10 @@ public class DashboardFragmentTest {
         mDashboardCategory.tiles.add(new Tile());
         mTestFragment = new TestFragment(ShadowApplication.getInstance().getApplicationContext());
         when(mFakeFeatureFactory.dashboardFeatureProvider.getProgressiveDisclosureMixin(
-                any(Context.class), eq(mTestFragment), any(Bundle.class)))
+                nullable(Context.class), eq(mTestFragment), nullable(Bundle.class)))
                 .thenReturn(mDisclosureMixin);
-        when(mFakeFeatureFactory.dashboardFeatureProvider.getTilesForCategory(anyString()))
+        when(mFakeFeatureFactory.dashboardFeatureProvider
+                .getTilesForCategory(nullable(String.class)))
                 .thenReturn(mDashboardCategory);
         mTestFragment.onAttach(ShadowApplication.getInstance().getApplicationContext());
         when(mContext.getPackageName()).thenReturn("TestPackage");
@@ -96,21 +102,23 @@ public class DashboardFragmentTest {
 
     @Test
     public void displayTilesAsPreference_shouldAddTilesWithIntent() {
-        when(mFakeFeatureFactory.dashboardFeatureProvider.getTilesForCategory(anyString()))
+        when(mFakeFeatureFactory.dashboardFeatureProvider
+                .getTilesForCategory(nullable(String.class)))
                 .thenReturn(mDashboardCategory);
-        when(mFakeFeatureFactory.dashboardFeatureProvider.getDashboardKeyForTile(any(Tile.class)))
+        when(mFakeFeatureFactory.dashboardFeatureProvider
+                .getDashboardKeyForTile(nullable(Tile.class)))
                 .thenReturn("test_key");
         mTestFragment.onCreatePreferences(new Bundle(), "rootKey");
 
-        verify(mDisclosureMixin).addPreference(any(PreferenceScreen.class),
-                any(Preference.class));
+        verify(mDisclosureMixin).addPreference(nullable(PreferenceScreen.class),
+                nullable(Preference.class));
     }
 
     @Test
     public void displayTilesAsPreference_shouldNotAddTilesWithoutIntent() {
         mTestFragment.onCreatePreferences(new Bundle(), "rootKey");
 
-        verify(mTestFragment.mScreen, never()).addPreference(any(Preference.class));
+        verify(mTestFragment.mScreen, never()).addPreference(nullable(Preference.class));
     }
 
     @Test
@@ -118,12 +126,12 @@ public class DashboardFragmentTest {
         mDashboardCategory.tiles = null;
         mTestFragment.onCreatePreferences(new Bundle(), "rootKey");
 
-        verify(mTestFragment.mScreen, never()).addPreference(any(Preference.class));
+        verify(mTestFragment.mScreen, never()).addPreference(nullable(Preference.class));
     }
 
     @Test
     public void onAttach_shouldCreatePlaceholderPreferenceController() {
-        final PreferenceController controller = mTestFragment.getPreferenceController(
+        final AbstractPreferenceController controller = mTestFragment.getPreferenceController(
                 DashboardTilePlaceholderPreferenceController.class);
 
         assertThat(controller).isNotNull();
@@ -131,9 +139,11 @@ public class DashboardFragmentTest {
 
     @Test
     public void updateState_skipUnavailablePrefs() {
-        final List<PreferenceController> preferenceControllers = mTestFragment.mControllers;
-        final PreferenceController mockController1 = mock(PreferenceController.class);
-        final PreferenceController mockController2 = mock(PreferenceController.class);
+        final List<AbstractPreferenceController> preferenceControllers = mTestFragment.mControllers;
+        final AbstractPreferenceController mockController1 =
+                mock(AbstractPreferenceController.class);
+        final AbstractPreferenceController mockController2 =
+                mock(AbstractPreferenceController.class);
         preferenceControllers.add(mockController1);
         preferenceControllers.add(mockController2);
         when(mockController1.isAvailable()).thenReturn(false);
@@ -146,7 +156,47 @@ public class DashboardFragmentTest {
         verify(mockController2).getPreferenceKey();
     }
 
-    public static class TestPreferenceController extends PreferenceController {
+    @Test
+    public void tintTileIcon_hasMetadata_shouldReturnIconTintableMetadata() {
+        final Tile tile = new Tile();
+        tile.icon = mock(Icon.class);
+        final Bundle metaData = new Bundle();
+        tile.metaData = metaData;
+
+        metaData.putBoolean(TileUtils.META_DATA_PREFERENCE_ICON_TINTABLE, false);
+        assertThat(mTestFragment.tintTileIcon(tile)).isFalse();
+
+        metaData.putBoolean(TileUtils.META_DATA_PREFERENCE_ICON_TINTABLE, true);
+        assertThat(mTestFragment.tintTileIcon(tile)).isTrue();
+    }
+
+    @Test
+    public void tintTileIcon_noIcon_shouldReturnFalse() {
+        final Tile tile = new Tile();
+        final Bundle metaData = new Bundle();
+        tile.metaData = metaData;
+
+        assertThat(mTestFragment.tintTileIcon(tile)).isFalse();
+    }
+
+    @Test
+    public void tintTileIcon_noMetadata_shouldReturnPackageNameCheck() {
+        final Tile tile = new Tile();
+        tile.icon = mock(Icon.class);
+        final Intent intent = new Intent();
+        tile.intent = intent;
+
+        intent.setComponent(new ComponentName(
+                ShadowApplication.getInstance().getApplicationContext().getPackageName(),
+                "TestClass"));
+        assertThat(mTestFragment.tintTileIcon(tile)).isFalse();
+
+        intent.setComponent(new ComponentName("OtherPackage", "TestClass"));
+        assertThat(mTestFragment.tintTileIcon(tile)).isTrue();
+    }
+
+    public static class TestPreferenceController extends AbstractPreferenceController
+            implements PreferenceControllerMixin {
 
         public TestPreferenceController(Context context) {
             super(context);
@@ -177,7 +227,7 @@ public class DashboardFragmentTest {
 
         private final PreferenceManager mPreferenceManager;
         private final Context mContext;
-        private final List<PreferenceController> mControllers;
+        private final List<AbstractPreferenceController> mControllers;
 
         public final PreferenceScreen mScreen;
 
@@ -218,7 +268,7 @@ public class DashboardFragmentTest {
         }
 
         @Override
-        protected List<PreferenceController> getPreferenceControllers(Context context) {
+        protected List<AbstractPreferenceController> getPreferenceControllers(Context context) {
             return mControllers;
         }
 

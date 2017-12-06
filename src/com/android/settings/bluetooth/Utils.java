@@ -17,19 +17,31 @@
 package com.android.settings.bluetooth;
 
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.VisibleForTesting;
+import android.util.Pair;
 import android.widget.Toast;
 
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.settings.R;
 import com.android.settings.overlay.FeatureFactory;
+import com.android.settingslib.bluetooth.CachedBluetoothDevice;
+import com.android.settingslib.bluetooth.HidProfile;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
 import com.android.settingslib.bluetooth.LocalBluetoothManager.BluetoothManagerCallback;
+import com.android.settingslib.bluetooth.LocalBluetoothProfile;
 import com.android.settingslib.bluetooth.Utils.ErrorListener;
+import com.android.settingslib.graph.BluetoothDeviceLayerDrawable;
+
+import java.util.List;
 
 /**
  * Utils is a helper class that contains constants for various
@@ -141,4 +153,82 @@ public final class Utils {
             com.android.settingslib.bluetooth.Utils.setErrorListener(mErrorListener);
         }
     };
+
+    static Pair<Drawable, String> getBtClassDrawableWithDescription(Context context,
+            CachedBluetoothDevice cachedDevice) {
+        return getBtClassDrawableWithDescription(context, cachedDevice, 1 /* iconScale */);
+    }
+
+    static Pair<Drawable, String> getBtClassDrawableWithDescription(Context context,
+            CachedBluetoothDevice cachedDevice, float iconScale) {
+        BluetoothClass btClass = cachedDevice.getBtClass();
+        final int level = cachedDevice.getBatteryLevel();
+        if (btClass != null) {
+            switch (btClass.getMajorDeviceClass()) {
+                case BluetoothClass.Device.Major.COMPUTER:
+                    return new Pair<>(getBluetoothDrawable(context, R.drawable.ic_bt_laptop, level,
+                            iconScale),
+                            context.getString(R.string.bluetooth_talkback_computer));
+
+                case BluetoothClass.Device.Major.PHONE:
+                    return new Pair<>(
+                            getBluetoothDrawable(context, R.drawable.ic_bt_cellphone, level,
+                                    iconScale),
+                            context.getString(R.string.bluetooth_talkback_phone));
+
+                case BluetoothClass.Device.Major.PERIPHERAL:
+                    return new Pair<>(
+                            getBluetoothDrawable(context, HidProfile.getHidClassDrawable(btClass),
+                                    level, iconScale),
+                            context.getString(R.string.bluetooth_talkback_input_peripheral));
+
+                case BluetoothClass.Device.Major.IMAGING:
+                    return new Pair<>(
+                            getBluetoothDrawable(context, R.drawable.ic_settings_print, level,
+                                    iconScale),
+                            context.getString(R.string.bluetooth_talkback_imaging));
+
+                default:
+                    // unrecognized device class; continue
+            }
+        }
+
+        List<LocalBluetoothProfile> profiles = cachedDevice.getProfiles();
+        for (LocalBluetoothProfile profile : profiles) {
+            int resId = profile.getDrawableResource(btClass);
+            if (resId != 0) {
+                return new Pair<>(getBluetoothDrawable(context, resId, level, iconScale), null);
+            }
+        }
+        if (btClass != null) {
+            if (btClass.doesClassMatch(BluetoothClass.PROFILE_HEADSET)) {
+                return new Pair<>(
+                        getBluetoothDrawable(context, R.drawable.ic_bt_headset_hfp, level,
+                                iconScale),
+                        context.getString(R.string.bluetooth_talkback_headset));
+            }
+            if (btClass.doesClassMatch(BluetoothClass.PROFILE_A2DP)) {
+                return new Pair<>(
+                        getBluetoothDrawable(context, R.drawable.ic_bt_headphones_a2dp, level,
+                                iconScale),
+                        context.getString(R.string.bluetooth_talkback_headphone));
+            }
+        }
+        return new Pair<>(
+                getBluetoothDrawable(context, R.drawable.ic_settings_bluetooth, level, iconScale),
+                context.getString(R.string.bluetooth_talkback_bluetooth));
+    }
+
+    @VisibleForTesting
+    static Drawable getBluetoothDrawable(Context context, @DrawableRes int resId,
+            int batteryLevel, float iconScale) {
+        if (batteryLevel != BluetoothDevice.BATTERY_LEVEL_UNKNOWN) {
+            return BluetoothDeviceLayerDrawable.createLayerDrawable(context, resId, batteryLevel,
+                    iconScale);
+        } else if (resId != 0) {
+            return context.getDrawable(resId);
+        } else {
+            return null;
+        }
+    }
 }

@@ -28,9 +28,10 @@ import android.support.v7.preference.Preference;
 import android.text.TextUtils;
 
 import com.android.settings.R;
-import com.android.settings.core.PreferenceController;
+import com.android.settings.core.PreferenceControllerMixin;
 import com.android.settings.core.instrumentation.MetricsFeatureProvider;
 import com.android.settings.overlay.FeatureFactory;
+import com.android.settingslib.core.AbstractPreferenceController;
 
 import libcore.util.Objects;
 
@@ -39,8 +40,8 @@ import java.util.List;
 
 import static com.android.internal.logging.nano.MetricsProto.MetricsEvent.ACTION_THEME;
 
-public class ThemePreferenceController extends PreferenceController implements
-        Preference.OnPreferenceChangeListener {
+public class ThemePreferenceController extends AbstractPreferenceController implements
+        PreferenceControllerMixin, Preference.OnPreferenceChangeListener {
 
     private static final String KEY_THEME = "theme";
 
@@ -90,11 +91,20 @@ public class ThemePreferenceController extends PreferenceController implements
         pref.setEntries(labels);
         pref.setEntryValues(pkgs);
         String theme = getCurrentTheme();
-        if (TextUtils.isEmpty(theme)) {
-            theme = mContext.getString(R.string.default_theme);
-            pref.setSummary(theme);
+        CharSequence themeLabel = null;
+
+        for (int i = 0; i < pkgs.length; i++) {
+            if (TextUtils.equals(pkgs[i], theme)) {
+                themeLabel = labels[i];
+                break;
+            }
         }
-        pref.setSummary(theme);
+
+        if (TextUtils.isEmpty(themeLabel)) {
+            themeLabel = mContext.getString(R.string.default_theme);
+        }
+
+        pref.setSummary(themeLabel);
         pref.setValue(theme);
     }
 
@@ -127,7 +137,7 @@ public class ThemePreferenceController extends PreferenceController implements
                     UserHandle.myUserId());
             for (int i = 0, size = infos.size(); i < size; i++) {
                 if (infos.get(i).isEnabled() &&
-                         isChangeableOverlay(infos.get(i).packageName)) {
+                        isChangeableOverlay(infos.get(i).packageName)) {
                     return infos.get(i).packageName;
                 }
             }

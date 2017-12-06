@@ -16,7 +16,10 @@
 
 package com.android.settings.applications;
 
+
 import android.app.AlertDialog;
+import android.app.AppOpsManager;
+import android.app.Fragment;
 import android.app.LoaderManager;
 import android.app.admin.DevicePolicyManager;
 import android.content.Context;
@@ -38,9 +41,11 @@ import com.android.internal.os.BatterySipper;
 import com.android.internal.os.BatteryStatsHelper;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
-import com.android.settings.SettingsRobolectricTestRunner;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
 import com.android.settings.TestConfig;
 import com.android.settings.applications.instantapps.InstantAppButtonsController;
+import com.android.settings.applications.instantapps.InstantAppButtonsController.ShowDialogDelegate;
+import com.android.settings.enterprise.DevicePolicyManagerWrapper;
 import com.android.settings.fuelgauge.BatteryUtils;
 import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settingslib.Utils;
@@ -66,10 +71,9 @@ import java.util.HashSet;
 import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -80,7 +84,11 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(SettingsRobolectricTestRunner.class)
-@Config(manifest = TestConfig.MANIFEST_PATH, sdk = TestConfig.SDK_VERSION)
+@Config(
+    manifest = TestConfig.MANIFEST_PATH,
+    sdk = TestConfig.SDK_VERSION,
+    shadows = InstalledAppDetailsTest.ShadowUtils.class
+)
 public final class InstalledAppDetailsTest {
 
     private static final String PACKAGE_NAME = "test_package_name";
@@ -96,7 +104,7 @@ public final class InstalledAppDetailsTest {
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private SettingsActivity mActivity;
     @Mock
-    private DevicePolicyManager mDevicePolicyManager;
+    private DevicePolicyManagerWrapper mDevicePolicyManager;
     @Mock
     private BatterySipper mBatterySipper;
     @Mock
@@ -111,6 +119,8 @@ public final class InstalledAppDetailsTest {
     private BatteryUtils mBatteryUtils;
     @Mock
     private LoaderManager mLoaderManager;
+    @Mock
+    private AppOpsManager mAppOpsManager;
 
     private FakeFeatureFactory mFeatureFactory;
     private InstalledAppDetails mAppDetail;
@@ -121,8 +131,7 @@ public final class InstalledAppDetailsTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        FakeFeatureFactory.setupForTest(mContext);
-        mFeatureFactory = (FakeFeatureFactory) FakeFeatureFactory.getFactory(mContext);
+        mFeatureFactory = FakeFeatureFactory.setupForTest(mContext);
         mShadowContext = RuntimeEnvironment.application;
         mAppDetail = spy(new InstalledAppDetails());
         mAppDetail.mBatteryUtils = mBatteryUtils;
@@ -137,6 +146,7 @@ public final class InstalledAppDetailsTest {
         doReturn(mActivity).when(mAppDetail).getActivity();
         doReturn(mShadowContext).when(mAppDetail).getContext();
         doReturn(mPackageManager).when(mActivity).getPackageManager();
+        doReturn(mAppOpsManager).when(mActivity).getSystemService(Context.APP_OPS_SERVICE);
 
         // Default to not considering any apps to be instant (individual tests can override this).
         ReflectionHelpers.setStaticField(AppUtils.class, "sInstantAppDataProvider",
@@ -145,7 +155,7 @@ public final class InstalledAppDetailsTest {
 
     @Test
     public void shouldShowUninstallForAll_installForOneOtherUserOnly_shouldReturnTrue() {
-        when(mDevicePolicyManager.packageHasActiveAdmins(anyString())).thenReturn(false);
+        when(mDevicePolicyManager.packageHasActiveAdmins(nullable(String.class))).thenReturn(false);
         when(mUserManager.getUsers().size()).thenReturn(2);
         ReflectionHelpers.setField(mAppDetail, "mDpm", mDevicePolicyManager);
         ReflectionHelpers.setField(mAppDetail, "mUserManager", mUserManager);
@@ -161,7 +171,7 @@ public final class InstalledAppDetailsTest {
 
     @Test
     public void shouldShowUninstallForAll_installForSelfOnly_shouldReturnFalse() {
-        when(mDevicePolicyManager.packageHasActiveAdmins(anyString())).thenReturn(false);
+        when(mDevicePolicyManager.packageHasActiveAdmins(nullable(String.class))).thenReturn(false);
         when(mUserManager.getUsers().size()).thenReturn(2);
         ReflectionHelpers.setField(mAppDetail, "mDpm", mDevicePolicyManager);
         ReflectionHelpers.setField(mAppDetail, "mUserManager", mUserManager);
@@ -247,7 +257,7 @@ public final class InstalledAppDetailsTest {
         // Make this app appear to be instant.
         ReflectionHelpers.setStaticField(AppUtils.class, "sInstantAppDataProvider",
                 (InstantAppDataProvider) (i -> true));
-        when(mDevicePolicyManager.packageHasActiveAdmins(anyString())).thenReturn(false);
+        when(mDevicePolicyManager.packageHasActiveAdmins(nullable(String.class))).thenReturn(false);
         when(mUserManager.getUsers().size()).thenReturn(2);
 
         final ApplicationInfo info = new ApplicationInfo();
@@ -359,13 +369,14 @@ public final class InstalledAppDetailsTest {
 
         final InstantAppButtonsController buttonsController =
                 mock(InstantAppButtonsController.class);
-        when(buttonsController.setPackageName(anyString())).thenReturn(buttonsController);
-
+        when(buttonsController.setPackageName(nullable(String.class)))
+                .thenReturn(buttonsController);
         when(mFeatureFactory.applicationFeatureProvider.newInstantAppButtonsController(
-                any(), any(), any())).thenReturn(buttonsController);
+                nullable(Fragment.class), nullable(View.class), nullable(ShowDialogDelegate.class)))
+                .thenReturn(buttonsController);
 
         fragment.maybeAddInstantAppButtons();
-        verify(buttonsController).setPackageName(anyString());
+        verify(buttonsController).setPackageName(nullable(String.class));
         verify(buttonsController).show();
     }
 
@@ -485,7 +496,6 @@ public final class InstalledAppDetailsTest {
     }
 
     @Test
-    @Config(shadows = ShadowUtils.class)
     public void handleDisableable_appIsEnabled_buttonShouldWork() {
         final ApplicationInfo info = new ApplicationInfo();
         info.packageName = "pkg";
@@ -507,7 +517,6 @@ public final class InstalledAppDetailsTest {
     }
 
     @Test
-    @Config(shadows = ShadowUtils.class)
     public void handleDisableable_appIsEnabledAndInKeepEnabledWhitelist_buttonShouldNotWork() {
         final ApplicationInfo info = new ApplicationInfo();
         info.packageName = "pkg";

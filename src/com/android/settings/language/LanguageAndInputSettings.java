@@ -16,39 +16,32 @@
 
 package com.android.settings.language;
 
+import android.app.Activity;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.UserHandle;
 import android.provider.SearchIndexableResource;
 import android.provider.Settings;
 import android.speech.tts.TtsEngines;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 
-import com.android.internal.hardware.AmbientDisplayConfiguration;
 import com.android.internal.logging.nano.MetricsProto;
 import com.android.settings.R;
 import com.android.settings.applications.defaultapps.DefaultAutofillPreferenceController;
-import com.android.settings.core.PreferenceController;
-import com.android.settings.core.lifecycle.Lifecycle;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.dashboard.SummaryLoader;
-import com.android.settings.gestures.AssistGesturePreferenceController;
-import com.android.settings.gestures.DoubleTapPowerPreferenceController;
-import com.android.settings.gestures.DoubleTapScreenPreferenceController;
-import com.android.settings.gestures.DoubleTwistPreferenceController;
-import com.android.settings.gestures.PickupGesturePreferenceController;
-import com.android.settings.gestures.SwipeToNotificationPreferenceController;
 import com.android.settings.inputmethod.GameControllerPreferenceController;
 import com.android.settings.inputmethod.PhysicalKeyboardPreferenceController;
 import com.android.settings.inputmethod.SpellCheckerPreferenceController;
 import com.android.settings.inputmethod.VirtualKeyboardPreferenceController;
 import com.android.settings.search.BaseSearchIndexProvider;
+import com.android.settingslib.core.AbstractPreferenceController;
+import com.android.settingslib.core.lifecycle.Lifecycle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,14 +52,7 @@ public class LanguageAndInputSettings extends DashboardFragment {
     private static final String TAG = "LangAndInputSettings";
 
     private static final String KEY_TEXT_TO_SPEECH = "tts_settings_summary";
-    private static final String KEY_ASSIST = "gesture_assist_input_summary";
-    private static final String KEY_SWIPE_DOWN = "gesture_swipe_down_fingerprint_input_summary";
-    private static final String KEY_DOUBLE_TAP_POWER = "gesture_double_tap_power_input_summary";
-    private static final String KEY_DOUBLE_TWIST = "gesture_double_twist_input_summary";
-    private static final String KEY_DOUBLE_TAP_SCREEN = "gesture_double_tap_screen_input_summary";
-    private static final String KEY_PICK_UP = "gesture_pick_up_input_summary";
-
-    private AmbientDisplayConfiguration mAmbientDisplayConfig;
+    private static final String KEY_PHYSICAL_KEYBOARD = "physical_keyboard_pref";
 
     @Override
     public int getMetricsCategory() {
@@ -82,6 +68,20 @@ public class LanguageAndInputSettings extends DashboardFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mProgressiveDisclosureMixin.setTileLimit(2);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Hack to update action bar title. It's necessary to refresh title because this page user
+        // can change locale from here and fragment won't relaunch. Once language changes, title
+        // must display in the new language.
+        final Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+        activity.setTitle(R.string.language_settings);
     }
 
     @Override
@@ -90,18 +90,13 @@ public class LanguageAndInputSettings extends DashboardFragment {
     }
 
     @Override
-    protected List<PreferenceController> getPreferenceControllers(Context context) {
-        if (mAmbientDisplayConfig == null) {
-            mAmbientDisplayConfig = new AmbientDisplayConfiguration(context);
-        }
-
-        return buildPreferenceControllers(context, getLifecycle(), mAmbientDisplayConfig);
+    protected List<AbstractPreferenceController> getPreferenceControllers(Context context) {
+        return buildPreferenceControllers(context, getLifecycle());
     }
 
-    private static List<PreferenceController> buildPreferenceControllers(@NonNull Context context,
-            @Nullable Lifecycle lifecycle,
-            @NonNull AmbientDisplayConfiguration ambientDisplayConfiguration) {
-        final List<PreferenceController> controllers = new ArrayList<>();
+    private static List<AbstractPreferenceController> buildPreferenceControllers(
+            @NonNull Context context, @Nullable Lifecycle lifecycle) {
+        final List<AbstractPreferenceController> controllers = new ArrayList<>();
         // Language
         controllers.add(new PhoneLanguagePreferenceController(context));
         controllers.add(new SpellCheckerPreferenceController(context));
@@ -117,24 +112,8 @@ public class LanguageAndInputSettings extends DashboardFragment {
         }
 
         controllers.add(gameControllerPreferenceController);
-        // Gestures
-        controllers.add(new AssistGesturePreferenceController(context, lifecycle, KEY_ASSIST));
-        controllers.add(new SwipeToNotificationPreferenceController(context, lifecycle,
-                KEY_SWIPE_DOWN));
-        controllers.add(new DoubleTwistPreferenceController(context, lifecycle, KEY_DOUBLE_TWIST));
-        controllers.add(new DoubleTapPowerPreferenceController(context, lifecycle,
-                KEY_DOUBLE_TAP_POWER));
-        controllers.add(new PickupGesturePreferenceController(context, lifecycle,
-                ambientDisplayConfiguration, UserHandle.myUserId(), KEY_PICK_UP));
-        controllers.add(new DoubleTapScreenPreferenceController(context, lifecycle,
-                ambientDisplayConfiguration, UserHandle.myUserId(), KEY_DOUBLE_TAP_SCREEN));
         controllers.add(new DefaultAutofillPreferenceController(context));
         return controllers;
-    }
-
-    @VisibleForTesting
-    void setAmbientDisplayConfig(AmbientDisplayConfiguration ambientConfig) {
-        mAmbientDisplayConfig = ambientConfig;
     }
 
     private static class SummaryProvider implements SummaryLoader.SummaryProvider {
@@ -149,15 +128,16 @@ public class LanguageAndInputSettings extends DashboardFragment {
 
         @Override
         public void setListening(boolean listening) {
+            final ContentResolver contentResolver = mContext.getContentResolver();
             if (listening) {
                 final String flattenComponent = Settings.Secure.getString(
-                        mContext.getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
+                        contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD);
                 if (!TextUtils.isEmpty(flattenComponent)) {
                     final PackageManager packageManage = mContext.getPackageManager();
                     final String pkg = ComponentName.unflattenFromString(flattenComponent)
                             .getPackageName();
-                    final InputMethodManager imm = (InputMethodManager) mContext.getSystemService(
-                            Context.INPUT_METHOD_SERVICE);
+                    final InputMethodManager imm = (InputMethodManager)
+                            mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
                     final List<InputMethodInfo> imis = imm.getInputMethodList();
                     for (InputMethodInfo imi : imis) {
                         if (TextUtils.equals(imi.getPackageName(), pkg)) {
@@ -185,9 +165,9 @@ public class LanguageAndInputSettings extends DashboardFragment {
                 }
 
                 @Override
-                public List<PreferenceController> getPreferenceControllers(Context context) {
-                    return buildPreferenceControllers(context, null,
-                            new AmbientDisplayConfiguration(context));
+                public List<AbstractPreferenceController> getPreferenceControllers(
+                        Context context) {
+                    return buildPreferenceControllers(context, null);
                 }
 
                 @Override
@@ -195,12 +175,7 @@ public class LanguageAndInputSettings extends DashboardFragment {
                     List<String> keys = super.getNonIndexableKeys(context);
                     // Duplicates in summary and details pages.
                     keys.add(KEY_TEXT_TO_SPEECH);
-                    keys.add(KEY_ASSIST);
-                    keys.add(KEY_SWIPE_DOWN);
-                    keys.add(KEY_DOUBLE_TAP_POWER);
-                    keys.add(KEY_DOUBLE_TWIST);
-                    keys.add(KEY_DOUBLE_TAP_SCREEN);
-                    keys.add(KEY_PICK_UP);
+                    keys.add(KEY_PHYSICAL_KEYBOARD);
 
                     return keys;
                 }

@@ -19,6 +19,7 @@ package com.android.settings.enterprise;
 import android.annotation.NonNull;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
+import android.content.Intent;
 import android.os.UserHandle;
 import android.support.annotation.Nullable;
 
@@ -39,6 +40,11 @@ public class DevicePolicyManagerWrapperImpl implements DevicePolicyManagerWrappe
     @Override
     public int getMaximumFailedPasswordsForWipe(@Nullable ComponentName admin, int userHandle) {
         return mDpm.getMaximumFailedPasswordsForWipe(admin, userHandle);
+    }
+
+    @Override
+    public ComponentName getDeviceOwnerComponentOnCallingUser() {
+        return mDpm.getDeviceOwnerComponentOnCallingUser();
     }
 
     @Override
@@ -110,5 +116,10 @@ public class DevicePolicyManagerWrapperImpl implements DevicePolicyManagerWrappe
     @Override
     public boolean isUninstallInQueue(String packageName) {
         return mDpm.isUninstallInQueue(packageName);
+    }
+
+    @Override
+    public Intent createAdminSupportIntent(@NonNull String restriction) {
+        return mDpm.createAdminSupportIntent(restriction);
     }
 }

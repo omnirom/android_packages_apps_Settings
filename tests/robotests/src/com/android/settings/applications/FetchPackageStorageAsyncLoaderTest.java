@@ -18,6 +18,7 @@ package com.android.settings.applications;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -27,7 +28,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.UserHandle;
 
-import com.android.settings.SettingsRobolectricTestRunner;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
 import com.android.settings.TestConfig;
 import com.android.settingslib.applications.StorageStatsSource;
 import com.android.settingslib.applications.StorageStatsSource.AppStorageStats;
@@ -63,7 +64,8 @@ public class FetchPackageStorageAsyncLoaderTest {
         when(stats.getCodeBytes()).thenReturn(1L);
         when(stats.getDataBytes()).thenReturn(2L);
         when(stats.getCacheBytes()).thenReturn(3L);
-        when(mSource.getStatsForPackage(anyString(), anyString(), any(UserHandle.class)))
+        when(mSource.getStatsForPackage(nullable(String.class), nullable(String.class),
+                any(UserHandle.class)))
                 .thenReturn(stats);
         ApplicationInfo info = new ApplicationInfo();
         info.packageName = PACKAGE_NAME;

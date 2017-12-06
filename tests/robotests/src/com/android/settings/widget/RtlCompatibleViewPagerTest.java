@@ -21,7 +21,7 @@ import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import com.android.settings.SettingsRobolectricTestRunner;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
 import com.android.settings.TestConfig;
 import com.android.settings.testutils.shadow.ShadowTextUtils;
 import java.util.Locale;
@@ -34,7 +34,11 @@ import org.robolectric.shadows.ShadowApplication;
 import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(SettingsRobolectricTestRunner.class)
-@Config(manifest = TestConfig.MANIFEST_PATH, sdk = TestConfig.SDK_VERSION)
+@Config(
+    manifest = TestConfig.MANIFEST_PATH,
+    sdk = TestConfig.SDK_VERSION,
+    shadows = {ShadowTextUtils.class}
+)
 public class RtlCompatibleViewPagerTest {
 
     private Locale mLocaleEn;
@@ -51,7 +55,6 @@ public class RtlCompatibleViewPagerTest {
     }
 
     @Test
-    @Config(shadows = {ShadowTextUtils.class})
     public void testGetCurrentItem_shouldMaintainIndexDuringLocaleChange() {
         testRtlCompatibleInner(0);
         testRtlCompatibleInner(1);

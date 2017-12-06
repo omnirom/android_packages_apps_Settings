@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
@@ -30,7 +31,7 @@ import android.support.v7.preference.Preference;
 import com.android.internal.logging.nano.MetricsProto;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
-import com.android.settings.SettingsRobolectricTestRunner;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
 import com.android.settings.TestConfig;
 import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settings.testutils.shadow.ShadowUserManager;
@@ -363,5 +364,17 @@ public class DashboardFeatureProviderImplTest {
     @Test
     public void testGetExtraIntentAction_shouldReturnNull() {
         assertThat(mImpl.getExtraIntentAction()).isNull();
+    }
+
+    @Test
+    public void testShouldTintIcon_shouldReturnValueFromResource() {
+        final Resources res = mActivity.getApplicationContext().getResources();
+        when(res.getBoolean(R.bool.config_tintSettingIcon))
+                .thenReturn(false);
+        assertThat(mImpl.shouldTintIcon()).isFalse();
+
+        when(res.getBoolean(R.bool.config_tintSettingIcon))
+                .thenReturn(true);
+        assertThat(mImpl.shouldTintIcon()).isTrue();
     }
 }

@@ -22,11 +22,10 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Xml;
 
-import com.android.settings.SettingsRobolectricTestRunner;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
 import com.android.settings.TestConfig;
 import com.android.settings.R;
 
-import com.android.settings.search2.XmlParserUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

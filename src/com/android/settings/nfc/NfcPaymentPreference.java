@@ -18,6 +18,7 @@ package com.android.settings.nfc;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.preference.PreferenceViewHolder;
@@ -30,9 +31,9 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 
-import com.android.settings.CustomDialogPreference;
 import com.android.settings.R;
 import com.android.settings.nfc.PaymentBackend.PaymentAppInfo;
+import com.android.settingslib.CustomDialogPreference;
 
 import java.util.List;
 
@@ -209,7 +210,9 @@ public class NfcPaymentPreference extends CustomDialogPreference implements
             if (!appInfo.isDefault) {
                 mPaymentBackend.setDefaultPaymentApp(appInfo.componentName);
             }
-            getDialog().dismiss();
+            Dialog dialog = getDialog();
+            if (dialog != null)
+                dialog.dismiss();
         }
     }
 }

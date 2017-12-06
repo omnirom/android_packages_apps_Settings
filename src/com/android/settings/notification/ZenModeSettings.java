@@ -45,6 +45,7 @@ import android.view.View;
 
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.settings.R;
+import com.android.settingslib.TwoTargetPreference;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
@@ -135,7 +136,7 @@ public class ZenModeSettings extends ZenModeSettingsBase {
             }
         }
         final Preference p = new Preference(getPrefContext());
-        p.setIcon(R.drawable.ic_add);
+        p.setIcon(R.drawable.ic_menu_add);
         p.setTitle(R.string.zen_mode_add_rule);
         p.setPersistent(false);
         p.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -171,16 +172,12 @@ public class ZenModeSettings extends ZenModeSettingsBase {
                 ? getString(R.string.switch_off_text)
                 : getString(R.string.zen_mode_rule_summary_enabled_combination, mode);
 
-        return isSystemRule ? ruleState
-                : getString(R.string.zen_mode_rule_summary_provider_combination,
-                        providerLabel, ruleState);
+        return ruleState;
     }
 
     private static ManagedServiceSettings.Config getConditionProviderConfig() {
         final ManagedServiceSettings.Config c = new ManagedServiceSettings.Config();
         c.tag = TAG;
-        c.setting = Settings.Secure.ENABLED_NOTIFICATION_POLICY_ACCESS_PACKAGES;
-        c.secondarySetting = Settings.Secure.ENABLED_NOTIFICATION_LISTENERS;
         c.intentAction = ConditionProviderService.SERVICE_INTERFACE;
         c.permission = android.Manifest.permission.BIND_CONDITION_PROVIDER_SERVICE;
         c.noun = "condition provider";
@@ -286,7 +283,7 @@ public class ZenModeSettings extends ZenModeSettingsBase {
         return R.string.help_uri_interruptions;
     }
 
-    private class ZenRulePreference extends Preference {
+    private class ZenRulePreference extends TwoTargetPreference {
         final CharSequence mName;
         final String mId;
         final boolean appExists;
@@ -306,11 +303,8 @@ public class ZenModeSettings extends ZenModeSettingsBase {
 
             try {
                 ApplicationInfo info = mPm.getApplicationInfo(rule.getOwner().getPackageName(), 0);
-                LoadIconTask task = new LoadIconTask(this);
-                task.execute(info);
                 setSummary(computeRuleSummary(rule, isSystemRule, info.loadLabel(mPm)));
             } catch (PackageManager.NameNotFoundException e) {
-                setIcon(R.drawable.ic_label);
                 appExists = false;
                 return;
             }
@@ -325,8 +319,11 @@ public class ZenModeSettings extends ZenModeSettingsBase {
             ComponentName settingsActivity = getSettingsActivity(si);
             setIntent(getRuleIntent(action, settingsActivity, mId));
             setSelectable(settingsActivity != null || isSystemRule);
+        }
 
-            setWidgetLayoutResource(R.layout.zen_rule_widget);
+        @Override
+        protected int getSecondTargetResId() {
+            return R.layout.zen_rule_widget;
         }
 
         @Override
@@ -347,29 +344,6 @@ public class ZenModeSettings extends ZenModeSettingsBase {
         };
     }
 
-    private class LoadIconTask extends AsyncTask<ApplicationInfo, Void, Drawable> {
-        private final WeakReference<Preference> prefReference;
-
-        public LoadIconTask(Preference pref) {
-            prefReference = new WeakReference<>(pref);
-        }
-
-        @Override
-        protected Drawable doInBackground(ApplicationInfo... params) {
-            return params[0].loadIcon(mPm);
-        }
-
-        @Override
-        protected void onPostExecute(Drawable icon) {
-            if (icon != null) {
-                final Preference pref = prefReference.get();
-                if (pref != null) {
-                    pref.setIcon(icon);
-                }
-            }
-        }
-    }
-
     public static class SummaryBuilder {
 
         private Context mContext;
@@ -380,10 +354,10 @@ public class ZenModeSettings extends ZenModeSettingsBase {
 
         String getPrioritySettingSummary(Policy policy) {
             String s = mContext.getString(R.string.zen_mode_alarms);
-            s = append(s, isCategoryEnabled(policy, Policy.PRIORITY_CATEGORY_REMINDERS),
+            s = prepend(s, isCategoryEnabled(policy, Policy.PRIORITY_CATEGORY_EVENTS),
+                    R.string.zen_mode_events);
+            s = prepend(s, isCategoryEnabled(policy, Policy.PRIORITY_CATEGORY_REMINDERS),
                 R.string.zen_mode_reminders);
-            s = append(s, isCategoryEnabled(policy, Policy.PRIORITY_CATEGORY_EVENTS),
-                R.string.zen_mode_events);
             if (isCategoryEnabled(policy, Policy.PRIORITY_CATEGORY_MESSAGES)) {
                 if (policy.priorityMessageSenders == Policy.PRIORITY_SENDERS_ANY) {
                     s = append(s, true, R.string.zen_mode_all_messages);
@@ -444,6 +418,15 @@ public class ZenModeSettings extends ZenModeSettingsBase {
             if (condition) {
                 return mContext.getString(
                     R.string.join_many_items_middle, s, mContext.getString(resId));
+            }
+            return s;
+        }
+
+        @VisibleForTesting
+        String prepend(String s, boolean condition, int resId) {
+            if (condition) {
+                return mContext.getString(
+                        R.string.join_many_items_middle, mContext.getString(resId), s);
             }
             return s;
         }

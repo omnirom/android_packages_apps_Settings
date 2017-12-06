@@ -158,11 +158,14 @@ public class EnterprisePrivacyFeatureProviderImpl implements EnterprisePrivacyFe
 
     @Override
     public int getMaximumFailedPasswordsBeforeWipeInCurrentUser() {
-        final ComponentName profileOwner = mDpm.getProfileOwnerAsUser(MY_USER_ID);
-        if (profileOwner == null) {
+        ComponentName owner = mDpm.getDeviceOwnerComponentOnCallingUser();
+        if (owner == null) {
+            owner = mDpm.getProfileOwnerAsUser(MY_USER_ID);
+        }
+        if (owner == null) {
             return 0;
         }
-        return mDpm.getMaximumFailedPasswordsForWipe(profileOwner, MY_USER_ID);
+        return mDpm.getMaximumFailedPasswordsForWipe(owner, MY_USER_ID);
     }
 
     @Override
@@ -197,20 +200,25 @@ public class EnterprisePrivacyFeatureProviderImpl implements EnterprisePrivacyFe
     }
 
     @Override
-    public int getNumberOfOwnerInstalledCaCertsForCurrentUserAndManagedProfile() {
-        int num = 0;
-        List<String> certs = mDpm.getOwnerInstalledCaCerts(new UserHandle(MY_USER_ID));
-        if (certs != null) {
-            num += certs.size();
+    public int getNumberOfOwnerInstalledCaCertsForCurrentUser() {
+        final List<String> certs = mDpm.getOwnerInstalledCaCerts(new UserHandle(MY_USER_ID));
+        if (certs == null) {
+            return 0;
         }
+        return certs.size();
+    }
+
+    @Override
+    public int getNumberOfOwnerInstalledCaCertsForManagedProfile() {
         final int userId = getManagedProfileUserId();
-        if (userId != UserHandle.USER_NULL) {
-            certs = mDpm.getOwnerInstalledCaCerts(new UserHandle(userId));
-            if (certs != null) {
-                num += certs.size();
-            }
+        if (userId == UserHandle.USER_NULL) {
+            return 0;
         }
-        return num;
+        final List<String> certs = mDpm.getOwnerInstalledCaCerts(new UserHandle(userId));
+        if (certs == null) {
+            return 0;
+        }
+        return certs.size();
     }
 
     @Override

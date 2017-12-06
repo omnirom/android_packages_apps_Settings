@@ -16,15 +16,12 @@
 
 package com.android.settings.notification;
 
-import static android.app.NotificationManager.IMPORTANCE_LOW;
-import static android.app.NotificationManager.IMPORTANCE_NONE;
-import static android.app.NotificationManager.IMPORTANCE_UNSPECIFIED;
-
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -39,18 +36,16 @@ import android.view.View;
 import android.widget.Switch;
 
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
-import com.android.settings.AppHeader;
 import com.android.settings.R;
 import com.android.settings.Utils;
-import com.android.settings.applications.AppHeaderController;
 import com.android.settings.applications.AppInfoBase;
 import com.android.settings.applications.LayoutPreference;
 import com.android.settings.notification.NotificationBackend.AppRow;
-import com.android.settings.overlay.FeatureFactory;
-import com.android.settings.widget.FooterPreference;
+import com.android.settings.widget.EntityHeaderController;
 import com.android.settings.widget.MasterSwitchPreference;
 import com.android.settings.widget.SwitchBar;
 import com.android.settingslib.RestrictedSwitchPreference;
+import com.android.settingslib.widget.FooterPreference;
 
 import org.omnirom.omnigears.preference.SeekBarPreference;
 import org.omnirom.omnigears.batterylight.BatteryLightPreference;
@@ -61,6 +56,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import static android.app.NotificationManager.IMPORTANCE_LOW;
+import static android.app.NotificationManager.IMPORTANCE_NONE;
+import static android.app.NotificationManager.IMPORTANCE_UNSPECIFIED;
 
 /** These settings are per app, so should not be returned in global search results. */
 public class AppNotificationSettings extends NotificationSettingsBase {
@@ -248,19 +247,20 @@ public class AppNotificationSettings extends NotificationSettingsBase {
     }
 
     private void addHeaderPref() {
-        ArrayMap<String, AppRow> rows = new ArrayMap<String, AppRow>();
+        ArrayMap<String, AppRow> rows = new ArrayMap<>();
         rows.put(mAppRow.pkg, mAppRow);
         collectConfigActivities(rows);
         final Activity activity = getActivity();
-        final Preference pref = FeatureFactory.getFactory(activity)
-                .getApplicationFeatureProvider(activity)
-                .newAppHeaderController(this /* fragment */, null /* appHeader */)
+        final Preference pref = EntityHeaderController
+                .newInstance(activity, this /* fragment */, null /* header */)
+                .setRecyclerView(getListView(), getLifecycle())
                 .setIcon(mAppRow.icon)
                 .setLabel(mAppRow.label)
                 .setPackageName(mAppRow.pkg)
                 .setUid(mAppRow.uid)
-                .setButtonActions(AppHeaderController.ActionType.ACTION_NONE,
-                        AppHeaderController.ActionType.ACTION_NOTIF_PREFERENCE)
+                .setHasAppInfoLink(true)
+                .setButtonActions(EntityHeaderController.ActionType.ACTION_NONE,
+                        EntityHeaderController.ActionType.ACTION_NOTIF_PREFERENCE)
                 .done(activity, getPrefContext());
         pref.setKey(KEY_HEADER);
         getPreferenceScreen().addPreference(pref);
@@ -313,7 +313,8 @@ public class AppNotificationSettings extends NotificationSettingsBase {
             }
 
             int deletedChannelCount = mBackend.getDeletedChannelCount(mAppRow.pkg, mAppRow.uid);
-            if (deletedChannelCount > 0) {
+            if (deletedChannelCount > 0 &&
+                    getPreferenceScreen().findPreference(KEY_DELETED) == null) {
                 mDeletedChannels = new FooterPreference(getPrefContext());
                 mDeletedChannels.setSelectable(false);
                 mDeletedChannels.setTitle(getResources().getQuantityString(
@@ -341,7 +342,6 @@ public class AppNotificationSettings extends NotificationSettingsBase {
         channelPref.setSummary(getImportanceSummary(channel));
         Bundle channelArgs = new Bundle();
         channelArgs.putInt(AppInfoBase.ARG_PACKAGE_UID, mUid);
-        channelArgs.putBoolean(AppHeader.EXTRA_HIDE_INFO_BUTTON, true);
         channelArgs.putString(AppInfoBase.ARG_PACKAGE_NAME, mPkg);
         channelArgs.putString(Settings.EXTRA_CHANNEL_ID, channel.getId());
         Intent channelIntent = Utils.onBuildStartFragmentIntent(getActivity(),
@@ -476,13 +476,20 @@ public class AppNotificationSettings extends NotificationSettingsBase {
             case NotificationManager.IMPORTANCE_LOW:
                 return getContext().getString(R.string.notification_importance_low);
             case NotificationManager.IMPORTANCE_DEFAULT:
-                return getContext().getString(R.string.notification_importance_default);
+                if (hasValidSound(channel)) {
+                    return getContext().getString(R.string.notification_importance_default);
+                } else { // Silent
+                    return getContext().getString(R.string.notification_importance_low);
+                }
             case NotificationManager.IMPORTANCE_HIGH:
             case NotificationManager.IMPORTANCE_MAX:
             default:
-                return getContext().getString(R.string.notification_importance_high);
+                if (hasValidSound(channel)) {
+                    return getContext().getString(R.string.notification_importance_high);
+                } else { // Silent
+                    return getContext().getString(R.string.notification_importance_high_silent);
+                }
         }
-
     }
 
     private Comparator<NotificationChannel> mChannelComparator =

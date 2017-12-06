@@ -247,11 +247,15 @@ public class IccLockSettings extends SettingsPreferenceFragment
     }
 
     private void updatePreferences() {
-        mPinDialog.setEnabled(mPhone != null);
-        mPinToggle.setEnabled(mPhone != null);
+        if (mPinDialog != null) {
+            mPinDialog.setEnabled(mPhone != null);
+        }
+        if (mPinToggle != null) {
+            mPinToggle.setEnabled(mPhone != null);
 
-        if (mPhone != null) {
-            mPinToggle.setChecked(mPhone.getIccCard().getIccLockEnabled());
+            if (mPhone != null) {
+                mPinToggle.setChecked(mPhone.getIccCard().getIccLockEnabled());
+            }
         }
     }
 
@@ -281,6 +285,11 @@ public class IccLockSettings extends SettingsPreferenceFragment
     public void onPause() {
         super.onPause();
         getContext().unregisterReceiver(mSimStateReceiver);
+    }
+
+    @Override
+    protected int getHelpResource() {
+        return R.string.help_url_icc_lock;
     }
 
     @Override

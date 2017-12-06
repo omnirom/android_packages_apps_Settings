@@ -23,6 +23,7 @@ import static android.provider.Settings.Global.WIFI_WAKEUP_ENABLED;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.provider.Settings;
@@ -30,15 +31,17 @@ import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.Preference;
 
 import com.android.settings.R;
-import com.android.settings.SettingsRobolectricTestRunner;
+import com.android.settings.network.NetworkScoreManagerWrapper;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
 import com.android.settings.TestConfig;
-import com.android.settings.core.lifecycle.Lifecycle;
 import com.android.settings.testutils.shadow.SettingsShadowResources;
+import com.android.settingslib.core.lifecycle.Lifecycle;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -50,6 +53,8 @@ import org.robolectric.annotation.Config;
         shadows = { SettingsShadowResources.class })
 public class WifiWakeupPreferenceControllerTest {
 
+    private static final String TEST_SCORER_PACKAGE_NAME = "Test Scorer";
+
     private Context mContext;
     private WifiWakeupPreferenceController mController;
 
@@ -57,8 +62,10 @@ public class WifiWakeupPreferenceControllerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mContext = RuntimeEnvironment.application;
-        mController = new WifiWakeupPreferenceController(mContext, mock(Lifecycle.class));
+        mController = new WifiWakeupPreferenceController(
+                mContext, mock(Lifecycle.class));
         Settings.System.putInt(mContext.getContentResolver(), WIFI_SCAN_ALWAYS_AVAILABLE, 1);
+        Settings.System.putInt(mContext.getContentResolver(), NETWORK_RECOMMENDATIONS_ENABLED, 1);
         SettingsShadowResources.overrideResource(
                 com.android.internal.R.integer.config_wifi_wakeup_available, 0);
     }
@@ -107,9 +114,8 @@ public class WifiWakeupPreferenceControllerTest {
     }
 
     @Test
-    public void updateState_preferenceSetCheckedAndSetEnabledWhenSettingsAreEnabled() {
+    public void updateState_preferenceSetCheckedAndSetEnabledWhenWakeupSettingEnabled() {
         final SwitchPreference preference = mock(SwitchPreference.class);
-        Settings.System.putInt(mContext.getContentResolver(), NETWORK_RECOMMENDATIONS_ENABLED, 1);
         Settings.System.putInt(mContext.getContentResolver(), WIFI_WAKEUP_ENABLED, 1);
 
         mController.updateState(preference);
@@ -120,22 +126,20 @@ public class WifiWakeupPreferenceControllerTest {
     }
 
     @Test
-    public void updateState_preferenceSetCheckedAndSetEnabledWhenSettingsAreDisabled() {
+    public void updateState_preferenceSetUncheckedAndSetEnabledWhenWakeupSettingDisabled() {
         final SwitchPreference preference = mock(SwitchPreference.class);
-        Settings.System.putInt(mContext.getContentResolver(), NETWORK_RECOMMENDATIONS_ENABLED, 0);
         Settings.System.putInt(mContext.getContentResolver(), WIFI_WAKEUP_ENABLED, 0);
 
         mController.updateState(preference);
 
         verify(preference).setChecked(false);
-        verify(preference).setEnabled(false);
+        verify(preference).setEnabled(true);
         verify(preference).setSummary(R.string.wifi_wakeup_summary);
     }
 
     @Test
     public void updateState_preferenceSetUncheckedAndSetDisabledWhenWifiScanningDisabled() {
         final SwitchPreference preference = mock(SwitchPreference.class);
-        Settings.System.putInt(mContext.getContentResolver(), NETWORK_RECOMMENDATIONS_ENABLED, 1);
         Settings.System.putInt(mContext.getContentResolver(), WIFI_WAKEUP_ENABLED, 1);
         Settings.System.putInt(mContext.getContentResolver(), WIFI_SCAN_ALWAYS_AVAILABLE, 0);
 
@@ -144,5 +148,18 @@ public class WifiWakeupPreferenceControllerTest {
         verify(preference).setChecked(true);
         verify(preference).setEnabled(false);
         verify(preference).setSummary(R.string.wifi_wakeup_summary_scanning_disabled);
+    }
+
+    @Test
+    public void updateState_preferenceSetUncheckedAndSetDisabledWhenScoringDisabled() {
+        final SwitchPreference preference = mock(SwitchPreference.class);
+        Settings.System.putInt(mContext.getContentResolver(), WIFI_WAKEUP_ENABLED, 1);
+        Settings.System.putInt(mContext.getContentResolver(), NETWORK_RECOMMENDATIONS_ENABLED, 0);
+
+        mController.updateState(preference);
+
+        verify(preference).setChecked(true);
+        verify(preference).setEnabled(false);
+        verify(preference).setSummary(R.string.wifi_wakeup_summary_scoring_disabled);
     }
 }

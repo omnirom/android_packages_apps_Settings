@@ -35,6 +35,7 @@ import android.os.IBinder;
 import android.os.ServiceManager;
 import android.os.UserHandle;
 import android.os.UserManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.internal.logging.nano.MetricsProto;
@@ -42,6 +43,8 @@ import com.android.settings.SettingsActivity;
 import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.Utils;
 import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
+import com.android.settings.enterprise.DevicePolicyManagerWrapper;
+import com.android.settings.enterprise.DevicePolicyManagerWrapperImpl;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settingslib.RestrictedLockUtils;
 import com.android.settingslib.applications.ApplicationsState;
@@ -72,7 +75,7 @@ public abstract class AppInfoBase extends SettingsPreferenceFragment
     protected String mPackageName;
 
     protected IUsbManager mUsbManager;
-    protected DevicePolicyManager mDpm;
+    protected DevicePolicyManagerWrapper mDpm;
     protected UserManager mUserManager;
     protected PackageManager mPm;
 
@@ -91,7 +94,8 @@ public abstract class AppInfoBase extends SettingsPreferenceFragment
                 .getApplicationFeatureProvider(activity);
         mState = ApplicationsState.getInstance(activity.getApplication());
         mSession = mState.newSession(this);
-        mDpm = (DevicePolicyManager) activity.getSystemService(Context.DEVICE_POLICY_SERVICE);
+        mDpm = new DevicePolicyManagerWrapperImpl(
+                (DevicePolicyManager) activity.getSystemService(Context.DEVICE_POLICY_SERVICE));
         mUserManager = (UserManager) activity.getSystemService(Context.USER_SERVICE);
         mPm = activity.getPackageManager();
         IBinder b = ServiceManager.getService(Context.USB_SERVICE);
@@ -291,7 +295,8 @@ public abstract class AppInfoBase extends SettingsPreferenceFragment
         @Override
         public void onReceive(Context context, Intent intent) {
             String packageName = intent.getData().getSchemeSpecificPart();
-            if (!mFinishing && mAppEntry.info.packageName.equals(packageName)) {
+            if (!mFinishing && (mAppEntry == null || mAppEntry.info == null
+                    || TextUtils.equals(mAppEntry.info.packageName, packageName))) {
                 onPackageRemoved();
             }
         }

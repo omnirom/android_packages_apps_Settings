@@ -38,7 +38,13 @@
         settings:useAdditionalSummary="true" />
 
     <PreferenceCategory
+        android:key="advanced"
         android:title="@string/advanced_apps">
+
+        <!-- Visibility Override -->
+        <com.android.settings.notification.RestrictedDropDownPreference
+            android:key="visibility_override"
+            android:title="@string/app_notification_visibility_override_title" />
 
         <!-- Show badge -->
         <com.android.settingslib.RestrictedSwitchPreference
@@ -46,11 +52,6 @@
             android:title="@string/notification_channel_badge_title"
             settings:useAdditionalSummary="true"
             settings:restrictedSwitchSummary="@string/enabled_by_admin" />
-
-        <!-- Visibility Override -->
-        <com.android.settings.notification.RestrictedDropDownPreference
-            android:key="visibility_override"
-            android:title="@string/app_notification_visibility_override_title" />
 
         <!-- Bypass DND -->
         <com.android.settingslib.RestrictedSwitchPreference
@@ -66,7 +67,8 @@
         <!-- Lights -->
         <com.android.settingslib.RestrictedSwitchPreference
             android:key="lights"
-            android:title="@string/notification_show_lights_title"/>
+            android:title="@string/notification_show_lights_title"
+            settings:useAdditionalSummary="true" />
 
         <SwitchPreference
             android:key="show_light_on_zen"

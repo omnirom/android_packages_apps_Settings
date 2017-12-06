@@ -145,16 +145,6 @@
     <item msgid="6019931571712517411">"좋음"</item>
     <item msgid="8986346415847956850">"우수함"</item>
   </string-array>
-  <string-array name="wifi_sleep_policy_entries">
-    <item msgid="3269131034472904310">"항상"</item>
-    <item msgid="844721238536786870">"충전 중인 경우에만"</item>
-    <item msgid="1986753720941888596">"안함"</item>
-  </string-array>
-  <string-array name="wifi_sleep_policy_entries_wifi_only">
-    <item msgid="2124319326282651391">"항상"</item>
-    <item msgid="7433294150916905997">"충전 중인 경우에만"</item>
-    <item msgid="1390404486722375028">"안함"</item>
-  </string-array>
   <string-array name="data_usage_data_range">
     <item msgid="5013973108901348144">"최근 30일"</item>
     <item msgid="6600989128423965319">"사용 주기 설정..."</item>
@@ -303,7 +293,7 @@
     <item msgid="7222837656938871633">"SIP 사용"</item>
     <item msgid="6108267038969274380">"발신 전화 처리"</item>
     <item msgid="4823402479973873358">"지문"</item>
-    <item msgid="5895843015407713543">"신체 센서"</item>
+    <item msgid="5895843015407713543">"인체 감지 센서"</item>
     <item msgid="1436446526955010826">"셀 브로드캐스트 읽기"</item>
     <item msgid="884172201575690484">"가상 위치"</item>
     <item msgid="3591971310048485247">"저장용량 읽기"</item>
@@ -370,7 +360,7 @@
     <item msgid="864565065016166003">"SIP 사용"</item>
     <item msgid="1958009349883195116">"발신 전화 처리"</item>
     <item msgid="8526563410140613458">"지문"</item>
-    <item msgid="7864822459293570891">"신체 센서"</item>
+    <item msgid="7864822459293570891">"인체 감지 센서"</item>
     <item msgid="6798698496904810960">"셀 브로드캐스트 읽기"</item>
     <item msgid="5242052845700875820">"가상 위치"</item>
     <item msgid="1246296877820358565">"저장용량 읽기"</item>

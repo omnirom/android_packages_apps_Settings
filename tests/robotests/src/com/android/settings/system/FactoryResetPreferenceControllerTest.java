@@ -22,9 +22,8 @@ import static org.mockito.Mockito.when;
 import android.accounts.AccountManager;
 import android.content.Context;
 import android.os.UserManager;
-import android.provider.Settings;
 
-import com.android.settings.SettingsRobolectricTestRunner;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
 import com.android.settings.TestConfig;
 import com.android.settings.testutils.shadow.ShadowSecureSettings;
 import com.android.settings.testutils.shadow.ShadowUtils;
@@ -38,7 +37,11 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.annotation.Config;
 
 @RunWith(SettingsRobolectricTestRunner.class)
-@Config(manifest = TestConfig.MANIFEST_PATH, sdk = TestConfig.SDK_VERSION)
+@Config(
+    manifest = TestConfig.MANIFEST_PATH,
+    sdk = TestConfig.SDK_VERSION,
+    shadows = {ShadowSecureSettings.class, ShadowUtils.class}
+)
 public class FactoryResetPreferenceControllerTest {
 
     private static final String FACTORY_RESET_KEY = "factory_reset";
@@ -73,24 +76,17 @@ public class FactoryResetPreferenceControllerTest {
     }
 
     @Test
-    @Config(shadows = { ShadowSecureSettings.class, ShadowUtils.class })
     public void isAvailable_nonSystemUser() {
         when(mUserManager.isAdminUser()).thenReturn(false);
-        ShadowUtils.setIsCarrierDemoUser(false);
+        ShadowUtils.setIsDemoUser(false);
 
         assertThat(mController.isAvailable()).isFalse();
     }
 
     @Test
-    @Config(shadows = { ShadowSecureSettings.class, ShadowUtils.class })
-    public void isAvailable_carrierDemoUser() {
+    public void isAvailable_demoUser() {
         when(mUserManager.isAdminUser()).thenReturn(false);
-        ShadowUtils.setIsCarrierDemoUser(true);
-
-        final String carrierDemoModeSetting = "carrier_demo_mode";
-        when(mContext.getString(com.android.internal.R.string.config_carrierDemoModeSetting))
-                .thenReturn(carrierDemoModeSetting);
-        Settings.Secure.putInt(null, carrierDemoModeSetting, 1);
+        ShadowUtils.setIsDemoUser(true);
 
         assertThat(mController.isAvailable()).isTrue();
     }

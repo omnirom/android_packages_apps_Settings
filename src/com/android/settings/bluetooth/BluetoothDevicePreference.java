@@ -17,17 +17,16 @@
 package com.android.settings.bluetooth;
 
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.UserManager;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceViewHolder;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.widget.ImageView;
@@ -38,10 +37,6 @@ import com.android.settings.core.instrumentation.MetricsFeatureProvider;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.widget.GearPreference;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
-import com.android.settingslib.bluetooth.HidProfile;
-import com.android.settingslib.bluetooth.LocalBluetoothProfile;
-
-import java.util.List;
 
 import static android.os.UserManager.DISALLOW_CONFIG_BLUETOOTH;
 
@@ -59,23 +54,17 @@ public final class BluetoothDevicePreference extends GearPreference implements
     private final UserManager mUserManager;
 
     private AlertDialog mDisconnectDialog;
-
     private String contentDescription = null;
-
+    private DeviceListPreferenceFragment mDeviceListPreferenceFragment;
     /* Talk-back descriptions for various BT icons */
-    Resources r = getContext().getResources();
-    public final String COMPUTER = r.getString(R.string.bluetooth_talkback_computer);
-    public final String INPUT_PERIPHERAL = r.getString(
-            R.string.bluetooth_talkback_input_peripheral);
-    public final String HEADSET = r.getString(R.string.bluetooth_talkback_headset);
-    public final String PHONE = r.getString(R.string.bluetooth_talkback_phone);
-    public final String IMAGING = r.getString(R.string.bluetooth_talkback_imaging);
-    public final String HEADPHONE = r.getString(R.string.bluetooth_talkback_headphone);
-    public final String BLUETOOTH = r.getString(R.string.bluetooth_talkback_bluetooth);
+    Resources mResources;
 
-    public BluetoothDevicePreference(Context context, CachedBluetoothDevice cachedDevice) {
+    public BluetoothDevicePreference(Context context, CachedBluetoothDevice cachedDevice,
+            DeviceListPreferenceFragment deviceListPreferenceFragment) {
         super(context, null);
+        mResources = getContext().getResources();
         mUserManager = (UserManager) context.getSystemService(Context.USER_SERVICE);
+        mDeviceListPreferenceFragment = deviceListPreferenceFragment;
 
         if (sDimAlpha == Integer.MIN_VALUE) {
             TypedValue outValue = new TypedValue();
@@ -130,23 +119,23 @@ public final class BluetoothDevicePreference extends GearPreference implements
          * any preference info has changed from the previous value.
          */
         setTitle(mCachedDevice.getName());
+        // Null check is done at the framework
+        setSummary(mCachedDevice.getConnectionSummary());
 
-        int summaryResId = mCachedDevice.getConnectionSummary();
-        if (summaryResId != 0) {
-            setSummary(summaryResId);
-        } else {
-            setSummary(null);   // empty summary for unpaired devices
-        }
-
-
-        Pair<Integer, String> pair = getBtClassDrawableWithDescription();
-        if (pair.first != 0) {
+        final Pair<Drawable, String> pair = Utils.getBtClassDrawableWithDescription(getContext(),
+                mCachedDevice);
+        if (pair.first != null) {
             setIcon(pair.first);
             contentDescription = pair.second;
         }
 
         // Used to gray out the item
         setEnabled(!mCachedDevice.isBusy());
+
+        // Device is only visible in the UI if it has a valid name besides MAC address or when user
+        // allows showing devices without user-friendly name in developer settings
+        setVisible(mDeviceListPreferenceFragment.shouldShowDevicesWithoutNames()
+                || mCachedDevice.hasHumanReadableName());
 
         // This could affect ordering, so notify that
         notifyHierarchyChanged();
@@ -199,22 +188,27 @@ public final class BluetoothDevicePreference extends GearPreference implements
     }
 
     void onClicked() {
+        Context context = getContext();
         int bondState = mCachedDevice.getBondState();
 
         final MetricsFeatureProvider metricsFeatureProvider =
-                FeatureFactory.getFactory(getContext()).getMetricsFeatureProvider();
+                FeatureFactory.getFactory(context).getMetricsFeatureProvider();
 
         if (mCachedDevice.isConnected()) {
-            metricsFeatureProvider.action(getContext(),
+            metricsFeatureProvider.action(context,
                     MetricsEvent.ACTION_SETTINGS_BLUETOOTH_DISCONNECT);
             askDisconnect();
         } else if (bondState == BluetoothDevice.BOND_BONDED) {
-            metricsFeatureProvider.action(getContext(),
+            metricsFeatureProvider.action(context,
                     MetricsEvent.ACTION_SETTINGS_BLUETOOTH_CONNECT);
             mCachedDevice.connect(true);
         } else if (bondState == BluetoothDevice.BOND_NONE) {
-            metricsFeatureProvider.action(getContext(),
+            metricsFeatureProvider.action(context,
                     MetricsEvent.ACTION_SETTINGS_BLUETOOTH_PAIR);
+            if (!mCachedDevice.hasHumanReadableName()) {
+                metricsFeatureProvider.action(context,
+                        MetricsEvent.ACTION_SETTINGS_BLUETOOTH_PAIR_DEVICES_WITHOUT_NAMES);
+            }
             pair();
         }
     }
@@ -246,45 +240,4 @@ public final class BluetoothDevicePreference extends GearPreference implements
         }
     }
 
-    private Pair<Integer, String> getBtClassDrawableWithDescription() {
-        BluetoothClass btClass = mCachedDevice.getBtClass();
-        if (btClass != null) {
-            switch (btClass.getMajorDeviceClass()) {
-                case BluetoothClass.Device.Major.COMPUTER:
-                    return new Pair<Integer, String>(R.drawable.ic_bt_laptop, COMPUTER);
-
-                case BluetoothClass.Device.Major.PHONE:
-                    return new Pair<Integer, String>(R.drawable.ic_bt_cellphone, PHONE);
-
-                case BluetoothClass.Device.Major.PERIPHERAL:
-                    return new Pair<Integer, String>(HidProfile.getHidClassDrawable(btClass),
-                            INPUT_PERIPHERAL);
-
-                case BluetoothClass.Device.Major.IMAGING:
-                    return new Pair<Integer, String>(R.drawable.ic_bt_imaging, IMAGING);
-
-                default:
-                    // unrecognized device class; continue
-            }
-        } else {
-            Log.w(TAG, "mBtClass is null");
-        }
-
-        List<LocalBluetoothProfile> profiles = mCachedDevice.getProfiles();
-        for (LocalBluetoothProfile profile : profiles) {
-            int resId = profile.getDrawableResource(btClass);
-            if (resId != 0) {
-                return new Pair<Integer, String>(resId, null);
-            }
-        }
-        if (btClass != null) {
-            if (btClass.doesClassMatch(BluetoothClass.PROFILE_HEADSET)) {
-                return new Pair<Integer, String>(R.drawable.ic_bt_headset_hfp, HEADSET);
-            }
-            if (btClass.doesClassMatch(BluetoothClass.PROFILE_A2DP)) {
-                return new Pair<Integer, String>(R.drawable.ic_bt_headphones_a2dp, HEADPHONE);
-            }
-        }
-        return new Pair<Integer, String>(R.drawable.ic_settings_bluetooth, BLUETOOTH);
-    }
 }
