@@ -242,9 +242,6 @@ public abstract class SettingsPreferenceFragment extends InstrumentedPreferenceF
     }
 
     public void setLoading(boolean loading, boolean animate) {
-        if (getListView() == null) {
-            return;
-        }
         View loadingContainer = getView().findViewById(R.id.loading_container);
         LoadingViewController.handleLoadingContainer(loadingContainer, getListView(),
                 !loading /* done */,
