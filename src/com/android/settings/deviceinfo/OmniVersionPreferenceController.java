@@ -26,9 +26,9 @@ import android.os.SystemProperties;
 import android.support.v7.preference.Preference;
 import android.text.TextUtils;
 
-import com.android.settings.core.PreferenceController;
+import com.android.settingslib.core.AbstractPreferenceController;
 
-public class OmniVersionPreferenceController extends PreferenceController {
+public class OmniVersionPreferenceController extends AbstractPreferenceController {
 
     private static final String KEY_OMNI_VERSION = "mod_version";
     private static final String PROPERTY_OMNI_VERSION = "ro.omni.version";

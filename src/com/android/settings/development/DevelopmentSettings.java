@@ -663,7 +663,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             pref.setEnabled(enabled && !mDisabledPrefs.contains(pref));
         }
         mEnableAdbController.enablePreference(enabled);
-        mBugReportInPowerController.enablePreference(enabled);
         mTelephonyMonitorController.enablePreference(enabled);
         mWebViewAppPrefController.enablePreference(enabled);
         mCameraHalHdrplusController.enablePreference(enabled);
@@ -751,7 +750,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             @Override
             public void onReceive(Context context, Intent intent) {
                 mVerifyAppsOverUsbController.updatePreference();
-                updateBugreportOptions();
             }
         };
         LocalBroadcastManager.getInstance(getContext())
@@ -2917,19 +2915,9 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
 
         updateSwitchPreference(mAdbOverNetwork, enabled);
 
-        WifiInfo wifiInfo = null;
+        WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
 
-        if (enabled) {
-            IWifiManager wifiManager = IWifiManager.Stub.asInterface(
-                    ServiceManager.getService(Context.WIFI_SERVICE));
-            try {
-                wifiInfo = wifiManager.getConnectionInfo();
-            } catch (RemoteException e) {
-                Log.e(TAG, "wifiManager, getConnectionInfo()", e);
-            }
-        }
-
-        if (wifiInfo != null) {
+        if (wifiInfo != null && enabled) {
             String hostAddress = NetworkUtils.intToInetAddress(
                     wifiInfo.getIpAddress()).getHostAddress();
             mAdbOverNetwork.setSummary(hostAddress + ":" + String.valueOf(port));
