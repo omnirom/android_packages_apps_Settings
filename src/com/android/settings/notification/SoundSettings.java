@@ -61,8 +61,6 @@ public class SoundSettings extends DashboardFragment {
 
     private RingtonePreference mRequestPreference;
     private TwoStatePreference mVolumeLinkNotification;
-    private static NotificationVolumePreferenceController sNotificationVolumeController;
-    private static RingVolumePreferenceController sRingVolumePreferenceController;
 
     @Override
     public void onAttach(Context context) {
@@ -220,10 +218,8 @@ public class SoundSettings extends DashboardFragment {
         // === Volumes ===
         controllers.add(new AlarmVolumePreferenceController(context, callback, lifecycle));
         controllers.add(new MediaVolumePreferenceController(context, callback, lifecycle));
-        sNotificationVolumeController = new NotificationVolumePreferenceController(context, callback, lifecycle);
-        controllers.add(sNotificationVolumeController);
-        sRingVolumePreferenceController = new RingVolumePreferenceController(context, callback, lifecycle);
-        controllers.add(sRingVolumePreferenceController);
+        controllers.add(new NotificationVolumePreferenceController(context, callback, lifecycle));
+        controllers.add(new RingVolumePreferenceController(context, callback, lifecycle));
 
         // === Phone & notification ringtone ===
         controllers.add(new PhoneRingtonePreferenceController(context));
@@ -264,11 +260,10 @@ public class SoundSettings extends DashboardFragment {
                     }
                     Settings.System.putInt(getContentResolver(),
                             Settings.System.VOLUME_LINK_NOTIFICATION, val ? 1 : 0);
-
-                    if (val) {
-                        getPreferenceScreen().removePreference(sNotificationVolumeController.getPreference());
-                    } else {
-                        getPreferenceScreen().addPreference(sNotificationVolumeController.getPreference());
+                    NotificationVolumePreferenceController notificationVolumeController = 
+                            getPreferenceController(NotificationVolumePreferenceController.class);
+                    if (notificationVolumeController != null) {
+                        notificationVolumeController.getPreference().setVisible(!val);
                     }
                     return true;
                 }
@@ -281,10 +276,10 @@ public class SoundSettings extends DashboardFragment {
             final boolean linkEnabled = Settings.System.getInt(getContentResolver(),
                     Settings.System.VOLUME_LINK_NOTIFICATION, 1) == 1;
             mVolumeLinkNotification.setChecked(linkEnabled);
-            if (linkEnabled) {
-                getPreferenceScreen().removePreference(sNotificationVolumeController.getPreference());
-            } else {
-                getPreferenceScreen().addPreference(sNotificationVolumeController.getPreference());
+            NotificationVolumePreferenceController notificationVolumeController = 
+                    getPreferenceController(NotificationVolumePreferenceController.class);
+            if (notificationVolumeController != null) {
+                notificationVolumeController.getPreference().setVisible(!linkEnabled);
             }
         }
     }
