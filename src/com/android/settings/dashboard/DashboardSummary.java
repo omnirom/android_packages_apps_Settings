@@ -110,6 +110,16 @@ public class DashboardSummary extends InstrumentedFragment
                     mSuggestionFeatureProvider.getSharedPrefs(activity), R.xml.suggestion_ordering);
             mSuggestionsChecks = new SuggestionsChecks(getContext());
         }
+
+        mAppPreferencesListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                updateSettings();
+            }
+        };
+        mAppPreferences = getContext().getSharedPreferences(SettingsActivity.APP_PREFERENCES_NAME,
+                Context.MODE_PRIVATE);
+
         if (DEBUG_TIMING) {
             Log.d(TAG, "onCreate took " + (System.currentTimeMillis() - startTime)
                     + " ms");
