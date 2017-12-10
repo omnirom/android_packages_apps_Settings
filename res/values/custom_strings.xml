@@ -140,4 +140,9 @@
     <string name="usb_paranoia_connect_title">USB secure connect</string>
     <string name="usb_paranoia_connect_summary">Only enable charging when USB plugged on secure lock screens</string>
     <string name="usb_category_title">USB</string>
+
+    <!-- Ambient Display Brightness -->
+    <string name="ambient_display_category_other">Other</string>
+    <string name="ambient_doze_auto_brightness_title">Ambient and LiftToWake auto brightness</string>
+    <string name="ambient_doze_auto_brightness_summary">Use last screen-on adaptive brightness value for Ambient Display or Lift to Wake screen</string>
 </resources>

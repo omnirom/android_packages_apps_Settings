@@ -74,4 +74,7 @@
   <string name="ramp_up_time_twenty">20 сек.</string>
   <string name="ramp_up_time_thirty">30 сек.</string>
   <string name="ramp_up_time_sixty">60 сек.</string>
+  <string name="ambient_display_category_other">Разное</string>
+  <string name="ambient_doze_auto_brightness_title">Автояркость активного экрана</string>
+  <string name="ambient_doze_auto_brightness_summary">Использовать автояркость для активного экрана</string>
 </resources>

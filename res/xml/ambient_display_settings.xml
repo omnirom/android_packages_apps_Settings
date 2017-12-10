@@ -26,6 +26,11 @@
             android:key="ambient_display_always_on"
             android:title="@string/doze_always_on_title"
             android:summary="@string/doze_always_on_summary" />
+            
+        <SwitchPreference
+            android:key="ambient_display_notification"
+            android:title="@string/doze_title"
+            android:summary="@string/doze_summary" />
 
         <Preference
             android:key="ambient_display_double_tap"
@@ -39,12 +44,14 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory>
+    <PreferenceCategory
+            android:title="@string/ambient_display_category_other">
 
         <SwitchPreference
-            android:key="ambient_display_notification"
-            android:title="@string/doze_title"
-            android:summary="@string/doze_summary" />
+            android:key="ambient_doze_auto_brightness"
+            android:title="@string/ambient_doze_auto_brightness_title"
+            android:summary="@string/ambient_doze_auto_brightness_summary" />
+
 
         <ListPreference
             android:key="force_ambient_for_media"
