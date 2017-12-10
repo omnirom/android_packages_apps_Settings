@@ -26,6 +26,7 @@ import com.android.internal.logging.nano.MetricsProto;
 import com.android.settings.R;
 import com.android.settings.core.instrumentation.MetricsFeatureProvider;
 import com.android.settings.dashboard.DashboardFragment;
+import com.android.settings.display.DozeAutoBrightnessPreferenceController;
 import com.android.settings.gestures.DoubleTapScreenPreferenceController;
 import com.android.settings.gestures.PickupGesturePreferenceController;
 import com.android.settings.search.BaseSearchIndexProvider;
@@ -48,6 +49,7 @@ public class AmbientDisplaySettings extends DashboardFragment {
     private static final String KEY_AMBIENT_DISPLAY_DOUBLE_TAP = "ambient_display_double_tap";
     private static final String KEY_AMBIENT_DISPLAY_PICK_UP = "ambient_display_pick_up";
     private static final String KEY_AMBIENT_DISPLAY_NOTIFICATION = "ambient_display_notification";
+    private static final String KEY_AMBIENT_DOZE_AUTO_BRIGHTNESS = "ambient_doze_auto_brightness";
 
     private static List<AbstractPreferenceController> buildPreferenceControllers(Context context,
             Lifecycle lifecycle, AmbientDisplayConfiguration config,
@@ -63,7 +65,9 @@ public class AmbientDisplaySettings extends DashboardFragment {
         controllers.add(new PickupGesturePreferenceController(context, lifecycle, config,
                 MY_USER_ID, KEY_AMBIENT_DISPLAY_PICK_UP));
         controllers.add(new AmbientDisplayMusicController(context));
-        return controllers;
+        controllers.add(new DozeAutoBrightnessPreferenceController(context, config,
+                metricsFeatureProvider));
+         return controllers;
     }
 
 
