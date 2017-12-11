@@ -20,6 +20,7 @@ import android.provider.Settings;
 import android.support.v7.preference.Preference;
 import android.support.v14.preference.SwitchPreference;
 
+import com.android.settings.core.PreferenceControllerMixin;
 import com.android.settingslib.core.AbstractPreferenceController;
 
 import static android.provider.Settings.System.SHOW_BATTERY_IMAGE;
@@ -29,7 +30,7 @@ import static android.provider.Settings.System.SHOW_BATTERY_IMAGE;
  */
 
 public class BatteryImagePreferenceController extends AbstractPreferenceController
-        implements Preference.OnPreferenceChangeListener {
+        implements PreferenceControllerMixin, Preference.OnPreferenceChangeListener {
 
     private static final String KEY_BATTERY_IMAGE = "battery_image";
 
