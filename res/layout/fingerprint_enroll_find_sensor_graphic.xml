@@ -25,8 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/security_settings_fingerprint_enroll_find_sensor_content_description"
-        android:src="@drawable/fingerprint_sensor_location"
-        android:scaleType="centerInside"/>
+        android:src="@drawable/fingerprint_sensor_location"/>
 
     <ImageView
         android:id="@+id/fingerprint_sensor_location_front_overlay"
@@ -34,7 +33,6 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/security_settings_fingerprint_enroll_find_sensor_content_description"
         android:src="@drawable/fingerprint_sensor_location_front_overlay"
-        android:scaleType="centerInside"
         android:visibility="gone"/>
 
     <com.android.settings.fingerprint.FingerprintLocationAnimationView
