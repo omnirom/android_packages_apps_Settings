@@ -48,16 +48,17 @@
                 android:text="@string/security_settings_fingerprint_enroll_find_sensor_message"/>
         </LinearLayout>
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <include
-            layout="@layout/fingerprint_enroll_find_sensor_graphic"
+        <com.android.setupwizardlib.view.FillContentLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_weight="1" >
 
+            <include
+                layout="@layout/fingerprint_enroll_find_sensor_graphic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"/>
+
+        </com.android.setupwizardlib.view.FillContentLayout>
     </LinearLayout>
 </com.android.setupwizardlib.GlifLayout>
