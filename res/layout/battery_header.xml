@@ -31,7 +31,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginStart="56dp"
+        android:paddingStart="@dimen/preference_no_icon_padding_start"
         android:orientation="vertical">
 
         <TextView

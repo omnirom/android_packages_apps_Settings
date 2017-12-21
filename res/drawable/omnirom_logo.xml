@@ -21,7 +21,7 @@
     android:height="48dp"
     android:viewportWidth="512.000000"
     android:viewportHeight="512.000000"
-		android:tint="@color/omni_logo_color">
+    android:tint="@color/omni_logo_color">
     <group
         android:translateY="512.000000"
         android:scaleX="0.100000"
