@@ -218,13 +218,13 @@
     </style>
 
     <style name="ThemeOverlay.SwitchBar.Settings" parent="@android:style/ThemeOverlay.Material.ActionBar">
-        <item name="switchBarMarginStart">@dimen/switchbar_subsettings_margin_start</item>
+        <item name="switchBarMarginStart">@dimen/preference_no_icon_padding_start</item>
         <item name="switchBarMarginEnd">@dimen/switchbar_subsettings_margin_end</item>
         <item name="switchBarBackgroundColor">?android:attr/colorSecondary</item>
     </style>
 
     <style name="ThemeOverlay.SwitchBar.SubSettings" parent="@android:style/ThemeOverlay.Material.ActionBar">
-        <item name="switchBarMarginStart">@dimen/switchbar_subsettings_margin_start</item>
+        <item name="switchBarMarginStart">@dimen/preference_no_icon_padding_start</item>
         <item name="switchBarMarginEnd">@dimen/switchbar_subsettings_margin_end</item>
         <item name="switchBarBackgroundColor">?android:attr/colorSecondary</item>
     </style>

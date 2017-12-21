@@ -74,7 +74,7 @@
             android:key="show_light_on_zen"
             android:title="@string/show_light_on_zen_title" />
 
-        <org.omnirom.omnigears.batterylight.BatteryLightPreference
+        <org.omnirom.omnigears.preference.ColorSelectPreference
             android:key="custom_light"
             android:title="@string/custom_light_title" />
 
