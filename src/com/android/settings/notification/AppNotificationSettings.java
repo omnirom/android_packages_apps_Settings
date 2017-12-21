@@ -48,7 +48,7 @@ import com.android.settingslib.RestrictedSwitchPreference;
 import com.android.settingslib.widget.FooterPreference;
 
 import org.omnirom.omnigears.preference.SeekBarPreference;
-import org.omnirom.omnigears.batterylight.BatteryLightPreference;
+import org.omnirom.omnigears.preference.ColorSelectPreference;
 
 import static android.provider.Settings.System.NOTIFICATION_LIGHT_PULSE;
 
@@ -82,7 +82,7 @@ public class AppNotificationSettings extends NotificationSettingsBase {
 
     private PreferenceCategory mLightCategory;
     private RestrictedSwitchPreference mLights;
-    private BatteryLightPreference mCustomLight;
+    private ColorSelectPreference mCustomLight;
     private SeekBarPreference mLightOnTime;
     private SeekBarPreference mLightOffTime;
     private SwitchPreference mLightOnZen;
@@ -153,7 +153,7 @@ public class AppNotificationSettings extends NotificationSettingsBase {
         //find light prefs
         mLights = (RestrictedSwitchPreference) findPreference(KEY_LIGHTS);
         boolean multiColorLed = getResources().getBoolean(com.android.internal.R.bool.config_multiColorNotificationLed);
-        mCustomLight = (BatteryLightPreference) findPreference(KEY_CUSTOM_LIGHT);
+        mCustomLight = (ColorSelectPreference) findPreference(KEY_CUSTOM_LIGHT);
         if (!multiColorLed) {
             mLightCategory.removePreference(mCustomLight);
         }
