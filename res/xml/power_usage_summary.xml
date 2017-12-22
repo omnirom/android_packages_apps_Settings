@@ -75,10 +75,10 @@
             android:entryValues="@array/screen_timeout_values"/-->
 
         <!-- Cross-listed item, if you change this, also change it in display_settings.xml -->
-        <Preference
+        <!--<Preference
             android:key="ambient_display_battery"
             android:title="@string/ambient_display_screen_title"
-            android:fragment="com.android.settings.display.AmbientDisplaySettings" />
+            android:fragment="com.android.settings.display.AmbientDisplaySettings" />-->
 
     </PreferenceCategory>
 
