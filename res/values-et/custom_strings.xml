@@ -19,10 +19,41 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="style_settings_title">Stiil</string>
+  <string name="header_category_omni">OmniGears</string>
+  <string name="omni_dashboard_summary">Omni oma seadet</string>
+  <string name="style_settings_summary">Taustapildid ja muu värk</string>
+  <string name="omni_device_parts">Seadme funktsioonid</string>
+  <string name="columns_menu">Veergude paigutus</string>
+  <string name="hide_summary_menu">Peida kokkuvõtted</string>
+  <string name="bars_settings_title">Ribad ja lukukuva</string>
+  <string name="button_settings_title">Nupud</string>
+  <string name="mod_version">Omni versioon</string>
+  <string name="mod_version_default">Tundmatu</string>
+  <string name="more_settings_title">Veel</string>
+  <string name="global_actions_title">Toitemenüü</string>
+  <string name="display_rotation_title">Pööramine</string>
+  <string name="display_rotation_summary">Seadista võimalikke pööramisnurki</string>
+  <string name="battery_light_settings_title">Aku LEDi seaded</string>
   <!-- Custom light color -->
+  <string name="value_equals_default">Automaatne</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">ADB üle võrgu</string>
   <!-- Warning for Adb over Network -->
+  <string name="battery_image">Aku pilt</string>
+  <string name="battery_image_description">Kuva aku pilti olekuribal</string>
+  <string name="twilight_mode_location_dialog">Asukoht keelatud</string>
+  <string name="twilight_mode_location_disabled">Asukoha juurdepääs on keelatud</string>
+  <string name="twilight_mode_location_enable">Luba</string>
   <!-- Encryption and credential -->
+  <string name="custom_encryption_and_credential_settings_summary_on">Seade on krüptitud</string>
+  <string name="custom_encryption_and_credential_settings_summary_off">Seade on krüptimata</string>
+  <string name="select_sim_for_sms">Vali SMSi jaoks SIM</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Leia sõrmejäljelugeja oma seadme <xliff:g id="sensor_location">%1$s</xliff:g>küljel.</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">taga</string>
+  <string name="security_settings_fingerprint_sensor_location_front">esi</string>
+  <string name="security_settings_fingerprint_sensor_location_left">vasakul </string>
+  <string name="security_settings_fingerprint_sensor_location_right">paremal </string>
 </resources>

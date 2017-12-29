@@ -19,10 +19,51 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="style_settings_title">Стиль</string>
+  <string name="header_category_omni">OmniGears</string>
+  <string name="omni_dashboard_summary">Настройте свое устройство</string>
+  <string name="style_settings_summary">Обои и другие крутости</string>
+  <string name="omni_device_parts">Возможности устройства</string>
+  <string name="columns_menu">Раскладка столбцов</string>
+  <string name="hide_summary_menu">Скрыть содержание</string>
+  <string name="bars_settings_title">Панели и экран блокировки</string>
+  <string name="button_settings_title">Кнопки</string>
+  <string name="mod_version">Версия Omni</string>
+  <string name="mod_version_default">Неизвестно</string>
+  <string name="more_settings_title">Ещё</string>
+  <string name="global_actions_title">Меню кнопки питания</string>
+  <string name="display_rotation_title">Поворот экрана</string>
+  <string name="display_rotation_summary">Настройте возможные углы поворота</string>
+  <string name="battery_light_settings_title">Индикация батареи</string>
+  <string name="link_volume_option_title">Связать громкость звонка и уведомлений</string>
   <!-- Custom light color -->
+  <string name="light_customization">Уведомление светодиодом</string>
+  <string name="custom_light_title">Цвет светодиода</string>
+  <string name="custom_light_on_time_title">"Время включения подсветки во время импульса (мс)"</string>
+  <string name="custom_light_off_time_title">"Время выключения подсветки во время импульса (мс)"</string>
+  <string name="app_notifications_info_desc">Нажмите на один из вышеуказанных каналов, чтобы настроить их цвета и другие параметры</string>
+  <string name="value_equals_default">Автоматически</string>
+  <string name="show_light_on_zen_title">Мигать во время режима \"Не беспокоить\"</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">Отладка по сети</string>
+  <string name="adb_over_network_summary">Включить отладку TCP/IP через сетевые интерфейсы (Wi-Fi, USB-сети). Эта установка сбрасывается при перезагрузке</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">ВНИМАНИЕ: когда включена отладка по сети, устройство открыто для неконтролируемого доступа из всех подключённых сетей!\n\nИспользуйте эту функцию только тогда, когда вы подключены к доверенным сетям.\n\nВы действительно хотите включить эту функцию?</string>
+  <string name="battery_image">Изображение батареи</string>
+  <string name="battery_image_description">Показать изображение батареи в строке состояния</string>
+  <string name="twilight_mode_location_dialog">Местоположение отключено</string>
+  <string name="twilight_mode_location_disabled">Доступ к местоположению отключен</string>
+  <string name="twilight_mode_location_enable">Включено</string>
   <!-- Encryption and credential -->
+  <string name="custom_encryption_and_credential_settings_summary_on">Устройство зашифровано</string>
+  <string name="custom_encryption_and_credential_settings_summary_off">Устройство расшифровано</string>
+  <string name="select_sim_for_sms">Выберите SIM для SMS</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Найдите датчик отпечатков пальцев <xliff:g id="sensor_location">%1$s </xliff:g> телефона.</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">на задней части</string>
+  <string name="security_settings_fingerprint_sensor_location_front">на передней части</string>
+  <string name="security_settings_fingerprint_sensor_location_left">на левом торце</string>
+  <string name="security_settings_fingerprint_sensor_location_right">на правом торце</string>
+  <string name="screenshot_shutter_sound_title">Звук скриншота</string>
 </resources>

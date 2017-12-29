@@ -59,4 +59,5 @@
   <string name="security_settings_fingerprint_sensor_location_front">frontal</string>
   <string name="security_settings_fingerprint_sensor_location_left">lado izquierdo</string>
   <string name="security_settings_fingerprint_sensor_location_right">lado derecho</string>
+  <string name="screenshot_shutter_sound_title">Sonido al capturar la pantalla</string>
 </resources>

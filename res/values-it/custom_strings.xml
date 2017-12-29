@@ -65,4 +65,5 @@
   <string name="security_settings_fingerprint_sensor_location_front">anteriore</string>
   <string name="security_settings_fingerprint_sensor_location_left">lato sinistro</string>
   <string name="security_settings_fingerprint_sensor_location_right">lato destro</string>
+  <string name="screenshot_shutter_sound_title">Suono screenshot</string>
 </resources>
