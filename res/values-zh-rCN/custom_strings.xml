@@ -19,15 +19,51 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="style_settings_title">风格</string>
-  <string name="header_category_omni">Omni配置</string>
+  <string name="style_settings_title">样式</string>
+  <string name="header_category_omni">Omni 配置</string>
   <string name="omni_dashboard_summary">自定义您的设备</string>
+  <string name="style_settings_summary">壁纸和其它Swag</string>
+  <string name="omni_device_parts">设备特性</string>
+  <string name="columns_menu">列布局</string>
+  <string name="hide_summary_menu">隐藏摘要</string>
+  <string name="bars_settings_title">锁屏</string>
+  <string name="button_settings_title">按键</string>
   <string name="mod_version">Omni 版本</string>
   <string name="mod_version_default">未知</string>
+  <string name="more_settings_title">更多</string>
+  <string name="global_actions_title">电源菜单</string>
+  <string name="display_rotation_title">旋转设置</string>
+  <string name="display_rotation_summary">旋转角度设置</string>
+  <string name="battery_light_settings_title">电池LED灯设置</string>
+  <string name="link_volume_option_title">链接铃声和通知音量</string>
+  
   <!-- Custom light color -->
+  <string name="light_customization">Led灯通知设置</string>
+  <string name="custom_light_title">LED灯颜色r</string>
+  <string name="value_equals_default">自动</string>
+  <string name="show_light_on_zen_title">请勿打扰</string>
+  
   <!-- Android debugging over WiFi -->
   <!-- Warning for Adb over Network -->
+  <string name="battery_image">图标图标</string>
+  <string name="battery_image_description">在状态栏显示电池图标</string>
+  
+  <string name="twilight_mode_location_dialog">位置已禁用</string>
+  <string name="twilight_mode_location_disabled">位置权限已被禁用</string>
+  <string name="twilight_mode_location_enable">启用</string>
+  
   <!-- Encryption and credential -->
+  <string name="custom_encryption_and_credential_settings_summary_on">设备已加密</string>
+  <string name="custom_encryption_and_credential_settings_summary_off">设备未加密</string>
+  
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">在您的手机 <xliff:g id="sensor_location">%1$s</xliff:g> 找到指纹传感器。</string>
+
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">背面</string>
+  <string name="security_settings_fingerprint_sensor_location_front">正面</string>
+  <string name="security_settings_fingerprint_sensor_location_left">左侧</string>
+  <string name="security_settings_fingerprint_sensor_location_right">右侧</string>
+  
+  <string name="screenshot_shutter_sound_title">屏幕截图声音</string>
 </resources>
