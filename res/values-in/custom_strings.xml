@@ -65,4 +65,5 @@
   <string name="security_settings_fingerprint_sensor_location_front">depan</string>
   <string name="security_settings_fingerprint_sensor_location_left">sisi kiri</string>
   <string name="security_settings_fingerprint_sensor_location_right">sisi kanan</string>
+  <string name="screenshot_shutter_sound_title">Pengatur suara tangkapan layar</string>
 </resources>

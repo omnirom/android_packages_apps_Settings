@@ -22,12 +22,34 @@
   <string name="style_settings_title">风格</string>
   <string name="header_category_omni">Omni配置</string>
   <string name="omni_dashboard_summary">自定义您的设备</string>
+  <string name="omni_device_parts">设备特性</string>
+  <string name="columns_menu">列布局</string>
+  <string name="hide_summary_menu">隐藏摘要</string>
+  <string name="button_settings_title">按钮</string>
   <string name="mod_version">Omni 版本</string>
   <string name="mod_version_default">未知</string>
+  <string name="more_settings_title">更多</string>
+  <string name="global_actions_title">电源菜单选项</string>
+  <string name="battery_light_settings_title">电池指示灯设置</string>
+  <string name="link_volume_option_title">关联铃声和通知音量</string>
   <!-- Custom light color -->
+  <string name="light_customization">LED灯光通知</string>
+  <string name="value_equals_default">自动</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">网络 ADB 调试</string>
+  <string name="adb_over_network_summary">通过网络接口 (WLAN, USB 网络) 启用 TCP/IP 调试。 该设置重启后失效</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">警告：网络 ADB 调试启用后，您的设备将会在已连接的网络上被视为是开放的，，包括 GSM 数据网络，并有可能被侵入！\n\n请仅在您所信任的网络上使用此功能。\n\n您确实要启用该功能吗？</string>
+  <string name="twilight_mode_location_enable">启用</string>
   <!-- Encryption and credential -->
+  <string name="custom_encryption_and_credential_settings_summary_on">设备已加密</string>
+  <string name="custom_encryption_and_credential_settings_summary_off">设备已解密</string>
+  <string name="select_sim_for_sms">选择发送短信的SIM卡</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">在您手机上的<xliff:g id="sensor_location">%1$s </xliff:g>定位到指纹传感器。</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">返回</string>
+  <string name="security_settings_fingerprint_sensor_location_left">左边</string>
+  <string name="security_settings_fingerprint_sensor_location_right">右边</string>
+  <string name="screenshot_shutter_sound_title">屏幕截图音效</string>
 </resources>
