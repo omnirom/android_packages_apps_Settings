@@ -19,10 +19,51 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="style_settings_title">Stílus</string>
+  <string name="header_category_omni">OmniGears</string>
+  <string name="omni_dashboard_summary">Omnisítsa eszközét</string>
+  <string name="style_settings_summary">Háttérképek és egyéb szajrék</string>
+  <string name="omni_device_parts">Eszközfunkciók</string>
+  <string name="columns_menu">Oszlop elrendezés</string>
+  <string name="hide_summary_menu">Összefoglaló elrejtése</string>
+  <string name="bars_settings_title">Panelek és zárképernyő</string>
+  <string name="button_settings_title">Gombok</string>
+  <string name="mod_version">Omni verzió</string>
+  <string name="mod_version_default">Ismeretlen</string>
+  <string name="more_settings_title">Egyebek</string>
+  <string name="global_actions_title">Kikapcsoló menü</string>
+  <string name="display_rotation_title">Elforgatás</string>
+  <string name="display_rotation_summary">Lehetséges elforgatási szögek beállítása</string>
+  <string name="battery_light_settings_title">Akkumulátor LED beállítások</string>
+  <string name="link_volume_option_title">Csengő és értesítési hangok összekötése</string>
   <!-- Custom light color -->
+  <string name="light_customization">LED értesítés</string>
+  <string name="custom_light_title">Fény színe</string>
+  <string name="custom_light_on_time_title">"Fény BE a pulzálás során (ms)"</string>
+  <string name="custom_light_off_time_title">"Fény KI a pulzálás során (ms)"</string>
+  <string name="app_notifications_info_desc">Kattintson a fenti csatornák egyikére a színek és egyéb beállítások módosításához</string>
+  <string name="value_equals_default">Auto</string>
+  <string name="show_light_on_zen_title">Villog a Ne zavarj alatt</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">ADB hálózaton keresztül</string>
+  <string name="adb_over_network_summary">Engedélyezi a TCP/IP hibakeresést hálózati eszközön keresztül (Wi-Fi, USB hálózatok). Újraindítás után alaphelyzetbe áll vissza</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">VIGYÁZAT: Ha a funkció engedélyezve van, az eszköz nyitva áll bármilyen behatolásra az összes kapcsolódó hálózaton keresztül!\n\nCsak biztonságos hálózatra csatlakozva érdemes engedélyezni.\n\nBiztosan engedélyezni szeretné?</string>
+  <string name="battery_image">Akkumulátor kép</string>
+  <string name="battery_image_description">Akkumulátor kép megjelenítése az állapotsoron</string>
+  <string name="twilight_mode_location_dialog">Helymeghatározás kikapcsolva</string>
+  <string name="twilight_mode_location_disabled">A helyhozzáférés ki van kapcsolva</string>
+  <string name="twilight_mode_location_enable">Engedélyezés</string>
   <!-- Encryption and credential -->
+  <string name="custom_encryption_and_credential_settings_summary_on">Eszköz titkosítva van</string>
+  <string name="custom_encryption_and_credential_settings_summary_off">Eszköz nincs titkosítva</string>
+  <string name="select_sim_for_sms">Válasszon SIM-et az SMS-hez</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Keresse meg az ujjlenyomat érzékelőt a telefonon: <xliff:g id="sensor_location">%1$s</xliff:g>.</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">hátul</string>
+  <string name="security_settings_fingerprint_sensor_location_front">elől</string>
+  <string name="security_settings_fingerprint_sensor_location_left">bal oldalon</string>
+  <string name="security_settings_fingerprint_sensor_location_right">jobb oldalon</string>
+  <string name="screenshot_shutter_sound_title">Képernyőmentés zárhang</string>
 </resources>

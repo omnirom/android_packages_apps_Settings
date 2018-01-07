@@ -22,7 +22,7 @@
   <string name="style_settings_title">Stiil</string>
   <string name="header_category_omni">OmniGears</string>
   <string name="omni_dashboard_summary">Omni oma seadet</string>
-  <string name="style_settings_summary">Taustapildid ja muu värk</string>
+  <string name="style_settings_summary">Taustapildid ja muu nodi</string>
   <string name="omni_device_parts">Seadme funktsioonid</string>
   <string name="columns_menu">Veergude paigutus</string>
   <string name="hide_summary_menu">Peida kokkuvõtted</string>
@@ -35,8 +35,12 @@
   <string name="display_rotation_title">Pööramine</string>
   <string name="display_rotation_summary">Seadista võimalikke pööramisnurki</string>
   <string name="battery_light_settings_title">Aku LEDi seaded</string>
+  <string name="link_volume_option_title">Ühenda helina ja teate helitugevus</string>
   <!-- Custom light color -->
+  <string name="light_customization">LED-tulukese teade</string>
+  <string name="custom_light_title">Tulukese värv</string>
   <string name="value_equals_default">Automaatne</string>
+  <string name="show_light_on_zen_title">Vilgu, kui mitte segada režiim on sees</string>
   <!-- Android debugging over WiFi -->
   <string name="adb_over_network">ADB üle võrgu</string>
   <!-- Warning for Adb over Network -->
@@ -56,4 +60,5 @@
   <string name="security_settings_fingerprint_sensor_location_front">esi</string>
   <string name="security_settings_fingerprint_sensor_location_left">vasakul </string>
   <string name="security_settings_fingerprint_sensor_location_right">paremal </string>
+  <string name="screenshot_shutter_sound_title">Kuvatõmmise tegemise heli</string>
 </resources>

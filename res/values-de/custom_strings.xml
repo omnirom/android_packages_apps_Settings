@@ -64,4 +64,5 @@
   <string name="security_settings_fingerprint_sensor_location_front">Vorderseite</string>
   <string name="security_settings_fingerprint_sensor_location_left">linke Seite</string>
   <string name="security_settings_fingerprint_sensor_location_right">rechte Seite</string>
+  <string name="screenshot_shutter_sound_title">Bildschirmfoto Auslöse-Ton</string>
 </resources>

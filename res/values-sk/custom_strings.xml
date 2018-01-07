@@ -19,10 +19,51 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="style_settings_title">Štýl</string>
+  <string name="header_category_omni">OmniGears</string>
+  <string name="omni_dashboard_summary">Upraviť vaše zariadenie v štýle Omnify</string>
+  <string name="style_settings_summary">Tapety a ďalšie</string>
+  <string name="omni_device_parts">Funkcie zariadenia</string>
+  <string name="columns_menu">Rozloženie stĺpcov</string>
+  <string name="hide_summary_menu">Skryť prehľad</string>
+  <string name="bars_settings_title">Panely a obrazovka uzamknutia</string>
+  <string name="button_settings_title">Tlačidlá</string>
+  <string name="mod_version">Verzia Omni</string>
+  <string name="mod_version_default">Neznáma</string>
+  <string name="more_settings_title">Viac</string>
+  <string name="global_actions_title">Ponuka tlačidla Napájanie</string>
+  <string name="display_rotation_title">Otočenie</string>
+  <string name="display_rotation_summary">Nastavte možné uhly otočenia</string>
+  <string name="battery_light_settings_title">Nastavenia LED indikátora batérie</string>
+  <string name="link_volume_option_title">Prepojiť hlasitosť zvonenia a upozornení</string>
   <!-- Custom light color -->
+  <string name="light_customization">LED signalizácia upozornení</string>
+  <string name="custom_light_title">Farba LED</string>
+  <string name="custom_light_on_time_title">"Čas. interval zapnutia LED (ms)"</string>
+  <string name="custom_light_off_time_title">"Čas. interval vypnutia LED (ms)"</string>
+  <string name="app_notifications_info_desc">Klepnutím na jeden z vyššie uvedených kanálov môžete konfigurovať farbu LED a ďalšie možnosti</string>
+  <string name="value_equals_default">Automaticky</string>
+  <string name="show_light_on_zen_title">Blikať počas režimu Nerušiť</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">ADB cez sieť</string>
+  <string name="adb_over_network_summary">Zapnúť TCP/IP ladenie cez sieť (Wi-Fi, USB siete). Táto možnosť bude resetovaná po reštarte</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">UPOZORNENIE: Keď ladenie cez sieť je zapnuté, váš telefón je otvorený pre všetky pripojené siete, vrátane dátového pripojenia GSM!\n\nPoužite túto funkciu iba v sieťach, ktorým dôverujete.\n\nNaozaj chcete zapnúť túto funkciu?</string>
+  <string name="battery_image">Štýl ikony batérie</string>
+  <string name="battery_image_description">Zobraziť ikonu batérie v stavovom riadku</string>
+  <string name="twilight_mode_location_dialog">Poloha je vypnutá</string>
+  <string name="twilight_mode_location_disabled">Prístup k polohe je zakázaný</string>
+  <string name="twilight_mode_location_enable">Zapnúť</string>
   <!-- Encryption and credential -->
+  <string name="custom_encryption_and_credential_settings_summary_on">Zariadenie je šifrované</string>
+  <string name="custom_encryption_and_credential_settings_summary_off">Zariadenie je dešifrované</string>
+  <string name="select_sim_for_sms">Vyberte SIM pre SMS</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Nájdite snímač odtlačkov prstov na<xliff:g id="sensor_location">%1$s</xliff:g> vášho zariadenia.</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">zadnej strane</string>
+  <string name="security_settings_fingerprint_sensor_location_front">prednej strane</string>
+  <string name="security_settings_fingerprint_sensor_location_left">ľavej strane</string>
+  <string name="security_settings_fingerprint_sensor_location_right">pravej strane</string>
+  <string name="screenshot_shutter_sound_title">Zvuk uzávierky pri snímke obrazovky</string>
 </resources>
