@@ -67,8 +67,7 @@
         <!-- Lights -->
         <com.android.settingslib.RestrictedSwitchPreference
             android:key="lights"
-            android:title="@string/notification_show_lights_title"
-            settings:useAdditionalSummary="true" />
+            android:title="@string/notification_show_lights_title"/>
 
         <SwitchPreference
             android:key="show_light_on_zen"

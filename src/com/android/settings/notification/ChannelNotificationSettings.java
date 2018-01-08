@@ -69,6 +69,7 @@ public class ChannelNotificationSettings extends NotificationSettingsBase {
     private static final String KEY_RINGTONE = "ringtone";
     private static final String KEY_IMPORTANCE = "importance";
     private static final String KEY_LIGHT_ON_ZEN = "show_light_on_zen";
+    private static final String KEY_LIGHTS_CAT = "light_customization";
     private static final String KEY_ADVANCED = "advanced";
 
     private Preference mImportance;
@@ -81,6 +82,7 @@ public class ChannelNotificationSettings extends NotificationSettingsBase {
     private FooterPreference mFooter;
     private NotificationChannelGroup mChannelGroup;
     private SwitchPreference mLightOnZen;
+    private PreferenceGroup mLightsCategory;
     private EntityHeaderController mHeaderPref;
     private PreferenceGroup mAdvanced;
 
@@ -151,6 +153,7 @@ public class ChannelNotificationSettings extends NotificationSettingsBase {
         setupRingtone();
         setupImportance();
         mAdvanced = (PreferenceGroup) findPreference(KEY_ADVANCED);
+        mLightsCategory = (PreferenceGroup) findPreference(KEY_LIGHTS_CAT);
     }
 
     private void addHeaderPref() {
@@ -222,8 +225,7 @@ public class ChannelNotificationSettings extends NotificationSettingsBase {
         mLights = (RestrictedSwitchPreference) findPreference(KEY_LIGHTS);
         mCustomLight = (ColorSelectPreference) findPreference(KEY_CUSTOM_LIGHT);
         if (!multiColorLed) {
-            PreferenceCategory lightCategory = (PreferenceCategory) findPreference("light_customization");
-            lightCategory.removePreference(mCustomLight);
+            mLightsCategory.removePreference(mCustomLight);
         }
         mLightOnTime =(SeekBarPreference) findPreference(KEY_LIGHTS_ON_TIME);
         mLightOffTime = (SeekBarPreference) findPreference(KEY_LIGHTS_OFF_TIME);
@@ -481,7 +483,7 @@ public class ChannelNotificationSettings extends NotificationSettingsBase {
         } else {
             setVisible(mAdvanced, checkCanBeVisible(NotificationManager.IMPORTANCE_MIN));
             setVisible(mImportance, checkCanBeVisible(NotificationManager.IMPORTANCE_MIN));
-            setVisible(mAdvanced, mLights, checkCanBeVisible(
+            setVisible(mLightsCategory, checkCanBeVisible(
                     NotificationManager.IMPORTANCE_DEFAULT) && canPulseLight());
             setVisible(mVibrate, checkCanBeVisible(NotificationManager.IMPORTANCE_DEFAULT));
             setVisible(mRingtone, checkCanBeVisible(NotificationManager.IMPORTANCE_DEFAULT));
