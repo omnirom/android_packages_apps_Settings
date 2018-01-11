@@ -23,5 +23,5 @@
     android:layout_gravity="center"
     android:scaleType="center"
     android:src="@drawable/ic_settings"
+    android:background="@*android:color/secondary_device_default_settings_light"
     android:contentDescription="@string/settings_button" />
-
