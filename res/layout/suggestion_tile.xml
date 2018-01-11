@@ -23,7 +23,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:background="@*android:color/secondary_device_default_settings_light"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:minHeight="@dimen/dashboard_tile_minimum_height">
