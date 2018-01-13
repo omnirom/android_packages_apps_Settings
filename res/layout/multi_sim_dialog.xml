@@ -15,103 +15,108 @@
 -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/sim_content_padding"
+        android:paddingEnd="@dimen/sim_content_padding"
+        android:orientation="vertical">
 
         <LinearLayout android:id="@+id/type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/sim_dialog_margin_top"
+            android:paddingBottom="4dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical" >
 
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/sim_dialog_margin_top"
-                    android:paddingStart="@dimen/sim_content_padding"
-                    android:text="@string/sim_editor_name" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/device_info_dialog_label"
+                android:text="@string/sim_editor_name" />
 
             <EditText android:id="@+id/sim_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:paddingStart="@dimen/sim_content_padding"
-                    android:paddingBottom="@dimen/sim_dialog_margin_bottom"
-                    android:hint="@string/sim_name_hint"
-                    android:inputType="textNoSuggestions"
-                    android:maxLength="@integer/sim_name_length"
-                    android:textColor="@android:color/black"
-                    style="?android:attr/textAppearanceMedium" />
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:hint="@string/sim_name_hint"
+                android:inputType="textNoSuggestions"
+                android:maxLength="@integer/sim_name_length"
+                android:paddingStart="8dp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical" >
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/sim_dialog_margin_top"
-                android:paddingStart="@dimen/sim_content_padding"
+                android:layout_gravity="center_vertical"
                 android:text="@string/color_title" />
 
             <Spinner
                 android:id="@+id/spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="8dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/sim_dialog_margin_top"
+            android:paddingBottom="@dimen/sim_dialog_margin_bottom"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical" >
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/sim_content_padding" />
-
-        </LinearLayout>
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/sim_dialog_margin_top"
-                    android:paddingStart="@dimen/sim_content_padding"
-                    android:text="@string/sim_editor_carrier" />
+                style="@style/device_info_dialog_label"
+                android:text="@string/sim_editor_carrier" />
 
             <TextView android:id="@+id/carrier"
-                    android:textColor="@android:color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/sim_content_padding"
-                    android:paddingBottom="@dimen/sim_dialog_margin_bottom"
-                    android:singleLine="true"
-                    style="?android:attr/textAppearanceMedium" />
-
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:paddingStart="8dp"
+                style="@style/device_info_dialog_value" />
         </LinearLayout>
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/sim_dialog_margin_top"
+            android:paddingBottom="@dimen/sim_dialog_margin_bottom"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical" >
 
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/sim_dialog_margin_top"
-                    android:paddingStart="@dimen/sim_content_padding"
-                    android:text="@string/sim_editor_number" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/device_info_dialog_label"
+                android:text="@string/sim_editor_number" />
 
             <TextView android:id="@+id/number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/sim_dialog_margin_bottom"
-                    android:paddingStart="@dimen/sim_content_padding"
-                    android:singleLine="true"
-                    android:textColor="@android:color/black"
-                    style="?android:attr/textAppearanceMedium" />
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:paddingStart="8dp"
+                style="@style/device_info_dialog_value" />
 
         </LinearLayout>
 
