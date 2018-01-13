@@ -110,7 +110,7 @@ public class SimPreferenceDialog extends Activity {
         final Spinner tintSpinner = (Spinner) mDialogLayout.findViewById(R.id.spinner);
         SelectColorAdapter adapter = new SelectColorAdapter(mContext,
                 R.layout.settings_color_picker_item, mColorStrings);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //adapter.setDropDownViewResource(R.layout.settings_color_picker_item);
         tintSpinner.setAdapter(adapter);
 
         for (int i = 0; i < mTintArr.length; i++) {
