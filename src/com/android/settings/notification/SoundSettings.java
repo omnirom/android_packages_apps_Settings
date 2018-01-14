@@ -27,6 +27,7 @@ import android.os.UserHandle;
 import android.preference.SeekBarVolumizer;
 import android.provider.SearchIndexableResource;
 import android.provider.Settings;
+import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
 import android.support.v7.preference.TwoStatePreference;
@@ -46,12 +47,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SoundSettings extends DashboardFragment {
+public class SoundSettings extends DashboardFragment implements OnPreferenceChangeListener {
     private static final String TAG = "SoundSettings";
 
     private static final String KEY_CELL_BROADCAST_SETTINGS = "cell_broadcast_settings";
     private static final String SELECTED_PREFERENCE_KEY = "selected_preference";
     private static final String KEY_VOLUME_LINK_NOTIFICATION = "volume_link_notification";
+    private static final String KEY_RAMP_UP_TIME = "increasing_ring_ramp_up";
     private static final int REQUEST_CODE = 200;
 
     private static final int SAMPLE_CUTOFF = 2000;  // manually cap sample playback at 2 seconds
@@ -61,6 +63,7 @@ public class SoundSettings extends DashboardFragment {
 
     private RingtonePreference mRequestPreference;
     private TwoStatePreference mVolumeLinkNotification;
+    private ListPreference mRampUpTime;
 
     @Override
     public void onAttach(Context context) {
@@ -89,6 +92,14 @@ public class SoundSettings extends DashboardFragment {
         } else {
             removePreference(KEY_VOLUME_LINK_NOTIFICATION);
         }
+
+        mRampUpTime = (ListPreference) findPreference(KEY_RAMP_UP_TIME);
+        int ramUpTime = Settings.System.getInt(getContentResolver(),
+                Settings.System.INCREASING_RING_RAMP_UP_TIME, 10);
+
+        mRampUpTime.setValue(Integer.toString(ramUpTime));
+        mRampUpTime.setSummary(mRampUpTime.getEntry());
+        mRampUpTime.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -282,6 +293,18 @@ public class SoundSettings extends DashboardFragment {
                 notificationVolumeController.getPreference().setVisible(!linkEnabled);
             }
         }
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        if (preference == mRampUpTime) {
+            int value = Integer.valueOf((String) newValue);
+            int index = mRampUpTime.findIndexOfValue((String) newValue);
+            mRampUpTime.setSummary(mRampUpTime.getEntries()[index]);
+            Settings.System.putInt(getContentResolver(), Settings.System.INCREASING_RING_RAMP_UP_TIME, value);
+            return true;
+        }
+        return false;
     }
 
     // === Indexing ===
