@@ -31,7 +31,7 @@ import com.android.settings.RingtonePreference;
 import com.android.settings.applications.NotificationApps;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.dashboard.SummaryLoader;
-import com.android.settings.gestures.SwipeToNotificationPreferenceController;
+//import com.android.settings.gestures.SwipeToNotificationPreferenceController;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.search.Indexable;
 import com.android.settingslib.core.AbstractPreferenceController;
@@ -51,8 +51,8 @@ public class ConfigureNotificationSettings extends DashboardFragment {
             "lock_screen_notifications_profile_header";
     @VisibleForTesting
     static final String KEY_LOCKSCREEN_WORK_PROFILE = "lock_screen_notifications_profile";
-    @VisibleForTesting
-    static final String KEY_SWIPE_DOWN = "gesture_swipe_down_fingerprint_notifications";
+    //@VisibleForTesting
+    //static final String KEY_SWIPE_DOWN = "gesture_swipe_down_fingerprint_notifications";
 
     private static final String KEY_NOTI_DEFAULT_RINGTONE = "notification_default_ringtone";
 
@@ -96,8 +96,8 @@ public class ConfigureNotificationSettings extends DashboardFragment {
             lifecycle.addObserver(pulseController);
             lifecycle.addObserver(lockScreenNotificationController);
         }
-        controllers.add(new SwipeToNotificationPreferenceController(context, lifecycle,
-                KEY_SWIPE_DOWN));
+        //controllers.add(new SwipeToNotificationPreferenceController(context, lifecycle,
+        //        KEY_SWIPE_DOWN));
         controllers.add(badgeController);
         controllers.add(pulseController);
         controllers.add(lockScreenNotificationController);
@@ -173,7 +173,7 @@ public class ConfigureNotificationSettings extends DashboardFragment {
                 @Override
                 public List<String> getNonIndexableKeys(Context context) {
                     final List<String> keys = super.getNonIndexableKeys(context);
-                    keys.add(KEY_SWIPE_DOWN);
+                    //keys.add(KEY_SWIPE_DOWN);
                     keys.add(KEY_LOCKSCREEN);
                     keys.add(KEY_LOCKSCREEN_WORK_PROFILE);
                     keys.add(KEY_LOCKSCREEN_WORK_PROFILE_HEADER);
