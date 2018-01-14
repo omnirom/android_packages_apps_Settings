@@ -27,4 +27,15 @@
         <item>@string/security_settings_fingerprint_sensor_location_right</item>
     </string-array>
 
+    <string-array name="increasing_ring_ramp_up_entries" translatable="false">
+        <item>@string/ramp_up_time_ten</item>
+        <item>@string/ramp_up_time_twenty</item>
+        <item>@string/ramp_up_time_thirty</item>
+    </string-array>
+
+    <string-array name="increasing_ring_ramp_up_values" translatable="false">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+    </string-array>
 </resources>

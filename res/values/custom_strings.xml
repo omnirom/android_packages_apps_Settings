@@ -77,4 +77,11 @@
 
     <string name="heads_up_notifications_enabled_title">Allow peeking</string>
     <string name="heads_up_notifications_enabled_summary">Allow or disable peeking for all notifications</string>
+
+    <string name="increasing_ring_volume_option_title">Increasing ring volume</string>
+    <string name="increasing_ring_ramp_up_title">Ramp-up time</string>
+
+    <string name="ramp_up_time_ten">10s</string>
+    <string name="ramp_up_time_twenty">20s</string>
+    <string name="ramp_up_time_thirty">30s</string>
 </resources>

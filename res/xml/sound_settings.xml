@@ -59,6 +59,22 @@
                 android:key="vibrate_when_ringing"
                 android:title="@string/vibrate_when_ringing_title" />
 
+        <!-- Increasing ring -->
+        <org.omnirom.omnigears.preference.SystemSettingSwitchPreference
+                android:key="increasing_ring"
+                android:title="@string/increasing_ring_volume_option_title"
+                android:defaultValue="false" />
+
+        <!-- Increasing ring ram up time -->
+        <ListPreference
+                android:key="increasing_ring_ramp_up"
+                android:title="@string/increasing_ring_ramp_up_title"
+                android:dialogTitle="@string/increasing_ring_ramp_up_title"
+                android:entries="@array/increasing_ring_ramp_up_entries"
+                android:entryValues="@array/increasing_ring_ramp_up_values"
+                android:dependency="increasing_ring"
+                android:persistent="false" />
+
         <!-- Interruptions -->
         <com.android.settingslib.RestrictedPreference
                 android:key="zen_mode"
