@@ -39,11 +39,16 @@
   <!-- Custom light color -->
   <string name="light_customization">LED-tulukese teade</string>
   <string name="custom_light_title">Tulukese värv</string>
+  <string name="custom_light_on_time_title">"Valguse SEES oleku aeg LED-pulseerimise ajal (ms)"</string>
+  <string name="custom_light_off_time_title">"Valguse VÄLJAS oleku aeg LED-pulseerimise ajal (ms)"</string>
+  <string name="app_notifications_info_desc">Koputa ühele eespool olevale kanalile, et seadistada selle valguse värvi ja muid valikuid</string>
   <string name="value_equals_default">Automaatne</string>
   <string name="show_light_on_zen_title">Vilgu, kui mitte segada režiim on sees</string>
   <!-- Android debugging over WiFi -->
   <string name="adb_over_network">ADB üle võrgu</string>
+  <string name="adb_over_network_summary">Luba TCP/IP silumine üle võrgu (WiFi, USB-võrgud). See seade lähtestatakse taaskäivitamisel</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">HOIATUS: Kui ADB üle võrgu on aktiveeritud, on seade vaba rünnakutele kõigis võrgudes, kaasa arvatud GSM andmesidevõrk!\n\nKasuta seda funktsiooni ainult siis, kui oled ühendatud usaldusväärses võrgus.\n\nKas soovid kindlasti selle funktsiooni lubada?</string>
   <string name="battery_image">Aku pilt</string>
   <string name="battery_image_description">Kuva aku pilti olekuribal</string>
   <string name="twilight_mode_location_dialog">Asukoht keelatud</string>

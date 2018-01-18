@@ -41,6 +41,7 @@
   <string name="custom_light_title">LED-Farbe</string>
   <string name="custom_light_on_time_title">"Länge des Aufleuchtens der LED pro Intervall (ms)"</string>
   <string name="custom_light_off_time_title">"Länge des nicht Aufleuchtens der LED pro Intervall (ms)"</string>
+  <string name="app_notifications_info_desc">Tippen Sie zum Konfigurieren unf zur Farbgebung auf einen der oben dargestellten Kanäle</string>
   <string name="value_equals_default">Automatisch</string>
   <string name="show_light_on_zen_title">Aufleuchten im \"nicht stören\"-Modus</string>
   <!-- Android debugging over WiFi -->
