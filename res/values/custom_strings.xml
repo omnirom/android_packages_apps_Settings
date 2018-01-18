@@ -80,9 +80,13 @@
 
     <string name="increasing_ring_volume_option_title">Increasing ring volume</string>
     <string name="increasing_ring_ramp_up_title">Ramp-up time to ring volume</string>
+    <string name="increasing_ring_volume_option_summary">Increase ring volume to selected volume</string>
 
     <string name="ramp_up_time_ten">10s</string>
     <string name="ramp_up_time_twenty">20s</string>
     <string name="ramp_up_time_thirty">30s</string>
     <string name="ramp_up_time_sixty">60s</string>
+
+    <string name="force_safe_media_volume_disabled_title">Disable safe volume check</string>
+    <string name="force_safe_media_volume_disabled_summary">Dont limit media volume for headsets</string>
 </resources>
