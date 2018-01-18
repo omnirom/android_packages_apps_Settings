@@ -75,25 +75,30 @@
                 android:dependency="increasing_ring"
                 android:persistent="false" />
 
+        <org.omnirom.omnigears.preference.SystemSettingSwitchPreference
+                android:key="force_safe_media_volume_disabled"
+                android:title="@string/force_safe_media_volume_disabled_title"
+                android:defaultValue="false" />
+        
         <!-- Interruptions -->
         <com.android.settingslib.RestrictedPreference
                 android:key="zen_mode"
                 android:title="@string/zen_mode_settings_title"
                 settings:useAdminDisabledSummary="true"
                 settings:keywords="@string/keywords_sounds_and_notifications_interruptions"
-                android:fragment="com.android.settings.notification.ZenModeSettings"
-                settings:allowDividerAbove="true" />
-
-        <!-- Phone ringtone -->
-        <com.android.settings.DefaultRingtonePreference
-            android:key="ringtone"
-            android:title="@string/ringtone_title"
-            android:dialogTitle="@string/ringtone_title"
-            android:summary="@string/summary_placeholder"
-            android:ringtoneType="ringtone"
-            settings:allowDividerAbove="true" />
+                android:fragment="com.android.settings.notification.ZenModeSettings" />
 
     </PreferenceCategory>
+        
+    <!-- Phone ringtone -->
+    <com.android.settings.DefaultRingtonePreference
+        android:key="ringtone"
+        android:title="@string/ringtone_title"
+        android:dialogTitle="@string/ringtone_title"
+        android:summary="@string/summary_placeholder"
+        android:ringtoneType="ringtone"
+        settings:allowDividerAbove="true"
+        android:order="-99" />
 
     <!-- Default notification ringtone -->
     <com.android.settings.DefaultRingtonePreference
@@ -102,7 +107,7 @@
         android:dialogTitle="@string/notification_ringtone_title"
         android:summary="@string/summary_placeholder"
         android:ringtoneType="notification"
-        android:order="-99"/>
+        android:order="-98"/>
 
     <!-- Default alarm ringtone -->
     <com.android.settings.DefaultRingtonePreference
@@ -112,7 +117,7 @@
         android:summary="@string/summary_placeholder"
         android:persistent="false"
         android:ringtoneType="alarm"
-        android:order="-98"/>
+        android:order="-97"/>
 
     <!-- Other sounds -->
     <PreferenceCategory
@@ -170,6 +175,7 @@
         <SwitchPreference
             android:key="screenshot_shutter_sound"
             android:title="@string/screenshot_shutter_sound_title" />
+
     </PreferenceCategory>
 
     <com.android.settingslib.RestrictedPreference
