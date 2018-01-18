@@ -85,4 +85,6 @@
     <string name="ramp_up_time_twenty">20s</string>
     <string name="ramp_up_time_thirty">30s</string>
     <string name="ramp_up_time_sixty">60s</string>
+
+    <string name="force_safe_media_volume_disabled_title">Force disable safe volume check</string>
 </resources>
