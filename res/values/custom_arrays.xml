@@ -28,14 +28,18 @@
     </string-array>
 
     <string-array name="increasing_ring_ramp_up_entries" translatable="false">
+        <item>@string/ramp_up_time_five</item>
         <item>@string/ramp_up_time_ten</item>
+        <item>@string/ramp_up_time_fifteen</item>
         <item>@string/ramp_up_time_twenty</item>
         <item>@string/ramp_up_time_thirty</item>
         <item>@string/ramp_up_time_sixty</item>
     </string-array>
 
     <string-array name="increasing_ring_ramp_up_values" translatable="false">
+        <item>5</item>
         <item>10</item>
+        <item>15</item>
         <item>20</item>
         <item>30</item>
         <item>60</item>

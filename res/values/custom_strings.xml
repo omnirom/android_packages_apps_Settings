@@ -86,7 +86,9 @@
     <string name="ramp_up_time_twenty">20s</string>
     <string name="ramp_up_time_thirty">30s</string>
     <string name="ramp_up_time_sixty">60s</string>
-
+    <string name="ramp_up_time_five">5s</string>
+    <string name="ramp_up_time_fifteen">15s</string>
+    
     <string name="force_safe_media_volume_disabled_title">Disable safe volume check</string>
     <string name="force_safe_media_volume_disabled_summary">Dont limit media volume for headsets</string>
 
