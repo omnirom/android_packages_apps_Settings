@@ -823,7 +823,7 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
                                 showAlertDialog(ERROR_ALERT_DLG_ID, msgId);
                             } else {
                                 mCurrentUiccProvisionState = newProvisionedState == PROVISIONED;
-                                //showAlertDialog(RESULT_ALERT_DLG_ID, 0);
+                                cleanUpPendingDialogs();
                             }
                             mHandler.removeMessages(EVT_PROGRESS_DLG_TIME_OUT);
                             break;
