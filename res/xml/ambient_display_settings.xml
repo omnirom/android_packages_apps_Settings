@@ -46,6 +46,12 @@
             android:title="@string/doze_title"
             android:summary="@string/doze_summary" />
 
-    </PreferenceCategory>
+        <ListPreference
+            android:key="force_ambient_for_media"
+            android:title="@string/force_ambient_for_media_pref_title"
+            android:entries="@array/force_ambient_for_media_entries"
+            android:entryValues="@array/force_ambient_for_media_values"
+            android:persistent="false" />
 
+    </PreferenceCategory>
 </PreferenceScreen>
