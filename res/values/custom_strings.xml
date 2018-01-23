@@ -109,4 +109,10 @@
     <string name="sub_activate_failed">Activation failed.</string>
     <string name="sub_deactivate_success">SIM deactivated.</string>
     <string name="sub_deactivate_failed">Deactivation failed.</string>
+
+    <string name="force_ambient_for_media_pref_title">Ambient Music Ticker</string>
+    <string name="force_ambient_for_media_off">Disabled</string>
+    <string name="force_ambient_for_media_on">Enabled</string>
+    <string name="force_ambient_for_media_on_forced">Enabled and forced</string>
+    <string name="force_ambient_for_media_on_forced_clean">Enabled and forced minimal</string>
 </resources>
