@@ -24,4 +24,7 @@
     <string name="selinux_status_permissive">Permissive</string>
     <string name="selinux_status_enforcing">Enforcing</string>
 
+    <string name="app_package_name_title">Package</string>
+    <string name="app_version_title">Version</string>
+
 </resources>

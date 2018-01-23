@@ -21,14 +21,14 @@ import android.text.BidiFormatter;
 
 import com.android.settings.R;
 
-public class AppVersionPreferenceController extends AppInfoPreferenceControllerBase {
+public class AppPackagePreferenceController extends AppInfoPreferenceControllerBase {
 
-    public AppVersionPreferenceController(Context context, String key) {
+    public AppPackagePreferenceController(Context context, String key) {
         super(context, key);
     }
 
     @Override
     public CharSequence getSummary() {
-        return BidiFormatter.getInstance().unicodeWrap(mParent.getPackageInfo().versionName);
+        return BidiFormatter.getInstance().unicodeWrap(mParent.getPackageInfo().packageName);
     }
 }
