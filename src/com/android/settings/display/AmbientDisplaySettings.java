@@ -61,6 +61,7 @@ public class AmbientDisplaySettings extends DashboardFragment {
                 MY_USER_ID, KEY_AMBIENT_DISPLAY_DOUBLE_TAP));
         controllers.add(new PickupGesturePreferenceController(context, lifecycle, config,
                 MY_USER_ID, KEY_AMBIENT_DISPLAY_PICK_UP));
+        controllers.add(new AmbientDisplayMusicController(context));
         return controllers;
     }
 
