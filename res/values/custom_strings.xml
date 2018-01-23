@@ -178,4 +178,7 @@
     <string name="heads_up_time_out_10sec">10 seconds</string>
 
     <string name="log_category">Notifications history</string>
+
+    <string name="app_package_name_title">Package</string>
+    <string name="app_version_title">Version</string>
 </resources>

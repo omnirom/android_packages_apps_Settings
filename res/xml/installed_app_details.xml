@@ -86,7 +86,14 @@
         android:selectable="true"/>
 
     <Preference
+        android:title="@string/app_version_title"
         android:key="app_version"
+        android:selectable="false"
+        android:order="9998"/>
+
+    <Preference
+        android:title="@string/app_package_name_title"
+        android:key="app_package_name"
         android:selectable="false"
         android:order="9999"/>
 
