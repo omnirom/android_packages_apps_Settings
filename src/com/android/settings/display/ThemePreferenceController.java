@@ -47,6 +47,7 @@ public class ThemePreferenceController extends AbstractPreferenceController impl
 
     private static final String KEY_THEME = "theme";
     private static final String KEY_THEMES_DISABLED = "default";
+    private static final String OMNI_THEME_PREFIX = "org.omnirom.";
 
     private final MetricsFeatureProvider mMetricsFeatureProvider;
     private final OverlayManager mOverlayService;
@@ -196,7 +197,8 @@ public class ThemePreferenceController extends AbstractPreferenceController impl
                     UserHandle.myUserId());
             List<String> pkgs = new ArrayList(infos.size());
             for (int i = 0, size = infos.size(); i < size; i++) {
-                if (isChangeableOverlay(infos.get(i).packageName)) {
+                if (!infos.get(i).packageName.startsWith(OMNI_THEME_PREFIX) &&
+                        isChangeableOverlay(infos.get(i).packageName)) {
                     pkgs.add(infos.get(i).packageName);
                 }
             }
