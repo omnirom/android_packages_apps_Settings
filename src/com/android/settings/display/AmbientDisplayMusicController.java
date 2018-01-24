@@ -57,6 +57,7 @@ public class AmbientDisplayMusicController extends AbstractPreferenceController 
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String value = (String) newValue;
         Settings.System.putInt(mContext.getContentResolver(), Settings.System.FORCE_AMBIENT_FOR_MEDIA, Integer.valueOf(value));
+        updateState(preference);
         return true;
     }
 }
