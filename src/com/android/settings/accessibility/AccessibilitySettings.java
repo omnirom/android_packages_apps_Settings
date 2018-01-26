@@ -91,8 +91,8 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
             "toggle_inversion_preference";
     private static final String TOGGLE_POWER_BUTTON_ENDS_CALL_PREFERENCE =
             "toggle_power_button_ends_call_preference";
-    private static final String TOGGLE_LOCK_SCREEN_ROTATION_PREFERENCE =
-            "toggle_lock_screen_rotation_preference";
+    //private static final String TOGGLE_LOCK_SCREEN_ROTATION_PREFERENCE =
+    //        "toggle_lock_screen_rotation_preference";
     private static final String TOGGLE_LARGE_POINTER_ICON =
             "toggle_large_pointer_icon";
     private static final String TOGGLE_MASTER_MONO =
@@ -192,7 +192,7 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
 
     private SwitchPreference mToggleHighTextContrastPreference;
     private SwitchPreference mTogglePowerButtonEndsCallPreference;
-    private SwitchPreference mToggleLockScreenRotationPreference;
+    //private SwitchPreference mToggleLockScreenRotationPreference;
     private SwitchPreference mToggleLargePointerIconPreference;
     private SwitchPreference mToggleMasterMonoPreference;
     private ListPreference mSelectLongPressTimeoutPreference;
@@ -296,9 +296,9 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
         } else if (mTogglePowerButtonEndsCallPreference == preference) {
             handleTogglePowerButtonEndsCallPreferenceClick();
             return true;
-        } else if (mToggleLockScreenRotationPreference == preference) {
+        /*} else if (mToggleLockScreenRotationPreference == preference) {
             handleLockScreenRotationPreferenceClick();
-            return true;
+            return true;*/
         } else if (mToggleLargePointerIconPreference == preference) {
             handleToggleLargePointerIconPreferenceClick();
             return true;
@@ -323,10 +323,10 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
                         : Settings.Secure.INCALL_POWER_BUTTON_BEHAVIOR_SCREEN_OFF));
     }
 
-    private void handleLockScreenRotationPreferenceClick() {
+    /*private void handleLockScreenRotationPreferenceClick() {
         RotationPolicy.setRotationLockForAccessibility(getActivity(),
                 !mToggleLockScreenRotationPreference.isChecked());
-    }
+    }*/
 
     private void handleToggleLargePointerIconPreferenceClick() {
         Settings.Secure.putInt(getContentResolver(),
@@ -363,12 +363,12 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
         }
 
         // Lock screen rotation.
-        mToggleLockScreenRotationPreference =
+        /*mToggleLockScreenRotationPreference =
                 (SwitchPreference) findPreference(TOGGLE_LOCK_SCREEN_ROTATION_PREFERENCE);
         if (!RotationPolicy.isRotationSupported(getActivity())) {
             mCategoryToPrefCategoryMap.get(CATEGORY_INTERACTION_CONTROL)
                     .removePreference(mToggleLockScreenRotationPreference);
-        }
+        }*/
 
         // Large pointer icon.
         mToggleLargePointerIconPreference =
