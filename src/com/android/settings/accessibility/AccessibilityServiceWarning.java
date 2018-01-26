@@ -74,7 +74,7 @@ public class AccessibilityServiceWarning {
         params.privateFlags |= PRIVATE_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS;
         window.setAttributes(params);
         ad.create();
-        ad.getButton(AlertDialog.BUTTON_POSITIVE).setOnTouchListener(filterTouchListener);
+        //ad.getButton(AlertDialog.BUTTON_POSITIVE).setOnTouchListener(filterTouchListener);
         ad.setCanceledOnTouchOutside(true);
 
         return ad;
