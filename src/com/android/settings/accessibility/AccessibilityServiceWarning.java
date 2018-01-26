@@ -56,7 +56,7 @@ public class AccessibilityServiceWarning {
                 .setNegativeButton(android.R.string.cancel, listener)
                 .create();
 
-        final View.OnTouchListener filterTouchListener = (View v, MotionEvent event) -> {
+        /*final View.OnTouchListener filterTouchListener = (View v, MotionEvent event) -> {
             // Filter obscured touches by consuming them.
             if (((event.getFlags() & MotionEvent.FLAG_WINDOW_IS_OBSCURED) != 0)
                     || ((event.getFlags() & MotionEvent.FLAG_WINDOW_IS_PARTIALLY_OBSCURED) != 0)) {
@@ -67,14 +67,14 @@ public class AccessibilityServiceWarning {
                 return true;
             }
             return false;
-        };
+        };*/
 
         Window window = ad.getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
         params.privateFlags |= PRIVATE_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS;
         window.setAttributes(params);
         ad.create();
-        ad.getButton(AlertDialog.BUTTON_POSITIVE).setOnTouchListener(filterTouchListener);
+        //ad.getButton(AlertDialog.BUTTON_POSITIVE).setOnTouchListener(filterTouchListener);
         ad.setCanceledOnTouchOutside(true);
 
         return ad;
