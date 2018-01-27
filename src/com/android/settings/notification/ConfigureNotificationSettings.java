@@ -108,6 +108,7 @@ public class ConfigureNotificationSettings extends DashboardFragment {
             }
 
         });
+        controllers.add(new LessNotificationSoundsController(context));
         return controllers;
     }
 
