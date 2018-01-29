@@ -48,7 +48,7 @@
   <string name="adb_over_network">ADB üle võrgu</string>
   <string name="adb_over_network_summary">Luba TCP/IP silumine üle võrgu (WiFi, USB-võrgud). See seade lähtestatakse taaskäivitamisel</string>
   <!-- Warning for Adb over Network -->
-  <string name="adb_over_network_warning">HOIATUS: Kui ADB üle võrgu on aktiveeritud, on seade vaba rünnakutele kõigis võrgudes, kaasa arvatud GSM andmesidevõrk!\n\nKasuta seda funktsiooni ainult siis, kui oled ühendatud usaldusväärses võrgus.\n\nKas soovid kindlasti selle funktsiooni lubada?</string>
+  <string name="adb_over_network_warning">HOIATUS: Kui ADB üle võrgu on aktiveeritud, on seade avatud rünnakutele kõigis võrgudes, kaasa arvatud GSM andmesidevõrk!\n\nKasuta seda funktsiooni ainult siis, kui oled ühendatud usaldusväärses võrgus.\n\nKas soovid kindlasti selle funktsiooni lubada?</string>
   <string name="battery_image">Aku pilt</string>
   <string name="battery_image_description">Kuva aku pilti olekuribal</string>
   <string name="twilight_mode_location_dialog">Asukoht keelatud</string>
@@ -66,4 +66,12 @@
   <string name="security_settings_fingerprint_sensor_location_left">vasakul </string>
   <string name="security_settings_fingerprint_sensor_location_right">paremal </string>
   <string name="screenshot_shutter_sound_title">Kuvatõmmise tegemise heli</string>
+  <string name="heads_up_notifications_enabled_title">Luba piilumine</string>
+  <string name="heads_up_notifications_enabled_summary">Luba või keela kõikide teadete piilumine</string>
+  <string name="increasing_ring_volume_option_title">Suurenev helina helitugevus</string>
+  <string name="increasing_ring_ramp_up_title">Helina helitugevuse tõstmise aeg</string>
+  <string name="ramp_up_time_ten">10s</string>
+  <string name="ramp_up_time_twenty">20s</string>
+  <string name="ramp_up_time_thirty">30s</string>
+  <string name="ramp_up_time_sixty">60s</string>
 </resources>

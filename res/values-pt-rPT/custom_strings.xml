@@ -66,4 +66,12 @@
   <string name="security_settings_fingerprint_sensor_location_left">lado esquerdo</string>
   <string name="security_settings_fingerprint_sensor_location_right">lado direito</string>
   <string name="screenshot_shutter_sound_title">Som da captura de ecrã</string>
+  <string name="heads_up_notifications_enabled_title">Permitir notificações flutuantes</string>
+  <string name="heads_up_notifications_enabled_summary">Activar ou desactivar as notificações flutuantes</string>
+  <string name="increasing_ring_volume_option_title">Aumentar volume do toque</string>
+  <string name="increasing_ring_ramp_up_title">Tempo de arranque para o volume do toque</string>
+  <string name="ramp_up_time_ten">10s</string>
+  <string name="ramp_up_time_twenty">20s</string>
+  <string name="ramp_up_time_thirty">30s</string>
+  <string name="ramp_up_time_sixty">60s</string>
 </resources>

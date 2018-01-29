@@ -66,4 +66,12 @@
   <string name="security_settings_fingerprint_sensor_location_left">lato sinistro</string>
   <string name="security_settings_fingerprint_sensor_location_right">lato destro</string>
   <string name="screenshot_shutter_sound_title">Suono screenshot</string>
+  <string name="heads_up_notifications_enabled_title">Permetti peeking</string>
+  <string name="heads_up_notifications_enabled_summary">Abilita/disabilita controllo di tutte le notifiche</string>
+  <string name="increasing_ring_volume_option_title">Volume della suoneria crescente</string>
+  <string name="increasing_ring_ramp_up_title">Tempo di aumento del volume</string>
+  <string name="ramp_up_time_ten">10s</string>
+  <string name="ramp_up_time_twenty">20s</string>
+  <string name="ramp_up_time_thirty">30s</string>
+  <string name="ramp_up_time_sixty">60s</string>
 </resources>

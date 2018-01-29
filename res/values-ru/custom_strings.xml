@@ -49,8 +49,8 @@
   <string name="adb_over_network_summary">Включить отладку TCP/IP через сетевые интерфейсы (Wi-Fi, USB-сети). Эта установка сбрасывается при перезагрузке</string>
   <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">ВНИМАНИЕ: когда включена отладка по сети, устройство открыто для неконтролируемого доступа из всех подключённых сетей!\n\nИспользуйте эту функцию только тогда, когда вы подключены к доверенным сетям.\n\nВы действительно хотите включить эту функцию?</string>
-  <string name="battery_image">Изображение батареи</string>
-  <string name="battery_image_description">Показать изображение батареи в строке состояния</string>
+  <string name="battery_image">Отображение иконки батареи</string>
+  <string name="battery_image_description">Отображать иконку батареи в строке состояния</string>
   <string name="twilight_mode_location_dialog">Местоположение отключено</string>
   <string name="twilight_mode_location_disabled">Доступ к местоположению отключен</string>
   <string name="twilight_mode_location_enable">Включено</string>
@@ -59,11 +59,19 @@
   <string name="custom_encryption_and_credential_settings_summary_off">Устройство расшифровано</string>
   <string name="select_sim_for_sms">Выберите SIM для SMS</string>
   <!-- Format string for fingerprint location message -->
-  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Найдите датчик отпечатков пальцев <xliff:g id="sensor_location">%1$s </xliff:g> телефона.</string>
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Найдите датчик отпечатков пальцев на <xliff:g id="sensor_location">%1$s </xliff:g> телефона.</string>
   <!-- Fingerprint sensor locations -->
-  <string name="security_settings_fingerprint_sensor_location_back">на задней части</string>
-  <string name="security_settings_fingerprint_sensor_location_front">на передней части</string>
-  <string name="security_settings_fingerprint_sensor_location_left">на левом торце</string>
-  <string name="security_settings_fingerprint_sensor_location_right">на правом торце</string>
+  <string name="security_settings_fingerprint_sensor_location_back">задней части</string>
+  <string name="security_settings_fingerprint_sensor_location_front">передней части</string>
+  <string name="security_settings_fingerprint_sensor_location_left">левом торце</string>
+  <string name="security_settings_fingerprint_sensor_location_right">правом торце</string>
   <string name="screenshot_shutter_sound_title">Звук скриншота</string>
+  <string name="heads_up_notifications_enabled_title">Разрешить всплывающие уведомления</string>
+  <string name="heads_up_notifications_enabled_summary">Разрешить или запретить всплывающие уведомления</string>
+  <string name="increasing_ring_volume_option_title">Возрастающая громкость звонка</string>
+  <string name="increasing_ring_ramp_up_title">Время нарастания громкости</string>
+  <string name="ramp_up_time_ten">10 сек.</string>
+  <string name="ramp_up_time_twenty">20 сек.</string>
+  <string name="ramp_up_time_thirty">30 сек.</string>
+  <string name="ramp_up_time_sixty">60 сек.</string>
 </resources>

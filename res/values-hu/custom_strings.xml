@@ -66,4 +66,12 @@
   <string name="security_settings_fingerprint_sensor_location_left">bal oldalon</string>
   <string name="security_settings_fingerprint_sensor_location_right">jobb oldalon</string>
   <string name="screenshot_shutter_sound_title">Képernyőmentés zárhang</string>
+  <string name="heads_up_notifications_enabled_title">Lebegő értesítések</string>
+  <string name="heads_up_notifications_enabled_summary">Lebegő értesítések engedélyezése vagy tiltása</string>
+  <string name="increasing_ring_volume_option_title">Emelkedő csengő hangerő</string>
+  <string name="increasing_ring_ramp_up_title">Felfutási idő a hangerőig</string>
+  <string name="ramp_up_time_ten">10mp</string>
+  <string name="ramp_up_time_twenty">20mp</string>
+  <string name="ramp_up_time_thirty">30mp</string>
+  <string name="ramp_up_time_sixty">60mp</string>
 </resources>
