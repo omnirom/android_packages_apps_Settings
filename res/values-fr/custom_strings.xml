@@ -19,10 +19,59 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="style_settings_title">Apparence</string>
+  <string name="header_category_omni">OmniGears</string>
+  <string name="omni_dashboard_summary">Omnifié votre appareil</string>
+  <string name="style_settings_summary">Fonds d’écran et autres</string>
+  <string name="omni_device_parts">Paramètres additionnels</string>
+  <string name="columns_menu">Disposition des colonnes</string>
+  <string name="hide_summary_menu">Masquer le résumé</string>
+  <string name="bars_settings_title">Barres et écran de déverrouillage</string>
+  <string name="button_settings_title">Boutons</string>
+  <string name="mod_version">Version d\'Omni</string>
+  <string name="mod_version_default">Inconnu</string>
+  <string name="more_settings_title">Afficher plus</string>
+  <string name="global_actions_title">Menu Marche/Arrêt</string>
+  <string name="display_rotation_title">Rotation</string>
+  <string name="display_rotation_summary">Configurer les angles de rotation possibles</string>
+  <string name="battery_light_settings_title">Paramètres de LED pour la batterie</string>
+  <string name="link_volume_option_title">Lier le volume de la sonnerie et des notifications</string>
   <!-- Custom light color -->
+  <string name="light_customization">Paramètres de LED pour les notifications</string>
+  <string name="custom_light_title">Couleur de la lumière</string>
+  <string name="custom_light_on_time_title">"Durée de l'impulsion lumineuse (ms)"</string>
+  <string name="custom_light_off_time_title">"Durée de la pause lumineuse (ms)"</string>
+  <string name="app_notifications_info_desc">Appuyez sur l\'un des canaux ci-dessus pour régler leurs couleurs d\'éclairages et d\'autres options</string>
+  <string name="value_equals_default">Auto</string>
+  <string name="show_light_on_zen_title">Clignoter en mode \"Ne pas déranger\"</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">ADB par le réseau</string>
+  <string name="adb_over_network_summary">Activer le débogage TCP/IP sur les interfaces réseau (Wi-Fi, réseaux USB). Ce paramètre est réinitialisé au redémarrage</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">ATTENTION: Lorsque ADB par le réseau est activé, votre téléphone est ouvert aux intrusions sur tous les réseaux connectés, y compris le réseau data GSM !\n\nN\'utilisez cette fonction que lorsque vous êtes connecté sur des réseaux de confiance.\n\nVoulez-vous vraiment activer cette fonction?</string>
+  <string name="battery_image">Image de la batterie</string>
+  <string name="battery_image_description">Voir la l\'image de la batterie dans la barre d’état</string>
+  <string name="twilight_mode_location_dialog">Localisation désactivée</string>
+  <string name="twilight_mode_location_disabled">L\'accès à la localisation est désactivé</string>
+  <string name="twilight_mode_location_enable">Activer</string>
   <!-- Encryption and credential -->
+  <string name="custom_encryption_and_credential_settings_summary_on">L\'appareil est chiffré</string>
+  <string name="custom_encryption_and_credential_settings_summary_off">L\'appareil est déchiffré</string>
+  <string name="select_sim_for_sms">Sélectionnez une carte SIM pour les SMS</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Localiser le capteur d’empreintes digitales <xliff:g id="sensor_location">%1$s </xliff:g> de votre téléphone.</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">à l\'arrière</string>
+  <string name="security_settings_fingerprint_sensor_location_front">à l\'avant</string>
+  <string name="security_settings_fingerprint_sensor_location_left">sur le côté gauche</string>
+  <string name="security_settings_fingerprint_sensor_location_right">sur le côté droit</string>
+  <string name="screenshot_shutter_sound_title">Émettre un son lors d\'une capture d\'écran</string>
+  <string name="heads_up_notifications_enabled_title">Notifications flottantes</string>
+  <string name="heads_up_notifications_enabled_summary">Activer ou désactiver les notifications flottantes</string>
+  <string name="increasing_ring_volume_option_title">Volume de sonnerie progressif</string>
+  <string name="increasing_ring_ramp_up_title">Durée d\'augmentation du volume de sonnerie</string>
+  <string name="ramp_up_time_ten">10s</string>
+  <string name="ramp_up_time_twenty">20s</string>
+  <string name="ramp_up_time_thirty">30s</string>
+  <string name="ramp_up_time_sixty">60s</string>
 </resources>

@@ -66,4 +66,12 @@
   <string name="security_settings_fingerprint_sensor_location_left">ľavej strane</string>
   <string name="security_settings_fingerprint_sensor_location_right">pravej strane</string>
   <string name="screenshot_shutter_sound_title">Zvuk uzávierky pri snímke obrazovky</string>
+  <string name="heads_up_notifications_enabled_title">Povoliť plávajúce upozornenia</string>
+  <string name="heads_up_notifications_enabled_summary">Povoliť alebo zakázať všetky plávajúce upozornenia</string>
+  <string name="increasing_ring_volume_option_title">Zvyšovanie hlasitosti zvonenia</string>
+  <string name="increasing_ring_ramp_up_title">Trvanie zvyšovania hlasitosti zvonenia</string>
+  <string name="ramp_up_time_ten">10s</string>
+  <string name="ramp_up_time_twenty">20s</string>
+  <string name="ramp_up_time_thirty">30s</string>
+  <string name="ramp_up_time_sixty">60s</string>
 </resources>

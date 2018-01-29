@@ -66,4 +66,12 @@
   <string name="security_settings_fingerprint_sensor_location_left">linke Seite</string>
   <string name="security_settings_fingerprint_sensor_location_right">rechte Seite</string>
   <string name="screenshot_shutter_sound_title">Bildschirmfoto Auslöse-Ton</string>
+  <string name="heads_up_notifications_enabled_title">Einblenden erlauben</string>
+  <string name="heads_up_notifications_enabled_summary">Erlaube oder blockiere Einblenden für alle Benachrichtigungen</string>
+  <string name="increasing_ring_volume_option_title">Ansteigende Klingeltonlautstärke</string>
+  <string name="increasing_ring_ramp_up_title">Anlaufzeit zum Klingeln der Lautstärke</string>
+  <string name="ramp_up_time_ten">10s</string>
+  <string name="ramp_up_time_twenty">20s</string>
+  <string name="ramp_up_time_thirty">30s</string>
+  <string name="ramp_up_time_sixty">60s</string>
 </resources>
