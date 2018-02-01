@@ -66,9 +66,9 @@ import java.util.List;
 public class NotificationStation extends SettingsPreferenceFragment {
     private static final String TAG = NotificationStation.class.getSimpleName();
 
-    private static final boolean DEBUG = true;
-    private static final boolean DUMP_EXTRAS = true;
-    private static final boolean DUMP_PARCEL = true;
+    private static final boolean DEBUG = false;
+    private static final boolean DUMP_EXTRAS = false;
+    private static final boolean DUMP_PARCEL = false;
     private Handler mHandler;
 
     private static class HistoricalNotificationInfo {
