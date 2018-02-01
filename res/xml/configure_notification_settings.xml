@@ -22,6 +22,10 @@
         android:key="dashboard_tile_placeholder"
         android:order="1"/>
 
+    <PreferenceScreen
+        android:title="@string/notification_log_title"
+        android:fragment="com.android.settings.notification.NotificationStation" />
+
     <!-- When device is locked -->
     <com.android.settings.notification.RestrictedDropDownPreference
         android:key="lock_screen_notifications"
