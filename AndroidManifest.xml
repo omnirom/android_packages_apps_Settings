@@ -1187,7 +1187,8 @@
         <activity android:name="Settings$NotificationStationActivity"
                 android:theme="@style/Theme.NotificationStation"
                 android:label="@string/notification_log_title"
-                android:taskAffinity="">
+                android:taskAffinity=""
+                android:parentActivityName="Settings">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />

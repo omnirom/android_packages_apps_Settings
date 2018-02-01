@@ -23,12 +23,14 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
@@ -66,9 +68,9 @@ import java.util.List;
 public class NotificationStation extends SettingsPreferenceFragment {
     private static final String TAG = NotificationStation.class.getSimpleName();
 
-    private static final boolean DEBUG = true;
-    private static final boolean DUMP_EXTRAS = true;
-    private static final boolean DUMP_PARCEL = true;
+    private static final boolean DEBUG = false;
+    private static final boolean DUMP_EXTRAS = false;
+    private static final boolean DUMP_PARCEL = false;
     private Handler mHandler;
 
     private static class HistoricalNotificationInfo {
@@ -297,8 +299,9 @@ public class NotificationStation extends SettingsPreferenceFragment {
                     info.key = sbn.getKey();
 
                     info.active = (resultset == active);
-
-                    info.extra = generateExtraText(sbn, info);
+                    if (DUMP_EXTRAS) {
+                        info.extra = generateExtraText(sbn, info);
+                    }
 
                     logd("   [%d] %s: %s", info.timestamp, info.pkg, info.title);
                     list.add(info);
@@ -479,16 +482,14 @@ public class NotificationStation extends SettingsPreferenceFragment {
                     .append(n.contentView.toString());
         }
 
-        if (DUMP_EXTRAS) {
-            if (n.extras != null && n.extras.size() > 0) {
-                sb.append("\n")
-                        .append(bold(getString(
-                                R.string.notification_log_details_extras)));
-                for (String extraKey : n.extras.keySet()) {
-                    String val = String.valueOf(n.extras.get(extraKey));
-                    if (val.length() > 100) val = val.substring(0, 100) + "...";
-                    sb.append("\n  ").append(extraKey).append(delim).append(val);
-                }
+        if (n.extras != null && n.extras.size() > 0) {
+            sb.append("\n")
+                    .append(bold(getString(
+                            R.string.notification_log_details_extras)));
+            for (String extraKey : n.extras.keySet()) {
+                String val = String.valueOf(n.extras.get(extraKey));
+                if (val.length() > 100) val = val.substring(0, 100) + "...";
+                sb.append("\n  ").append(extraKey).append(delim).append(val);
             }
         }
         if (DUMP_PARCEL) {
@@ -592,11 +593,11 @@ public class NotificationStation extends SettingsPreferenceFragment {
             ((TextView) row.findViewById(R.id.pkgname)).setText(mInfo.pkgname);
 
             final TextView extra = (TextView) row.findViewById(R.id.extra);
-            extra.setText(mInfo.extra);
-            extra.setVisibility(mInfo.timestamp == sLastExpandedTimestamp
-                    ? View.VISIBLE : View.GONE);
-
-            row.itemView.setOnClickListener(
+            if (DUMP_EXTRAS) {
+                extra.setText(mInfo.extra);
+                extra.setVisibility(mInfo.timestamp == sLastExpandedTimestamp
+                        ? View.VISIBLE : View.GONE);
+                row.findViewById(R.id.package_line).setOnClickListener(
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -604,17 +605,32 @@ public class NotificationStation extends SettingsPreferenceFragment {
                                     ? View.GONE : View.VISIBLE);
                             sLastExpandedTimestamp = mInfo.timestamp;
                         }
-                    });
-
+                    }
+                );
+            } else {
+                extra.setVisibility(View.GONE);
+            }
             row.itemView.setAlpha(mInfo.active ? 1.0f : 0.5f);
         }
 
         @Override
         public void performClick() {
-//            Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-//                    Uri.fromParts("package", mInfo.pkg, null));
-//            intent.setComponent(intent.resolveActivity(getContext().getPackageManager()));
-//            getContext().startActivity(intent);
+            doHandleClick();
+        }
+
+        private void doHandleClick() {
+            Intent intent = getContext().getPackageManager().getLaunchIntentForPackage(mInfo.pkg);
+            if (intent != null && intent.resolveActivity(getContext().getPackageManager()) != null) {
+                getContext().startActivity(intent);
+            } else {
+                intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.fromParts("package", mInfo.pkg, null));
+                ComponentName name = intent.resolveActivity(getContext().getPackageManager());
+                if (name != null) {
+                    intent.setComponent(name);
+                    getContext().startActivity(intent);
+                }
+            }
         }
     }
 }
