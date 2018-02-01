@@ -77,4 +77,10 @@
         android:title="@string/heads_up_notifications_enabled_title"
         android:summary="@string/heads_up_notifications_enabled_summary"
         android:defaultValue="true" />
+
+    <Preference
+        android:title="@string/notification_log_title"
+        android:summary="@string/notification_log_summary"
+        android:fragment="com.android.settings.notification.NotificationStation" />
+
 </PreferenceScreen>
