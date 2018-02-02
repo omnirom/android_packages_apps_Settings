@@ -195,7 +195,7 @@ public class LockScreenNotificationPreferenceController extends AbstractPreferen
 
     @Override
     public String getPreferenceKey() {
-        return null;
+        return mSettingKey;
     }
 
     @Override
