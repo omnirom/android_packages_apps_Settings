@@ -41,14 +41,14 @@ public class LockscreenDashboardFragment extends DashboardFragment
 
     private static final String TAG = "LockscreenDashboardFragment";
 
-    @VisibleForTesting
+    /*@VisibleForTesting
     static final String KEY_LOCK_SCREEN_NOTIFICATON = "security_setting_lock_screen_notif";
     @VisibleForTesting
     static final String KEY_LOCK_SCREEN_NOTIFICATON_WORK_PROFILE_HEADER =
             "security_setting_lock_screen_notif_work_header";
     @VisibleForTesting
     static final String KEY_LOCK_SCREEN_NOTIFICATON_WORK_PROFILE =
-            "security_setting_lock_screen_notif_work";
+            "security_setting_lock_screen_notif_work";*/
 
     private OwnerInfoPreferenceController mOwnerInfoPreferenceController;
 
@@ -76,13 +76,13 @@ public class LockscreenDashboardFragment extends DashboardFragment
     protected List<AbstractPreferenceController> getPreferenceControllers(Context context) {
         final List<AbstractPreferenceController> controllers = new ArrayList<>();
         final Lifecycle lifecycle = getLifecycle();
-        final LockScreenNotificationPreferenceController notificationController =
+        /*final LockScreenNotificationPreferenceController notificationController =
             new LockScreenNotificationPreferenceController(context,
                     KEY_LOCK_SCREEN_NOTIFICATON,
                     KEY_LOCK_SCREEN_NOTIFICATON_WORK_PROFILE_HEADER,
                     KEY_LOCK_SCREEN_NOTIFICATON_WORK_PROFILE);
         lifecycle.addObserver(notificationController);
-        controllers.add(notificationController);
+        controllers.add(notificationController);*/
         final AddUserWhenLockedPreferenceController addUserWhenLockedController =
             new AddUserWhenLockedPreferenceController(context);
         lifecycle.addObserver(addUserWhenLockedController);
@@ -113,7 +113,7 @@ public class LockscreenDashboardFragment extends DashboardFragment
             @Override
             public List<AbstractPreferenceController> getPreferenceControllers(Context context) {
                 final List<AbstractPreferenceController> controllers = new ArrayList<>();
-                controllers.add(new LockScreenNotificationPreferenceController(context));
+                //controllers.add(new LockScreenNotificationPreferenceController(context));
                 controllers.add(new AddUserWhenLockedPreferenceController(context));
                 controllers.add(new OwnerInfoPreferenceController(
                     context, null /* fragment */, null /* lifecycle */));
