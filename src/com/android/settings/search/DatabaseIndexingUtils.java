@@ -90,8 +90,8 @@ public class DatabaseIndexingUtils {
         final Class<?> clazz = getIndexableClass(className);
 
         if (clazz == null) {
-            Log.d(TAG, "SearchIndexableResource '" + className +
-                    "' should implement the " + Indexable.class.getName() + " interface!");
+            /*Log.d(TAG, "SearchIndexableResource '" + className +
+                    "' should implement the " + Indexable.class.getName() + " interface!");*/
             return null;
         }
 
