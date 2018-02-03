@@ -397,6 +397,9 @@ public class SecuritySettings extends SettingsPreferenceFragment
                     && preference.getKey().startsWith(SECURITY_STATUS_KEY_PREFIX)) {
                     // Injected security status settings are placed under the Security status
                     // category.
+                    if (preference.getKey().equals("security_status_security_patch_level")) {
+                        continue;
+                    }
                     securityStatusPreferenceGroup.addPreference(preference);
                     numSecurityStatusPrefs++;
                 } else {
