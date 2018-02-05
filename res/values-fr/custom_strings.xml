@@ -38,9 +38,7 @@
   <string name="link_volume_option_title">Lier le volume de la sonnerie et des notifications</string>
   <!-- Custom light color -->
   <string name="light_customization">Paramètres de LED pour les notifications</string>
-  <string name="custom_light_title">Couleur de la lumière</string>
-  <string name="custom_light_on_time_title">"Durée de l'impulsion lumineuse (ms)"</string>
-  <string name="custom_light_off_time_title">"Durée de la pause lumineuse (ms)"</string>
+  <string name="custom_light_title">Couleur de l\'éclairage</string>
   <string name="app_notifications_info_desc">Appuyez sur l\'un des canaux ci-dessus pour régler leurs couleurs d\'éclairages et d\'autres options</string>
   <string name="value_equals_default">Auto</string>
   <string name="show_light_on_zen_title">Clignoter en mode \"Ne pas déranger\"</string>
