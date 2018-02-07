@@ -3316,11 +3316,11 @@
                   android:label="@string/style_settings_title"
                   android:icon="@drawable/ic_settings_style"
                   android:taskAffinity="com.android.settings"
-                  android:parentActivityName="Settings" >
+                  android:parentActivityName="Settings$OmniDashboardActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
-                </intent-filter>
+            </intent-filter>
             <intent-filter android:priority="7">
                 <action android:name="com.android.settings.action.SETTINGS" />
             </intent-filter>
@@ -3334,7 +3334,8 @@
         <activity android:name=".Settings$DevicePartsActivity"
                   android:label="@string/omni_device_parts"
                   android:icon="@drawable/ic_settings_omnigears"
-                  android:taskAffinity="">
+                  android:taskAffinity="com.android.settings"
+                  android:parentActivityName="Settings$OmniDashboardActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -3353,8 +3354,7 @@
                   android:label="@string/button_settings_title"
                   android:icon="@drawable/ic_settings_buttons"
                   android:taskAffinity="com.android.settings"
-                  android:parentActivityName="Settings"
-                  android:exported="true" >
+                  android:parentActivityName="Settings$OmniDashboardActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -3369,11 +3369,11 @@
             <meta-data android:name="com.android.settings.summary"
                        android:resource="@string/summary_empty"/>
         </activity>
-        <activity android:name=".Settings$BarsSettingsSettingsActivity"
+        <activity android:name=".Settings$BarsSettingsActivity"
                   android:label="@string/bars_settings_title"
                   android:icon="@drawable/ic_bars_tile"
                   android:taskAffinity="com.android.settings"
-                  android:parentActivityName="Settings" >
+                  android:parentActivityName="Settings$OmniDashboardActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -3392,7 +3392,7 @@
                   android:label="@string/display_rotation_title"
                   android:icon="@drawable/ic_display_rotation_tile"
                   android:taskAffinity="com.android.settings"
-                  android:parentActivityName="Settings" >
+                  android:parentActivityName="Settings$OmniDashboardActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -3411,7 +3411,7 @@
                   android:label="@string/battery_light_settings_title"
                   android:icon="@drawable/ic_settings_leds"
                   android:taskAffinity="com.android.settings"
-                  android:parentActivityName="Settings" >
+                  android:parentActivityName="Settings$OmniDashboardActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -3426,11 +3426,11 @@
             <meta-data android:name="com.android.settings.summary"
                        android:resource="@string/summary_empty"/>
         </activity>
-        <activity android:name=".Settings$MoreSettingsSettingsActivity"
+        <activity android:name=".Settings$MoreSettingsActivity"
                   android:label="@string/more_settings_title"
                   android:icon="@drawable/ic_settings_more"
                   android:taskAffinity="com.android.settings"
-                  android:parentActivityName="Settings" >
+                  android:parentActivityName="Settings$OmniDashboardActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -3447,8 +3447,7 @@
         </activity>
         <activity android:name=".Settings$GlobalActionsSettingsActivity"
                   android:label="@string/global_actions_title"
-                  android:taskAffinity="com.android.settings"
-                  android:parentActivityName="Settings" >
+                  android:taskAffinity="com.android.settings" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -3458,8 +3457,7 @@
         </activity>
         <activity android:name="Settings$OmniJawsSettingsActivity"
                   android:label="@string/weather_title"
-                  android:taskAffinity="com.android.settings"
-                  android:parentActivityName="Settings" >
+                  android:taskAffinity="com.android.settings" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
