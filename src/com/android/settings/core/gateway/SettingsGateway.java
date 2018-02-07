@@ -311,6 +311,16 @@ public class SettingsGateway {
             Settings.DateTimeSettingsActivity.class.getName(),
             Settings.DeviceInfoSettingsActivity.class.getName(),
             Settings.EnterprisePrivacySettingsActivity.class.getName(),
-            Settings.OmniDashboardActivity.class.getName(),
-    };
+
+            // omni additions start
+            OmniDashboardFragment.class.getName(),
+            StyleSettings.class.getName(),
+            GlobalActionsSettings.class.getName(),
+            BarsSettings.class.getName(),
+            ButtonSettings.class.getName(),
+            MoreSettings.class.getName(),
+            DisplayRotation.class.getName(),
+            BatteryLightSettings.class.getName(),
+            OmniJawsSettings.class.getName()
+        };
 }
