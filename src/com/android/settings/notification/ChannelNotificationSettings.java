@@ -149,13 +149,13 @@ public class ChannelNotificationSettings extends NotificationSettingsBase {
         setupBadge();
         setupPriorityPref(mChannel.canBypassDnd());
         setupVisOverridePref(mChannel.getLockscreenVisibility());
+        mAdvanced = (PreferenceGroup) findPreference(KEY_ADVANCED);
+        mLightsCategory = (PreferenceGroup) findPreference(KEY_LIGHTS_CAT);
         //setup lights for categorized channel
         setupLights();
         setupVibrate();
         setupRingtone();
         setupImportance();
-        mAdvanced = (PreferenceGroup) findPreference(KEY_ADVANCED);
-        mLightsCategory = (PreferenceGroup) findPreference(KEY_LIGHTS_CAT);
     }
 
     private void addHeaderPref() {

@@ -75,6 +75,7 @@ public class AppNotificationSettings extends NotificationSettingsBase {
     private static final String KEY_LIGHTS_ON_TIME = "custom_light_on_time";
     private static final String KEY_LIGHTS_OFF_TIME = "custom_light_off_time";
     private static final String KEY_LIGHT_ON_ZEN = "show_light_on_zen";
+    private static final String KEY_LIGHTS_CAT = "light_customization";
 
     private List<NotificationChannelGroup> mChannelGroupList;
     private List<PreferenceCategory> mChannelGroups = new ArrayList();
@@ -121,7 +122,7 @@ public class AppNotificationSettings extends NotificationSettingsBase {
             mChannel = mBackend.getChannel(
                     mAppRow.pkg, mAppRow.uid, NotificationChannel.DEFAULT_CHANNEL_ID);
             populateDefaultChannelPrefs();
-            mLightCategory = (PreferenceCategory) findPreference("light_customization");
+            mLightCategory = (PreferenceCategory) findPreference(KEY_LIGHTS_CAT);
             //setup lights for legacy app default channel
             setupLights();
         } else {
