@@ -40,7 +40,7 @@ public class BatteryImagePreferenceController extends AbstractPreferenceControll
 
     @Override
     public boolean isAvailable() {
-        return true;
+        return false;
     }
 
     @Override
