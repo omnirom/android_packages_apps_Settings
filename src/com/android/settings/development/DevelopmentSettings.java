@@ -729,10 +729,11 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         IntentFilter filter = new IntentFilter();
-        filter.addAction(UsbManager.ACTION_USB_STATE);
+        /*filter.addAction(UsbManager.ACTION_USB_STATE);
         if (getActivity().registerReceiver(mUsbReceiver, filter) == null) {
             updateUsbConfigurationValues();
-        }
+        }*/
+        updateUsbConfigurationValues();
 
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
         if (adapter != null) {
@@ -1777,13 +1778,18 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
 
     private void updateUsbConfigurationValues() {
         if (mUsbConfiguration != null) {
-            UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
+            String defaultConfig = getResources().getString(R.string.default_usb_configuration);
+            String[] values = getResources().getStringArray(R.array.default_usb_configuration_values);
+            String[] titles = getResources().getStringArray(R.array.default_usb_configuration_titles);
+            String func = Settings.Global.getString(getActivity().getContentResolver(),
+                    Settings.Global.USB_DEFAULT_CONFIGURATION);
+            if (func == null) {
+                func = defaultConfig;
+            }
 
-            String[] values = getResources().getStringArray(R.array.usb_configuration_values);
-            String[] titles = getResources().getStringArray(R.array.usb_configuration_titles);
             int index = 0;
             for (int i = 0; i < titles.length; i++) {
-                if (manager.isFunctionEnabled(values[i])) {
+                if (values[i].equals(func)) {
                     index = i;
                     break;
                 }
@@ -1795,12 +1801,14 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     }
 
     private void writeUsbConfigurationOption(Object newValue) {
-        UsbManager manager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
+        String defaultConfig = getResources().getString(R.string.default_usb_configuration);
         String function = newValue.toString();
-        if (function.equals("none")) {
-            manager.setCurrentFunction(function, false);
+        if (function.equals(defaultConfig)) {
+            Settings.Global.putString(getActivity().getContentResolver(),
+                    Settings.Global.USB_DEFAULT_CONFIGURATION, null);
         } else {
-            manager.setCurrentFunction(function, true);
+            Settings.Global.putString(getActivity().getContentResolver(),
+                    Settings.Global.USB_DEFAULT_CONFIGURATION, function);
         }
     }
 
@@ -2748,12 +2756,12 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         }
     }
 
-    private BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
+    /*private BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateUsbConfigurationValues();
         }
-    };
+    };*/
 
     private BroadcastReceiver mBluetoothA2dpReceiver = new BroadcastReceiver() {
         @Override
