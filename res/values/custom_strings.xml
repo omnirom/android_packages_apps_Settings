@@ -132,4 +132,9 @@
     <string name="less_notification_sounds_5m">Every 5 minutes</string>
 
     <string name="notification_log_summary">Show notifications history log</string>
+
+    <string name="select_default_usb_configuration_title">Select default USB configuration</string>
+    <string name="select_default_usb_configuration_dialog_title">Select USB Configuration</string>
+    <string name="default_usb_configuration" translatable="false" >default</string>
+    <string name="select_usb_default_confguration_warning">WARNING: Default USB configuration is enabled also when device is locked!\n\nDo you really want to enable this configuration?</string>
 </resources>
