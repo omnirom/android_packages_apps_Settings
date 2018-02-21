@@ -85,4 +85,30 @@
         <item>120000</item>
         <item>300000</item>
     </string-array>
+
+    <!-- USB configuration names for Developer Settings.
+    This can be overridden by devices with additional USB configurations. -->
+    <string-array name="default_usb_configuration_titles">
+        <item>System default</item>
+        <item>Charging</item>
+        <item>MTP (Media Transfer Protocol)</item>
+        <item>PTP (Picture Transfer Protocol)</item>
+        <item>MIDI</item>
+    </string-array>
+
+    <!-- USB configuration values for Developer Settings.
+    These are lists of USB functions passed to the USB Manager to change USB configuraton.
+    This can be overridden by devices with additional USB configurations.
+    Do not translate. -->
+    <string-array name="default_usb_configuration_values" translatable="false">
+        <item>@string/default_usb_configuration</item>
+        <!-- Do not translate. -->
+        <item>none</item>
+        <!-- Do not translate. -->
+        <item>mtp</item>
+        <!-- Do not translate. -->
+        <item>ptp</item>
+        <!-- Do not translate. -->
+        <item>midi</item>
+    </string-array>
 </resources>
