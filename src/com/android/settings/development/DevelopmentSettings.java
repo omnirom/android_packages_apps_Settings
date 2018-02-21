@@ -373,6 +373,8 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     private CameraLaserSensorPreferenceController mCameraLaserSensorController;
 
     private BroadcastReceiver mEnableAdbReceiver;
+    private Dialog mUSBConfigurationDialog;
+    private String mDefaultUsbConfiguration;
 
     public DevelopmentSettings() {
         super(UserManager.DISALLOW_DEBUGGING_FEATURES);
@@ -507,7 +509,11 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             }
             mLogpersist = null;
         }
+        mDefaultUsbConfiguration = getResources().getString(R.string.default_usb_configuration);
         mUsbConfiguration = addListPreference(USB_CONFIGURATION_KEY);
+        updateUsbConfigurationValues();
+        mUsbConfiguration.setOnPreferenceChangeListener(this);
+
         mBluetoothShowDevicesWithoutNames =
                 findAndInitSwitchPref(BLUETOOTH_SHOW_DEVICES_WITHOUT_NAMES_KEY);
         mBluetoothDisableAbsVolume = findAndInitSwitchPref(BLUETOOTH_DISABLE_ABSOLUTE_VOLUME_KEY);
@@ -729,10 +735,10 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         IntentFilter filter = new IntentFilter();
-        filter.addAction(UsbManager.ACTION_USB_STATE);
+        /*filter.addAction(UsbManager.ACTION_USB_STATE);
         if (getActivity().registerReceiver(mUsbReceiver, filter) == null) {
             updateUsbConfigurationValues();
-        }
+        }*/
 
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
         if (adapter != null) {
@@ -766,7 +772,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         if (mUnavailable) {
             return;
         }
-        getActivity().unregisterReceiver(mUsbReceiver);
+        //getActivity().unregisterReceiver(mUsbReceiver);
         getActivity().unregisterReceiver(mBluetoothA2dpReceiver);
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
         if (adapter != null) {
@@ -1777,31 +1783,36 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
 
     private void updateUsbConfigurationValues() {
         if (mUsbConfiguration != null) {
-            UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
+            String[] values = getResources().getStringArray(R.array.default_usb_configuration_values);
+            String[] titles = getResources().getStringArray(R.array.default_usb_configuration_titles);
+            String func = Settings.Global.getString(getActivity().getContentResolver(),
+                    Settings.Global.USB_DEFAULT_CONFIGURATION);
+            if (func == null) {
+                func = mDefaultUsbConfiguration;
+            }
 
-            String[] values = getResources().getStringArray(R.array.usb_configuration_values);
-            String[] titles = getResources().getStringArray(R.array.usb_configuration_titles);
             int index = 0;
             for (int i = 0; i < titles.length; i++) {
-                if (manager.isFunctionEnabled(values[i])) {
+                if (values[i].equals(func)) {
                     index = i;
                     break;
                 }
             }
             mUsbConfiguration.setValue(values[index]);
             mUsbConfiguration.setSummary(titles[index]);
-            mUsbConfiguration.setOnPreferenceChangeListener(this);
         }
     }
 
     private void writeUsbConfigurationOption(Object newValue) {
-        UsbManager manager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
         String function = newValue.toString();
-        if (function.equals("none")) {
-            manager.setCurrentFunction(function, false);
+        if (function.equals(mDefaultUsbConfiguration)) {
+            Settings.Global.putString(getActivity().getContentResolver(),
+                    Settings.Global.USB_DEFAULT_CONFIGURATION, null);
         } else {
-            manager.setCurrentFunction(function, true);
+            Settings.Global.putString(getActivity().getContentResolver(),
+                    Settings.Global.USB_DEFAULT_CONFIGURATION, function);
         }
+        updateUsbConfigurationValues();
     }
 
     private void initBluetoothConfigurationValues() {
@@ -2603,7 +2614,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     }
 
     @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
+    public boolean onPreferenceChange(Preference preference, final Object newValue) {
         if (HDCP_CHECKING_KEY.equals(preference.getKey())) {
             SystemProperties.set(HDCP_CHECKING_PROPERTY, newValue.toString());
             updateHdcpValues();
@@ -2626,7 +2637,31 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             writeLogpersistOption(newValue, false);
             return true;
         } else if (preference == mUsbConfiguration) {
-            writeUsbConfigurationOption(newValue);
+            if (newValue.equals(mDefaultUsbConfiguration)) {
+                writeUsbConfigurationOption(newValue);
+                return true;
+            }
+            if (mUSBConfigurationDialog != null) {
+                dismissDialogs();
+            }
+            mUSBConfigurationDialog = new AlertDialog.Builder(getActivity()).setMessage(
+                    getResources().getString(R.string.select_usb_default_confguration_warning))
+                    .setTitle(R.string.select_default_usb_configuration_dialog_title)
+                    .setIconAttribute(android.R.attr.alertDialogIcon)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            writeUsbConfigurationOption(newValue);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            updateUsbConfigurationValues();
+                        }
+                    })
+                    .show();
+            mUSBConfigurationDialog.setOnDismissListener(this);
             return true;
         } else if (preference == mWindowAnimationScale) {
             writeAnimationScaleOption(0, mWindowAnimationScale, newValue);
@@ -2679,6 +2714,10 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         if (mLogpersistClearDialog != null) {
             mLogpersistClearDialog.dismiss();
             mLogpersistClearDialog = null;
+        }
+        if (mUSBConfigurationDialog != null) {
+            mUSBConfigurationDialog.dismiss();
+            mUSBConfigurationDialog = null;
         }
     }
 
@@ -2748,12 +2787,12 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         }
     }
 
-    private BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
+    /*private BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateUsbConfigurationValues();
         }
-    };
+    };*/
 
     private BroadcastReceiver mBluetoothA2dpReceiver = new BroadcastReceiver() {
         @Override
