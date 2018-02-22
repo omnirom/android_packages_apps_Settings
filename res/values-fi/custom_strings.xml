@@ -19,10 +19,43 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="style_settings_title">Tyyli</string>
+  <string name="header_category_omni">OmniGears</string>
+  <string name="style_settings_summary">Taustakuvat ja muu sälä</string>
+  <string name="omni_device_parts">Laitteen ominaisuudet</string>
+  <string name="hide_summary_menu">Piilota yhteenveto</string>
+  <string name="bars_settings_title">Palkit ja lukitusnäyttö</string>
+  <string name="button_settings_title">Painikkeet</string>
+  <string name="mod_version">Omni versio</string>
+  <string name="mod_version_default">Tuntematon</string>
+  <string name="more_settings_title">Lisää</string>
+  <string name="display_rotation_title">Näytön kierto</string>
+  <string name="battery_light_settings_title">Akun LED asetukset</string>
   <!-- Custom light color -->
+  <string name="light_customization">Led-ilmoitusvalo</string>
+  <string name="custom_light_title">Valon väri</string>
   <!-- Android debugging over WiFi -->
   <!-- Warning for Adb over Network -->
+  <string name="battery_image">Akun kuva</string>
+  <string name="battery_image_description">Näytä akun kuva tilapalkissa</string>
+  <string name="twilight_mode_location_dialog">Sijainti poistettu käytöstä</string>
+  <string name="twilight_mode_location_disabled">Sijaintipalvelut pois käytöstä</string>
+  <string name="twilight_mode_location_enable">Ota käyttöön</string>
   <!-- Encryption and credential -->
+  <string name="custom_encryption_and_credential_settings_summary_on">Laite on salattu</string>
+  <string name="custom_encryption_and_credential_settings_summary_off">Laite ei ole salattu</string>
+  <string name="select_sim_for_sms">Valitse SIM tekstiviesteille</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Paikanna sormenjälkisensori puhelimesi <xliff:g id="sensor_location">%1$s</xliff:g>.</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">takapuolella</string>
+  <string name="security_settings_fingerprint_sensor_location_front">etupuolella</string>
+  <string name="security_settings_fingerprint_sensor_location_left">vasemmalla sivulla</string>
+  <string name="security_settings_fingerprint_sensor_location_right">oikealla sivulla</string>
+  <string name="screenshot_shutter_sound_title">Kuvankaappauksen sulkimen ääni</string>
+  <string name="increasing_ring_volume_option_title">Nouseva soittoäänen voimakkuus</string>
+  <string name="ramp_up_time_ten">10s</string>
+  <string name="ramp_up_time_twenty">20s</string>
+  <string name="ramp_up_time_thirty">30s</string>
+  <string name="ramp_up_time_sixty">60s</string>
 </resources>

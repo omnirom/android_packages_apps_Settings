@@ -22,24 +22,37 @@
   <string name="style_settings_title">风格</string>
   <string name="header_category_omni">Omni配置</string>
   <string name="omni_dashboard_summary">自定义您的设备</string>
+  <string name="style_settings_summary">壁纸和其他的swag</string>
   <string name="omni_device_parts">设备特性</string>
   <string name="columns_menu">列布局</string>
   <string name="hide_summary_menu">隐藏摘要</string>
+  <string name="bars_settings_title">功能条和锁屏界面</string>
   <string name="button_settings_title">按钮</string>
   <string name="mod_version">Omni 版本</string>
   <string name="mod_version_default">未知</string>
   <string name="more_settings_title">更多</string>
   <string name="global_actions_title">电源菜单选项</string>
+  <string name="display_rotation_title">旋转</string>
+  <string name="display_rotation_summary">配置可用的旋转角度</string>
   <string name="battery_light_settings_title">电池指示灯设置</string>
   <string name="link_volume_option_title">关联铃声和通知音量</string>
   <!-- Custom light color -->
   <string name="light_customization">LED灯光通知</string>
+  <string name="custom_light_title">浅色</string>
+  <string name="custom_light_on_time_title">"LED灯亮时间(毫秒)"</string>
+  <string name="custom_light_off_time_title">"LED灯灭时间(毫秒)"</string>
+  <string name="app_notifications_info_desc">点击以上任意的频道以配置灯光颜色和其他选项</string>
   <string name="value_equals_default">自动</string>
+  <string name="show_light_on_zen_title">勿扰模式下灯光闪烁</string>
   <!-- Android debugging over WiFi -->
   <string name="adb_over_network">网络 ADB 调试</string>
   <string name="adb_over_network_summary">通过网络接口 (WLAN, USB 网络) 启用 TCP/IP 调试。 该设置重启后失效</string>
   <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">警告：网络 ADB 调试启用后，您的设备将会在已连接的网络上被视为是开放的，，包括 GSM 数据网络，并有可能被侵入！\n\n请仅在您所信任的网络上使用此功能。\n\n您确实要启用该功能吗？</string>
+  <string name="battery_image">电池图标</string>
+  <string name="battery_image_description">在状态栏中显示电池图标</string>
+  <string name="twilight_mode_location_dialog">已禁用位置</string>
+  <string name="twilight_mode_location_disabled">已禁用位置访问</string>
   <string name="twilight_mode_location_enable">启用</string>
   <!-- Encryption and credential -->
   <string name="custom_encryption_and_credential_settings_summary_on">设备已加密</string>
@@ -49,7 +62,15 @@
   <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">在您手机上的<xliff:g id="sensor_location">%1$s </xliff:g>定位到指纹传感器。</string>
   <!-- Fingerprint sensor locations -->
   <string name="security_settings_fingerprint_sensor_location_back">返回</string>
+  <string name="security_settings_fingerprint_sensor_location_front">前置</string>
   <string name="security_settings_fingerprint_sensor_location_left">左边</string>
   <string name="security_settings_fingerprint_sensor_location_right">右边</string>
   <string name="screenshot_shutter_sound_title">屏幕截图音效</string>
+  <string name="heads_up_notifications_enabled_title">开启悬浮通知</string>
+  <string name="heads_up_notifications_enabled_summary">开启或关闭所有悬浮通知</string>
+  <string name="increasing_ring_volume_option_title">渐强的铃声音量</string>
+  <string name="ramp_up_time_ten">10秒</string>
+  <string name="ramp_up_time_twenty">20秒</string>
+  <string name="ramp_up_time_thirty">30秒</string>
+  <string name="ramp_up_time_sixty">60秒</string>
 </resources>

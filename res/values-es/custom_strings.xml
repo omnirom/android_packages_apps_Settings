@@ -37,7 +37,13 @@
   <string name="battery_light_settings_title">Ajustes del LED de batería</string>
   <string name="link_volume_option_title">Enlazar el volumen de timbre y notificaciones</string>
   <!-- Custom light color -->
+  <string name="light_customization">Led luz de notificación</string>
+  <string name="custom_light_title">Color de led</string>
+  <string name="custom_light_on_time_title">"Tiempo de duración del pulso de led (ms)"</string>
+  <string name="custom_light_off_time_title">"Tiempo de duración sin pulso de led (ms)"</string>
+  <string name="app_notifications_info_desc">Pulse sobre uno de los canales para configurar sus colores claros y otras opciones</string>
   <string name="value_equals_default">Automático</string>
+  <string name="show_light_on_zen_title">Parpadear durante modo no molestar</string>
   <!-- Android debugging over WiFi -->
   <string name="adb_over_network">ADB sobre red</string>
   <string name="adb_over_network_summary">Habilitar la depuración TCP/IP a través de interfaces de red (Wi-Fi, redes USB). Este ajuste se restablece al reiniciar</string>
@@ -60,4 +66,12 @@
   <string name="security_settings_fingerprint_sensor_location_left">lado izquierdo</string>
   <string name="security_settings_fingerprint_sensor_location_right">lado derecho</string>
   <string name="screenshot_shutter_sound_title">Sonido al capturar la pantalla</string>
+  <string name="heads_up_notifications_enabled_title">Permitir vistazo</string>
+  <string name="heads_up_notifications_enabled_summary">Permitir o desactivar vistazo para todas las notificaciones</string>
+  <string name="increasing_ring_volume_option_title">Aumento de volumen de timbre</string>
+  <string name="increasing_ring_ramp_up_title">Aumentar tiempo para volumen ascendente</string>
+  <string name="ramp_up_time_ten">10s</string>
+  <string name="ramp_up_time_twenty">20s</string>
+  <string name="ramp_up_time_thirty">30s</string>
+  <string name="ramp_up_time_sixty">60s</string>
 </resources>

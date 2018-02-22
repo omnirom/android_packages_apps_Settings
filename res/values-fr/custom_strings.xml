@@ -39,6 +39,8 @@
   <!-- Custom light color -->
   <string name="light_customization">Paramètres de LED pour les notifications</string>
   <string name="custom_light_title">Couleur de l\'éclairage</string>
+  <string name="custom_light_on_time_title">"Durée d’éclairage pendant l’impulsion led (ms)"</string>
+  <string name="custom_light_off_time_title">"Durée d’extinction pendant l’impulsion led (ms)"</string>
   <string name="app_notifications_info_desc">Appuyez sur l\'un des canaux ci-dessus pour régler leurs couleurs d\'éclairages et d\'autres options</string>
   <string name="value_equals_default">Auto</string>
   <string name="show_light_on_zen_title">Clignoter en mode \"Ne pas déranger\"</string>
@@ -48,7 +50,7 @@
   <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">ATTENTION: Lorsque ADB par le réseau est activé, votre téléphone est ouvert aux intrusions sur tous les réseaux connectés, y compris le réseau data GSM !\n\nN\'utilisez cette fonction que lorsque vous êtes connecté sur des réseaux de confiance.\n\nVoulez-vous vraiment activer cette fonction?</string>
   <string name="battery_image">Image de la batterie</string>
-  <string name="battery_image_description">Voir la l\'image de la batterie dans la barre d’état</string>
+  <string name="battery_image_description">Afficher l\'image de la batterie dans la barre d’état</string>
   <string name="twilight_mode_location_dialog">Localisation désactivée</string>
   <string name="twilight_mode_location_disabled">L\'accès à la localisation est désactivé</string>
   <string name="twilight_mode_location_enable">Activer</string>

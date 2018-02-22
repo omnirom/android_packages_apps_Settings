@@ -21,9 +21,9 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="style_settings_title">Tarz</string>
   <string name="header_category_omni">OmniGears</string>
-  <string name="omni_dashboard_summary">Cihazınızı hususîleştirin</string>
+  <string name="omni_dashboard_summary">Cihazınızı husûsîleştirin</string>
   <string name="style_settings_summary">Duvar kâğıtları ve diğer tarzlar</string>
-  <string name="omni_device_parts">Cihaz hususîyetleri</string>
+  <string name="omni_device_parts">Cihaz husûsîyetleri</string>
   <string name="columns_menu">Sütun tertibatı</string>
   <string name="hide_summary_menu">Özeti sakla</string>
   <string name="bars_settings_title">Çubuklar ve kilit ekranı</string>
@@ -48,7 +48,7 @@
   <string name="adb_over_network">Ağ üzerinden ADB</string>
   <string name="adb_over_network_summary">Ağ arayüzleri (Wi-Fi, USB ağları) üzerinde TCP/IP hatâ ayıklamayı etkinleştirin. Bu ayar telefonu tekrar başlattığınızda sıfırlanır</string>
   <!-- Warning for Adb over Network -->
-  <string name="adb_over_network_warning">UYARI: Ağ üzerinden ADB etkinleştirildiğinde, telefonunuz GSM veri ağı dâhil bütün bağlandığınız ağlar üzerinde güvenlik ihlâline açık olur!\n\nBu hususîyeti sadece güvenilir ağlara bağlıyken kullanın.\n\nBu hususîyeti sahiden etkinleştirmek istiyor musunuz?</string>
+  <string name="adb_over_network_warning">UYARI: Ağ üzerinden ADB etkinleştirildiğinde, telefonunuz GSM veri ağı dâhil bütün bağlandığınız ağlar üzerinde güvenlik ihlâline açık olur!\n\nBu husûsîyeti sadece güvenilir ağlara bağlıyken kullanın.\n\nBu husûsîyeti sahiden etkinleştirmek istiyor musunuz?</string>
   <string name="battery_image">Pil resmi</string>
   <string name="battery_image_description">Pil resmini durum çubuğunda göster</string>
   <string name="twilight_mode_location_dialog">Konum devre dışı</string>
@@ -65,9 +65,9 @@
   <string name="security_settings_fingerprint_sensor_location_front">önünde</string>
   <string name="security_settings_fingerprint_sensor_location_left">sol tarafında</string>
   <string name="security_settings_fingerprint_sensor_location_right">sağ tarafında</string>
-  <string name="screenshot_shutter_sound_title">Ekran görüntüsü alınırken deklanşör sesi</string>
-  <string name="heads_up_notifications_enabled_title">Ekran üstü bildirimlerine izin ver</string>
-  <string name="heads_up_notifications_enabled_summary">Bütün bildirimler için ekran üstü bildirimine izin verin veyâ devre dışı bırakın</string>
+  <string name="screenshot_shutter_sound_title">Ekran resmi alınırken deklanşör sesi</string>
+  <string name="heads_up_notifications_enabled_title">Ekran üstü bildirime izin ver</string>
+  <string name="heads_up_notifications_enabled_summary">Bütün bildirimler için ekran üstü bildirime izin verin veyâ devre dışı bırakın</string>
   <string name="increasing_ring_volume_option_title">Artan zil sesi seviyesi</string>
   <string name="increasing_ring_ramp_up_title">Zil sesi seviyesinin artma müddeti</string>
   <string name="ramp_up_time_ten">10 saniye</string>
