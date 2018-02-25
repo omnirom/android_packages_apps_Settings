@@ -137,4 +137,7 @@
     <string name="select_default_usb_configuration_dialog_title">Select USB Configuration</string>
     <string name="default_usb_configuration" translatable="false" >default</string>
     <string name="select_usb_default_confguration_warning">WARNING: Default USB configuration is enabled also when device is locked!\n\nDo you really want to enable this configuration?</string>
+    <string name="usb_paranoia_connect_title">USB secure connect</string>
+    <string name="usb_paranoia_connect_summary">Only enable charging when USB plugged on secure lock screens</string>
+    <string name="usb_category_title">USB</string>
 </resources>
