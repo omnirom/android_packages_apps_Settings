@@ -142,4 +142,7 @@
     <string name="usb_category_title">USB</string>
 
     <string name="easter_settings_title">Happy Easter</string>
+
+    <!-- Font picker -->
+    <string name="font_picker_title">Font</string>
 </resources>
