@@ -147,4 +147,7 @@
 
     <string name="battery_saver_system_bars_color_enable_title">System bars background color</string>
     <string name="battery_saver_system_bars_color_enable_summary">Use different color for status and navigation bar when battery saver is enabled</string>
+
+    <!-- Font picker -->
+    <string name="font_picker_title">Font</string>
 </resources>
