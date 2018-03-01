@@ -144,4 +144,7 @@
     <!-- Scramble PIN layout when unlocking -->
     <string name="unlock_scramble_pin_layout_title">Scramble layout</string>
     <string name="unlock_scramble_pin_layout_summary">Scramble PIN layout when unlocking device</string>
+
+    <!-- Font picker -->
+    <string name="font_picker_title">Font</string>
 </resources>
