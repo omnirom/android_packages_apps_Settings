@@ -66,10 +66,10 @@ public class UserAndAccountDashboardFragment extends DashboardFragment {
     protected List<AbstractPreferenceController> getPreferenceControllers(Context context) {
         final List<AbstractPreferenceController> controllers = new ArrayList<>();
         controllers.add(new EmergencyInfoPreferenceController(context));
-        AddUserWhenLockedPreferenceController addUserWhenLockedPrefController =
+        /*AddUserWhenLockedPreferenceController addUserWhenLockedPrefController =
                 new AddUserWhenLockedPreferenceController(context);
         controllers.add(addUserWhenLockedPrefController);
-        getLifecycle().addObserver(addUserWhenLockedPrefController);
+        getLifecycle().addObserver(addUserWhenLockedPrefController);*/
         controllers.add(new AutoSyncDataPreferenceController(context, this));
         controllers.add(new AutoSyncPersonalDataPreferenceController(context, this));
         controllers.add(new AutoSyncWorkDataPreferenceController(context, this));
