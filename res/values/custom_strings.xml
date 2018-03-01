@@ -89,4 +89,7 @@
 
     <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
     <string name="ringtone2_title">Phone ringtone - SIM 2</string>
+
+    <!-- Font picker -->
+    <string name="font_picker_title">Font</string>
 </resources>
