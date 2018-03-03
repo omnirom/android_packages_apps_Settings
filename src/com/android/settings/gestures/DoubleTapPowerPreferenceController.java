@@ -29,6 +29,7 @@ import com.android.settings.search.ResultPayload;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 
 import static android.provider.Settings.Secure.CAMERA_DOUBLE_TAP_POWER_GESTURE_DISABLED;
+import static android.provider.Settings.Secure.TORCH_DOUBLE_TAP_POWER_GESTURE_ENABLED;
 
 public class DoubleTapPowerPreferenceController extends GesturePreferenceController {
 
@@ -39,6 +40,7 @@ public class DoubleTapPowerPreferenceController extends GesturePreferenceControl
     private final String mDoubleTapPowerKey;
 
     private final String SECURE_KEY = CAMERA_DOUBLE_TAP_POWER_GESTURE_DISABLED;
+    private final String FLASH_KEY = TORCH_DOUBLE_TAP_POWER_GESTURE_ENABLED;
 
     public DoubleTapPowerPreferenceController(Context context, Lifecycle lifecycle, String key) {
         super(context, lifecycle);
@@ -73,24 +75,52 @@ public class DoubleTapPowerPreferenceController extends GesturePreferenceControl
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         boolean enabled = (boolean) newValue;
-        Settings.Secure.putInt(mContext.getContentResolver(), SECURE_KEY, enabled ? ON : OFF);
-        return true;
+        if (mDoubleTapPowerKey == SECURE_KEY) {
+            Settings.Secure.putInt(mContext.getContentResolver(), SECURE_KEY, enabled ? ON : OFF);
+            Settings.Secure.putInt(mContext.getContentResolver(), FLASH_KEY, OFF);
+            return true;
+        } else if (mDoubleTapPowerKey == FLASH_KEY) {
+            Settings.Secure.putInt(mContext.getContentResolver(), FLASH_KEY, enabled ? ON : OFF);
+            Settings.Secure.putInt(mContext.getContentResolver(), SECURE_KEY, OFF);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     protected boolean isSwitchPrefEnabled() {
-        final int cameraDisabled = Settings.Secure.getInt(mContext.getContentResolver(),
-                SECURE_KEY, ON);
-        return cameraDisabled == 0;
+        if (mDoubleTapPowerKey == SECURE_KEY) {
+            final int cameraDisabled = Settings.Secure.getInt(mContext.getContentResolver(),
+                    SECURE_KEY, ON);
+            return cameraDisabled == 0;
+        } else if (mDoubleTapPowerKey == FLASH_KEY) {
+            final int flashDisabled = Settings.Secure.getInt(mContext.getContentResolver(),
+                FLASH_KEY, ON);
+            return flashDisabled == 0;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public ResultPayload getResultPayload() {
-        final Intent intent = DatabaseIndexingUtils.buildSubsettingIntent(mContext,
-                DoubleTapPowerSettings.class.getName(), mDoubleTapPowerKey,
-                mContext.getString(R.string.display_settings));
-
-        return new InlineSwitchPayload(SECURE_KEY, ResultPayload.SettingsSource.SECURE,
-                ON /* onValue */, intent, isAvailable(), ON /* defaultValue */);
+        if (mDoubleTapPowerKey == SECURE_KEY) {
+            final Intent intent = DatabaseIndexingUtils.buildSubsettingIntent(mContext,
+                    DoubleTapPowerSettings.class.getName(), mDoubleTapPowerKey,
+                    mContext.getString(R.string.display_settings));
+            return new InlineSwitchPayload(SECURE_KEY, ResultPayload.SettingsSource.SECURE,
+                    ON /* onValue */, intent, isAvailable(), ON /* defaultValue */);
+        } else {
+            if (isSwitchPrefEnabled()) {
+            //final Intent intent = DatabaseIndexingUtils.buildSubsettingIntent(mContext,
+            //        DoubleTapPowerSettings.class.getName(), mDoubleTapPowerKey,
+            //        mContext.getString(R.string.display_settings));
+            //return new InlineSwitchPayload(FLASH_KEY, ResultPayload.SettingsSource.SECURE,
+            //        ON /* onValue */, intent, isAvailable(), ON /* defaultValue */);
+            return null;
+            }
+        return null;
+        }
     }
 }

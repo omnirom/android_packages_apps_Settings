@@ -8012,6 +8012,13 @@
     <!-- Description of setting that controls gesture to open camera by double tapping the power button [CHAR LIMIT=NONE] -->
     <string name="camera_double_tap_power_gesture_desc">Quickly open camera without unlocking your screen</string>
 
+
+    <!-- Title of setting that controls gesture to open flashlight by double tapping the power button [CHAR LIMIT=40] -->
+    <string name="double_tap_power_for_flash_title">Press power button twice for flashlight</string>
+
+    <!-- Description of setting that controls gesture to open flashlight by double tapping the power button [CHAR LIMIT=NONE] -->
+    <string name="double_tap_power_for_flash_summary">Quickly open flashlight without unlocking your screen</string>
+
     <!-- Title of setting that controls screen zoom (e.g. how large interface elements appear). [CHAR LIMIT=40] -->
     <string name="screen_zoom_title">Display size</string>
     <!-- Short summary for Magnification gesture. Lets the user know that this makes items on screen larger or smaller. Appears in the accessibility portion of Setup Wizard. [CHAR LIMIT=NONE] -->
