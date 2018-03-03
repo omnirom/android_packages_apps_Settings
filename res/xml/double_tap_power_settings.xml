@@ -30,4 +30,10 @@
         android:summary="@string/double_tap_power_for_camera_summary"
         app:keywords="@string/keywords_gesture" />
 
+    <SwitchPreference
+        android:key="flash_gesture_double_tap_power"
+        android:title="@string/double_tap_power_for_flash_title"
+        android:summary="@string/double_tap_power_for_flash_summary"
+        app:keywords="@string/keywords_gesture" />
+
 </PreferenceScreen>
