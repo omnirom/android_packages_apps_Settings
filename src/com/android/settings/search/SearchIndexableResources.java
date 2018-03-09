@@ -98,7 +98,9 @@ import org.omnirom.omnigears.DisplayRotation;
 import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.interfacesettings.GlobalActionsSettings;
+import org.omnirom.omnigears.interfacesettings.NetworkTraffic;
 import org.omnirom.omnigears.interfacesettings.StatusbarBatterySettings;
+import org.omnirom.omnigears.interfacesettings.StatusbarClockSettings;
 import org.omnirom.omnigears.interfacesettings.StyleSettings;
 import org.omnirom.omnigears.moresettings.MoreSettings;
 
@@ -239,6 +241,8 @@ public final class SearchIndexableResources {
         addIndex(BatteryLightSettings.class, NO_DATA_RES_ID, R.drawable.ic_settings_leds);
         addIndex(OmniDashboardFragment.class, NO_DATA_RES_ID, R.drawable.omnirom_logo);
         addIndex(StatusbarBatterySettings.class, NO_DATA_RES_ID, R.drawable.ic_bars_tile);
+        addIndex(StatusbarClockSettings.class, NO_DATA_RES_ID, R.drawable.ic_bars_tile);
+        addIndex(NetworkTraffic.class, NO_DATA_RES_ID, R.drawable.ic_bars_tile);
     }
 
     private SearchIndexableResources() {
