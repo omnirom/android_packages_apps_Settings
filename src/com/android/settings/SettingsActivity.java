@@ -871,15 +871,6 @@ public class SettingsActivity extends SettingsDrawerActivity
                 WifiDisplaySettings.isAvailable(this), isAdmin)
                 || somethingChanged;
 
-        // Omni DeviceParts
-        boolean devicePartsSupported = false;
-        try {
-            devicePartsSupported = (getPackageManager().getPackageInfo("org.omnirom.device", 0).versionCode > 0);
-        } catch (PackageManager.NameNotFoundException e) {
-        }
-        setTileEnabled(new ComponentName(packageName, Settings.DevicePartsActivity.class.getName()),
-            devicePartsSupported, isAdmin);
-
         if (UserHandle.MU_ENABLED && !isAdmin) {
 
             // When on restricted users, disable all extra categories (but only the settings ones).
