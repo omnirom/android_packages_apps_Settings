@@ -26,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.settings.R;
+import com.android.settings.Utils;
 
 public class StorageSummaryPreference extends Preference {
     private int mPercent = -1;
@@ -54,7 +55,8 @@ public class StorageSummaryPreference extends Preference {
         }
 
         final TextView summary = (TextView) view.findViewById(android.R.id.summary);
-        summary.setTextColor(Color.parseColor("#8a000000"));
+        int textColorSecondary = Utils.getColorAttr(getContext(), android.R.attr.textColorSecondary);
+        summary.setTextColor(textColorSecondary);
 
         super.onBindViewHolder(view);
     }
