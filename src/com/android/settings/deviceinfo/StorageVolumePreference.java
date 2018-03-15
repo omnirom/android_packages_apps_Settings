@@ -69,7 +69,7 @@ public class StorageVolumePreference extends Preference {
         if (VolumeInfo.ID_PRIVATE_INTERNAL.equals(volume.getId())) {
             icon = context.getDrawable(R.drawable.ic_storage);
         } else {
-            icon = context.getDrawable(R.drawable.ic_sim_sd);
+            icon = context.getDrawable(R.drawable.ic_settings_sd);
         }
 
         if (volume.isMountedReadable()) {
@@ -129,7 +129,6 @@ public class StorageVolumePreference extends Preference {
     public void onBindViewHolder(PreferenceViewHolder view) {
         final ImageView unmount = (ImageView) view.findViewById(R.id.unmount);
         if (unmount != null) {
-            unmount.setImageTintList(ColorStateList.valueOf(Color.parseColor("#8a000000")));
             unmount.setOnClickListener(mUnmountListener);
         }
 
