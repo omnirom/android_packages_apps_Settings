@@ -110,6 +110,9 @@ public class StorageSettings extends SettingsPreferenceFragment implements Index
 
         final Context context = getActivity();
 
+        int accentColor = Utils.getColorAttr(context, android.R.attr.colorAccent);
+        COLOR_PRIVATE[0] = accentColor;
+
         mStorageManager = context.getSystemService(StorageManager.class);
 
         if (sTotalInternalStorage <= 0) {
@@ -259,6 +262,9 @@ public class StorageSettings extends SettingsPreferenceFragment implements Index
 
     @Override
     public boolean onPreferenceTreeClick(Preference pref) {
+        if (pref == null) {
+            return false;
+        }
         final String key = pref.getKey();
         if (pref instanceof StorageVolumePreference) {
             // Picked a normal volume
