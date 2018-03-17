@@ -29,6 +29,8 @@ import android.util.Log;
 
 import java.util.List;
 
+import com.android.settings.utils.EventService;
+
 import static android.content.pm.PackageManager.GET_ACTIVITIES;
 import static android.content.pm.PackageManager.GET_META_DATA;
 import static android.content.pm.PackageManager.GET_RESOLVED_FILTER;
@@ -54,6 +56,11 @@ public class SettingsInitialize extends BroadcastReceiver {
         final PackageManager pm  = context.getPackageManager();
         managedProfileSetup(context, pm, broadcast, userInfo);
         webviewSettingSetup(context, pm, userInfo);
+        startEventService(context);
+    }
+
+    private void startEventService(Context context) {
+        EventService.startEventService(context);
     }
 
     private void managedProfileSetup(Context context, final PackageManager pm, Intent broadcast,

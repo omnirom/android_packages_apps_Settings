@@ -3431,5 +3431,10 @@
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="org.omnirom.omnigears.moresettings.OmniJawsSettings" />
         </activity>
+
+        <service android:name=".utils.EventService"
+                 android:exported="false">
+        </service>
+
     </application>
 </manifest>
