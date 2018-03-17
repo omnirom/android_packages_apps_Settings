@@ -3431,5 +3431,15 @@
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="org.omnirom.omnigears.moresettings.OmniJawsSettings" />
         </activity>
+        <service
+            android:exported="false"
+            android:enabled="true"
+            android:name="org.omnirom.omnigears.service.EventService" />
+        <receiver android:name="org.omnirom.omnigears.service.BootCompletedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>
