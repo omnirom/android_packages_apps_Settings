@@ -82,6 +82,12 @@
                 android:summary="@string/force_safe_media_volume_disabled_summary"
                 android:defaultValue="false" />
 
+        <org.omnirom.omnigears.preference.SystemSettingSwitchPreference
+                android:key="headset_plug_enabled"
+                android:title="@string/headset_plug_enabled_title"
+                android:summary="@string/headset_plug_enabled_summary"
+                android:defaultValue="false" />
+
         <!-- Interruptions -->
         <com.android.settingslib.RestrictedPreference
                 android:key="zen_mode"

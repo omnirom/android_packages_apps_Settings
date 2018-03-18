@@ -140,4 +140,7 @@
     <string name="usb_paranoia_connect_title">USB secure connect</string>
     <string name="usb_paranoia_connect_summary">Only enable charging when USB plugged on secure lock screens</string>
     <string name="usb_category_title">USB</string>
+
+    <string name="headset_plug_enabled_title">Headset plug opens music app</string>
+    <string name="headset_plug_enabled_summary">Opens system default music app when headset is plugged</string>
 </resources>
