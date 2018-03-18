@@ -140,4 +140,20 @@
     <string name="usb_paranoia_connect_title">USB secure connect</string>
     <string name="usb_paranoia_connect_summary">Only enable charging when USB plugged on secure lock screens</string>
     <string name="usb_category_title">USB</string>
+
+    <!-- Headset plug -->
+    <string name="headset_settings">Headset</string>
+    <string name="headset_plug_enable_title">Insert shortcut</string>
+    <string name="headset_plug_music_active_title">Disable on active audio</string>
+    <string name="headset_plug_music_active_summary">Dont run shortcut on active audio playback</string>
+    <string name="headset_plug_app_running_title">Action on running shortcut</string>
+    <string name="headset_plug_app_running_nothing">None</string>
+    <string name="headset_plug_app_running_front">Move to front</string>
+    <string name="headset_plug_action_title">Headset plug action</string>
+    <string name="select_headset_plug_action_dialog_title">Select an action</string>
+    <string name="headset_plug_app_list_title">Headset plug app list</string>
+    <string name="headset_plug_app_list_summary">List of application shortcuts</string>
+    <string name="none_headset_plug_action" translatable="false">NONE</string>
+    <string name="system_default_headset_plug_action" translatable="false">SYSTEM_DEFAULT</string>
+    <string name="app_list_headset_plug_action" translatable="false">APP_LIST</string>
 </resources>

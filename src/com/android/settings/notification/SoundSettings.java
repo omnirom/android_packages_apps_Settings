@@ -32,7 +32,6 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
 import android.support.v7.preference.TwoStatePreference;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.settings.R;
@@ -43,9 +42,12 @@ import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.core.AbstractPreferenceController;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 
+import org.omnirom.omnigears.preference.AppMultiSelectListPreference;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class SoundSettings extends DashboardFragment implements OnPreferenceChangeListener {
     private static final String TAG = "SoundSettings";
@@ -54,6 +56,10 @@ public class SoundSettings extends DashboardFragment implements OnPreferenceChan
     private static final String SELECTED_PREFERENCE_KEY = "selected_preference";
     private static final String KEY_VOLUME_LINK_NOTIFICATION = "volume_link_notification";
     private static final String KEY_RAMP_UP_TIME = "increasing_ring_ramp_up";
+    private static final String KEY_HEADSET_PLUG_ACTION = "headset_plug_action";
+    private static final String KEY_HEADSET_PLUG_APP_LIST = "headset_plug_app_list";
+    private static final String KEY_HEADSET_PLUG_APP_RUNNING = "headset_plug_app_running";
+    private static final String VALUE_APP_LIST = "APP_LIST";
     private static final int REQUEST_CODE = 200;
 
     private static final int SAMPLE_CUTOFF = 2000;  // manually cap sample playback at 2 seconds
@@ -64,6 +70,9 @@ public class SoundSettings extends DashboardFragment implements OnPreferenceChan
     private RingtonePreference mRequestPreference;
     private TwoStatePreference mVolumeLinkNotification;
     private ListPreference mRampUpTime;
+    private ListPreference mHeadsetPlugAction;
+    private ListPreference mHeadsetAppRunning;
+    private AppMultiSelectListPreference mHeadsetPlugAppList;
 
     @Override
     public void onAttach(Context context) {
@@ -100,6 +109,24 @@ public class SoundSettings extends DashboardFragment implements OnPreferenceChan
         mRampUpTime.setValue(Integer.toString(ramUpTime));
         mRampUpTime.setSummary(mRampUpTime.getEntry());
         mRampUpTime.setOnPreferenceChangeListener(this);
+
+        mHeadsetPlugAction = (ListPreference) findPreference(KEY_HEADSET_PLUG_ACTION);
+        String headset_action = Settings.System.getStringForUser(getContentResolver(),
+                Settings.System.HEADSET_PLUG_ACTION, UserHandle.USER_CURRENT);
+        mHeadsetPlugAction.setValue(headset_action);
+        mHeadsetPlugAction.setSummary(mHeadsetPlugAction.getEntry());
+        mHeadsetPlugAction.setOnPreferenceChangeListener(this);
+
+        mHeadsetPlugAppList = (AppMultiSelectListPreference) findPreference(KEY_HEADSET_PLUG_APP_LIST);
+        mHeadsetPlugAppList.setEnabled(
+                headset_action.equals(VALUE_APP_LIST));
+        mHeadsetPlugAppList.setOnPreferenceChangeListener(this);
+
+        mHeadsetAppRunning = (ListPreference) findPreference(KEY_HEADSET_PLUG_APP_RUNNING);
+        mHeadsetAppRunning.setValue(Integer.toString(Settings.System.getInt(
+                getContentResolver(), Settings.System.HEADSET_PLUG_APP_RUNNING, 0)));
+        mHeadsetAppRunning.setSummary(mHeadsetAppRunning.getEntry());
+        mHeadsetAppRunning.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -303,7 +330,38 @@ public class SoundSettings extends DashboardFragment implements OnPreferenceChan
             mRampUpTime.setSummary(mRampUpTime.getEntries()[index]);
             Settings.System.putInt(getContentResolver(), Settings.System.INCREASING_RING_RAMP_UP_TIME, value);
             return true;
+        } else if (preference == mHeadsetPlugAction){
+            String value = (String) newValue;
+            int index = mHeadsetPlugAction.findIndexOfValue(value);
+            mHeadsetPlugAction.setSummary(mHeadsetPlugAction.getEntries()[index]);
+            Settings.System.putStringForUser(getContentResolver(),
+                    Settings.System.HEADSET_PLUG_ACTION, value, UserHandle.USER_CURRENT);
+            mHeadsetPlugAppList.setEnabled(
+                    value.equals(VALUE_APP_LIST));
+            return true;
+        } else if (preference == mHeadsetPlugAppList) {
+            StringBuilder builder = new StringBuilder();
+            String delimiter = "";
+
+            for (String value : (Set<String>) newValue) {
+                builder.append(delimiter);
+                builder.append(value);
+                delimiter = "|";
+            }
+
+            Settings.System.putStringForUser(getContentResolver(),
+                    Settings.System.HEADSET_PLUG_APP_LIST, builder.toString(), UserHandle.USER_CURRENT);
+            return true;
+        } else if (preference == mHeadsetAppRunning) {
+            String value = (String) newValue;
+            int val = Integer.parseInt(value);
+            Settings.System.putIntForUser(getContentResolver(),
+                    Settings.System.HEADSET_PLUG_APP_RUNNING, val, UserHandle.USER_CURRENT);
+            int index = mHeadsetAppRunning.findIndexOfValue(value);
+            mHeadsetAppRunning.setSummary(mHeadsetAppRunning.getEntries()[index]);
+            return true;
         }
+
         return false;
     }
 

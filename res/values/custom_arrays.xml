@@ -111,4 +111,30 @@
         <!-- Do not translate. -->
         <item>midi</item>
     </string-array>
+
+    <string-array name="headset_plug_action_titles">
+        <item>None</item>
+        <item>Open system default music app</item>
+        <item>Display app list</item>
+    </string-array>
+
+    <string-array name="headset_plug_action_values" translatable="false">
+        <item>@string/none_headset_plug_action</item>
+        <!-- Do not translate. -->
+        <item>@string/system_default_headset_plug_action</item>
+        <!-- Do not translate. -->
+        <item>@string/app_list_headset_plug_action</item>
+    </string-array>
+
+    <string-array name="headset_plug_app_running_entries" translatable="false">
+        <item>@string/headset_plug_app_running_nothing</item>
+        <item>@string/headset_plug_app_running_front</item>
+    </string-array>
+
+    <string-array name="headset_plug_app_running_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+
 </resources>
