@@ -19,10 +19,40 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="style_settings_title">Stil</string>
+  <string name="header_category_omni">OmniGears</string>
+  <string name="omni_device_parts">Enhetsfunksjoner</string>
+  <string name="columns_menu">Kolonne Utforming</string>
+  <string name="hide_summary_menu">Skjul sammendrag</string>
+  <string name="button_settings_title">Knapper</string>
+  <string name="mod_version">Omni versjon</string>
+  <string name="mod_version_default">Ukjent</string>
+  <string name="more_settings_title">Mer</string>
+  <string name="global_actions_title">Strøm-meny</string>
+  <string name="display_rotation_title">Rotasjon</string>
+  <string name="battery_light_settings_title">Batteri LED-innstillinger</string>
+  <string name="link_volume_option_title">Koble ringetone- og varslingsvolum</string>
   <!-- Custom light color -->
+  <string name="value_equals_default">Auto</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">ADB over nettverk</string>
+  <string name="adb_over_network_summary">Aktiver TCP/IP-feilsøking over nettverksgrensesnitt (Wi-Fi, USB-nettverk). Denne innstillingen tilbakestilles ved omstart</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">Advarsel: Når ADB over nettverk er aktivert, er telefonen åpen for inntrenging på alle tilkoblede nettverk, inkludert GSM datanettverk! \n\nBare bruk denne funksjonen når du er koblet på klarerte nettverk.\n\nVil du aktivere denne funksjonen?</string>
+  <string name="twilight_mode_location_enable">Aktiver</string>
   <!-- Encryption and credential -->
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Finn fingeravtrykksleser på <xliff:g id="sensor_location">%1$s </xliff:g> på telefonen.</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">bak</string>
+  <string name="security_settings_fingerprint_sensor_location_front">foran</string>
+  <string name="security_settings_fingerprint_sensor_location_left">venstre side</string>
+  <string name="security_settings_fingerprint_sensor_location_right">høyre side</string>
+  <string name="screenshot_shutter_sound_title">Skjermbilde lyd</string>
+  <string name="heads_up_notifications_enabled_title">Tillat varsel-vindu</string>
+  <string name="heads_up_notifications_enabled_summary">Tillate eller deaktivere varsel-vindu for alle meldinger</string>
+  <string name="ramp_up_time_ten">10s</string>
+  <string name="ramp_up_time_twenty">20s</string>
+  <string name="ramp_up_time_thirty">30s</string>
+  <string name="ramp_up_time_sixty">60s</string>
 </resources>

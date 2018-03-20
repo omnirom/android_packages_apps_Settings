@@ -20,56 +20,56 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="style_settings_title">Estilo</string>
-  <string name="header_category_omni">Extras Omni</string>
-  <string name="omni_dashboard_summary">Omnify o seu dispositivo</string>
-  <string name="style_settings_summary">Wallpapers e outros swag</string>
-  <string name="omni_device_parts">Características do dispositivo</string>
-  <string name="columns_menu">Layout de coluna</string>
-  <string name="hide_summary_menu">Esconder o sumário</string>
-  <string name="bars_settings_title">Barras e tela de bloqueio</string>
+  <string name="header_category_omni">OmniGears</string>
+  <string name="omni_dashboard_summary">Omnifique o seu dispositivo</string>
+  <string name="style_settings_summary">Imagens de fundo e outras personalizações</string>
+  <string name="omni_device_parts">Funcionalidades do dispositivo</string>
+  <string name="columns_menu">Esquema em colunas</string>
+  <string name="hide_summary_menu">Ocultar resumos</string>
+  <string name="bars_settings_title">Barras e ecrã de bloqueio</string>
   <string name="button_settings_title">Botões</string>
   <string name="mod_version">Versão Omni</string>
-  <string name="mod_version_default">Desconhecido</string>
+  <string name="mod_version_default">Desconhecida</string>
   <string name="more_settings_title">Mais</string>
-  <string name="global_actions_title">Menu de energia</string>
+  <string name="global_actions_title">Menu de ligar/desligar</string>
   <string name="display_rotation_title">Rotação</string>
   <string name="display_rotation_summary">Configurar os ângulos de rotação possíveis</string>
-  <string name="battery_light_settings_title">Configurações da luz de bateria</string>
-  <string name="link_volume_option_title">Associar volumes de toque e notificação</string>
+  <string name="battery_light_settings_title">Definições da luz de bateria</string>
+  <string name="link_volume_option_title">Associar volumes de toque e notificações</string>
   <!-- Custom light color -->
-  <string name="light_customization">Luz led de notificação</string>
+  <string name="light_customization">Luz de notificação</string>
   <string name="custom_light_title">Cor da luz</string>
-  <string name="custom_light_on_time_title">"Tempo de ativação da luz durante o pulso led (ms)"</string>
-  <string name="custom_light_off_time_title">"Tempo de desligamento durante o pulso led (ms)"</string>
-  <string name="app_notifications_info_desc">Toque num dos canais acima para configurar suas cores claras e outras opções</string>
+  <string name="custom_light_on_time_title">"Duração da luz quando LIGADA (ms)"</string>
+  <string name="custom_light_off_time_title">"Duração da luz quando DESLIGADA (ms)"</string>
+  <string name="app_notifications_info_desc">Toque numa das categorias acima para configurar as cores das luzes e outras opções</string>
   <string name="value_equals_default">Automático</string>
-  <string name="show_light_on_zen_title">Piscar durante Não Incomodar</string>
+  <string name="show_light_on_zen_title">Piscar durante o modo Não Incomodar</string>
   <!-- Android debugging over WiFi -->
   <string name="adb_over_network">ADB através da rede</string>
-  <string name="adb_over_network_summary">Habilita depuração por interfaces de rede TCP/IP (Wi-Fi, redes USB). Esta configuração é perdida ao reiniciar</string>
+  <string name="adb_over_network_summary">Ativar depuração através de TCP/IP pelas interfaces de rede (Wi-Fi, redes USB). Esta configuração é perdida ao reiniciar</string>
   <!-- Warning for Adb over Network -->
-  <string name="adb_over_network_warning">Aviso: Quando o ADB através da rede estiver activado, o seu telefone fica desprotegido e pode facilitar invasões em todas as redes a que estiver ligado, incluindo rede de dados GSM! \n\nUsar esta funcionalidade apenas quando estiver ligado a redes fiáveis.\n\nQuer mesmo activar esta funcionalidade?</string>
-  <string name="battery_image">Imagem da Bateria</string>
-  <string name="battery_image_description">Mostrar a imagem da bateria na barra de status</string>
+  <string name="adb_over_network_warning">AVISO: Quando o ADB através da rede está ativado, o seu telefone fica vulnerável a invasões através de todas as redes a que estiver ligado, incluindo redes de dados GSM!\n\nUtilize esta funcionalidade apenas quando estiver ligado a redes confiáveis.\n\nDeseja mesmo ativar esta funcionalidade?</string>
+  <string name="battery_image">Ícone da bateria</string>
+  <string name="battery_image_description">Mostrar a imagem da bateria na barra de estado</string>
   <string name="twilight_mode_location_dialog">Localização desativada</string>
-  <string name="twilight_mode_location_disabled">Serviços de localização inactivos</string>
+  <string name="twilight_mode_location_disabled">O acesso à localização está desativado</string>
   <string name="twilight_mode_location_enable">Ativar</string>
   <!-- Encryption and credential -->
   <string name="custom_encryption_and_credential_settings_summary_on">O dispositivo está encriptado</string>
   <string name="custom_encryption_and_credential_settings_summary_off">O dispositivo está desencriptado</string>
-  <string name="select_sim_for_sms">Selecione um SIM para SMS</string>
+  <string name="select_sim_for_sms">Selecione um cartão SIM para SMS</string>
   <!-- Format string for fingerprint location message -->
-  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Localize o sensor de impressão digital na <xliff:g id="sensor_location">%1$s</xliff:g> do seu equipamento.</string>
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Localize o sensor de impressões digitais na <xliff:g id="sensor_location">%1$s</xliff:g> do seu telefone.</string>
   <!-- Fingerprint sensor locations -->
   <string name="security_settings_fingerprint_sensor_location_back">traseira</string>
   <string name="security_settings_fingerprint_sensor_location_front">frente</string>
-  <string name="security_settings_fingerprint_sensor_location_left">lado esquerdo</string>
-  <string name="security_settings_fingerprint_sensor_location_right">lado direito</string>
+  <string name="security_settings_fingerprint_sensor_location_left">lateral esquerda</string>
+  <string name="security_settings_fingerprint_sensor_location_right">lateral direita</string>
   <string name="screenshot_shutter_sound_title">Som da captura de ecrã</string>
   <string name="heads_up_notifications_enabled_title">Permitir notificações flutuantes</string>
-  <string name="heads_up_notifications_enabled_summary">Activar ou desactivar as notificações flutuantes</string>
-  <string name="increasing_ring_volume_option_title">Aumentar volume do toque</string>
-  <string name="increasing_ring_ramp_up_title">Tempo de arranque para o volume do toque</string>
+  <string name="heads_up_notifications_enabled_summary">Ativar ou desativar as notificações flutuantes</string>
+  <string name="increasing_ring_volume_option_title">Volume de toque gradual</string>
+  <string name="increasing_ring_ramp_up_title">Tempo de aumento gradual do volume do toque</string>
   <string name="ramp_up_time_ten">10s</string>
   <string name="ramp_up_time_twenty">20s</string>
   <string name="ramp_up_time_thirty">30s</string>

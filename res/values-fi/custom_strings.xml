@@ -21,6 +21,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="style_settings_title">Tyyli</string>
   <string name="header_category_omni">OmniGears</string>
+  <string name="omni_dashboard_summary">Lisää Omnia laitteeseesi</string>
   <string name="style_settings_summary">Taustakuvat ja muu sälä</string>
   <string name="omni_device_parts">Laitteen ominaisuudet</string>
   <string name="hide_summary_menu">Piilota yhteenveto</string>

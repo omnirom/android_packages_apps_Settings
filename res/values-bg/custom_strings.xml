@@ -19,10 +19,18 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="style_settings_title">Стил</string>
+  <string name="button_settings_title">Бутони</string>
+  <string name="more_settings_title">Още</string>
   <!-- Custom light color -->
+  <string name="value_equals_default">Автоматично</string>
   <!-- Android debugging over WiFi -->
   <!-- Warning for Adb over Network -->
   <!-- Encryption and credential -->
   <!-- Format string for fingerprint location message -->
   <!-- Fingerprint sensor locations -->
+  <string name="ramp_up_time_ten">10 сек.</string>
+  <string name="ramp_up_time_twenty">20 сек.</string>
+  <string name="ramp_up_time_thirty">30 сек.</string>
+  <string name="ramp_up_time_sixty">60 сек.</string>
 </resources>

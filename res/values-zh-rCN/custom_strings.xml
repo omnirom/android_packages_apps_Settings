@@ -69,6 +69,7 @@
   <string name="heads_up_notifications_enabled_title">开启悬浮通知</string>
   <string name="heads_up_notifications_enabled_summary">开启或关闭所有悬浮通知</string>
   <string name="increasing_ring_volume_option_title">渐强的铃声音量</string>
+  <string name="increasing_ring_ramp_up_title">上升时间到圆环容量</string>
   <string name="ramp_up_time_ten">10秒</string>
   <string name="ramp_up_time_twenty">20秒</string>
   <string name="ramp_up_time_thirty">30秒</string>
