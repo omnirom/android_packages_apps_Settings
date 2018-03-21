@@ -144,6 +144,7 @@ import org.omnirom.omnigears.interfacesettings.StatusbarClockSettings;
 import org.omnirom.omnigears.interfacesettings.StyleSettings;
 import org.omnirom.omnigears.moresettings.MoreSettings;
 import org.omnirom.omnigears.moresettings.OmniJawsSettings;
+import org.omnirom.omnigears.service.EventServiceSettings;
 
 public class SettingsGateway {
 
@@ -279,7 +280,8 @@ public class SettingsGateway {
             OmniJawsSettings.class.getName(),
             StatusbarBatterySettings.class.getName(),
             StatusbarClockSettings.class.getName(),
-            NetworkTraffic.class.getName()
+            NetworkTraffic.class.getName(),
+            EventServiceSettings.class.getName()
     };
 
     public static final String[] SETTINGS_FOR_RESTRICTED = {
@@ -330,6 +332,7 @@ public class SettingsGateway {
             Settings.OmniJawsSettingsActivity.class.getName(),
             Settings.BatteryStyleSettingsActivity.class.getName(),
             Settings.BatteryClockSettingsActivity.class.getName(),
-            Settings.NetworkTrafficSettingsActivity.class.getName()
+            Settings.NetworkTrafficSettingsActivity.class.getName(),
+            Settings.EventServiceSettingsActivity.class.getName()
     };
 }

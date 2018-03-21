@@ -3441,5 +3441,19 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+        <activity android:name=".Settings$EventServiceSettingsActivity"
+                  android:label="@string/event_service_settings_title"
+                  android:icon="@drawable/ic_settings_event_service"
+                  android:taskAffinity="com.android.settings"
+                  android:parentActivityName="Settings$OmniDashboardActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                       android:value="org.omnirom.omnigears.service.EventServiceSettings" />
+            <meta-data android:name="com.android.settings.summary"
+                       android:resource="@string/summary_empty"/>
+        </activity>
     </application>
 </manifest>
