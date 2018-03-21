@@ -103,6 +103,7 @@ import org.omnirom.omnigears.interfacesettings.StatusbarBatterySettings;
 import org.omnirom.omnigears.interfacesettings.StatusbarClockSettings;
 import org.omnirom.omnigears.interfacesettings.StyleSettings;
 import org.omnirom.omnigears.moresettings.MoreSettings;
+import org.omnirom.omnigears.service.EventServiceSettings;
 
 public final class SearchIndexableResources {
 
@@ -243,6 +244,7 @@ public final class SearchIndexableResources {
         addIndex(StatusbarBatterySettings.class, NO_DATA_RES_ID, R.drawable.ic_bars_tile);
         addIndex(StatusbarClockSettings.class, NO_DATA_RES_ID, R.drawable.ic_bars_tile);
         addIndex(NetworkTraffic.class, NO_DATA_RES_ID, R.drawable.ic_bars_tile);
+        addIndex(EventServiceSettings.class, NO_DATA_RES_ID, R.drawable.ic_settings_event_service);
     }
 
     private SearchIndexableResources() {
