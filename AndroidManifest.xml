@@ -3465,5 +3465,14 @@
             <meta-data android:name="com.android.settings.title"
                        android:resource="@string/easter_settings_title" />
         </activity>
+        <activity
+            android:name="org.omnirom.omnigears.ui.MultiAppSelectorActivity"
+            android:theme="@android:style/Theme.Dialog"
+            android:excludeFromRecents="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>
