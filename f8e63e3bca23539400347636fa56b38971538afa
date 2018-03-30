@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cf286e8b_212635f1",
+        "filename": "res/xml/security_settings_pin_sub.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2018-03-30T23:08:02Z",
+      "side": 1,
+      "message": "you MUST add android:defaultValue\u003d\"false\"",
+      "revId": "f8e63e3bca23539400347636fa56b38971538afa",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
