@@ -986,11 +986,6 @@ public class SettingsActivity extends SettingsDrawerActivity
             case R.id.hide_summary_menu:
                 boolean hideSummary = mAppPreferences.getBoolean(KEY_HIDE_SUMMARY, false);
                 mAppPreferences.edit().putBoolean(KEY_HIDE_SUMMARY, !hideSummary).commit();
-                // TODO remove after fun ended
-                this.getPackageManager().setComponentEnabledSetting(
-                        new ComponentName("com.android.settings", "com.android.settings.EasterFunActivity"),
-                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                        PackageManager.DONT_KILL_APP);
                 return true;
         }
         return super.onOptionsItemSelected(item);
