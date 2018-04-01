@@ -70,8 +70,56 @@
   <string name="heads_up_notifications_enabled_summary">Povoliť alebo zakázať všetky plávajúce upozornenia</string>
   <string name="increasing_ring_volume_option_title">Zvyšovanie hlasitosti zvonenia</string>
   <string name="increasing_ring_ramp_up_title">Trvanie zvyšovania hlasitosti zvonenia</string>
+  <string name="increasing_ring_volume_option_summary">Zvýšiť hlasitosť zvonenia na vybranú úroveň</string>
   <string name="ramp_up_time_ten">10s</string>
   <string name="ramp_up_time_twenty">20s</string>
   <string name="ramp_up_time_thirty">30s</string>
   <string name="ramp_up_time_sixty">60s</string>
+  <string name="ramp_up_time_five">5s</string>
+  <string name="ramp_up_time_fifteen">15s</string>
+  <string name="force_safe_media_volume_disabled_title">Zakázať kontrolu bezpečnej hlasitosti</string>
+  <string name="force_safe_media_volume_disabled_summary">Neobmedzovať hlasitosť médií pre slúchadlá</string>
+  <!-- Manual provisioning support -->
+  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> je <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
+  <string name="sim_enabled">povolená</string>
+  <string name="sim_disabled">zakázaná</string>
+  <string name="sim_missing">chýbajúca alebo chybná</string>
+  <string name="sim_enabler_need_disable_sim">SIM karta bude deaktivovaná. Chcete pokračovať?</string>
+  <string name="sim_enabler_will_disable_sim_title">Upozornenie</string>
+  <string name="sim_enabler_need_switch_data_service">Táto SIM karta bude deaktivovaná a SIM karta <xliff:g id="slotid">%1$s</xliff:g> bude použitá pre dátové služby. Ste si istí, že chcete pokračovať?</string>
+  <string name="sim_enabler_airplane_on">Počas režimu lietadlo nemožno vykonať operáciu.</string>
+  <string name="sim_enabler_in_call">Počas režimu volania nemožno vykonať operáciu.</string>
+  <string name="sim_enabler_both_inactive">Nemožno zakázať všetky SIM karty</string>
+  <string name="sim_enabler_enabling">Aktivácia\u2026</string>
+  <string name="sim_enabler_disabling">Deaktivácia\u2026</string>
+  <string name="sub_activate_success">SIM karta aktivovaná.</string>
+  <string name="sub_activate_failed">Aktivácia zlyhala.</string>
+  <string name="sub_deactivate_success">SIM karta deaktivovaná.</string>
+  <string name="sub_deactivate_failed">Deaktivácia zlyhala.</string>
+  <string name="force_ambient_for_media_pref_title">Upozornenia o hudbe v okolí</string>
+  <string name="force_ambient_for_media_off">Zakázané</string>
+  <string name="force_ambient_for_media_on">Povolené</string>
+  <string name="force_ambient_for_media_on_forced">Povolené a vynútené</string>
+  <string name="force_ambient_for_media_on_forced_clean">Povolené a minimálne vynútené</string>
+  <string name="ambient_ticker_footer">Táto funkcia umožňuje zobraziť aktuálne informácie o hudobných skladbách na obrazovke uzamknutia so zapnutým alebo vypnutým Ambientnym zobrazením.\n\nMôžete si vybrať z dvoch rozložení, normálneho alebo minimálneho. Aj keď táto funkcia využíva výhody Ambientneho zobrazenia, nezávisí na ňom.</string>
+  <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_title">Menej časté zvuky upozornení</string>
+  <string name="less_notification_sounds_summary">Prehrať zvuk uznámenia každej aplikácie len raz za stanovené časové obdobie</string>
+  <string name="less_notification_sounds_default">Predvolené správanie</string>
+  <string name="less_notification_sounds_3s">Každé 3 sekundy</string>
+  <string name="less_notification_sounds_5s">Každých 5 sekúnd</string>
+  <string name="less_notification_sounds_10s">Každých 10 sekúnd</string>
+  <string name="less_notification_sounds_15s">Každých 15 sekúnd</string>
+  <string name="less_notification_sounds_30s">Každých 30 sekúnd</string>
+  <string name="less_notification_sounds_45s">Každých 45 sekúnd</string>
+  <string name="less_notification_sounds_1m">Každú 1 minútu</string>
+  <string name="less_notification_sounds_2m">Každé 2 minúty</string>
+  <string name="less_notification_sounds_5m">Každých 5 minút</string>
+  <string name="notification_log_summary">Zobraziť denník histórie upozornení</string>
+  <string name="select_default_usb_configuration_title">Vyberte predvolenú konfiguráciu USB</string>
+  <string name="select_default_usb_configuration_dialog_title">Vyberte konfiguráciu USB</string>
+  <string name="select_usb_default_confguration_warning">VAROVANIE: Predvolená konfigurácia USB je zapnutá, aj keď je zariadenie uzamknuté!\n\nNaozaj chcete povoliť túto konfiguráciu?</string>
+  <string name="usb_paranoia_connect_title">USB bezpečné pripojenie</string>
+  <string name="usb_paranoia_connect_summary">Ak je telefón na zabezpečenej obrazovke uzamknutia, pri pripojení na USB povolí iba režim nabíjania</string>
+  <string name="usb_category_title">USB</string>
 </resources>

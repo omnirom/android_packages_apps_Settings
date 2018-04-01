@@ -30,7 +30,9 @@
   <string name="mod_version">Omni versio</string>
   <string name="mod_version_default">Tuntematon</string>
   <string name="more_settings_title">Lisää</string>
+  <string name="global_actions_title">Käynnistysvalikko</string>
   <string name="display_rotation_title">Näytön kierto</string>
+  <string name="display_rotation_summary">Määritä mahdolliset kiertokulmat</string>
   <string name="battery_light_settings_title">Akun LED asetukset</string>
   <!-- Custom light color -->
   <string name="light_customization">Led-ilmoitusvalo</string>
@@ -59,4 +61,17 @@
   <string name="ramp_up_time_twenty">20s</string>
   <string name="ramp_up_time_thirty">30s</string>
   <string name="ramp_up_time_sixty">60s</string>
+  <string name="ramp_up_time_five">5s</string>
+  <string name="ramp_up_time_fifteen">15s</string>
+  <!-- Manual provisioning support -->
+  <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_3s">Joka 3. sekunti</string>
+  <string name="less_notification_sounds_5s">Joka 5. sekunti</string>
+  <string name="less_notification_sounds_10s">Joka 10. sekunti</string>
+  <string name="less_notification_sounds_15s">Joka 15. sekunti</string>
+  <string name="less_notification_sounds_30s">Joka 30. sekunti</string>
+  <string name="less_notification_sounds_45s">Joka 45. sekunti</string>
+  <string name="less_notification_sounds_1m">Joka minuutti</string>
+  <string name="less_notification_sounds_2m">Joka 2. minuutti</string>
+  <string name="less_notification_sounds_5m">Joka 5. minuutti</string>
 </resources>

@@ -70,8 +70,56 @@
   <string name="heads_up_notifications_enabled_summary">开启或关闭所有悬浮通知</string>
   <string name="increasing_ring_volume_option_title">渐强的铃声音量</string>
   <string name="increasing_ring_ramp_up_title">上升时间到圆环容量</string>
+  <string name="increasing_ring_volume_option_summary">将铃声音量增加到选定的音量</string>
   <string name="ramp_up_time_ten">10秒</string>
   <string name="ramp_up_time_twenty">20秒</string>
   <string name="ramp_up_time_thirty">30秒</string>
   <string name="ramp_up_time_sixty">60秒</string>
+  <string name="ramp_up_time_five">5秒</string>
+  <string name="ramp_up_time_fifteen">15 秒</string>
+  <string name="force_safe_media_volume_disabled_title">禁用安全音量检查</string>
+  <string name="force_safe_media_volume_disabled_summary">不要限制耳机的媒体音量</string>
+  <!-- Manual provisioning support -->
+  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
+  <string name="sim_enabled">已启用</string>
+  <string name="sim_disabled">已禁用</string>
+  <string name="sim_missing">丢失或错误</string>
+  <string name="sim_enabler_need_disable_sim">SIM 卡将被停用。是否继续？</string>
+  <string name="sim_enabler_will_disable_sim_title">注意</string>
+  <string name="sim_enabler_need_switch_data_service">此 sim 卡将被禁用, sim <xliff:g id="slotid">%1$s</xliff:g> 将用于数据服务。是否确实要继续？</string>
+  <string name="sim_enabler_airplane_on">无法在飞行模式打开时执行操作。</string>
+  <string name="sim_enabler_in_call">无法在通话过程中执行操作。</string>
+  <string name="sim_enabler_both_inactive">无法禁用所有SIM卡</string>
+  <string name="sim_enabler_enabling">激活\ U2026</string>
+  <string name="sim_enabler_disabling">停用\ U2026</string>
+  <string name="sub_activate_success">SIM激活。</string>
+  <string name="sub_activate_failed">激活失败。</string>
+  <string name="sub_deactivate_success">SIM已禁用。</string>
+  <string name="sub_deactivate_failed">取消激活失败。</string>
+  <string name="force_ambient_for_media_pref_title">环境音乐行情</string>
+  <string name="force_ambient_for_media_off">禁用</string>
+  <string name="force_ambient_for_media_on">已启用</string>
+  <string name="force_ambient_for_media_on_forced">启用和强制</string>
+  <string name="force_ambient_for_media_on_forced_clean">启用并强制最小化</string>
+  <string name="ambient_ticker_footer">环境音乐代码允许显示当前的音乐轨道信息的锁屏界面与或没有环境显示启用. \n您可以从两个布局中选择正常和最小。虽然此功能利用了环境显示, 但它并不依赖于它。</string>
+  <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_title">减少通知频率</string>
+  <string name="less_notification_sounds_summary">每次设置的时间段只播放一次应用程序的通知声音</string>
+  <string name="less_notification_sounds_default">默认行为</string>
+  <string name="less_notification_sounds_3s">每 3 秒</string>
+  <string name="less_notification_sounds_5s">每 5 秒</string>
+  <string name="less_notification_sounds_10s">每 10 秒</string>
+  <string name="less_notification_sounds_15s">每 15 秒</string>
+  <string name="less_notification_sounds_30s">每 30 秒</string>
+  <string name="less_notification_sounds_45s">每 45 秒</string>
+  <string name="less_notification_sounds_1m">每 1 分钟</string>
+  <string name="less_notification_sounds_2m">每 2 分钟</string>
+  <string name="less_notification_sounds_5m">每 5 分钟</string>
+  <string name="notification_log_summary">显示通知历史记录日志</string>
+  <string name="select_default_usb_configuration_title">选择默认 USB 配置</string>
+  <string name="select_default_usb_configuration_dialog_title">选择 USB 配置</string>
+  <string name="select_usb_default_confguration_warning">警告: 在设备锁定时也启用默认 USB 配置! \n \n 是否确实要启用此配置？</string>
+  <string name="usb_paranoia_connect_title">USB 安全连接</string>
+  <string name="usb_paranoia_connect_summary">仅当 USB 插入安全锁定屏幕时才启用充电</string>
+  <string name="usb_category_title">USB</string>
 </resources>

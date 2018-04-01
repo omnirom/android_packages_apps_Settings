@@ -60,4 +60,6 @@
   <string name="security_settings_fingerprint_sensor_location_front">przód</string>
   <string name="security_settings_fingerprint_sensor_location_left">lewa strona</string>
   <string name="security_settings_fingerprint_sensor_location_right">prawa strona</string>
+  <!-- Manual provisioning support -->
+  <!-- Less Notification sounds -->
 </resources>

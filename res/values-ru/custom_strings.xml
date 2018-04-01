@@ -70,8 +70,47 @@
   <string name="heads_up_notifications_enabled_summary">Разрешить или запретить всплывающие уведомления</string>
   <string name="increasing_ring_volume_option_title">Возрастающая громкость звонка</string>
   <string name="increasing_ring_ramp_up_title">Время нарастания громкости</string>
+  <string name="increasing_ring_volume_option_summary">Увеличить громкость звонка до выбранного уровня</string>
   <string name="ramp_up_time_ten">10 сек.</string>
   <string name="ramp_up_time_twenty">20 сек.</string>
   <string name="ramp_up_time_thirty">30 сек.</string>
   <string name="ramp_up_time_sixty">60 сек.</string>
+  <string name="ramp_up_time_five">5 сек.</string>
+  <string name="ramp_up_time_fifteen">15 сек.</string>
+  <string name="force_safe_media_volume_disabled_title">Отключить проверку безопасной громкости</string>
+  <string name="force_safe_media_volume_disabled_summary">Не ограничивать громкость для гарнитуры</string>
+  <!-- Manual provisioning support -->
+  <string name="sim_enabled">включена</string>
+  <string name="sim_disabled">отключена</string>
+  <string name="sim_missing">отсутствует или неисправна</string>
+  <string name="sim_enabler_need_disable_sim">SIM-карта будет деактивирована. Вы хотите продолжить?</string>
+  <string name="sim_enabler_will_disable_sim_title">Внимание!</string>
+  <string name="sim_enabler_need_switch_data_service">Эта SIM будет отключена, и SIM <xliff:g id="slotid">%1$s</xliff:g> будет использоваться для передачи данных. Вы уверены, что вы хотите продолжить?</string>
+  <string name="sim_enabler_airplane_on">Не возможно выполнить операцию, пока включен режим полета.</string>
+  <string name="sim_enabler_in_call">Не возможно выполнить операцию при звонке.</string>
+  <string name="sim_enabler_both_inactive">Невозможно отключить все SIM-карты</string>
+  <string name="sim_enabler_enabling">Активация\u2026</string>
+  <string name="sim_enabler_disabling">Деактивация\u2026</string>
+  <string name="sub_activate_success">SIM-карта активирована.</string>
+  <string name="sub_activate_failed">Ошибка активации.</string>
+  <string name="sub_deactivate_success">SIM-карта деактивирована.</string>
+  <string name="sub_deactivate_failed">Ошибка деактивации.</string>
+  <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_default">Поведение по умолчанию</string>
+  <string name="less_notification_sounds_3s">Каждые 3 секунды</string>
+  <string name="less_notification_sounds_5s">Каждые 5 секунд</string>
+  <string name="less_notification_sounds_10s">Каждые 10 секунд</string>
+  <string name="less_notification_sounds_15s">Каждые 15 секунд</string>
+  <string name="less_notification_sounds_30s">Каждые 30 секунд</string>
+  <string name="less_notification_sounds_45s">Каждые 45 секунд</string>
+  <string name="less_notification_sounds_1m">Каждую минуту</string>
+  <string name="less_notification_sounds_2m">Каждые 2 минуты</string>
+  <string name="less_notification_sounds_5m">Каждые 5 минут</string>
+  <string name="notification_log_summary">Показать журнал уведомлений</string>
+  <string name="select_default_usb_configuration_title">Выберите конфигурацию USB по умолчанию</string>
+  <string name="select_default_usb_configuration_dialog_title">Выберите конфигурацию USB</string>
+  <string name="select_usb_default_confguration_warning">Внимание: Конфигурация USB по-умолчанию включена даже когда устройство заблокировано!\n\nВы действительно хотите включить эту конфигурацию?</string>
+  <string name="usb_paranoia_connect_title">Безопасное USB подключение</string>
+  <string name="usb_paranoia_connect_summary">Включать только зарядку, когда кабель подключен при заблокированном устройстве</string>
+  <string name="usb_category_title">USB</string>
 </resources>

@@ -55,4 +55,6 @@
   <string name="ramp_up_time_twenty">20s</string>
   <string name="ramp_up_time_thirty">30s</string>
   <string name="ramp_up_time_sixty">60s</string>
+  <!-- Manual provisioning support -->
+  <!-- Less Notification sounds -->
 </resources>

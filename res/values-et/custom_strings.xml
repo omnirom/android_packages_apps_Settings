@@ -70,8 +70,54 @@
   <string name="heads_up_notifications_enabled_summary">Luba või keela kõikide teadete piilumine</string>
   <string name="increasing_ring_volume_option_title">Suurenev helina helitugevus</string>
   <string name="increasing_ring_ramp_up_title">Helina helitugevuse tõstmise aeg</string>
+  <string name="increasing_ring_volume_option_summary">Suurenda helina tugevust valitud helitugevuse puhul</string>
   <string name="ramp_up_time_ten">10s</string>
   <string name="ramp_up_time_twenty">20s</string>
   <string name="ramp_up_time_thirty">30s</string>
   <string name="ramp_up_time_sixty">60s</string>
+  <string name="ramp_up_time_five">5s</string>
+  <string name="ramp_up_time_fifteen">15s</string>
+  <string name="force_safe_media_volume_disabled_title">Keela ohutu helitugevuse kontroll</string>
+  <string name="force_safe_media_volume_disabled_summary">Ära piira meedia helitugevust peakomplektide puhul</string>
+  <!-- Manual provisioning support -->
+  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> on <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
+  <string name="sim_enabled">lubatud</string>
+  <string name="sim_disabled">keelatud</string>
+  <string name="sim_missing">puuduv või vigane</string>
+  <string name="sim_enabler_need_disable_sim">SIM-kaart desaktiveeritakse. Kas soovid jätkata?</string>
+  <string name="sim_enabler_will_disable_sim_title">Tähelepanu</string>
+  <string name="sim_enabler_need_switch_data_service">See SIM keelatakse ja SIMi <xliff:g id="slotid">%1$s</xliff:g> kasutatakse andmesideteenuste jaoks. Kas soovid kindlasti jätkata?</string>
+  <string name="sim_enabler_airplane_on">Toimingut ei saa sooritada, kuni lennurežiim on aktiivne.</string>
+  <string name="sim_enabler_in_call">Toimingut ei saa sooritada kõne ajal.</string>
+  <string name="sim_enabler_both_inactive">Kõiki SIM-kaarte ei saa keelata</string>
+  <string name="sim_enabler_enabling">Aktiveerin\u2026</string>
+  <string name="sim_enabler_disabling">Desaktiveerin\u2026</string>
+  <string name="sub_activate_success">SIM aktiveeritud.</string>
+  <string name="sub_activate_failed">Aktiveerimine ebaõnnestus.</string>
+  <string name="sub_deactivate_success">SIM desaktiveeritud.</string>
+  <string name="sub_deactivate_failed">Desaktiveerimine ebaõnnestus.</string>
+  <string name="force_ambient_for_media_pref_title">Taustamuusika kuva</string>
+  <string name="force_ambient_for_media_off">Keelatud</string>
+  <string name="force_ambient_for_media_on">Lubatud</string>
+  <string name="force_ambient_for_media_on_forced">Lubatud ja sunnitud</string>
+  <string name="force_ambient_for_media_on_forced_clean">Lubatud ja sunnitud, minimaalne</string>
+  <string name="ambient_ticker_footer">Taustamuusika kuva lubab näidata hetkel käiva loo infot lukukuval või ilma Ambientse ekraani lubamiseta.\nSa võid valida kahe paigutuse seast - tavaline või minimaalne. Kuigi see funktsioon töötab hästi Ambientse ekraaniga, ei sõltu see sellest.</string>
+  <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_title">Harvemad teatehelid</string>
+  <string name="less_notification_sounds_summary">Esita iga rakenduse teateheli ainult ühe korra kindlas ajaperioodis</string>
+  <string name="less_notification_sounds_default">Vaikimisi käitumine</string>
+  <string name="less_notification_sounds_3s">Iga 3 sekundi järel</string>
+  <string name="less_notification_sounds_5s">Iga 5 sekundi järel</string>
+  <string name="less_notification_sounds_10s">Iga 10 sekundi järel</string>
+  <string name="less_notification_sounds_15s">Iga 15 sekundi järel</string>
+  <string name="less_notification_sounds_30s">Iga 30 sekundi järel</string>
+  <string name="less_notification_sounds_45s">Iga 45 sekundi järel</string>
+  <string name="less_notification_sounds_1m">Iga 1 minuti järel</string>
+  <string name="less_notification_sounds_2m">Iga 2 minuti järel</string>
+  <string name="less_notification_sounds_5m">Iga 5 minuti järel</string>
+  <string name="notification_log_summary">Kuva teadete ajaloo logi</string>
+  <string name="select_default_usb_configuration_title">Vali vaikimisi USB-seadistus</string>
+  <string name="select_default_usb_configuration_dialog_title">Vali USB-seadistus</string>
+  <string name="usb_paranoia_connect_title">USB turvaline ühendus</string>
+  <string name="usb_category_title">USB</string>
 </resources>
