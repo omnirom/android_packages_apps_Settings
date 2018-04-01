@@ -70,8 +70,40 @@
   <string name="heads_up_notifications_enabled_summary">Permitir o desactivar vistazo para todas las notificaciones</string>
   <string name="increasing_ring_volume_option_title">Aumento de volumen de timbre</string>
   <string name="increasing_ring_ramp_up_title">Aumentar tiempo para volumen ascendente</string>
+  <string name="increasing_ring_volume_option_summary">Aumentar el volumen del timbre al volumen seleccionado</string>
   <string name="ramp_up_time_ten">10s</string>
   <string name="ramp_up_time_twenty">20s</string>
   <string name="ramp_up_time_thirty">30s</string>
   <string name="ramp_up_time_sixty">60s</string>
+  <string name="ramp_up_time_five">5s</string>
+  <string name="ramp_up_time_fifteen">15s</string>
+  <string name="force_safe_media_volume_disabled_title">Deshabilitar comprobación de volumen seguro</string>
+  <string name="force_safe_media_volume_disabled_summary">No limitar el volumen de medios para los auriculares</string>
+  <!-- Manual provisioning support -->
+  <string name="sim_enabled">habilitado</string>
+  <string name="sim_disabled">deshabilitado</string>
+  <string name="sim_enabler_need_disable_sim">Tarjeta SIM se desactivará. ¿Desea continuar?</string>
+  <string name="sim_enabler_will_disable_sim_title">Atención</string>
+  <string name="sim_enabler_airplane_on">No se puede realizar la operación mientras el modo avión está activado.</string>
+  <string name="sim_enabler_in_call">No se puede realizar la operación durante una llamada.</string>
+  <string name="sim_enabler_both_inactive">No es posible desactivar todas las tarjetas SIM</string>
+  <string name="sub_activate_success">SIM activada.</string>
+  <string name="sub_activate_failed">Error de activación.</string>
+  <string name="sub_deactivate_success">SIM desactivada.</string>
+  <string name="force_ambient_for_media_off">Deshabilitado</string>
+  <string name="force_ambient_for_media_on">Habilitado</string>
+  <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_3s">Cada 3 segundos</string>
+  <string name="less_notification_sounds_5s">Cada 5 segundos</string>
+  <string name="less_notification_sounds_10s">Cada 10 segundos</string>
+  <string name="less_notification_sounds_15s">Cada 15 segundos</string>
+  <string name="less_notification_sounds_30s">Cada 30 segundos</string>
+  <string name="less_notification_sounds_45s">Cada 45 segundos</string>
+  <string name="less_notification_sounds_1m">Cada minuto</string>
+  <string name="less_notification_sounds_2m">Cada 2 minutos</string>
+  <string name="less_notification_sounds_5m">Cada 5 minutos</string>
+  <string name="notification_log_summary">Mostrar historial de notificaciones</string>
+  <string name="select_default_usb_configuration_title">Seleccione configuración de USB por defecto</string>
+  <string name="select_default_usb_configuration_dialog_title">Seleccione configuración de USB</string>
+  <string name="usb_category_title">USB</string>
 </resources>

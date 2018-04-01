@@ -65,4 +65,6 @@
   <string name="security_settings_fingerprint_sensor_location_front">în fața</string>
   <string name="security_settings_fingerprint_sensor_location_left">pe partea stângă a</string>
   <string name="security_settings_fingerprint_sensor_location_right">pe partea dreaptă a</string>
+  <!-- Manual provisioning support -->
+  <!-- Less Notification sounds -->
 </resources>

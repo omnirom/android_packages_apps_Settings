@@ -70,8 +70,56 @@
   <string name="heads_up_notifications_enabled_summary">Lebegő értesítések engedélyezése vagy tiltása</string>
   <string name="increasing_ring_volume_option_title">Emelkedő csengő hangerő</string>
   <string name="increasing_ring_ramp_up_title">Felfutási idő a hangerőig</string>
+  <string name="increasing_ring_volume_option_summary">Csengetés hangerejének növelése a kiválasztott hangerőre</string>
   <string name="ramp_up_time_ten">10mp</string>
   <string name="ramp_up_time_twenty">20mp</string>
   <string name="ramp_up_time_thirty">30mp</string>
   <string name="ramp_up_time_sixty">60mp</string>
+  <string name="ramp_up_time_five">5 mp</string>
+  <string name="ramp_up_time_fifteen">15 mp</string>
+  <string name="force_safe_media_volume_disabled_title">Biztonságos hangerő ellenőrzésének letiltása</string>
+  <string name="force_safe_media_volume_disabled_summary">Ne korlátozza a fejhallgatókhoz a hangerőt</string>
+  <!-- Manual provisioning support -->
+  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
+  <string name="sim_enabled">engedélyezve</string>
+  <string name="sim_disabled">letiltva</string>
+  <string name="sim_missing">hiányzik vagy hibás</string>
+  <string name="sim_enabler_need_disable_sim">A SIM-kártya deaktiválásra kerül. Mégis folytatja?</string>
+  <string name="sim_enabler_will_disable_sim_title">Figyelem</string>
+  <string name="sim_enabler_need_switch_data_service">Ez a SIM letiltásra kerül, és a SIM <xliff:g id="slotid">%1$s</xliff:g> kerül az adatforgalomhoz használatra. Biztos, hogy folytatni akarja?</string>
+  <string name="sim_enabler_airplane_on">A műveletet nem lehet végrehajtani aktív repülőgép üzemmód mellett.</string>
+  <string name="sim_enabler_in_call">A műveletet nem lehet végrehajtani hívás közben.</string>
+  <string name="sim_enabler_both_inactive">Az összes SIM-kártya nem tiltható le</string>
+  <string name="sim_enabler_enabling">Aktiválás\u2026</string>
+  <string name="sim_enabler_disabling">Deaktiválás\u2026</string>
+  <string name="sub_activate_success">SIM aktiválva.</string>
+  <string name="sub_activate_failed">Aktiválás sikertelen.</string>
+  <string name="sub_deactivate_success">SIM deaktiválva.</string>
+  <string name="sub_deactivate_failed">Deaktiválás sikertelen.</string>
+  <string name="force_ambient_for_media_pref_title">Környezeti kijelző zene értesítése</string>
+  <string name="force_ambient_for_media_off">Letiltva</string>
+  <string name="force_ambient_for_media_on">Engedélyezve</string>
+  <string name="force_ambient_for_media_on_forced">Engedélyezve és kényszerítve</string>
+  <string name="force_ambient_for_media_on_forced_clean">Engedélyezve és minimális kényszerítve</string>
+  <string name="ambient_ticker_footer">Környezeti kijelző zene értesítése lehetővé teszi, hogy az aktuális zeneszám információit a zárképernyőn megjelenítse a Környezeti kijelző engedélyezésével, vagy anélkül.\n\nKét elrendezés közül választhat: normál és minimális. Bár ez a funkció kihasználja a környezeti kijelzőt, mégsem függ attól.</string>
+  <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_title">Kevésbé gyakori értesítési hangok</string>
+  <string name="less_notification_sounds_summary">Mindegyik alkalmazás értesítési hangját csak egyszer játssza le a beállított időtartamban</string>
+  <string name="less_notification_sounds_default">Alapértelmezett viselkedés</string>
+  <string name="less_notification_sounds_3s">3 másodpercenként</string>
+  <string name="less_notification_sounds_5s">5 másodpercenként</string>
+  <string name="less_notification_sounds_10s">10 másodpercenként</string>
+  <string name="less_notification_sounds_15s">15 másodpercenként</string>
+  <string name="less_notification_sounds_30s">30 másodpercenként</string>
+  <string name="less_notification_sounds_45s">45 másodpercenként</string>
+  <string name="less_notification_sounds_1m">1 percenként</string>
+  <string name="less_notification_sounds_2m">2 percenként</string>
+  <string name="less_notification_sounds_5m">5 percenként</string>
+  <string name="notification_log_summary">Az értesítési előzménynapló megtekintése</string>
+  <string name="select_default_usb_configuration_title">Válassza ki az alapértelmezett USB konfigurációt</string>
+  <string name="select_default_usb_configuration_dialog_title">Válassza ki az USB konfigurációt</string>
+  <string name="select_usb_default_confguration_warning">Figyelmeztetés: Alapértelmezett USB konfiguráció az engedélyezett akkor is, ha a készülék zárolva van!\n\nBiztosan engedélyezni kívánja ezt a konfigurációt?</string>
+  <string name="usb_paranoia_connect_title">Biztonságos USB kapcsolat</string>
+  <string name="usb_paranoia_connect_summary">Csak a töltést engedélyezze, ha az USB-t a biztonságos zárképernyő mellett csatlakoztatta</string>
+  <string name="usb_category_title">USB</string>
 </resources>

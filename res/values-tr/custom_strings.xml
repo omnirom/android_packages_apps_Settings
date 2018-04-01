@@ -70,8 +70,56 @@
   <string name="heads_up_notifications_enabled_summary">Bütün bildirimler için ekran üstü bildirime izin verin veyâ devre dışı bırakın</string>
   <string name="increasing_ring_volume_option_title">Artan zil sesi seviyesi</string>
   <string name="increasing_ring_ramp_up_title">Zil sesi seviyesinin artma müddeti</string>
+  <string name="increasing_ring_volume_option_summary">Zil sesi seviyesini seçilen ses seviyesine kadar artır</string>
   <string name="ramp_up_time_ten">10 saniye</string>
   <string name="ramp_up_time_twenty">20 saniye</string>
   <string name="ramp_up_time_thirty">30 saniye</string>
   <string name="ramp_up_time_sixty">60 saniye</string>
+  <string name="ramp_up_time_five">5 saniye</string>
+  <string name="ramp_up_time_fifteen">15 saniye</string>
+  <string name="force_safe_media_volume_disabled_title">Güvenli ses seviyesi yoklamasını devre dışı bırak</string>
+  <string name="force_safe_media_volume_disabled_summary">Kulaklıklar için olan medya sesi seviyesini sınırlama</string>
+  <!-- Manual provisioning support -->
+  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
+  <string name="sim_enabled">fa\'âl hale getirildi</string>
+  <string name="sim_disabled">devre dışı bırakıldı</string>
+  <string name="sim_missing">eksik veyâ hatâlı</string>
+  <string name="sim_enabler_need_disable_sim">SIM kart devre dışı bırakılacak. Devam etmek istiyor musunuz?</string>
+  <string name="sim_enabler_will_disable_sim_title">Dikkat</string>
+  <string name="sim_enabler_need_switch_data_service">Bu SIM devre dışı bırakılacak ve veri hizmetleri için SIM <xliff:g id="slotid">%1$s</xliff:g> kullanılacak. Devam etmek istediğinizden emin misiniz?</string>
+  <string name="sim_enabler_airplane_on">Uçak modu açıkken bu işlemi îfâ edemezsiniz.</string>
+  <string name="sim_enabler_in_call">Arama esnâsında bu işlemi îfâ edemezsiniz.</string>
+  <string name="sim_enabler_both_inactive">Bütün SIM kartlar devre dışı bırakılamıyor</string>
+  <string name="sim_enabler_enabling">Fa\'âl hâle getiriliyor\u2026</string>
+  <string name="sim_enabler_disabling">Devre dışı bırakılıyor\u2026</string>
+  <string name="sub_activate_success">SIM fa\'âl hâle getirildi.</string>
+  <string name="sub_activate_failed">Fa\'âl hâle getirilemedi.</string>
+  <string name="sub_deactivate_success">SIM devre dışı bırakıldı.</string>
+  <string name="sub_deactivate_failed">Devre dışı bırakılamadı.</string>
+  <string name="force_ambient_for_media_pref_title">Müzik Ma\'lumatı</string>
+  <string name="force_ambient_for_media_off">Devre dışı</string>
+  <string name="force_ambient_for_media_on">Fa\'âl</string>
+  <string name="force_ambient_for_media_on_forced">Fa\'âl ve mecbûrî</string>
+  <string name="force_ambient_for_media_on_forced_clean">Fa\'âl ve asgarî mecbûrîyet</string>
+  <string name="ambient_ticker_footer">Müzik Ma\'lumatı Fa\'âl ekran fa\'âl olsun veyâ olmasın mevcûd müzik ma\'lumatını kilit ekranında göstermenize imkân sağlar.\nStandart veyâ ufak düzenlerinden birini seçebilirsiniz. Fa\'âl ekrandan faydalanmasına rağmen bu husûsîyet fa\'âl ekrana tâbi değildir.</string>
+  <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_title">Daha seyrek bildirim sesleri</string>
+  <string name="less_notification_sounds_summary">Kararlaştırılan bir zaman devrinde her uygulamanın bildirim sesini sadece bir defa oynat</string>
+  <string name="less_notification_sounds_default">Standart Tavır</string>
+  <string name="less_notification_sounds_3s">Her 3 saniyede</string>
+  <string name="less_notification_sounds_5s">Her 5 saniyede</string>
+  <string name="less_notification_sounds_10s">Her 10 saniyede</string>
+  <string name="less_notification_sounds_15s">Her 15 saniyede</string>
+  <string name="less_notification_sounds_30s">Her 30 saniyede</string>
+  <string name="less_notification_sounds_45s">Her 45 saniyede</string>
+  <string name="less_notification_sounds_1m">Her 1 dakikada</string>
+  <string name="less_notification_sounds_2m">Her 2 dakikada</string>
+  <string name="less_notification_sounds_5m">Her 5 dakikada</string>
+  <string name="notification_log_summary">Bildirim geçmişi kaydını göster</string>
+  <string name="select_default_usb_configuration_title">Standart USB ayarını seçin</string>
+  <string name="select_default_usb_configuration_dialog_title">USB ayarını seçin</string>
+  <string name="select_usb_default_confguration_warning">ÎKÂZ: Standart USB ayarı cihaz kilitlendiğinde de fa\'âl hâle getirilir!\n\nBu ayarı sahiden fa\'âl hâle getirmek istiyor musunuz?</string>
+  <string name="usb_paranoia_connect_title">Güvenli USB bağlantısı</string>
+  <string name="usb_paranoia_connect_summary">Sadece güvenli kilit ekranlarında USB takıldığı zaman şarj et</string>
+  <string name="usb_category_title">USB</string>
 </resources>

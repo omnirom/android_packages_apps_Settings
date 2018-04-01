@@ -19,10 +19,53 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="style_settings_title">Stil</string>
+  <string name="header_category_omni">OmniMatorları</string>
+  <string name="omni_dashboard_summary">Cihazınızı tapın</string>
+  <string name="omni_device_parts">Cihaz xüsusiyyətləri</string>
+  <string name="columns_menu">Sütun tərtibatı</string>
+  <string name="hide_summary_menu">Qısa məzmunu gizlət</string>
+  <string name="button_settings_title">Düymələr</string>
+  <string name="mod_version">Omni versiyası</string>
+  <string name="mod_version_default">Naməlum</string>
+  <string name="more_settings_title">Daha çox</string>
+  <string name="global_actions_title">Güc menyusu</string>
+  <string name="display_rotation_title">Ekranı Fırlatmaq</string>
+  <string name="battery_light_settings_title">Batareya LED işığı parametrləri</string>
+  <string name="link_volume_option_title">Zəng və bildiriş səslərini birləşdir</string>
   <!-- Custom light color -->
+  <string name="value_equals_default">Avto</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">Şəbəkədən ADB</string>
+  <string name="adb_over_network_summary">Şəbəkə interfeyslərində (Wi-Fi, USB şəbəkələri) TCP/IP xəta aşkarlamanı aktivləşdir. Bu parametr yenidən başladıldıqda sıfırlanır</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">XƏBƏRDARLIQ: Şəbəkədə ADB aktiv olanda telefonunuz GSM məlumat şəbəkəsi də olmaqla bütün qoşulu şəbəkələrdən sui-istifadəyə açıq olacaq!\n\nBu xüsusiyyəti yalnız təhlükəsiz şəbəkələrə qoşulu olanda istifadə edin.\n\nBu xüsusiyyət aktivləşdirilsin?</string>
+  <string name="twilight_mode_location_enable">Aktivləşdir</string>
   <!-- Encryption and credential -->
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Telefonunuzun <xliff:g id="sensor_location">%1$s</xliff:g> bölməsində yerləşən barmaq izi sensorunu tapın.</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">arxa</string>
+  <string name="security_settings_fingerprint_sensor_location_front">ön</string>
+  <string name="security_settings_fingerprint_sensor_location_left">sol tərəf</string>
+  <string name="security_settings_fingerprint_sensor_location_right">sağ tərəf</string>
+  <string name="screenshot_shutter_sound_title">SS düymə səsi</string>
+  <string name="heads_up_notifications_enabled_title">Ekran üstü bildirişlərə icazə ver</string>
+  <string name="heads_up_notifications_enabled_summary">Bütün ekran üstü bildirişlərə icazə ver və ya qeyri-aktiv et</string>
+  <string name="increasing_ring_volume_option_title">Zəng səsi artırma</string>
+  <string name="ramp_up_time_ten">10s</string>
+  <string name="ramp_up_time_twenty">20s</string>
+  <string name="ramp_up_time_thirty">30s</string>
+  <string name="ramp_up_time_sixty">60s</string>
+  <string name="ramp_up_time_five">5s</string>
+  <string name="ramp_up_time_fifteen">15s</string>
+  <!-- Manual provisioning support -->
+  <string name="sim_enabled">aktivdir</string>
+  <string name="sim_disabled">qeyri-Aktiv</string>
+  <string name="sim_missing">yoxdur ya da səhvdir</string>
+  <string name="sim_enabler_will_disable_sim_title">Diqqət</string>
+  <string name="force_ambient_for_media_off">Qeyri-Aktiv</string>
+  <string name="force_ambient_for_media_on">Aktivdir</string>
+  <!-- Less Notification sounds -->
+  <string name="usb_category_title">USB</string>
 </resources>
