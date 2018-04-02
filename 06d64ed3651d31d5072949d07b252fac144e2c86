@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7ed2beed_dcab18a7",
+        "filename": "AndroidManifest.xml",
+        "patchSetId": 8
+      },
+      "lineNbr": 3461,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2018-04-02T10:42:00Z",
+      "side": 1,
+      "message": "to prevent any theme problems should follow other dialogs from setting and use\nandroid:theme\u003d\"@android:style/Theme.DeviceDefault.Light.Dialog\"",
+      "revId": "06d64ed3651d31d5072949d07b252fac144e2c86",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
