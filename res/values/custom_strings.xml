@@ -144,4 +144,7 @@
     <!-- Scramble PIN layout when unlocking -->
     <string name="unlock_scramble_pin_layout_title">Scramble layout</string>
     <string name="unlock_scramble_pin_layout_summary">Scramble PIN layout when unlocking device</string>
+
+    <string name="battery_saver_system_bars_color_enable_title">System bars background color</string>
+    <string name="battery_saver_system_bars_color_enable_summary">Use different color for status and navigation bar when battery saver is enabled</string>
 </resources>
