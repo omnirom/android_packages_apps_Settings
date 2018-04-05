@@ -86,6 +86,7 @@
     <uses-permission android:name="android.permission.HIDE_NON_SYSTEM_OVERLAY_WINDOWS"/>
     <uses-permission android:name="android.permission.READ_PRINT_SERVICES" />
     <uses-permission android:name="android.permission.NETWORK_SETTINGS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <application android:label="@string/settings_label"
             android:icon="@drawable/ic_launcher_settings"
@@ -3454,16 +3455,6 @@
                        android:value="org.omnirom.omnigears.service.EventServiceSettings" />
             <meta-data android:name="com.android.settings.summary"
                        android:resource="@string/summary_empty"/>
-        </activity>
-        <activity
-            android:name="org.omnirom.omnigears.ui.MultiAppSelectorActivity"
-            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"
-            android:excludeFromRecents="true"
-            android:configChanges="orientation|screenSize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
     </application>
 </manifest>
