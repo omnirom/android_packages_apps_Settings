@@ -130,4 +130,9 @@
         android:title="@string/display_vr_pref_title"
         android:fragment="com.android.settings.display.VrDisplayPreferencePicker" />
 
+    <SwitchPreference
+        android:key="ambient_weather_lockscreen"
+        android:title="@string/ambient_weather_lockscreen_title"
+        android:summary="@string/ambient_weather_lockscreen_summary" />
+
 </PreferenceScreen>
