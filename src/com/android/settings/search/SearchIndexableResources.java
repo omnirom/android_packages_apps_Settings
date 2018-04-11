@@ -104,6 +104,7 @@ import org.omnirom.omnigears.interfacesettings.StatusbarClockSettings;
 import org.omnirom.omnigears.interfacesettings.StyleSettings;
 import org.omnirom.omnigears.moresettings.MoreSettings;
 import org.omnirom.omnigears.service.EventServiceSettings;
+import org.omnirom.omnigears.interfacesettings.LockscreenSettings;
 
 public final class SearchIndexableResources {
 
@@ -245,6 +246,7 @@ public final class SearchIndexableResources {
         addIndex(StatusbarClockSettings.class, NO_DATA_RES_ID, R.drawable.ic_bars_tile);
         addIndex(NetworkTraffic.class, NO_DATA_RES_ID, R.drawable.ic_bars_tile);
         addIndex(EventServiceSettings.class, NO_DATA_RES_ID, R.drawable.ic_settings_event_service);
+        addIndex(LockscreenSettings.class, NO_DATA_RES_ID, R.drawable.ic_lockscreen_tile);
     }
 
     private SearchIndexableResources() {
