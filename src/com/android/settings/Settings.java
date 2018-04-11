@@ -206,4 +206,5 @@ public class Settings extends SettingsActivity {
     public static class BatteryClockSettingsActivity extends SettingsActivity { /* empty */ }
     public static class BatteryStyleSettingsActivity extends SettingsActivity { /* empty */ }
     public static class EventServiceSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class LockscreenSettingsActivity extends SettingsActivity { /* empty */ }
 }
