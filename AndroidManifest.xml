@@ -3357,7 +3357,7 @@
                        android:resource="@string/summary_empty"/>
         </activity>
         <activity android:name=".Settings$BarsSettingsActivity"
-                  android:label="@string/bars_settings_title"
+                  android:label="@string/custom_bars_settings_title"
                   android:icon="@drawable/ic_bars_tile"
                   android:taskAffinity="com.android.settings"
                   android:parentActivityName="Settings$OmniDashboardActivity" >
