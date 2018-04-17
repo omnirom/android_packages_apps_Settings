@@ -74,6 +74,27 @@
   <string name="ramp_up_time_twenty">20s</string>
   <string name="ramp_up_time_thirty">30s</string>
   <string name="ramp_up_time_sixty">60s</string>
+  <string name="ramp_up_time_five">5s</string>
+  <string name="ramp_up_time_fifteen">15s</string>
   <!-- Manual provisioning support -->
+  <string name="sim_enabled">abilitato</string>
+  <string name="sim_disabled">disabilitato</string>
+  <string name="sub_activate_success">Scheda SIM attivata.</string>
+  <string name="sub_activate_failed">Attivazione non riuscita.</string>
+  <string name="sub_deactivate_success">Scheda SIM disattivata.</string>
+  <string name="sub_deactivate_failed">Disattivazione fallita.</string>
+  <string name="force_ambient_for_media_off">Disabilitato</string>
+  <string name="force_ambient_for_media_on">Abilitato</string>
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_default">Comportamento predefinito</string>
+  <string name="less_notification_sounds_3s">Ogni 3 secondi</string>
+  <string name="less_notification_sounds_5s">Ogni 5 secondi</string>
+  <string name="less_notification_sounds_10s">Ogni 10 secondi</string>
+  <string name="less_notification_sounds_15s">Ogni 15 secondi</string>
+  <string name="less_notification_sounds_30s">Ogni 30 secondi</string>
+  <string name="less_notification_sounds_45s">Ogni 45 secondi</string>
+  <string name="less_notification_sounds_1m">Ogni minuto</string>
+  <string name="less_notification_sounds_2m">Ogni 2 minuti</string>
+  <string name="less_notification_sounds_5m">Ogni 5 minuti</string>
+  <string name="usb_category_title">USB</string>
 </resources>

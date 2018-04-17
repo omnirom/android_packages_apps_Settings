@@ -26,7 +26,7 @@
   <string name="omni_device_parts">Seadme funktsioonid</string>
   <string name="columns_menu">Veergude paigutus</string>
   <string name="hide_summary_menu">Peida kokkuvõtted</string>
-  <string name="bars_settings_title">Ribad ja lukukuva</string>
+  <string name="bars_settings_title">Ribad</string>
   <string name="button_settings_title">Nupud</string>
   <string name="mod_version">Omni versioon</string>
   <string name="mod_version_default">Tundmatu</string>
@@ -68,9 +68,9 @@
   <string name="screenshot_shutter_sound_title">Kuvatõmmise tegemise heli</string>
   <string name="heads_up_notifications_enabled_title">Luba piilumine</string>
   <string name="heads_up_notifications_enabled_summary">Luba või keela kõikide teadete piilumine</string>
-  <string name="increasing_ring_volume_option_title">Suurenev helina helitugevus</string>
+  <string name="increasing_ring_volume_option_title">Valjenev helina helitugevus</string>
   <string name="increasing_ring_ramp_up_title">Helina helitugevuse tõstmise aeg</string>
-  <string name="increasing_ring_volume_option_summary">Suurenda helina tugevust valitud helitugevuse puhul</string>
+  <string name="increasing_ring_volume_option_summary">Tõsta helina helitugevust valitud väärtuseni</string>
   <string name="ramp_up_time_ten">10s</string>
   <string name="ramp_up_time_twenty">20s</string>
   <string name="ramp_up_time_thirty">30s</string>
@@ -101,7 +101,7 @@
   <string name="force_ambient_for_media_on">Lubatud</string>
   <string name="force_ambient_for_media_on_forced">Lubatud ja sunnitud</string>
   <string name="force_ambient_for_media_on_forced_clean">Lubatud ja sunnitud, minimaalne</string>
-  <string name="ambient_ticker_footer">Taustamuusika kuva lubab näidata hetkel käiva loo infot lukukuval või ilma Ambientse ekraani lubamiseta.\nSa võid valida kahe paigutuse seast - tavaline või minimaalne. Kuigi see funktsioon töötab hästi Ambientse ekraaniga, ei sõltu see sellest.</string>
+  <string name="ambient_ticker_footer">Taustamuusika kuva lubab näidata hetkel käiva loo infot lukukuval või ilma säästliku ekraani lubamiseta.\nSa võid valida kahe paigutuse seast - tavaline või minimaalne. Kuigi see funktsioon töötab hästi säästliku ekraaniga, ei sõltu see sellest.</string>
   <!-- Less Notification sounds -->
   <string name="less_notification_sounds_title">Harvemad teatehelid</string>
   <string name="less_notification_sounds_summary">Esita iga rakenduse teateheli ainult ühe korra kindlas ajaperioodis</string>
@@ -118,6 +118,8 @@
   <string name="notification_log_summary">Kuva teadete ajaloo logi</string>
   <string name="select_default_usb_configuration_title">Vali vaikimisi USB-seadistus</string>
   <string name="select_default_usb_configuration_dialog_title">Vali USB-seadistus</string>
+  <string name="select_usb_default_confguration_warning">Hoiatus: Vaikimisi USB-konfiguratsioon on lubatud ka siis, kui seade on lukus!\n\nKas soovid kindlasti lubada selle konfiguratsiooni?</string>
   <string name="usb_paranoia_connect_title">USB turvaline ühendus</string>
+  <string name="usb_paranoia_connect_summary">Luba laadimine ainult siis, kui USB on ühendatud turvalisel lukukuval</string>
   <string name="usb_category_title">USB</string>
 </resources>

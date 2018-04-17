@@ -19,12 +19,28 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="more_settings_title">Mais</string>
   <!-- Custom light color -->
   <!-- Android debugging over WiFi -->
   <!-- Warning for Adb over Network -->
   <!-- Encryption and credential -->
   <!-- Format string for fingerprint location message -->
   <!-- Fingerprint sensor locations -->
+  <string name="ramp_up_time_ten">10s</string>
+  <string name="ramp_up_time_twenty">20s</string>
+  <string name="ramp_up_time_thirty">30s</string>
+  <string name="ramp_up_time_sixty">60s</string>
   <!-- Manual provisioning support -->
+  <string name="sim_enabler_will_disable_sim_title">Atenção</string>
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_3s">A cada 3 segundos</string>
+  <string name="less_notification_sounds_5s">A cada 5 segundos</string>
+  <string name="less_notification_sounds_10s">A cada 10 segundos</string>
+  <string name="less_notification_sounds_15s">A cada 15 segundos</string>
+  <string name="less_notification_sounds_30s">A cada 30 segundos</string>
+  <string name="less_notification_sounds_45s">A cada 45 segundos</string>
+  <string name="less_notification_sounds_1m">A cada minuto</string>
+  <string name="less_notification_sounds_2m">A cada 2 minutos</string>
+  <string name="less_notification_sounds_5m">A cada 5 minutos</string>
+  <string name="usb_category_title">USB</string>
 </resources>

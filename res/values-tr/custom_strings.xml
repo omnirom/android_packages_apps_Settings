@@ -120,6 +120,6 @@
   <string name="select_default_usb_configuration_dialog_title">USB ayarını seçin</string>
   <string name="select_usb_default_confguration_warning">ÎKÂZ: Standart USB ayarı cihaz kilitlendiğinde de fa\'âl hâle getirilir!\n\nBu ayarı sahiden fa\'âl hâle getirmek istiyor musunuz?</string>
   <string name="usb_paranoia_connect_title">Güvenli USB bağlantısı</string>
-  <string name="usb_paranoia_connect_summary">Sadece güvenli kilit ekranlarında USB takıldığı zaman şarj et</string>
+  <string name="usb_paranoia_connect_summary">Sadece güvenli kilit ekranlarında USB takıldığı zaman şarj etmeyi fa\'âl hâle getir</string>
   <string name="usb_category_title">USB</string>
 </resources>

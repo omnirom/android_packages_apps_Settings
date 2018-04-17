@@ -74,6 +74,24 @@
   <string name="ramp_up_time_twenty">20s</string>
   <string name="ramp_up_time_thirty">30s</string>
   <string name="ramp_up_time_sixty">60s</string>
+  <string name="ramp_up_time_five">5s</string>
+  <string name="ramp_up_time_fifteen">15s</string>
   <!-- Manual provisioning support -->
+  <string name="sim_enabled">aktiviert</string>
+  <string name="sim_disabled">deaktiviert</string>
+  <string name="sub_activate_success">SIM aktiviert.</string>
+  <string name="sub_deactivate_success">SIM deaktiviert.</string>
+  <string name="force_ambient_for_media_off">Deaktiviert</string>
+  <string name="force_ambient_for_media_on">Aktiviert</string>
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_3s">Alle 3 Sekunden</string>
+  <string name="less_notification_sounds_5s">Alle 5 Sekunden</string>
+  <string name="less_notification_sounds_10s">Alle 10 Sekunden</string>
+  <string name="less_notification_sounds_15s">Alle 15 Sekunden</string>
+  <string name="less_notification_sounds_30s">Alle 30 Sekunden</string>
+  <string name="less_notification_sounds_45s">Alle 45 Sekunden</string>
+  <string name="less_notification_sounds_1m">Jede Minute</string>
+  <string name="less_notification_sounds_2m">Alle 2 Minuten</string>
+  <string name="less_notification_sounds_5m">Alle 5 Minuten</string>
+  <string name="usb_category_title">USB</string>
 </resources>

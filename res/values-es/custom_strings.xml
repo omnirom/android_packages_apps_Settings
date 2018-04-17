@@ -93,6 +93,9 @@
   <string name="force_ambient_for_media_off">Deshabilitado</string>
   <string name="force_ambient_for_media_on">Habilitado</string>
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_title">Sonidos de notificación menos frecuentes</string>
+  <string name="less_notification_sounds_summary">Reproducir el sonido de notificación de cada aplicación una sola vez por periodo de tiempo</string>
+  <string name="less_notification_sounds_default">Comportamiento por defecto</string>
   <string name="less_notification_sounds_3s">Cada 3 segundos</string>
   <string name="less_notification_sounds_5s">Cada 5 segundos</string>
   <string name="less_notification_sounds_10s">Cada 10 segundos</string>
