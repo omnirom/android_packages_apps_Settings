@@ -146,6 +146,7 @@ import org.omnirom.omnigears.moresettings.MoreSettings;
 import org.omnirom.omnigears.moresettings.OmniJawsSettings;
 import org.omnirom.omnigears.service.EventServiceSettings;
 import org.omnirom.omnigears.interfacesettings.LockscreenSettings;
+import org.omnirom.omnigears.interfacesettings.LockscreenItemSettings;
 
 public class SettingsGateway {
 
@@ -283,7 +284,8 @@ public class SettingsGateway {
             StatusbarClockSettings.class.getName(),
             NetworkTraffic.class.getName(),
             EventServiceSettings.class.getName(),
-            LockscreenSettings.class.getName()
+            LockscreenSettings.class.getName(),
+            LockscreenItemSettings.class.getName()
     };
 
     public static final String[] SETTINGS_FOR_RESTRICTED = {
@@ -336,6 +338,7 @@ public class SettingsGateway {
             Settings.BatteryClockSettingsActivity.class.getName(),
             Settings.NetworkTrafficSettingsActivity.class.getName(),
             Settings.EventServiceSettingsActivity.class.getName(),
-            Settings.LockscreenSettingsActivity.class.getName()
+            Settings.LockscreenSettingsActivity.class.getName(),
+            Settings.LockscreenItemSettingsActivity.class.getName()
     };
 }

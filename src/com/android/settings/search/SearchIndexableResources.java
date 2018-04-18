@@ -105,6 +105,7 @@ import org.omnirom.omnigears.interfacesettings.StyleSettings;
 import org.omnirom.omnigears.moresettings.MoreSettings;
 import org.omnirom.omnigears.service.EventServiceSettings;
 import org.omnirom.omnigears.interfacesettings.LockscreenSettings;
+import org.omnirom.omnigears.interfacesettings.LockscreenItemSettings;
 
 public final class SearchIndexableResources {
 
@@ -247,6 +248,7 @@ public final class SearchIndexableResources {
         addIndex(NetworkTraffic.class, NO_DATA_RES_ID, R.drawable.ic_bars_tile);
         addIndex(EventServiceSettings.class, NO_DATA_RES_ID, R.drawable.ic_settings_event_service);
         addIndex(LockscreenSettings.class, NO_DATA_RES_ID, R.drawable.ic_lockscreen_tile);
+        addIndex(LockscreenItemSettings.class, NO_DATA_RES_ID, R.drawable.ic_lockscreen_tile);
     }
 
     private SearchIndexableResources() {
