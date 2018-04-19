@@ -56,6 +56,7 @@ import android.widget.ListView;
 import android.widget.SectionIndexer;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.SearchView;
 
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.settings.R;
@@ -654,6 +655,26 @@ public class ManageApplications extends InstrumentedPreferenceFragment
         mOptionsMenu = menu;
         inflater.inflate(R.menu.manage_apps, menu);
         updateOptionsMenu();
+
+        // Search
+        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView)item.getActionView();
+
+        searchView.setQueryHint(getText(R.string.menu_search_hint));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mApplications.getFilter().filter(newText);
+
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -702,6 +723,8 @@ public class ManageApplications extends InstrumentedPreferenceFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         int menuId = item.getItemId();
         switch (item.getItemId()) {
+            case R.id.action_search:
+                return true;
             case R.id.sort_order_alpha:
             case R.id.sort_order_size:
                 mSortOrder = menuId;
