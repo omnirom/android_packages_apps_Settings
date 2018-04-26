@@ -19,12 +19,115 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="style_settings_title">Stijl</string>
+  <string name="header_category_omni">OmniGears</string>
+  <string name="omni_dashboard_summary">Omnify uw apparaat</string>
+  <string name="style_settings_summary">Achtergronden en andere swag</string>
+  <string name="omni_device_parts">Apparaat functies</string>
+  <string name="columns_menu">Kolommen lay-out</string>
+  <string name="hide_summary_menu">Verberg samenvatting</string>
+  <string name="custom_bars_settings_title">Balken</string>
+  <string name="button_settings_title">Knoppen</string>
+  <string name="mod_version">Omni versie</string>
+  <string name="mod_version_default">Onbekend</string>
+  <string name="more_settings_title">Meer</string>
+  <string name="global_actions_title">Afsluit-menu</string>
+  <string name="display_rotation_title">Schermrotatie</string>
+  <string name="display_rotation_summary">Mogelijke rotatiehoeken configureren</string>
+  <string name="battery_light_settings_title">Batterij-LED instellingen</string>
+  <string name="link_volume_option_title">Volumes van beltoon en meldingen koppelen</string>
   <!-- Custom light color -->
+  <string name="light_customization">LED licht notificatie</string>
+  <string name="custom_light_title">Lichtkleur</string>
+  <string name="custom_light_on_time_title">"Licht AAN tijd tijdens LED pulse (ms)"</string>
+  <string name="custom_light_off_time_title">"Licht UIT tijd tijdens LED pulse (ms)"</string>
+  <string name="app_notifications_info_desc">Tik op een van bovenstaande kanalen om hun lichtkleuren en andere opties te configureren</string>
+  <string name="value_equals_default">Automatisch</string>
+  <string name="show_light_on_zen_title">Knipperen tijdens Do Not Disturb</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">ADB over netwerk</string>
+  <string name="adb_over_network_summary">TCP/IP-foutopsporing inschakelen over netwerkinterfaces (Wi-Fi, USB-netwerken). Deze instelling wordt hersteld bij een herstart</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">WAAARSCHUWING: Als ADB over het netwerk is ingeschakeld, is je telefoon open voor inbraken van alle verbonden netwerken, Ook het GSM datanetwerk!\n\nGebruiken deze optie alleen als je verbonden bent met een vertrouwd netwerk.\n\nWeet u zeker dat u deze funtie wilt inschakelen?</string>
+  <string name="battery_image">Batterij afbeelding</string>
+  <string name="battery_image_description">Toon batterij afbeelding in statusbalk</string>
+  <string name="twilight_mode_location_dialog">Locatie is uitgeschakeld</string>
+  <string name="twilight_mode_location_disabled">Locatietoegang is uitgeschakeld</string>
+  <string name="twilight_mode_location_enable">Inschakelen</string>
   <!-- Encryption and credential -->
+  <string name="custom_encryption_and_credential_settings_summary_on">Apparaat is versleuteld</string>
+  <string name="custom_encryption_and_credential_settings_summary_off">Apparaat is ontsleuteld</string>
+  <string name="select_sim_for_sms">Selecteer een SIM voor SMS</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Vind de vingerafdruk sensor op de <xliff:g id="sensor_location">%1$s</xliff:g> van uw telefoon.</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">achterkant</string>
+  <string name="security_settings_fingerprint_sensor_location_front">voorkant</string>
+  <string name="security_settings_fingerprint_sensor_location_left">linkerkant</string>
+  <string name="security_settings_fingerprint_sensor_location_right">rechterkant</string>
+  <string name="screenshot_shutter_sound_title">Schermopname sluitergeluid</string>
+  <string name="heads_up_notifications_enabled_title">Gluren toestaan</string>
+  <string name="heads_up_notifications_enabled_summary">Gluren toestaan in- of uitschakelen voor alle meldingen</string>
+  <string name="increasing_ring_volume_option_title">Oplopend beltoon volume</string>
+  <string name="increasing_ring_ramp_up_title">Oplooptijd tot beltoon volume</string>
+  <string name="increasing_ring_volume_option_summary">Verhoog het beltoon volume tot het geselecteerde volume</string>
+  <string name="ramp_up_time_ten">10s</string>
+  <string name="ramp_up_time_twenty">20s</string>
+  <string name="ramp_up_time_thirty">30s</string>
+  <string name="ramp_up_time_sixty">60s</string>
+  <string name="ramp_up_time_five">5s</string>
+  <string name="ramp_up_time_fifteen">15s</string>
+  <string name="force_safe_media_volume_disabled_title">Schakel veilige volumecontrole uit</string>
+  <string name="force_safe_media_volume_disabled_summary">Mediavolume voor hoofdtelefoons niet beperken</string>
   <!-- Manual provisioning support -->
+  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> is <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
+  <string name="sim_enabled">ingeschakeld</string>
+  <string name="sim_disabled">uitgeschakeld</string>
+  <string name="sim_missing">ontbrekend of defect</string>
+  <string name="sim_enabler_need_disable_sim">SIM-kaart wordt gedeactiveerd. Wilt u doorgaan?</string>
+  <string name="sim_enabler_will_disable_sim_title">Opgelet</string>
+  <string name="sim_enabler_need_switch_data_service">Deze SIM wordt uitgeschakeld en SIM <xliff:g id="slotid">%1$s</xliff:g> wordt gebruikt voor gegevensservices. Weet u zeker dat u door wilt gaan?</string>
+  <string name="sim_enabler_airplane_on">Kan de bewerking niet uitvoeren terwijl vliegtuigmodus is ingeschakeld.</string>
+  <string name="sim_enabler_in_call">Kan de bewerking niet tijdens een gesprek uitvoeren.</string>
+  <string name="sim_enabler_both_inactive">Kan niet alle SIM-kaarten uitschakelen</string>
+  <string name="sim_enabler_enabling">Activeren\u2026</string>
+  <string name="sim_enabler_disabling">Deactiveren\u2026</string>
+  <string name="sub_activate_success">SIM geactiveerd.</string>
+  <string name="sub_activate_failed">Activitie mislukt.</string>
+  <string name="sub_deactivate_success">SIM gedeactiveerd.</string>
+  <string name="sub_deactivate_failed">Deactivatie mislukt.</string>
+  <string name="force_ambient_for_media_pref_title">Actieve Muziek Ticker</string>
+  <string name="force_ambient_for_media_off">Uitgeschakeld</string>
+  <string name="force_ambient_for_media_on">Ingeschakeld</string>
+  <string name="force_ambient_for_media_on_forced">Ingeschakeld en geforceerd</string>
+  <string name="force_ambient_for_media_on_forced_clean">Ingeschakeld en geforceerd minimaal</string>
+  <string name="ambient_ticker_footer">Actieve Muziek Ticker biedt de mogelijkheid om de huidige muziektrackinformatie op het vergrendelscherm weer te geven met of zonder Actieve weergave ingeschakeld.\nU kunt kiezen uit twee lay-outs, normaal en minimaal. Hoewel deze functie gebruikmaakt van het actieve weergave, hangt deze er niet van af.</string>
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_title">Minder frequente meldingsgeluiden</string>
+  <string name="less_notification_sounds_summary">Speel meldingsgeluiden van elke app één keer per ingestelde periode</string>
+  <string name="less_notification_sounds_default">Standaard gedrag</string>
+  <string name="less_notification_sounds_3s">Elke 3 seconden</string>
+  <string name="less_notification_sounds_5s">Elke 5 seconden</string>
+  <string name="less_notification_sounds_10s">Elke 10 seconden</string>
+  <string name="less_notification_sounds_15s">Elke 15 seconden</string>
+  <string name="less_notification_sounds_30s">Elke 30 seconden</string>
+  <string name="less_notification_sounds_45s">Elke 45 seconden</string>
+  <string name="less_notification_sounds_1m">Elke minuut</string>
+  <string name="less_notification_sounds_2m">Elke 2 minuten</string>
+  <string name="less_notification_sounds_5m">Elke 5 minuten</string>
+  <string name="notification_log_summary">Toon notificaties geschiedenislog</string>
+  <string name="select_default_usb_configuration_title">Selecteer standaard USB-configuratie</string>
+  <string name="select_default_usb_configuration_dialog_title">Selecteer USB-configuratie</string>
+  <string name="select_usb_default_confguration_warning">Waarschuwing: Standaard USB-configuratie is ook ingeschakeld wanneer het apparaat is vergrendeld!\n\nWil je echt deze configuratie inschakelen?</string>
+  <string name="usb_paranoia_connect_title">USB beveiligde verbinding</string>
+  <string name="usb_paranoia_connect_summary">Alleen opladen inschakelen als USB is aangesloten op beveiligde vergrendelschermen</string>
+  <string name="usb_category_title">USB</string>
+  <!-- Scramble PIN layout when unlocking -->
+  <string name="unlock_scramble_pin_layout_title">Willekeurige lay-out</string>
+  <string name="unlock_scramble_pin_layout_summary">Willekeurige PIN lay-out bij apparaat ontgrendelen</string>
+  <string name="battery_saver_system_bars_color_enable_title">Systeembalk achtergrondkleur</string>
+  <string name="battery_saver_system_bars_color_enable_summary">Gebruik verschillende kleur voor status- en navigatiebalk wanneer batterijbesparing is ingeschakeld</string>
+  <!-- Font picker -->
+  <string name="font_picker_title">Lettertype</string>
+  <string name="font_picker_progress">Lettertype instellen\u2026</string>
 </resources>

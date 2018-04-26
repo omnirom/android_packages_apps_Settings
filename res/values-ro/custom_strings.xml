@@ -26,7 +26,6 @@
   <string name="omni_device_parts">Caracteristici dispozitiv</string>
   <string name="columns_menu">Aspectul coloanelor</string>
   <string name="hide_summary_menu">Ascundere rezumat</string>
-  <string name="bars_settings_title">Bare şi blocare ecran</string>
   <string name="button_settings_title">Butoane</string>
   <string name="mod_version">Versiune Omni</string>
   <string name="mod_version_default">Necunoscută</string>
@@ -67,4 +66,6 @@
   <string name="security_settings_fingerprint_sensor_location_right">pe partea dreaptă a</string>
   <!-- Manual provisioning support -->
   <!-- Less Notification sounds -->
+  <!-- Scramble PIN layout when unlocking -->
+  <!-- Font picker -->
 </resources>

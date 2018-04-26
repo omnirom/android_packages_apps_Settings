@@ -26,7 +26,6 @@
   <string name="omni_device_parts">Paramètres additionnels</string>
   <string name="columns_menu">Disposition des colonnes</string>
   <string name="hide_summary_menu">Masquer le résumé</string>
-  <string name="bars_settings_title">Barres et écran de déverrouillage</string>
   <string name="button_settings_title">Boutons</string>
   <string name="mod_version">Version d\'Omni</string>
   <string name="mod_version_default">Inconnu</string>
@@ -76,4 +75,6 @@
   <string name="ramp_up_time_sixty">60s</string>
   <!-- Manual provisioning support -->
   <!-- Less Notification sounds -->
+  <!-- Scramble PIN layout when unlocking -->
+  <!-- Font picker -->
 </resources>

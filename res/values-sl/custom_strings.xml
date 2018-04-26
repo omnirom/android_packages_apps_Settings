@@ -19,12 +19,65 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="style_settings_title">Slog</string>
+  <string name="header_category_omni">OmniGears</string>
+  <string name="omni_dashboard_summary">PoOmnite vašo napravo</string>
+  <string name="style_settings_summary">Slike ozadja in drugi stili</string>
+  <string name="omni_device_parts">Značilnosti naprave</string>
+  <string name="columns_menu">Razporeditev stolpcev</string>
+  <string name="hide_summary_menu">Skrij povzetek</string>
+  <string name="custom_bars_settings_title">Vrstice</string>
+  <string name="button_settings_title">Gumbi</string>
+  <string name="mod_version">Različica Omni</string>
+  <string name="mod_version_default">Neznano</string>
+  <string name="more_settings_title">Več</string>
+  <string name="global_actions_title">Meni gumba za vklop</string>
+  <string name="display_rotation_title">Sukanje</string>
+  <string name="display_rotation_summary">Nastavitev možnih kotov sukanja</string>
+  <string name="battery_light_settings_title">Nastavitve lučke LED za baterijo</string>
+  <string name="link_volume_option_title">Poveži glasnosti zvonjenja in obvestil</string>
   <!-- Custom light color -->
+  <string name="custom_light_title">Barva lučke</string>
+  <string name="value_equals_default">Samodejno</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">ADB prek omrežja</string>
   <!-- Warning for Adb over Network -->
+  <string name="battery_image">Slika baterije</string>
+  <string name="battery_image_description">Prikaz slike baterije v vrstici stanja</string>
+  <string name="twilight_mode_location_dialog">Lokacija onemogočena</string>
+  <string name="twilight_mode_location_disabled">Dostop do lokacije je onemogočen</string>
+  <string name="twilight_mode_location_enable">Omogoči</string>
   <!-- Encryption and credential -->
+  <string name="custom_encryption_and_credential_settings_summary_on">Naprava je šifrirana</string>
+  <string name="custom_encryption_and_credential_settings_summary_off">Naprava je dešifrirana</string>
+  <string name="select_sim_for_sms">Izberite SIM za SMS</string>
   <!-- Format string for fingerprint location message -->
   <!-- Fingerprint sensor locations -->
+  <string name="ramp_up_time_ten">10s</string>
+  <string name="ramp_up_time_twenty">20s</string>
+  <string name="ramp_up_time_thirty">30s</string>
+  <string name="ramp_up_time_sixty">60s</string>
   <!-- Manual provisioning support -->
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_15s">Vsakih 15 sekund</string>
+  <string name="less_notification_sounds_30s">Vsakih 30 sekund</string>
+  <string name="less_notification_sounds_45s">Vsakih 45 sekund</string>
+  <string name="less_notification_sounds_1m">Vsako minuto</string>
+  <string name="less_notification_sounds_2m">Vsaki 2 minuti</string>
+  <string name="less_notification_sounds_5m">Vsakih 5 minut</string>
+  <string name="notification_log_summary">Prikaz obvestil v dnevniku zgodovine</string>
+  <string name="select_default_usb_configuration_title">Izberite privzeto nastavitev USB</string>
+  <string name="select_default_usb_configuration_dialog_title">Izberite nastavitev USB</string>
+  <string name="select_usb_default_confguration_warning">OPOZORILO: Privzeta nastavitev USB je omogočena tudi, ko je naprava zaklenjena!\n\nAli res želite omogočiti to nastavitev?</string>
+  <string name="usb_paranoia_connect_title">Varna povezava USB</string>
+  <string name="usb_paranoia_connect_summary">Omogoči polnjenje samo, ko je USB priklopljen v varnih zaklenjenih zaslonih</string>
+  <string name="usb_category_title">USB</string>
+  <!-- Scramble PIN layout when unlocking -->
+  <string name="unlock_scramble_pin_layout_title">Premešaj razporeditev</string>
+  <string name="unlock_scramble_pin_layout_summary">Premešaj razporeditev PIN ob odklepanju naprave</string>
+  <string name="battery_saver_system_bars_color_enable_title">Barva ozadja vrstic sistema</string>
+  <string name="battery_saver_system_bars_color_enable_summary">Uporaba druge barve za vrstico stanja in krmarjenja, ko je omogočen ohranjevalnik baterije</string>
+  <!-- Font picker -->
+  <string name="font_picker_title">Pisava</string>
+  <string name="font_picker_progress">Nastavljanje pisave \u2026</string>
 </resources>

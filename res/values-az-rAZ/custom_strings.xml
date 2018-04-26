@@ -68,4 +68,6 @@
   <string name="force_ambient_for_media_on">Aktivdir</string>
   <!-- Less Notification sounds -->
   <string name="usb_category_title">USB</string>
+  <!-- Scramble PIN layout when unlocking -->
+  <!-- Font picker -->
 </resources>

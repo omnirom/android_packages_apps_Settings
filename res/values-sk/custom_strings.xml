@@ -26,7 +26,7 @@
   <string name="omni_device_parts">Funkcie zariadenia</string>
   <string name="columns_menu">Rozloženie stĺpcov</string>
   <string name="hide_summary_menu">Skryť prehľad</string>
-  <string name="bars_settings_title">Panely a obrazovka uzamknutia</string>
+  <string name="custom_bars_settings_title">Panely</string>
   <string name="button_settings_title">Tlačidlá</string>
   <string name="mod_version">Verzia Omni</string>
   <string name="mod_version_default">Neznáma</string>
@@ -122,4 +122,12 @@
   <string name="usb_paranoia_connect_title">USB bezpečné pripojenie</string>
   <string name="usb_paranoia_connect_summary">Ak je telefón na zabezpečenej obrazovke uzamknutia, pri pripojení na USB povolí iba režim nabíjania</string>
   <string name="usb_category_title">USB</string>
+  <!-- Scramble PIN layout when unlocking -->
+  <string name="unlock_scramble_pin_layout_title">Prehádzať rozloženie</string>
+  <string name="unlock_scramble_pin_layout_summary">Prehádzať rozmiestnenie PINu pri odomykaní obrazovky</string>
+  <string name="battery_saver_system_bars_color_enable_title">Farba pozadia systémových panelov</string>
+  <string name="battery_saver_system_bars_color_enable_summary">Použiť rozdielnu farbu pre stavový riadok a navigačný panel ak je zapnutý šetrič batérie</string>
+  <!-- Font picker -->
+  <string name="font_picker_title">Písmo</string>
+  <string name="font_picker_progress">Nastavovanie písma\u2026</string>
 </resources>

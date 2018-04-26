@@ -57,4 +57,6 @@
   <string name="ramp_up_time_sixty">60s</string>
   <!-- Manual provisioning support -->
   <!-- Less Notification sounds -->
+  <!-- Scramble PIN layout when unlocking -->
+  <!-- Font picker -->
 </resources>
