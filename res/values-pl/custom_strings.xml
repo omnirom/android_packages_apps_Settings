@@ -62,4 +62,6 @@
   <string name="security_settings_fingerprint_sensor_location_right">prawa strona</string>
   <!-- Manual provisioning support -->
   <!-- Less Notification sounds -->
+  <!-- Scramble PIN layout when unlocking -->
+  <!-- Font picker -->
 </resources>

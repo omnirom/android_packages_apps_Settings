@@ -26,7 +26,6 @@
   <string name="omni_device_parts">Возможности устройства</string>
   <string name="columns_menu">Раскладка столбцов</string>
   <string name="hide_summary_menu">Скрыть содержание</string>
-  <string name="bars_settings_title">Панели и экран блокировки</string>
   <string name="button_settings_title">Кнопки</string>
   <string name="mod_version">Версия Omni</string>
   <string name="mod_version_default">Неизвестно</string>
@@ -113,4 +112,6 @@
   <string name="usb_paranoia_connect_title">Безопасное USB подключение</string>
   <string name="usb_paranoia_connect_summary">Включать только зарядку, когда кабель подключен при заблокированном устройстве</string>
   <string name="usb_category_title">USB</string>
+  <!-- Scramble PIN layout when unlocking -->
+  <!-- Font picker -->
 </resources>

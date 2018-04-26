@@ -26,7 +26,7 @@
   <string name="omni_device_parts">Seadme funktsioonid</string>
   <string name="columns_menu">Veergude paigutus</string>
   <string name="hide_summary_menu">Peida kokkuvõtted</string>
-  <string name="bars_settings_title">Ribad</string>
+  <string name="custom_bars_settings_title">Ribad</string>
   <string name="button_settings_title">Nupud</string>
   <string name="mod_version">Omni versioon</string>
   <string name="mod_version_default">Tundmatu</string>
@@ -122,4 +122,12 @@
   <string name="usb_paranoia_connect_title">USB turvaline ühendus</string>
   <string name="usb_paranoia_connect_summary">Luba laadimine ainult siis, kui USB on ühendatud turvalisel lukukuval</string>
   <string name="usb_category_title">USB</string>
+  <!-- Scramble PIN layout when unlocking -->
+  <string name="unlock_scramble_pin_layout_title">Sega paigutust</string>
+  <string name="unlock_scramble_pin_layout_summary">Aja PINi paigutus segamini seadme lahti lukustamisel</string>
+  <string name="battery_saver_system_bars_color_enable_title">Süsteemiribade taustavärv</string>
+  <string name="battery_saver_system_bars_color_enable_summary">Kasuta erinevat värvi oleku- ja navigatsiooniribal, kui akusäästja on sees</string>
+  <!-- Font picker -->
+  <string name="font_picker_title">Vorming</string>
+  <string name="font_picker_progress">Vormingu seadmine\u2026</string>
 </resources>

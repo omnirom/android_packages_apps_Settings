@@ -26,7 +26,7 @@
   <string name="omni_device_parts">Eszközfunkciók</string>
   <string name="columns_menu">Oszlop elrendezés</string>
   <string name="hide_summary_menu">Összefoglaló elrejtése</string>
-  <string name="bars_settings_title">Panelek és zárképernyő</string>
+  <string name="custom_bars_settings_title">Sávok</string>
   <string name="button_settings_title">Gombok</string>
   <string name="mod_version">Omni verzió</string>
   <string name="mod_version_default">Ismeretlen</string>
@@ -122,4 +122,12 @@
   <string name="usb_paranoia_connect_title">Biztonságos USB kapcsolat</string>
   <string name="usb_paranoia_connect_summary">Csak a töltést engedélyezze, ha az USB-t a biztonságos zárképernyő mellett csatlakoztatta</string>
   <string name="usb_category_title">USB</string>
+  <!-- Scramble PIN layout when unlocking -->
+  <string name="unlock_scramble_pin_layout_title">Véletlenszerű elrendezés</string>
+  <string name="unlock_scramble_pin_layout_summary">Összekeveri a beviteli mezőn a számok elrendezését az eszköz feloldásakor</string>
+  <string name="battery_saver_system_bars_color_enable_title">Különböző színű rendszersávok használata</string>
+  <string name="battery_saver_system_bars_color_enable_summary">Különböző színű állapot és navigációs sáv használata, ha az akkukímélő-üzemmód be van kapcsolva</string>
+  <!-- Font picker -->
+  <string name="font_picker_title">Betűtípus</string>
+  <string name="font_picker_progress">Betűtípus beállítása\u2026</string>
 </resources>

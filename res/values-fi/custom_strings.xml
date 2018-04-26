@@ -25,7 +25,6 @@
   <string name="style_settings_summary">Taustakuvat ja muu sälä</string>
   <string name="omni_device_parts">Laitteen ominaisuudet</string>
   <string name="hide_summary_menu">Piilota yhteenveto</string>
-  <string name="bars_settings_title">Palkit ja lukitusnäyttö</string>
   <string name="button_settings_title">Painikkeet</string>
   <string name="mod_version">Omni versio</string>
   <string name="mod_version_default">Tuntematon</string>
@@ -74,4 +73,6 @@
   <string name="less_notification_sounds_1m">Joka minuutti</string>
   <string name="less_notification_sounds_2m">Joka 2. minuutti</string>
   <string name="less_notification_sounds_5m">Joka 5. minuutti</string>
+  <!-- Scramble PIN layout when unlocking -->
+  <!-- Font picker -->
 </resources>

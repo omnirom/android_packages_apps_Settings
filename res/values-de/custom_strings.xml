@@ -26,7 +26,6 @@
   <string name="omni_device_parts">Gerätefunktionen</string>
   <string name="columns_menu">Spalten-Layout</string>
   <string name="hide_summary_menu">Zusammenfassung verbergen</string>
-  <string name="bars_settings_title">Statusleiste und Sperrbildschirm</string>
   <string name="button_settings_title">Tasten</string>
   <string name="mod_version">Omni-Version</string>
   <string name="mod_version_default">Unbekannt</string>
@@ -94,4 +93,7 @@
   <string name="less_notification_sounds_2m">Alle 2 Minuten</string>
   <string name="less_notification_sounds_5m">Alle 5 Minuten</string>
   <string name="usb_category_title">USB</string>
+  <!-- Scramble PIN layout when unlocking -->
+  <!-- Font picker -->
+  <string name="font_picker_title">Schriftart</string>
 </resources>

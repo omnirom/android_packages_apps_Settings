@@ -26,7 +26,6 @@
   <string name="omni_device_parts">Caratteristiche del dispositivo</string>
   <string name="columns_menu">Layout colonne</string>
   <string name="hide_summary_menu">Nascondi sommario</string>
-  <string name="bars_settings_title">Barre e schermata di blocco</string>
   <string name="button_settings_title">Pulsanti</string>
   <string name="mod_version">Versione Omni</string>
   <string name="mod_version_default">Sconosciuta</string>
@@ -97,4 +96,6 @@
   <string name="less_notification_sounds_2m">Ogni 2 minuti</string>
   <string name="less_notification_sounds_5m">Ogni 5 minuti</string>
   <string name="usb_category_title">USB</string>
+  <!-- Scramble PIN layout when unlocking -->
+  <!-- Font picker -->
 </resources>

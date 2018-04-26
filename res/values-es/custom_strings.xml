@@ -26,7 +26,6 @@
   <string name="omni_device_parts">Características del dispositivo</string>
   <string name="columns_menu">Diseño de columnas</string>
   <string name="hide_summary_menu">Ocultar Resumen</string>
-  <string name="bars_settings_title">Barras y pantalla de bloqueo</string>
   <string name="button_settings_title">Botones</string>
   <string name="mod_version">Versión de Omni</string>
   <string name="mod_version_default">Desconocido</string>
@@ -109,4 +108,6 @@
   <string name="select_default_usb_configuration_title">Seleccione configuración de USB por defecto</string>
   <string name="select_default_usb_configuration_dialog_title">Seleccione configuración de USB</string>
   <string name="usb_category_title">USB</string>
+  <!-- Scramble PIN layout when unlocking -->
+  <!-- Font picker -->
 </resources>

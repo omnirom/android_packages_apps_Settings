@@ -43,4 +43,6 @@
   <string name="less_notification_sounds_2m">A cada 2 minutos</string>
   <string name="less_notification_sounds_5m">A cada 5 minutos</string>
   <string name="usb_category_title">USB</string>
+  <!-- Scramble PIN layout when unlocking -->
+  <!-- Font picker -->
 </resources>

@@ -26,7 +26,7 @@
   <string name="omni_device_parts">Cihaz husûsîyetleri</string>
   <string name="columns_menu">Sütun tertibatı</string>
   <string name="hide_summary_menu">Özeti sakla</string>
-  <string name="bars_settings_title">Çubuklar ve kilit ekranı</string>
+  <string name="custom_bars_settings_title">Çubuklar</string>
   <string name="button_settings_title">Düğmeler</string>
   <string name="mod_version">Omni sürümü</string>
   <string name="mod_version_default">Bilinmiyor</string>
@@ -122,4 +122,12 @@
   <string name="usb_paranoia_connect_title">Güvenli USB bağlantısı</string>
   <string name="usb_paranoia_connect_summary">Sadece güvenli kilit ekranlarında USB takıldığı zaman şarj etmeyi fa\'âl hâle getir</string>
   <string name="usb_category_title">USB</string>
+  <!-- Scramble PIN layout when unlocking -->
+  <string name="unlock_scramble_pin_layout_title">Karışık düzen</string>
+  <string name="unlock_scramble_pin_layout_summary">Cihaz kilidini açarken PIN düzenini karıştır</string>
+  <string name="battery_saver_system_bars_color_enable_title">Sistem çubuklarının arka plan rengi</string>
+  <string name="battery_saver_system_bars_color_enable_summary">Pil tasarrufu fa\'âl iken durum ve gezinti çubukları için farklı renk kullan</string>
+  <!-- Font picker -->
+  <string name="font_picker_title">Yazı çeşiti</string>
+  <string name="font_picker_progress">Yazı çeşiti ayarlanıyor\u2026</string>
 </resources>

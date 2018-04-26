@@ -27,4 +27,6 @@
   <!-- Fingerprint sensor locations -->
   <!-- Manual provisioning support -->
   <!-- Less Notification sounds -->
+  <!-- Scramble PIN layout when unlocking -->
+  <!-- Font picker -->
 </resources>

@@ -26,7 +26,6 @@
   <string name="omni_device_parts">Fitur perangkat</string>
   <string name="columns_menu">Tataletak kolom</string>
   <string name="hide_summary_menu">Sembunyikan ringkasan</string>
-  <string name="bars_settings_title">Bar dan layar kunci</string>
   <string name="button_settings_title">Tombol</string>
   <string name="mod_version">Versi Omni</string>
   <string name="mod_version_default">Tidak diketahui</string>
@@ -68,4 +67,6 @@
   <string name="screenshot_shutter_sound_title">Pengatur suara tangkapan layar</string>
   <!-- Manual provisioning support -->
   <!-- Less Notification sounds -->
+  <!-- Scramble PIN layout when unlocking -->
+  <!-- Font picker -->
 </resources>
