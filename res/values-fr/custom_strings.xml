@@ -75,6 +75,9 @@
   <string name="ramp_up_time_sixty">60s</string>
   <!-- Manual provisioning support -->
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_default">Comportement par défaut</string>
+  <string name="select_default_usb_configuration_title">Sélectionnez une configuration USB par défaut</string>
+  <string name="select_default_usb_configuration_dialog_title">Sélectionnez une Configuration USB</string>
   <!-- Scramble PIN layout when unlocking -->
   <!-- Font picker -->
 </resources>
