@@ -130,4 +130,7 @@
   <!-- Font picker -->
   <string name="font_picker_title">Betűtípus</string>
   <string name="font_picker_progress">Betűtípus beállítása\u2026</string>
+  <!-- Search -->
+  <string name="menu_search">Alkalmazások keresése</string>
+  <string name="menu_search_hint">Alkalmazások keresése...</string>
 </resources>

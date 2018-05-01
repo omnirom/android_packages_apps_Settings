@@ -130,4 +130,7 @@
   <!-- Font picker -->
   <string name="font_picker_title">Písmo</string>
   <string name="font_picker_progress">Nastavování písma\u2026</string>
+  <!-- Search -->
+  <string name="menu_search">Vyhledávání aplikací</string>
+  <string name="menu_search_hint">Vyhledávání aplikací...</string>
 </resources>

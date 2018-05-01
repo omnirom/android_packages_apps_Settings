@@ -130,4 +130,5 @@
   <!-- Font picker -->
   <string name="font_picker_title">Písmo</string>
   <string name="font_picker_progress">Nastavovanie písma\u2026</string>
+  <!-- Search -->
 </resources>

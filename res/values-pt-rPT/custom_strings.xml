@@ -130,4 +130,7 @@
   <!-- Font picker -->
   <string name="font_picker_title">Tipo de letra</string>
   <string name="font_picker_progress">A definir o tipo de letra\u2026</string>
+  <!-- Search -->
+  <string name="menu_search">Procurar aplicações</string>
+  <string name="menu_search_hint">Procurar aplicações...</string>
 </resources>

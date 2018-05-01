@@ -80,4 +80,5 @@
   <!-- Font picker -->
   <string name="font_picker_title">Pisava</string>
   <string name="font_picker_progress">Nastavljanje pisave \u2026</string>
+  <!-- Search -->
 </resources>

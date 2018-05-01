@@ -26,6 +26,7 @@
   <string name="omni_device_parts">Возможности устройства</string>
   <string name="columns_menu">Раскладка столбцов</string>
   <string name="hide_summary_menu">Скрыть содержание</string>
+  <string name="custom_bars_settings_title">Панели</string>
   <string name="button_settings_title">Кнопки</string>
   <string name="mod_version">Версия Omni</string>
   <string name="mod_version_default">Неизвестно</string>
@@ -79,6 +80,7 @@
   <string name="force_safe_media_volume_disabled_title">Отключить проверку безопасной громкости</string>
   <string name="force_safe_media_volume_disabled_summary">Не ограничивать громкость для гарнитуры</string>
   <!-- Manual provisioning support -->
+  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> is <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
   <string name="sim_enabled">включена</string>
   <string name="sim_disabled">отключена</string>
   <string name="sim_missing">отсутствует или неисправна</string>
@@ -94,7 +96,11 @@
   <string name="sub_activate_failed">Ошибка активации.</string>
   <string name="sub_deactivate_success">SIM-карта деактивирована.</string>
   <string name="sub_deactivate_failed">Ошибка деактивации.</string>
+  <string name="force_ambient_for_media_off">Отключено</string>
+  <string name="force_ambient_for_media_on">Включено</string>
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_title">Уменьшить частоту звуков уведомлений</string>
+  <string name="less_notification_sounds_summary">Воспроизводить звук уведомления каждого приложения только один раз за установленный период времени</string>
   <string name="less_notification_sounds_default">Поведение по умолчанию</string>
   <string name="less_notification_sounds_3s">Каждые 3 секунды</string>
   <string name="less_notification_sounds_5s">Каждые 5 секунд</string>
@@ -113,5 +119,12 @@
   <string name="usb_paranoia_connect_summary">Включать только зарядку, когда кабель подключен при заблокированном устройстве</string>
   <string name="usb_category_title">USB</string>
   <!-- Scramble PIN layout when unlocking -->
+  <string name="unlock_scramble_pin_layout_title">Перемешать кнопки</string>
+  <string name="unlock_scramble_pin_layout_summary">Перемешать кнопки ввода PIN-кода при разблокировке устройства</string>
+  <string name="battery_saver_system_bars_color_enable_title">Цвет фона системных баров</string>
+  <string name="battery_saver_system_bars_color_enable_summary">Использовать другой цвет для строки состояния и панели навигации, когда включена функция экономии заряда батареи</string>
   <!-- Font picker -->
+  <string name="font_picker_title">Шрифт</string>
+  <string name="font_picker_progress">Установка шрифта\u2026</string>
+  <!-- Search -->
 </resources>

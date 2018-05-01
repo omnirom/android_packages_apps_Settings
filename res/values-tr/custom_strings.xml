@@ -130,4 +130,7 @@
   <!-- Font picker -->
   <string name="font_picker_title">Yazı çeşiti</string>
   <string name="font_picker_progress">Yazı çeşiti ayarlanıyor\u2026</string>
+  <!-- Search -->
+  <string name="menu_search">Uygulamaları ara</string>
+  <string name="menu_search_hint">Uygulamaları ara...</string>
 </resources>

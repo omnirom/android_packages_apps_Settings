@@ -26,6 +26,7 @@
   <string name="omni_device_parts">Funkcje urządzenia</string>
   <string name="columns_menu">Układ kolumn</string>
   <string name="hide_summary_menu">Ukryj podsumowanie</string>
+  <string name="custom_bars_settings_title">Paski</string>
   <string name="button_settings_title">Przyciski</string>
   <string name="mod_version">Wersja Omni</string>
   <string name="mod_version_default">Nieznany</string>
@@ -38,7 +39,11 @@
   <!-- Custom light color -->
   <string name="light_customization">Powiadomienia LED</string>
   <string name="custom_light_title">Kolor</string>
+  <string name="custom_light_on_time_title">"Czas włączonego światła podczas włączonego pulsowania LED (ms)"</string>
+  <string name="custom_light_off_time_title">"Czas wyłączonego światła podczas włączonego pulsowania LED (ms)"</string>
+  <string name="app_notifications_info_desc">Stuknij w jeden z powyższych kanałów, aby skonfigurować kolory i inne opcje</string>
   <string name="value_equals_default">Automatyczny</string>
+  <string name="show_light_on_zen_title">Pulsowanie podczas \"Nie przeszkadzać\"</string>
   <!-- Android debugging over WiFi -->
   <string name="adb_over_network">ADB przez sieć</string>
   <string name="adb_over_network_summary">Aktywuj debugowanie TCP/IP przez interfejs sieciowy (Wi-Fi, sieci USB). Ustawienie zostanie zresetowane po ponownym uruchomieniu</string>
@@ -60,8 +65,39 @@
   <string name="security_settings_fingerprint_sensor_location_front">przód</string>
   <string name="security_settings_fingerprint_sensor_location_left">lewa strona</string>
   <string name="security_settings_fingerprint_sensor_location_right">prawa strona</string>
+  <string name="screenshot_shutter_sound_title">Dźwięk migawki zrzutu ekranu</string>
+  <string name="heads_up_notifications_enabled_title">Zezwól na podgląd</string>
+  <string name="heads_up_notifications_enabled_summary">Zezwól lub wyłącz podgląd dla wszystkich powiadomień</string>
+  <string name="increasing_ring_volume_option_title">Narastająca głośność dzwonka</string>
+  <string name="increasing_ring_ramp_up_title">Czas wzrastanie głośności dzwonka</string>
+  <string name="increasing_ring_volume_option_summary">Zwiększ głośność dzwonka do wybranej głośności</string>
+  <string name="ramp_up_time_ten">10s</string>
+  <string name="ramp_up_time_twenty">20s</string>
+  <string name="ramp_up_time_thirty">30s</string>
+  <string name="ramp_up_time_sixty">60s</string>
+  <string name="ramp_up_time_five">5s</string>
+  <string name="ramp_up_time_fifteen">15s</string>
+  <string name="force_safe_media_volume_disabled_title">Wyłącz ostrzeżenie wysokiej głośności</string>
+  <string name="force_safe_media_volume_disabled_summary">Nie ograniczaj głośności multimediów dla słuchawek</string>
   <!-- Manual provisioning support -->
+  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> jest <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
+  <string name="sim_enabled">włączone</string>
+  <string name="sim_disabled">wyłączone</string>
+  <string name="sim_missing">brakujący lub uszkodzony</string>
+  <string name="sim_enabler_need_disable_sim">Karta SIM zostanie dezaktywowana. Czy chcesz kontynuować?</string>
+  <string name="sim_enabler_will_disable_sim_title">Uwaga</string>
+  <string name="sim_enabler_need_switch_data_service">Ta karta SIM zostanie wyłączona i karta SIM <xliff:g id="slotid">%1$s</xliff:g> będzie używana dla usługi danych. Czy na pewno chcesz kontynuować?</string>
+  <string name="sim_enabler_airplane_on">Nie można wykonać operacji, gdy tryb samolotowy jest włączony.</string>
+  <string name="sim_enabler_in_call">Nie można wykonać operacji podczas połączenia.</string>
+  <string name="sim_enabler_both_inactive">Nie można wyłączyć wszystkich kart SIM</string>
+  <string name="sim_enabler_enabling">Aktywacja\u2026</string>
+  <string name="sim_enabler_disabling">Dezaktywacja\u2026</string>
+  <string name="sub_activate_success">Aktywowaną kartę SIM.</string>
+  <string name="sub_activate_failed">Twoja aktywacja się nie powiodła.</string>
+  <string name="sub_deactivate_success">SIM dezaktywowany.</string>
+  <string name="sub_deactivate_failed">Dezaktywacja nie powiodła się.</string>
   <!-- Less Notification sounds -->
   <!-- Scramble PIN layout when unlocking -->
   <!-- Font picker -->
+  <!-- Search -->
 </resources>

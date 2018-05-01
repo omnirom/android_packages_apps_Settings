@@ -96,4 +96,5 @@
   <!-- Scramble PIN layout when unlocking -->
   <!-- Font picker -->
   <string name="font_picker_title">Schriftart</string>
+  <!-- Search -->
 </resources>

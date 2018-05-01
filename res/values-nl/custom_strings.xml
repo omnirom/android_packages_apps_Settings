@@ -130,4 +130,5 @@
   <!-- Font picker -->
   <string name="font_picker_title">Lettertype</string>
   <string name="font_picker_progress">Lettertype instellen\u2026</string>
+  <!-- Search -->
 </resources>

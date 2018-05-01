@@ -26,6 +26,7 @@
   <string name="omni_device_parts">Paramètres additionnels</string>
   <string name="columns_menu">Disposition des colonnes</string>
   <string name="hide_summary_menu">Masquer le résumé</string>
+  <string name="custom_bars_settings_title">Barres</string>
   <string name="button_settings_title">Boutons</string>
   <string name="mod_version">Version d\'Omni</string>
   <string name="mod_version_default">Inconnu</string>
@@ -69,12 +70,67 @@
   <string name="heads_up_notifications_enabled_summary">Activer ou désactiver les notifications flottantes</string>
   <string name="increasing_ring_volume_option_title">Volume de sonnerie progressif</string>
   <string name="increasing_ring_ramp_up_title">Durée d\'augmentation du volume de sonnerie</string>
+  <string name="increasing_ring_volume_option_summary">Augmenter le volume de la sonnerie au volume sélectionné</string>
   <string name="ramp_up_time_ten">10s</string>
   <string name="ramp_up_time_twenty">20s</string>
   <string name="ramp_up_time_thirty">30s</string>
   <string name="ramp_up_time_sixty">60s</string>
+  <string name="ramp_up_time_five">5 s</string>
+  <string name="ramp_up_time_fifteen">15 s</string>
+  <string name="force_safe_media_volume_disabled_title">Désactiver le contrôle de volume sécurisé</string>
+  <string name="force_safe_media_volume_disabled_summary">Ne pas limiter le volume de médias pour les casques</string>
   <!-- Manual provisioning support -->
+  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g>est<xliff:g id="status" example="disabled">%2$s</xliff:g></string>
+  <string name="sim_enabled">activé</string>
+  <string name="sim_disabled">désactivé</string>
+  <string name="sim_missing">manquant ou défectueux</string>
+  <string name="sim_enabler_need_disable_sim">La carte SIM sera désactivée. Voulez-vous continuer ?</string>
+  <string name="sim_enabler_will_disable_sim_title">Attention</string>
+  <string name="sim_enabler_need_switch_data_service">Cette carte SIM sera désactivée et SIM <xliff:g id="slotid">%1$s</xliff:g> sera utilisé pour les services de données. Êtes-vous sûr de vouloir continuer ?</string>
+  <string name="sim_enabler_airplane_on">Impossible d’effectuer l’opération pendant que le mode avion est activé.</string>
+  <string name="sim_enabler_in_call">Impossible d’effectuer l’opération pendant un appel.</string>
+  <string name="sim_enabler_both_inactive">Impossible de désactiver toutes les cartes SIM</string>
+  <string name="sim_enabler_enabling">Activation\u2026</string>
+  <string name="sim_enabler_disabling">Désactivation\u2026</string>
+  <string name="sub_activate_success">SIM activée.</string>
+  <string name="sub_activate_failed">Activation échouée.</string>
+  <string name="sub_deactivate_success">SIM désactivée.</string>
+  <string name="sub_deactivate_failed">Désactivation échouée.</string>
+  <string name="force_ambient_for_media_pref_title">Affichage ambiant Music Ticker</string>
+  <string name="force_ambient_for_media_off">Désactivé</string>
+  <string name="force_ambient_for_media_on">Activé</string>
+  <string name="force_ambient_for_media_on_forced">Activé et forcé</string>
+  <string name="force_ambient_for_media_on_forced_clean">Activé et forcé un minimum</string>
+  <string name="ambient_ticker_footer">Affichage ambiant Music Ticker permet d’afficher les informations actuelles sur la piste musique sur l\'écran de verrouillage avec ou sans affichage ambiant activée.\nVous avez le choix entre deux mises en page, normales et minimal. Bien que cette fonctionnalité tire parti de l’affichage ambiant, elle ne dépend pas de lui.</string>
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_title">Limiter la fréquence des notifications sonores</string>
+  <string name="less_notification_sounds_summary">Jouer les notifications sonore pour chaque application une fois par période définie</string>
+  <string name="less_notification_sounds_default">Comportement par défaut</string>
+  <string name="less_notification_sounds_3s">Toutes les 3 secondes</string>
+  <string name="less_notification_sounds_5s">Toutes les 5 secondes</string>
+  <string name="less_notification_sounds_10s">Toutes les 10 secondes</string>
+  <string name="less_notification_sounds_15s">Toutes les 15 secondes</string>
+  <string name="less_notification_sounds_30s">Toutes les 30 secondes</string>
+  <string name="less_notification_sounds_45s">Toutes les 45 secondes</string>
+  <string name="less_notification_sounds_1m">Toute les minutes</string>
+  <string name="less_notification_sounds_2m">Toutes les 2 minutes</string>
+  <string name="less_notification_sounds_5m">Toutes les 5 minutes</string>
+  <string name="notification_log_summary">Voir la liste des notifications</string>
+  <string name="select_default_usb_configuration_title">Sélectionnez une configuration USB par défaut</string>
+  <string name="select_default_usb_configuration_dialog_title">Sélectionnez une Configuration USB</string>
+  <string name="select_usb_default_confguration_warning">ATTENTION : Par défaut la configuration USB est activée également lorsque l’appareil est verrouillé ! \n\n Voulez-vous vraiment activer cette configuration ?</string>
+  <string name="usb_paranoia_connect_title">Connection USB sécurisé</string>
+  <string name="usb_paranoia_connect_summary">Activer uniquement la recharge USB lorsque l\'appareil est branché sur les écrans de verrouillage sécurisés</string>
+  <string name="usb_category_title">USB</string>
   <!-- Scramble PIN layout when unlocking -->
+  <string name="unlock_scramble_pin_layout_title">Mise en page du clavier aléatoire</string>
+  <string name="unlock_scramble_pin_layout_summary">Disposition aléatoire pour le déverrouillage par code PIN</string>
+  <string name="battery_saver_system_bars_color_enable_title">Couleur d\'arrière-plan des barres du système</string>
+  <string name="battery_saver_system_bars_color_enable_summary">Utiliser des couleurs différentes pour les barres de statut et de navigation lorsque l’économiseur de batterie est activé</string>
   <!-- Font picker -->
+  <string name="font_picker_title">Police</string>
+  <string name="font_picker_progress">Paramètre de police\u2026</string>
+  <!-- Search -->
+  <string name="menu_search">Applications de recherche</string>
+  <string name="menu_search_hint">Applications de recherche...</string>
 </resources>

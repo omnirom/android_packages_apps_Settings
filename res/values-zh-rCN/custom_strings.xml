@@ -130,4 +130,7 @@
   <!-- Font picker -->
   <string name="font_picker_title">字体</string>
   <string name="font_picker_progress">设置 font\u2026</string>
+  <!-- Search -->
+  <string name="menu_search">搜索应用程序</string>
+  <string name="menu_search_hint">搜索应用程序..。</string>
 </resources>
