@@ -18,14 +18,20 @@ package com.android.settings.location;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContentResolver;
 import android.location.SettingInjectorService;
 import android.os.Bundle;
 import android.provider.SearchIndexableResource;
+import android.provider.Settings;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceGroup;
+import android.support.v7.preference.PreferenceScreen;
+import android.support.v14.preference.SwitchPreference;
+import android.util.Log;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
+import com.android.settings.core.BasePreferenceController;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.dashboard.SummaryLoader;
 import com.android.settings.search.BaseSearchIndexProvider;
@@ -38,7 +44,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * System location settings (Settings &gt; Location). The screen has three parts:
@@ -124,6 +134,7 @@ public class LocationSettings extends DashboardFragment {
         controllers.add(
                 new LocationServicePreferenceController(context, fragment, lifecycle));
         controllers.add(new LocationFooterPreferenceController(context, lifecycle));
+        controllers.add(new AgpsPreferenceController(context));
         return controllers;
     }
 
@@ -175,4 +186,87 @@ public class LocationSettings extends DashboardFragment {
                             null /* lifecycle */);
                 }
             };
+
+    //PreferenceController of AGPS
+    public static class AgpsPreferenceController extends BasePreferenceController {
+        // CMCC assisted gps SUPL(Secure User Plane Location) server address
+        private static final String ASSISTED_GPS_SUPL_HOST = "assisted_gps_supl_host";
+        // CMCC agps SUPL port address
+        private static final String ASSISTED_GPS_SUPL_PORT = "assisted_gps_supl_port";
+
+        private static final String KEY_ASSISTED_GPS = "assisted_gps";
+        private static final String PROPERTIES_FILE = "/etc/gps.conf";
+
+        private SwitchPreference mAgpsPreference;
+
+        public AgpsPreferenceController(Context context) {
+            super(context, KEY_ASSISTED_GPS);
+        }
+
+        @Override
+        public String getPreferenceKey() {
+            return KEY_ASSISTED_GPS;
+        }
+
+        @AvailabilityStatus
+        public int getAvailabilityStatus() {
+            return mContext.getResources().getBoolean(R.bool.config_agps_enabled)
+                    ? AVAILABLE
+                    : UNSUPPORTED_ON_DEVICE;
+        }
+
+        @Override
+        public void displayPreference(PreferenceScreen screen) {
+            super.displayPreference(screen);
+            mAgpsPreference =
+                    (SwitchPreference) screen.findPreference(KEY_ASSISTED_GPS);
+        }
+
+        @Override
+        public void updateState(Preference preference) {
+            if (mAgpsPreference != null) {
+                mAgpsPreference.setChecked(Settings.Global.getInt(
+                        mContext.getContentResolver(), Settings.Global.ASSISTED_GPS_ENABLED, 0) == 1);
+            }
+        }
+
+        @Override
+        public boolean handlePreferenceTreeClick(Preference preference) {
+            if (KEY_ASSISTED_GPS.equals(preference.getKey())) {
+                final ContentResolver cr = mContext.getContentResolver();
+                final boolean switchState = mAgpsPreference.isChecked();
+                if (switchState) {
+                    if (Settings.Global.getString(cr, ASSISTED_GPS_SUPL_HOST) == null
+                            || Settings.Global
+                            .getString(cr, ASSISTED_GPS_SUPL_PORT) == null) {
+                        FileInputStream stream = null;
+                        try {
+                            Properties properties = new Properties();
+                            File file = new File(PROPERTIES_FILE);
+                            stream = new FileInputStream(file);
+                            properties.load(stream);
+                            Settings.Global.putString(cr, ASSISTED_GPS_SUPL_HOST,
+                                    properties.getProperty("SUPL_HOST", null));
+                            Settings.Global.putString(cr, ASSISTED_GPS_SUPL_PORT,
+                                    properties.getProperty("SUPL_PORT", null));
+                        } catch (IOException e) {
+                            Log.e(TAG, "Could not open GPS configuration file "
+                                            + PROPERTIES_FILE + ", e=" + e);
+                        } finally {
+                            if (stream != null) {
+                                try {
+                                    stream.close();
+                                } catch (Exception e) {
+                                }
+                            }
+                        }
+                    }
+                }
+                Settings.Global.putInt(cr, Settings.Global.ASSISTED_GPS_ENABLED,
+                        switchState ? 1 : 0);
+                return true;
+            }
+            return false;
+        }
+    }
 }
