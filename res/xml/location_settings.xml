@@ -31,6 +31,11 @@
             android:fragment="com.android.settings.location.RecentLocationRequestSeeAllFragment"
             settings:searchable="false"/>
 
+            <CheckBoxPreference
+                android:key="assisted_gps"
+                android:title="@string/assisted_gps"
+                android:summaryOn="@string/assisted_gps_enabled"
+                android:summaryOff="@string/assisted_gps_disabled"/>
         <PreferenceCategory
             android:key="location_advanced_settings"
             android:layout="@layout/preference_category_no_label"

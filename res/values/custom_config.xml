@@ -29,4 +29,7 @@
 
     <bool name="config_show_color_mode">true</bool>
 
+    <!-- Whether to add AGPS parameter settings -->
+    <bool name="config_agps_enabled">false</bool>
+
 </resources>
