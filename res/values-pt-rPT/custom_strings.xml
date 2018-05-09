@@ -23,7 +23,7 @@
   <string name="header_category_omni">OmniGears</string>
   <string name="omni_dashboard_summary">Omnifique o seu dispositivo</string>
   <string name="style_settings_summary">Imagens de fundo e outras personalizações</string>
-  <string name="omni_device_parts">Funcionalidades do dispositivo</string>
+  <string name="omni_device_parts">Botões adicionais</string>
   <string name="columns_menu">Esquema em colunas</string>
   <string name="hide_summary_menu">Ocultar resumos</string>
   <string name="custom_bars_settings_title">Barras</string>

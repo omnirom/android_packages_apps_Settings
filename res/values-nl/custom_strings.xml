@@ -131,4 +131,6 @@
   <string name="font_picker_title">Lettertype</string>
   <string name="font_picker_progress">Lettertype instellen\u2026</string>
   <!-- Search -->
+  <string name="menu_search">Zoek apps</string>
+  <string name="menu_search_hint">Zoek apps...</string>
 </resources>

@@ -26,6 +26,7 @@
   <string name="omni_device_parts">Características del dispositivo</string>
   <string name="columns_menu">Diseño de columnas</string>
   <string name="hide_summary_menu">Ocultar Resumen</string>
+  <string name="custom_bars_settings_title">Barras</string>
   <string name="button_settings_title">Botones</string>
   <string name="mod_version">Versión de Omni</string>
   <string name="mod_version_default">Desconocido</string>
@@ -91,6 +92,8 @@
   <string name="sub_deactivate_success">SIM desactivada.</string>
   <string name="force_ambient_for_media_off">Deshabilitado</string>
   <string name="force_ambient_for_media_on">Habilitado</string>
+  <string name="force_ambient_for_media_on_forced">Habilitado y obligado</string>
+  <string name="force_ambient_for_media_on_forced_clean">Habilitado y obligado mínimo</string>
   <!-- Less Notification sounds -->
   <string name="less_notification_sounds_title">Sonidos de notificación menos frecuentes</string>
   <string name="less_notification_sounds_summary">Reproducir el sonido de notificación de cada aplicación una sola vez por periodo de tiempo</string>
@@ -109,6 +112,12 @@
   <string name="select_default_usb_configuration_dialog_title">Seleccione configuración de USB</string>
   <string name="usb_category_title">USB</string>
   <!-- Scramble PIN layout when unlocking -->
+  <string name="unlock_scramble_pin_layout_title">Disposición aleatoria</string>
+  <string name="unlock_scramble_pin_layout_summary">Desordenar números cuando se desbloquee el dispositivo</string>
+  <string name="battery_saver_system_bars_color_enable_title">Color de fondo de barras sistema</string>
   <!-- Font picker -->
+  <string name="font_picker_title">Fuente</string>
   <!-- Search -->
+  <string name="menu_search">Buscar aplicaciones</string>
+  <string name="menu_search_hint">Buscar aplicaciones...</string>
 </resources>
