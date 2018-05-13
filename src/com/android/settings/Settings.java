@@ -208,4 +208,5 @@ public class Settings extends SettingsActivity {
     public static class EventServiceSettingsActivity extends SettingsActivity { /* empty */ }
     public static class LockscreenSettingsActivity extends SettingsActivity { /* empty */ }
     public static class LockscreenItemSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class AmbientDisplaySettingsActivity extends SettingsActivity { /* empty */ }
 }
