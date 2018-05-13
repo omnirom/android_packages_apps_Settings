@@ -3457,5 +3457,16 @@
             <meta-data android:name="com.android.settings.summary"
                        android:resource="@string/summary_empty"/>
         </activity>
+        <activity
+            android:name=".Settings$AmbientDisplaySettingsActivity"
+            android:label="@string/ambient_display_screen_title"
+            android:taskAffinity="" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                       android:value="com.android.settings.display.AmbientDisplaySettings"/>
+        </activity>
     </application>
 </manifest>
