@@ -26,6 +26,7 @@
   <string name="omni_device_parts">Caratteristiche del dispositivo</string>
   <string name="columns_menu">Layout colonne</string>
   <string name="hide_summary_menu">Nascondi sommario</string>
+  <string name="custom_bars_settings_title">Barre</string>
   <string name="button_settings_title">Pulsanti</string>
   <string name="mod_version">Versione Omni</string>
   <string name="mod_version_default">Sconosciuta</string>
@@ -69,22 +70,41 @@
   <string name="heads_up_notifications_enabled_summary">Abilita/disabilita controllo di tutte le notifiche</string>
   <string name="increasing_ring_volume_option_title">Volume della suoneria crescente</string>
   <string name="increasing_ring_ramp_up_title">Tempo di aumento del volume</string>
+  <string name="increasing_ring_volume_option_summary">Aumenta volume della suoneria al volume selezionato</string>
   <string name="ramp_up_time_ten">10s</string>
   <string name="ramp_up_time_twenty">20s</string>
   <string name="ramp_up_time_thirty">30s</string>
   <string name="ramp_up_time_sixty">60s</string>
   <string name="ramp_up_time_five">5s</string>
   <string name="ramp_up_time_fifteen">15s</string>
+  <string name="force_safe_media_volume_disabled_title">Disabilita controllo del volume</string>
+  <string name="force_safe_media_volume_disabled_summary">Non limitare volume multimediale per le cuffie</string>
   <!-- Manual provisioning support -->
+  <string name="sim_enabler_summary"><xliff:g id="text">%1$s</xliff:g>, <xliff:g id="size" example="230 kB">%2$s</xliff:g>/s</string>
   <string name="sim_enabled">abilitato</string>
   <string name="sim_disabled">disabilitato</string>
+  <string name="sim_missing">mancante o non funzionante</string>
+  <string name="sim_enabler_need_disable_sim">La SIM verrà disattivata. Vuoi continuare?</string>
+  <string name="sim_enabler_will_disable_sim_title">Attenzione</string>
+  <string name="sim_enabler_need_switch_data_service">La SIM verrà disattivata e la SIM <xliff:g id="slotid">%1$s</xliff:g> sarà utilizzata per i dati mobili. Sei sicuro di voler continuare?</string>
+  <string name="sim_enabler_airplane_on">Impossibile effettuare l\'operazione quando è attivata la modalità aereo.</string>
+  <string name="sim_enabler_in_call">Impossibile effettuare l\'operazione durante una chiamata.</string>
+  <string name="sim_enabler_both_inactive">Impossibile disabilitare tutte le schede SIM</string>
+  <string name="sim_enabler_enabling">Attivazione\u2026</string>
+  <string name="sim_enabler_disabling">Disattivazione\u2026</string>
   <string name="sub_activate_success">Scheda SIM attivata.</string>
   <string name="sub_activate_failed">Attivazione non riuscita.</string>
   <string name="sub_deactivate_success">Scheda SIM disattivata.</string>
   <string name="sub_deactivate_failed">Disattivazione fallita.</string>
+  <string name="force_ambient_for_media_pref_title">Ticker Ambient musicale</string>
   <string name="force_ambient_for_media_off">Disabilitato</string>
   <string name="force_ambient_for_media_on">Abilitato</string>
+  <string name="force_ambient_for_media_on_forced">Attivato e forzato</string>
+  <string name="force_ambient_for_media_on_forced_clean">Abilitato e forzato minimale</string>
+  <string name="ambient_ticker_footer">Il ticker Ambient musicale permette di visualizzare le info del brano in riproduzione con o senza l\'Ambient display abilitato.\nPuoi selezionare due layout, normale e minimale. Mentre questa funzine prende vantaggio dell\'ambient display, non dipende da esso.</string>
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_title">Suoni di notifica meno frequenti</string>
+  <string name="less_notification_sounds_summary">Limitare i suoni di notifica di ogni app ad una sola volta per ogni lasso di tempo impostato</string>
   <string name="less_notification_sounds_default">Comportamento predefinito</string>
   <string name="less_notification_sounds_3s">Ogni 3 secondi</string>
   <string name="less_notification_sounds_5s">Ogni 5 secondi</string>
@@ -95,8 +115,22 @@
   <string name="less_notification_sounds_1m">Ogni minuto</string>
   <string name="less_notification_sounds_2m">Ogni 2 minuti</string>
   <string name="less_notification_sounds_5m">Ogni 5 minuti</string>
+  <string name="notification_log_summary">Mostra registro cronologia delle notifiche</string>
+  <string name="select_default_usb_configuration_title">Seleziona la configurazione USB predefinita</string>
+  <string name="select_default_usb_configuration_dialog_title">Seleziona la configurazione USB</string>
+  <string name="select_usb_default_confguration_warning">ATTENZIONE: la configurazione USB predefinita è abilitata anche quando il dispositivo è bloccato!\n\nVuoi veramente abilitare questa configurazione?</string>
+  <string name="usb_paranoia_connect_title">Connessione sicura USB</string>
+  <string name="usb_paranoia_connect_summary">Abilitare la ricarica solo quando la USB viene collegata sulla schermata di blocco</string>
   <string name="usb_category_title">USB</string>
   <!-- Scramble PIN layout when unlocking -->
+  <string name="unlock_scramble_pin_layout_title">Disposizione casuale</string>
+  <string name="unlock_scramble_pin_layout_summary">Modifica casualmente il layout di inserimento del PIN di sblocco</string>
+  <string name="battery_saver_system_bars_color_enable_title">Colore sfondo delle barre di sistema</string>
+  <string name="battery_saver_system_bars_color_enable_summary">Usa un colore diverso per la barra di stato e di navigazione quando è abilitato il risparmio energetico</string>
   <!-- Font picker -->
+  <string name="font_picker_title">Carattere</string>
+  <string name="font_picker_progress">Impostazione carattere\u2026</string>
   <!-- Search -->
+  <string name="menu_search">Cerca app</string>
+  <string name="menu_search_hint">Cerca app...</string>
 </resources>

@@ -90,6 +90,7 @@
   <string name="sub_activate_success">SIM activada.</string>
   <string name="sub_activate_failed">Error de activación.</string>
   <string name="sub_deactivate_success">SIM desactivada.</string>
+  <string name="sub_deactivate_failed">Error de desactivación.</string>
   <string name="force_ambient_for_media_off">Deshabilitado</string>
   <string name="force_ambient_for_media_on">Habilitado</string>
   <string name="force_ambient_for_media_on_forced">Habilitado y obligado</string>
