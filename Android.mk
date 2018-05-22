@@ -64,6 +64,7 @@ endif
 
 include frameworks/opt/setupwizard/library/common-gingerbread.mk
 include frameworks/base/packages/SettingsLib/common.mk
+include packages/apps/OmniLib/common.mk
 
 include $(BUILD_PACKAGE)
 
