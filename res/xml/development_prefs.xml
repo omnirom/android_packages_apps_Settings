@@ -177,7 +177,7 @@
             android:defaultValue="@string/default_usb_configuration"
             android:persistent="false" />
 
-        <org.omnirom.omnigears.preference.GlobalSettingSwitchPreference
+        <org.omnirom.omnilib.preference.GlobalSettingSwitchPreference
             android:key="usb_paranoia_connect"
             android:title="@string/usb_paranoia_connect_title"
             android:summary="@string/usb_paranoia_connect_summary"

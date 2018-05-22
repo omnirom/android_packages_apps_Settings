@@ -47,8 +47,8 @@ import com.android.settings.widget.SwitchBar;
 import com.android.settingslib.RestrictedSwitchPreference;
 import com.android.settingslib.widget.FooterPreference;
 
-import org.omnirom.omnigears.preference.SeekBarPreference;
-import org.omnirom.omnigears.preference.ColorSelectPreference;
+import org.omnirom.omnilib.preference.SeekBarPreference;
+import org.omnirom.omnilib.preference.ColorSelectPreference;
 
 import static android.provider.Settings.System.NOTIFICATION_LIGHT_PULSE;
 
