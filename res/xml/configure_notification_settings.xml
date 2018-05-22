@@ -72,7 +72,7 @@
     </PreferenceCategory>
 
     <!-- global heads-up enable/disable -->
-    <org.omnirom.omnigears.preference.GlobalSettingSwitchPreference
+    <org.omnirom.omnilib.preference.GlobalSettingSwitchPreference
         android:key="heads_up_notifications_enabled"
         android:title="@string/heads_up_notifications_enabled_title"
         android:summary="@string/heads_up_notifications_enabled_summary"

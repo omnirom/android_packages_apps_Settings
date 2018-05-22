@@ -26,7 +26,7 @@
         android:entries="@array/lock_after_timeout_entries"
         android:entryValues="@array/lock_after_timeout_values" />
 
-    <org.omnirom.omnigears.preference.SystemSettingSwitchPreference
+    <org.omnirom.omnilib.preference.SystemSettingSwitchPreference
         android:key="lockscreen_scramble_pin_layout"
         android:title="@string/unlock_scramble_pin_layout_title"
         android:summary="@string/unlock_scramble_pin_layout_summary"

@@ -53,8 +53,8 @@ import static android.app.NotificationManager.IMPORTANCE_LOW;
 import static android.app.NotificationManager.IMPORTANCE_NONE;
 import static android.app.NotificationManager.IMPORTANCE_UNSPECIFIED;
 
-import org.omnirom.omnigears.preference.SeekBarPreference;
-import org.omnirom.omnigears.preference.ColorSelectPreference;
+import org.omnirom.omnilib.preference.SeekBarPreference;
+import org.omnirom.omnilib.preference.ColorSelectPreference;
 
 import static android.provider.Settings.System.NOTIFICATION_LIGHT_PULSE;
 
