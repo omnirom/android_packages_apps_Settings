@@ -24,7 +24,7 @@
             android:title="@string/battery_saver_turn_on_automatically_title"
             android:summary="%s" />
 
-    <org.omnirom.omnigears.preference.SystemSettingSwitchPreference
+    <org.omnirom.omnilib.preference.SystemSettingSwitchPreference
             android:key="battery_saver_system_bars_color_enable"
             android:title="@string/battery_saver_system_bars_color_enable_title"
             android:summary="@string/battery_saver_system_bars_color_enable_summary"
