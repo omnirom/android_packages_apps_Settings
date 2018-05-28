@@ -25,8 +25,50 @@
   <!-- Encryption and credential -->
   <!-- Format string for fingerprint location message -->
   <!-- Fingerprint sensor locations -->
+  <string name="ramp_up_time_ten">10δ</string>
+  <string name="ramp_up_time_twenty">20δ</string>
+  <string name="ramp_up_time_thirty">30δ</string>
+  <string name="ramp_up_time_sixty">60δ</string>
+  <string name="ramp_up_time_five">5δ</string>
+  <string name="force_safe_media_volume_disabled_title">Απενεργοποίηση ελέγχου ασφαλής έντασης</string>
+  <string name="force_safe_media_volume_disabled_summary">Χωρίς περιορισμό έντασης πολυμέσων στα ακουστικά</string>
   <!-- Manual provisioning support -->
+  <string name="sim_enabled">ενεργό</string>
+  <string name="sim_disabled">ανενεργό</string>
+  <string name="sim_missing">ελλειπής ή εσφαλμένο</string>
+  <string name="sim_enabler_need_disable_sim">Η κάρτα SIM θα απενεργοποιηθεί. Θελετε να συνεχίσετε;</string>
+  <string name="sim_enabler_will_disable_sim_title">Προσοχή</string>
+  <string name="sim_enabler_need_switch_data_service">Η κάρτα SIM θα απενεργοποιηθεί και η SIM <xliff:g id="slotid">%1$s</xliff:g> θα χρησιμοποιηθεί για της υπηρεσίες δεδομένων. Είστε σίγουροι πως θέλετε να συνεχίσετε;</string>
+  <string name="sim_enabler_airplane_on">Δεν είναι δυνατή η εκτέλεση της λειτουργίας, ενώ η λειτουργία πτήσης είναι ενεργοποιημένη.</string>
+  <string name="sim_enabler_in_call">Δεν είναι δυνατή η εκτέλεση αυτής της λειτουργίας εν ώρα κλήσης.</string>
+  <string name="sim_enabler_both_inactive">Δεν είναι δυνατή η απενεργοποίηση των καρτών SIM</string>
+  <string name="sim_enabler_enabling">Ενεργοποίηση\u2026</string>
+  <string name="sim_enabler_disabling">Απενεργοποίηση\u2026</string>
+  <string name="sub_activate_success">Η κάρτα SIM ενεργοποιήθηκε.</string>
+  <string name="sub_activate_failed">Η ενεργοποίηση απέτυχε.</string>
+  <string name="sub_deactivate_success">Η κάρτα SIM απενεργοποιήθηκε.</string>
+  <string name="sub_deactivate_failed">Η απενεργοποίηση απέτυχε.</string>
+  <string name="force_ambient_for_media_off">Ανενεργό</string>
+  <string name="force_ambient_for_media_on">Ενεργό</string>
+  <string name="force_ambient_for_media_on_forced">Ενεργό και εξαναγκασμένο</string>
+  <string name="force_ambient_for_media_on_forced_clean">Ενεργοποιημένο και εξαναγκασμένο (ελάχιστο)</string>
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_title">Λιγότερο συχνοί ήχοι ειδοποίησης</string>
+  <string name="less_notification_sounds_default">Προεπιλεγμένη συμπεριφορά</string>
+  <string name="less_notification_sounds_3s">Κάθε 3 δευτερόλεπτα</string>
+  <string name="less_notification_sounds_5s">Κάθε 5 δευτερόλεπτα</string>
+  <string name="less_notification_sounds_10s">Κάθε 10 δευτερόλεπτα</string>
+  <string name="less_notification_sounds_15s">Κάθε 15 δευτερόλεπτα</string>
+  <string name="less_notification_sounds_30s">Κάθε 30 δευτερόλεπτα</string>
+  <string name="less_notification_sounds_45s">Κάθε 45 δευτερόλεπτα</string>
+  <string name="less_notification_sounds_1m">Κάθε 1 λεπτό</string>
+  <string name="less_notification_sounds_2m">Κάθε 2 λεπτά</string>
+  <string name="less_notification_sounds_5m">Κάθε 5 λεπτά</string>
+  <string name="notification_log_summary">Εμφάνιση ιστορικού καταγραφής ειδοποιήσεων</string>
+  <string name="select_default_usb_configuration_title">Επιλογή προεπιλεγμένης διαμόρφωσης USB</string>
+  <string name="select_default_usb_configuration_dialog_title">Επιλογή διαμόρφωσης USB</string>
+  <string name="usb_paranoia_connect_title">Ασφαλής σύνδεση USB</string>
+  <string name="usb_paranoia_connect_summary">Ενεργοποίηση μόνο της φόρτισης όταν το USB είναι συνδεδεμένη στο κλείδωμα οθόνης</string>
   <!-- Scramble PIN layout when unlocking -->
   <!-- Font picker -->
   <!-- Search -->
