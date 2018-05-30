@@ -109,6 +109,8 @@ public class ConfigureNotificationSettings extends DashboardFragment {
 
         });
         controllers.add(new LessNotificationSoundsController(context));
+        controllers.add(new PeekSnoozeTimeController(context));
+        controllers.add(new PeekTimeoutController(context));
         return controllers;
     }
 
