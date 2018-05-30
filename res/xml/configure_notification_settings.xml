@@ -71,16 +71,39 @@
 
     </PreferenceCategory>
 
-    <!-- global heads-up enable/disable -->
-    <org.omnirom.omnilib.preference.GlobalSettingSwitchPreference
-        android:key="heads_up_notifications_enabled"
-        android:title="@string/heads_up_notifications_enabled_title"
-        android:summary="@string/heads_up_notifications_enabled_summary"
-        android:defaultValue="true" />
+    <PreferenceCategory
+        android:title="@string/heads_up_category">
 
-    <Preference
-        android:title="@string/notification_log_title"
-        android:summary="@string/notification_log_summary"
-        android:fragment="com.android.settings.notification.NotificationStation" />
+        <!-- global heads-up enable/disable -->
+        <org.omnirom.omnilib.preference.GlobalSettingSwitchPreference
+            android:key="heads_up_notifications_enabled"
+            android:title="@string/heads_up_notifications_enabled_title"
+            android:summary="@string/heads_up_notifications_enabled_summary"
+            android:defaultValue="true" />
 
+        <ListPreference
+            android:key="heads_up_time_out"
+            android:title="@string/heads_up_time_out_title"
+            android:entries="@array/heads_up_time_out_entries"
+            android:entryValues="@array/heads_up_time_out_values"
+            android:persistent="false" />
+
+        <ListPreference
+            android:key="heads_up_snooze_time"
+            android:title="@string/heads_up_snooze_title"
+            android:entries="@array/heads_up_snooze_entries"
+            android:entryValues="@array/heads_up_snooze_values"
+            android:persistent="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/log_category">
+
+        <Preference
+            android:title="@string/notification_log_title"
+            android:summary="@string/notification_log_summary"
+            android:fragment="com.android.settings.notification.NotificationStation" />
+
+    </PreferenceCategory>
 </PreferenceScreen>
