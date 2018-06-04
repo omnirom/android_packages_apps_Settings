@@ -15,7 +15,8 @@
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:settings="http://schemas.android.com/apk/res/com.android.settings" >
+    xmlns:omnilib="http://schemas.android.com/apk/lib/res/org.omnirom.omnilib"
+    xmlns:settings="http://schemas.android.com/apk/res/com.android.settings" >
 
     <!-- Importance -->
     <Preference
@@ -82,19 +83,19 @@
             android:title="@string/custom_light_on_time_title"
             android:summary="@string/value_equals_default"
             android:max="3000"
-            settings:min="0"
-            settings:interval="100"
-            settings:unitsLeft=""
-            settings:unitsRight="@string/unit_msec" />
+            omnilib:min="0"
+            omnilib:interval="100"
+            omnilib:unitsLeft=""
+            omnilib:unitsRight="@string/unit_msec" />
 
         <org.omnirom.omnilib.preference.SeekBarPreference
             android:key="custom_light_off_time"
             android:title="@string/custom_light_off_time_title"
             android:summary="@string/value_equals_default"
             android:max="3000"
-            settings:min="0"
-            settings:interval="100"
-            settings:unitsLeft=""
-            settings:unitsRight="@string/unit_msec" />
+            omnilib:min="0"
+            omnilib:interval="100"
+            omnilib:unitsLeft=""
+            omnilib:unitsRight="@string/unit_msec" />
     </PreferenceCategory>
 </PreferenceScreen>
