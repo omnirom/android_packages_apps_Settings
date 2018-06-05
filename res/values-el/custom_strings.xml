@@ -33,6 +33,7 @@
   <string name="force_safe_media_volume_disabled_title">Απενεργοποίηση ελέγχου ασφαλής έντασης</string>
   <string name="force_safe_media_volume_disabled_summary">Χωρίς περιορισμό έντασης πολυμέσων στα ακουστικά</string>
   <!-- Manual provisioning support -->
+  <string name="sim_enabler_summary"></xliff:g><xliff:g id="displayName">%1$s</xliff:g> είναι <xliff:g id="status" example="disabled"><xliff:g id="status" example="disabled"></xliff:g></string>
   <string name="sim_enabled">ενεργό</string>
   <string name="sim_disabled">ανενεργό</string>
   <string name="sim_missing">ελλειπής ή εσφαλμένο</string>
