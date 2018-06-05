@@ -561,7 +561,7 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
             if (getProvisionStatus(mSlotId) != PROVISIONED) {
                 CharSequence state = mContext.getString(
                         hasCard() ? R.string.sim_disabled : R.string.sim_missing);
-                return mContext.getString(R.string.sim_enabler_summary,
+                return mContext.getString(R.string.sim_enabler_summary_new,
                         mSubInfoRecord.getDisplayName(), state);
             } else {
                 return super.determineSummary();
@@ -718,8 +718,8 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
 
                 case ERROR_ALERT_DLG_ID:
                     builder.setMessage(mContext.getString(msgId));
-                    builder.setNeutralButton(android.R.string.ok, mDialogClickListener);
-                    builder.setCancelable(false);
+                    builder.setPositiveButton(android.R.string.ok, mNoopDialogClickListener);
+                    builder.setOnCancelListener(mDialogCanceListener);
                     break;
 
                 case RESULT_ALERT_DLG_ID:
@@ -727,7 +727,7 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
                              mContext.getString(R.string.sub_activate_success) :
                             mContext.getString(R.string.sub_deactivate_success);
                     builder.setMessage(msg);
-                    builder.setNeutralButton(android.R.string.ok, null);
+                    builder.setPositiveButton(android.R.string.ok, null);
                     break;
                 default:
                     break;
@@ -802,6 +802,12 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
                     }
                 };
 
+        private DialogInterface.OnClickListener mNoopDialogClickListener = new DialogInterface
+                .OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        update();
+                    }
+                };
 
         private Handler mHandler = new Handler() {
                 @Override
