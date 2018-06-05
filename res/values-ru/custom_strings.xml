@@ -127,4 +127,6 @@
   <string name="font_picker_title">Шрифт</string>
   <string name="font_picker_progress">Установка шрифта\u2026</string>
   <!-- Search -->
+  <string name="menu_search">Поиск приложений</string>
+  <string name="menu_search_hint">Поиск приложений...</string>
 </resources>
