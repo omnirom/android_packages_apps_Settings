@@ -96,7 +96,7 @@
   <string name="sub_activate_failed">激活失败。</string>
   <string name="sub_deactivate_success">SIM已禁用。</string>
   <string name="sub_deactivate_failed">取消激活失败。</string>
-  <string name="force_ambient_for_media_pref_title">环境音乐行情</string>
+  <string name="force_ambient_for_media_pref_title">环境音乐通知提示</string>
   <string name="force_ambient_for_media_off">禁用</string>
   <string name="force_ambient_for_media_on">已启用</string>
   <string name="force_ambient_for_media_on_forced">启用和强制</string>

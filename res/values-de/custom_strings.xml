@@ -26,6 +26,7 @@
   <string name="omni_device_parts">Gerätefunktionen</string>
   <string name="columns_menu">Spalten-Layout</string>
   <string name="hide_summary_menu">Zusammenfassung verbergen</string>
+  <string name="custom_bars_settings_title">Balken</string>
   <string name="button_settings_title">Tasten</string>
   <string name="mod_version">Omni-Version</string>
   <string name="mod_version_default">Unbekannt</string>
@@ -75,14 +76,28 @@
   <string name="ramp_up_time_sixty">60s</string>
   <string name="ramp_up_time_five">5s</string>
   <string name="ramp_up_time_fifteen">15s</string>
+  <string name="force_safe_media_volume_disabled_title">Deaktiviere Lautstärkebegrenzung</string>
+  <string name="force_safe_media_volume_disabled_summary">Keine Begrenzung der Medienlautstärke bei Kopfhörern</string>
   <!-- Manual provisioning support -->
   <string name="sim_enabled">aktiviert</string>
   <string name="sim_disabled">deaktiviert</string>
+  <string name="sim_missing">fehlend oder defekt</string>
+  <string name="sim_enabler_need_disable_sim">SIM Karte wird deaktiviert. Wollen sie fortfahren?</string>
+  <string name="sim_enabler_will_disable_sim_title">Achtung</string>
+  <string name="sim_enabler_need_switch_data_service">Diese SIM wird deaktivert und SIM <xliff:g id="slotid">%1$s</xliff:g> wird für mobile Daten verwendet. Wollen sie wirklich fortfahren?</string>
+  <string name="sim_enabler_airplane_on">Kann nicht durchgeführt werden, während Flugmodus aktiv ist.</string>
+  <string name="sim_enabler_in_call">Kann nicht durchgeführt werden, während Anruf aktiv ist.</string>
+  <string name="sim_enabler_both_inactive">Es können nicht alle SIM Karten deaktiviert werden</string>
+  <string name="sim_enabler_enabling">Aktiviere\u2026</string>
+  <string name="sim_enabler_disabling">Deaktiviere\u2026</string>
   <string name="sub_activate_success">SIM aktiviert.</string>
+  <string name="sub_activate_failed">Aktivierung fehlgeschlagen.</string>
   <string name="sub_deactivate_success">SIM deaktiviert.</string>
+  <string name="sub_deactivate_failed">Deaktivierung fehlgeschlagen.</string>
   <string name="force_ambient_for_media_off">Deaktiviert</string>
   <string name="force_ambient_for_media_on">Aktiviert</string>
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_default">Standardverhalten</string>
   <string name="less_notification_sounds_3s">Alle 3 Sekunden</string>
   <string name="less_notification_sounds_5s">Alle 5 Sekunden</string>
   <string name="less_notification_sounds_10s">Alle 10 Sekunden</string>
@@ -92,9 +107,16 @@
   <string name="less_notification_sounds_1m">Jede Minute</string>
   <string name="less_notification_sounds_2m">Alle 2 Minuten</string>
   <string name="less_notification_sounds_5m">Alle 5 Minuten</string>
+  <string name="select_default_usb_configuration_title">Auswahl der Standard-USB-Konfiguration</string>
+  <string name="select_default_usb_configuration_dialog_title">Auswahl der USB-Konfiguration</string>
+  <string name="select_usb_default_confguration_warning">Achtung: Standard USB-Konfiguration wird auch aktiviert, wenn das Gerät gesperrt ist!\n\n Diese Konfiguration wirklich aktivieren?</string>
   <string name="usb_category_title">USB</string>
   <!-- Scramble PIN layout when unlocking -->
+  <string name="unlock_scramble_pin_layout_title">Zufälliges Layout</string>
+  <string name="unlock_scramble_pin_layout_summary">Zufällige Anordnung der Zifferntasten für die PIN-Eingabe</string>
   <!-- Font picker -->
   <string name="font_picker_title">Schriftart</string>
   <!-- Search -->
+  <string name="menu_search">Suche Apps</string>
+  <string name="menu_search_hint">Suche Apps...</string>
 </resources>

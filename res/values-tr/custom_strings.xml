@@ -96,7 +96,7 @@
   <string name="sub_activate_failed">Fa\'âl hâle getirilemedi.</string>
   <string name="sub_deactivate_success">SIM devre dışı bırakıldı.</string>
   <string name="sub_deactivate_failed">Devre dışı bırakılamadı.</string>
-  <string name="force_ambient_for_media_pref_title">Müzik Ma\'lumatı</string>
+  <string name="force_ambient_for_media_pref_title">Müzik Malumatı</string>
   <string name="force_ambient_for_media_off">Devre dışı</string>
   <string name="force_ambient_for_media_on">Fa\'âl</string>
   <string name="force_ambient_for_media_on_forced">Fa\'âl ve mecbûrî</string>
@@ -104,7 +104,7 @@
   <string name="ambient_ticker_footer">Müzik Ma\'lumatı Fa\'âl ekran fa\'âl olsun veyâ olmasın mevcûd müzik ma\'lumatını kilit ekranında göstermenize imkân sağlar.\nStandart veyâ ufak düzenlerinden birini seçebilirsiniz. Fa\'âl ekrandan faydalanmasına rağmen bu husûsîyet fa\'âl ekrana tâbi değildir.</string>
   <!-- Less Notification sounds -->
   <string name="less_notification_sounds_title">Daha seyrek bildirim sesleri</string>
-  <string name="less_notification_sounds_summary">Kararlaştırılan bir zaman devrinde her uygulamanın bildirim sesini sadece bir defa oynat</string>
+  <string name="less_notification_sounds_summary">Kararlaştırılan bir zaman devrinde her uygulamanın bildirim sesini sadece bir defa çal</string>
   <string name="less_notification_sounds_default">Standart Tavır</string>
   <string name="less_notification_sounds_3s">Her 3 saniyede</string>
   <string name="less_notification_sounds_5s">Her 5 saniyede</string>

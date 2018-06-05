@@ -97,7 +97,16 @@
   <string name="sub_deactivate_success">SIM dezaktywowany.</string>
   <string name="sub_deactivate_failed">Dezaktywacja nie powiodła się.</string>
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_default">Domyślne zachowanie</string>
+  <string name="less_notification_sounds_1m">Co minutę</string>
+  <string name="less_notification_sounds_2m">Co 2 minuty</string>
+  <string name="less_notification_sounds_5m">Co 5 minut</string>
+  <string name="notification_log_summary">Pokaż historię powiadomień</string>
+  <string name="select_default_usb_configuration_title">Wybierz domyślną konfigurację USB</string>
+  <string name="select_default_usb_configuration_dialog_title">Wybierz konfigurację USB</string>
+  <string name="usb_category_title">USB</string>
   <!-- Scramble PIN layout when unlocking -->
   <!-- Font picker -->
+  <string name="font_picker_title">Czcionka</string>
   <!-- Search -->
 </resources>
