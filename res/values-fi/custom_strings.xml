@@ -25,6 +25,7 @@
   <string name="style_settings_summary">Taustakuvat ja muu sälä</string>
   <string name="omni_device_parts">Laitteen ominaisuudet</string>
   <string name="hide_summary_menu">Piilota yhteenveto</string>
+  <string name="custom_bars_settings_title">Palkit</string>
   <string name="button_settings_title">Painikkeet</string>
   <string name="mod_version">Omni versio</string>
   <string name="mod_version_default">Tuntematon</string>
