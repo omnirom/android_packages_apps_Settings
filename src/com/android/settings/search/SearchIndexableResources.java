@@ -95,6 +95,7 @@ import org.omnirom.omnigears.OmniDashboardFragment;
 import org.omnirom.omnigears.ButtonSettings;
 import org.omnirom.omnigears.ButtonBrightnessSettings;
 import org.omnirom.omnigears.DisplayRotation;
+import org.omnirom.omnigears.OmniClockSettings;
 import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.interfacesettings.GlobalActionsSettings;
@@ -249,6 +250,7 @@ public final class SearchIndexableResources {
         addIndex(EventServiceSettings.class, NO_DATA_RES_ID, R.drawable.ic_settings_event_service);
         addIndex(LockscreenSettings.class, NO_DATA_RES_ID, R.drawable.ic_lockscreen_tile);
         addIndex(LockscreenItemSettings.class, NO_DATA_RES_ID, R.drawable.ic_lockscreen_tile);
+        addIndex(OmniClockSettings.class, NO_DATA_RES_ID, R.drawable.ic_lockscreen_tile);
     }
 
     private SearchIndexableResources() {
