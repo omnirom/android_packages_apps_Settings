@@ -15,7 +15,7 @@
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:omnilib="http://schemas.android.com/apk/lib/res/org.omnirom.omnilib"
+    xmlns:omnilib="http://schemas.android.com/apk/res-auto"
     xmlns:settings="http://schemas.android.com/apk/res/com.android.settings" >
 
     <!-- Show badge -->
@@ -66,7 +66,6 @@
             android:max="3000"
             omnilib:min="0"
             omnilib:interval="100"
-            omnilib:unitsLeft=""
             omnilib:unitsRight="@string/unit_msec" />
 
         <org.omnirom.omnilib.preference.SeekBarPreference
@@ -76,7 +75,6 @@
             android:max="3000"
             omnilib:min="0"
             omnilib:interval="100"
-            omnilib:unitsLeft=""
             omnilib:unitsRight="@string/unit_msec" />
     </PreferenceCategory>
 </PreferenceScreen>
