@@ -94,6 +94,7 @@ import java.util.HashMap;
 import org.omnirom.omnigears.OmniDashboardFragment;
 import org.omnirom.omnigears.ButtonSettings;
 import org.omnirom.omnigears.ButtonBrightnessSettings;
+import org.omnirom.omnigears.DigitalClockSettings;
 import org.omnirom.omnigears.DisplayRotation;
 import org.omnirom.omnigears.OmniClockSettings;
 import org.omnirom.omnigears.batterylight.BatteryLightSettings;
@@ -251,6 +252,7 @@ public final class SearchIndexableResources {
         addIndex(LockscreenSettings.class, NO_DATA_RES_ID, R.drawable.ic_lockscreen_tile);
         addIndex(LockscreenItemSettings.class, NO_DATA_RES_ID, R.drawable.ic_lockscreen_tile);
         addIndex(OmniClockSettings.class, NO_DATA_RES_ID, R.drawable.ic_lockscreen_tile);
+        addIndex(DigitalClockSettings.class, NO_DATA_RES_ID, R.drawable.ic_lockscreen_tile);
     }
 
     private SearchIndexableResources() {
