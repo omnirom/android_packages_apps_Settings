@@ -74,7 +74,24 @@
   <string name="less_notification_sounds_1m">Joka minuutti</string>
   <string name="less_notification_sounds_2m">Joka 2. minuutti</string>
   <string name="less_notification_sounds_5m">Joka 5. minuutti</string>
+  <string name="usb_category_title">USB</string>
   <!-- Scramble PIN layout when unlocking -->
   <!-- Font picker -->
+  <string name="font_picker_title">Fontti</string>
+  <string name="font_picker_progress">Asetetaan fonttia\u2026</string>
   <!-- Search -->
+  <!-- Heads up snooze -->
+  <string name="heads_up_snooze_1min">1 minuutti</string>
+  <string name="heads_up_snooze_5min">5 minuuttia</string>
+  <string name="heads_up_snooze_10min">10 minuuttia</string>
+  <string name="heads_up_snooze_15min">15 minuuttia</string>
+  <string name="heads_up_snooze_20min">20 minuuttia</string>
+  <!-- Heads up timeout -->
+  <string name="heads_up_time_out_2sec">2 sekuntia</string>
+  <string name="heads_up_time_out_4sec">4 sekuntia</string>
+  <string name="heads_up_time_out_5sec">5 sekuntia</string>
+  <string name="heads_up_time_out_6sec">6 sekuntia</string>
+  <string name="heads_up_time_out_8sec">8 sekuntia</string>
+  <string name="heads_up_time_out_10sec">10 sekuntia</string>
+  <string name="log_category">Ilmoitushistoria</string>
 </resources>

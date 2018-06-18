@@ -80,7 +80,6 @@
   <string name="force_safe_media_volume_disabled_title">Отключить проверку безопасной громкости</string>
   <string name="force_safe_media_volume_disabled_summary">Не ограничивать громкость для гарнитуры</string>
   <!-- Manual provisioning support -->
-  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> is <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
   <string name="sim_enabled">включена</string>
   <string name="sim_disabled">отключена</string>
   <string name="sim_missing">отсутствует или неисправна</string>
@@ -96,8 +95,11 @@
   <string name="sub_activate_failed">Ошибка активации.</string>
   <string name="sub_deactivate_success">SIM-карта деактивирована.</string>
   <string name="sub_deactivate_failed">Ошибка деактивации.</string>
+  <string name="force_ambient_for_media_pref_title">Уведомление о фоновой музыке</string>
   <string name="force_ambient_for_media_off">Отключено</string>
   <string name="force_ambient_for_media_on">Включено</string>
+  <string name="force_ambient_for_media_on_forced">Включено и принудительно</string>
+  <string name="force_ambient_for_media_on_forced_clean">Включено и сведено к минимуму</string>
   <!-- Less Notification sounds -->
   <string name="less_notification_sounds_title">Уменьшить частоту звуков уведомлений</string>
   <string name="less_notification_sounds_summary">Воспроизводить звук уведомления каждого приложения только один раз за установленный период времени</string>
@@ -129,4 +131,20 @@
   <!-- Search -->
   <string name="menu_search">Поиск приложений</string>
   <string name="menu_search_hint">Поиск приложений...</string>
+  <!-- Heads up snooze -->
+  <string name="heads_up_category">Всплывающие уведомления</string>
+  <string name="heads_up_snooze_disabled_summary">Таймер отсрочки отключен</string>
+  <string name="heads_up_snooze_1min">1 минута</string>
+  <string name="heads_up_snooze_5min">5 минут</string>
+  <string name="heads_up_snooze_10min">10 минут</string>
+  <string name="heads_up_snooze_15min">15 минут</string>
+  <string name="heads_up_snooze_20min">20 минут</string>
+  <!-- Heads up timeout -->
+  <string name="heads_up_time_out_2sec">2 секунды</string>
+  <string name="heads_up_time_out_4sec">4 секунды</string>
+  <string name="heads_up_time_out_5sec">5 секунды</string>
+  <string name="heads_up_time_out_6sec">6 секунд</string>
+  <string name="heads_up_time_out_8sec">8 секунд</string>
+  <string name="heads_up_time_out_10sec">10 секунд</string>
+  <string name="log_category">История уведомлений</string>
 </resources>

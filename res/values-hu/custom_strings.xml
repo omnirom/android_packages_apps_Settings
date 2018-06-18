@@ -80,7 +80,6 @@
   <string name="force_safe_media_volume_disabled_title">Biztonságos hangerő ellenőrzésének letiltása</string>
   <string name="force_safe_media_volume_disabled_summary">Ne korlátozza a fejhallgatókhoz a hangerőt</string>
   <!-- Manual provisioning support -->
-  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
   <string name="sim_enabled">engedélyezve</string>
   <string name="sim_disabled">letiltva</string>
   <string name="sim_missing">hiányzik vagy hibás</string>
@@ -133,4 +132,22 @@
   <!-- Search -->
   <string name="menu_search">Alkalmazások keresése</string>
   <string name="menu_search_hint">Alkalmazások keresése...</string>
+  <!-- Heads up snooze -->
+  <string name="heads_up_category">Felugró értesítések</string>
+  <string name="heads_up_snooze_title">Felugró értesítések szundi időzítője</string>
+  <string name="heads_up_snooze_disabled_summary">Elhalasztási időzítő letiltásra került</string>
+  <string name="heads_up_snooze_1min">1 perc</string>
+  <string name="heads_up_snooze_5min">5 perc</string>
+  <string name="heads_up_snooze_10min">10 perc</string>
+  <string name="heads_up_snooze_15min">15 perc</string>
+  <string name="heads_up_snooze_20min">20 perc</string>
+  <!-- Heads up timeout -->
+  <string name="heads_up_time_out_title">Felugró értesítés időtúllépése</string>
+  <string name="heads_up_time_out_2sec">2 másodperc</string>
+  <string name="heads_up_time_out_4sec">4 másodperc</string>
+  <string name="heads_up_time_out_5sec">5 másodperc</string>
+  <string name="heads_up_time_out_6sec">6 másodperc</string>
+  <string name="heads_up_time_out_8sec">8 másodperc</string>
+  <string name="heads_up_time_out_10sec">10 másodperc</string>
+  <string name="log_category">Értesítések előzményei</string>
 </resources>

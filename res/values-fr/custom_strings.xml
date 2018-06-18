@@ -80,7 +80,6 @@
   <string name="force_safe_media_volume_disabled_title">Désactiver le contrôle de volume sécurisé</string>
   <string name="force_safe_media_volume_disabled_summary">Ne pas limiter le volume de médias pour les casques</string>
   <!-- Manual provisioning support -->
-  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g>est<xliff:g id="status" example="disabled">%2$s</xliff:g></string>
   <string name="sim_enabled">activé</string>
   <string name="sim_disabled">désactivé</string>
   <string name="sim_missing">manquant ou défectueux</string>
@@ -133,4 +132,6 @@
   <!-- Search -->
   <string name="menu_search">Applications de recherche</string>
   <string name="menu_search_hint">Applications de recherche...</string>
+  <!-- Heads up snooze -->
+  <!-- Heads up timeout -->
 </resources>

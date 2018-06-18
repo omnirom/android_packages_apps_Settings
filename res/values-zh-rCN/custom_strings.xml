@@ -22,7 +22,7 @@
   <string name="style_settings_title">风格</string>
   <string name="header_category_omni">Omni 配置</string>
   <string name="omni_dashboard_summary">自定义您的设备</string>
-  <string name="style_settings_summary">壁纸和其他的swag</string>
+  <string name="style_settings_summary">壁纸和其他 swag</string>
   <string name="omni_device_parts">设备特性</string>
   <string name="columns_menu">列布局</string>
   <string name="hide_summary_menu">隐藏摘要</string>
@@ -49,6 +49,8 @@
   <string name="adb_over_network_summary">通过网络接口 (WLAN, USB 网络) 启用 TCP/IP 调试。 该设置重启后失效</string>
   <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">警告：网络 ADB 调试启用后，您的设备将会在已连接的网络上被视为是开放的，，包括 GSM 数据网络，并有可能被侵入！\n\n请仅在您所信任的网络上使用此功能。\n\n您确实要启用该功能吗？</string>
+  <string name="adb_over_network_disable_on_disconnect_title">在断开连接的情况下禁用 ADB 网络</string>
+  <string name="adb_over_network_disable_on_disconnect_summary">从 wi-fi 断开连接后, ADB 网络将被禁用</string>
   <string name="battery_image">电池图标</string>
   <string name="battery_image_description">在状态栏中显示电池图标</string>
   <string name="twilight_mode_location_dialog">已禁用位置</string>
@@ -80,7 +82,6 @@
   <string name="force_safe_media_volume_disabled_title">禁用安全音量检查</string>
   <string name="force_safe_media_volume_disabled_summary">不要限制耳机的媒体音量</string>
   <!-- Manual provisioning support -->
-  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
   <string name="sim_enabled">已启用</string>
   <string name="sim_disabled">已禁用</string>
   <string name="sim_missing">丢失或错误</string>
@@ -133,4 +134,24 @@
   <!-- Search -->
   <string name="menu_search">搜索应用程序</string>
   <string name="menu_search_hint">搜索应用程序..。</string>
+  <!-- Heads up snooze -->
+  <string name="heads_up_category">悬浮通知</string>
+  <string name="heads_up_snooze_title">查看通知暂停计时器</string>
+  <string name="heads_up_snooze_disabled_summary">禁用暂停计时器</string>
+  <string name="heads_up_snooze_1min">1 分钟</string>
+  <string name="heads_up_snooze_5min">5 分钟</string>
+  <string name="heads_up_snooze_10min">10 分钟</string>
+  <string name="heads_up_snooze_15min">15 分钟</string>
+  <string name="heads_up_snooze_20min">20 分钟</string>
+  <!-- Heads up timeout -->
+  <string name="heads_up_time_out_title">查看通知超时</string>
+  <string name="heads_up_time_out_2sec">2 秒</string>
+  <string name="heads_up_time_out_4sec">4 秒</string>
+  <string name="heads_up_time_out_5sec">5 秒</string>
+  <string name="heads_up_time_out_6sec">6 秒</string>
+  <string name="heads_up_time_out_8sec">8 秒</string>
+  <string name="heads_up_time_out_10sec">10 秒</string>
+  <string name="log_category">通知历史记录</string>
+  <string name="app_package_name_title">包</string>
+  <string name="app_version_title">版本</string>
 </resources>

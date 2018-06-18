@@ -80,7 +80,6 @@
   <string name="force_safe_media_volume_disabled_title">Keela ohutu helitugevuse kontroll</string>
   <string name="force_safe_media_volume_disabled_summary">Ära piira meedia helitugevust peakomplektide puhul</string>
   <!-- Manual provisioning support -->
-  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> on <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
   <string name="sim_enabled">lubatud</string>
   <string name="sim_disabled">keelatud</string>
   <string name="sim_missing">puuduv või vigane</string>
@@ -133,4 +132,22 @@
   <!-- Search -->
   <string name="menu_search">Otsi rakendusi</string>
   <string name="menu_search_hint">Otsi rakendusi...</string>
+  <!-- Heads up snooze -->
+  <string name="heads_up_category">Piiluvad teated</string>
+  <string name="heads_up_snooze_title">Piiluvate teadete tukastustaimer</string>
+  <string name="heads_up_snooze_disabled_summary">Tukastustaimer on välja lülitatud</string>
+  <string name="heads_up_snooze_1min">1 minut</string>
+  <string name="heads_up_snooze_5min">5 minutit</string>
+  <string name="heads_up_snooze_10min">10 minutit</string>
+  <string name="heads_up_snooze_15min">15 minutit</string>
+  <string name="heads_up_snooze_20min">20 minutit</string>
+  <!-- Heads up timeout -->
+  <string name="heads_up_time_out_title">Piiluvate teadete ajalõpp</string>
+  <string name="heads_up_time_out_2sec">2 sekundit</string>
+  <string name="heads_up_time_out_4sec">4 sekundit</string>
+  <string name="heads_up_time_out_5sec">5 sekundit</string>
+  <string name="heads_up_time_out_6sec">6 sekundit</string>
+  <string name="heads_up_time_out_8sec">8 sekundit</string>
+  <string name="heads_up_time_out_10sec">10 sekundit</string>
+  <string name="log_category">Teadete ajalugu</string>
 </resources>

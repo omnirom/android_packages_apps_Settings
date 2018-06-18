@@ -119,4 +119,6 @@
   <!-- Search -->
   <string name="menu_search">Suche Apps</string>
   <string name="menu_search_hint">Suche Apps...</string>
+  <!-- Heads up snooze -->
+  <!-- Heads up timeout -->
 </resources>

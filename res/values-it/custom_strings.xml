@@ -80,7 +80,6 @@
   <string name="force_safe_media_volume_disabled_title">Disabilita controllo del volume</string>
   <string name="force_safe_media_volume_disabled_summary">Non limitare volume multimediale per le cuffie</string>
   <!-- Manual provisioning support -->
-  <string name="sim_enabler_summary"><xliff:g id="text">%1$s</xliff:g>, <xliff:g id="size" example="230 kB">%2$s</xliff:g>/s</string>
   <string name="sim_enabled">abilitato</string>
   <string name="sim_disabled">disabilitato</string>
   <string name="sim_missing">mancante o non funzionante</string>
@@ -133,4 +132,21 @@
   <!-- Search -->
   <string name="menu_search">Cerca app</string>
   <string name="menu_search_hint">Cerca app...</string>
+  <!-- Heads up snooze -->
+  <string name="heads_up_category">Notifiche peek</string>
+  <string name="heads_up_snooze_disabled_summary">La sospensione del timer è disabilitata</string>
+  <string name="heads_up_snooze_1min">1 minuto</string>
+  <string name="heads_up_snooze_5min">5 minuti</string>
+  <string name="heads_up_snooze_10min">10 minuti</string>
+  <string name="heads_up_snooze_15min">15 minuti</string>
+  <string name="heads_up_snooze_20min">20 minuti</string>
+  <!-- Heads up timeout -->
+  <string name="heads_up_time_out_title">Timeout delle notifiche peek</string>
+  <string name="heads_up_time_out_2sec">2 secondi</string>
+  <string name="heads_up_time_out_4sec">4 secondi</string>
+  <string name="heads_up_time_out_5sec">5 secondi</string>
+  <string name="heads_up_time_out_6sec">6 secondi</string>
+  <string name="heads_up_time_out_8sec">8 secondi</string>
+  <string name="heads_up_time_out_10sec">10 secondi</string>
+  <string name="log_category">Cronologia notifiche</string>
 </resources>

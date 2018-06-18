@@ -121,4 +121,6 @@
   <!-- Search -->
   <string name="menu_search">Buscar aplicaciones</string>
   <string name="menu_search_hint">Buscar aplicaciones...</string>
+  <!-- Heads up snooze -->
+  <!-- Heads up timeout -->
 </resources>

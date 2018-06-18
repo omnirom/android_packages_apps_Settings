@@ -49,6 +49,8 @@
   <string name="adb_over_network_summary">Zapnúť TCP/IP ladenie cez sieť (Wi-Fi, USB siete). Táto možnosť bude vypnutá po reštarte</string>
   <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">UPOZORNENIE: Keď ladenie cez sieť je zapnuté, váš telefón je otvorený pre všetky pripojené siete, vrátane dátového pripojenia GSM!\n\nPoužite túto funkciu iba v sieťach, ktorým dôverujete.\n\nNaozaj chcete zapnúť túto funkciu?</string>
+  <string name="adb_over_network_disable_on_disconnect_title">Zakázať ADB cez sieť po odpojení</string>
+  <string name="adb_over_network_disable_on_disconnect_summary">Služba ADB cez sieť bude pri odpojovaní z Wi-Fi zakázaná</string>
   <string name="battery_image">Vzhľad ikony batérie</string>
   <string name="battery_image_description">Zobraziť ikonu batérie v stavovom riadku</string>
   <string name="twilight_mode_location_dialog">Poloha je vypnutá</string>
@@ -80,7 +82,6 @@
   <string name="force_safe_media_volume_disabled_title">Zakázať kontrolu bezpečnej hlasitosti</string>
   <string name="force_safe_media_volume_disabled_summary">Neobmedzovať hlasitosť médií pre slúchadlá</string>
   <!-- Manual provisioning support -->
-  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> je <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
   <string name="sim_enabled">povolená</string>
   <string name="sim_disabled">zakázaná</string>
   <string name="sim_missing">chýbajúca alebo chybná</string>
@@ -131,4 +132,26 @@
   <string name="font_picker_title">Písmo</string>
   <string name="font_picker_progress">Nastavovanie písma\u2026</string>
   <!-- Search -->
+  <string name="menu_search">Vyhľadávanie aplikácií</string>
+  <string name="menu_search_hint">Vyhľadávanie aplikácií...</string>
+  <!-- Heads up snooze -->
+  <string name="heads_up_category">Prezeranie upozornení</string>
+  <string name="heads_up_snooze_title">Časovač odloženia prezerania upozornení</string>
+  <string name="heads_up_snooze_disabled_summary">Časovač odložena je vypnutý</string>
+  <string name="heads_up_snooze_1min">1 minúta</string>
+  <string name="heads_up_snooze_5min">5 minút</string>
+  <string name="heads_up_snooze_10min">10 minút</string>
+  <string name="heads_up_snooze_15min">15 minút</string>
+  <string name="heads_up_snooze_20min">20 minút</string>
+  <!-- Heads up timeout -->
+  <string name="heads_up_time_out_title">Časový limit pre zobrazenie upozornenia</string>
+  <string name="heads_up_time_out_2sec">2 sekundy</string>
+  <string name="heads_up_time_out_4sec">4 sekundy</string>
+  <string name="heads_up_time_out_5sec">5 sekúnd</string>
+  <string name="heads_up_time_out_6sec">6 sekúnd</string>
+  <string name="heads_up_time_out_8sec">8 sekúnd</string>
+  <string name="heads_up_time_out_10sec">10 sekúnd</string>
+  <string name="log_category">História upozornení</string>
+  <string name="app_package_name_title">Balík</string>
+  <string name="app_version_title">Verzia</string>
 </resources>

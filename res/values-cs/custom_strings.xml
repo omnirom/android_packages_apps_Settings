@@ -80,7 +80,6 @@
   <string name="force_safe_media_volume_disabled_title">Zakázat kontrolu bezpečné hlasitosti</string>
   <string name="force_safe_media_volume_disabled_summary">Neomezovat hlasitost médií pro sluchátka</string>
   <!-- Manual provisioning support -->
-  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> je <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
   <string name="sim_enabled">povoleno</string>
   <string name="sim_disabled">zakázáno</string>
   <string name="sim_missing">chybějící nebo vadné</string>
@@ -133,4 +132,22 @@
   <!-- Search -->
   <string name="menu_search">Vyhledávání aplikací</string>
   <string name="menu_search_hint">Vyhledávání aplikací...</string>
+  <!-- Heads up snooze -->
+  <string name="heads_up_category">Prohlížení oznámení</string>
+  <string name="heads_up_snooze_title">Časovač odložení prohlížení oznámení</string>
+  <string name="heads_up_snooze_disabled_summary">Časovač odložení je vypnutý</string>
+  <string name="heads_up_snooze_1min">1 minuta</string>
+  <string name="heads_up_snooze_5min">5 minut</string>
+  <string name="heads_up_snooze_10min">10 minut</string>
+  <string name="heads_up_snooze_15min">15 minut</string>
+  <string name="heads_up_snooze_20min">20 minut</string>
+  <!-- Heads up timeout -->
+  <string name="heads_up_time_out_title">Časový limit prohlížení oznámení</string>
+  <string name="heads_up_time_out_2sec">2 sekundy</string>
+  <string name="heads_up_time_out_4sec">4 sekundy</string>
+  <string name="heads_up_time_out_5sec">5 sekund</string>
+  <string name="heads_up_time_out_6sec">6 sekund</string>
+  <string name="heads_up_time_out_8sec">8 sekund</string>
+  <string name="heads_up_time_out_10sec">10 sekund</string>
+  <string name="log_category">Historie oznámení</string>
 </resources>

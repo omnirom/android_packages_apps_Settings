@@ -30,4 +30,18 @@
   <!-- Scramble PIN layout when unlocking -->
   <!-- Font picker -->
   <!-- Search -->
+  <!-- Heads up snooze -->
+  <string name="heads_up_snooze_disabled_summary">スヌーズタイマーは無効です</string>
+  <string name="heads_up_snooze_1min">1分</string>
+  <string name="heads_up_snooze_5min">5分</string>
+  <string name="heads_up_snooze_10min">10分</string>
+  <string name="heads_up_snooze_15min">15分</string>
+  <string name="heads_up_snooze_20min">20分</string>
+  <!-- Heads up timeout -->
+  <string name="heads_up_time_out_2sec">2秒</string>
+  <string name="heads_up_time_out_4sec">4秒</string>
+  <string name="heads_up_time_out_5sec">5秒</string>
+  <string name="heads_up_time_out_6sec">6秒</string>
+  <string name="heads_up_time_out_8sec">8秒</string>
+  <string name="heads_up_time_out_10sec">10秒</string>
 </resources>

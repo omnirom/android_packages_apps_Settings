@@ -49,6 +49,8 @@
   <string name="adb_over_network_summary">Ativar depuração através de TCP/IP pelas interfaces de rede (Wi-Fi, redes USB). Esta configuração é perdida ao reiniciar</string>
   <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">AVISO: Quando o ADB através da rede está ativado, o seu telefone fica vulnerável a invasões através de todas as redes a que estiver ligado, incluindo redes de dados GSM!\n\nUtilize esta funcionalidade apenas quando estiver ligado a redes confiáveis.\n\nDeseja mesmo ativar esta funcionalidade?</string>
+  <string name="adb_over_network_disable_on_disconnect_title">Desativar ADB através da rede ao desligar</string>
+  <string name="adb_over_network_disable_on_disconnect_summary">O ADB através da rede será desativado quando se desligar do Wi-Fi</string>
   <string name="battery_image">Ícone da bateria</string>
   <string name="battery_image_description">Mostrar a imagem da bateria na barra de estado</string>
   <string name="twilight_mode_location_dialog">Localização desativada</string>
@@ -80,7 +82,6 @@
   <string name="force_safe_media_volume_disabled_title">Desativar verificação de volume seguro</string>
   <string name="force_safe_media_volume_disabled_summary">Não limitar o volume multimédia dos auscultadores</string>
   <!-- Manual provisioning support -->
-  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> está <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
   <string name="sim_enabled">ativado</string>
   <string name="sim_disabled">desativado</string>
   <string name="sim_missing">em falta ou com defeito</string>
@@ -133,4 +134,24 @@
   <!-- Search -->
   <string name="menu_search">Procurar aplicações</string>
   <string name="menu_search_hint">Procurar aplicações...</string>
+  <!-- Heads up snooze -->
+  <string name="heads_up_category">Notificações flutuantes</string>
+  <string name="heads_up_snooze_title">Tempo de suspensão de notificações flutuantes</string>
+  <string name="heads_up_snooze_disabled_summary">O tempo de suspensão está desativado</string>
+  <string name="heads_up_snooze_1min">1 minuto</string>
+  <string name="heads_up_snooze_5min">5 minutos</string>
+  <string name="heads_up_snooze_10min">10 minutos</string>
+  <string name="heads_up_snooze_15min">15 minutos</string>
+  <string name="heads_up_snooze_20min">20 minutos</string>
+  <!-- Heads up timeout -->
+  <string name="heads_up_time_out_title">Duração das notificações flutuantes</string>
+  <string name="heads_up_time_out_2sec">2 segundos</string>
+  <string name="heads_up_time_out_4sec">4 segundos</string>
+  <string name="heads_up_time_out_5sec">5 segundos</string>
+  <string name="heads_up_time_out_6sec">6 segundos</string>
+  <string name="heads_up_time_out_8sec">8 segundos</string>
+  <string name="heads_up_time_out_10sec">10 segundos</string>
+  <string name="log_category">Histórico de notificações</string>
+  <string name="app_package_name_title">Pacote</string>
+  <string name="app_version_title">Versão</string>
 </resources>

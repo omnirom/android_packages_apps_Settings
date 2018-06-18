@@ -49,10 +49,12 @@
   <string name="adb_over_network_summary">Ağ arayüzleri (Wi-Fi, USB ağları) üzerinde TCP/IP hatâ ayıklamayı etkinleştirin. Bu ayar telefonu tekrar başlattığınızda sıfırlanır</string>
   <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">UYARI: Ağ üzerinden ADB etkinleştirildiğinde, telefonunuz GSM veri ağı dâhil bütün bağlandığınız ağlar üzerinde güvenlik ihlâline açık olur!\n\nBu husûsîyeti sadece güvenilir ağlara bağlıyken kullanın.\n\nBu husûsîyeti sahiden etkinleştirmek istiyor musunuz?</string>
+  <string name="adb_over_network_disable_on_disconnect_title">Bağlantı kesildiği vakit şebeke üzerinden ADB\'yi devre dışı bırak</string>
+  <string name="adb_over_network_disable_on_disconnect_summary">Bir kablosuz bağlantı ile olan bağlantı kesildiği vakit şebeke üzerinden ADB devre dışı bırakılacak</string>
   <string name="battery_image">Pil resmi</string>
   <string name="battery_image_description">Pil resmini durum çubuğunda göster</string>
-  <string name="twilight_mode_location_dialog">Konum devre dışı</string>
-  <string name="twilight_mode_location_disabled">Konum erişimi devre dışı bırakıldı</string>
+  <string name="twilight_mode_location_dialog">Yer tespiti devre dışı</string>
+  <string name="twilight_mode_location_disabled">Yer erişimi devre dışı bırakıldı</string>
   <string name="twilight_mode_location_enable">Etkinleştir</string>
   <!-- Encryption and credential -->
   <string name="custom_encryption_and_credential_settings_summary_on">Cihaz şifrelenmiş</string>
@@ -71,16 +73,15 @@
   <string name="increasing_ring_volume_option_title">Artan zil sesi seviyesi</string>
   <string name="increasing_ring_ramp_up_title">Zil sesi seviyesinin artma müddeti</string>
   <string name="increasing_ring_volume_option_summary">Zil sesi seviyesini seçilen ses seviyesine kadar artır</string>
-  <string name="ramp_up_time_ten">10 saniye</string>
-  <string name="ramp_up_time_twenty">20 saniye</string>
-  <string name="ramp_up_time_thirty">30 saniye</string>
-  <string name="ramp_up_time_sixty">60 saniye</string>
-  <string name="ramp_up_time_five">5 saniye</string>
-  <string name="ramp_up_time_fifteen">15 saniye</string>
+  <string name="ramp_up_time_ten">10 sâniye</string>
+  <string name="ramp_up_time_twenty">20 sâniye</string>
+  <string name="ramp_up_time_thirty">30 sâniye</string>
+  <string name="ramp_up_time_sixty">60 sâniye</string>
+  <string name="ramp_up_time_five">5 sâniye</string>
+  <string name="ramp_up_time_fifteen">15 sâniye</string>
   <string name="force_safe_media_volume_disabled_title">Güvenli ses seviyesi yoklamasını devre dışı bırak</string>
   <string name="force_safe_media_volume_disabled_summary">Kulaklıklar için olan medya sesi seviyesini sınırlama</string>
   <!-- Manual provisioning support -->
-  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
   <string name="sim_enabled">fa\'âl hale getirildi</string>
   <string name="sim_disabled">devre dışı bırakıldı</string>
   <string name="sim_missing">eksik veyâ hatâlı</string>
@@ -106,15 +107,15 @@
   <string name="less_notification_sounds_title">Daha seyrek bildirim sesleri</string>
   <string name="less_notification_sounds_summary">Kararlaştırılan bir zaman devrinde her uygulamanın bildirim sesini sadece bir defa çal</string>
   <string name="less_notification_sounds_default">Standart Tavır</string>
-  <string name="less_notification_sounds_3s">Her 3 saniyede</string>
-  <string name="less_notification_sounds_5s">Her 5 saniyede</string>
-  <string name="less_notification_sounds_10s">Her 10 saniyede</string>
-  <string name="less_notification_sounds_15s">Her 15 saniyede</string>
-  <string name="less_notification_sounds_30s">Her 30 saniyede</string>
-  <string name="less_notification_sounds_45s">Her 45 saniyede</string>
-  <string name="less_notification_sounds_1m">Her 1 dakikada</string>
-  <string name="less_notification_sounds_2m">Her 2 dakikada</string>
-  <string name="less_notification_sounds_5m">Her 5 dakikada</string>
+  <string name="less_notification_sounds_3s">Her 3 sâniyede</string>
+  <string name="less_notification_sounds_5s">Her 5 sâniyede</string>
+  <string name="less_notification_sounds_10s">Her 10 sâniyede</string>
+  <string name="less_notification_sounds_15s">Her 15 sâniyede</string>
+  <string name="less_notification_sounds_30s">Her 30 sâniyede</string>
+  <string name="less_notification_sounds_45s">Her 45 sâniyede</string>
+  <string name="less_notification_sounds_1m">Her 1 dakîkada</string>
+  <string name="less_notification_sounds_2m">Her 2 dakîkada</string>
+  <string name="less_notification_sounds_5m">Her 5 dakîkada</string>
   <string name="notification_log_summary">Bildirim geçmişi kaydını göster</string>
   <string name="select_default_usb_configuration_title">Standart USB ayarını seçin</string>
   <string name="select_default_usb_configuration_dialog_title">USB ayarını seçin</string>
@@ -133,4 +134,24 @@
   <!-- Search -->
   <string name="menu_search">Uygulamaları ara</string>
   <string name="menu_search_hint">Uygulamaları ara...</string>
+  <!-- Heads up snooze -->
+  <string name="heads_up_category">Ekran üstü bildirimler</string>
+  <string name="heads_up_snooze_title">Ekran üstü bildirim erteleme zamanlayıcısı</string>
+  <string name="heads_up_snooze_disabled_summary">Erteleme zamanlayıcısı devre dışı</string>
+  <string name="heads_up_snooze_1min">1 dakîka</string>
+  <string name="heads_up_snooze_5min">5 dakîka</string>
+  <string name="heads_up_snooze_10min">10 dakîka</string>
+  <string name="heads_up_snooze_15min">15 dakîka</string>
+  <string name="heads_up_snooze_20min">20 dakîka</string>
+  <!-- Heads up timeout -->
+  <string name="heads_up_time_out_title">Ekran üstü bildirimin zaman aşımı</string>
+  <string name="heads_up_time_out_2sec">2 sâniye</string>
+  <string name="heads_up_time_out_4sec">4 sâniye</string>
+  <string name="heads_up_time_out_5sec">5 sâniye</string>
+  <string name="heads_up_time_out_6sec">6 sâniye</string>
+  <string name="heads_up_time_out_8sec">8 sâniye</string>
+  <string name="heads_up_time_out_10sec">10 sâniye</string>
+  <string name="log_category">Bildirim kaydı</string>
+  <string name="app_package_name_title">Paket</string>
+  <string name="app_version_title">Nüsha</string>
 </resources>

@@ -80,7 +80,6 @@
   <string name="force_safe_media_volume_disabled_title">Schakel veilige volumecontrole uit</string>
   <string name="force_safe_media_volume_disabled_summary">Mediavolume voor hoofdtelefoons niet beperken</string>
   <!-- Manual provisioning support -->
-  <string name="sim_enabler_summary"><xliff:g id="displayName">%1$s</xliff:g> is <xliff:g id="status" example="disabled">%2$s</xliff:g></string>
   <string name="sim_enabled">ingeschakeld</string>
   <string name="sim_disabled">uitgeschakeld</string>
   <string name="sim_missing">ontbrekend of defect</string>
@@ -133,4 +132,6 @@
   <!-- Search -->
   <string name="menu_search">Zoek apps</string>
   <string name="menu_search_hint">Zoek apps...</string>
+  <!-- Heads up snooze -->
+  <!-- Heads up timeout -->
 </resources>
