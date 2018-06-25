@@ -19,18 +19,124 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="style_settings_title">スタイル</string>
+  <string name="header_category_omni">OmniGears</string>
+  <string name="omni_dashboard_summary">デバイスをカスタマイズ</string>
+  <string name="style_settings_summary">壁紙やその他の飾り</string>
+  <string name="omni_device_parts">端末の機能</string>
+  <string name="columns_menu">列のレイアウト</string>
+  <string name="hide_summary_menu">概要を非表示にする</string>
+  <string name="custom_bars_settings_title">バー</string>
+  <string name="button_settings_title">ボタン</string>
+  <string name="mod_version">Omni バージョン</string>
+  <string name="mod_version_default">不明</string>
+  <string name="more_settings_title">詳細</string>
+  <string name="global_actions_title">電源メニュー</string>
+  <string name="display_rotation_title">画面回転</string>
+  <string name="display_rotation_summary">回転角度の設定</string>
+  <string name="battery_light_settings_title">バッテリーLEDの設定</string>
+  <string name="link_volume_option_title">着信音と通知音をリンクさせる</string>
   <!-- Custom light color -->
+  <string name="light_customization">LEDライトによる通知</string>
+  <string name="custom_light_title">ライトの色</string>
+  <string name="custom_light_on_time_title">"LEDパルス中の点灯時間（ms）"</string>
+  <string name="custom_light_off_time_title">"LEDパルス中の消灯時間（ms）"</string>
+  <string name="app_notifications_info_desc">上記のいずれかのチャンネルをタップして明るい色やその他のオプションを設定する</string>
+  <string name="value_equals_default">自動</string>
+  <string name="show_light_on_zen_title">サイレントモード中は点滅させる</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">ネットワーク経由のADB</string>
+  <string name="adb_over_network_summary">ネットワークインタフェース（Wi-FiやUSB）越しのTCP/IPデバッグを有効にする（この設定は再起動でリセットされます）</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">警告: ネットワーク経由でのADBを有効にすると、あなたの携帯電話はGSMデータネットワークを含む接続しているすべてのネットワークから侵入できるようになります。\n\nこの機能は信頼されたネットワークに接続しているときにのみ使用して下さい。\n\nこの機能を本当に有効にしますか？</string>
+  <string name="adb_over_network_disable_on_disconnect_title">切断時にネットワーク経由のADBを無効にする</string>
+  <string name="adb_over_network_disable_on_disconnect_summary">Wi-Fiから切断するとネットワーク経由のADBは無効になります</string>
+  <string name="battery_image">バッテリーアイコン</string>
+  <string name="battery_image_description">ステータスバーにバッテリーアイコンを表示する</string>
+  <string name="twilight_mode_location_dialog">位置情報は無効</string>
+  <string name="twilight_mode_location_disabled">位置情報アクセスは無効です</string>
+  <string name="twilight_mode_location_enable">有効</string>
   <!-- Encryption and credential -->
+  <string name="custom_encryption_and_credential_settings_summary_on">端末は暗号化されています</string>
+  <string name="custom_encryption_and_credential_settings_summary_off">端末は暗号化されていません</string>
+  <string name="select_sim_for_sms">SMSに使うSIMを選択</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">端末の<xliff:g id="sensor_location">%1$s</xliff:g>にある指紋センサーの場所を探す</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">背面</string>
+  <string name="security_settings_fingerprint_sensor_location_front">前面</string>
+  <string name="security_settings_fingerprint_sensor_location_left">左側面</string>
+  <string name="security_settings_fingerprint_sensor_location_right">右側面</string>
+  <string name="screenshot_shutter_sound_title">スクリーンショットのシャッター音</string>
+  <string name="heads_up_notifications_enabled_title">Heads Up許可する</string>
+  <string name="heads_up_notifications_enabled_summary">全ての通知のHeads Upを有効/無効にする</string>
+  <string name="increasing_ring_volume_option_title">音量を大きくする</string>
+  <string name="increasing_ring_ramp_up_title">着信音量を強めるまでの時間</string>
+  <string name="increasing_ring_volume_option_summary">選択した音量に着信音量を上げる</string>
+  <string name="ramp_up_time_ten">10秒</string>
+  <string name="ramp_up_time_twenty">20秒</string>
+  <string name="ramp_up_time_thirty">30秒</string>
+  <string name="ramp_up_time_sixty">60秒</string>
+  <string name="ramp_up_time_five">5秒</string>
+  <string name="ramp_up_time_fifteen">15秒</string>
+  <string name="force_safe_media_volume_disabled_title">安全音量確認を無効にする</string>
+  <string name="force_safe_media_volume_disabled_summary">ヘッドセットのメディア音量を制限しない</string>
   <!-- Manual provisioning support -->
+  <string name="sim_enabled">有効</string>
+  <string name="sim_disabled">無効</string>
+  <string name="sim_missing">挿入されていないか、問題があります。</string>
+  <string name="sim_enabler_need_disable_sim">SIMカードはアクティベート解除されます。続けますか？</string>
+  <string name="sim_enabler_will_disable_sim_title">注意</string>
+  <string name="sim_enabler_need_switch_data_service">このSIMは無効になり、SIM <xliff:g id="slotid">%1$s</xliff:g>がデータサービスに使用されます。続けますか？</string>
+  <string name="sim_enabler_airplane_on">機内モードがオンになっている間はこの操作を実行することはできません</string>
+  <string name="sim_enabler_in_call">通話中はこの操作を実行することはできません</string>
+  <string name="sim_enabler_both_inactive">全てのSIMを無効にできません</string>
+  <string name="sim_enabler_enabling">認証中\u2026</string>
+  <string name="sim_enabler_disabling">認証解除中\u2026</string>
+  <string name="sub_activate_success">SIMをアクティベートしました</string>
+  <string name="sub_activate_failed">アクティベートに失敗しました</string>
+  <string name="sub_deactivate_success">SIMをアクティベート解除しました</string>
+  <string name="sub_deactivate_failed">アクティベート解除に失敗しました</string>
+  <string name="force_ambient_for_media_pref_title">アンビエント音楽ティッカー</string>
+  <string name="force_ambient_for_media_off">無効</string>
+  <string name="force_ambient_for_media_on">有効</string>
+  <string name="force_ambient_for_media_on_forced">強制的に有効</string>
+  <string name="force_ambient_for_media_on_forced_clean">強制的に最小化して有効</string>
+  <string name="ambient_ticker_footer">アンビエントミュージックティッカーを使用すると、アンビエント表示を有効または無効にしたロック画面上に現在の音楽トラック情報を表示することができます。通常と最小の2つのレイアウトから選択できます。 この機能はアンビエント表示を利用しますが、それの設定に依存しません。</string>
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_title">通知音の制限</string>
+  <string name="less_notification_sounds_summary">設定した時間ごとに各アプリの通知音を1回だけ再生する</string>
+  <string name="less_notification_sounds_default">既定の動作</string>
+  <string name="less_notification_sounds_3s">3秒ごと</string>
+  <string name="less_notification_sounds_5s">5秒ごと</string>
+  <string name="less_notification_sounds_10s">10秒ごと</string>
+  <string name="less_notification_sounds_15s">15秒ごと</string>
+  <string name="less_notification_sounds_30s">30秒ごと</string>
+  <string name="less_notification_sounds_45s">45秒ごと</string>
+  <string name="less_notification_sounds_1m">1分ごと</string>
+  <string name="less_notification_sounds_2m">2分ごと</string>
+  <string name="less_notification_sounds_5m">5分ごと</string>
+  <string name="notification_log_summary">通知履歴ログを表示する</string>
+  <string name="select_default_usb_configuration_title">既定のUSB設定を選択</string>
+  <string name="select_default_usb_configuration_dialog_title">USB設定の選択</string>
+  <string name="select_usb_default_confguration_warning">警告：デバイスがロックされている場合でも、デフォルトのUSB設定は有効です！\n本当にこの設定を有効にしますか？</string>
+  <string name="usb_paranoia_connect_title">保護されたUSB接続</string>
+  <string name="usb_paranoia_connect_summary">保護されたロック画面にUSBが接続されている場合は充電のみを有効にする</string>
+  <string name="usb_category_title">USB</string>
   <!-- Scramble PIN layout when unlocking -->
+  <string name="unlock_scramble_pin_layout_title">ランダムなレイアウト</string>
+  <string name="unlock_scramble_pin_layout_summary">アンロック時のPINキー配列をランダムに入れ替える</string>
+  <string name="battery_saver_system_bars_color_enable_title">システムバーの背景色</string>
+  <string name="battery_saver_system_bars_color_enable_summary">バッテリーセーバーが有効な時はステータスバーとナビゲーションバーに異なる色を使用する</string>
   <!-- Font picker -->
+  <string name="font_picker_title">フォント</string>
+  <string name="font_picker_progress">フォントを設定\u2026</string>
   <!-- Search -->
+  <string name="menu_search">アプリを検索</string>
+  <string name="menu_search_hint">アプリを検索</string>
   <!-- Heads up snooze -->
+  <string name="heads_up_category">Heads Up</string>
+  <string name="heads_up_snooze_title">Heads Upのスヌーズタイマー</string>
   <string name="heads_up_snooze_disabled_summary">スヌーズタイマーは無効です</string>
   <string name="heads_up_snooze_1min">1分</string>
   <string name="heads_up_snooze_5min">5分</string>
@@ -38,10 +144,14 @@
   <string name="heads_up_snooze_15min">15分</string>
   <string name="heads_up_snooze_20min">20分</string>
   <!-- Heads up timeout -->
+  <string name="heads_up_time_out_title">Heads Upのタイムアウト</string>
   <string name="heads_up_time_out_2sec">2秒</string>
   <string name="heads_up_time_out_4sec">4秒</string>
   <string name="heads_up_time_out_5sec">5秒</string>
   <string name="heads_up_time_out_6sec">6秒</string>
   <string name="heads_up_time_out_8sec">8秒</string>
   <string name="heads_up_time_out_10sec">10秒</string>
+  <string name="log_category">通知履歴</string>
+  <string name="app_package_name_title">パッケージ</string>
+  <string name="app_version_title">バージョン</string>
 </resources>

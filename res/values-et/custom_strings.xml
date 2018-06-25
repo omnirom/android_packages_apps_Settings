@@ -49,6 +49,8 @@
   <string name="adb_over_network_summary">Luba TCP/IP silumine üle võrgu (WiFi, USB-võrgud). See seade lähtestatakse taaskäivitamisel</string>
   <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">HOIATUS: Kui ADB üle võrgu on aktiveeritud, on seade avatud rünnakutele kõigis võrgudes, kaasa arvatud GSM andmesidevõrk!\n\nKasuta seda funktsiooni ainult siis, kui oled ühendatud usaldusväärses võrgus.\n\nKas soovid kindlasti selle funktsiooni lubada?</string>
+  <string name="adb_over_network_disable_on_disconnect_title">Keela ADB üle võrgu ja ühenda lahti</string>
+  <string name="adb_over_network_disable_on_disconnect_summary">ADB üle võrgu keelatakse, kui ühendad Wi-Fist lahti</string>
   <string name="battery_image">Aku pilt</string>
   <string name="battery_image_description">Kuva aku pilti olekuribal</string>
   <string name="twilight_mode_location_dialog">Asukoht keelatud</string>
@@ -150,4 +152,6 @@
   <string name="heads_up_time_out_8sec">8 sekundit</string>
   <string name="heads_up_time_out_10sec">10 sekundit</string>
   <string name="log_category">Teadete ajalugu</string>
+  <string name="app_package_name_title">Pakett</string>
+  <string name="app_version_title">Versioon</string>
 </resources>

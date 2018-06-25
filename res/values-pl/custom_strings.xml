@@ -95,8 +95,18 @@
   <string name="sub_activate_failed">Twoja aktywacja się nie powiodła.</string>
   <string name="sub_deactivate_success">SIM dezaktywowany.</string>
   <string name="sub_deactivate_failed">Dezaktywacja nie powiodła się.</string>
+  <string name="force_ambient_for_media_off">Nieaktywny</string>
+  <string name="force_ambient_for_media_on">Aktywny</string>
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_title">Rzadsze dźwięki powiadomień</string>
+  <string name="less_notification_sounds_summary">Odtwarzaj dźwięki powiadomień każdej aplikacji raz na określony okres czasu</string>
   <string name="less_notification_sounds_default">Domyślne zachowanie</string>
+  <string name="less_notification_sounds_3s">Raz na 3 sekundy</string>
+  <string name="less_notification_sounds_5s">Raz na 5 sekund</string>
+  <string name="less_notification_sounds_10s">Raz na 10 sekund</string>
+  <string name="less_notification_sounds_15s">Raz na 15 sekund</string>
+  <string name="less_notification_sounds_30s">Raz na 30 sekund</string>
+  <string name="less_notification_sounds_45s">Raz na 45 sekund</string>
   <string name="less_notification_sounds_1m">Co minutę</string>
   <string name="less_notification_sounds_2m">Co 2 minuty</string>
   <string name="less_notification_sounds_5m">Co 5 minut</string>
@@ -108,6 +118,19 @@
   <!-- Font picker -->
   <string name="font_picker_title">Czcionka</string>
   <!-- Search -->
+  <string name="menu_search_hint">Wyszukaj aplikacje...</string>
   <!-- Heads up snooze -->
+  <string name="heads_up_category">Podgląd powiadomień</string>
+  <string name="heads_up_snooze_20min">20 minut</string>
   <!-- Heads up timeout -->
+  <string name="heads_up_time_out_title">Czas wyświetlania powiadomienia</string>
+  <string name="heads_up_time_out_2sec">2 sekundy</string>
+  <string name="heads_up_time_out_4sec">4 sekundy</string>
+  <string name="heads_up_time_out_5sec">5 sekund</string>
+  <string name="heads_up_time_out_6sec">6 sekund</string>
+  <string name="heads_up_time_out_8sec">8 sekund</string>
+  <string name="heads_up_time_out_10sec">10 sekund</string>
+  <string name="log_category">Historia powiadomień</string>
+  <string name="app_package_name_title">Pakiet</string>
+  <string name="app_version_title">Wersja</string>
 </resources>

@@ -49,6 +49,8 @@
   <string name="adb_over_network_summary">Engedélyezi a TCP/IP hibakeresést hálózati eszközön keresztül (Wi-Fi, USB hálózatok). Újraindítás után alaphelyzetbe áll vissza</string>
   <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">VIGYÁZAT: Ha a funkció engedélyezve van, az eszköz nyitva áll bármilyen behatolásra az összes kapcsolódó hálózaton keresztül!\n\nCsak biztonságos hálózatra csatlakozva érdemes engedélyezni.\n\nBiztosan engedélyezni szeretné?</string>
+  <string name="adb_over_network_disable_on_disconnect_title">ADB hálózaton keresztül letiltása leválasztáskor</string>
+  <string name="adb_over_network_disable_on_disconnect_summary">Az ADB hálózaton keresztül letiltásra fog kerülni, amint lecsatlakozik a Wi-Fi-ről</string>
   <string name="battery_image">Akkumulátor kép</string>
   <string name="battery_image_description">Akkumulátor kép megjelenítése az állapotsoron</string>
   <string name="twilight_mode_location_dialog">Helymeghatározás kikapcsolva</string>
@@ -150,4 +152,6 @@
   <string name="heads_up_time_out_8sec">8 másodperc</string>
   <string name="heads_up_time_out_10sec">10 másodperc</string>
   <string name="log_category">Értesítések előzményei</string>
+  <string name="app_package_name_title">Csomag</string>
+  <string name="app_version_title">Verzió</string>
 </resources>

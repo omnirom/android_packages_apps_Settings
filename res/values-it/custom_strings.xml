@@ -49,6 +49,8 @@
   <string name="adb_over_network_summary">Attiva il debug TCP/IP tramite interfacce di rete (Wi-Fi, reti USB). Questa impostazione si ripristina al riavvio</string>
   <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">Attenzione: Quando ADB sulla rete è attivo, il tuo telefono è aperto alle intrusioni su tutte le reti a cui è connesso, comprese la rete dati GSM!\n\nUsare questa funzionalità solo se connessi a reti affidabili.\n\nVuoi veramente attivare questa funzione?</string>
+  <string name="adb_over_network_disable_on_disconnect_title">Disattivare ADB in rete alla disconnessione</string>
+  <string name="adb_over_network_disable_on_disconnect_summary">ADB in rete verrà disabilitato quando si scollega dal Wi-Fi</string>
   <string name="battery_image">Icona batteria</string>
   <string name="battery_image_description">Visualizza l\'icona della batteria nella barra di stato</string>
   <string name="twilight_mode_location_dialog">Posizione disabilitata</string>
@@ -134,6 +136,7 @@
   <string name="menu_search_hint">Cerca app...</string>
   <!-- Heads up snooze -->
   <string name="heads_up_category">Notifiche peek</string>
+  <string name="heads_up_snooze_title">Durata delle notifiche sospese</string>
   <string name="heads_up_snooze_disabled_summary">La sospensione del timer è disabilitata</string>
   <string name="heads_up_snooze_1min">1 minuto</string>
   <string name="heads_up_snooze_5min">5 minuti</string>
@@ -149,4 +152,6 @@
   <string name="heads_up_time_out_8sec">8 secondi</string>
   <string name="heads_up_time_out_10sec">10 secondi</string>
   <string name="log_category">Cronologia notifiche</string>
+  <string name="app_package_name_title">Pacchetto</string>
+  <string name="app_version_title">Versione</string>
 </resources>

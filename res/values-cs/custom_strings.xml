@@ -49,6 +49,8 @@
   <string name="adb_over_network_summary">Povolit ladění přes síťové připojení (např. Wi-Fi nebo síť USB). Toto nastavení bude obnoveno po restartu</string>
   <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">UPOZORNĚNÍ: Pokud je povoleno ADB přes síťové připojení, zařízení je otevřené pro pokusy o průniky na všech připojených sítích, včetně GSM datové sítě!\n\nPoužijte tuto vlastnost pouze pokud jste připojeni k důvěryhodné síti.\n\nOpravdu chcete povolit tuto funkci?</string>
+  <string name="adb_over_network_disable_on_disconnect_title">Zakázat ADB přes síť při odpojení</string>
+  <string name="adb_over_network_disable_on_disconnect_summary">ADB přes síť bude zakázáno při odpojení od Wi-Fi</string>
   <string name="battery_image">Styl ikony baterie</string>
   <string name="battery_image_description">Zobrazit ikonu baterie ve stavové liště</string>
   <string name="twilight_mode_location_dialog">Poloha je zakázána</string>
@@ -150,4 +152,6 @@
   <string name="heads_up_time_out_8sec">8 sekund</string>
   <string name="heads_up_time_out_10sec">10 sekund</string>
   <string name="log_category">Historie oznámení</string>
+  <string name="app_package_name_title">Balíček</string>
+  <string name="app_version_title">Verze</string>
 </resources>

@@ -19,17 +19,57 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="style_settings_title">Estil</string>
+  <string name="header_category_omni">OmniGears</string>
+  <string name="omni_dashboard_summary">Omnifiqueu el dispositiu</string>
+  <string name="omni_device_parts">Característiques del dispositiu</string>
+  <string name="custom_bars_settings_title">Barres</string>
+  <string name="button_settings_title">Botons</string>
+  <string name="mod_version">Versió d\'Omni</string>
+  <string name="mod_version_default">Desconeguda</string>
+  <string name="more_settings_title">Més</string>
+  <string name="global_actions_title">Menú d\'encesa</string>
+  <string name="display_rotation_title">Rotació</string>
+  <string name="battery_light_settings_title">Configuració del LED de bateria</string>
+  <string name="link_volume_option_title">Enllaça el volum de la trucada i dels avisos</string>
   <!-- Custom light color -->
+  <string name="value_equals_default">Auto</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">ADB per xarxa</string>
+  <string name="adb_over_network_summary">Habilita la depuració TCP/IP per interfícies de xarxa (Wi-Fi, xarxes USB). Aquest ajustament es restableix en reiniciar</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">AVÍS: Si s\'habilita ADB per xarxa, el telèfon queda obert a intrusions des de totes les xarxes connectades, incloent les xarxes de dades GSM!\n\nUtilitzeu aquesta característica si esteu connectats a xarxes de confiança.\n\nSegur que voleu habilitar aquesta funció?</string>
+  <string name="twilight_mode_location_enable">Habilita</string>
   <!-- Encryption and credential -->
   <!-- Format string for fingerprint location message -->
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">enrere</string>
+  <string name="screenshot_shutter_sound_title">So de l\'obturador en captures de pantalla</string>
+  <string name="heads_up_notifications_enabled_title">Avisos flotants</string>
+  <string name="heads_up_notifications_enabled_summary">Permet o inhabilita els avisos flotants</string>
+  <string name="ramp_up_time_ten">10s</string>
+  <string name="ramp_up_time_twenty">20s</string>
   <!-- Manual provisioning support -->
   <!-- Less Notification sounds -->
+  <string name="usb_category_title">USB</string>
   <!-- Scramble PIN layout when unlocking -->
   <!-- Font picker -->
+  <string name="font_picker_title">Tipus de lletra</string>
   <!-- Search -->
   <!-- Heads up snooze -->
+  <string name="heads_up_category">Avisos flotants</string>
+  <string name="heads_up_snooze_1min">1 minut</string>
+  <string name="heads_up_snooze_5min">5 minuts</string>
+  <string name="heads_up_snooze_10min">10 minuts</string>
+  <string name="heads_up_snooze_15min">15 minuts</string>
+  <string name="heads_up_snooze_20min">20 minuts</string>
   <!-- Heads up timeout -->
+  <string name="heads_up_time_out_2sec">2 segons</string>
+  <string name="heads_up_time_out_4sec">4 segons</string>
+  <string name="heads_up_time_out_5sec">5 segons</string>
+  <string name="heads_up_time_out_6sec">6 segons</string>
+  <string name="heads_up_time_out_8sec">8 segons</string>
+  <string name="heads_up_time_out_10sec">10 segons</string>
+  <string name="app_package_name_title">Paquet</string>
+  <string name="app_version_title">Versió</string>
 </resources>
