@@ -30,4 +30,6 @@
 
     <!-- Whether notify user that switch data service -->
     <bool name="confirm_to_switch_data_service">false</bool>
+
+    <bool name="config_notificationLedTiming">true</bool>
 </resources>
