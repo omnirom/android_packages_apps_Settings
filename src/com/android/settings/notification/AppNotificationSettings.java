@@ -156,6 +156,7 @@ public class AppNotificationSettings extends NotificationSettingsBase {
         //find light prefs
         mLights = (RestrictedSwitchPreference) findPreference(KEY_LIGHTS);
         boolean multiColorLed = getResources().getBoolean(com.android.internal.R.bool.config_multiColorNotificationLed);
+        boolean ledTiming = getResources().getBoolean(R.bool.config_notificationLedTiming);
         mCustomLight = (ColorSelectPreference) findPreference(KEY_CUSTOM_LIGHT);
         if (!multiColorLed) {
             mLightCategory.removePreference(mCustomLight);
@@ -167,8 +168,8 @@ public class AppNotificationSettings extends NotificationSettingsBase {
         mLights.setChecked(mChannel.shouldShowLights());
         //enable custom light prefs is light is enabled
         mCustomLight.setEnabled(!mLights.isDisabledByAdmin() && mChannel.shouldShowLights());
-        mLightOnTime.setEnabled(!mLights.isDisabledByAdmin() && mChannel.shouldShowLights());
-        mLightOffTime.setEnabled(!mLights.isDisabledByAdmin() && mChannel.shouldShowLights());
+        mLightOnTime.setEnabled(!mLights.isDisabledByAdmin() && mChannel.shouldShowLights() && ledTiming);
+        mLightOffTime.setEnabled(!mLights.isDisabledByAdmin() && mChannel.shouldShowLights() && ledTiming);
         mLightOnZen.setEnabled(!mLights.isDisabledByAdmin() && mChannel.shouldShowLights());
 
         //light pref
