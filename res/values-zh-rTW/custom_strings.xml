@@ -19,17 +19,132 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="style_settings_title">風格</string>
+  <string name="header_category_omni">OmniGears</string>
+  <string name="omni_dashboard_summary">Omnify 您的設備</string>
+  <string name="style_settings_summary">桌布或其他個人化設定</string>
+  <string name="omni_device_parts">進階功能</string>
+  <string name="columns_menu">使用列佈局</string>
+  <string name="hide_summary_menu">隱藏摘要</string>
+  <string name="custom_bars_settings_title">狀態欄</string>
+  <string name="button_settings_title">按鍵</string>
+  <string name="mod_version">Omni 版本</string>
+  <string name="mod_version_default">未知</string>
+  <string name="more_settings_title">更多</string>
+  <string name="global_actions_title">電源選單</string>
+  <string name="display_rotation_title">螢幕旋轉</string>
+  <string name="display_rotation_summary">設定可用的旋轉角度</string>
+  <string name="battery_light_settings_title">電量指示燈設定</string>
+  <string name="link_volume_option_title">連結鈴聲和通知鈴聲音量</string>
   <!-- Custom light color -->
+  <string name="light_customization">LED 燈光通知</string>
+  <string name="custom_light_title">LED 顏色</string>
+  <string name="custom_light_on_time_title">"LED 開燈持續時間(毫秒)"</string>
+  <string name="custom_light_off_time_title">"LED 關燈持續時間(毫秒)"</string>
+  <string name="value_equals_default">自動</string>
+  <string name="show_light_on_zen_title">勿擾模式下啟用呼吸燈</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">無線 ADB 偵錯</string>
+  <string name="adb_over_network_summary">通過網路連接 (WiFi, USB 網路) 啟用 TCP/IP 调偵錯。 重新開機後回復預設值</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">警告：無線 ADB 偵錯啟用後，你的裝置將會被已連線上的網路視為開放的，包括行動網路，並有可能遭到入侵！\n\n請只在信任的網路使用此功能。\n\n確定要開啟此功能嗎？</string>
+  <string name="adb_over_network_disable_on_disconnect_title">無網路狀態時停用無線 ADB 偵錯</string>
+  <string name="adb_over_network_disable_on_disconnect_summary">當 Wi-Fi 斷開後將會停用無線 ADB 偵錯</string>
+  <string name="battery_image">更換電池圖案</string>
+  <string name="battery_image_description">在狀態欄中顯示電池圖案</string>
+  <string name="twilight_mode_location_dialog">定位功能已停用</string>
+  <string name="twilight_mode_location_disabled">定位功能已停用</string>
+  <string name="twilight_mode_location_enable">開啟</string>
   <!-- Encryption and credential -->
+  <string name="custom_encryption_and_credential_settings_summary_on">設備已加密</string>
+  <string name="custom_encryption_and_credential_settings_summary_off">設備已解密</string>
+  <string name="select_sim_for_sms">選擇發送 SMS 的 SIM 卡</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">您手機上指紋感測器在 <xliff:g id="sensor_location">%1$s</xliff:g> 位置</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">背面</string>
+  <string name="security_settings_fingerprint_sensor_location_front">前面</string>
+  <string name="security_settings_fingerprint_sensor_location_left">左側</string>
+  <string name="security_settings_fingerprint_sensor_location_right">右側</string>
+  <string name="screenshot_shutter_sound_title">螢幕截圖音效</string>
+  <string name="heads_up_notifications_enabled_title">啟用漂浮通知</string>
+  <string name="heads_up_notifications_enabled_summary">啟用或關閉所有漂浮通知</string>
+  <string name="increasing_ring_volume_option_title">漸強鈴聲音量</string>
+  <string name="increasing_ring_ramp_up_title">漸強至指定音量的時間</string>
+  <string name="increasing_ring_volume_option_summary">漸強鈴聲音量至指定音量</string>
+  <string name="ramp_up_time_ten">10 秒</string>
+  <string name="ramp_up_time_twenty">20秒</string>
+  <string name="ramp_up_time_thirty">30 秒</string>
+  <string name="ramp_up_time_sixty">60 秒</string>
+  <string name="ramp_up_time_five">5 秒</string>
+  <string name="ramp_up_time_fifteen">15秒</string>
+  <string name="force_safe_media_volume_disabled_title">禁用安全音量檢查</string>
+  <string name="force_safe_media_volume_disabled_summary">停用安全音量檢查</string>
   <!-- Manual provisioning support -->
+  <string name="sim_enabled">已啟用</string>
+  <string name="sim_disabled">已停用</string>
+  <string name="sim_missing">缺失或錯誤</string>
+  <string name="sim_enabler_need_disable_sim">SIM 卡將會被停用. 是否繼續?</string>
+  <string name="sim_enabler_will_disable_sim_title">請注意</string>
+  <string name="sim_enabler_need_switch_data_service">此 SIM 卡將會被停用且 <xliff:g id="slotid">%1$s</xliff:g> 用來做為資料傳輸. 請問是否繼續?</string>
+  <string name="sim_enabler_airplane_on">無法在飛航模式啟動時執行此操作</string>
+  <string name="sim_enabler_in_call">無法在通話過程中執行此操作</string>
+  <string name="sim_enabler_both_inactive">無法停用所有 SIM 卡</string>
+  <string name="sim_enabler_enabling">啟動中\u2026</string>
+  <string name="sim_enabler_disabling">停用中\u2026</string>
+  <string name="sub_activate_success">SIM 卡啟用</string>
+  <string name="sub_activate_failed">啟用失敗</string>
+  <string name="sub_deactivate_success">SIM 卡已停用</string>
+  <string name="sub_deactivate_failed">停用失敗</string>
+  <string name="force_ambient_for_media_pref_title">環境音樂通知</string>
+  <string name="force_ambient_for_media_off">停用</string>
+  <string name="force_ambient_for_media_on">啟用</string>
+  <string name="force_ambient_for_media_on_forced">強制啟用</string>
+  <string name="force_ambient_for_media_on_forced_clean">啟用並強制最小化</string>
+  <string name="ambient_ticker_footer">無論在環境顯示啟用或停用時, 環境音樂通知允許在鎖定畫面中顯示目前的音樂訊息\n您將可採用兩種樣式, 一般或是最小化. 此功能類似環境顯示但不依賴該設定</string>
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_title">減少通知音效</string>
+  <string name="less_notification_sounds_summary">在設定的時間內只播放一次通知音效</string>
+  <string name="less_notification_sounds_default">預設行為</string>
+  <string name="less_notification_sounds_3s">每 3 秒</string>
+  <string name="less_notification_sounds_5s">每 5 秒</string>
+  <string name="less_notification_sounds_10s">每 10 秒</string>
+  <string name="less_notification_sounds_15s">每 15 秒</string>
+  <string name="less_notification_sounds_30s">每 30 秒</string>
+  <string name="less_notification_sounds_45s">每45秒</string>
+  <string name="less_notification_sounds_1m">每 1 分鐘</string>
+  <string name="less_notification_sounds_2m">每 2 分鐘</string>
+  <string name="less_notification_sounds_5m">每 5 分鐘</string>
+  <string name="notification_log_summary">顯示通知歷史訊息</string>
+  <string name="select_default_usb_configuration_title">選擇預設 USB 設定</string>
+  <string name="select_default_usb_configuration_dialog_title">選擇 USB 設定</string>
+  <string name="select_usb_default_confguration_warning">警告: 在鎖定裝置時也啟用預設 USB 配置! \n\n 是否確實要啟用此設定？</string>
+  <string name="usb_category_title">USB</string>
   <!-- Scramble PIN layout when unlocking -->
+  <string name="unlock_scramble_pin_layout_title">亂序數字佈局</string>
+  <string name="unlock_scramble_pin_layout_summary">輸入 PIN 碼解鎖時亂序數字佈局</string>
+  <string name="battery_saver_system_bars_color_enable_title">系統欄背景顏色</string>
+  <string name="battery_saver_system_bars_color_enable_summary">當啟動節約電量模式時, 狀態欄與導航欄配置不同顏色</string>
   <!-- Font picker -->
+  <string name="font_picker_title">字型</string>
+  <string name="font_picker_progress">設定字體\u2026</string>
   <!-- Search -->
+  <string name="menu_search">搜尋應用程式</string>
+  <string name="menu_search_hint">搜尋應用程式...</string>
   <!-- Heads up snooze -->
+  <string name="heads_up_category">迅速瀏覽通知</string>
+  <string name="heads_up_snooze_1min">1 分鐘</string>
+  <string name="heads_up_snooze_5min">5 分鐘</string>
+  <string name="heads_up_snooze_10min">10 分鐘</string>
+  <string name="heads_up_snooze_15min">15 分鐘</string>
+  <string name="heads_up_snooze_20min">20 分鐘</string>
   <!-- Heads up timeout -->
+  <string name="heads_up_time_out_2sec">2 秒</string>
+  <string name="heads_up_time_out_4sec">4 秒</string>
+  <string name="heads_up_time_out_5sec">5 秒</string>
+  <string name="heads_up_time_out_6sec">6 秒</string>
+  <string name="heads_up_time_out_8sec">8 秒</string>
+  <string name="heads_up_time_out_10sec">10 秒</string>
+  <string name="log_category">通知歷史記錄</string>
+  <string name="app_version_title">版本</string>
 </resources>

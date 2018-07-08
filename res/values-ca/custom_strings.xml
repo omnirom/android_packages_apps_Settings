@@ -22,7 +22,10 @@
   <string name="style_settings_title">Estil</string>
   <string name="header_category_omni">OmniGears</string>
   <string name="omni_dashboard_summary">Omnifiqueu el dispositiu</string>
+  <string name="style_settings_summary">Fons de pantalla i altres decoracions</string>
   <string name="omni_device_parts">Característiques del dispositiu</string>
+  <string name="columns_menu">Disposició de les colummnes</string>
+  <string name="hide_summary_menu">Oculta el resum</string>
   <string name="custom_bars_settings_title">Barres</string>
   <string name="button_settings_title">Botons</string>
   <string name="mod_version">Versió d\'Omni</string>
@@ -30,46 +33,125 @@
   <string name="more_settings_title">Més</string>
   <string name="global_actions_title">Menú d\'encesa</string>
   <string name="display_rotation_title">Rotació</string>
+  <string name="display_rotation_summary">Configura els angles de rotació possibles</string>
   <string name="battery_light_settings_title">Configuració del LED de bateria</string>
   <string name="link_volume_option_title">Enllaça el volum de la trucada i dels avisos</string>
   <!-- Custom light color -->
+  <string name="light_customization">Avís de llum LED</string>
+  <string name="custom_light_title">Color del llum</string>
+  <string name="custom_light_on_time_title">"Temps que el llum està engegat durant la pulsació LED (ms)"</string>
+  <string name="custom_light_off_time_title">"Temps que el llum està apagat durant la pulsació LED (ms)"</string>
+  <string name="app_notifications_info_desc">Feu un toc en un dels canals de dalt per configurar els colors del seu llum i altres opcions</string>
   <string name="value_equals_default">Auto</string>
+  <string name="show_light_on_zen_title">Parpelleja en mode no molesteu</string>
   <!-- Android debugging over WiFi -->
   <string name="adb_over_network">ADB per xarxa</string>
   <string name="adb_over_network_summary">Habilita la depuració TCP/IP per interfícies de xarxa (Wi-Fi, xarxes USB). Aquest ajustament es restableix en reiniciar</string>
   <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">AVÍS: Si s\'habilita ADB per xarxa, el telèfon queda obert a intrusions des de totes les xarxes connectades, incloent les xarxes de dades GSM!\n\nUtilitzeu aquesta característica si esteu connectats a xarxes de confiança.\n\nSegur que voleu habilitar aquesta funció?</string>
+  <string name="adb_over_network_disable_on_disconnect_title">Inhabilita l\'ADB per xarxa en desconnectar</string>
+  <string name="adb_over_network_disable_on_disconnect_summary">L\'ADB per xarxa s\'inhabilitarà en desconnectar-se de la Wi-Fi</string>
+  <string name="battery_image">Imatge de la bateria</string>
+  <string name="battery_image_description">Mostra la imatge de la bateria a la barra d\'estat</string>
+  <string name="twilight_mode_location_dialog">Ubicació inhabilitada</string>
+  <string name="twilight_mode_location_disabled">S\'ha inhabilitat l\'accés a la ubicació</string>
   <string name="twilight_mode_location_enable">Habilita</string>
   <!-- Encryption and credential -->
+  <string name="custom_encryption_and_credential_settings_summary_on">Es dispositiu està encriptat</string>
+  <string name="custom_encryption_and_credential_settings_summary_off">El dispositiu està desencriptat</string>
+  <string name="select_sim_for_sms">Seleccioneu una SIM per als SMS</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Localitzeu el sensor d\'empremtes dactilars al <xliff:g id="sensor_location">%1$s</xliff:g> del telèfon.</string>
   <!-- Fingerprint sensor locations -->
   <string name="security_settings_fingerprint_sensor_location_back">enrere</string>
+  <string name="security_settings_fingerprint_sensor_location_front">davant</string>
+  <string name="security_settings_fingerprint_sensor_location_left">costat esquerre</string>
+  <string name="security_settings_fingerprint_sensor_location_right">costat dret</string>
   <string name="screenshot_shutter_sound_title">So de l\'obturador en captures de pantalla</string>
   <string name="heads_up_notifications_enabled_title">Avisos flotants</string>
-  <string name="heads_up_notifications_enabled_summary">Permet o inhabilita els avisos flotants</string>
+  <string name="heads_up_notifications_enabled_summary">Permet o inhabilita que tots els avisos siguin flotants</string>
+  <string name="increasing_ring_volume_option_title">Volum del timbre ascendent</string>
+  <string name="increasing_ring_ramp_up_title">Temps per augmentar el volum del timbre</string>
+  <string name="increasing_ring_volume_option_summary">Augmenta el volum del timbre al volum seleccionat</string>
   <string name="ramp_up_time_ten">10s</string>
   <string name="ramp_up_time_twenty">20s</string>
+  <string name="ramp_up_time_thirty">30s</string>
+  <string name="ramp_up_time_sixty">60s</string>
+  <string name="ramp_up_time_five">5s</string>
+  <string name="ramp_up_time_fifteen">15s</string>
+  <string name="force_safe_media_volume_disabled_title">Inhabilita la comprovació de seguretat del volum</string>
+  <string name="force_safe_media_volume_disabled_summary">No limitis el volum multimèdia per als auriculars</string>
   <!-- Manual provisioning support -->
+  <string name="sim_enabled">habilitat</string>
+  <string name="sim_disabled">inhabilitat</string>
+  <string name="sim_missing">falta o defectuosa</string>
+  <string name="sim_enabler_need_disable_sim">Es desactivarà la targeta SIM. Voleu continuar?</string>
+  <string name="sim_enabler_will_disable_sim_title">Atenció</string>
+  <string name="sim_enabler_need_switch_data_service">Aquesta SIM s\'inhabilitarà i s\'utilitzarà la SIM <xliff:g id="slotid">%1$s</xliff:g> per als serveis de dades. Voleu continuar?</string>
+  <string name="sim_enabler_airplane_on">No es pot fer l\'operació amb el mode avió activat.</string>
+  <string name="sim_enabler_in_call">No es pot fer l\'operació si s\'està trucant.</string>
+  <string name="sim_enabler_both_inactive">No es pot inhabilitar totes les targetes SIM</string>
+  <string name="sim_enabler_enabling">S\'està activant\u2026</string>
+  <string name="sim_enabler_disabling">S\'està desactivant\u2026</string>
+  <string name="sub_activate_success">S\'ha activat la SIM.</string>
+  <string name="sub_activate_failed">L\'activació ha fallat.</string>
+  <string name="sub_deactivate_success">S\'ha desactivat la SIM.</string>
+  <string name="sub_deactivate_failed">La desactivació ha fallat.</string>
+  <string name="force_ambient_for_media_pref_title">Etiqueta de música ambient</string>
+  <string name="force_ambient_for_media_off">Inhabilitat</string>
+  <string name="force_ambient_for_media_on">Habilitat</string>
+  <string name="force_ambient_for_media_on_forced">Habilitat i forçat</string>
+  <string name="force_ambient_for_media_on_forced_clean">Habilitat i mínimament forçat</string>
+  <string name="ambient_ticker_footer">L\'etiqueta de música ambient permet que es pugui mostrar la informació de la pista de música actual a la pantalla de bloqueig amb o sense la pantalla activa habilitada.\nPodeu seleccionar dues disposicions, normal i mínima. Tot i que aquesta característica aprofita la pantalla activa, no en depèn.</string>
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_title">Sons d\'avís menys freqüents</string>
+  <string name="less_notification_sounds_summary">Reprodueix el so d\'avís de cada app només un cop per al període de temps establert</string>
+  <string name="less_notification_sounds_default">Comportament per defecte</string>
+  <string name="less_notification_sounds_3s">Cada 3 segons</string>
+  <string name="less_notification_sounds_5s">Cada 5 segons</string>
+  <string name="less_notification_sounds_10s">Cada 10 segons</string>
+  <string name="less_notification_sounds_15s">Cada 15 segons</string>
+  <string name="less_notification_sounds_30s">Cada 30 segons</string>
+  <string name="less_notification_sounds_45s">Cada 45 segons</string>
+  <string name="less_notification_sounds_1m">Cada 1 minut</string>
+  <string name="less_notification_sounds_2m">Cada 2 minuts</string>
+  <string name="less_notification_sounds_5m">Cada 5 minuts</string>
+  <string name="notification_log_summary">Mostra el registre de l\'historial d\'avisos</string>
+  <string name="select_default_usb_configuration_title">Selecció de la configuració USB per defecte</string>
+  <string name="select_default_usb_configuration_dialog_title">Selecció de la configuració USB</string>
+  <string name="select_usb_default_confguration_warning">COMPTE: La configuració USB per defecte està habilitada també quan el dispositiu està bloquejat.\n\nSegur que voleu habilitar aquesta configuració?</string>
+  <string name="usb_paranoia_connect_title">Connexió USB segura</string>
+  <string name="usb_paranoia_connect_summary">Permet la càrrega només quan es connecti l\'USB en pantalles de bloqueig segures</string>
   <string name="usb_category_title">USB</string>
   <!-- Scramble PIN layout when unlocking -->
+  <string name="unlock_scramble_pin_layout_title">Disposició aleatòria</string>
+  <string name="unlock_scramble_pin_layout_summary">Desordena la disposició per al PIN en desbloquejar el dispositiu</string>
+  <string name="battery_saver_system_bars_color_enable_title">Color de fons de les barres del sistema</string>
+  <string name="battery_saver_system_bars_color_enable_summary">Utilitza un color diferent per a la barra d\'estat i la de navegació quan l\'estalvi d\'energia està habilitat</string>
   <!-- Font picker -->
   <string name="font_picker_title">Tipus de lletra</string>
+  <string name="font_picker_progress">S\'està establint el tipus de lletra\u2026</string>
   <!-- Search -->
+  <string name="menu_search">Cerca d\'apps</string>
+  <string name="menu_search_hint">Cerca d\'apps...</string>
   <!-- Heads up snooze -->
   <string name="heads_up_category">Avisos flotants</string>
+  <string name="heads_up_snooze_title">Temporitzador de repetició dels avisos flotants</string>
+  <string name="heads_up_snooze_disabled_summary">El temporitzador de repetició està inhabilitat</string>
   <string name="heads_up_snooze_1min">1 minut</string>
   <string name="heads_up_snooze_5min">5 minuts</string>
   <string name="heads_up_snooze_10min">10 minuts</string>
   <string name="heads_up_snooze_15min">15 minuts</string>
   <string name="heads_up_snooze_20min">20 minuts</string>
   <!-- Heads up timeout -->
+  <string name="heads_up_time_out_title">Temps d\'espera dels avisos flotants</string>
   <string name="heads_up_time_out_2sec">2 segons</string>
   <string name="heads_up_time_out_4sec">4 segons</string>
   <string name="heads_up_time_out_5sec">5 segons</string>
   <string name="heads_up_time_out_6sec">6 segons</string>
   <string name="heads_up_time_out_8sec">8 segons</string>
   <string name="heads_up_time_out_10sec">10 segons</string>
+  <string name="log_category">Historial d\'avisos</string>
   <string name="app_package_name_title">Paquet</string>
   <string name="app_version_title">Versió</string>
 </resources>

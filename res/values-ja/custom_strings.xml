@@ -43,7 +43,7 @@
   <string name="custom_light_off_time_title">"LEDパルス中の消灯時間（ms）"</string>
   <string name="app_notifications_info_desc">上記のいずれかのチャンネルをタップして明るい色やその他のオプションを設定する</string>
   <string name="value_equals_default">自動</string>
-  <string name="show_light_on_zen_title">サイレントモード中は点滅させる</string>
+  <string name="show_light_on_zen_title">マナーモード中は点滅させる</string>
   <!-- Android debugging over WiFi -->
   <string name="adb_over_network">ネットワーク経由のADB</string>
   <string name="adb_over_network_summary">ネットワークインタフェース（Wi-FiやUSB）越しのTCP/IPデバッグを有効にする（この設定は再起動でリセットされます）</string>
@@ -68,7 +68,7 @@
   <string name="security_settings_fingerprint_sensor_location_left">左側面</string>
   <string name="security_settings_fingerprint_sensor_location_right">右側面</string>
   <string name="screenshot_shutter_sound_title">スクリーンショットのシャッター音</string>
-  <string name="heads_up_notifications_enabled_title">Heads Up許可する</string>
+  <string name="heads_up_notifications_enabled_title">Heads Upを許可する</string>
   <string name="heads_up_notifications_enabled_summary">全ての通知のHeads Upを有効/無効にする</string>
   <string name="increasing_ring_volume_option_title">音量を大きくする</string>
   <string name="increasing_ring_ramp_up_title">着信音量を強めるまでの時間</string>

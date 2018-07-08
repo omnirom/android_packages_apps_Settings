@@ -19,20 +19,94 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="style_settings_title">Estilo</string>
+  <string name="header_category_omni">OmniGears</string>
+  <string name="omni_dashboard_summary">Omnifique o seu dispositivo</string>
+  <string name="style_settings_summary">Imagens de fundo e outras personalizações</string>
+  <string name="omni_device_parts">Recursos do dispositivo</string>
+  <string name="columns_menu">Layout da coluna</string>
+  <string name="hide_summary_menu">Ocultar sumário</string>
+  <string name="custom_bars_settings_title">Barras</string>
+  <string name="button_settings_title">Botões</string>
+  <string name="mod_version">Versão Omni</string>
+  <string name="mod_version_default">Desconhecida</string>
   <string name="more_settings_title">Mais</string>
+  <string name="global_actions_title">Menu de ligar/desligar</string>
+  <string name="display_rotation_title">Rotação</string>
+  <string name="display_rotation_summary">Configurar os ângulos de rotação possíveis</string>
+  <string name="battery_light_settings_title">Definições da luz de bateria</string>
+  <string name="link_volume_option_title">Associar volumes de toque e notificações</string>
   <!-- Custom light color -->
+  <string name="light_customization">Luz de notificação</string>
+  <string name="custom_light_title">Cor da luz</string>
+  <string name="custom_light_on_time_title">"Duração da luz quando LIGADA (ms)"</string>
+  <string name="custom_light_off_time_title">"Duração da luz quando DESLIGADA (ms)"</string>
+  <string name="app_notifications_info_desc">Toque numa das categorias acima para configurar as cores das luzes e outras opções</string>
+  <string name="value_equals_default">Auto</string>
+  <string name="show_light_on_zen_title">Piscar durante o modo Não Incomodar</string>
   <!-- Android debugging over WiFi -->
+  <string name="adb_over_network">ADB através da rede</string>
+  <string name="adb_over_network_summary">Habilita depuração por interfaces de rede TCP/IP (Wi-Fi, redes USB). Esta configuração é perdida ao reiniciar</string>
   <!-- Warning for Adb over Network -->
+  <string name="adb_over_network_warning">Aviso: Quando ADB sobre rede estiver ativado, o seu telefone fica desprotegido e pode facilitar invasões em todas as redes conectadas, incluindo rede de dados GSM!\n\n Usar esta funcionalidade apenas quando estiver conectado a redes fiáveis.\n\n Quer mesmo ativar esta função?</string>
+  <string name="adb_over_network_disable_on_disconnect_title">Desativar ADB através da rede ao desligar</string>
+  <string name="adb_over_network_disable_on_disconnect_summary">O ADB através da rede será desativado quando se desligar do Wi-Fi</string>
+  <string name="battery_image">Ícone da bateria</string>
+  <string name="battery_image_description">Mostrar a imagem da bateria na barra de estado</string>
+  <string name="twilight_mode_location_dialog">Localização desativada</string>
+  <string name="twilight_mode_location_disabled">O acesso à localização está desativado</string>
+  <string name="twilight_mode_location_enable">Ativado</string>
   <!-- Encryption and credential -->
+  <string name="custom_encryption_and_credential_settings_summary_on">O dispositivo está encriptado</string>
+  <string name="custom_encryption_and_credential_settings_summary_off">O dispositivo está desencriptado</string>
+  <string name="select_sim_for_sms">Selecione um cartão SIM para SMS</string>
   <!-- Format string for fingerprint location message -->
+  <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Localize o sensor de impressão digital <xliff:g id="sensor_location">%1$s </xliff:g> do seu dispositivo.</string>
   <!-- Fingerprint sensor locations -->
+  <string name="security_settings_fingerprint_sensor_location_back">voltar</string>
+  <string name="security_settings_fingerprint_sensor_location_front">na frente</string>
+  <string name="security_settings_fingerprint_sensor_location_left">no lado esquerdo</string>
+  <string name="security_settings_fingerprint_sensor_location_right">no lado direito</string>
+  <string name="screenshot_shutter_sound_title">Tocar som quando capturar tela</string>
+  <string name="heads_up_notifications_enabled_title">Permitir notificações flutuantes</string>
+  <string name="heads_up_notifications_enabled_summary">Ativar ou desativar as notificações flutuantes</string>
+  <string name="increasing_ring_volume_option_title">Volume de toque gradual</string>
+  <string name="increasing_ring_ramp_up_title">Tempo de aumento gradual do volume do toque</string>
+  <string name="increasing_ring_volume_option_summary">Aumentar o volume do toque até ao volume selecionado</string>
   <string name="ramp_up_time_ten">10s</string>
   <string name="ramp_up_time_twenty">20s</string>
   <string name="ramp_up_time_thirty">30s</string>
   <string name="ramp_up_time_sixty">60s</string>
+  <string name="ramp_up_time_five">5s</string>
+  <string name="ramp_up_time_fifteen">15s</string>
+  <string name="force_safe_media_volume_disabled_title">Desativar verificação de volume seguro</string>
+  <string name="force_safe_media_volume_disabled_summary">Não limite o volume de mídia para fones de ouvido</string>
   <!-- Manual provisioning support -->
+  <string name="sim_enabled">ativado</string>
+  <string name="sim_disabled">desativado</string>
+  <string name="sim_missing">em falta ou com defeito</string>
+  <string name="sim_enabler_need_disable_sim">O cartão SIM será desativado. Deseja continuar?</string>
   <string name="sim_enabler_will_disable_sim_title">Atenção</string>
+  <string name="sim_enabler_need_switch_data_service">Este cartão SIM será desativado e o cartão SIM <xliff:g id="slotid">%1$s</xliff:g> será usado para serviços de dados. Tem a certeza de que deseja continuar?</string>
+  <string name="sim_enabler_airplane_on">Não é possível executar a operação enquanto o modo de avião estiver ativado.</string>
+  <string name="sim_enabler_in_call">Não é possível executar a operação durante uma chamada.</string>
+  <string name="sim_enabler_both_inactive">Não é possível desativar todos os cartões SIM</string>
+  <string name="sim_enabler_enabling">A ativar\u2026</string>
+  <string name="sim_enabler_disabling">A desativar\u2026</string>
+  <string name="sub_activate_success">Cartão SIM ativado.</string>
+  <string name="sub_activate_failed">Falha ao ativar.</string>
+  <string name="sub_deactivate_success">Cartão SIM desativado.</string>
+  <string name="sub_deactivate_failed">Falha ao desativar.</string>
+  <string name="force_ambient_for_media_pref_title">Notificação de música ambiente</string>
+  <string name="force_ambient_for_media_off">Desativada</string>
+  <string name="force_ambient_for_media_on">Ativado</string>
+  <string name="force_ambient_for_media_on_forced">Ativado e forçado</string>
+  <string name="force_ambient_for_media_on_forced_clean">Ativado e forçado ao mínimo</string>
+  <string name="ambient_ticker_footer">As notificações de música ambiente permitem visualizar a informação da música atual no ecrã de bloqueio, com ou sem a visualização de ambiente ativada.\nPode escolher entre dois modos de visualização: normal e minimalista. Esta funcionalidade tira partido da visualização ambiente, mas não depende dela.</string>
   <!-- Less Notification sounds -->
+  <string name="less_notification_sounds_title">Sons de notificação menos frequentes</string>
+  <string name="less_notification_sounds_summary">Tocar sons de notificações de cada aplicação apenas uma vez num período de tempo definido</string>
+  <string name="less_notification_sounds_default">Comportamento padrão</string>
   <string name="less_notification_sounds_3s">A cada 3 segundos</string>
   <string name="less_notification_sounds_5s">A cada 5 segundos</string>
   <string name="less_notification_sounds_10s">A cada 10 segundos</string>
@@ -42,10 +116,42 @@
   <string name="less_notification_sounds_1m">A cada minuto</string>
   <string name="less_notification_sounds_2m">A cada 2 minutos</string>
   <string name="less_notification_sounds_5m">A cada 5 minutos</string>
+  <string name="notification_log_summary">Mostrar o histórico de notificações</string>
+  <string name="select_default_usb_configuration_title">Selecione uma configuração padrão do USB</string>
+  <string name="select_default_usb_configuration_dialog_title">Selecione a configuração USB</string>
+  <string name="select_usb_default_confguration_warning">AVISO: a configuração padrão do USB está ativada mesmo com o dispositivo bloqueado!\n\nDeseja realmente ativar esta funcionalidade?</string>
+  <string name="usb_paranoia_connect_title">Ligação USB segura</string>
+  <string name="usb_paranoia_connect_summary">Quando o USB for ligado em ecrãs de bloqueio seguros, ativar apenas o modo de carregamento</string>
   <string name="usb_category_title">USB</string>
   <!-- Scramble PIN layout when unlocking -->
+  <string name="unlock_scramble_pin_layout_title">Layout embaralhado</string>
+  <string name="unlock_scramble_pin_layout_summary">Embaralhar o layout do PIN ao desbloquear o dispositivo</string>
+  <string name="battery_saver_system_bars_color_enable_title">Cor de fundo das barras de sistema</string>
+  <string name="battery_saver_system_bars_color_enable_summary">Usar cores diferentes para as barras de estado e navegação quando o modo de poupança de bateria estiver ativado</string>
   <!-- Font picker -->
+  <string name="font_picker_title">Fonte</string>
+  <string name="font_picker_progress">A definir o tipo de fonte\u2026</string>
   <!-- Search -->
+  <string name="menu_search">Procurar aplicações</string>
+  <string name="menu_search_hint">Procurar aplicações...</string>
   <!-- Heads up snooze -->
+  <string name="heads_up_category">Notificações flutuante</string>
+  <string name="heads_up_snooze_title">Tempo de suspensão de notificações flutuantes</string>
+  <string name="heads_up_snooze_disabled_summary">O tempo de suspensão está desativado</string>
+  <string name="heads_up_snooze_1min">1 minuto</string>
+  <string name="heads_up_snooze_5min">5 minutos</string>
+  <string name="heads_up_snooze_10min">10 minutos</string>
+  <string name="heads_up_snooze_15min">15 minutos</string>
+  <string name="heads_up_snooze_20min">20 minutos</string>
   <!-- Heads up timeout -->
+  <string name="heads_up_time_out_title">Duração das notificações flutuantes</string>
+  <string name="heads_up_time_out_2sec">2 segundos</string>
+  <string name="heads_up_time_out_4sec">4 segundos</string>
+  <string name="heads_up_time_out_5sec">5 segundos</string>
+  <string name="heads_up_time_out_6sec">6 segundos</string>
+  <string name="heads_up_time_out_8sec">8 segundos</string>
+  <string name="heads_up_time_out_10sec">10 segundos</string>
+  <string name="log_category">Histórico de notificações</string>
+  <string name="app_package_name_title">Pacote</string>
+  <string name="app_version_title">Versão</string>
 </resources>

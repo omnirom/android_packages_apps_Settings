@@ -147,4 +147,6 @@
   <string name="heads_up_time_out_8sec">8 секунд</string>
   <string name="heads_up_time_out_10sec">10 секунд</string>
   <string name="log_category">История уведомлений</string>
+  <string name="app_package_name_title">Имя пакета</string>
+  <string name="app_version_title">Версия</string>
 </resources>
