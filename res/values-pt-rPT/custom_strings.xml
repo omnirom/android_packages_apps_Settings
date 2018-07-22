@@ -102,7 +102,7 @@
   <string name="force_ambient_for_media_on">Ativada</string>
   <string name="force_ambient_for_media_on_forced">Ativado e forçado</string>
   <string name="force_ambient_for_media_on_forced_clean">Ativado e forçado ao mínimo</string>
-  <string name="ambient_ticker_footer">As notificações de música ambiente permitem visualizar a informação da música atual no ecrã de bloqueio, com ou sem a visualização de ambiente ativada.\nPode escolher entre dois modos de visualização: normal e minimalista. Esta funcionalidade tira partido da visualização ambiente, mas não depende dela.</string>
+  <string name="ambient_ticker_footer">As notificações de música ambiente permitem visualizar a informação da música atual no ecrã de bloqueio, com ou sem a visualização ambiente ativada.\nPode escolher entre dois modos de visualização: normal e minimalista. Esta funcionalidade tira partido da visualização ambiente, mas não depende dela.</string>
   <!-- Less Notification sounds -->
   <string name="less_notification_sounds_title">Sons de notificação menos frequentes</string>
   <string name="less_notification_sounds_summary">Tocar sons de notificações de cada aplicação apenas uma vez num período de tempo definido</string>

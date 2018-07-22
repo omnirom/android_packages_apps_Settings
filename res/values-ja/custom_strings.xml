@@ -45,7 +45,7 @@
   <string name="value_equals_default">自動</string>
   <string name="show_light_on_zen_title">マナーモード中は点滅させる</string>
   <!-- Android debugging over WiFi -->
-  <string name="adb_over_network">ネットワーク経由のADB</string>
+  <string name="adb_over_network">ネット経由のADB</string>
   <string name="adb_over_network_summary">ネットワークインタフェース（Wi-FiやUSB）越しのTCP/IPデバッグを有効にする（この設定は再起動でリセットされます）</string>
   <!-- Warning for Adb over Network -->
   <string name="adb_over_network_warning">警告: ネットワーク経由でのADBを有効にすると、あなたの携帯電話はGSMデータネットワークを含む接続しているすべてのネットワークから侵入できるようになります。\n\nこの機能は信頼されたネットワークに接続しているときにのみ使用して下さい。\n\nこの機能を本当に有効にしますか？</string>
@@ -106,7 +106,7 @@
   <!-- Less Notification sounds -->
   <string name="less_notification_sounds_title">通知音の制限</string>
   <string name="less_notification_sounds_summary">設定した時間ごとに各アプリの通知音を1回だけ再生する</string>
-  <string name="less_notification_sounds_default">既定の動作</string>
+  <string name="less_notification_sounds_default">デフォルトの動作</string>
   <string name="less_notification_sounds_3s">3秒ごと</string>
   <string name="less_notification_sounds_5s">5秒ごと</string>
   <string name="less_notification_sounds_10s">10秒ごと</string>
@@ -117,7 +117,7 @@
   <string name="less_notification_sounds_2m">2分ごと</string>
   <string name="less_notification_sounds_5m">5分ごと</string>
   <string name="notification_log_summary">通知履歴ログを表示する</string>
-  <string name="select_default_usb_configuration_title">既定のUSB設定を選択</string>
+  <string name="select_default_usb_configuration_title">デフォルトのUSB設定を選択</string>
   <string name="select_default_usb_configuration_dialog_title">USB設定の選択</string>
   <string name="select_usb_default_confguration_warning">警告：デバイスがロックされている場合でも、デフォルトのUSB設定は有効です！\n本当にこの設定を有効にしますか？</string>
   <string name="usb_paranoia_connect_title">保護されたUSB接続</string>
