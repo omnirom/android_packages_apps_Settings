@@ -251,6 +251,7 @@ public final class SearchIndexableResources {
         addIndex(LockscreenItemSettings.class, NO_DATA_RES_ID, R.drawable.ic_lockscreen_tile);
         addIndex(OmniClockSettings.class, NO_DATA_RES_ID, R.drawable.ic_lockscreen_tile);
         addIndex(DigitalClockSettings.class, NO_DATA_RES_ID, R.drawable.ic_lockscreen_tile);
+        addIndex(org.omnirom.omnigears.GestureSettings.class, NO_DATA_RES_ID, R.drawable.ic_settings_gestures);
     }
 
     private SearchIndexableResources() {
