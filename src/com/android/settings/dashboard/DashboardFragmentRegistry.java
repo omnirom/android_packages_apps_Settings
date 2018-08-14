@@ -40,6 +40,8 @@ import com.android.settings.security.SecuritySettings;
 import com.android.settings.system.SystemDashboardFragment;
 import com.android.settingslib.drawer.CategoryKey;
 
+import org.omnirom.omnigears.OmniDashboardFragment;
+
 import java.util.Map;
 
 /**
@@ -101,7 +103,8 @@ public class DashboardFragmentRegistry {
             CategoryKey.CATEGORY_GESTURES);
         PARENT_TO_CATEGORY_KEY_MAP.put(NightDisplaySettings.class.getName(),
             CategoryKey.CATEGORY_NIGHT_DISPLAY);
-
+        PARENT_TO_CATEGORY_KEY_MAP.put(OmniDashboardFragment.class.getName(),
+                OmniDashboardFragment.CATEGORY_OMNI);
         CATEGORY_KEY_TO_PARENT_MAP = new ArrayMap<>(PARENT_TO_CATEGORY_KEY_MAP.size());
 
         for (Map.Entry<String, String> parentToKey : PARENT_TO_CATEGORY_KEY_MAP.entrySet()) {

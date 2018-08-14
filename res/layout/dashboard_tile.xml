@@ -21,7 +21,6 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
-    android:minHeight="@dimen/dashboard_tile_minimum_height"
     android:clickable="true"
     android:focusable="true">
 
@@ -41,19 +40,20 @@
         <TextView android:id="@android:id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
+            android:maxLines="2"
             android:textAppearance="@style/TextAppearance.TileTitle"
             android:ellipsize="marquee"
-            android:fadingEdge="horizontal" />
+            android:fadingEdge="horizontal"
+            android:paddingEnd="@dimen/dashboard_text_margin_end" />
 
         <TextView android:id="@android:id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.Small"
             android:textColor="?android:attr/textColorSecondary"
-            android:maxLines="1"
+            android:maxLines="2"
             android:ellipsize="end"
-            android:paddingEnd="@dimen/dashboard_tile_image_margin" />
+            android:paddingEnd="@dimen/dashboard_text_margin_end" />
 
     </LinearLayout>
 
