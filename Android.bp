@@ -44,7 +44,16 @@ android_library {
         "SettingsLib-search-defaults",
     ],
 
-    srcs: ["src/**/*.java"],
+    srcs: [
+        "src/**/*.java",
+        "OmniGears/src/**/*.java",
+    ],
+
+    aaptflags: ["--extra-packages org.omnirom.omnigears"],
+
+    resource_dirs: ["res",
+                    "OmniGears/res"
+    ],
 
     static_libs: [
         "androidx-constraintlayout_constraintlayout",
@@ -73,6 +82,7 @@ android_library {
         "android.hardware.dumpstate-V1.0-java",
         "android.hardware.dumpstate-V1.1-java",
         "lottie",
+        "OmniLib",
     ],
 
     libs: [
