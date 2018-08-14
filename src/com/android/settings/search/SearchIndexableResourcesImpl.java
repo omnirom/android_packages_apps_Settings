@@ -103,6 +103,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.omnirom.omnigears.OmniDashboardFragment;
+import org.omnirom.omnigears.ButtonSettings;
+
 public class SearchIndexableResourcesImpl implements SearchIndexableResources {
 
     private final Set<Class> sProviders = new HashSet<>();
@@ -193,6 +196,8 @@ public class SearchIndexableResourcesImpl implements SearchIndexableResources {
         addIndex(RecentLocationRequestSeeAllFragment.class);
         addIndex(PreviouslyConnectedDeviceDashboardFragment.class);
         addIndex(BluetoothDashboardFragment.class);
+        addIndex(OmniDashboardFragment.class);
+        addIndex(ButtonSettings.class);
     }
 
     @Override
