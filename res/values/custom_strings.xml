@@ -30,4 +30,6 @@
     <string name="mod_version">Omni version</string>
     <string name="mod_version_default">Unknown</string>
 
+    <string name="header_category_omni">OmniGears</string>
+    <string name="omni_dashboard_summary">Omnify your device</string>
 </resources>
