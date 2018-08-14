@@ -7,6 +7,7 @@
 
 # Keep all Fragments in this package, which are used by reflection.
 -keep public class com.android.settings.** extends androidx.fragment.app.Fragment
+-keep class org.omnirom.omnigears.**
 
 # Keep all preference controllers needed by slice and DashboardFragment.
 -keep class * extends com.android.settings.core.BasePreferenceController {
