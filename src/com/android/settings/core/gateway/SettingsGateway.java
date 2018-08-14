@@ -148,6 +148,10 @@ import com.android.settings.wifi.p2p.WifiP2pSettings;
 import com.android.settings.wifi.savedaccesspoints.SavedAccessPointsWifiSettings;
 import com.android.settings.wifi.tether.WifiTetherSettings;
 
+import org.omnirom.omnigears.OmniDashboardFragment;
+import org.omnirom.omnigears.ButtonSettings;
+import org.omnirom.omnigears.moresettings.MoreSettings;
+
 public class SettingsGateway {
 
     /**
@@ -283,7 +287,11 @@ public class SettingsGateway {
             PreviouslyConnectedDeviceDashboardFragment.class.getName(),
             BatterySaverScheduleSettings.class.getName(),
             MobileNetworkListFragment.class.getName(),
-            GlobalActionsPanelSettings.class.getName()
+            GlobalActionsPanelSettings.class.getName(),
+            // omni additions start
+            OmniDashboardFragment.class.getName(),
+            ButtonSettings.class.getName(),
+            MoreSettings.class.getName(),
     };
 
     public static final String[] SETTINGS_FOR_RESTRICTED = {
@@ -322,5 +330,8 @@ public class SettingsGateway {
             Settings.MyDeviceInfoActivity.class.getName(),
             Settings.ModuleLicensesActivity.class.getName(),
             UserBackupSettingsActivity.class.getName(),
+            // Home page > OmniGears
+            Settings.ButtonSettingsActivity.class.getName(),
+            Settings.MoreSettingsActivity.class.getName(),
     };
 }

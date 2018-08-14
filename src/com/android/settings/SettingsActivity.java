@@ -171,6 +171,12 @@ public class SettingsActivity extends SettingsBaseActivity
 
     private DashboardFeatureProvider mDashboardFeatureProvider;
 
+    // omni additions start
+    private static final String DEVICE_PARTS_FRAGMENT = "org.omnirom.device.DeviceParts";
+    public static final String KEY_HIDE_SUMMARY = "hide_summary";
+    public static final String KEY_COLUMNS_COUNT = "columns_count";
+    public static final String APP_PREFERENCES_NAME = "app_settings";
+
     public SwitchBar getSwitchBar() {
         return mSwitchBar;
     }
@@ -551,6 +557,13 @@ public class SettingsActivity extends SettingsBaseActivity
     private Fragment switchToFragment(String fragmentName, Bundle args, boolean validate,
             int titleResId, CharSequence title) {
         Log.d(LOG_TAG, "Switching to fragment " + fragmentName);
+        if (DEVICE_PARTS_FRAGMENT.equals(fragmentName)) {
+            Intent devicePartsIntent = new Intent();
+            devicePartsIntent.setClassName("org.omnirom.device", "org.omnirom.device.DeviceSettings");
+            startActivity(devicePartsIntent);
+            finish();
+            return null;
+        }
         if (validate && !isValidFragment(fragmentName)) {
             throw new IllegalArgumentException("Invalid fragment for this activity: "
                     + fragmentName);
