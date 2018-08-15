@@ -310,6 +310,7 @@ public class SettingsGateway {
             Settings.MyDeviceInfoActivity.class.getName(),
 
             // Home page > OmniGears
+            Settings.DevicePartsActivity.class.getName(),
             Settings.ButtonSettingsActivity.class.getName(),
             Settings.MoreSettingsActivity.class.getName(),
     };
