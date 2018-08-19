@@ -2,7 +2,11 @@
 <!--
 /*
 **
+<<<<<<< HEAD
 ** Copyright 2017 The OmniROM Project
+=======
+** Copyright 2017-2018 The OmniROM Project
+>>>>>>> acf4250dfb... [2/3] Settings: add support for adb over network
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -18,6 +22,7 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
     <string name="style_settings_title">Style</string>
     <string name="header_category_omni">OmniGears</string>
     <string name="omni_dashboard_summary">Omnify your device</string>
@@ -50,6 +55,7 @@
     <string name="adb_over_network_summary">Enable TCP/IP debugging over network interfaces (Wi-Fi, USB networks). This setting is reset on reboot</string>
     <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">WARNING: When ADB over network is enabled, your phone is open for intrusions on all connected networks, including GSM data network!\n\nOnly use this feature when you are connected on trusted networks.\n\nDo you really want to enable this function?</string>
+    <string name="adb_over_network_warning_title">Allow ADB over network?</string>
 
     <string name="battery_image">Battery image</string>
     <string name="battery_image_description">Show battery image in status bar</string>
