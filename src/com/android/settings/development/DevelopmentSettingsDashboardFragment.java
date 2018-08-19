@@ -62,7 +62,8 @@ import java.util.List;
 public class DevelopmentSettingsDashboardFragment extends RestrictedDashboardFragment
         implements SwitchBar.OnSwitchChangeListener, OemUnlockDialogHost, AdbDialogHost,
         AdbClearKeysDialogHost, LogPersistDialogHost,
-        BluetoothA2dpHwOffloadRebootDialog.OnA2dpHwDialogConfirmedListener {
+        BluetoothA2dpHwOffloadRebootDialog.OnA2dpHwDialogConfirmedListener,
+        AdbNetworkDialogHost {
 
     private static final String TAG = "DevSettingsDashboard";
 
@@ -293,6 +294,21 @@ public class DevelopmentSettingsDashboardFragment extends RestrictedDashboardFra
     }
 
     @Override
+    public void onEnableAdbNetworkDialogConfirmed() {
+        final AdbNetworkPreferenceController controller = getDevelopmentOptionsController(
+                AdbNetworkPreferenceController.class);
+        controller.onAdbDialogConfirmed();
+
+    }
+
+    @Override
+    public void onEnableAdbNetworkDialogDismissed() {
+        final AdbNetworkPreferenceController controller = getDevelopmentOptionsController(
+                AdbNetworkPreferenceController.class);
+        controller.onAdbDialogDismissed();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         boolean handledResult = false;
         for (AbstractPreferenceController controller : mPreferenceControllers) {
@@ -496,6 +512,7 @@ public class DevelopmentSettingsDashboardFragment extends RestrictedDashboardFra
         controllers.add(new AutofillResetOptionsPreferenceController(context));
         controllers.add(new TrustAgentsExtendUnlockPreferenceController(context));
         controllers.add(new TrustLostLocksScreenPreferenceController(context));
+        controllers.add(new AdbNetworkPreferenceController(context, fragment));
         return controllers;
     }
 
