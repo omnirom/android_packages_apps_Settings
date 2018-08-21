@@ -203,6 +203,7 @@ public class SearchIndexableResourcesImpl implements SearchIndexableResources {
         addIndex(ButtonSettings.class);
         addIndex(MoreSettings.class);
         addIndex(StyleSettings.class);
+        addIndex(org.omnirom.omnigears.GestureSettings.class);
     }
 
     @Override

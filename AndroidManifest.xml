@@ -3332,7 +3332,9 @@
         <!-- omni additions start -->
         <activity android:name=".Settings$OmniDashboardActivity"
                   android:label="@string/header_category_omni"
-                  android:icon="@drawable/ic_homepage_omnigears">
+                  android:icon="@drawable/ic_homepage_omnigears"
+                  android:taskAffinity="com.android.settings"
+                  android:parentActivityName="Settings">
             <intent-filter android:priority="12">
                 <action android:name="com.android.settings.action.SETTINGS"/>
             </intent-filter>
