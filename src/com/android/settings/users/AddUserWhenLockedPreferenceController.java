@@ -76,8 +76,9 @@ public class AddUserWhenLockedPreferenceController extends AbstractPreferenceCon
 
     @Override
     public boolean isAvailable() {
-        return mUserCaps.isAdmin() &&
-                (!mUserCaps.disallowAddUser() || mUserCaps.disallowAddUserSetByAdmin());
+        return false;
+        /*return mUserCaps.isAdmin() &&
+                (!mUserCaps.disallowAddUser() || mUserCaps.disallowAddUserSetByAdmin());*/
     }
 
     @Override
