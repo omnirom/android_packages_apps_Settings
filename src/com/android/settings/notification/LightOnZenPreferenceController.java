@@ -28,18 +28,18 @@ import com.android.settingslib.core.lifecycle.Lifecycle;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnResume;
 
-public class LightsPreferenceController extends NotificationPreferenceController
+public class LightOnZenPreferenceController extends NotificationPreferenceController
         implements PreferenceControllerMixin, Preference.OnPreferenceChangeListener {
 
-    private static final String KEY_LIGHTS = "lights";
+    private static final String KEY_LIGHT_ON_ZEN = "show_light_on_zen";
 
-    public LightsPreferenceController(Context context, NotificationBackend backend) {
+    public LightOnZenPreferenceController(Context context, NotificationBackend backend) {
         super(context, backend);
     }
 
     @Override
     public String getPreferenceKey() {
-        return KEY_LIGHTS;
+        return KEY_LIGHT_ON_ZEN;
     }
 
     @Override
@@ -57,17 +57,15 @@ public class LightsPreferenceController extends NotificationPreferenceController
     public void updateState(Preference preference) {
         if (mChannel != null) {
             RestrictedSwitchPreference pref = (RestrictedSwitchPreference) preference;
-            pref.setDisabledByAdmin(mAdmin);
-            pref.setEnabled(isChannelConfigurable() && !pref.isDisabledByAdmin());
-            pref.setChecked(mChannel.shouldShowLights());
+            pref.setChecked(mChannel.shouldLightOnZen());
         }
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (mChannel != null) {
-            final boolean lights = (Boolean) newValue;
-            mChannel.enableLights(lights);
+            final boolean show = (Boolean) newValue;
+            mChannel.setLightOnZen(show);
             saveChannel();
         }
         return true;

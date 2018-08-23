@@ -28,18 +28,25 @@ import com.android.settingslib.core.lifecycle.Lifecycle;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnResume;
 
-public class LightsPreferenceController extends NotificationPreferenceController
+import org.omnirom.omnilib.preference.SeekBarPreference;
+
+public class CustomLightOnTimePreferenceController extends NotificationPreferenceController
         implements PreferenceControllerMixin, Preference.OnPreferenceChangeListener {
 
-    private static final String KEY_LIGHTS = "lights";
+    private static final String KEY_LIGHTS_ON_TIME = "custom_light_on_time";
 
-    public LightsPreferenceController(Context context, NotificationBackend backend) {
+    private int defaultLightColor = mContext.getResources()
+            .getColor(com.android.internal.R.color.config_defaultNotificationColor);
+
+    private int mLedColor = 0;
+
+    public CustomLightOnTimePreferenceController(Context context, NotificationBackend backend) {
         super(context, backend);
     }
 
     @Override
     public String getPreferenceKey() {
-        return KEY_LIGHTS;
+        return KEY_LIGHTS_ON_TIME;
     }
 
     @Override
@@ -56,19 +63,24 @@ public class LightsPreferenceController extends NotificationPreferenceController
 
     public void updateState(Preference preference) {
         if (mChannel != null) {
-            RestrictedSwitchPreference pref = (RestrictedSwitchPreference) preference;
-            pref.setDisabledByAdmin(mAdmin);
-            pref.setEnabled(isChannelConfigurable() && !pref.isDisabledByAdmin());
-            pref.setChecked(mChannel.shouldShowLights());
+            //light on time pref
+            SeekBarPreference mLightOnTime = (SeekBarPreference) preference;
+            int lightOn = mChannel.getLightOnTime();
+            int defaultLightOn = mContext.getResources().getInteger(
+                    com.android.internal.R.integer.config_defaultNotificationLedOn);
+            mLightOnTime.setDefaultValue(defaultLightOn);
+            lightOn = lightOn == 0 ? defaultLightOn : lightOn;
+            mLightOnTime.setValue(lightOn);
         }
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (mChannel != null) {
-            final boolean lights = (Boolean) newValue;
-            mChannel.enableLights(lights);
+            int val = (Integer) newValue;
+            mChannel.setLightOnTime(val);
             saveChannel();
+            showLedPreview();
         }
         return true;
     }
@@ -82,4 +94,15 @@ public class LightsPreferenceController extends NotificationPreferenceController
                 Settings.System.NOTIFICATION_LIGHT_PULSE, 1) == 1;
     }
 
+    private void showLedPreview() {
+        if (mChannel.shouldShowLights()) {
+            mLedColor = (mChannel.getLightColor() != 0 ? mChannel.getLightColor() : defaultLightColor);
+            if (mLedColor == 0xFFFFFFFF) {
+                // i've no idea why atm but this is needed
+                mLedColor = 0xffffff;
+            }
+            mNm.forcePulseLedLight(
+                    mLedColor, mChannel.getLightOnTime(), mChannel.getLightOffTime());
+        }
+    }
 }
