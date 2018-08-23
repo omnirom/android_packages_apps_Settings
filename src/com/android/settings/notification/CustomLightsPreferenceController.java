@@ -28,18 +28,22 @@ import com.android.settingslib.core.lifecycle.Lifecycle;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnResume;
 
-public class LightsPreferenceController extends NotificationPreferenceController
+import org.omnirom.omnilib.preference.ColorSelectPreference;
+
+public class CustomLightsPreferenceController extends NotificationPreferenceController
         implements PreferenceControllerMixin, Preference.OnPreferenceChangeListener {
 
-    private static final String KEY_LIGHTS = "lights";
+    private static final String KEY_CUSTOM_LIGHT = "custom_light";
 
-    public LightsPreferenceController(Context context, NotificationBackend backend) {
+    private int mLedColor = 0;
+
+    public CustomLightsPreferenceController(Context context, NotificationBackend backend) {
         super(context, backend);
     }
 
     @Override
     public String getPreferenceKey() {
-        return KEY_LIGHTS;
+        return KEY_CUSTOM_LIGHT;
     }
 
     @Override
@@ -56,18 +60,21 @@ public class LightsPreferenceController extends NotificationPreferenceController
 
     public void updateState(Preference preference) {
         if (mChannel != null) {
-            RestrictedSwitchPreference pref = (RestrictedSwitchPreference) preference;
-            pref.setDisabledByAdmin(mAdmin);
-            pref.setEnabled(isChannelConfigurable() && !pref.isDisabledByAdmin());
-            pref.setChecked(mChannel.shouldShowLights());
+             //light color pref
+            ColorSelectPreference mCustomLight = (ColorSelectPreference) preference;
+            int defaultLightColor = mContext.getResources()
+                    .getColor(com.android.internal.R.color.config_defaultNotificationColor);
+            mCustomLight.setColor(defaultLightColor);
+            mLedColor = (mChannel.getLightColor() != 0 ? mChannel.getLightColor() : defaultLightColor);
+            mCustomLight.setColor(mLedColor);
         }
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (mChannel != null) {
-            final boolean lights = (Boolean) newValue;
-            mChannel.enableLights(lights);
+            mLedColor = ((Integer) newValue).intValue();
+            mChannel.setLightColor(mLedColor);
             saveChannel();
         }
         return true;
@@ -81,5 +88,4 @@ public class LightsPreferenceController extends NotificationPreferenceController
         return Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.NOTIFICATION_LIGHT_PULSE, 1) == 1;
     }
-
 }

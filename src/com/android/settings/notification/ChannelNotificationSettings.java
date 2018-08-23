@@ -91,6 +91,24 @@ public class ChannelNotificationSettings extends NotificationSettingsBase {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mNm.forcePulseLedLight(-1, -1, -1);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mNm.forcePulseLedLight(-1, -1, -1);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mNm.forcePulseLedLight(-1, -1, -1);
+    }
+
+    @Override
     protected List<AbstractPreferenceController> createPreferenceControllers(Context context) {
         mControllers = new ArrayList<>();
         mControllers.add(new HeaderPreferenceController(context, this));
@@ -107,6 +125,10 @@ public class ChannelNotificationSettings extends NotificationSettingsBase {
         mControllers.add(new VisibilityPreferenceController(context, new LockPatternUtils(context),
                 mBackend));
         mControllers.add(new LightsPreferenceController(context, mBackend));
+        mControllers.add(new CustomLightsPreferenceController(context, mBackend));
+        mControllers.add(new CustomLightOnTimePreferenceController(context, mBackend));
+        mControllers.add(new CustomLightOffTimePreferenceController(context, mBackend));
+        mControllers.add(new LightOnZenPreferenceController(context, mBackend));
         mControllers.add(new BadgePreferenceController(context, mBackend));
         mControllers.add(new DndPreferenceController(context, mBackend));
         mControllers.add(new NotificationsOffPreferenceController(context));
