@@ -35,4 +35,10 @@
     <string name="app_package_name_title">Package</string>
     <string name="app_version_title">Version</string>
 
+    <!-- Custom light color -->
+    <string name="custom_light_title">Light color</string>
+    <string name="custom_light_on_time_title">Light ON time during led pulse (ms)</string>
+    <string name="custom_light_off_time_title">Light OFF time during led pulse (ms)"</string>
+    <string name="value_equals_default">def</string>
+    <string name="show_light_on_zen_title">Blink during Do Not Disturb</string>
 </resources>
