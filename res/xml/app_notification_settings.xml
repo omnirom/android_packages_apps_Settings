@@ -49,6 +49,41 @@
         android:summary="@string/app_notification_override_dnd_summary"
         settings:useAdditionalSummary="true"/>
 
+    <!-- Lights -->
+    <com.android.settingslib.RestrictedSwitchPreference
+        android:key="lights"
+        android:title="@string/notification_show_lights_title"
+        settings:useAdditionalSummary="true"/>
+
+    <com.android.settingslib.RestrictedSwitchPreference
+        android:key="show_light_on_zen"
+        android:dependency="lights"
+        android:title="@string/show_light_on_zen_title"/>
+
+    <!-- Custom led color -->
+    <org.omnirom.omnilib.preference.ColorSelectPreference
+        android:key="custom_light"
+        android:dependency="lights"
+        android:title="@string/custom_light_title"
+        settings:withAlpha="true"
+        settings:multiColor="true" />
+
+    <org.omnirom.omnilib.preference.SeekBarPreference
+        android:key="custom_light_on_time"
+        android:dependency="lights"
+        android:title="@string/custom_light_on_time_title"
+        settings:min="0"
+        android:max="5000"
+        settings:interval="100" />
+
+    <org.omnirom.omnilib.preference.SeekBarPreference
+        android:key="custom_light_off_time"
+        android:dependency="lights"
+        android:title="@string/custom_light_off_time_title"
+        settings:min="0"
+        android:max="5000"
+        settings:interval="100" />
+
     <PreferenceCategory
         android:key="app_advanced"
         android:order="1000"
