@@ -140,6 +140,7 @@ import com.android.settings.wifi.p2p.WifiP2pSettings;
 import org.omnirom.omnigears.OmniDashboardFragment;
 import org.omnirom.omnigears.ButtonSettings;
 import org.omnirom.omnigears.GestureSettings;
+import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.interfacesettings.StyleSettings;
 import org.omnirom.omnigears.moresettings.MoreSettings;
 
@@ -274,6 +275,7 @@ public class SettingsGateway {
             ButtonSettings.class.getName(),
             MoreSettings.class.getName(),
             GestureSettings.class.getName(),
+            BarsSettings.class.getName(),
     };
 
     public static final String[] SETTINGS_FOR_RESTRICTED = {
