@@ -105,6 +105,7 @@ import java.util.Set;
 
 import org.omnirom.omnigears.OmniDashboardFragment;
 import org.omnirom.omnigears.ButtonSettings;
+import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.StyleSettings;
 import org.omnirom.omnigears.moresettings.MoreSettings;
 
@@ -204,6 +205,7 @@ public class SearchIndexableResourcesImpl implements SearchIndexableResources {
         addIndex(MoreSettings.class);
         addIndex(StyleSettings.class);
         addIndex(org.omnirom.omnigears.GestureSettings.class);
+        addIndex(BatteryLightSettings.class);
     }
 
     @Override
