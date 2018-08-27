@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:minHeight="112dp"
         android:paddingBottom="8dp"
+        android:background="@*android:color/secondary_device_default_settings_light"
         android:orientation="vertical">
 
         <RelativeLayout
