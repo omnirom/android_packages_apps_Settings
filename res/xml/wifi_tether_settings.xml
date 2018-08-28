@@ -21,7 +21,7 @@
     android:key="wifi_tether_settings_screen"
     android:title="@string/wifi_hotspot_checkbox_text"
     settings:searchable="false"
-    settings:initialExpandedChildrenCount="3">
+    settings:initialExpandedChildrenCount="8">
 
     <com.android.settings.wifi.tether.WifiTetherSsidPreference
         android:key="wifi_tether_network_name"
@@ -48,4 +48,5 @@
     <ListPreference
         android:key="wifi_tether_network_ap_band"
         android:title="@string/wifi_hotspot_ap_band_title"/>
+
 </PreferenceScreen>
