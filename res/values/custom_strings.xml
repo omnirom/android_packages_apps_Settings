@@ -92,4 +92,5 @@
     <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
     <string name="ringtone2_title">Phone ringtone - SIM 2</string>
 
+    <string name="weather_title">Weather</string>
 </resources>
