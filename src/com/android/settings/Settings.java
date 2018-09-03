@@ -167,4 +167,5 @@ public class Settings extends SettingsActivity {
 
     // omni additions start
     public static class OmniDashboardActivity extends SettingsActivity {}
+    public static class OmniJawsSettingsActivity extends SettingsActivity { /* empty */ }
 }
