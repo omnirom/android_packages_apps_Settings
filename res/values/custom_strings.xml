@@ -86,4 +86,5 @@
     <string name="selinux_status_permissive">Permissive</string>
     <string name="selinux_status_enforcing">Enforcing</string>
 
+    <string name="weather_title">Weather</string>
 </resources>
