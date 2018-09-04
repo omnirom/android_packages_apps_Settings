@@ -3299,5 +3299,16 @@
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="org.omnirom.omnigears.moresettings.OmniJawsSettings" />
         </activity>
+        <activity
+            android:name=".Settings$SwipeToNotificationSuggestionActivity"
+            android:label="@string/fingerprint_swipe_for_notifications_title"
+            android:icon="@drawable/ic_settings_gestures">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="com.android.settings.suggested.category.GESTURE" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                       android:value="com.android.settings.gestures.SwipeToNotificationSettings"/>
+        </activity>
     </application>
 </manifest>
