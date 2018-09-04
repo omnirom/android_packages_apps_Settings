@@ -239,4 +239,7 @@ public class Settings extends SettingsActivity {
      * Activity for MediaControlsSettings
      */
     public static class MediaControlsSettingsActivity extends SettingsActivity {}
+
+    // omni additions start
+    public static class SwipeToNotificationSuggestionActivity extends SettingsActivity { /* empty */ }
 }
