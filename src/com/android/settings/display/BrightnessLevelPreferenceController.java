@@ -33,6 +33,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceScreen;
 import android.util.Log;
 
+import com.android.settings.Utils;
 import com.android.settings.core.PreferenceControllerMixin;
 import com.android.settingslib.core.AbstractPreferenceController;
 import com.android.settingslib.core.lifecycle.Lifecycle;
@@ -121,7 +122,7 @@ public class BrightnessLevelPreferenceController extends AbstractPreferenceContr
 
     private void updatedSummary(Preference preference) {
         if (preference != null) {
-            preference.setSummary(NumberFormat.getPercentInstance().format(getCurrentBrightness()));
+            preference.setSummary(Utils.formatPercentage(getCurrentBrightness()));
         }
     }
 
