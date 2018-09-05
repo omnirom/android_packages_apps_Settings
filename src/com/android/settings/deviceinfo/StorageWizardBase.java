@@ -121,7 +121,7 @@ public abstract class StorageWizardBase extends Activity {
     protected void setCurrentProgress(int progress) {
         getProgressBar().setProgress(progress);
         ((TextView) requireViewById(R.id.storage_wizard_progress_summary)).setText(
-                NumberFormat.getPercentInstance().format((double) progress / 100));
+                Utils.formatPercentage((double) progress / 100));
     }
 
     protected void setHeaderText(int resId, CharSequence... args) {
