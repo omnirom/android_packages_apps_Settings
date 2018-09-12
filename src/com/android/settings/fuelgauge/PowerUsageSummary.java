@@ -223,6 +223,19 @@ public class PowerUsageSummary extends PowerUsageBase implements OnLongClickList
     }
 
     @Override
+    public boolean onPreferenceTreeClick(Preference preference) {
+        if (KEY_BATTERY_HEADER.equals(preference.getKey())) {
+            new SubSettingLauncher(getContext())
+                        .setDestination(PowerUsageAdvanced.class.getName())
+                        .setSourceMetricsCategory(getMetricsCategory())
+                        .setTitle(R.string.advanced_battery_title)
+                        .launch();
+            return true;
+        }
+        return super.onPreferenceTreeClick(preference);
+    }
+
+    @Override
     public int getMetricsCategory() {
         return MetricsEvent.FUELGAUGE_POWER_USAGE_SUMMARY_V2;
     }
