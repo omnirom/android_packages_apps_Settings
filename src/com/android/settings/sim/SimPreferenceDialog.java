@@ -145,9 +145,11 @@ public class SimPreferenceDialog extends Activity {
         }
 
         String simCarrierName = tm.getSimOperatorName(mSubInfoRecord.getSubscriptionId());
+        CharSequence subsCarrierName = mSubInfoRecord.getCarrierName();
         TextView carrierView = (TextView)mDialogLayout.findViewById(R.id.carrier);
         carrierView.setText(!TextUtils.isEmpty(simCarrierName) ? simCarrierName :
-                mContext.getString(com.android.internal.R.string.unknownName));
+                (!TextUtils.isEmpty(subsCarrierName) ? subsCarrierName :
+                res.getString(com.android.internal.R.string.unknownName)));
 
         mBuilder.setTitle(String.format(res.getString(R.string.sim_editor_title),
                 (mSubInfoRecord.getSimSlotIndex() + 1)));

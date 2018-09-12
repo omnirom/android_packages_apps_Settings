@@ -298,13 +298,17 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
             setTitle(String.format(mContext.getResources()
                     .getString(R.string.sim_editor_title), (mSlotId + 1)));
             if (mSubInfoRecord != null) {
-                if (TextUtils.isEmpty(getPhoneNumber(mSubInfoRecord))) {
-                    setSummary(mSubInfoRecord.getDisplayName());
-                } else {
-                    setSummary(mSubInfoRecord.getDisplayName() + " - " +
-                            PhoneNumberUtils.createTtsSpannable(getPhoneNumber(mSubInfoRecord)));
-                    setEnabled(true);
+                setEnabled(true);
+                CharSequence subsCarrierName = mSubInfoRecord.getCarrierName();
+                CharSequence summary = mSubInfoRecord.getDisplayName();
+                if (!TextUtils.isEmpty(subsCarrierName)) {
+                    summary += " - " + subsCarrierName;
                 }
+                /*if (!TextUtils.isEmpty(getPhoneNumber(mSubInfoRecord))) {
+                    summary += " - " +
+                            PhoneNumberUtils.createTtsSpannable(getPhoneNumber(mSubInfoRecord));
+                }*/
+                setSummary(summary);
                 setIcon(new BitmapDrawable(res, (mSubInfoRecord.createIconBitmap(mContext))));
             } else {
                 setSummary(R.string.sim_slot_empty);
