@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "763c39ab_71bd08db",
+        "filename": "src/com/android/settings/fuelgauge/PowerUsageSummary.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2018-09-12T11:53:21Z",
+      "side": 1,
+      "message": "packages/apps/Settings/src/com/android/settings/fuelgauge/PowerUsageSummary.java:226: error: cannot find symbol\n    public boolean onPreferenceTreeClick(Preference preference) {",
+      "revId": "a5b7a85f02e69996f55ba410aa8087cee16c37ca",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
