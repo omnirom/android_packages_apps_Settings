@@ -52,7 +52,7 @@
     <PreferenceCategory
         android:key="app_advanced"
         android:order="1000"
-        settings:initialExpandedChildrenCount="0">
+        settings:initialExpandedChildrenCount="2">
         <!-- Show badge -->
         <com.android.settingslib.RestrictedSwitchPreference
             android:key="badge"
