@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d20f51db_cd685b12",
+        "filename": "res/xml/location_settings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2018-10-06T13:49:54Z",
+      "side": 1,
+      "message": "Switch?",
+      "revId": "794034d236f149b9b786d9c954c91c7d9b948d79",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": true
+    }
+  ]
+}
