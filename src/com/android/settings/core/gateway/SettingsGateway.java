@@ -139,6 +139,7 @@ import com.android.settings.wifi.p2p.WifiP2pSettings;
 
 import org.omnirom.omnigears.OmniDashboardFragment;
 import org.omnirom.omnigears.ButtonSettings;
+import org.omnirom.omnigears.ButtonBrightnessSettings;
 import org.omnirom.omnigears.GestureSettings;
 import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
@@ -276,6 +277,7 @@ public class SettingsGateway {
             OmniDashboardFragment.class.getName(),
             StyleSettings.class.getName(),
             ButtonSettings.class.getName(),
+            ButtonBrightnessSettings.class.getName(),
             MoreSettings.class.getName(),
             GestureSettings.class.getName(),
             BarsSettings.class.getName(),
