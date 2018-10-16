@@ -92,8 +92,6 @@ public class ValidatedEditTextPreference extends CustomEditTextPreference {
         if (mIsSummaryPassword) {
             textView.setInputType(
                     InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        } else {
-            textView.setInputType(InputType.TYPE_CLASS_TEXT);
         }
     }
 
