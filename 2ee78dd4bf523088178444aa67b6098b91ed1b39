@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "24573f75_aef272ee",
+        "filename": "src/com/android/settings/deviceinfo/DeviceNamePreferenceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1001823
+      },
+      "writtenOn": "2018-10-16T21:20:18Z",
+      "side": 1,
+      "message": "ghost change :O",
+      "revId": "2ee78dd4bf523088178444aa67b6098b91ed1b39",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
