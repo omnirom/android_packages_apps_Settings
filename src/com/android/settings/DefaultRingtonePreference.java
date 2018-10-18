@@ -62,12 +62,14 @@ public class DefaultRingtonePreference extends RingtonePreference {
 
     @VisibleForTesting
     void setActualDefaultRingtoneUri(Uri ringtoneUri) {
-        RingtoneManager.setActualDefaultRingtoneUri(mUserContext, getRingtoneType(), ringtoneUri);
+        RingtoneManager.setActualDefaultRingtoneUriBySlot(mUserContext, getRingtoneType(),
+                ringtoneUri, getSlotId());
     }
 
     @Override
     protected Uri onRestoreRingtone() {
-        return RingtoneManager.getActualDefaultRingtoneUri(mUserContext, getRingtoneType());
+        return RingtoneManager.getActualDefaultRingtoneUriBySlot(mUserContext, getRingtoneType(),
+                getSlotId());
     }
 
 }

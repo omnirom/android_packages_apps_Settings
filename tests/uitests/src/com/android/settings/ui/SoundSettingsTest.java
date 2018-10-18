@@ -21,6 +21,7 @@ import android.os.SystemClock;
 import android.provider.Settings;
 import android.system.helpers.SettingsHelper;
 import android.system.helpers.SettingsHelper.SettingsType;
+import android.telephony.TelephonyManager;
 import android.test.InstrumentationTestCase;
 
 import androidx.test.filters.MediumTest;
@@ -42,6 +43,7 @@ public class SoundSettingsTest extends InstrumentationTestCase {
     private UiDevice mDevice;
     private ContentResolver mResolver;
     private SettingsHelper mHelper;
+    private TelephonyManager mTelephonyManager;
 
 
     private final Map<String, String> ringtoneSounds = Map.of(
@@ -100,6 +102,8 @@ public class SoundSettingsTest extends InstrumentationTestCase {
         mDevice.setOrientationNatural();
         mResolver = getInstrumentation().getContext().getContentResolver();
         mHelper = new SettingsHelper();
+        mTelephonyManager = (TelephonyManager) getInstrumentation().getContext()
+                .getSystemService(Context.TELEPHONY_SERVICE);
     }
 
     @Override
@@ -174,26 +178,49 @@ public class SoundSettingsTest extends InstrumentationTestCase {
     public void testPhoneRingtoneNone() throws Exception {
         launchSoundSettings();
         mHelper.clickSetting("Phone ringtone");
-        verifyRingtone(new RingtoneSetting("None", "null"),
-                Settings.System.RINGTONE);
+        if (mTelephonyManager.isMultiSimEnabled()) {
+            mHelper.clickSetting("Phone ringtone - SIM 1");
+            verifyRingtone(new RingtoneSetting("None", "null"), Settings.System.RINGTONE);
+            mHelper.clickSetting("Phone ringtone - SIM 2");
+            verifyRingtone(new RingtoneSetting("None", "null"), Settings.System.RINGTONE2);
+        } else {
+            mHelper.clickSetting("Phone ringtone");
+            verifyRingtone(new RingtoneSetting("None", "null"), Settings.System.RINGTONE);
+        }
     }
 
     @MediumTest
     @Suppress
     public void testPhoneRingtoneHangouts() throws Exception {
         launchSoundSettings();
-        mHelper.clickSetting("Phone ringtone");
-        verifyRingtone(new RingtoneSetting("Hangouts Call", "31"), Settings.System.RINGTONE);
+        if (mTelephonyManager.isMultiSimEnabled()) {
+            mHelper.clickSetting("Phone ringtone - SIM 1");
+            verifyRingtone(new RingtoneSetting("Hangouts Call", "31"), Settings.System.RINGTONE);
+            mHelper.clickSetting("Phone ringtone - SIM 2");
+            verifyRingtone(new RingtoneSetting("Hangouts Call", "31"), Settings.System.RINGTONE2);
+        } else {
+            mHelper.clickSetting("Phone ringtone");
+            verifyRingtone(new RingtoneSetting("Hangouts Call", "31"), Settings.System.RINGTONE);
+        }
     }
 
     @MediumTest
     public void testPhoneRingtone() throws Exception {
         launchSoundSettings();
-        mHelper.clickSetting("Phone ringtone");
         String ringtone = ringtoneSounds.get(mDevice.getProductName()).toString();
         String ringtoneSettingValue = ringtoneCodes.get(mDevice.getProductName()).toString();
-        verifyRingtone(new RingtoneSetting(ringtone, ringtoneSettingValue),
-                Settings.System.RINGTONE);
+        if (mTelephonyManager.isMultiSimEnabled()) {
+            mHelper.clickSetting("Phone ringtone - SIM 1");
+            verifyRingtone(new RingtoneSetting(ringtone, ringtoneSettingValue),
+                    Settings.System.RINGTONE);
+            mHelper.clickSetting("Phone ringtone - SIM 2");
+            verifyRingtone(new RingtoneSetting(ringtone, ringtoneSettingValue),
+                    Settings.System.RINGTONE2);
+        } else {
+            mHelper.clickSetting("Phone ringtone");
+            verifyRingtone(new RingtoneSetting(ringtone, ringtoneSettingValue),
+                    Settings.System.RINGTONE);
+        }
     }
 
     @MediumTest
