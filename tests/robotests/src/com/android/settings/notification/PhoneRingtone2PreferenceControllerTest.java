@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 The Android Open Source Project
+ * Copyright (C) 2018 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,21 +25,21 @@ import android.content.Context;
 import android.media.RingtoneManager;
 import android.telephony.TelephonyManager;
 
-import androidx.preference.PreferenceScreen;
+import android.support.v7.preference.PreferenceScreen;
 
 import com.android.settings.DefaultRingtonePreference;
-import com.android.settings.R;
+import com.android.settings.testutils.SettingsRobolectricTestRunner;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowApplication;
 
-@RunWith(RobolectricTestRunner.class)
-public class PhoneRingtonePreferenceControllerTest {
+@RunWith(SettingsRobolectricTestRunner.class)
+public class PhoneRingtone2PreferenceControllerTest {
 
     @Mock
     private TelephonyManager mTelephonyManager;
@@ -49,7 +49,7 @@ public class PhoneRingtonePreferenceControllerTest {
     private DefaultRingtonePreference mPreference;
 
     private Context mContext;
-    private PhoneRingtonePreferenceController mController;
+    private PhoneRingtone2PreferenceController mController;
 
     @Before
     public void setUp() {
@@ -57,18 +57,17 @@ public class PhoneRingtonePreferenceControllerTest {
         ShadowApplication shadowContext = ShadowApplication.getInstance();
         shadowContext.setSystemService(Context.TELEPHONY_SERVICE, mTelephonyManager);
         mContext = RuntimeEnvironment.application;
-        mController = new PhoneRingtonePreferenceController(mContext);
+        mController = new PhoneRingtone2PreferenceController(mContext);
     }
 
     @Test
-    public void displayPreference_shouldUpdateTitle_for_MultiSimDevice() {
-        when(mTelephonyManager.isMultiSimEnabled()).thenReturn(true);
+    public void displayPreference_shouldSetSlotId() {
         when(mPreferenceScreen.findPreference(mController.getPreferenceKey()))
                 .thenReturn(mPreference);
         mController.displayPreference(mPreferenceScreen);
 
-        verify(mPreference).setTitle(mContext.getString(R.string.ringtone1_title));
-    
+        verify(mPreference).setSlotId(1);
+    }
 
     @Test
     public void isAvailable_notVoiceCapable_shouldReturnFalse() {
@@ -78,8 +77,16 @@ public class PhoneRingtonePreferenceControllerTest {
     }
 
     @Test
-    public void isAvailable_VoiceCapable_shouldReturnTrue() {
+    public void isAvailable_notMultiSimEnabled_shouldReturnFalse() {
+        when(mTelephonyManager.isMultiSimEnabled()).thenReturn(false);
+
+        assertThat(mController.isAvailable()).isFalse();
+    }
+
+    @Test
+    public void isAvailable_VoiceCapable_and_MultiSimEnabled_shouldReturnTrue() {
         when(mTelephonyManager.isVoiceCapable()).thenReturn(true);
+        when(mTelephonyManager.isMultiSimEnabled()).thenReturn(true);
 
         assertThat(mController.isAvailable()).isTrue();
     }
