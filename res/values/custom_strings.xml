@@ -80,4 +80,10 @@
     <string name="security_settings_fingerprint_sensor_location_right">right side</string>
 
     <string name="screenshot_shutter_sound_title">Screenshot shutter sound</string>
+
+    <string name="selinux_status">SELinux status</string>
+    <string name="selinux_status_disabled">Disabled</string>
+    <string name="selinux_status_permissive">Permissive</string>
+    <string name="selinux_status_enforcing">Enforcing</string>
+
 </resources>
