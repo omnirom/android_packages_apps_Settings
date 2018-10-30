@@ -109,6 +109,7 @@ import org.omnirom.omnigears.ButtonBrightnessSettings;
 import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
 import org.omnirom.omnigears.interfacesettings.LockscreenItemSettings;
+import org.omnirom.omnigears.interfacesettings.NetworkTraffic;
 import org.omnirom.omnigears.interfacesettings.StyleSettings;
 import org.omnirom.omnigears.moresettings.MoreSettings;
 import org.omnirom.omnigears.moresettings.OmniJawsSettings;
@@ -214,6 +215,7 @@ public class SearchIndexableResourcesImpl implements SearchIndexableResources {
         addIndex(BatteryLightSettings.class);
         addIndex(OmniJawsSettings.class);
         addIndex(LockscreenItemSettings.class);
+        addIndex(NetworkTraffic.class);
     }
 
     @Override
