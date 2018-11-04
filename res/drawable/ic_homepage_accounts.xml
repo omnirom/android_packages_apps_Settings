@@ -30,7 +30,6 @@
     <item
         android:width="@dimen/dashboard_tile_foreground_image_size"
         android:height="@dimen/dashboard_tile_foreground_image_size"
-        android:start="@dimen/dashboard_tile_foreground_image_inset"
-        android:top="@dimen/dashboard_tile_foreground_image_inset"
+        android:gravity="center"
         android:drawable="@drawable/ic_settings_accounts" />
 </layer-list>
