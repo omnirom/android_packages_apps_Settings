@@ -341,7 +341,7 @@ public class SettingsActivity extends SettingsDrawerActivity
         }
 
         if (mIsShowingDashboard) {
-            findViewById(R.id.search_bar).setVisibility(View.VISIBLE);
+            setSearchBarVisibility();
             findViewById(R.id.action_bar).setVisibility(View.GONE);
             Toolbar toolbar = findViewById(R.id.search_action_bar);
             toolbar.setOnClickListener(this);
@@ -423,6 +423,12 @@ public class SettingsActivity extends SettingsDrawerActivity
         if (DEBUG_TIMING) {
             Log.d(LOG_TAG, "onCreate took " + (System.currentTimeMillis() - startTime) + " ms");
         }
+    }
+
+    @VisibleForTesting
+    void setSearchBarVisibility() {
+        findViewById(R.id.search_bar).setVisibility(
+                Utils.isDeviceProvisioned(this) ? View.VISIBLE : View.INVISIBLE);
     }
 
     @VisibleForTesting
