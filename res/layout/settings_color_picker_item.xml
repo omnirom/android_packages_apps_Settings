@@ -38,6 +38,6 @@
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
         android:paddingStart="8dp"
-        style="?android:attr/textAppearanceMedium" />
+        style="@style/device_info_dialog_label" />
 
 </LinearLayout>

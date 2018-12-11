@@ -47,7 +47,8 @@
                 android:hint="@string/sim_name_hint"
                 android:inputType="textNoSuggestions"
                 android:maxLength="@integer/sim_name_length"
-                android:paddingStart="8dp" />
+                android:paddingStart="16dp"
+                style="@style/device_info_dialog_label" />
 
         </LinearLayout>
 
@@ -61,6 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                style="@style/device_info_dialog_label"
                 android:text="@string/color_title" />
 
             <Spinner
@@ -69,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="center_vertical"
-                android:paddingStart="8dp" />
+                android:paddingStart="16dp" />
 
         </LinearLayout>
 
@@ -77,7 +79,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/sim_dialog_margin_top"
-            android:paddingBottom="@dimen/sim_dialog_margin_bottom"
             android:orientation="horizontal"
             android:layout_gravity="center_vertical" >
 
@@ -92,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:paddingStart="8dp"
+                android:paddingStart="16dp"
                 style="@style/device_info_dialog_value" />
         </LinearLayout>
 
@@ -100,7 +101,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/sim_dialog_margin_top"
-            android:paddingBottom="@dimen/sim_dialog_margin_bottom"
             android:orientation="horizontal"
             android:layout_gravity="center_vertical" >
 
@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:paddingStart="8dp"
+                android:paddingStart="16dp"
                 style="@style/device_info_dialog_value" />
 
         </LinearLayout>
