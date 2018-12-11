@@ -507,4 +507,9 @@
         <item name="android:paddingBottom">24dp</item>
     </style>
 
+    <style name="device_info_dialog_value_plain">
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Material.Body2</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
 </resources>

@@ -21,13 +21,12 @@
     android:orientation="horizontal"
     android:layout_gravity="center_vertical"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:paddingStart="4dp"
     android:background="?android:attr/selectableItemBackground" >
 
     <ImageView
         android:id="@+id/color_icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:scaleType="centerInside"
         android:layout_gravity="center_vertical" />
 
@@ -38,6 +37,6 @@
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
         android:paddingStart="8dp"
-        style="?android:attr/textAppearanceMedium" />
+        style="@style/device_info_dialog_label" />
 
 </LinearLayout>
