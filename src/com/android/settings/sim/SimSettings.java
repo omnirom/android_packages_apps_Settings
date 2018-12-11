@@ -35,6 +35,7 @@ import android.os.ServiceManager;
 import android.os.SystemProperties;
 import android.provider.SearchIndexableResource;
 import android.provider.Settings;
+import android.support.v4.content.res.TypedArrayUtils;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 import android.support.v7.preference.PreferenceGroup;
@@ -449,7 +450,9 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
         private static final int MSG_DELAY_TIME = 2000;
 
         public SimEnablerPreference(Context context, SubscriptionInfo sir, int slotId) {
-            super(context, null, com.android.internal.R.attr.checkBoxPreferenceStyle, sir, slotId);
+            super(context, null, TypedArrayUtils.getAttr(context,
+                    android.support.v7.preference.R.attr.checkBoxPreferenceStyle,
+                    android.R.attr.checkBoxPreferenceStyle), sir, slotId);
             setWidgetLayoutResource(R.layout.custom_sim_switch);
         }
 
