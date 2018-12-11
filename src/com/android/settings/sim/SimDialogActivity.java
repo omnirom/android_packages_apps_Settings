@@ -328,8 +328,11 @@ public class SimDialogActivity extends Activity {
                 holder.summary.setVisibility(View.GONE);
                 holder.icon.setImageDrawable(getResources()
                         .getDrawable(R.drawable.ic_live_help));
+                holder.icon.setColorFilter(getResources()
+                        .getColor(R.color.sim_noitification));
             } else {
                 holder.title.setText(getSubscriptionDisplayName(sir));
+                holder.icon.setColorFilter(null);
                 if (!TextUtils.isEmpty(sir.getNumber())) {
                     holder.summary.setVisibility(View.VISIBLE);
                     holder.summary.setText(sir.getNumber());
