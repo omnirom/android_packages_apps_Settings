@@ -31,8 +31,7 @@
     <com.android.settings.applications.LayoutPreference
         android:key="omni_mod_header"
         android:order="1"
-        android:layout="@layout/settings_entity_header"
-        android:selectable="false"/>
+        android:layout="@layout/settings_entity_header"/>
 
     <!-- Device name -->
     <com.android.settings.widget.ValidatedEditTextPreference
