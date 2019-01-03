@@ -19,6 +19,7 @@ package com.android.settings.deviceinfo.aboutphone;
 import static com.android.settings.bluetooth.Utils.getLocalBtManager;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.UserInfo;
@@ -26,6 +27,7 @@ import android.os.Bundle;
 import android.os.SystemProperties;
 import android.os.UserManager;
 import android.provider.SearchIndexableResource;
+import android.support.v7.preference.Preference;
 import android.view.View;
 
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
@@ -194,6 +196,19 @@ public class MyDeviceInfoFragment extends DashboardFragment
         controller.setIcon(getResources().getDrawable(R.drawable.omnirom_logo));
 
         controller.done(context, true /* rebindActions */);
+        headerPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                try {
+                    final Intent intent = new Intent();
+                    ComponentName cn = new ComponentName("org.omnirom.games.eggs", "org.omnirom.games.eggs.StartingActivity");
+                    intent.setComponent(cn);
+                    context.startActivity(intent);
+                } catch (Exception e) {
+                }
+                return false;
+            }
+        });
     }
 
     @Override
