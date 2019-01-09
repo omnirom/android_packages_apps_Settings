@@ -101,10 +101,26 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:id="@+id/find_sensor_graphic_default"
             android:layout_height="match_parent">
 
             <include
                 layout="@layout/fingerprint_enroll_find_sensor_graphic"
+                android:layout_width="@dimen/fingerprint_find_sensor_graphic_size"
+                android:layout_height="@dimen/fingerprint_find_sensor_graphic_size"
+                android:layout_gravity="center"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/find_sensor_graphic_under"
+            android:visibility="gone"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <include
+                layout="@layout/fingerprint_enroll_find_sensor_graphic_under"
                 android:layout_width="@dimen/fingerprint_find_sensor_graphic_size"
                 android:layout_height="@dimen/fingerprint_find_sensor_graphic_size"
                 android:layout_gravity="center"/>
