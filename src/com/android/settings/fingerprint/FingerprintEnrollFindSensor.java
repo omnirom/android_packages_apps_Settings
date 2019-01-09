@@ -49,6 +49,7 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
     private boolean mLaunchedConfirmLock;
     private FingerprintEnrollSidecar mSidecar;
     private boolean mNextClicked;
+    private boolean mSensorLocationUnderscreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
         setContentView(getContentView());
         Button skipButton = findViewById(R.id.skip_button);
         skipButton.setOnClickListener(this);
+        mSensorLocationUnderscreen = getResources().getBoolean(R.bool.config_fingerprintSensor_underscreen);
 
         setHeaderText(R.string.security_settings_fingerprint_enroll_find_sensor_title);
         if (savedInstanceState != null) {
@@ -75,6 +77,9 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
             mAnimation = null;
         }
 
+        if (mSensorLocationUnderscreen) {
+                return;
+        } else {
         int sensorLocation = getResources().getInteger(R.integer.config_fingerprintSensorLocation);
         if (sensorLocation < SENSOR_LOCATION_BACK || sensorLocation > SENSOR_LOCATION_RIGHT) {
             sensorLocation = SENSOR_LOCATION_BACK;
@@ -88,11 +93,16 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
         if (sensorLocation == SENSOR_LOCATION_FRONT) {
             findViewById(R.id.fingerprint_sensor_location_front_overlay)
                     .setVisibility(View.VISIBLE);
+            }
         }
     }
 
     protected int getContentView() {
-        return R.layout.fingerprint_enroll_find_sensor;
+        if  (mSensorLocationUnderscreen) {
+                return R.layout.fingerprint_enroll_find_sensor_underscreen;
+        } else {
+                return R.layout.fingerprint_enroll_find_sensor;
+        }
     }
 
     @Override
