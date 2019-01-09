@@ -77,6 +77,8 @@ public class FingerprintEnrollEnrolling extends FingerprintEnrollBase
      */
     private static final int ICON_TOUCH_COUNT_SHOW_UNTIL_DIALOG_SHOWN = 3;
 
+    private static final int SENSOR_LOCATION_UNDER = 4;
+
     private static final VibrationEffect VIBRATE_EFFECT_ERROR =
             VibrationEffect.createWaveform(new long[] {0, 5, 55, 60}, -1);
     private static final AudioAttributes FINGERPRINT_ENROLLING_SONFICATION_ATTRIBUTES =
@@ -162,6 +164,12 @@ public class FingerprintEnrollEnrolling extends FingerprintEnrollBase
         if (mRestoring) {
             startIconAnimation();
         }
+         int sensorLocation = getResources().getInteger(R.integer.config_fingerprintSensorLocation);
+         if (sensorLocation == SENSOR_LOCATION_UNDER) {
+                setHeaderText(R.string.security_settings_fingerprint_enroll_find_sensor_message_underscreen);
+                findViewById(R.id.fingerprint_sensor_location_under_overlay)
+                    .setVisibility(View.VISIBLE);
+         }
     }
 
     @Override
