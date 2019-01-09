@@ -21,8 +21,9 @@
        1 = front
        2 = left side
        3 = right side
+       4 = under the screen
     -->
-    <integer name="config_fingerprintSensorLocation">0</integer>
+<integer name="config_fingerprintSensorLocation">0</integer>
 
     <bool name="config_show_color_mode">true</bool>
 
