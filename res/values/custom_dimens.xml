@@ -22,4 +22,6 @@
     <dimen name="dashboard_category_height">48dp</dimen>
     <dimen name="dashboard_text_margin_end">10dp</dimen>
 
+    <dimen name="fingerprint_find_sensor_graphic_size_under_width">190dp</dimen>
+    <dimen name="fingerprint_find_sensor_graphic_size_under_height">40dp</dimen>
 </resources>

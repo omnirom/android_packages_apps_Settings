@@ -42,6 +42,7 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
     private static final int SENSOR_LOCATION_FRONT = 1;
     private static final int SENSOR_LOCATION_LEFT = 2;
     private static final int SENSOR_LOCATION_RIGHT = 3;
+    private static final int SENSOR_LOCATION_UNDER = 4;
     public static final String EXTRA_KEY_LAUNCHED_CONFIRM = "launched_confirm_lock";
 
     @Nullable
@@ -76,18 +77,31 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
         }
 
         int sensorLocation = getResources().getInteger(R.integer.config_fingerprintSensorLocation);
-        if (sensorLocation < SENSOR_LOCATION_BACK || sensorLocation > SENSOR_LOCATION_RIGHT) {
-            sensorLocation = SENSOR_LOCATION_BACK;
-        }
         final String location = getResources().getStringArray(
                 R.array.security_settings_fingerprint_sensor_locations)[sensorLocation];
         TextView message = (TextView) findViewById(R.id.find_sensor_message);
         message.setText(getString(
                 R.string.security_settings_fingerprint_enroll_find_sensor_message_cm,
                 location));
-        if (sensorLocation == SENSOR_LOCATION_FRONT) {
-            findViewById(R.id.fingerprint_sensor_location_front_overlay)
+
+        switch (sensorLocation) {
+            case SENSOR_LOCATION_BACK:
+                 break;
+            case SENSOR_LOCATION_FRONT:
+                 findViewById(R.id.fingerprint_sensor_location_front_overlay)
                     .setVisibility(View.VISIBLE);
+                 break;
+            case SENSOR_LOCATION_LEFT:
+                 break;
+            case SENSOR_LOCATION_RIGHT:
+                 break;
+            case SENSOR_LOCATION_UNDER:
+                 message.setText(location);
+                 findViewById(R.id.find_sensor_graphic_default)
+                    .setVisibility(View.INVISIBLE);
+                 findViewById(R.id.find_sensor_graphic_under)
+                    .setVisibility(View.VISIBLE);
+                 break;
         }
     }
 
@@ -153,6 +167,12 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
         super.onSaveInstanceState(outState);
         outState.putBoolean(EXTRA_KEY_LAUNCHED_CONFIRM, mLaunchedConfirmLock);
         outState.putByteArray(ChooseLockSettingsHelper.EXTRA_KEY_CHALLENGE_TOKEN, mToken);
+    }
+
+    @Override
+    protected void onNextButtonClick() {
+        mNextClicked = true;
+        proceedToEnrolling(true /* cancelEnrollment */);
     }
 
     @Override
