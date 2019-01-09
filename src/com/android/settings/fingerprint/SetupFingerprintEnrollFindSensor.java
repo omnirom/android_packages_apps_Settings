@@ -28,16 +28,22 @@ import android.support.annotation.NonNull;
 
 import com.android.internal.logging.nano.MetricsProto;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
+import com.android.settings.fingerprint.FingerprintEnrollFindSensor;
 import com.android.settings.R;
 import com.android.settings.SetupWizardUtils;
 import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
 import com.android.settings.password.ChooseLockSettingsHelper;
 
 public class SetupFingerprintEnrollFindSensor extends FingerprintEnrollFindSensor {
+    private boolean mSensorLocation;
 
     @Override
     protected int getContentView() {
-        return R.layout.fingerprint_enroll_find_sensor;
+        if  (mSensorLocation) {
+                return R.layout.fingerprint_enroll_find_sensor_underscreen;
+        } else {
+                return R.layout.fingerprint_enroll_find_sensor;
+        }
     }
 
     @Override
