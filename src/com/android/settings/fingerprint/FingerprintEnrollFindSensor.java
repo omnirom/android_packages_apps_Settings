@@ -42,6 +42,7 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
     private static final int SENSOR_LOCATION_FRONT = 1;
     private static final int SENSOR_LOCATION_LEFT = 2;
     private static final int SENSOR_LOCATION_RIGHT = 3;
+    private static final int SENSOR_LOCATION_UNDERSCREEN = 4;
     public static final String EXTRA_KEY_LAUNCHED_CONFIRM = "launched_confirm_lock";
 
     @Nullable
@@ -76,7 +77,7 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
         }
 
         int sensorLocation = getResources().getInteger(R.integer.config_fingerprintSensorLocation);
-        if (sensorLocation < SENSOR_LOCATION_BACK || sensorLocation > SENSOR_LOCATION_RIGHT) {
+        if (sensorLocation < SENSOR_LOCATION_BACK || sensorLocation > SENSOR_LOCATION_UNDERSCREEN) {
             sensorLocation = SENSOR_LOCATION_BACK;
         }
         final String location = getResources().getStringArray(
@@ -87,6 +88,11 @@ public class FingerprintEnrollFindSensor extends FingerprintEnrollBase {
                 location));
         if (sensorLocation == SENSOR_LOCATION_FRONT) {
             findViewById(R.id.fingerprint_sensor_location_front_overlay)
+                    .setVisibility(View.VISIBLE);
+        }
+
+        if (sensorLocation == SENSOR_LOCATION_UNDERSCREEN) {
+            findViewById(R.id.fingerprint_sensor_location)
                     .setVisibility(View.VISIBLE);
         }
     }
