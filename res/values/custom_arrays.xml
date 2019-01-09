@@ -25,6 +25,7 @@
         <item>@string/security_settings_fingerprint_sensor_location_front</item>
         <item>@string/security_settings_fingerprint_sensor_location_left</item>
         <item>@string/security_settings_fingerprint_sensor_location_right</item>
+        <item>@string/security_settings_fingerprint_sensor_location_under</item>
     </string-array>
 
 </resources>
