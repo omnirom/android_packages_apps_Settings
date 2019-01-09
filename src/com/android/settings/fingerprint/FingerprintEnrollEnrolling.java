@@ -41,6 +41,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -90,6 +91,7 @@ public class FingerprintEnrollEnrolling extends FingerprintEnrollBase
     private TextView mStartMessage;
     private TextView mRepeatMessage;
     private TextView mErrorText;
+    private ImageView mFingerprintIcon;
     private Interpolator mFastOutSlowInInterpolator;
     private Interpolator mLinearOutSlowInInterpolator;
     private Interpolator mFastOutLinearInInterpolator;
@@ -100,6 +102,7 @@ public class FingerprintEnrollEnrolling extends FingerprintEnrollBase
     private AnimatedVectorDrawable mIconBackgroundBlinksDrawable;
     private boolean mRestoring;
     private Vibrator mVibrator;
+    private boolean mSensorLocationUnderscreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,9 +112,9 @@ public class FingerprintEnrollEnrolling extends FingerprintEnrollBase
         mStartMessage = (TextView) findViewById(R.id.start_message);
         mRepeatMessage = (TextView) findViewById(R.id.repeat_message);
         mErrorText = (TextView) findViewById(R.id.error_text);
+        mFingerprintIcon = (ImageView) findViewById(R.id.finger_logo_image);
         mProgressBar = (ProgressBar) findViewById(R.id.fingerprint_progress_bar);
         mVibrator = getSystemService(Vibrator.class);
-
         Button skipButton = findViewById(R.id.skip_button);
         skipButton.setOnClickListener(this);
 
@@ -159,6 +162,7 @@ public class FingerprintEnrollEnrolling extends FingerprintEnrollBase
         mSidecar.setListener(this);
         updateProgress(false /* animate */);
         updateDescription();
+        iconVisible();
         if (mRestoring) {
             startIconAnimation();
         }
@@ -264,6 +268,14 @@ public class FingerprintEnrollEnrolling extends FingerprintEnrollBase
         }
     }
 
+    private void iconVisible() {
+        mSensorLocationUnderscreen = getResources().getBoolean(R.bool.config_fingerprintSensor_underscreen);
+        if (mSensorLocationUnderscreen) {
+            mFingerprintIcon.setVisibility(View.VISIBLE);
+        } else {
+            mFingerprintIcon.setVisibility(View.INVISIBLE);
+        }
+    }
 
     @Override
     public void onEnrollmentHelp(CharSequence helpString) {
