@@ -89,6 +89,15 @@
 
         </LinearLayout>
 
+        <ImageView
+                android:id="@+id/fingerprint_sensor_location_under_overlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/custom_finger_logo"
+                android:visibility="gone"
+                android:scaleType="centerInside"/>
+
     </LinearLayout>
 
 </com.android.setupwizardlib.GlifLayout>

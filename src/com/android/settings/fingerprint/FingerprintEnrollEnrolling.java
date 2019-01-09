@@ -41,6 +41,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -76,6 +77,8 @@ public class FingerprintEnrollEnrolling extends FingerprintEnrollBase
      * fingerprint sensor.
      */
     private static final int ICON_TOUCH_COUNT_SHOW_UNTIL_DIALOG_SHOWN = 3;
+
+    private static final int SENSOR_LOCATION_UNDER = 4;
 
     private static final VibrationEffect VIBRATE_EFFECT_ERROR =
             VibrationEffect.createWaveform(new long[] {0, 5, 55, 60}, -1);
@@ -161,6 +164,14 @@ public class FingerprintEnrollEnrolling extends FingerprintEnrollBase
         updateDescription();
         if (mRestoring) {
             startIconAnimation();
+        }
+        int sensorLocation = getResources().getInteger(R.integer.config_fingerprintSensorLocation);
+        if (sensorLocation == SENSOR_LOCATION_UNDER) {
+            TextView message = (TextView) findViewById(R.id.start_message);
+               message.setText(getString(
+               R.string.security_settings_fingerprint_enroll_find_sensor_underscreen_message));
+            findViewById(R.id.fingerprint_sensor_location_under_overlay)
+               .setVisibility(View.VISIBLE);
         }
     }
 
@@ -263,7 +274,6 @@ public class FingerprintEnrollEnrolling extends FingerprintEnrollBase
             mRepeatMessage.setVisibility(View.VISIBLE);
         }
     }
-
 
     @Override
     public void onEnrollmentHelp(CharSequence helpString) {
