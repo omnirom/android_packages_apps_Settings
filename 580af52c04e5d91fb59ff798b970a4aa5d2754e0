@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dbf4def7_6fcfef03",
+        "filename": "src/com/android/settings/deviceinfo/firmwareversion/BasebandVersionDialogController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2019-01-12T22:41:24Z",
+      "side": 1,
+      "message": "#1 wrong indent size - its 4 not 2\n\n#2 you dont really need to check with contains before - split will simply return an array with size 1 if there is no \",\" - saves a line :)",
+      "revId": "580af52c04e5d91fb59ff798b970a4aa5d2754e0",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": true
+    }
+  ]
+}
