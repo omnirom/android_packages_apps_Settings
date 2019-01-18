@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "875296bb_2fcb99f4",
+        "filename": "src/com/android/settings/development/NotificationChannelWarningsPreferenceController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2019-01-18T11:29:36Z",
+      "side": 1,
+      "message": "why not simply SETTING_VALUE_OFF as default?\nthe toast makes no sense in any case for the end user and devs should know about it anyway",
+      "revId": "ea3f330b16a07695c00f4a81ab3b171f5d26282b",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": true
+    }
+  ]
+}
