@@ -9610,16 +9610,16 @@
     <string name="ambient_display_pickup_summary" product="device">To check time, notification icons, and other info, pick up your device.</string>
 
     <!-- Title text for swiping downwards on fingerprint sensor for notifications [CHAR LIMIT=80]-->
-    <string name="fingerprint_swipe_for_notifications_title">Swipe fingerprint for notifications</string>
+    <string name="fingerprint_swipe_for_notifications_title">Default fingerprint gesture for notifications</string>
     <!-- Title text for fingerprint gesture preference screen [CHAR LIMIT=25] -->
     <string name="fingerprint_gesture_screen_title">Swipe fingerprint</string>
 
     <!-- Summary text for fingerprint swipe for notifications (phone) [CHAR LIMIT=160]-->
-    <string name="fingerprint_swipe_for_notifications_summary" product="default">To check your notifications, swipe down on the fingerprint sensor on the back of your phone.</string>
+    <string name="fingerprint_swipe_for_notifications_summary" product="default">To check your notifications, use the default fingerprint gesture on your phone.</string>
     <!-- Summary text for fingerprint swipe for notifications (tablet) [CHAR LIMIT=160]-->
-    <string name="fingerprint_swipe_for_notifications_summary" product="tablet">To check your notifications, swipe down on the fingerprint sensor on the back of your tablet.</string>
+    <string name="fingerprint_swipe_for_notifications_summary" product="tablet">To check your notifications, use the default fingerprint gesture on your tablet.</string>
     <!-- Summary text for fingerprint swipe for notifications (device) [CHAR LIMIT=160]-->
-    <string name="fingerprint_swipe_for_notifications_summary" product="device">To check your notifications, swipe down on the fingerprint sensor on the back of your device.</string>
+    <string name="fingerprint_swipe_for_notifications_summary" product="device">To check your notifications, use the default fingerprint gesture on the back of your device.</string>
 
     <!-- Title for settings suggestion for fingerprint swipe for notifications [CHAR LIMIT=60] -->
     <string name="fingerprint_swipe_for_notifications_suggestion_title">See notifications quickly</string>
