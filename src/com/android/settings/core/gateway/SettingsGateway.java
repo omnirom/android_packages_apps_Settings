@@ -141,6 +141,7 @@ import com.android.settings.wifi.tether.WifiTetherSettings;
 import org.omnirom.omnigears.OmniDashboardFragment;
 import org.omnirom.omnigears.ButtonSettings;
 import org.omnirom.omnigears.ButtonBrightnessSettings;
+import org.omnirom.omnigears.DialerSettings;
 import org.omnirom.omnigears.GestureSettings;
 import org.omnirom.omnigears.batterylight.BatteryLightSettings;
 import org.omnirom.omnigears.interfacesettings.BarsSettings;
@@ -286,6 +287,7 @@ public class SettingsGateway {
             BatteryLightSettings.class.getName(),
             OmniJawsSettings.class.getName(),
             LockscreenItemSettings.class.getName(),
+            DialerSettings.class.getName(),
     };
 
     public static final String[] SETTINGS_FOR_RESTRICTED = {
