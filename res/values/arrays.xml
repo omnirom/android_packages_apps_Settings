@@ -1119,15 +1119,15 @@
     <!-- Titles for ui dark mode preference. -->
     <string-array name="dark_ui_mode_entries" >
         <item>Automatic (based on time of day)</item>
-        <item>Always on</item>
         <item>Always off</item>
+        <item>Always on</item>
     </string-array>
 
     <!-- Values for ui dark mode preference. -->
     <string-array name="dark_ui_mode_values" translatable="false" >
         <item>auto</item>
-        <item>yes</item>
         <item>no</item>
+        <item>yes</item>
     </string-array>
 
     <!-- Titles for SystemUI theme preference. -->
