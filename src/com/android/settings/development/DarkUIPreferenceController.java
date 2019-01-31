@@ -71,10 +71,10 @@ public class DarkUIPreferenceController extends DeveloperOptionsPreferenceContro
             case UiModeManager.MODE_NIGHT_AUTO:
                 return values[0];
             case UiModeManager.MODE_NIGHT_YES:
-                return values[1];
+                return values[2];
             case UiModeManager.MODE_NIGHT_NO:
             default:
-                return values[2];
+                return values[1];
 
         }
     }
