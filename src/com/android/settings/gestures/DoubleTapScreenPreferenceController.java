@@ -123,6 +123,6 @@ public class DoubleTapScreenPreferenceController extends GesturePreferenceContro
 
     @Override
     protected boolean canHandleClicks() {
-        return !mAmbientConfig.alwaysOnEnabled(mUserId);
+        return !mAmbientConfig.alwaysOnEnabledSetting(mUserId);
     }
 }
