@@ -16,6 +16,13 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search_24dp"
+        android:title="@string/menu_search"
+        android:showAsAction="collapseActionView|ifRoom"
+        android:actionViewClass="android.widget.SearchView"/>
+
+    <item
         android:id="@+id/advanced"
         android:title="@string/advanced_apps"
         android:icon="@drawable/ic_settings_24dp"
