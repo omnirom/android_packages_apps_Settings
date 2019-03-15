@@ -51,6 +51,9 @@
     <string name="selinux_status_permissive">Permissive</string>
     <string name="selinux_status_enforcing">Enforcing</string>
 
+    <!-- About phone, uptime. Deep sleep ratio since last reboot. -->
+    <string name="status_deep_sleep">(Deep sleep: %1$d%2$s)</string>
+
     <!-- Format string for fingerprint location message -->
     <string name="security_settings_fingerprint_enroll_find_sensor_message_cm">Locate the fingerprint sensor on the <xliff:g id="sensor_location">%1$s</xliff:g> of your phone.</string>
 
