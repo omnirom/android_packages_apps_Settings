@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a54757b4_adacaef2",
+        "filename": "src/com/android/settings/deviceinfo/UpTimePreferenceController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000026
+      },
+      "writtenOn": "2019-03-16T08:22:25Z",
+      "side": 1,
+      "message": "AbstractPreferenceController has already     protected final Context mContext;",
+      "revId": "f8050da96e9dba776dff423e948d25bb981bfb22",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": true
+    }
+  ]
+}
