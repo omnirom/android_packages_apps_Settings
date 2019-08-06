@@ -128,6 +128,7 @@ public class AppNotificationSettings extends NotificationSettingsBase {
         final WindowManager.LayoutParams attrs = window.getAttributes();
         attrs.privateFlags &= ~PRIVATE_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS;
         window.setAttributes(attrs);
+        mNm.forcePulseLedLight(-1, -1, -1);
     }
 
     @Override
@@ -149,12 +150,6 @@ public class AppNotificationSettings extends NotificationSettingsBase {
     @Override
     public void onStop() {
         super.onStop();
-        mNm.forcePulseLedLight(-1, -1, -1);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
         mNm.forcePulseLedLight(-1, -1, -1);
     }
 
