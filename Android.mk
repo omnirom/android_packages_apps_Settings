@@ -62,6 +62,7 @@ endif
 
 include frameworks/base/packages/SettingsLib/common.mk
 include frameworks/base/packages/SettingsLib/search/common.mk
+include packages/apps/OmniLib/common.mk
 
 include $(BUILD_PACKAGE)
 
