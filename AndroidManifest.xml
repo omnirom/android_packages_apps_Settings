@@ -3274,6 +3274,21 @@
                 android:value="com.android.settings.gestures.GlobalActionsPanelSettings" />
         </activity>
 
+        <!-- This is the longest AndroidManifest.xml ever. -->
+
+        <!-- omni additions start -->
+        <activity android:name=".Settings$OmniDashboardActivity"
+                  android:label="@string/header_category_omni"
+                  android:icon="@drawable/ic_homepage_omnigears">
+            <intent-filter>
+                <action android:name="com.android.settings.action.SETTINGS"/>
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                       android:value="org.omnirom.omnigears.OmniDashboardFragment"/>
+            <meta-data android:name="com.android.settings.summary"
+                       android:resource="@string/omni_dashboard_summary"/>
+        </activity>
+
         <activity android:name="Settings$OmniJawsSettingsActivity"
                   android:label="@string/weather_title"
                   android:taskAffinity="com.android.settings" >
@@ -3283,22 +3298,6 @@
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="org.omnirom.omnigears.moresettings.OmniJawsSettings" />
-        </activity>
-        <!-- This is the longest AndroidManifest.xml ever. -->
-
-        <!-- omni additions start -->
-        <activity android:name=".Settings$OmniDashboardActivity"
-                  android:label="@string/header_category_omni"
-                  android:icon="@drawable/ic_homepage_omnigears">
-            <intent-filter android:priority="12">
-                <action android:name="com.android.settings.action.SETTINGS"/>
-            </intent-filter>
-            <meta-data android:name="com.android.settings.category"
-                       android:value="com.android.settings.category.ia.homepage"/>
-            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                       android:value="org.omnirom.omnigears.OmniDashboardFragment"/>
-            <meta-data android:name="com.android.settings.summary"
-                       android:resource="@string/omni_dashboard_summary"/>
         </activity>
     </application>
 </manifest>

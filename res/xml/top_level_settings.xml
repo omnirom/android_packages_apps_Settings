@@ -21,6 +21,15 @@
     android:key="top_level_settings">
 
     <Preference
+        android:key="top_level_omni"
+        android:title="@string/header_category_omni"
+        android:summary="@string/omni_dashboard_summary"
+        android:icon="@drawable/ic_homepage_omnigears"
+        android:order="-130"
+        android:fragment="org.omnirom.omnigears.OmniDashboardFragment"
+        settings:controller="org.omnirom.omnigears.TopLevelOmniEntryPreferenceController" />
+
+    <Preference
         android:key="top_level_network"
         android:title="@string/network_dashboard_title"
         android:summary="@string/summary_placeholder"
