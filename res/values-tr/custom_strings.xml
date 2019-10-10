@@ -26,6 +26,7 @@
     <string name="omni_device_parts">Cihaz özellikleri</string>
     <string name="columns_menu">Sütun düzeni</string>
     <string name="hide_summary_menu">Özeti sakla</string>
+    <string name="bars_settings_title">Çubuklar ve kilit ekranı</string>
     <string name="button_settings_title">Düğmeler</string>
     <string name="mod_version">Omni versiyonu</string>
     <string name="mod_version_default">Bilinmiyor</string>
@@ -48,6 +49,7 @@
     <string name="adb_over_network_summary">Şebeke arayüzleri (Kablosuz Bağlantı ve USB şebekeleri) üzerinde TCP veyâ IP hatâ ayıklamayı devreye sokar. Bu ayar telefonu tekrar başlattığınızda sıfırlanır</string>
     <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">ÎKÂZ: Şebeke üzerinden ADB devreye sokulduğunda, telefonunuz GSM\'in veri şebekesi de dâhil olmak üzere bütün bağlandığınız şebekeler üzerinde güvenlik ihlâline açık olur!\n\nBu özelliği sadece güvenilir şebekelere bağlıyken kullanın.\n\nBu özelliği sahiden devreye sokmak istiyor musunuz?</string>
+    <string name="adb_over_network_warning_title">Şebeke üzerinden ADB\'ye izin verilsin mi?</string>
     <string name="battery_image">Pil resmi</string>
     <string name="battery_image_description">Pil resmini durum çubuğunda gösterir</string>
     <string name="twilight_mode_location_dialog">Yer tespiti devre dışı</string>
@@ -65,6 +67,9 @@
     <string name="security_settings_fingerprint_sensor_location_left">sol tarafında</string>
     <string name="security_settings_fingerprint_sensor_location_right">sağ tarafında</string>
     <string name="screenshot_shutter_sound_title">Ekran görüntüsü alınırken deklanşör sesi</string>
+    <string name="selinux_status">SELinux durumu</string>
+    <string name="selinux_status_disabled">Devre dışı</string>
+    <string name="selinux_status_permissive">İhtiyari</string>
     <string name="selinux_status_enforcing">Mecburi</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
     <string name="ringtone1_title">Telefonun zil sesi - SIM 1</string>
@@ -74,4 +79,5 @@
     <string name="back_height_low_label">Tam</string>
     <string name="back_height_high_label">Alt</string>
     <string name="back_options_dialog_title">Tercihler</string>
+    <string name="back_height_message">Geri hareketi için dokunulabilir bölge olarak kullanılan ekran yüksekliğinin miktarı.</string>
 </resources>
