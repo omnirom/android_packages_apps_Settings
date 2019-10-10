@@ -3,7 +3,11 @@
 <!--
 /*
 **
+<<<<<<< HEAD
+** Copyright 2017 The OmniROM Project
+=======
 ** Copyright 2017-2018 The OmniROM Project
+>>>>>>> acf4250dfb... [2/3] Settings: add support for adb over network
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.

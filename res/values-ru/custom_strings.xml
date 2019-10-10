@@ -3,7 +3,11 @@
 <!--
 /*
 **
+<<<<<<< HEAD
+** Copyright 2017 The OmniROM Project
+=======
 ** Copyright 2017-2018 The OmniROM Project
+>>>>>>> acf4250dfb... [2/3] Settings: add support for adb over network
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -26,6 +30,7 @@
     <string name="omni_device_parts">Возможности устройства</string>
     <string name="columns_menu">Раскладка столбцов</string>
     <string name="hide_summary_menu">Скрыть содержание</string>
+    <string name="bars_settings_title">Панели и экран блокировки</string>
     <string name="button_settings_title">Кнопки</string>
     <string name="mod_version">Версия Omni</string>
     <string name="mod_version_default">Неизвестно</string>
@@ -48,6 +53,7 @@
     <string name="adb_over_network_summary">Включить отладку TCP/IP через сетевые интерфейсы (Wi-Fi, USB-сети). Эта установка сбрасывается при перезагрузке</string>
     <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">ВНИМАНИЕ: когда включена отладка по сети, устройство открыто для неконтролируемого доступа из всех подключённых сетей!\n\nИспользуйте эту функцию только тогда, когда вы подключены к доверенным сетям.\n\nВы действительно хотите включить эту функцию?</string>
+    <string name="adb_over_network_warning_title">Разрешить ADB через сеть?</string>
     <string name="battery_image">Отображение иконки батареи</string>
     <string name="battery_image_description">Отображать иконку батареи в строке состояния</string>
     <string name="twilight_mode_location_dialog">Местоположение отключено</string>
@@ -65,6 +71,17 @@
     <string name="security_settings_fingerprint_sensor_location_left">левом торце</string>
     <string name="security_settings_fingerprint_sensor_location_right">правом торце</string>
     <string name="screenshot_shutter_sound_title">Звук скриншота</string>
+    <string name="selinux_status">Статус SELinux</string>
+    <string name="selinux_status_disabled">Отключено</string>
+    <string name="selinux_status_permissive">Только предупреждение</string>
+    <string name="selinux_status_enforcing">Блокировка</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone1_title">Звук звонка - SIM 1</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone2_title">Звук звонка - SIM 2</string>
+    <string name="weather_title">Погода</string>
+    <string name="back_height_low_label">Полностью</string>
+    <string name="back_height_high_label">Низ</string>
+    <string name="back_options_dialog_title">Настройки</string>
+    <string name="back_height_message">Высота экрана, используемая в качестве сенсорной области для жеста назад.</string>
 </resources>
