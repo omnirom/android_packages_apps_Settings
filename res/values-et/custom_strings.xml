@@ -26,6 +26,7 @@
     <string name="omni_device_parts">Seadme funktsioonid</string>
     <string name="columns_menu">Veergude paigutus</string>
     <string name="hide_summary_menu">Peida kokkuvõtted</string>
+    <string name="bars_settings_title">Ribad ja lukustuskuva</string>
     <string name="button_settings_title">Nupud</string>
     <string name="mod_version">Omni versioon</string>
     <string name="mod_version_default">Tundmatu</string>
@@ -48,6 +49,7 @@
     <string name="adb_over_network_summary">Luba TCP/IP silumine üle võrgu (WiFi, USB-võrgud). See seade lähtestatakse taaskäivitamisel</string>
     <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">HOIATUS: Kui ADB üle võrgu on aktiveeritud, on seade avatud rünnakutele kõigis võrgudes, kaasa arvatud GSM andmesidevõrk!\n\nKasuta seda funktsiooni ainult siis, kui oled ühendatud usaldusväärses võrgus.\n\nKas soovid kindlasti selle funktsiooni lubada?</string>
+    <string name="adb_over_network_warning_title">Luba ADB üle võrgu?</string>
     <string name="battery_image">Aku pilt</string>
     <string name="battery_image_description">Kuva aku pilti olekuribal</string>
     <string name="twilight_mode_location_dialog">Asukoht keelatud</string>
@@ -65,6 +67,17 @@
     <string name="security_settings_fingerprint_sensor_location_left">vasakul </string>
     <string name="security_settings_fingerprint_sensor_location_right">paremal </string>
     <string name="screenshot_shutter_sound_title">Ekraanipildi tegemise heli</string>
+    <string name="selinux_status">SELinuxi olek</string>
+    <string name="selinux_status_disabled">Keelatud</string>
+    <string name="selinux_status_permissive">Lubav</string>
+    <string name="selinux_status_enforcing">Jõustav</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone1_title">Telefonihelin - SIM 1</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone2_title">Telefonihelin - SIM 2</string>
+    <string name="weather_title">Ilm</string>
+    <string name="back_height_low_label">Täielik</string>
+    <string name="back_height_high_label">Alumine</string>
+    <string name="back_options_dialog_title">Valikud</string>
+    <string name="back_height_message">Ekraani kõrgus, mida kasutatakse tagasiviipe puudutatava alana.</string>
 </resources>

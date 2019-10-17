@@ -26,6 +26,7 @@
     <string name="omni_device_parts">Gerätefunktionen</string>
     <string name="columns_menu">Spalten-Layout</string>
     <string name="hide_summary_menu">Zusammenfassung verbergen</string>
+    <string name="bars_settings_title">Balken und Sperrbildschirm</string>
     <string name="button_settings_title">Tasten</string>
     <string name="mod_version">Omni-Version</string>
     <string name="mod_version_default">Unbekannt</string>
@@ -48,6 +49,7 @@
     <string name="adb_over_network_summary">Aktiviert TCP/IP Debugging über Netzwerk (WLAN, USB). Diese Einstellung wird bei einem Neustart zurückgesetzt</string>
     <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">WARNUNG: Wenn ADB über Netzwerk aktiviert ist, ist dein Telefon anfällig für Angriffe über alle verbundenen Netzwerke, einschließlich GSM!\n\nBenutze diese Funktion nur, wenn du zu vertrauenswürdigen Netzwerken verbunden bist.\n\nMöchtest du diese Funktion wirklich aktivieren?</string>
+    <string name="adb_over_network_warning_title">ADB über Netzwerk zulassen?</string>
     <string name="battery_image">Akkusymbol</string>
     <string name="battery_image_description">Zeige Akkusymbol in der Statusleiste</string>
     <string name="twilight_mode_location_dialog">Ortungsdienste deaktiviert</string>
@@ -65,6 +67,17 @@
     <string name="security_settings_fingerprint_sensor_location_left">linke Seite</string>
     <string name="security_settings_fingerprint_sensor_location_right">rechte Seite</string>
     <string name="screenshot_shutter_sound_title">Bildschirmfoto Auslöse-Ton</string>
+    <string name="selinux_status">SELinux-Status</string>
+    <string name="selinux_status_disabled">Deaktiviert</string>
+    <string name="selinux_status_permissive">Permissiv</string>
+    <string name="selinux_status_enforcing">Enforcing</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone1_title">Klingelton - SIM 1</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone2_title">Klingelton - SIM 2</string>
+    <string name="weather_title">Wetter</string>
+    <string name="back_height_low_label">Voll</string>
+    <string name="back_height_high_label">Unten</string>
+    <string name="back_options_dialog_title">Einstellungen</string>
+    <string name="back_height_message">Höhe des Bildschirms, der als berührbare Region für die Zurück-Geste verwendet wird.</string>
 </resources>
