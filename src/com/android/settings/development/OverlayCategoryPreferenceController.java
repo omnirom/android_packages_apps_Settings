@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.settings.display;
+package com.android.settings.development;
 
 import static android.os.UserHandle.USER_SYSTEM;
 
@@ -35,8 +35,8 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
-import com.android.settingslib.core.AbstractPreferenceController;
 import com.android.settings.core.PreferenceControllerMixin;
+import com.android.settingslib.development.DeveloperOptionsPreferenceController;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -47,7 +47,7 @@ import java.util.List;
  * The chosen overlay is enabled exclusively within its category. A default option is also
  * exposed that disables all overlays in the given category.
  */
-public class OverlayCategoryPreferenceController extends AbstractPreferenceController
+public class OverlayCategoryPreferenceController extends DeveloperOptionsPreferenceController
         implements Preference.OnPreferenceChangeListener, PreferenceControllerMixin {
     private static final String TAG = "OverlayCategoryPC";
     @VisibleForTesting
@@ -193,6 +193,15 @@ public class OverlayCategoryPreferenceController extends AbstractPreferenceContr
         }
         filteredInfos.sort(OVERLAY_INFO_COMPARATOR);
         return filteredInfos;
+    }
+
+    @Override
+    protected void onDeveloperOptionsSwitchDisabled() {
+        super.onDeveloperOptionsSwitchDisabled();
+        // TODO b/133222035: remove these developer settings when the
+        // Settings.Secure.THEME_CUSTOMIZATION_OVERLAY_PACKAGES setting is used
+        setOverlay(PACKAGE_DEVICE_DEFAULT);
+        updateState(mPreference);
     }
 
 }
