@@ -20,6 +20,7 @@
          1 = front
          2 = left side
          3 = right side
+         4 = FOD (front)
     -->
     <integer name="config_fingerprintSensorLocation">0</integer>
 
