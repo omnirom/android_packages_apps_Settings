@@ -22,6 +22,7 @@ import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
@@ -43,6 +44,7 @@ public class FingerprintEnrollFindSensor extends BiometricEnrollBase {
     private static final int SENSOR_LOCATION_FRONT = 1;
     private static final int SENSOR_LOCATION_LEFT = 2;
     private static final int SENSOR_LOCATION_RIGHT = 3;
+    private static final int SENSOR_LOCATION_FOD = 4;
 
     @Nullable
     private FingerprintFindSensorAnimation mAnimation;
@@ -77,7 +79,7 @@ public class FingerprintEnrollFindSensor extends BiometricEnrollBase {
         }
 
         int sensorLocation = getResources().getInteger(R.integer.config_fingerprintSensorLocation);
-        if (sensorLocation < SENSOR_LOCATION_BACK || sensorLocation > SENSOR_LOCATION_RIGHT) {
+        if (sensorLocation < SENSOR_LOCATION_BACK || sensorLocation > SENSOR_LOCATION_FOD) {
             sensorLocation = SENSOR_LOCATION_BACK;
         }
         final String location = getResources().getStringArray(
@@ -88,6 +90,11 @@ public class FingerprintEnrollFindSensor extends BiometricEnrollBase {
         if (sensorLocation == SENSOR_LOCATION_FRONT) {
             findViewById(R.id.fingerprint_sensor_location_front_overlay)
                     .setVisibility(View.VISIBLE);
+        }
+        if (sensorLocation == SENSOR_LOCATION_FOD) {
+            findViewById(R.id.fingerprint_sensor_location_front_overlay)
+                    .setVisibility(View.VISIBLE);
+            animationView.setVisibility(View.GONE);
         }
     }
 
