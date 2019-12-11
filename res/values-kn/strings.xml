@@ -412,6 +412,7 @@
     <string name="security_settings_face_enroll_introduction_cancel" msgid="4277182322482408514">"ರದ್ದುಮಾಡಿ"</string>
     <string name="security_settings_face_enroll_introduction_no_thanks" msgid="8771760983171429187">"ಬೇಡ ಧನ್ಯವಾದಗಳು"</string>
     <string name="security_settings_face_enroll_introduction_agree" msgid="6370134135096047691">"ಅನುಮೋದಿಸಿ"</string>
+    <string name="security_settings_face_enroll_introduction_more" msgid="8933757421629981560">"ಇನ್ನಷ್ಟು"</string>
     <string name="security_settings_face_enroll_introduction_title" msgid="2694505011712885439">"ನಿಮ್ಮ ಮುಖ ಬಳಸಿ ಅನ್‌ಲಾಕ್ ಮಾಡಿ"</string>
     <string name="security_settings_face_enroll_introduction_title_unlock_disabled" msgid="8180330567034286589">"ಗುರುತಿಸುವಿಕೆಗೆ ನಿಮ್ಮ ಮುಖವನ್ನು ಬಳಸಿ"</string>
     <string name="security_settings_face_enroll_introduction_message" msgid="6150611993438981458">"ನಿಮ್ಮ ಫೋನ್ ಅನ್‌ಲಾಕ್ ಮಾಡಲು, ಖರೀದಿಗಳನ್ನು ದೃಢೀಕರಿಸಲು ಅಥವಾ ಅಪ್ಲಿಕೇಶನ್‌ಗಳಿಗೆ ಸೈನ್ ಇನ್ ಮಾಡಲು ನಿಮ್ಮ ಮುಖವನ್ನು ಬಳಸಿ."</string>
@@ -432,6 +433,12 @@
     <string name="security_settings_face_enroll_error_generic_dialog_message" msgid="3825066262969499407">"ಮುಖ ನೋಂದಣೆ ಮಾಡುವಿಕೆಯು ಕಾರ್ಯ ನಿರ್ವಹಿಸುತ್ತಿಲ್ಲ"</string>
     <string name="security_settings_face_enroll_finish_title" msgid="8268014305067971249">"ಎಲ್ಲವನ್ನು ಹೊಂದಿಸಲಾಗಿದೆ. ನೋಡಲು ಚೆನ್ನಾಗಿ ಕಾಣುತ್ತಿದೆ."</string>
     <string name="security_settings_face_enroll_done" msgid="6670735678797960484">"ಮುಗಿದಿದೆ"</string>
+    <string name="security_settings_face_enroll_should_re_enroll_title" msgid="2597813999178151532">"ಫೇಸ್ ಅನ್‌ಲಾಕ್ ಕಾರ್ಯಕ್ಷಮತೆಯನ್ನು ಸುಧಾರಿಸಿ"</string>
+    <string name="security_settings_face_enroll_should_re_enroll_subtitle" msgid="7484130460331761292">"ಫೇಸ್ ಅನ್‌ಲಾಕ್ ಅನ್ನು ಪುನಃ ಸೆಟಪ್ ಮಾಡಿ"</string>
+    <string name="security_settings_face_enroll_must_re_enroll_title" msgid="4337628251738248911">"ಫೇಸ್ ಅನ್‌ಲಾಕ್ ಅನ್ನು ಪುನಃ ಸೆಟಪ್ ಮಾಡಿ"</string>
+    <string name="security_settings_face_enroll_must_re_enroll_subtitle" msgid="997167500186209482">"ಭದ್ರತೆ ಮತ್ತು ಕಾರ್ಯಕ್ಷಮತೆಯನ್ನು ಸುಧಾರಿಸಿ"</string>
+    <string name="security_settings_face_enroll_improve_face_alert_title" msgid="6606576886674071486">"ಫೇಸ್ ಅನ್‌ಲಾಕ್ ಅನ್ನು ಸೆಟಪ್ ಮಾಡಿ"</string>
+    <string name="security_settings_face_enroll_improve_face_alert_body" msgid="430128610958597146">"ಫೇಸ್ ಅನ್‌ಲಾಕ್ ಅನ್ನು ಪುನಃ ಸೆಟಪ್ ಮಾಡಲು, ನಿಮ್ಮ ಪ್ರಸ್ತುತ ಫೇಸ್ ಡೇಟಾ ಅಳಿಸಿ.\n\nಫೇಸ್ ಅನ್‌ಲಾಕ್ ಬಳಸಿದ ಫೇಸ್ ಡೇಟಾವನ್ನು ಶಾಶ್ವತವಾಗಿ &amp; ಸುರಕ್ಷಿತವಾಗಿ ಅಳಿಸಲಾಗುತ್ತದೆ. ತೆಗೆದುಹಾಕಿದ ನಂತರ, ನಿಮ್ಮ ಫೋನ್ ಅನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು, ಆ್ಯಪ್‌ಗೆ ಸೈನ್ ಇನ್ ಮಾಡಲು &amp; ಪಾವತಿಯನ್ನು ಖಚಿತಪಡಿಸಲು ನಿಮ್ಮ ಪಿನ್, ಪ್ಯಾಟರ್ನ್ ಅಥವಾ ಪಾಸ್‌ವರ್ಡ್‌ನ ಅಗತ್ಯವಿರುತ್ತದೆ."</string>
     <string name="security_settings_face_settings_use_face_category" msgid="4087133372842623883">"ಫೇಸ್ ಅನ್‌ಲಾಕ್ ಬಳಸಿ"</string>
     <string name="security_settings_face_settings_use_face_unlock_phone" msgid="8780794239930621913">"ಫೋನ್ ಅನ್‌ಲಾಕಾಗುತ್ತಿದೆ"</string>
     <string name="security_settings_face_settings_use_face_for_apps" msgid="5751549943998662469">"ಆ್ಯಪ್‌ ಸೈನ್‌ ಇನ್‌ &amp; ಪಾವತಿಗಳು"</string>
@@ -444,7 +451,7 @@
     <string name="security_settings_face_settings_enroll" msgid="495403103503629382">"ಫೇಸ್ ಅನ್‌ಲಾಕ್ ಸೆಟಪ್ ಮಾಡಿ"</string>
     <string name="security_settings_face_settings_footer" msgid="1233594882557106034">"ನಿಮ್ಮ ಸಾಧನವನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು, ಆ್ಯಪ್‌ಗಳಿಗೆ ಸೈನ್ ಇನ್ ಮಾಡಲು ಮತ್ತು ಪಾವತಿಗಳನ್ನು ಖಚಿತಪಡಿಸಲು ಫೇಸ್ ಅನ್‌ಲಾಕ್ ಬಳಸಿ.\n\nನೆನಪಿಡಿ:\nಫೋನ್ ಕಡೆ ನೋಡಿದರೆ, ನಿಮಗೆ ಬೇಡದಿದ್ದಾಗಲೂ ಫೋನ್ ಅನ್‌ಲಾಕ್ ಆಗಬಹುದು.\n\nನಿಮ್ಮ ಕಣ್ಣುಗಳು ಮುಚ್ಚಿರುವಾಗಲೂ, ಫೋನ್‌ ಅನ್ನು ನಿಮ್ಮ ಮುಖದ ಕಡೆಗೆ ತೋರಿಸಿ ಬೇರೊಬ್ಬರು ಅನ್‌ಲಾಕ್ ಮಾಡಬಹುದು.\n\nನಿಮ್ಮನ್ನು ತುಂಬಾ ಹೋಲುವ ವ್ಯಕ್ತಿ, ಉದಾಹರಣೆಗೆ ನಿಮ್ಮ ತದ್ರೂಪಿ ಸಹೋದರ/ಸಹೋದರಿಯೂ ಕೂಡಾ ನಿಮ್ಮ ಫೋನ್ ಅನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಬಹುದು."</string>
     <string name="security_settings_face_settings_remove_dialog_title" msgid="4829278778459836075">"ಮುಖ ಗುರುತಿಸುವಿಕೆ ಡೇಟಾ ಅಳಿಸುವುದೇ?"</string>
-    <string name="security_settings_face_settings_remove_dialog_details" msgid="4820545735354901641">"ಫೇಸ್ ಅನ್‌ಲಾಕ್‌ಗಾಗಿ ಬಳಸುವ ಚಿತ್ರಗಳು ಮತ್ತು ಮುಖದ ಮಾದರಿಯನ್ನು ಶಾಶ್ವತವಾಗಿ ಮತ್ತು ಸುರಕ್ಷಿತವಾಗಿ ಅಳಿಸಲಾಗುತ್ತದೆ. ತೆಗೆದುಹಾಕಿದ ನಂತರ, ನಿಮ್ಮ ಫೋನ್ ಅನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು, ಆ್ಯಪ್‌ಗಳಿಗೆ ಸೈನ್ ಇನ್ ಮಾಡಲು ಮತ್ತು ಪಾವತಿಗಳನ್ನು ಖಚಿತಪಡಿಸಲು ನಿಮ್ಮ ಪಿನ್, ಪ್ಯಾಟರ್ನ್ ಅಥವಾ ಪಾಸ್‌ವರ್ಡ್‌ನ ಅಗತ್ಯವಿರುತ್ತದೆ."</string>
+    <string name="security_settings_face_settings_remove_dialog_details" msgid="1653339107100339721">"ಫೇಸ್ ಅನ್‌ಲಾಕ್ ಬಳಸಿದ ಫೇಸ್ ಡೇಟಾವನ್ನು ಶಾಶ್ವತವಾಗಿ ಮತ್ತು ಸುರಕ್ಷಿತವಾಗಿ ಅಳಿಸಲಾಗುತ್ತದೆ. ಅದನ್ನು ತೆಗೆದುಹಾಕಿದ ನಂತರ, ನಿಮ್ಮ ಫೋನ್ ಅನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು, ಆ್ಯಪ್‌ಗಳಿಗೆ ಸೈನ್ ಇನ್ ಮಾಡಲು ಮತ್ತು ಪಾವತಿಗಳನ್ನು ಖಚಿತಪಡಿಸಲು ನಿಮ್ಮ ಪಿನ್, ಪ್ಯಾಟರ್ನ್ ಅಥವಾ ಪಾಸ್‌ವರ್ಡ್‌ನ ಅಗತ್ಯವಿರುತ್ತದೆ."</string>
     <string name="security_settings_face_settings_context_subtitle" msgid="4381276009777294566">"ನಿಮ್ಮ ಫೋನ್ ಅನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಫೇಸ್ ಅನ್‌ಲಾಕ್ ಬಳಸಿ"</string>
     <string name="security_settings_fingerprint_preference_title" msgid="2488725232406204350">"ಬೆರಳಚ್ಚು"</string>
     <string name="fingerprint_manage_category_title" msgid="8293801041700001681">"ಬೆರಳಚ್ಚು ನಿರ್ವ."</string>
@@ -522,7 +529,7 @@
     <string name="fingerprint_delete_message" msgid="8597787803567398131">"ನೀವು ಈ ಫಿಂಗರ್‌ ಫ್ರಿಂಟ್ ಅಳಿಸಲು ಬಯಸುವಿರಾ?"</string>
     <string name="fingerprint_last_delete_message" msgid="7852321001254275878">"ನಿಮ್ಮ ಫೋನ್ ಅನ್‌ಲಾಕ್ ಮಾಡಲು, ಖರೀದಿಗಳನ್ನು ದೃಢೀಕರಿಸಲು ಅಥವಾ ಅಪ್ಲಿಕೇಶನ್‌ಗಳಿಗೆ ಸೈನ್ ಇನ್ ಮಾಡಲು ನಿಮ್ಮ ಫಿಂಗರ್‌ ಪ್ರಿಂಟ್‌ಗಳನ್ನು ಬಳಸಲು ನಿಮಗೆ ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ."</string>
     <string name="fingerprint_last_delete_message_profile_challenge" msgid="6521520787746771912">"ನಿಮ್ಮ ಕೆಲಸದ ಪ್ರೊಫೈಲ್ ಅನ್‌ಲಾಕ್ ಮಾಡಲು, ಖರೀದಿಗಳನ್ನು ದೃಢೀಕರಿಸಲು ಅಥವಾ ಕೆಲಸದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳಿಗೆ ಸೈನ್ ಇನ್ ಮಾಡಲು ನಿಮ್ಮ ಫಿಂಗರ್‌ ಪ್ರಿಂಟ್‌ಗಳನ್ನು ಬಳಸಲು ನಿಮಗೆ ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ."</string>
-    <string name="fingerprint_last_delete_confirm" msgid="2634726361059274289">"ಹೌದು, ತೆಗೆದುಹಾಕು"</string>
+    <string name="fingerprint_last_delete_confirm" msgid="2634726361059274289">"ಹೌದು, ತೆಗೆದುಹಾಕಿ"</string>
     <string name="crypt_keeper_settings_title" msgid="4219233835490520414">"ಎನ್‌ಕ್ರಿಪ್ಷನ್"</string>
     <string name="crypt_keeper_encrypt_title" product="tablet" msgid="1060273569887301457">"ಟ್ಯಾಬ್ಲೆಟ್ ಅನ್ನು ಎನ್‌ಕ್ರಿಪ್ಟ್ ಮಾಡು"</string>
     <string name="crypt_keeper_encrypt_title" product="default" msgid="1878996487755806122">"ಫೋನ್ ಎನ್‌ಕ್ರಿಪ್ಟ್"</string>
@@ -646,7 +653,7 @@
     <string name="unlock_disable_frp_warning_content_unknown_fingerprint_profile" msgid="4994062501123299418">"ನಿಮ್ಮ ಸ್ಕ್ರೀನ್ ಲಾಕ್ ಇಲ್ಲದೆ ಪ್ರೊಫೈಲ್ ರಕ್ಷಣೆ ವೈಶಿಷ್ಟ್ಯಗಳು ಕಾರ್ಯನಿರ್ವಹಿಸುವುದಿಲ್ಲ.<xliff:g id="EMPTY_LINE">
 
 </xliff:g>ಈ ಪ್ರೊಫೈಲ್‌ನಿಂದ ನಿಮ್ಮ ಉಳಿಸಲಾದ ಫಿಂಗರ್‌ಪ್ರಿಂಟ್‌ಗಳನ್ನು ಸಹ ತೆಗೆದುಹಾಕಲಾಗುವುದು ಮತ್ತು ನಿಮ್ಮ ಫೋನ್ ಅನ್‌ಲಾಕ್ ಮಾಡಲು, ಖರೀದಿಗಳನ್ನು ದೃಢೀಕರಿಸಲು ಅಥವಾ ಅವುಗಳ ಮೂಲಕ ಅಪ್ಲಿಕೇಶನ್‌ಗಳಿಗೆ ಸೈನ್ ಇನ್ ಮಾಡಲು ನಿಮಗೆ ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ."</string>
-    <string name="unlock_disable_frp_warning_ok" msgid="7075138677177748705">"ಹೌದು, ತೆಗೆದುಹಾಕು"</string>
+    <string name="unlock_disable_frp_warning_ok" msgid="7075138677177748705">"ಹೌದು, ತೆಗೆದುಹಾಕಿ"</string>
     <string name="unlock_change_lock_pattern_title" msgid="2044092014872741130">"ಅನ್‌ಲಾಕ್ ನಮೂನೆಯನ್ನು ಬದಲಾಯಿಸಿ"</string>
     <string name="unlock_change_lock_pin_title" msgid="806629901095938484">"ಅನ್‌ಲಾಕ್ ಪಿನ್‌ ಬದಲಾಯಿಸಿ"</string>
     <string name="unlock_change_lock_password_title" msgid="5606298470358768865">"ಅನ್‌ಲಾಕ್ ಪಾಸ್‌ವರ್ಡ್‌ ಬದಲಾಯಿಸಿ"</string>
@@ -1296,14 +1303,14 @@
     <string name="sim_lock_settings_summary_off" msgid="8028944267104896401">"ಆಫ್"</string>
     <string name="sim_lock_settings_summary_on" msgid="39103355956342985">"ಲಾಕ್ ಮಾಡಲಾಗಿದೆ"</string>
     <string name="sim_lock_settings_title" msgid="9018585580955414596">"ಸಿಮ್‌ ಕಾರ್ಡ್‌ ಲಾಕ್"</string>
-    <string name="sim_pin_toggle" msgid="1742123478029451888">"ಸಿಮ್‌ ಕಾರ್ಡ್ ಲಾಕ್ ಮಾಡು"</string>
+    <string name="sim_pin_toggle" msgid="1742123478029451888">"ಸಿಮ್‌ ಕಾರ್ಡ್ ಲಾಕ್ ಮಾಡಿ"</string>
     <string name="sim_lock_on" product="tablet" msgid="5058355081270397764">"ಟ್ಯಾಬ್ಲೆಟ್ ಬಳಸಲು ಪಿನ್‌ ಅಗತ್ಯವಿದೆ"</string>
     <string name="sim_lock_on" product="default" msgid="2503536505568814324">"ಫೋನ್ ಬಳಸಲು ಪಿನ್‌ ಅಗತ್ಯವಿದೆ"</string>
     <string name="sim_lock_off" product="tablet" msgid="2813800553917012356">"ಟ್ಯಾಬ್ಲೆಟ್ ಬಳಸಲು ಪಿನ್‌ ಅಗತ್ಯವಿದೆ"</string>
     <string name="sim_lock_off" product="default" msgid="258981978215428916">"ಫೋನ್ ಬಳಸಲು ಪಿನ್‌ ಅಗತ್ಯವಿದೆ"</string>
     <string name="sim_pin_change" msgid="6311414184279932368">"ಸಿಮ್‌ ಪಿನ್‌ ಬದಲಾಯಿಸು"</string>
     <string name="sim_enter_pin" msgid="6608715137008508432">"ಸಿಮ್‌ ಪಿನ್‌"</string>
-    <string name="sim_enable_sim_lock" msgid="4517742794997166918">"ಸಿಮ್‌ ಕಾರ್ಡ್ ಲಾಕ್ ಮಾಡು"</string>
+    <string name="sim_enable_sim_lock" msgid="4517742794997166918">"ಸಿಮ್‌ ಕಾರ್ಡ್ ಲಾಕ್ ಮಾಡಿ"</string>
     <string name="sim_disable_sim_lock" msgid="7664729528754784824">"ಸಿಮ್‌ ಕಾರ್ಡ್‌ ಅನ್‌ಲಾಕ್ ಮಾಡು"</string>
     <string name="sim_enter_old" msgid="6074196344494634348">"ಹಳೆಯ ಸಿಮ್‌ ಪಿನ್‌"</string>
     <string name="sim_enter_new" msgid="8742727032729243562">"ಹೊಸ ಸಿಮ್‌ ಪಿನ್‌"</string>
@@ -2328,7 +2335,7 @@
     <string name="battery_tip_smart_battery_summary" msgid="2326809294592208069">"ಬ್ಯಾಟರಿ ನಿರ್ವಾಹಕರನ್ನು ಆನ್‌ ಮಾಡಿ"</string>
     <string name="battery_tip_early_heads_up_title" msgid="5788492366387119807">"ಬ್ಯಾಟರಿ ಸೇವರ್‌ ಆನ್‌ ಮಾಡಿ"</string>
     <string name="battery_tip_early_heads_up_summary" msgid="1639271439914224547">"ಬ್ಯಾಟರಿ ಸಾಮಾನ್ಯಕ್ಕಿಂತ ಮೊದಲೇ ರನ್ ಆಗಬಹುದು"</string>
-    <string name="battery_tip_early_heads_up_done_title" msgid="4294083319255926811">"ಬ್ಯಾಟರಿ ರಕ್ಷಕ ಆನ್ ಆಗಿದೆ"</string>
+    <string name="battery_tip_early_heads_up_done_title" msgid="4294083319255926811">"ಬ್ಯಾಟರಿ ಸೇವರ್ ಆನ್ ಆಗಿದೆ"</string>
     <string name="battery_tip_early_heads_up_done_summary" msgid="7054036010928794364">"ಕೆಲವು ವೈಶಿಷ್ಟ್ಯಗಳು ಸೀಮಿತವಾಗಿರಬಹುದು"</string>
     <string name="battery_tip_high_usage_title" product="default" msgid="1282187115295901930">"ಫೋನ್ ಸಾಮಾನ್ಯಕ್ಕಿಂತ ಹೆಚ್ಚಿನದನ್ನು ಬಳಸಿದೆ"</string>
     <string name="battery_tip_high_usage_title" product="tablet" msgid="7422137233845959351">"ಟ್ಯಾಬ್ಲೆಟ್ ಸಾಮಾನ್ಯಕ್ಕಿಂತ ಹೆಚ್ಚಿನದನ್ನು ಬಳಸಿದೆ"</string>
@@ -3750,7 +3757,7 @@
     <string name="default_apps_title" msgid="1660450272764331490">"ಡಿಫಾಲ್ಟ್"</string>
     <string name="default_for_work" msgid="9152194239366247932">"ಕೆಲಸದ ಡಿಫಾಲ್ಟ್"</string>
     <string name="assist_and_voice_input_title" msgid="1733165754793221197">"ಸಹಾಯ &amp; ಧ್ವನಿ ಇನ್‌ಪುಟ್"</string>
-    <string name="default_assist_title" msgid="8868488975409247921">"ಅಪ್ಲಿಕೇಶನ್ ಸಹಾಯ"</string>
+    <string name="default_assist_title" msgid="8868488975409247921">"ಸಹಾಯಕ ಆ್ಯಪ್"</string>
     <string name="assistant_security_warning_title" msgid="8673079231955467177">"<xliff:g id="ASSISTANT_APP_NAME">%s</xliff:g> ಅನ್ನು ನಿಮ್ಮ ಸಹಾಯಕವನ್ನಾಗಿ ಮಾಡುವುದೇ?"</string>
     <string name="assistant_security_warning" msgid="8498726261327239136">"ನಿಮ್ಮ ಪರದೆಯಲ್ಲಿ ಗೋಚರಿಸುವ ಅಥವಾ ಅಪ್ಲಿಕೇಶನ್‌ಗಳಲ್ಲಿಯೇ ಪ್ರವೇಶಿಸಬಹುದಾದಂತಹ ಮಾಹಿತಿ ಸೇರಿದಂತೆ ನಿಮ್ಮ ಸಿಸ್ಟಂನಲ್ಲಿ ಬಳಕೆಯಲ್ಲಿರುವ ಅಪ್ಲಿಕೇಶನ್‌ಗಳ ಕುರಿತು ಮಾಹಿತಿಯನ್ನು ಓದಲು ಸಹಾಯಕಕ್ಕೆ ಸಾಧ್ಯವಾಗಬಹುದು."</string>
     <string name="assistant_security_warning_agree" msgid="7710290206928033908">"ಅನುಮೋದಿಸು"</string>
@@ -3977,7 +3984,7 @@
     <string name="condition_zen_title" msgid="2897779738211625">"ಅಡಚಣೆ ಮಾಡಬೇಡಿ ಆನ್ ಆಗಿದೆ"</string>
     <string name="condition_zen_summary_phone_muted" msgid="3644614024467141806">"ಫೋನ್ ಅನ್ನು ಮ್ಯೂಟ್ ಮಾಡಲಾಗಿದೆ"</string>
     <string name="condition_zen_summary_with_exceptions" msgid="4047564276599301064">"ವಿನಾಯಿತಿಗಳು ಸೇರಿವೆ"</string>
-    <string name="condition_battery_title" msgid="3272131008388575349">"ಬ್ಯಾಟರಿ ರಕ್ಷಕ ಆನ್ ಆಗಿದೆ"</string>
+    <string name="condition_battery_title" msgid="3272131008388575349">"ಬ್ಯಾಟರಿ ಸೇವರ್ ಆನ್ ಆಗಿದೆ"</string>
     <string name="condition_battery_summary" msgid="5847532902924566572">"ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ"</string>
     <string name="condition_cellular_title" msgid="1327317003797575735">"ಮೊಬೈಲ್ ಡೇಟಾ ಆಫ್ ಆಗಿದೆ"</string>
     <string name="condition_cellular_summary" msgid="816822977403022625">"ಇಂಟರ್ನೆಟ್, ಕೇವಲ ವೈ-ಫೈ ಮೂಲಕ ಲಭ್ಯವಿದೆ"</string>

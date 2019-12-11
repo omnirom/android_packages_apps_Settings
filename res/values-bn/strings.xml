@@ -412,6 +412,7 @@
     <string name="security_settings_face_enroll_introduction_cancel" msgid="4277182322482408514">"বাতিল করুন"</string>
     <string name="security_settings_face_enroll_introduction_no_thanks" msgid="8771760983171429187">"না থাক"</string>
     <string name="security_settings_face_enroll_introduction_agree" msgid="6370134135096047691">"সম্মত"</string>
+    <string name="security_settings_face_enroll_introduction_more" msgid="8933757421629981560">"আরও"</string>
     <string name="security_settings_face_enroll_introduction_title" msgid="2694505011712885439">"আপনার ফেস দিয়ে আনলক করুন"</string>
     <string name="security_settings_face_enroll_introduction_title_unlock_disabled" msgid="8180330567034286589">"যাচাইকরণ করতে আপনার ফেস ব্যবহার করুন"</string>
     <string name="security_settings_face_enroll_introduction_message" msgid="6150611993438981458">"আপনার ফোন আনলক, কেনাকাটা অনুমোদন বা অ্যাপগুলিতে সাইন-ইন করতে আপনার ফেস ব্যবহার করুন।"</string>
@@ -432,6 +433,12 @@
     <string name="security_settings_face_enroll_error_generic_dialog_message" msgid="3825066262969499407">"ফেস নথিভুক্ত বিকল্প কাজ করেনি।"</string>
     <string name="security_settings_face_enroll_finish_title" msgid="8268014305067971249">"সমস্ত সেট আছে। সবকিছু ঠিক লাগছে।"</string>
     <string name="security_settings_face_enroll_done" msgid="6670735678797960484">"হয়ে গেছে"</string>
+    <string name="security_settings_face_enroll_should_re_enroll_title" msgid="2597813999178151532">"\'মুখের সাহায্যে আনলক\' ফিচারটি আরও উন্নত করুন"</string>
+    <string name="security_settings_face_enroll_should_re_enroll_subtitle" msgid="7484130460331761292">"\'মুখের সাহায্যে আনলক\' ফিচার আবার সেট করুন"</string>
+    <string name="security_settings_face_enroll_must_re_enroll_title" msgid="4337628251738248911">"আবার মুখের সাহায্যে আনলক করার ফিচার সেট-আপ করুন"</string>
+    <string name="security_settings_face_enroll_must_re_enroll_subtitle" msgid="997167500186209482">"নিরাপত্তা ও পারফর্ম্যান্স আরও উন্নত করুন"</string>
+    <string name="security_settings_face_enroll_improve_face_alert_title" msgid="6606576886674071486">"মুখের সাহায্যে আনলক করার ফিচার সেট-আপ করুন"</string>
+    <string name="security_settings_face_enroll_improve_face_alert_body" msgid="430128610958597146">"আবার \'মুখের সাহায্যে আনলক\' ফিচার সেট করতে এখন আপনার সেভ থাকা ফেস সংক্রান্ত ডেটা মুছে দিন।\n\n\'মুখের সাহায্যে আনলক\' ফিচারটি যে ডেটা ব্যবহার করেছে তা স্থায়ীভাবে এবং নিরাপদে মুছে ফেলা হবে। সরানো হয়ে গেলে আপনাকে পিন, প্যাটার্ন বা পাসওয়ার্ডের সাহায্যে ফোন আনলক, অ্যাপে সাইন-ইন এবং পেমেন্ট কনফার্ম করতে হবে।"</string>
     <string name="security_settings_face_settings_use_face_category" msgid="4087133372842623883">"মুখের সাহায্যে আনলক করার সুবিধা ব্যবহার করুন"</string>
     <string name="security_settings_face_settings_use_face_unlock_phone" msgid="8780794239930621913">"ফোন আনলক করা"</string>
     <string name="security_settings_face_settings_use_face_for_apps" msgid="5751549943998662469">"অ্যাপ সাইন-ইন ও পেমেন্ট"</string>
@@ -444,7 +451,7 @@
     <string name="security_settings_face_settings_enroll" msgid="495403103503629382">"ফেসের সাহায্যে আনলক সেট-আপ করুন"</string>
     <string name="security_settings_face_settings_footer" msgid="1233594882557106034">"আপনার ডিভাইস আনলক, অ্যাপে সাইন-ইন এবং পেমেন্ট কনফার্ম করতে মুখের সাহায্যে আনলক করার সুবিধাটি ব্যবহার করুন।\n\nমনে রাখবেন:\nআপনি না চাইলেও ফোনের দিকে তাকালে সেটি আনলক হয়ে যেতে পারে।\n\nআপনার চোখ বন্ধ অবস্থায় থাকলেও অন্য কেউ আপনার মুখের সামনে ফোনটি ধরে আনলক করতে পারেন।\n\nআপনার মতো অনেকটা দেখতে এমন যে কেউ; যেমন আপনার যমজ ভাই বা বোন, আপনার ফোন আনলক করতে পারেন।"</string>
     <string name="security_settings_face_settings_remove_dialog_title" msgid="4829278778459836075">"মুখ শনাক্তকরণ ডেটা মুছে ফেলতে চান?"</string>
-    <string name="security_settings_face_settings_remove_dialog_details" msgid="4820545735354901641">"মুখের সাহায্যে আনলক ফিচারটি যে ছবি এবং ফেস মডেল ব্যবহার করেছে সেটি আপনার ফোন থেকে স্থায়ীভাবে এবং নিরাপদে মুছে যাবে। সরানো হয়ে গেলে আপনাকে পিন, প্যাটার্ন বা পাসওয়ার্ডের সাহায্যে ফোন আনলক, অ্যাপে সাইন-ইন এবং পেমেন্ট কনফার্ম করতে হবে।"</string>
+    <string name="security_settings_face_settings_remove_dialog_details" msgid="1653339107100339721">"\'মুখের সাহায্যে আনলক\' ফিচারটি মুখ সংক্রান্ত যে ডেটা ব্যবহার করেছে তা স্থায়ীভাবে এবং নিরাপদে মুছে ফেলা হবে। সরানো হয়ে গেলে, ফোন আনলক, অ্যাপে সাইন-ইন এবং পেমেন্ট কনফার্ম করতে আপনার পিন, প্যাটার্ন অথবা পাসওয়ার্ডের প্রয়োজন হবে।"</string>
     <string name="security_settings_face_settings_context_subtitle" msgid="4381276009777294566">"আপনার ফোন আনলক করার জন্য ফেসের সাহায্যে আনলক বিকল্প ব্যবহার করুন"</string>
     <string name="security_settings_fingerprint_preference_title" msgid="2488725232406204350">"আঙ্গুলের ছাপ"</string>
     <string name="fingerprint_manage_category_title" msgid="8293801041700001681">"আঙ্গুলের ছাপগুলি পরিচালনা করুন"</string>
@@ -727,7 +734,7 @@
     <string name="lockpattern_tutorial_cancel_label" msgid="6431583477570493261">"বাতিল"</string>
     <string name="lockpattern_tutorial_continue_label" msgid="3559793618653400434">"পরবর্তী"</string>
     <string name="lock_setup" msgid="3355847066343753943">"সেটআপ সম্পূর্ণ।"</string>
-    <string name="manage_device_admin" msgid="537804979483211453">"ডিভাইস প্রশাসক অ্যাপ"</string>
+    <string name="manage_device_admin" msgid="537804979483211453">"ডিভাইস অ্যাডমিন অ্যাপ"</string>
     <string name="number_of_device_admins_none" msgid="7185056721919496069">"কোনো সক্রিয় অ্যাপ নেই"</string>
     <plurals name="number_of_device_admins" formatted="false" msgid="3361891840111523393">
       <item quantity="one"><xliff:g id="COUNT_1">%d</xliff:g>টি অ্যাপ সক্রিয় আছে</item>
@@ -1156,7 +1163,7 @@
     <string name="sound_effects_enable_title" msgid="4429690369187229592">"আলতো চাপ দিলে শব্দ"</string>
     <string name="lock_sounds_enable_title" msgid="450098505659399520">"স্ক্রিন লক করার সাউন্ড"</string>
     <string name="audio_record_proc_title" msgid="4271091199976457534">"অপ্রয়োজনীয় আওয়াজ বাতিলকরণ"</string>
-    <string name="volume_media_description" msgid="7949355934788807863">"সঙ্গীত, ভিডিও, গেম্স, ও অন্যান্য মিডিয়া"</string>
+    <string name="volume_media_description" msgid="7949355934788807863">"মিউজিক, ভিডিও, গেম ও অন্যান্য মিডিয়া"</string>
     <string name="volume_ring_description" msgid="5936851631698298989">"রিংটোন ও বিজ্ঞপ্তি"</string>
     <string name="volume_notification_description" msgid="5810902320215328321">"বিজ্ঞপ্তি"</string>
     <string name="volume_alarm_description" msgid="8322615148532654841">"অ্যালার্মগুলি"</string>
@@ -1595,7 +1602,7 @@
     <string name="reset_dashboard_title" msgid="6254873816990678620">"রিসেটের বিকল্পগুলি"</string>
     <string name="reset_dashboard_summary" msgid="4851012632493522755">"নেটওয়ার্ক, অ্যাপ, অথবা ডিভাইস রিসেট করা যায়"</string>
     <string name="reset_network_title" msgid="6166025966016873843">"ওয়াই-ফাই, মোবাইল ও ব্লুটুথ রিসেট"</string>
-    <string name="reset_network_desc" msgid="5547979398298881406">"এগুলি সহ সমস্ত নেটওয়ার্ক সেটিংস আবার সেট করবে:\n\n"<li>"ওয়াই ফাই "</li>\n<li>"সেলুলার ডাটা "</li>\n<li>"ব্লুটুথ"</li></string>
+    <string name="reset_network_desc" msgid="5547979398298881406">"এগুলি সহ সমস্ত নেটওয়ার্ক সেটিংস আবার সেট করবে:\n\n"<li>"ওয়াই ফাই "</li>\n<li>"সেলুলার ডেটা "</li>\n<li>"ব্লুটুথ"</li></string>
     <string name="reset_esim_title" msgid="1979762943163078939">"ডাউনলোড করা সিম মুছে ফেলা"</string>
     <string name="reset_esim_desc" msgid="5940105242448544634">"পরিবর্ত সিম ডাউনলোড করতে আপনার পরিষেবা প্রদানকারীর সাথে যোগাযোগ করুন। এটি মোবাইল পরিষেবার কোনও প্ল্যান বাতিল করবে না।"</string>
     <string name="reset_network_button_text" msgid="2035676527471089853">"সেটিংস রিসেট করুন"</string>
@@ -1611,7 +1618,7 @@
     <string name="master_clear_short_title" msgid="8652450915870274285">"সবকিছু মুছুন (ফ্যাক্টরি রিসেট)"</string>
     <string name="master_clear_desc" product="tablet" msgid="2314458161059569301">"এটি আপনার ট্যাবলেটের "<b>"ইন্টারনাল স্টোরেজ"</b>", থেকে সমস্ত ডেটা মুছে দেবে, এগুলি সহ:\n\n"<li>"আপনার Google অ্যাকাউন্ট"</li>\n<li>"সিস্টেম এবং অ্যাপ ডেটা এবং সেটিংস"</li>\n<li>"ডাউনলোড করা অ্যাপ"</li></string>
     <string name="master_clear_desc" product="default" msgid="7647628092266675099">"এটি আপনার ফোনের "<b>"ইন্টারনাল স্টোরেজ"</b>", থেকে সমস্ত ডেটা মুছে দেবে, এগুলি সহ:\n\n"<li>"আপনার Google অ্যাকাউন্ট"</li>\n<li>"সিস্টেম এবং অ্যাপ ডেটা এবং সেটিংস"</li>\n<li>"ডাউনলোড করা অ্যাপ"</li></string>
-    <string name="master_clear_accounts" product="default" msgid="6412857499147999073">\n\n"আপনি বর্তমানে নিম্নলিখিত অ্যাকাউন্টে প্রবেশ করে আছেন:\n"</string>
+    <string name="master_clear_accounts" product="default" msgid="6412857499147999073">\n\n"আপনি বর্তমানে নিম্নলিখিত অ্যাকাউন্টে সাইন-ইন করে আছেন:\n"</string>
     <string name="master_clear_other_users_present" product="default" msgid="5161423070702470742">\n\n"এই ডিভাইসে অন্যান্য ব্যবহারকারীরাও রয়েছেন৷\n"</string>
     <string name="master_clear_desc_also_erases_external" msgid="1903185203791274237"><li>"সঙ্গীত"</li>\n<li>"ফটো"</li>\n<li>"অন্যান্য ব্যবহারকারী ডেটা"</li></string>
     <string name="master_clear_desc_also_erases_esim" msgid="6008213558725767177"><li>"ই-সিম"</li></string>
@@ -1873,7 +1880,7 @@
     <string name="show_background_processes" msgid="2009840211972293429">"ক্যাশে করা প্রক্রিয়াগুলি দেখান"</string>
     <string name="default_emergency_app" msgid="1951760659640369980">"জরুরি অ্যাপ্লিকেশান"</string>
     <string name="reset_app_preferences" msgid="1321050641018356925">"অ্যাপ্লিকেশানগুলির পছন্দ আবার সেট করুন"</string>
-    <string name="reset_app_preferences_title" msgid="6093179367325336662">"অ্যাপ্লিকেশানগুলির পছন্দ আবার সেট করবেন?"</string>
+    <string name="reset_app_preferences_title" msgid="6093179367325336662">"অ্যাপ পছন্দ রিসেট করবেন?"</string>
     <string name="reset_app_preferences_desc" msgid="4822447731869201512">"এটি এগুলির জন্য সমস্ত পছন্দ পরিবর্তন করবে:\n\n"<li>"বন্ধ করা অ্যাপ"</li>\n<li>"বন্ধ করা অ্যাপ বিজ্ঞপ্তি"</li>\n<li>"কাজের জন্য ডিফল্ট অ্যাপ"</li>\n<li>"অ্যাপের জন্য ব্যাকগ্রাউন্ড ডেটার সীমাবদ্ধতা"</li>\n<li>"যেকোনও অনুমতির সীমাবদ্ধতা"</li>\n\n"আপনি কোনও অ্যাপ ডেটা হারাবেন না।"</string>
     <string name="reset_app_preferences_button" msgid="2559089511841281242">"অ্যাপ রিসেট করুন"</string>
     <string name="manage_space_text" msgid="8852711522447794676">"জায়গা পরিচালনা করুন"</string>
@@ -3750,7 +3757,7 @@
     <string name="default_apps_title" msgid="1660450272764331490">"ডিফল্ট"</string>
     <string name="default_for_work" msgid="9152194239366247932">"কর্মস্থলের জন্য ডিফল্ট"</string>
     <string name="assist_and_voice_input_title" msgid="1733165754793221197">"সহায়তা এবং ভয়েস ইনপুট"</string>
-    <string name="default_assist_title" msgid="8868488975409247921">"অ্যাপ্লিকেশন সহায়তা"</string>
+    <string name="default_assist_title" msgid="8868488975409247921">"অ্যাপ সহায়তা"</string>
     <string name="assistant_security_warning_title" msgid="8673079231955467177">"<xliff:g id="ASSISTANT_APP_NAME">%s</xliff:g> -কে আপনার সহায়ক করবেন?"</string>
     <string name="assistant_security_warning" msgid="8498726261327239136">"সহায়কটি আপনার স্ক্রীনে প্রদর্শিত বা অ্যাপ্লিকেশানগুলির মধ্যে অ্যাক্সেসযোগ্য তথ্য সহ, আপনার সিস্টেমে ব্যবহারে থাকা অ্যাপ্লিকেশানগুলির তথ্য পড়তে পারবে৷"</string>
     <string name="assistant_security_warning_agree" msgid="7710290206928033908">"সম্মত"</string>
@@ -3843,13 +3850,13 @@
     <string name="usb_summary_MIDI_power" msgid="3308250484012677596">"MIDI মোডে অন্যান্য ডিভাইসে চার্জ দেওয়া"</string>
     <string name="background_check_pref" msgid="7550258400138010979">"ব্যাকগ্রাউন্ড পরীক্ষা"</string>
     <string name="background_check_title" msgid="4534254315824525593">"সম্পূর্ণ পটভূমি অ্যাক্সেস করুন"</string>
-    <string name="assist_access_context_title" msgid="2269032346698890257">"স্ক্রিন থেকে পাঠ্য ব্যবহার করুন"</string>
-    <string name="assist_access_context_summary" msgid="1991421283142279560">"সহায়তা অ্যাপ্লিকেশনটিকে স্ক্রিনের সামগ্রীসমূহকে টেক্সট হিসাবে অ্যাক্সেস করার অনুমতি দিন"</string>
+    <string name="assist_access_context_title" msgid="2269032346698890257">"স্ক্রিন থেকে টেক্সট ব্যবহার করুন"</string>
+    <string name="assist_access_context_summary" msgid="1991421283142279560">"সহায়তা অ্যাপকে স্ক্রিনের কন্টেন্ট টেক্সট হিসাবে অ্যাক্সেস করার অনুমতি দিন"</string>
     <string name="assist_access_screenshot_title" msgid="4034721336291215819">"স্ক্রিনশট ব্যবহার করুন"</string>
     <string name="assist_access_screenshot_summary" msgid="6761636689013259901">"সহায়তা অ্যাপ্লিকেশনটিকে স্ক্রিনের একটি ছবি অ্যাক্সেস করার অনুমতি দিন"</string>
     <string name="assist_flash_title" msgid="506661221230034891">"স্ক্রিন ফ্ল্যাশ করুন"</string>
     <string name="assist_flash_summary" msgid="9160668468824099262">"যখন সহায়তা অ্যাপ্লিকেশন স্ক্রিন বা স্ক্রিনশট থেকে টেক্সট অ্যাক্সেস করে তখন স্ক্রিনের প্রান্তগুলিকে ফ্ল্যাশ করুন"</string>
-    <string name="assist_footer" msgid="1982791172085896864">"সহায়তা অ্যাপ্লিকেশন আপনার দেখা স্ক্রিনের তথ্যের উপর ভিত্তি করে আপনাকে সহায্য করতে পারে৷ কিছু অ্যাপ্লিকেশন আপনাকে ইন্টিগ্রেটেড সহায়তা দিতে উভয় লঞ্চার এবং ভয়েস ইনপুট পরিষেবাগুলিকে সমর্থন করে৷"</string>
+    <string name="assist_footer" msgid="1982791172085896864">"সহায়তা অ্যাপ আপনার দেখা স্ক্রিনের তথ্যের উপর ভিত্তি করে আপনাকে সহায্য করতে পারে৷ কিছু অ্যাপ আপনাকে ইন্টিগ্রেটেড সহায়তা দিতে উভয় লঞ্চার এবং ভয়েস ইনপুট পরিষেবাগুলিকে সমর্থন করে৷"</string>
     <string name="average_memory_use" msgid="829566450150198512">"গড় মেমরির ব্যবহার"</string>
     <string name="maximum_memory_use" msgid="7493720799710132496">"সর্বাধিক মেমরির ব্যবহার"</string>
     <string name="memory_usage" msgid="1781358557214390033">"মেমরির ব্যবহার"</string>
