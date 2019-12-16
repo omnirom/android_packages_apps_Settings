@@ -310,6 +310,7 @@ public class WifiCallingSettingsForSub extends SettingsPreferenceFragment
         CarrierConfigManager configManager = (CarrierConfigManager)
                 getSystemService(Context.CARRIER_CONFIG_SERVICE);
         boolean isWifiOnlySupported = true;
+        boolean isImsPreferredSupported = false;
 
         if (configManager != null) {
             PersistableBundle b = configManager.getConfigForSubId(mSubId);
@@ -323,22 +324,66 @@ public class WifiCallingSettingsForSub extends SettingsPreferenceFragment
                         false);
                 isWifiOnlySupported = b.getBoolean(
                         CarrierConfigManager.KEY_CARRIER_WFC_SUPPORTS_WIFI_ONLY_BOOL, true);
+                isImsPreferredSupported = b.getBoolean(
+                        CarrierConfigManager.KEY_CARRIER_WFC_SUPPORTS_IMS_PREFERRED_BOOL, false);
             }
         }
 
-        if (!isWifiOnlySupported) {
-            mButtonWfcMode.setEntries(R.array.wifi_calling_mode_choices_without_wifi_only);
-            mButtonWfcMode.setEntryValues(R.array.wifi_calling_mode_values_without_wifi_only);
-            mButtonWfcMode.setEntrySummaries(R.array.wifi_calling_mode_summaries_without_wifi_only);
+        Log.d(TAG, "isWifiOnlySupported = " + isWifiOnlySupported + " isImsPreferredSupported = "
+                + isImsPreferredSupported);
+        if (isWifiOnlySupported) {
+            if (isImsPreferredSupported) {
+                mButtonWfcMode.setEntries(
+                        R.array.wifi_calling_mode_choices_with_ims_preferred);
+                mButtonWfcMode.setEntryValues(
+                        R.array.wifi_calling_mode_values_with_ims_preferred);
+                mButtonWfcMode.setEntrySummaries(
+                        R.array.wifi_calling_mode_summaries_with_ims_preferred);
 
-            mButtonWfcRoamingMode.setEntries(
-                    R.array.wifi_calling_mode_choices_v2_without_wifi_only);
-            mButtonWfcRoamingMode.setEntryValues(
-                    R.array.wifi_calling_mode_values_without_wifi_only);
-            mButtonWfcRoamingMode.setEntrySummaries(
-                    R.array.wifi_calling_mode_summaries_without_wifi_only);
+                mButtonWfcRoamingMode.setEntries(
+                        R.array.wifi_calling_mode_choices_v2_with_ims_preferred);
+                mButtonWfcRoamingMode.setEntryValues(
+                        R.array.wifi_calling_mode_values_with_ims_preferred);
+                mButtonWfcRoamingMode.setEntrySummaries(
+                        R.array.wifi_calling_mode_summaries_with_ims_preferred);
+            } else {
+                mButtonWfcMode.setEntries(R.array.wifi_calling_mode_choices);
+                mButtonWfcMode.setEntryValues(R.array.wifi_calling_mode_values);
+                mButtonWfcMode.setEntrySummaries(R.array.wifi_calling_mode_summaries);
+
+                mButtonWfcRoamingMode.setEntries(R.array.wifi_calling_mode_choices_v2);
+                mButtonWfcRoamingMode.setEntryValues(R.array.wifi_calling_mode_values);
+                mButtonWfcRoamingMode.setEntrySummaries(R.array.wifi_calling_mode_summaries);
+            }
+        } else {
+            if (isImsPreferredSupported) {
+                mButtonWfcMode.setEntries(
+                        R.array.wifi_calling_mode_choices_without_wifi_only_with_ims_preferred);
+                mButtonWfcMode.setEntryValues(
+                        R.array.wifi_calling_mode_values_without_wifi_only_with_ims_preferred);
+                mButtonWfcMode.setEntrySummaries(
+                        R.array.wifi_calling_mode_summaries_without_wifi_only_with_ims_preferred);
+
+                mButtonWfcRoamingMode.setEntries(
+                        R.array.wifi_calling_mode_choices_v2_without_wifi_only_with_ims_preferred);
+                mButtonWfcRoamingMode.setEntryValues(
+                        R.array.wifi_calling_mode_values_without_wifi_only_with_ims_preferred);
+                mButtonWfcRoamingMode.setEntrySummaries(
+                        R.array.wifi_calling_mode_summaries_without_wifi_only_with_ims_preferred);
+            } else {
+                mButtonWfcMode.setEntries(R.array.wifi_calling_mode_choices_without_wifi_only);
+                mButtonWfcMode.setEntryValues(R.array.wifi_calling_mode_values_without_wifi_only);
+                mButtonWfcMode.setEntrySummaries(
+                        R.array.wifi_calling_mode_summaries_without_wifi_only);
+
+                mButtonWfcRoamingMode.setEntries(
+                        R.array.wifi_calling_mode_choices_v2_without_wifi_only);
+                mButtonWfcRoamingMode.setEntryValues(
+                        R.array.wifi_calling_mode_values_without_wifi_only);
+                mButtonWfcRoamingMode.setEntrySummaries(
+                        R.array.wifi_calling_mode_summaries_without_wifi_only);
+            }
         }
-
 
         // NOTE: Buttons will be enabled/disabled in mPhoneStateListener
         boolean wfcEnabled = mImsManager.isWfcEnabledByUser()
@@ -588,6 +633,9 @@ public class WifiCallingSettingsForSub extends SettingsPreferenceFragment
                     break;
                 case ImsConfig.WfcModeFeatureValueConstants.WIFI_PREFERRED:
                     resId = com.android.internal.R.string.wfc_mode_wifi_preferred_summary;
+                    break;
+                case ImsConfig.WfcModeFeatureValueConstants.IMS_PREFERRED:
+                    resId = com.android.internal.R.string.wfc_mode_ims_preferred_summary;
                     break;
                 default:
                     Log.e(TAG, "Unexpected WFC mode value: " + wfcMode);

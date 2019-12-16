@@ -2607,7 +2607,19 @@
         <item>@*android:string/wfc_mode_cellular_preferred_summary</item>
         <item>@*android:string/wfc_mode_wifi_only_summary</item>
     </string-array>
+    <string-array name="wifi_calling_mode_choices_with_ims_preferred" translatable="false">
+        <item>@*android:string/wfc_mode_ims_preferred_summary</item>
+        <item>@*android:string/wfc_mode_wifi_preferred_summary</item>
+        <item>@*android:string/wfc_mode_cellular_preferred_summary</item>
+        <item>@*android:string/wfc_mode_wifi_only_summary</item>
+    </string-array>
     <string-array name="wifi_calling_mode_choices_v2">
+        <item>Wi-Fi</item>
+        <item>Mobile</item>
+        <item>Wi-Fi only</item>
+    </string-array>
+    <string-array name="wifi_calling_mode_choices_v2_with_ims_preferred">
+        <item>Ims Preferred</item>
         <item>Wi-Fi</item>
         <item>Mobile</item>
         <item>Wi-Fi only</item>
@@ -2617,15 +2629,37 @@
         <item>"1"</item>
         <item>"0"</item>
     </string-array>
+    <string-array name="wifi_calling_mode_values_with_ims_preferred" translatable="false">
+        <item>"10"</item>
+        <item>"2"</item>
+        <item>"1"</item>
+        <item>"0"</item>
+    </string-array>
     <string-array name="wifi_calling_mode_choices_without_wifi_only" translatable="false">
         <item>@*android:string/wfc_mode_wifi_preferred_summary</item>
         <item>@*android:string/wfc_mode_cellular_preferred_summary</item>
     </string-array>
+    <string-array name="wifi_calling_mode_choices_without_wifi_only_with_ims_preferred" translatable="false">
+        <item>@*android:string/wfc_mode_ims_preferred_summary</item>
+        <item>@*android:string/wfc_mode_wifi_preferred_summary</item>
+        <item>@*android:string/wfc_mode_cellular_preferred_summary</item>
+    </string-array>
+
     <string-array name="wifi_calling_mode_choices_v2_without_wifi_only">
         <item>Wi-Fi</item>
         <item>Mobile</item>
     </string-array>
+    <string-array name="wifi_calling_mode_choices_v2_without_wifi_only_with_ims_preferred">
+        <item>Ims Preferred</item>
+        <item>Wi-Fi</item>
+        <item>Mobile</item>
+    </string-array>
     <string-array name="wifi_calling_mode_values_without_wifi_only" translatable="false">
+        <item>"2"</item>
+        <item>"1"</item>
+    </string-array>
+    <string-array name="wifi_calling_mode_values_without_wifi_only_with_ims_preferred" translatable="false">
+        <item>"10"</item>
         <item>"2"</item>
         <item>"1"</item>
     </string-array>
@@ -2636,6 +2670,8 @@
     <string name="wifi_calling_mode_cellular_preferred_summary">If mobile network is unavailable, use Wi\u2011Fi</string>
     <!-- Summary of WFC preference item on the WFC preference selection dialog. [CHAR LIMIT=70]-->
     <string name="wifi_calling_mode_wifi_only_summary">Call over Wi\u2011Fi. If Wi\u2011Fi is lost, call will end.</string>
+    <!-- Summary of WFC preference item on the WFC preference selection dialog. [CHAR LIMIT=70]-->
+    <string name="wifi_calling_mode_ims_preferred_summary">If LTE and Wi\u2011Fi are unavailabe, use 2G/3G</string>
 
     <!-- Wi-Fi Calling settings. Text displayed when Wi-Fi Calling is off -->
     <string name="wifi_calling_off_explanation">When Wi-Fi calling is on, your phone can route calls via Wi-Fi networks or your carrier\u2019s network, depending on your preference and which signal is stronger. Before turning on this feature, check with your carrier regarding fees and other details.<xliff:g id="additional_text" example="Learn More">%1$s</xliff:g></string>
