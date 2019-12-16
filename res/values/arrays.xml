@@ -1393,11 +1393,28 @@
          <item>@string/wifi_calling_mode_wifi_only_summary</item>
     </string-array>
 
+
+    <!-- WiFi calling mode array with ims preferred -->
+    <string-array name="wifi_calling_mode_summaries_with_ims_preferred" translatable="false">
+         <item>@string/wifi_calling_mode_ims_preferred_summary</item>
+         <item>@string/wifi_calling_mode_wifi_preferred_summary</item>
+         <item>@string/wifi_calling_mode_cellular_preferred_summary</item>
+         <item>@string/wifi_calling_mode_wifi_only_summary</item>
+    </string-array>
+
     <!-- WiFi calling mode array without wifi only mode -->
     <string-array name="wifi_calling_mode_summaries_without_wifi_only" translatable="false">
          <item>@string/wifi_calling_mode_wifi_preferred_summary</item>
          <item>@string/wifi_calling_mode_cellular_preferred_summary</item>
     </string-array>
+
+    <!-- WiFi calling mode array without wifi only mode with ims preferred -->
+    <string-array name="wifi_calling_mode_summaries_without_wifi_only_with_ims_preferred" translatable="false">
+         <item>@string/wifi_calling_mode_ims_preferred_summary</item>
+         <item>@string/wifi_calling_mode_wifi_preferred_summary</item>
+         <item>@string/wifi_calling_mode_cellular_preferred_summary</item>
+    </string-array>
+
 
     <!-- Carrier variant of Enhaced 4G LTE Mode title.  [CHAR LIMIT=NONE] -->
     <string-array name="enhanced_4g_lte_mode_title_variant">
