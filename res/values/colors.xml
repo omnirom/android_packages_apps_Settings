@@ -140,7 +140,7 @@
     <!-- End of QR code scanner colors -->
 
     <!-- Search bar background color -->
-    <color name="search_bar_background">@android:color/white</color>
+    <color name="search_bar_background">@*android:color/primary_device_default_settings_light</color>
 
     <!-- Dialog background color -->
     <color name="dialog_background">@*android:color/background_device_default_light</color>
@@ -169,3 +169,4 @@
     <color name="palette_list_dark_mode_color_purple">#c58af9</color> <!-- Material Purple 300 -->
 
 </resources>
+
