@@ -26,6 +26,7 @@
     <string name="omni_device_parts">Paramètres additionnels</string>
     <string name="columns_menu">Disposition des colonnes</string>
     <string name="hide_summary_menu">Masquer le résumé</string>
+    <string name="bars_settings_title">Barres et écran de déverrouillage</string>
     <string name="button_settings_title">Boutons</string>
     <string name="mod_version">Version d\'Omni</string>
     <string name="mod_version_default">Inconnu</string>
@@ -48,6 +49,7 @@
     <string name="adb_over_network_summary">Activer le débogage TCP/IP sur les interfaces réseau (Wi-Fi, réseaux USB). Ce paramètre est réinitialisé au redémarrage</string>
     <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">ATTENTION: Lorsque ADB par le réseau est activé, votre téléphone est ouvert aux intrusions sur tous les réseaux connectés, y compris le réseau data GSM !\n\nN\'utilisez cette fonction que lorsque vous êtes connecté sur des réseaux de confiance.\n\nVoulez-vous vraiment activer cette fonction?</string>
+    <string name="adb_over_network_warning_title">Autoriser ADB sur le réseau ?</string>
     <string name="battery_image">Image de la batterie</string>
     <string name="battery_image_description">Afficher l\'image de la batterie dans la barre d’état</string>
     <string name="twilight_mode_location_dialog">Localisation désactivée</string>
@@ -65,6 +67,17 @@
     <string name="security_settings_fingerprint_sensor_location_left">sur le côté gauche</string>
     <string name="security_settings_fingerprint_sensor_location_right">sur le côté droit</string>
     <string name="screenshot_shutter_sound_title">Émettre un son lors d\'une capture d\'écran</string>
+    <string name="selinux_status">État SELinux</string>
+    <string name="selinux_status_disabled">Désactivé</string>
+    <string name="selinux_status_permissive">Permissif</string>
+    <string name="selinux_status_enforcing">Imposé</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone1_title">Sonnerie du téléphone - SIM 1</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone2_title">Sonnerie du téléphone - SIM 2</string>
+    <string name="weather_title">Prévisions météo</string>
+    <string name="back_height_low_label">Plein</string>
+    <string name="back_height_high_label">Bas</string>
+    <string name="back_options_dialog_title">Options</string>
+    <string name="back_height_message">Hauteur de l\'écran utilisée comme zone pour le geste retour.</string>
 </resources>
