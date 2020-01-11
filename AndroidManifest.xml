@@ -3306,5 +3306,15 @@
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                        android:value="com.android.settings.gestures.SwipeToNotificationSettings"/>
         </activity>
+        <activity android:name="Settings$StyleSettingsActivity"
+                  android:label="@string/style_settings_title"
+                  android:taskAffinity="com.android.settings" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="org.omnirom.omnigears.interfacesettings.StyleSettings" />
+        </activity>
     </application>
 </manifest>

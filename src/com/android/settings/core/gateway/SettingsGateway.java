@@ -149,6 +149,7 @@ import com.android.settings.wifi.tether.WifiTetherSettings;
 
 import org.omnirom.omnigears.OmniDashboardFragment;
 import org.omnirom.omnigears.ButtonSettings;
+import org.omnirom.omnigears.interfacesettings.StyleSettings;
 import org.omnirom.omnigears.moresettings.MoreSettings;
 import org.omnirom.omnigears.moresettings.OmniJawsSettings;
 
@@ -292,6 +293,7 @@ public class SettingsGateway {
             ButtonSettings.class.getName(),
             MoreSettings.class.getName(),
             OmniJawsSettings.class.getName(),
+            StyleSettings.class.getName(),
     };
 
     public static final String[] SETTINGS_FOR_RESTRICTED = {
@@ -334,5 +336,6 @@ public class SettingsGateway {
             Settings.ButtonSettingsActivity.class.getName(),
             Settings.MoreSettingsActivity.class.getName(),
             Settings.OmniJawsSettingsActivity.class.getName(),
+            Settings.StyleSettingsActivity.class.getName(),
     };
 }
