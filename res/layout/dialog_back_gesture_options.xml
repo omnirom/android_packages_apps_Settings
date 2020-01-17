@@ -72,7 +72,7 @@
         android:layout_marginStart="12dp"
         android:textAppearance="?android:attr/textAppearance"
         android:text="@string/back_height_message"
-        style="@android:style/TextAppearance.Material.Subhead" />
+        style="@*android:style/TextAppearance.DeviceDefault.Subhead" />
 
     <SeekBar
         android:id="@+id/back_height_seekbar"
