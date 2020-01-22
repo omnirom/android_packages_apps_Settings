@@ -96,6 +96,7 @@
     <string name="back_height_high_label">Bottom</string>
     <string name="back_options_dialog_title">Options</string>
     <string name="back_height_message">Amount of screen height used as touchable region for back gesture.</string>
+    <string name="back_block_ime_title">Disable height of virtual keyboard as touchable region for back gesture</string>
 
     <string name="app_package_name_title">Package</string>
     <string name="app_version_title">Version</string>
