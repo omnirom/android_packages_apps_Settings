@@ -117,4 +117,28 @@
                   android:ellipsize="marquee" />
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:layout_marginStart="12dp"
+                  android:layout_gravity="center_vertical"
+                  android:gravity="center_vertical"/>
+
+        <Switch   android:id="@+id/back_block_ime"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginEnd="12dp"
+                  android:text="@string/back_block_ime_title"
+                  android:textAppearance="?android:attr/textAppearance"
+                  android:layout_gravity="center_vertical" />
+
+    </LinearLayout>
 </LinearLayout>
