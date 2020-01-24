@@ -26,6 +26,7 @@
     <string name="omni_device_parts">端末の機能</string>
     <string name="columns_menu">列のレイアウト</string>
     <string name="hide_summary_menu">概要を非表示にする</string>
+    <string name="bars_settings_title">バーとロック画面</string>
     <string name="button_settings_title">ボタン</string>
     <string name="mod_version">Omniバージョン</string>
     <string name="mod_version_default">不明</string>
@@ -48,6 +49,7 @@
     <string name="adb_over_network_summary">ネットワークインタフェース (Wi-Fi や USB) 越しの TCP/IP デバッグを有効にする (この設定は再起動でリセットされます)</string>
     <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">警告: ネットワーク経由での ADB を有効にすると、あなたの携帯電話は GSM データネットワークを含む接続している全てのネットワークから侵入できるようになります。\n\nこの機能は信頼されたネットワークに接続している時にのみ使用して下さい。\n\nこの機能を本当に有効にしますか?</string>
+    <string name="adb_over_network_warning_title">ネット経由の ADB を許可しますか?</string>
     <string name="battery_image">バッテリーアイコン</string>
     <string name="battery_image_description">ステータスバーにバッテリーアイコンを表示する</string>
     <string name="twilight_mode_location_dialog">位置情報は無効</string>
@@ -65,6 +67,17 @@
     <string name="security_settings_fingerprint_sensor_location_left">左側面</string>
     <string name="security_settings_fingerprint_sensor_location_right">右側面</string>
     <string name="screenshot_shutter_sound_title">スクリーンショットのシャッター音</string>
+    <string name="selinux_status">SELinuxステータス</string>
+    <string name="selinux_status_disabled">Disabled</string>
+    <string name="selinux_status_permissive">Permissive</string>
+    <string name="selinux_status_enforcing">Enforcing</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone1_title">着信音 - SIM 1</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone2_title">着信音 - SIM 2</string>
+    <string name="weather_title">天気</string>
+    <string name="back_height_low_label">全部</string>
+    <string name="back_height_high_label">下部</string>
+    <string name="back_options_dialog_title">オプション</string>
+    <string name="back_height_message">戻るジェスチャーの入力領域に用いる画面の高さ</string>
 </resources>
