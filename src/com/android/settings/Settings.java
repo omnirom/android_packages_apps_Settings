@@ -184,4 +184,6 @@ public class Settings extends SettingsActivity {
     public static class OmniJawsSettingsActivity extends SettingsActivity { /* empty */ }
     public static class SwipeToNotificationSuggestionActivity extends SettingsActivity { /* empty */ }
     public static class StyleSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class DozeSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class LockscreenSettingsActivity extends SettingsActivity { /* empty */ }
 }
