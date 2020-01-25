@@ -337,5 +337,7 @@ public class SettingsGateway {
             Settings.MoreSettingsActivity.class.getName(),
             Settings.OmniJawsSettingsActivity.class.getName(),
             Settings.StyleSettingsActivity.class.getName(),
+            Settings.DozeSettingsActivity.class.getName(),
+            Settings.LockscreenSettingsActivity.class.getName(),
     };
 }
