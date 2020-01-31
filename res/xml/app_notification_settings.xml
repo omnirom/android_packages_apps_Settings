@@ -61,11 +61,6 @@
         android:title="@string/notification_show_lights_title"
         settings:useAdditionalSummary="true"/>
 
-    <com.android.settingslib.RestrictedSwitchPreference
-        android:key="show_light_on_zen"
-        android:dependency="lights"
-        android:title="@string/show_light_on_zen_title"/>
-
     <!-- Custom led color -->
     <org.omnirom.omnilib.preference.ColorSelectPreference
         android:key="custom_light"
