@@ -134,7 +134,6 @@ public class ChannelNotificationSettings extends NotificationSettingsBase {
         mControllers.add(new CustomLightsPreferenceController(context, mBackend));
         mControllers.add(new CustomLightOnTimePreferenceController(context, mBackend));
         mControllers.add(new CustomLightOffTimePreferenceController(context, mBackend));
-        mControllers.add(new LightOnZenPreferenceController(context, mBackend));
         mControllers.add(new BadgePreferenceController(context, mBackend));
         mControllers.add(new DndPreferenceController(context, mBackend));
         mControllers.add(new NotificationsOffPreferenceController(context));
