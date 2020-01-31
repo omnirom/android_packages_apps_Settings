@@ -123,12 +123,6 @@
             android:title="@string/custom_light_title"
             omnilib:ledPreview="true" />
 
-        <com.android.settingslib.RestrictedSwitchPreference
-            android:key="show_light_on_zen"
-            android:dependency="lights"
-            android:order="19"
-            android:title="@string/show_light_on_zen_title"/>
-
         <org.omnirom.omnilib.preference.SeekBarPreference
             android:key="custom_light_on_time"
             android:dependency="lights"
