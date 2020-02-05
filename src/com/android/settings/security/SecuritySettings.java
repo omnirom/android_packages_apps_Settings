@@ -20,7 +20,10 @@ import static com.android.settings.security.EncryptionStatusPreferenceController
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.provider.SearchIndexableResource;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
 import com.android.settings.biometrics.face.FaceProfileStatusPreferenceController;
@@ -60,6 +63,16 @@ public class SecuritySettings extends DashboardFragment {
     @Override
     protected int getPreferenceScreenResId() {
         return R.xml.security_dashboard_settings;
+    }
+
+    @Override
+    public void onCreate(Bundle icicle) {
+        super.onCreate(icicle);
+        if (!com.android.internal.util.du.Utils.isPackageInstalled(getContext(), "com.android.vending")) {
+            PreferenceScreen screen = getPreferenceScreen();
+            Preference mSecurityStatus = (Preference) findPreference("security_status");
+            screen.removePreference(mSecurityStatus);
+        }
     }
 
     @Override
