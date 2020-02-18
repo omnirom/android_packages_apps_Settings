@@ -21,6 +21,8 @@ import android.hardware.display.ColorDisplayManager;
 import androidx.preference.Preference;
 import com.android.settings.core.BasePreferenceController;
 
+import java.time.LocalTime;
+
 public class NightDisplayCustomStartTimePreferenceController extends BasePreferenceController {
 
     private ColorDisplayManager mColorDisplayManager;
@@ -41,10 +43,23 @@ public class NightDisplayCustomStartTimePreferenceController extends BasePrefere
 
     @Override
     public final void updateState(Preference preference) {
+        int mode = mColorDisplayManager.getNightDisplayAutoMode();
         preference
-                .setVisible(mColorDisplayManager.getNightDisplayAutoMode()
-                        == ColorDisplayManager.AUTO_MODE_CUSTOM_TIME);
-        preference.setSummary(mTimeFormatter.getFormattedTimeString(
-                mColorDisplayManager.getNightDisplayCustomStartTime()));
+                .setVisible(mode == ColorDisplayManager.AUTO_MODE_CUSTOM_TIME ||
+                        mode == ColorDisplayManager.AUTO_MODE_TWILIGHT);
+        preference.setShouldDisableView(false);
+        if (mode == ColorDisplayManager.AUTO_MODE_CUSTOM_TIME) {
+            preference.setSummary(mTimeFormatter.getFormattedTimeString(
+                    mColorDisplayManager.getNightDisplayCustomStartTime()));
+            preference.setEnabled(true);
+        } else if (mode == ColorDisplayManager.AUTO_MODE_TWILIGHT) {
+            LocalTime t = mColorDisplayManager.getNightDisplayAutoStartTime();
+            if (t != null) {
+                preference.setSummary(mTimeFormatter.getFormattedTimeString(t));
+            } else {
+                preference.setSummary("");
+            }
+            preference.setEnabled(false);
+        }
     }
 }
