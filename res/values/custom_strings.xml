@@ -105,4 +105,7 @@
     <string name="device_info_protected_single_press">Tap to show info</string>
     <string name="unknown_night_light_time">Unknown - press to update</string>
     <string name="night_display_location_text">\n\nThe schedule from sunset to sunrise requires enabled location services to get the correct times for your location.</string>
+
+    <string name="auto_brightness_min_title">Minimal brightness</string>
+    <string name="auto_brightness_min_summary">The minimal brightness that will be used when adaptive brightness is enabled</string>
 </resources>
