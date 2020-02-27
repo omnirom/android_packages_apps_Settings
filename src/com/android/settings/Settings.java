@@ -186,4 +186,5 @@ public class Settings extends SettingsActivity {
     public static class StyleSettingsActivity extends SettingsActivity { /* empty */ }
     public static class DozeSettingsActivity extends SettingsActivity { /* empty */ }
     public static class LockscreenSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class ButtonBrightnessSettingsActivity extends SettingsActivity { /* empty */ }
 }
