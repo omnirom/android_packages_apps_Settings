@@ -100,7 +100,7 @@ import java.util.List;
 public class RadioInfo extends Activity {
     private static final String TAG = "RadioInfo";
 
-    private static final String[] mPreferredNetworkLabels = {
+    private static final String[] PREFERRED_NETWORK_LABELS_MAX_LTE = {
             "GSM/WCDMA preferred",
             "GSM only",
             "WCDMA only",
@@ -124,6 +124,44 @@ public class RadioInfo extends Activity {
             "TD-SCDMA/GSM/WCDMA/LTE",
             "TD-SCDMA/GSM/WCDMA/CDMA/EVDO",
             "TD-SCDMA/LTE/GSM/WCDMA/CDMA/EVDO",
+            "Unknown"
+    };
+
+    private static final String[] PREFERRED_NETWORK_LABELS = {
+            "GSM/WCDMA preferred",
+            "GSM only",
+            "WCDMA only",
+            "GSM/WCDMA auto (PRL)",
+            "CDMA/EvDo auto (PRL)",
+            "CDMA only",
+            "EvDo only",
+            "CDMA/EvDo/GSM/WCDMA (PRL)",
+            "CDMA + LTE/EvDo (PRL)",
+            "GSM/WCDMA/LTE (PRL)",
+            "LTE/CDMA/EvDo/GSM/WCDMA (PRL)",
+            "LTE only",
+            "LTE/WCDMA",
+            "TDSCDMA only",
+            "TDSCDMA/WCDMA",
+            "LTE/TDSCDMA",
+            "TDSCDMA/GSM",
+            "LTE/TDSCDMA/GSM",
+            "TDSCDMA/GSM/WCDMA",
+            "LTE/TDSCDMA/WCDMA",
+            "LTE/TDSCDMA/GSM/WCDMA",
+            "TDSCDMA/CDMA/EvDo/GSM/WCDMA ",
+            "LTE/TDSCDMA/CDMA/EvDo/GSM/WCDMA",
+            "NR only",
+            "NR/LTE",
+            "NR/LTE/CDMA/EvDo",
+            "NR/LTE/GSM/WCDMA",
+            "NR/LTE/CDMA/EvDo/GSM/WCDMA",
+            "NR/LTE/WCDMA",
+            "NR/LTE/TDSCDMA",
+            "NR/LTE/TDSCDMA/GSM",
+            "NR/LTE/TDSCDMA/WCDMA",
+            "NR/LTE/TDSCDMA/GSM/WCDMA",
+            "NR/LTE/TDSCDMA/CDMA/EvDo/GSM/WCDMA",
             "Unknown"
     };
 
@@ -251,6 +289,8 @@ public class RadioInfo extends Activity {
     private int mPreferredNetworkTypeResult;
     private int mCellInfoRefreshRateIndex;
     private int mSelectedPhoneIndex;
+
+    private String[] mPreferredNetworkLabels;
 
     private final NetworkRequest mDefaultNetworkRequest = new NetworkRequest.Builder()
             .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
@@ -471,6 +511,10 @@ public class RadioInfo extends Activity {
 
         mPhyChanConfig = (TextView) findViewById(R.id.phy_chan_config);
 
+        final long supportedRadioBitmask = mTelephonyManager.getSupportedRadioAccessFamily();
+        mPreferredNetworkLabels =
+                ((TelephonyManager.NETWORK_TYPE_BITMASK_NR & supportedRadioBitmask) > 0)
+                        ? PREFERRED_NETWORK_LABELS : PREFERRED_NETWORK_LABELS_MAX_LTE;
         preferredNetworkType = (Spinner) findViewById(R.id.preferredNetworkType);
         ArrayAdapter<String> preferredNetworkTypeAdapter = new ArrayAdapter<String> (this,
                 android.R.layout.simple_spinner_item, mPreferredNetworkLabels);
