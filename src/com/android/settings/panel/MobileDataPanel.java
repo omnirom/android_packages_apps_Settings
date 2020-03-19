@@ -20,6 +20,8 @@ package com.android.settings.panel;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.content.Intent;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
 import android.net.Uri;
 
 import com.android.settings.R;
@@ -37,6 +39,7 @@ import java.util.List;
 public class MobileDataPanel implements PanelContent {
 
     private final Context mContext;
+    private final SubscriptionManager mSubscriptionManager;
 
     public static MobileDataPanel create(Context context) {
         return new MobileDataPanel(context);
@@ -44,11 +47,12 @@ public class MobileDataPanel implements PanelContent {
 
     private MobileDataPanel(Context context) {
         mContext = context.getApplicationContext();
+        mSubscriptionManager = context.getSystemService(SubscriptionManager.class);
     }
 
     @Override
     public CharSequence getTitle() {
-        return mContext.getText(R.string.cellular_data_title);
+        return getSummary();
     }
 
     @Override
@@ -77,5 +81,15 @@ public class MobileDataPanel implements PanelContent {
     @Override
     public int getMetricsCategory() {
         return SettingsEnums.PANEL_MOBILE_DATA;
+    }
+
+    private CharSequence getSummary() {
+        final SubscriptionInfo defaultSubscription =
+                mSubscriptionManager.getDefaultDataSubscriptionInfo();
+        if (defaultSubscription == null) {
+            return mContext.getText(R.string.cellular_data_title);
+        }
+
+        return defaultSubscription.getDisplayName();
     }
 }
