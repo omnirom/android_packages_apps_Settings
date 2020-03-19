@@ -148,7 +148,7 @@ public class WifiSlice implements CustomSliceable {
     private ListBuilder getHeaderRow(boolean isWifiEnabled) {
         final IconCompat icon = IconCompat.createWithResource(mContext,
                 R.drawable.ic_settings_wireless);
-        final String title = mContext.getString(R.string.wifi_settings);
+        final String title = mContext.getString(R.string.wifi_settings_master_switch_title);
         final PendingIntent toggleAction = getBroadcastIntent(mContext);
         final PendingIntent primaryAction = getPrimaryAction();
         final SliceAction primarySliceAction = SliceAction.createDeeplink(primaryAction, icon,
