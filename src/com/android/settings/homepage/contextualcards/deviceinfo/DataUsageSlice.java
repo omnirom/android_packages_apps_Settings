@@ -75,7 +75,7 @@ public class DataUsageSlice implements CustomSliceable {
 
         SubscriptionManager subscriptionManager = (SubscriptionManager) mContext
                 .getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
-        int defaultSubId = subscriptionManager.getDefaultSubscriptionId();
+        int defaultSubId = subscriptionManager.getDefaultDataSubscriptionId();
         if (defaultSubId == SubscriptionManager.INVALID_SUBSCRIPTION_ID) {
             info = dataUsageController.getDataUsageInfo();
         } else {
