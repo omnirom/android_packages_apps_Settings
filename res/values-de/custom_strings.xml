@@ -81,8 +81,13 @@
     <string name="back_height_high_label">Unten</string>
     <string name="back_options_dialog_title">Einstellungen</string>
     <string name="back_height_message">Höhe des Bildschirms, der als berührbare Region für die Zurück-Geste verwendet wird.</string>
+    <string name="back_block_ime_title">Blockiere die Höhe der Tastatur als berührbare Region für die Zurück-Geste</string>
     <string name="app_package_name_title">Paket</string>
     <string name="app_version_title">Version</string>
     <!-- String for removal of sensitive info on about, depending on tap -->
     <string name="device_info_protected_single_press">Tippen, um Info anzuzeigen</string>
+    <string name="unknown_night_light_time">Unbekannt - zum Aktualisieren drücken</string>
+    <string name="night_display_location_text">\n\nDer Zeitplan vom Sonnenuntergang bis zum Sonnenaufgang erfordert aktivierte Standortdienste, um die richtigen Zeiten für Ihren Standort zu erhalten.</string>
+    <string name="auto_brightness_min_title">Minimale Helligkeitsstufe</string>
+    <string name="auto_brightness_description_new">Ihre Bildschirmhelligkeit wird sich automatisch an Ihre Umgebung und Ihre Aktivitäten anpassen.\n\nSie können die minimale Helligkeitsstufe anpassen, die verwendet wird.</string>
 </resources>

@@ -38,8 +38,8 @@
     <!-- Custom light color -->
     <string name="light_customization">Led ışık bildirimi</string>
     <string name="custom_light_title">Işık rengi</string>
-    <string name="custom_light_on_time_title">"Işığın yanma müddeti (ms)"</string>
-    <string name="custom_light_off_time_title">"Işığın yanmama müddeti (ms)"</string>
+    <string name="custom_light_on_time_title">"Işığın yanıp sönerken yanma müddeti (ms)"</string>
+    <string name="custom_light_off_time_title">"Işığın yanıp sönerken yanmama müddeti (ms)"</string>
     <string name="app_notifications_info_desc">Işık renklerini ve diğer tercihleri ayarlamak için yukarıdaki kanallardan birine dokunun</string>
     <string name="value_equals_default">Kendiliğinden</string>
     <string name="show_light_on_zen_title">Rahatsız Etmeyin modunda yanıp sön</string>
@@ -81,8 +81,13 @@
     <string name="back_height_high_label">Alt</string>
     <string name="back_options_dialog_title">Tercihler</string>
     <string name="back_height_message">Geri hareketi için dokunulabilir bölge olarak kullanılan ekran yüksekliğinin miktarı.</string>
+    <string name="back_block_ime_title">Sanal klavyenin yüksekliğini geri hareketinin dokunabilir bölgesi için engelle</string>
     <string name="app_package_name_title">Paket</string>
     <string name="app_version_title">Versiyon</string>
     <!-- String for removal of sensitive info on about, depending on tap -->
     <string name="device_info_protected_single_press">Bilgiyi göstermek için dokunun</string>
+    <string name="unknown_night_light_time">Bilinmiyor - güncellemek için dokunun</string>
+    <string name="night_display_location_text">\n\nGün batımı ve gün doğumu arasındaki zamanlama, bulunduğunuz yerin doğru saatlerini almak üzere, devreye alınmış konum hizmetlerini gerektirir.</string>
+    <string name="auto_brightness_min_title">Asgarî parlaklık seviyesi</string>
+    <string name="auto_brightness_description_new">Ekran parlaklığınız, çevrenize ve faaliyetlerinize kendiliğinden uyum sağlayacaktır.\n\nKullanılacak asgarî parlaklık seviyesini ayarlayabilirsiniz.</string>
 </resources>

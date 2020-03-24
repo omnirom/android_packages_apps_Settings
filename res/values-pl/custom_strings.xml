@@ -20,8 +20,8 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="style_settings_title">Styl</string>
     <string name="header_category_omni">OmniGears</string>
-    <string name="omni_dashboard_summary">zOmnifikuj swoje urządzenie</string>
-    <string name="style_settings_summary">Tapety i inny swag</string>
+    <string name="omni_dashboard_summary">Omnifikuj swoje urządzenie</string>
+    <string name="style_settings_summary">Tapety i personalizacja</string>
     <string name="omni_device_parts">Funkcje urządzenia</string>
     <string name="columns_menu">Układ kolumn</string>
     <string name="hide_summary_menu">Ukryj podsumowanie</string>
@@ -48,7 +48,7 @@
     <string name="adb_over_network_summary">Aktywuj debugowanie TCP/IP przez interfejs sieciowy (Wi-Fi, sieci USB). Ustawienie zostanie zresetowane po ponownym uruchomieniu</string>
     <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">UWAGA: Kiedy ADB przez sieć jest aktywne, telefon jest otwarty na instrukcje w każdej połączonej sieci, w tym GSM!\n\nUżywaj tej funkcji tylko, gdy jesteś połączony z zaufanymi sieciami.\n\nCzy na pewno chcesz aktywować?</string>
-    <string name="adb_over_network_warning_title">Zezwolić ADB przez sieć?</string>
+    <string name="adb_over_network_warning_title">Zezwolić na ADB przez sieć?</string>
     <string name="battery_image">Wygląd ikony baterii</string>
     <string name="battery_image_description">Pokazuj ikonę baterii na pasku stanu</string>
     <string name="twilight_mode_location_dialog">Lokalizacja jest wyłączona</string>
@@ -81,8 +81,13 @@
     <string name="back_height_high_label">Dół</string>
     <string name="back_options_dialog_title">Opcje</string>
     <string name="back_height_message">Wysokość ekranu użyta jako obszar dotykowy dla gestu wstecz.</string>
+    <string name="back_block_ime_title">Zablokuj wysokość wirtualnej klawiatury jako obszar dotykowy gestu wstecz</string>
     <string name="app_package_name_title">Pakiet</string>
     <string name="app_version_title">Wersja</string>
     <!-- String for removal of sensitive info on about, depending on tap -->
     <string name="device_info_protected_single_press">Dotknij, aby wyświetlić informacje</string>
+    <string name="unknown_night_light_time">Nieznany - naciśnij aby zaktualizować</string>
+    <string name="night_display_location_text">\n\nHarmonogram od zachodu do wschodu słońca wymaga włączenia usług lokalizacyjnych, aby uzyskać odpowiednie ustawienia czasu dla Twojej lokalizacji.</string>
+    <string name="auto_brightness_min_title">Minimalny poziom jasności</string>
+    <string name="auto_brightness_description_new">Jasność ekranu zostanie automatycznie dostosowana do Twojego środowiska i aktywności.\n\nMożesz dostosować minimalny poziom jasności, który zostanie użyty.</string>
 </resources>

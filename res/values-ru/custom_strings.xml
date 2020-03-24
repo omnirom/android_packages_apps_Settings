@@ -81,8 +81,13 @@
     <string name="back_height_high_label">Низ</string>
     <string name="back_options_dialog_title">Настройки</string>
     <string name="back_height_message">Высота экрана, используемая в качестве сенсорной области для жеста назад.</string>
+    <string name="back_block_ime_title">Отключить область виртуальной клавиатуры в качестве сенсорной области для жеста назад</string>
     <string name="app_package_name_title">Пакет</string>
     <string name="app_version_title">Версия</string>
     <!-- String for removal of sensitive info on about, depending on tap -->
     <string name="device_info_protected_single_press">Нажмите, чтобы показать информацию</string>
+    <string name="unknown_night_light_time">Неизвестное - нажмите для обновления</string>
+    <string name="night_display_location_text">\n\nРасписание от заката до восхода солнца требует включенные службы определения местоположения, чтобы получить правильное время для вашего местоположения.</string>
+    <string name="auto_brightness_min_title">Минимальный уровень яркости</string>
+    <string name="auto_brightness_description_new">Яркость экрана будет автоматически регулироваться в вашей среде и активности.\n\nВы можете настроить минимальный уровень яркости, который будет использоваться.</string>
 </resources>

@@ -81,8 +81,13 @@
     <string name="back_height_high_label">Dole</string>
     <string name="back_options_dialog_title">Možnosti</string>
     <string name="back_height_message">Hodnota výšky obrazovky použité jako dotyková oblast pro gesto Zpět.</string>
+    <string name="back_block_ime_title">Blokovat výšku virtuální klávesnice jako dotykové oblasti pro gesto Zpět</string>
     <string name="app_package_name_title">Balíček</string>
     <string name="app_version_title">Verze</string>
     <!-- String for removal of sensitive info on about, depending on tap -->
     <string name="device_info_protected_single_press">Klepnutím zobrazit informace</string>
+    <string name="unknown_night_light_time">Není známo - stiskněte pro aktualizaci</string>
+    <string name="night_display_location_text">\n\nPlán od západu do východu slunce vyžaduje povolené lokalizační služby k získání správného času pro vaší polohu.</string>
+    <string name="auto_brightness_min_title">Minimální úroveň jasu</string>
+    <string name="auto_brightness_description_new">Jas obrazovky se automaticky přizpůsobí prostředí a vašim aktivitám.\n\nMůžete nastavit minimální úroveň jasu, která bude použita.</string>
 </resources>

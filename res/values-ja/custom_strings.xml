@@ -81,8 +81,13 @@
     <string name="back_height_high_label">下部</string>
     <string name="back_options_dialog_title">オプション</string>
     <string name="back_height_message">戻るジェスチャーの入力領域に用いる画面の高さ</string>
+    <string name="back_block_ime_title">戻るジェスチャーのタッチ可能な領域として仮想キーボードの高さを無効化</string>
     <string name="app_package_name_title">パッケージ</string>
     <string name="app_version_title">バージョン</string>
     <!-- String for removal of sensitive info on about, depending on tap -->
     <string name="device_info_protected_single_press">タップして情報を表示</string>
+    <string name="unknown_night_light_time">不明 - 押して更新</string>
+    <string name="night_display_location_text">\n\n日没から日の出までのスケジュールでは、位置情報サービスを有効にして、現在位置の正しい時刻を取得する必要があります。</string>
+    <string name="auto_brightness_min_title">最小の明るさレベル</string>
+    <string name="auto_brightness_description_new">画面の明るさは環境やアクティビティに合わせて自動的に調整されます。\n\n使用される最小の明るさレベルを調整できます。</string>
 </resources>
