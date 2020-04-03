@@ -513,6 +513,7 @@ public class DevelopmentSettingsDashboardFragment extends RestrictedDashboardFra
         controllers.add(new TrustAgentsExtendUnlockPreferenceController(context));
         controllers.add(new TrustLostLocksScreenPreferenceController(context));
         controllers.add(new AdbNetworkPreferenceController(context, fragment));
+        controllers.add(new UsbDiagPreferenceController(context));
         return controllers;
     }
 
