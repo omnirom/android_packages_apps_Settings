@@ -542,6 +542,8 @@ public class DevelopmentSettingsDashboardFragment extends RestrictedDashboardFra
         controllers.add(new SharedDataPreferenceController(context));
         controllers.add(new OverlaySettingsPreferenceController(context));
 
+        // Omni
+        controllers.add(new UsbDiagPreferenceController(context));
         return controllers;
     }
 

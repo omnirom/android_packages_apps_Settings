@@ -19,6 +19,9 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
+    <string name="usb_enable_diagnostics">Enable USB diagnostics</string>
+    <string name="usb_enable_diagnostics_summary">Put device into USB diagnostics mode</string>
+
     <string name="selinux_status">SELinux status</string>
     <string name="selinux_status_disabled">Disabled</string>
     <string name="selinux_status_permissive">Permissive</string>
