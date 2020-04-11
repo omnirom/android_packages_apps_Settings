@@ -147,6 +147,12 @@
             android:title="@string/adb_over_network"
             android:summary="@string/adb_over_network_summary" />
 
+        <SwitchPreference
+            android:key="usb_enable_diagnostics"
+            android:title="@string/usb_enable_diagnostics"
+            android:dependency="enable_adb"
+            android:summary="@string/usb_enable_diagnostics_summary" />
+
         <Preference android:key="clear_adb_keys"
                     android:title="@string/clear_adb_keys" />
 
