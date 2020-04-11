@@ -94,7 +94,7 @@ public class BluetoothDevicesSlice implements CustomSliceable {
         final IconCompat icon = IconCompat.createWithResource(mContext,
                 com.android.internal.R.drawable.ic_settings_bluetooth);
         final IconCompat pairNewIcon = IconCompat.createWithResource(mContext,
-                R.drawable.ic_add_24dp);
+                com.android.internal.R.drawable.ic_plus);
         final CharSequence title = mContext.getText(R.string.bluetooth_devices);
         final CharSequence titleNoBluetoothDevices = mContext.getText(
                 R.string.no_bluetooth_devices);
@@ -109,7 +109,8 @@ public class BluetoothDevicesSlice implements CustomSliceable {
                 ListBuilder.ICON_IMAGE, titlePairNew);
         final ListBuilder listBuilder =
                 new ListBuilder(mContext, getUri(), ListBuilder.INFINITY)
-                        .setAccentColor(COLOR_NOT_TINTED);
+                        .setAccentColor(Utils.getColorAttrDefaultColor(mContext,
+                        android.R.attr.textColorPrimary));
 
         // Get row builders by Bluetooth devices.
         final List<ListBuilder.RowBuilder> rows = getBluetoothRowBuilder();
@@ -264,7 +265,7 @@ public class BluetoothDevicesSlice implements CustomSliceable {
         List<CachedBluetoothDevice> bluetoothDevices = getConnectedBluetoothDevices();
         for (CachedBluetoothDevice bluetoothDevice : bluetoothDevices) {
             final ListBuilder.RowBuilder rowBuilder = new ListBuilder.RowBuilder()
-                    .setTitleItem(getBluetoothDeviceIcon(bluetoothDevice), ListBuilder.ICON_IMAGE)
+                    .setTitleItem(getBluetoothDeviceIcon(bluetoothDevice), ListBuilder.SMALL_IMAGE)
                     .setTitle(bluetoothDevice.getName())
                     .setSubtitle(bluetoothDevice.getConnectionSummary());
 
