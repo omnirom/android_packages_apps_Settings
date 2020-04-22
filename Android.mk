@@ -21,7 +21,10 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_USE_AAPT2 := true
 
 LOCAL_SRC_FILES := $(call all-java-files-under, src)
+
+ifneq (,$(wildcard packages/apps/OmniGears))
 LOCAL_SRC_FILES += $(call all-java-files-under, ../OmniGears/src)
+endif
 
 LOCAL_STATIC_ANDROID_LIBRARIES := \
     androidx-constraintlayout_constraintlayout \
@@ -55,16 +58,31 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
 
 LOCAL_PROGUARD_FLAG_FILES := proguard.flags
 
+ifneq (,$(wildcard packages/apps/OmniGears))
 LOCAL_AAPT_FLAGS := --auto-add-overlay \
     --extra-packages org.omnirom.omnigears
 
 LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/res \
     packages/apps/OmniGears/res
+else
+LOCAL_AAPT_FLAGS := --auto-add-overlay
+
+LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/res \
+    $(LOCAL_PATH)/res-common
+endif
 
 ifneq ($(INCREMENTAL_BUILDS),)
     LOCAL_PROGUARD_ENABLED := disabled
     LOCAL_JACK_ENABLED := incremental
     LOCAL_JACK_FLAGS := --multi-dex native
+endif
+
+LOCAL_MANIFEST_FILE := AndroidManifest.xml
+
+ifneq (,$(wildcard packages/apps/OmniGears))
+# will be merged with AndroidManifest.xml
+LOCAL_FULL_LIBS_MANIFEST_FILES := \
+    packages/apps/OmniGears/AndroidManifest-omni.xml
 endif
 
 include frameworks/base/packages/SettingsLib/common.mk

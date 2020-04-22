@@ -148,13 +148,6 @@ import com.android.settings.wifi.p2p.WifiP2pSettings;
 import com.android.settings.wifi.savedaccesspoints.SavedAccessPointsWifiSettings;
 import com.android.settings.wifi.tether.WifiTetherSettings;
 
-import org.omnirom.omnigears.OmniDashboardFragment;
-import org.omnirom.omnigears.ButtonSettings;
-import org.omnirom.omnigears.ButtonBrightnessSettings;
-import org.omnirom.omnigears.interfacesettings.StyleSettings;
-import org.omnirom.omnigears.moresettings.MoreSettings;
-import org.omnirom.omnigears.moresettings.OmniJawsSettings;
-
 public class SettingsGateway {
 
     /**
@@ -292,12 +285,12 @@ public class SettingsGateway {
             GlobalActionsPanelSettings.class.getName(),
             DarkModeSettingsFragment.class.getName(),
             // omni additions start
-            OmniDashboardFragment.class.getName(),
-            ButtonSettings.class.getName(),
-            MoreSettings.class.getName(),
-            OmniJawsSettings.class.getName(),
-            StyleSettings.class.getName(),
-            ButtonBrightnessSettings.class.getName(),
+            "org.omnirom.omnigears.OmniDashboardFragment",
+            "org.omnirom.omnigears.ButtonSettings",
+            "org.omnirom.omnigears.moresettings.MoreSettings",
+            "org.omnirom.omnigears.moresettings.OmniJawsSettings",
+            "org.omnirom.omnigears.interfacesettings.StyleSettings",
+            "org.omnirom.omnigears.ButtonBrightnessSettings",
     };
 
     public static final String[] SETTINGS_FOR_RESTRICTED = {
