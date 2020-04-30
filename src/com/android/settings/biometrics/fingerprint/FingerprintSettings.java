@@ -540,6 +540,18 @@ public class FingerprintSettings extends SubSettings {
             renameDialog.setDeleteInProgress(mRemovalSidecar.inProgress());
             renameDialog.setArguments(args);
             renameDialog.setTargetFragment(this, 0);
+            renameDialog.setAuthenticateSidecar(
+                () -> {
+                    if (mAuthenticateSidecar != null) {
+                        mAuthenticateSidecar.stopAuthentication();
+                    }
+                }
+                ,
+                () -> {
+                    if (mAuthenticateSidecar != null && !mInFingerprintLockout) {
+                        mAuthenticateSidecar.startAuthentication(mUserId);
+                    }
+                });
             renameDialog.show(getFragmentManager(), RenameDialog.class.getName());
         }
 
@@ -738,9 +750,17 @@ public class FingerprintSettings extends SubSettings {
             private ImeAwareEditText mDialogTextField;
             private AlertDialog mAlertDialog;
             private boolean mDeleteInProgress;
+            private Runnable mStopFingerprint;
+            private Runnable mStartFingerprint;
+            private boolean mInFingerprintLockout;
 
             public void setDeleteInProgress(boolean deleteInProgress) {
                 mDeleteInProgress = deleteInProgress;
+            }
+
+            public void setAuthenticateSidecar(Runnable stopFingerprint, Runnable startFingerprint) {
+                mStopFingerprint = stopFingerprint;
+                mStartFingerprint = startFingerprint;
             }
 
             @Override
@@ -778,13 +798,17 @@ public class FingerprintSettings extends SubSettings {
                                             parent.renameFingerPrint(mFp.getBiometricId(),
                                                     newName);
                                         }
+                                        mDialogTextField.clearFocus();
                                         dialog.dismiss();
+                                        mStartFingerprint.run();
                                     }
                                 })
                         .create();
                 mAlertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
                     public void onShow(DialogInterface dialog) {
+                        // dont let e.g. fod intercept events
+                        mStopFingerprint.run();
                         mDialogTextField = mAlertDialog.findViewById(R.id.fingerprint_rename_field);
                         CharSequence name = fingerName == null ? mFp.getName() : fingerName;
                         mDialogTextField.setText(name);
@@ -823,6 +847,11 @@ public class FingerprintSettings extends SubSettings {
             @Override
             public int getMetricsCategory() {
                 return SettingsEnums.DIALOG_FINGERPINT_EDIT;
+            }
+
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                mStartFingerprint.run();
             }
         }
 
