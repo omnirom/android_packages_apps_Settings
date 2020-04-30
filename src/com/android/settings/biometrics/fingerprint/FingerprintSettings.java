@@ -518,6 +518,7 @@ public class FingerprintSettings extends SubSettings {
             renameDialog.setDeleteInProgress(mRemovalSidecar.inProgress());
             renameDialog.setArguments(args);
             renameDialog.setTargetFragment(this, 0);
+            renameDialog.setAuthenticateSidecar(mUserId, mAuthenticateSidecar, mInFingerprintLockout);
             renameDialog.show(getFragmentManager(), RenameDialog.class.getName());
         }
 
@@ -715,9 +716,18 @@ public class FingerprintSettings extends SubSettings {
             private ImeAwareEditText mDialogTextField;
             private AlertDialog mAlertDialog;
             private boolean mDeleteInProgress;
+            private FingerprintAuthenticateSidecar mAuthenticateSidecar;
+            private int mUserId;
+            private boolean mInFingerprintLockout;
 
             public void setDeleteInProgress(boolean deleteInProgress) {
                 mDeleteInProgress = deleteInProgress;
+            }
+
+            public void setAuthenticateSidecar(int userId, FingerprintAuthenticateSidecar sidecar, boolean inFingerprintLockout) {
+                mAuthenticateSidecar = sidecar;
+                mUserId = userId;
+                mInFingerprintLockout = inFingerprintLockout;
             }
 
             @Override
@@ -762,6 +772,10 @@ public class FingerprintSettings extends SubSettings {
                 mAlertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
                     public void onShow(DialogInterface dialog) {
+                        // dont let e.g. fod intercept events
+                        if (mAuthenticateSidecar != null) {
+                            mAuthenticateSidecar.stopAuthentication();
+                        }
                         mDialogTextField = mAlertDialog.findViewById(R.id.fingerprint_rename_field);
                         CharSequence name = fingerName == null ? mFp.getName() : fingerName;
                         mDialogTextField.setText(name);
@@ -775,6 +789,13 @@ public class FingerprintSettings extends SubSettings {
                         }
                         mDialogTextField.requestFocus();
                         mDialogTextField.scheduleShowSoftInput();
+                    }
+                });
+                mAlertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        if (mAuthenticateSidecar != null && !mInFingerprintLockout) {
+                            mAuthenticateSidecar.startAuthentication(mUserId);
+                        }
                     }
                 });
                 return mAlertDialog;
