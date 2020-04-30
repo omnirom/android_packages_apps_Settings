@@ -26,6 +26,7 @@ import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.hardware.fingerprint.Fingerprint;
 import android.hardware.fingerprint.FingerprintManager;
@@ -132,6 +133,7 @@ public class FingerprintSettings extends SubSettings {
         private boolean mLaunchedConfirm;
         private Drawable mHighlightDrawable;
         private int mUserId;
+        private boolean mHasFod;
 
         private static final String TAG_AUTHENTICATE_SIDECAR = "authenticate_sidecar";
         private static final String TAG_REMOVAL_SIDECAR = "removal_sidecar";
@@ -249,6 +251,7 @@ public class FingerprintSettings extends SubSettings {
         }
 
         private void retryFingerprint() {
+            mHasFod = getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_FOD);
             if (mRemovalSidecar.inProgress()
                     || 0 == mFingerprintManager.getEnrolledFingerprints(mUserId).size()) {
                 return;
@@ -256,6 +259,9 @@ public class FingerprintSettings extends SubSettings {
             // Don't start authentication if ChooseLockGeneric is showing, otherwise if the user
             // is in FP lockout, a toast will show on top
             if (mLaunchedConfirm) {
+                return;
+            }
+            if (mHasFod){
                 return;
             }
             if (!mInFingerprintLockout) {
