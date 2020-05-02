@@ -62,7 +62,7 @@ public class PhoneNumberPreferenceController extends BasePreferenceController {
 
     @Override
     public CharSequence getSummary() {
-        if (mContext.getResources().getBoolean(R.bool.configShowDeviceSensitiveInfo) && mTapped) {
+        if (mContext.getResources().getBoolean(R.bool.configShowDeviceSensitiveInfo) || mTapped) {
             return getFirstPhoneNumber();
         }
         return mContext.getString(R.string.device_info_protected_single_press);
@@ -116,9 +116,10 @@ public class PhoneNumberPreferenceController extends BasePreferenceController {
         if (simSlotNumber == -1) {
             return false;
         }
-        mTapped = true;
+        mTapped = !mTapped;
         final Preference simStatusPreference = mPreferenceList.get(simSlotNumber);
         simStatusPreference.setSummary(getPhoneNumber(simSlotNumber));
+        updateState(simStatusPreference);
         return true;
     }
 
