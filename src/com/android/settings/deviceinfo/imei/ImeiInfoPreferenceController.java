@@ -46,6 +46,7 @@ public class ImeiInfoPreferenceController extends BasePreferenceController {
     private final TelephonyManager mTelephonyManager;
     private final List<Preference> mPreferenceList = new ArrayList<>();
     private Fragment mFragment;
+    private boolean mTapped = false;
 
     public ImeiInfoPreferenceController(Context context, String key) {
         super(context, key);
@@ -97,7 +98,7 @@ public class ImeiInfoPreferenceController extends BasePreferenceController {
 
     private CharSequence getSummary(int simSlot) {
         final int phoneType = getPhoneType(simSlot);
-        if (mContext.getResources().getBoolean(R.bool.configShowDeviceSensitiveInfo)) {
+        if (mContext.getResources().getBoolean(R.bool.configShowDeviceSensitiveInfo) || mTapped) {
             return phoneType == PHONE_TYPE_CDMA ? mTelephonyManager.getMeid(simSlot)
                     : mTelephonyManager.getImei(simSlot);
         }
@@ -107,11 +108,20 @@ public class ImeiInfoPreferenceController extends BasePreferenceController {
     @Override
     public boolean handlePreferenceTreeClick(Preference preference) {
         final int simSlot = mPreferenceList.indexOf(preference);
+
         if (simSlot == -1) {
             return false;
         }
 
-        ImeiInfoDialogFragment.show(mFragment, simSlot, preference.getTitle().toString());
+        final Preference imeiStatusPreference = mPreferenceList.get(simSlot);
+        if (mTapped) {
+            mTapped = !mTapped;
+            ImeiInfoDialogFragment.show(mFragment, simSlot, preference.getTitle().toString());
+            updateState(imeiStatusPreference);
+        } else {
+            mTapped = !mTapped;
+            updateState(imeiStatusPreference);
+        }
         return true;
     }
 
