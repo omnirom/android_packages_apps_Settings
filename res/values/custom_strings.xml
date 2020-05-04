@@ -24,4 +24,7 @@
     <string name="selinux_status_disabled">Disabled</string>
     <string name="selinux_status_permissive">Permissive</string>
     <string name="selinux_status_enforcing">Enforcing</string>
+
+    <string name="mod_version">Omni version</string>
+    <string name="mod_version_default">Unknown</string>
 </resources>

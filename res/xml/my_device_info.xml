@@ -225,10 +225,17 @@
             settings:controller="com.android.settings.deviceinfo.BuildNumberPreferenceController"/>
     </PreferenceCategory>
 
+    <!-- omni version -->
+    <Preference
+        android:key="omni_version"
+        android:order="54"
+        android:title="@string/mod_version"
+        android:summary="@string/mod_version_default"/>
+
     <!-- SELinux status information -->
     <Preference
         android:key="selinux_status"
-        android:order="54"
+        android:order="55"
         android:title="@string/selinux_status"
         android:summary="@string/selinux_status_enforcing"/>
 
