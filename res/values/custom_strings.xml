@@ -27,4 +27,7 @@
     <string name="app_package_name_title">Package</string>
     <string name="app_version_title">Version</string>
 
+    <string name="mod_version">Omni version</string>
+    <string name="mod_version_default">Unknown</string>
+
 </resources>
