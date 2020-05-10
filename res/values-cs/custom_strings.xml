@@ -49,6 +49,8 @@
     <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">UPOZORNĚNÍ: Pokud je povoleno ADB přes síťové připojení, zařízení je otevřené pro pokusy o průniky na všech připojených sítích, včetně GSM datové sítě!\n\nPoužijte tuto vlastnost pouze pokud jste připojeni k důvěryhodné síti.\n\nOpravdu chcete povolit tuto funkci?</string>
     <string name="adb_over_network_warning_title">Povolit ADB přes síť?</string>
+    <string name="usb_enable_diagnostics">Povolit diagnostiku USB</string>
+    <string name="usb_enable_diagnostics_summary">Přepněte zařízení do diagnostického režimu USB</string>
     <string name="battery_image">Styl ikony baterie</string>
     <string name="battery_image_description">Zobrazit ikonu baterie ve stavové liště</string>
     <string name="twilight_mode_location_dialog">Poloha je zakázána</string>

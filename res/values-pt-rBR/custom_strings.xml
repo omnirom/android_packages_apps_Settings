@@ -25,6 +25,7 @@
     <string name="omni_device_parts">Recursos do dispositivo</string>
     <string name="columns_menu">Layout da coluna</string>
     <string name="hide_summary_menu">Ocultar sumário</string>
+    <string name="bars_settings_title">Barras e tela de bloqueio</string>
     <string name="button_settings_title">Botões</string>
     <string name="mod_version">Versão Omni</string>
     <string name="mod_version_default">Desconhecida</string>
@@ -47,6 +48,9 @@
     <string name="adb_over_network_summary">Habilita depuração por interfaces de rede TCP/IP (Wi-Fi, redes USB). Esta configuração é perdida ao reiniciar</string>
     <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">Aviso: Quando ADB sobre rede estiver ativado, o seu telefone fica desprotegido e pode facilitar invasões em todas as redes conectadas, incluindo rede de dados GSM!\n\n Usar esta funcionalidade apenas quando estiver conectado a redes fiáveis.\n\n Quer mesmo ativar esta função?</string>
+    <string name="adb_over_network_warning_title">Permitir ADB pela rede?</string>
+    <string name="usb_enable_diagnostics">Habilitar diagnósticos USB</string>
+    <string name="usb_enable_diagnostics_summary">Colocar dispositivo no modo de diagnóstico USB</string>
     <string name="battery_image">Ícone da bateria</string>
     <string name="battery_image_description">Mostrar a imagem da bateria na barra de estado</string>
     <string name="twilight_mode_location_dialog">Localização desativada</string>
@@ -57,6 +61,8 @@
     <string name="custom_encryption_and_credential_settings_summary_off">O dispositivo está desencriptado</string>
     <string name="select_sim_for_sms">Selecione um cartão SIM para SMS</string>
     <!-- Format string for fingerprint location message -->
+    <string name="security_settings_fingerprint_enroll_find_sensor_message_cm" product="tablet">Localize o sensor de impressão digital no <xliff:g id="sensor_location">%1$s</xliff:g> do seu tablet.</string>
+    <string name="security_settings_fingerprint_enroll_find_sensor_message_cm" product="device">Localize o sensor de impressão digital <xliff:g id="sensor_location">%1$s </xliff:g> do seu dispositivo.</string>
     <string name="security_settings_fingerprint_enroll_find_sensor_message_cm" product="default">Localize o sensor de impressão digital <xliff:g id="sensor_location">%1$s </xliff:g> do seu dispositivo.</string>
     <!-- Fingerprint sensor locations -->
     <string name="security_settings_fingerprint_sensor_location_back">voltar</string>
@@ -64,7 +70,26 @@
     <string name="security_settings_fingerprint_sensor_location_left">no lado esquerdo</string>
     <string name="security_settings_fingerprint_sensor_location_right">no lado direito</string>
     <string name="screenshot_shutter_sound_title">Tocar som quando capturar tela</string>
+    <string name="selinux_status">Estado do SELinux</string>
+    <string name="selinux_status_disabled">Desativado</string>
+    <string name="selinux_status_permissive">Permissivo</string>
+    <string name="selinux_status_enforcing">Impondo</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone1_title">Toque de chamada - SIM 1</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone2_title">Toque de chamada - SIM 2</string>
+    <string name="weather_title">Clima</string>
+    <string name="back_height_low_label">Completo</string>
+    <string name="back_height_high_label">Inferior</string>
+    <string name="back_options_dialog_title">Opções</string>
+    <string name="back_height_message">Quantidade de altura da tela usada como região sensível ao toque para trás.</string>
+    <string name="back_block_ime_title">Bloquear a altura do teclado virtual como região sensível para voltar</string>
+    <string name="app_package_name_title">Pacote</string>
+    <string name="app_version_title">Versão</string>
     <!-- String for removal of sensitive info on about, depending on tap -->
+    <string name="device_info_protected_single_press">Toque para mostrar as informações</string>
+    <string name="unknown_night_light_time">Desconhecido - pressione para atualizar</string>
+    <string name="night_display_location_text">\n\nA programação do pôr do sol ao nascer requer que os serviços de localização ativados obtenham os horários corretos da sua localização.</string>
+    <string name="auto_brightness_min_title">Nível de brilho mínimo</string>
+    <string name="auto_brightness_description_new">O brilho de sua tela será ajustado automaticamente ao seu ambiente e às suas atividades.\n\nVocê pode ajustar um nível mínimo de brilho que será usado.</string>
 </resources>

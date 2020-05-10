@@ -49,6 +49,8 @@
     <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">ÎKÂZ: Şebeke üzerinden ADB devreye sokulduğunda, telefonunuz GSM\'in veri şebekesi de dâhil olmak üzere bütün bağlandığınız şebekeler üzerinde güvenlik ihlâline açık olur!\n\nBu özelliği sadece güvenilir şebekelere bağlıyken kullanın.\n\nBu özelliği sahiden devreye sokmak istiyor musunuz?</string>
     <string name="adb_over_network_warning_title">Şebeke üzerinden ADB\'ye izin verilsin mi?</string>
+    <string name="usb_enable_diagnostics">USB teşhisini devreye sok</string>
+    <string name="usb_enable_diagnostics_summary">Cihazı USB teşhisi moduna koyar</string>
     <string name="battery_image">Pil görüntüsü</string>
     <string name="battery_image_description">Pil görüntüsünü durum çubuğunda gösterir</string>
     <string name="twilight_mode_location_dialog">Konum devre dışı</string>

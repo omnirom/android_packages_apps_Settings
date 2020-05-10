@@ -27,7 +27,7 @@
     <string name="hide_summary_menu">概要を非表示にする</string>
     <string name="bars_settings_title">バーとロック画面</string>
     <string name="button_settings_title">ボタン</string>
-    <string name="mod_version">Omniバージョン</string>
+    <string name="mod_version">Omni バージョン</string>
     <string name="mod_version_default">不明</string>
     <string name="more_settings_title">詳細</string>
     <string name="global_actions_title">電源メニュー</string>
@@ -49,6 +49,8 @@
     <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">警告: ネットワーク経由での ADB を有効にすると、あなたの携帯電話は GSM データネットワークを含む接続している全てのネットワークから侵入できるようになります。\n\nこの機能は信頼されたネットワークに接続している時にのみ使用して下さい。\n\nこの機能を本当に有効にしますか?</string>
     <string name="adb_over_network_warning_title">ネット経由の ADB を許可しますか?</string>
+    <string name="usb_enable_diagnostics">USB 診断を有効化</string>
+    <string name="usb_enable_diagnostics_summary">端末を USB 診断モードにする</string>
     <string name="battery_image">バッテリーアイコン</string>
     <string name="battery_image_description">ステータスバーにバッテリーアイコンを表示する</string>
     <string name="twilight_mode_location_dialog">位置情報は無効</string>

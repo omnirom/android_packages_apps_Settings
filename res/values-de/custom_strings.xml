@@ -49,6 +49,8 @@
     <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">WARNUNG: Wenn ADB über Netzwerk aktiviert ist, ist dein Telefon anfällig für Angriffe über alle verbundenen Netzwerke, einschließlich GSM!\n\nBenutze diese Funktion nur, wenn du zu vertrauenswürdigen Netzwerken verbunden bist.\n\nMöchtest du diese Funktion wirklich aktivieren?</string>
     <string name="adb_over_network_warning_title">ADB über Netzwerk zulassen?</string>
+    <string name="usb_enable_diagnostics">USB-Diagnose aktivieren</string>
+    <string name="usb_enable_diagnostics_summary">Gerät in den USB-Diagnosemodus setzen</string>
     <string name="battery_image">Akkusymbol</string>
     <string name="battery_image_description">Zeige Akkusymbol in der Statusleiste</string>
     <string name="twilight_mode_location_dialog">Ortungsdienste deaktiviert</string>
