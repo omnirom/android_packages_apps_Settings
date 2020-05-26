@@ -181,27 +181,35 @@
         android:title="@string/fcc_equipment_id"
         android:summary="@string/summary_placeholder"/>
 
+    <!-- Build user -->
+    <Preference
+        android:key="build_user"
+        android:order="53"
+        android:title="@string/build_user"
+        android:summary="@string/build_username"
+        settings:allowDividerAbove="true"
+        settings:enableCopying="true"/>
+
     <!-- Build number -->
     <Preference
         android:key="build_number"
-        android:order="53"
+        android:order="54"
         android:title="@string/build_number"
         android:summary="@string/summary_placeholder"
-        settings:allowDividerAbove="true"
         settings:enableCopying="true"
         settings:controller="com.android.settings.deviceinfo.BuildNumberPreferenceController"/>
 
     <!-- omni version -->
     <Preference
         android:key="omni_version"
-        android:order="54"
+        android:order="55"
         android:title="@string/mod_version"
         android:summary="@string/mod_version_default"/>
 
     <!-- SELinux status information -->
     <Preference
         android:key="selinux_status"
-        android:order="55"
+        android:order="56"
         android:title="@string/selinux_status"
         android:summary="@string/selinux_status_enforcing"/>
 
