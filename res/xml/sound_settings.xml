@@ -210,6 +210,13 @@
         <SwitchPreference
           android:key="screenshot_shutter_sound"
           android:title="@string/screenshot_shutter_sound_title" />
+
+        <!-- Vibration intensities -->
+        <Preference
+            android:fragment="com.android.settings.accessibility.VibrationSettings"
+            android:key="vibration_preference_screen"
+            android:title="@string/accessibility_vibration_settings_title" />
+
     </PreferenceCategory>
 
     <com.android.settings.widget.WorkOnlyCategory
