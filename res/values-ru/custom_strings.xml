@@ -49,6 +49,8 @@
     <!-- Warning for Adb over Network -->
     <string name="adb_over_network_warning">ВНИМАНИЕ: когда включена отладка по сети, устройство открыто для неконтролируемого доступа из всех подключённых сетей!\n\nИспользуйте эту функцию только тогда, когда вы подключены к доверенным сетям.\n\nВы действительно хотите включить эту функцию?</string>
     <string name="adb_over_network_warning_title">Разрешить ADB через сеть?</string>
+    <string name="usb_enable_diagnostics">Включить диагностику USB</string>
+    <string name="usb_enable_diagnostics_summary">Ввести устройство в режим диагностики USB</string>
     <string name="battery_image">Отображение иконки батареи</string>
     <string name="battery_image_description">Отображать иконку батареи в строке состояния</string>
     <string name="twilight_mode_location_dialog">Местоположение отключено</string>
