@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>
         <Button
-            style="@android:style/Widget.Material.Button.Colored"
+            style="@style/ActionPrimaryButton"
             android:id="@+id/signin_button"
             android:text="@string/wifi_sign_in_button_text"
             android:layout_width="0dp"
