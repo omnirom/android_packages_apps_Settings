@@ -294,6 +294,16 @@
             android:summary="@string/wifi_scan_throttling_summary" />
 
         <SwitchPreference
+            android:key="wifi_whitelist_roaming"
+            android:title="@string/wifi_whitelist_roaming"
+            android:summary="@string/wifi_whitelist_roaming_summary" />
+
+        <SwitchPreference
+            android:key="wifi_new_network_auto_connection"
+            android:title="@string/wifi_new_network_auto_connection"
+            android:summary="@string/wifi_new_network_auto_connection_summary" />
+
+        <SwitchPreference
             android:key="wifi_enhanced_mac_randomization"
             android:title="@string/wifi_enhanced_mac_randomization"
             android:summary="@string/wifi_enhanced_mac_randomization_summary" />
