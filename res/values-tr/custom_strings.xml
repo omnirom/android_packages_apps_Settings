@@ -44,13 +44,13 @@
     <string name="value_equals_default">Kendiliğinden</string>
     <string name="show_light_on_zen_title">Rahatsız Etmeyin modunda yanıp sön</string>
     <!-- Android debugging over WiFi -->
-    <string name="adb_over_network">Şebeke üzerinden ADB</string>
-    <string name="adb_over_network_summary">Şebeke arayüzleri (Kablosuz Bağlantı ve USB şebekeleri) üzerinde TCP veyâ IP hatâ ayıklamayı devreye sokar. Bu ayar telefonu tekrar başlattığınızda sıfırlanır</string>
+    <string name="adb_over_network">Ağ üzerinden ADB</string>
+    <string name="adb_over_network_summary">Ağ arayüzleri (Kablosuz Bağlantı ve USB ağları) üzerinde TCP veyâ IP hatâ ayıklamayı devreye sokar. Bu ayar telefonu tekrar başlattığınızda sıfırlanır</string>
     <!-- Warning for Adb over Network -->
-    <string name="adb_over_network_warning">ÎKÂZ: Şebeke üzerinden ADB devreye sokulduğunda, telefonunuz GSM\'in veri şebekesi de dâhil olmak üzere bütün bağlandığınız şebekeler üzerinde güvenlik ihlâline açık olur!\n\nBu özelliği sadece güvenilir şebekelere bağlıyken kullanın.\n\nBu özelliği sahiden devreye sokmak istiyor musunuz?</string>
-    <string name="adb_over_network_warning_title">Şebeke üzerinden ADB\'ye izin verilsin mi?</string>
-    <string name="usb_enable_diagnostics">USB teşhisini devreye sok</string>
-    <string name="usb_enable_diagnostics_summary">Cihazı USB teşhisi moduna koyar</string>
+    <string name="adb_over_network_warning">UYARI: Ağ üzerinden ADB devreye sokulduğunda, telefonunuz GSM\'in veri ağı da dâhil olmak üzere bütün bağlandığınız ağlar üzerinde güvenlik ihlâline açık olur!\n\nBu özelliği sadece güvenilir ağlara bağlıyken kullanın.\n\nBu özelliği sahiden devreye sokmak istiyor musunuz?</string>
+    <string name="adb_over_network_warning_title">Ağ üzerinden ADB\'ye izin verilsin mi?</string>
+    <string name="usb_enable_diagnostics">USB tanılamayı devreye sok</string>
+    <string name="usb_enable_diagnostics_summary">Cihazı USB tanılama moduna koyar</string>
     <string name="battery_image">Pil görüntüsü</string>
     <string name="battery_image_description">Pil görüntüsünü durum çubuğunda gösterir</string>
     <string name="twilight_mode_location_dialog">Konum devre dışı</string>
