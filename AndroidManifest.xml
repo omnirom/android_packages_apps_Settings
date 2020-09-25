@@ -3128,7 +3128,7 @@
         <service
             android:name=".development.qstile.DevelopmentTiles$WirelessDebugging"
             android:label="@string/enable_adb_wireless"
-            android:icon="@drawable/tile_icon_debugging_wireless"
+            android:icon="@drawable/ic_qs_network_adb"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
             android:enabled="false">
             <intent-filter>
