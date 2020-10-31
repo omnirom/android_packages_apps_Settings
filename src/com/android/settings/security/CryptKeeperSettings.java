@@ -69,11 +69,12 @@ public class CryptKeeperSettings extends InstrumentedPreferenceFragment {
             if (action.equals(Intent.ACTION_BATTERY_CHANGED)) {
                 final int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
                 final int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0);
+                final boolean present = intent.getBooleanExtra(BatteryManager.EXTRA_PRESENT, true);
                 final int invalidCharger = intent.getIntExtra(
                     BatteryManager.EXTRA_INVALID_CHARGER, 0);
 
-                final boolean levelOk = level >= MIN_BATTERY_LEVEL;
-                final boolean pluggedOk =
+                final boolean levelOk = !present || level >= MIN_BATTERY_LEVEL;
+                final boolean pluggedOk = !present ||
                     ((plugged & BatteryManager.BATTERY_PLUGGED_ANY) != 0) &&
                      invalidCharger == 0;
 
