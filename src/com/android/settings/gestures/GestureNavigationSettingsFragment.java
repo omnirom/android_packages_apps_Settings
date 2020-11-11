@@ -43,6 +43,7 @@ public class GestureNavigationSettingsFragment extends DashboardFragment {
 
     private static final String LEFT_EDGE_SEEKBAR_KEY = "gesture_left_back_sensitivity";
     private static final String RIGHT_EDGE_SEEKBAR_KEY = "gesture_right_back_sensitivity";
+    private static final String KEY_BACK_HEIGHT = "gesture_back_height";
 
     private WindowManager mWindowManager;
     private BackGestureIndicatorView mIndicatorView;
@@ -74,6 +75,7 @@ public class GestureNavigationSettingsFragment extends DashboardFragment {
 
         initSeekBarPreference(LEFT_EDGE_SEEKBAR_KEY);
         initSeekBarPreference(RIGHT_EDGE_SEEKBAR_KEY);
+        initSeekBarPreference(KEY_BACK_HEIGHT);
     }
 
     @Override
@@ -116,11 +118,20 @@ public class GestureNavigationSettingsFragment extends DashboardFragment {
         final LabeledSeekBarPreference pref = getPreferenceScreen().findPreference(key);
         pref.setContinuousUpdates(true);
 
-        final String settingsKey = key == LEFT_EDGE_SEEKBAR_KEY
-                ? Settings.Secure.BACK_GESTURE_INSET_SCALE_LEFT
-                : Settings.Secure.BACK_GESTURE_INSET_SCALE_RIGHT;
-        final float initScale = Settings.Secure.getFloat(
+        final String settingsKey = key == LEFT_EDGE_SEEKBAR_KEY ?
+                Settings.Secure.BACK_GESTURE_INSET_SCALE_LEFT
+                : key == RIGHT_EDGE_SEEKBAR_KEY ?
+                Settings.Secure.BACK_GESTURE_INSET_SCALE_RIGHT
+                : Settings.System.OMNI_BACK_GESTURE_HEIGHT;
+
+
+        float initScale = Settings.Secure.getFloat(
                 getContext().getContentResolver(), settingsKey, 1.0f);
+
+        if (key == KEY_BACK_HEIGHT) {
+            initScale = Settings.System.getFloat(
+                getContext().getContentResolver(), settingsKey, 1.0f);
+        }
 
         // Find the closest value to initScale
         float minDistance = Float.MAX_VALUE;
@@ -143,7 +154,11 @@ public class GestureNavigationSettingsFragment extends DashboardFragment {
         pref.setOnPreferenceChangeStopListener((p, v) -> {
             mIndicatorView.setIndicatorWidth(0, key == LEFT_EDGE_SEEKBAR_KEY);
             final float scale = mBackGestureInsetScales[(int) v];
-            Settings.Secure.putFloat(getContext().getContentResolver(), settingsKey, scale);
+            if (key == KEY_BACK_HEIGHT) {
+                Settings.System.putFloat(getContext().getContentResolver(), settingsKey, scale);
+            } else {
+                Settings.Secure.putFloat(getContext().getContentResolver(), settingsKey, scale);
+            }
             return true;
         });
     }
