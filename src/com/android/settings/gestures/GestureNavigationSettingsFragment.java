@@ -50,6 +50,8 @@ public class GestureNavigationSettingsFragment extends DashboardFragment {
 
     private float[] mBackGestureInsetScales;
     private float mDefaultBackGestureInset;
+    private float[] mBackGestureHeightScales = { 0f, 1f, 2f, 3f };
+    private int mCurrentWidth;
 
     public GestureNavigationSettingsFragment() {
         super();
@@ -128,9 +130,15 @@ public class GestureNavigationSettingsFragment extends DashboardFragment {
         float initScale = Settings.Secure.getFloat(
                 getContext().getContentResolver(), settingsKey, 1.0f);
 
+        // needed if we just change the height - we onky need right side
+        final float currentWidthScale = Settings.Secure.getFloat(
+                getContext().getContentResolver(), Settings.Secure.BACK_GESTURE_INSET_SCALE_RIGHT, 1.0f);
+        mCurrentWidth = (int) (mDefaultBackGestureInset * currentWidthScale);
+
         if (key == KEY_BACK_HEIGHT) {
-            initScale = Settings.System.getFloat(
-                getContext().getContentResolver(), settingsKey, 1.0f);
+            mBackGestureInsetScales = mBackGestureHeightScales;
+            initScale = Settings.System.getInt(
+                    getContext().getContentResolver(), settingsKey, 0);
         }
 
         // Find the closest value to initScale
@@ -146,17 +154,33 @@ public class GestureNavigationSettingsFragment extends DashboardFragment {
         pref.setProgress(minDistanceIndex);
 
         pref.setOnPreferenceChangeListener((p, v) -> {
-            final int width = (int) (mDefaultBackGestureInset * mBackGestureInsetScales[(int) v]);
-            mIndicatorView.setIndicatorWidth(width, key == LEFT_EDGE_SEEKBAR_KEY);
+            if (key != KEY_BACK_HEIGHT) {
+                final int width = (int) (mDefaultBackGestureInset * mBackGestureInsetScales[(int) v]);
+                mIndicatorView.setIndicatorWidth(width, key == LEFT_EDGE_SEEKBAR_KEY);
+                if (key != LEFT_EDGE_SEEKBAR_KEY) {
+                    mCurrentWidth = width;
+                }
+            } else {
+                final int heightScale = (int) (mBackGestureInsetScales[(int) v]);
+                mIndicatorView.setIndicatorHeightScale(heightScale);
+                // dont use updateViewLayout else it will animate
+                mWindowManager.removeView(mIndicatorView);
+                mWindowManager.addView(mIndicatorView, mIndicatorView.getLayoutParams(
+                        getActivity().getWindow().getAttributes()));
+                // we show only right side
+                mIndicatorView.setIndicatorWidth(mCurrentWidth, false);
+            }
             return true;
         });
 
         pref.setOnPreferenceChangeStopListener((p, v) -> {
-            mIndicatorView.setIndicatorWidth(0, key == LEFT_EDGE_SEEKBAR_KEY);
             final float scale = mBackGestureInsetScales[(int) v];
             if (key == KEY_BACK_HEIGHT) {
-                Settings.System.putFloat(getContext().getContentResolver(), settingsKey, scale);
+                // we only showed right side
+                mIndicatorView.setIndicatorWidth(0, false);
+                Settings.System.putInt(getContext().getContentResolver(), settingsKey, (int) scale);
             } else {
+                mIndicatorView.setIndicatorWidth(0, key == LEFT_EDGE_SEEKBAR_KEY);
                 Settings.Secure.putFloat(getContext().getContentResolver(), settingsKey, scale);
             }
             return true;
