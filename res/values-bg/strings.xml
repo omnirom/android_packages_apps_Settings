@@ -1190,7 +1190,7 @@
     <string name="display_white_balance_summary" msgid="7625456704950209050"></string>
     <string name="peak_refresh_rate_title" msgid="1878771412897140903">"Плавно показване"</string>
     <string name="peak_refresh_rate_summary" msgid="1527087897198455042">"Автоматично увеличава честотата на опресняване от 60 на 90 Hz за част от съдържанието. По-интензивно използване на батерията."</string>
-    <string name="force_high_refresh_rate_toggle" msgid="7458268305727889355">"Плавно показване"</string>
+    <string name="force_high_refresh_rate_toggle" msgid="5861514655252832828">"Принудителна честота на опресняване при 90 Hz"</string>
     <string name="force_high_refresh_rate_desc" msgid="7794566420873814875">"Най-висока честота на опресняване за по-добро реагиране при докосване и качество на анимациите. По-интензивно използване на батерията."</string>
     <string name="adaptive_sleep_title" msgid="2987961991423539233">"Внимание към екрана"</string>
     <string name="adaptive_sleep_summary_on" msgid="313187971631243800">"Вкл. – Екранът няма да се изключи, ако гледате в него"</string>
@@ -1329,7 +1329,6 @@
     <string name="firmware_version" msgid="1606901586501447275">"Версия на Android"</string>
     <string name="security_patch" msgid="4071756145347865382">"Актуализация за сигурността на Android"</string>
     <string name="model_info" msgid="8997566254717810904">"Модел"</string>
-    <string name="model_summary" msgid="2246651782442466213">"Модел: %1$s"</string>
     <string name="hardware_info" msgid="7035211991066637019">"Модел и хардуер"</string>
     <string name="hardware_revision" msgid="3454709180861965025">"Версия на хардуера"</string>
     <string name="fcc_equipment_id" msgid="6596668314025646129">"Идент. № на оборудването"</string>
@@ -1858,6 +1857,12 @@
     <string name="forgot_password_text" msgid="2583194470767613163">"Можете да получите помощ за задаването на нов ПИН код, фигура или парола"</string>
     <string name="install_all_warning" product="tablet" msgid="7010749217925069520">"Таблетът и личните ви данни са по-уязвими към атаки от неизвестни приложения. С инсталирането на приложения от този източник приемате, че вие носите отговорност в случай на повреда на устройството ви или при загуба на данни вследствие използването на такива приложения."</string>
     <string name="install_all_warning" product="default" msgid="652516435709047343">"Телефонът и личните ви данни са по-уязвими към атаки от неизвестни приложения. С инсталирането на приложения от този източник приемате, че вие носите отговорност в случай на повреда на устройството ви или при загуба на данни вследствие използването на такива приложения."</string>
+    <string name="fdr_esim_failure_title" msgid="4776006228989385163">"Има проблем с изтриването на изтеглените SIM карти"</string>
+    <string name="fdr_esim_failure_text" msgid="8353414537422446964">"Моля, рестартирайте устройството и опитайте отново. Ако продължите с възстановяването на фабричните настройки, изтеглените SIM карти може да останат на устройството."</string>
+    <string name="fdr_esim_failure_reboot_btn" msgid="8629204185016602747">"Рестартиране"</string>
+    <string name="fdr_continue_title" msgid="5343622664826823937">"Продълж. с възст. на фабр. настройки?"</string>
+    <string name="fdr_continue_text" msgid="860874694422515489">"Изтеглените SIM карти ще останат на устройството."</string>
+    <string name="fdr_continue_btn" msgid="1875421470422667092">"Възстановяване на фабричните настройки"</string>
     <string name="install_all_warning" product="device" msgid="2348262609815354500">"Устройството и личните ви данни са по-уязвими към атаки от неизвестни приложения. С инсталирането на приложения от този източник приемате, че вие носите отговорност в случай на повреда на устройството ви или при загуба на данни вследствие използването на такива приложения."</string>
     <string name="advanced_settings" msgid="2368905204839169094">"Разширени настройки"</string>
     <string name="advanced_settings_summary" msgid="1823765348195530035">"Да се активират още опции за настройки"</string>
@@ -2271,7 +2276,7 @@
     <string name="accessibility_vibration_summary_high" msgid="1764693979030913712">"За звъненето и известията е зададено „Силно“"</string>
     <string name="accessibility_vibration_intensity_off" msgid="972159695404061944">"Изключено"</string>
     <string name="accessibility_vibration_intensity_low" msgid="6311161118835287335">"Слабо"</string>
-    <string name="accessibility_vibration_intensity_medium" msgid="1734058611879392797">"средно"</string>
+    <string name="accessibility_vibration_intensity_medium" msgid="1734058611879392797">"Средно"</string>
     <string name="accessibility_vibration_intensity_high" msgid="5982896399775212514">"Силно"</string>
     <string name="accessibility_menu_item_settings" msgid="2652637954865389271">"Настройки"</string>
     <string name="accessibility_feature_state_on" msgid="1777344331063467511">"Вкл."</string>
@@ -3438,7 +3443,7 @@
     <string name="work_use_personal_sounds_summary" msgid="4482832555278975008">"Звуците за служебния и личния потребителски профил са едни и същи"</string>
     <string name="work_ringtone_title" msgid="4810802758746102589">"Служебна мелодия на телефона"</string>
     <string name="work_notification_ringtone_title" msgid="2955312017013255515">"Стандартен звук за служебните известия"</string>
-    <string name="work_alarm_ringtone_title" msgid="3369293796769537392">"Стандартен звук за служебните будилници"</string>
+    <string name="work_alarm_ringtone_title" msgid="3369293796769537392">"Стандартен звук за служебните аларми"</string>
     <string name="work_sound_same_as_personal" msgid="1836913235401642334">"Като за личния потребителски профил"</string>
     <string name="work_sync_dialog_title" msgid="2359563902332046231">"Да се заменят ли звуците?"</string>
     <string name="work_sync_dialog_yes" msgid="9161415252411868574">"Замяна"</string>
@@ -3575,7 +3580,7 @@
     <string name="allow_interruption" msgid="5237201780159482716">"Разрешаване на прекъсвания"</string>
     <string name="allow_interruption_summary" msgid="9044131663518112543">"Разрешаване на приложението да издава звук, да вибрира и/или да показва изскачащи прозорци с известия на екрана"</string>
     <string name="notification_priority_title" msgid="5554834239080425229">"Приоритет"</string>
-    <string name="notification_channel_summary_priority" msgid="7225362351439076913">"Показва се като плаващо балонче в горната част на секцията с разговори и показва снимката на потребителския профил на заключения екран"</string>
+    <string name="notification_channel_summary_priority" msgid="7225362351439076913">"Показва се като плаващо балонче в горната част на секцията с разговори, показва снимката на потр. профил на заключения екран"</string>
     <string name="convo_not_supported_summary" msgid="4285471045268268048">"<xliff:g id="APP_NAME">%1$s</xliff:g> не поддържа по-голяма част от функциите за разговорите. Не можете да зададете разговор като приоритетен и разговорите няма да се показват като плаващи балончета."</string>
     <string name="notification_channel_summary_min" msgid="8823399508450176842">"Свиване на известията в падащия панел, така че да се показват на един ред"</string>
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"Без звук или вибриране"</string>

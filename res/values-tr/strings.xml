@@ -1190,7 +1190,7 @@
     <string name="display_white_balance_summary" msgid="7625456704950209050"></string>
     <string name="peak_refresh_rate_title" msgid="1878771412897140903">"Smooth Display"</string>
     <string name="peak_refresh_rate_summary" msgid="1527087897198455042">"Bazı içerikler için yenileme hızını otomatik olarak 60 Hz\'den 90 Hz\'e yükseltir. Pil kullanımını artırır."</string>
-    <string name="force_high_refresh_rate_toggle" msgid="7458268305727889355">"Smooth Display"</string>
+    <string name="force_high_refresh_rate_toggle" msgid="5861514655252832828">"90 Hz yenileme hızına zorla"</string>
     <string name="force_high_refresh_rate_desc" msgid="7794566420873814875">"Geliştirilmiş dokunma duyarlılığı ve animasyon kalitesi için en yüksek yenileme hızı. Pil kullanımını artırır."</string>
     <string name="adaptive_sleep_title" msgid="2987961991423539233">"Ekrana dikkat verme"</string>
     <string name="adaptive_sleep_summary_on" msgid="313187971631243800">"Açık / Bakıyorsanız ekran kapanmaz"</string>
@@ -1329,7 +1329,6 @@
     <string name="firmware_version" msgid="1606901586501447275">"Android sürümü"</string>
     <string name="security_patch" msgid="4071756145347865382">"Android güvenlik güncellemesi"</string>
     <string name="model_info" msgid="8997566254717810904">"Model"</string>
-    <string name="model_summary" msgid="2246651782442466213">"Model: %1$s"</string>
     <string name="hardware_info" msgid="7035211991066637019">"Model ve donanım"</string>
     <string name="hardware_revision" msgid="3454709180861965025">"Donanım sürümü"</string>
     <string name="fcc_equipment_id" msgid="6596668314025646129">"Cihaz Kimliği"</string>
@@ -1851,13 +1850,19 @@
     <string name="install_applications_title" msgid="7890233747559108106">"Tüm uyg. kaynaklarına izin ver"</string>
     <string name="recent_app_category_title" msgid="189758417804427533">"Son açılan uygulamalar"</string>
     <plurals name="see_all_apps_title" formatted="false" msgid="6864581406735745400">
-      <item quantity="other">Tüm %1$d uygulamaları göster</item>
+      <item quantity="other">%1$d uygulamanın tamamını göster</item>
       <item quantity="one">Tüm uygulamaları göster</item>
     </plurals>
     <string name="forgot_password_title" msgid="3967873480875239885">"BT yöneticinizle iletişim kurun"</string>
     <string name="forgot_password_text" msgid="2583194470767613163">"Kendisi PIN, desen veya şifrenizi sıfırlamanıza yardımcı olabilir."</string>
     <string name="install_all_warning" product="tablet" msgid="7010749217925069520">"Tabletiniz ve kişisel verileriniz, bilinmeyen uygulamalardan gelen saldırılara karşı daha savunmasızdır. Bu kaynaktan uygulama yükleyerek, bu uygulamaları kullanmanız sonucunda tabletinizin başına gelebilecek her tür hasardan ve veri kaybından kendinizin sorumlu olduğunu kabul etmiş olursunuz."</string>
     <string name="install_all_warning" product="default" msgid="652516435709047343">"Telefonunuz ve kişisel verileriniz, bilinmeyen uygulamalardan gelen saldırılara karşı daha savunmasızdır. Bu kaynaktan uygulama yükleyerek, bu uygulamaları kullanmanız sonucunda telefonunuzun başına gelebilecek her tür hasardan ve veri kaybından kendinizin sorumlu olduğunu kabul etmiş olursunuz."</string>
+    <string name="fdr_esim_failure_title" msgid="4776006228989385163">"İndirilen SIM\'lerin silinmesiyle ilgili bir sorun oluştu"</string>
+    <string name="fdr_esim_failure_text" msgid="8353414537422446964">"Lütfen cihazı yeniden başlatıp tekrar deneyin. Fabrika ayarlarına sıfırlama işlemine devam ederseniz indirilen SIM\'ler cihazda kalmaya devam edebilir."</string>
+    <string name="fdr_esim_failure_reboot_btn" msgid="8629204185016602747">"Yeniden başlat"</string>
+    <string name="fdr_continue_title" msgid="5343622664826823937">"Fabrika ayarlarına sıfırlansın mı?"</string>
+    <string name="fdr_continue_text" msgid="860874694422515489">"İndirilen SIM\'ler cihazda kalmaya devam edecek."</string>
+    <string name="fdr_continue_btn" msgid="1875421470422667092">"Fabrika ayarlarına sıfırla"</string>
     <string name="install_all_warning" product="device" msgid="2348262609815354500">"Cihazınız ve kişisel verileriniz, bilinmeyen uygulamalardan gelen saldırılara karşı daha savunmasızdır. Bu kaynaktan uygulama yükleyerek, bu uygulamaları kullanmanız sonucunda cihazınızın başına gelebilecek her tür hasardan ve veri kaybından kendinizin sorumlu olduğunu kabul etmiş olursunuz."</string>
     <string name="advanced_settings" msgid="2368905204839169094">"Gelişmiş ayarlar"</string>
     <string name="advanced_settings_summary" msgid="1823765348195530035">"Diğer ayar seçeneklerini etkinleştirin."</string>
@@ -2887,7 +2892,7 @@
     <string name="data_usage_metered_yes" msgid="4262598072030135223">"Sayaçlı"</string>
     <string name="data_usage_metered_no" msgid="1685828958417926268">"Sınırsız"</string>
     <string name="data_usage_disclaimer" msgid="3271450299386176770">"Operatörünüzün veri hesaplaması, cihazınızınkinden farklı olabilir."</string>
-    <string name="cryptkeeper_emergency_call" msgid="8369322820475703306">"Acil durum çağrısı"</string>
+    <string name="cryptkeeper_emergency_call" msgid="8369322820475703306">"Acil durum araması"</string>
     <string name="cryptkeeper_return_to_call" msgid="3857250752781151232">"Çağrıya dön"</string>
     <string name="vpn_name" msgid="3806456074909253262">"Ad"</string>
     <string name="vpn_type" msgid="5533202873260826663">"Tür"</string>

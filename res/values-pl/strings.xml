@@ -1230,7 +1230,7 @@
     <string name="display_white_balance_summary" msgid="7625456704950209050"></string>
     <string name="peak_refresh_rate_title" msgid="1878771412897140903">"Płynne wyświetlanie"</string>
     <string name="peak_refresh_rate_summary" msgid="1527087897198455042">"W przypadku niektórych treści automatycznie podwyższa częstotliwość odświeżania z 60 na 90 Hz. Zwiększa zużycie baterii."</string>
-    <string name="force_high_refresh_rate_toggle" msgid="7458268305727889355">"Płynne wyświetlanie"</string>
+    <string name="force_high_refresh_rate_toggle" msgid="5861514655252832828">"Wymuś częstotliwość odświeżania na poziomie 90 Hz"</string>
     <string name="force_high_refresh_rate_desc" msgid="7794566420873814875">"Najszybsza częstotliwość odświeżania zapewnia szybszą reakcję na dotyk i wyższą jakość animacji. Zwiększa zużycie baterii."</string>
     <string name="adaptive_sleep_title" msgid="2987961991423539233">"Aktywność ekranu"</string>
     <string name="adaptive_sleep_summary_on" msgid="313187971631243800">"Włączone / Ekran nie wyłączy się, jeśli na niego patrzysz"</string>
@@ -1371,7 +1371,6 @@
     <string name="firmware_version" msgid="1606901586501447275">"Wersja Androida"</string>
     <string name="security_patch" msgid="4071756145347865382">"Aktualizacja zabezpieczeń Androida"</string>
     <string name="model_info" msgid="8997566254717810904">"Model"</string>
-    <string name="model_summary" msgid="2246651782442466213">"Model: %1$s"</string>
     <string name="hardware_info" msgid="7035211991066637019">"Model i sprzęt"</string>
     <string name="hardware_revision" msgid="3454709180861965025">"Wersja sprzętu"</string>
     <string name="fcc_equipment_id" msgid="6596668314025646129">"Identyfikator sprzętu"</string>
@@ -1904,6 +1903,12 @@
     <string name="forgot_password_text" msgid="2583194470767613163">"Możesz uzyskać pomoc dotyczącą resetowania kodu PIN, wzoru lub hasła"</string>
     <string name="install_all_warning" product="tablet" msgid="7010749217925069520">"Tablet i dane osobiste są bardziej narażone na atak nieznanych aplikacji. Instalując aplikacje z tego źródła, przyjmujesz odpowiedzialność za wszelkie uszkodzenia telefonu bądź utratę danych, które mogą być spowodowane używaniem tych aplikacji."</string>
     <string name="install_all_warning" product="default" msgid="652516435709047343">"Telefon i dane osobiste są bardziej narażone na atak nieznanych aplikacji. Instalując aplikacje z tego źródła, przyjmujesz odpowiedzialność za wszelkie uszkodzenia telefonu bądź utratę danych, które mogą być spowodowane używaniem tych aplikacji."</string>
+    <string name="fdr_esim_failure_title" msgid="4776006228989385163">"Wystąpił problem przy usuwaniu pobranych kart SIM"</string>
+    <string name="fdr_esim_failure_text" msgid="8353414537422446964">"Uruchom ponownie urządzenie i spróbuj jeszcze raz. Jeśli będziesz kontynuować resetowanie do ustawień fabrycznych, pobrane karty SIM mogą pozostać na urządzeniu."</string>
+    <string name="fdr_esim_failure_reboot_btn" msgid="8629204185016602747">"Zrestartuj"</string>
+    <string name="fdr_continue_title" msgid="5343622664826823937">"Kontynuować resetowanie?"</string>
+    <string name="fdr_continue_text" msgid="860874694422515489">"Pobrane karty SIM pozostaną na tym urządzeniu."</string>
+    <string name="fdr_continue_btn" msgid="1875421470422667092">"Resetuj do ustawień fabrycznych"</string>
     <string name="install_all_warning" product="device" msgid="2348262609815354500">"Urządzenie i dane osobiste są bardziej narażone na atak nieznanych aplikacji. Instalując aplikacje z tego źródła, przyjmujesz odpowiedzialność za wszelkie uszkodzenia urządzenia bądź przypadki utraty danych, które mogą być spowodowane używaniem tych aplikacji."</string>
     <string name="advanced_settings" msgid="2368905204839169094">"Ustawienia zaawansowane"</string>
     <string name="advanced_settings_summary" msgid="1823765348195530035">"Włącz więcej opcji ustawień."</string>
@@ -2197,7 +2202,7 @@
     <string name="accessibility_tutorial_dialog_message_gesture_settings" msgid="40769674586981429">"Aby użyć ułatwień dostępu, przesuń 2 palcami z dołu ekranu w górę.\n\nAby przełączać się między funkcjami, przesuń 2 palcami w górę i przytrzymaj."</string>
     <string name="accessibility_tutorial_dialog_message_gesture_settings_talkback" msgid="7292969929578621958">"Aby użyć ułatwień dostępu, przesuń 3 palcami z dołu ekranu w górę.\n\nAby przełączać się między funkcjami, przesuń 3 palcami w górę i przytrzymaj."</string>
     <string name="accessibility_tutorial_dialog_button" msgid="2031773187678948436">"OK"</string>
-    <string name="accessibility_shortcut_title" msgid="8125867833704517463">"Skrót <xliff:g id="SERVICE">%1$s</xliff:g>"</string>
+    <string name="accessibility_shortcut_title" msgid="8125867833704517463">"<xliff:g id="SERVICE">%1$s</xliff:g> – skrót"</string>
     <string name="accessibility_shortcut_edit_summary_software" msgid="6405629977940618205">"Przycisk ułatwień dostępu"</string>
     <string name="accessibility_shortcut_edit_dialog_title_software_gesture" msgid="8078659880723370597">"Przesuń w górę dwoma palcami"</string>
     <string name="accessibility_shortcut_edit_dialog_title_software_gesture_talkback" msgid="7422753388389160524">"Przesuń w górę trzema palcami"</string>
@@ -3441,7 +3446,7 @@
     <string name="zen_mode_settings_category" msgid="3794956668816783447">"Zezwól na powiadomienia dźwiękowe"</string>
     <string name="zen_mode_visual_interruptions_settings_title" msgid="7806181124566937214">"Blokuj wyświetlanie"</string>
     <string name="zen_mode_visual_signals_settings_subtitle" msgid="7433077540895876672">"Zezwól na sygnały wizualne"</string>
-    <string name="zen_mode_restrict_notifications_title" msgid="4169952466106040297">"Wyświetl opcje ukrytych powiadomień"</string>
+    <string name="zen_mode_restrict_notifications_title" msgid="4169952466106040297">"Opcje wyświetlania ukrytych powiadomień"</string>
     <string name="zen_mode_restrict_notifications_category" msgid="5870944770935394566">"Po włączeniu trybu Nie przeszkadzać"</string>
     <string name="zen_mode_restrict_notifications_mute" msgid="6692072837485018287">"Brak dźwięku powiadomień"</string>
     <string name="zen_mode_restrict_notifications_mute_summary" msgid="966597459849580949">"Powiadomienia będą wyświetlać się na ekranie"</string>
@@ -3529,8 +3534,8 @@
     <string name="zen_onboarding_dnd_visual_disturbances_header" msgid="8639698336231314609">"Zmienić ustawienia trybu Nie przeszkadzać?"</string>
     <string name="sound_work_settings" msgid="752627453846309092">"Dźwięki w profilu do pracy"</string>
     <string name="work_use_personal_sounds_title" msgid="7729428677919173609">"Użyj dźwięków z profilu osobistego"</string>
-    <string name="work_use_personal_sounds_summary" msgid="4482832555278975008">"Dźwięki są takie same w profilu osobistym i do pracy"</string>
-    <string name="work_ringtone_title" msgid="4810802758746102589">"Dzwonek w profilu do pracy"</string>
+    <string name="work_use_personal_sounds_summary" msgid="4482832555278975008">"Dźwięki są takie same w profilu osobistym i służbowym"</string>
+    <string name="work_ringtone_title" msgid="4810802758746102589">"Dzwonek w profilu służbowym"</string>
     <string name="work_notification_ringtone_title" msgid="2955312017013255515">"Domyślny dźwięk powiadomienia w profilu służbowym"</string>
     <string name="work_alarm_ringtone_title" msgid="3369293796769537392">"Domyślny dźwięk alarmu w profilu służbowym"</string>
     <string name="work_sound_same_as_personal" msgid="1836913235401642334">"Taki sam jak w profilu osobistym"</string>

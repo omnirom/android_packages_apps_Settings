@@ -745,7 +745,7 @@
     <string name="bluetooth_device_context_connect" msgid="4913860372216815855">"Падключыцца"</string>
     <string name="bluetooth_device_context_disconnect" msgid="4464167389972513232">"Адключыць"</string>
     <string name="bluetooth_device_context_pair_connect" msgid="2406032703622371826">"Спарыць і падключыць"</string>
-    <string name="bluetooth_device_context_unpair" msgid="7525735305244087162">"Разарваць пару"</string>
+    <string name="bluetooth_device_context_unpair" msgid="7525735305244087162">"Разлучыць"</string>
     <string name="bluetooth_device_context_disconnect_unpair" msgid="2001359431289794561">"Адключыць і разарваць пару"</string>
     <string name="bluetooth_device_context_connect_advanced" msgid="934657460643490773">"Параметры..."</string>
     <string name="bluetooth_menu_advanced" msgid="7633682234855216066">"Пашыраныя налады"</string>
@@ -1230,7 +1230,7 @@
     <string name="display_white_balance_summary" msgid="7625456704950209050"></string>
     <string name="peak_refresh_rate_title" msgid="1878771412897140903">"Плаўнае адлюстраванне"</string>
     <string name="peak_refresh_rate_summary" msgid="1527087897198455042">"Аўтаматычна павялічвае частату абнаўлення пэўнага змесціва з 60 да 90 Гц. Павышае выкарыстанне зараду акумулятара."</string>
-    <string name="force_high_refresh_rate_toggle" msgid="7458268305727889355">"Плаўнае адлюстраванне"</string>
+    <string name="force_high_refresh_rate_toggle" msgid="5861514655252832828">"Прымусовая частата абнаўлення: 90 Гц"</string>
     <string name="force_high_refresh_rate_desc" msgid="7794566420873814875">"Найвышэйшая частата абнаўлення для лепшага рэагавання на дотыкі і вышэйшай якасці анімацыі. Павышае выкарыстанне зараду акумулятара."</string>
     <string name="adaptive_sleep_title" msgid="2987961991423539233">"Адаптыўны рэжым"</string>
     <string name="adaptive_sleep_summary_on" msgid="313187971631243800">"Укл. / Калі глядзець на экран, ён не будзе выключацца"</string>
@@ -1371,7 +1371,6 @@
     <string name="firmware_version" msgid="1606901586501447275">"Версія Android"</string>
     <string name="security_patch" msgid="4071756145347865382">"Абнаўленне сістэмы бяспекі Android"</string>
     <string name="model_info" msgid="8997566254717810904">"Мадэль"</string>
-    <string name="model_summary" msgid="2246651782442466213">"Мадэль: %1$s"</string>
     <string name="hardware_info" msgid="7035211991066637019">"Мадэль і апаратнае забеспячэнне"</string>
     <string name="hardware_revision" msgid="3454709180861965025">"Версія апаратнага забеспячэння"</string>
     <string name="fcc_equipment_id" msgid="6596668314025646129">"Iдэнтыфiкатар абсталявання"</string>
@@ -1904,6 +1903,12 @@
     <string name="forgot_password_text" msgid="2583194470767613163">"ІТ-адміністратары могуць дапамагчы вам скінуць PIN-код, узор разблакіроўкі ці пароль"</string>
     <string name="install_all_warning" product="tablet" msgid="7010749217925069520">"Ваш планшэт і асабістыя даныя больш уразлівыя для нападаў невядомых праграм. Пры ўсталёўцы праграм з гэтай крыніцы вы згаджаецеся, што несяце адказнасць за любыя пашкоджанні планшэта ці страту даных, якія могуць адбыцца ў выніку выкарыстання гэтых праграм."</string>
     <string name="install_all_warning" product="default" msgid="652516435709047343">"Ваш тэлефон і асабістыя даныя больш уразлівыя для нападаў невядомых праграм. Пры ўсталёўцы праграм з гэтай крыніцы вы згаджаецеся, што несяце адказнасць за любыя пашкоджанні тэлефона ці страту даных, якія могуць адбыцца ў выніку выкарыстання гэтых праграм."</string>
+    <string name="fdr_esim_failure_title" msgid="4776006228989385163">"Памылка сцірання даных са спампаваных SIM-карт"</string>
+    <string name="fdr_esim_failure_text" msgid="8353414537422446964">"Перазагрузіце прыладу і паўтарыце спробу. Калі працягнуць скід да заводскіх налад, спампаваныя SIM-карты застануцца на гэтай прыладзе."</string>
+    <string name="fdr_esim_failure_reboot_btn" msgid="8629204185016602747">"Перазагрузіць"</string>
+    <string name="fdr_continue_title" msgid="5343622664826823937">"Працягнуць скід да заводскіх налад?"</string>
+    <string name="fdr_continue_text" msgid="860874694422515489">"Спампаваныя SIM-карты застануцца на прыладзе."</string>
+    <string name="fdr_continue_btn" msgid="1875421470422667092">"Скід да заводскіх налад"</string>
     <string name="install_all_warning" product="device" msgid="2348262609815354500">"Ваша прылада і асабістыя даныя больш прыступныя для нападаў невядомых праграм. Усталёўваючы праграмы з гэтай крыніцы вы згаджаецеся, што несяце адказнасць за любыя пашкоджанні прылады ці страту даных, якія могуць адбыцца ў выніку выкарыстання гэтых праграм."</string>
     <string name="advanced_settings" msgid="2368905204839169094">"Пашыраныя налады"</string>
     <string name="advanced_settings_summary" msgid="1823765348195530035">"Уключыць дадатковыя параметры налад"</string>
@@ -2328,7 +2333,7 @@
     <string name="accessibility_vibration_summary_medium" msgid="2348889320548746469">"Уключана умераная вібрацыя пры выкліках і атрыманні апавяшчэнняў"</string>
     <string name="accessibility_vibration_summary_high" msgid="1764693979030913712">"Уключана моцная вібрацыя пры выкліках і атрыманні апавяшчэнняў"</string>
     <string name="accessibility_vibration_intensity_off" msgid="972159695404061944">"Выключана"</string>
-    <string name="accessibility_vibration_intensity_low" msgid="6311161118835287335">"Слабы"</string>
+    <string name="accessibility_vibration_intensity_low" msgid="6311161118835287335">"Слабая"</string>
     <string name="accessibility_vibration_intensity_medium" msgid="1734058611879392797">"Умераная"</string>
     <string name="accessibility_vibration_intensity_high" msgid="5982896399775212514">"Моцная"</string>
     <string name="accessibility_menu_item_settings" msgid="2652637954865389271">"Налады"</string>
@@ -3400,7 +3405,7 @@
     <string name="other_sound_settings" msgid="5468360269346162072">"Іншыя гукі"</string>
     <string name="dial_pad_tones_title" msgid="3536945335367914892">"Гукі панэлі набору"</string>
     <string name="screen_locking_sounds_title" msgid="5695030983872787321">"Гук экрана блакіроўкі"</string>
-    <string name="charging_sounds_title" msgid="5261683808537783668">"Сігнал зарадкі і вібрацыя"</string>
+    <string name="charging_sounds_title" msgid="5261683808537783668">"Гукі і вібрацыя пры зарадцы"</string>
     <string name="docking_sounds_title" msgid="5341616179210436159">"Гукі док-станцыі"</string>
     <string name="touch_sounds_title" msgid="2200734041857425078">"Гукі пры дотыку"</string>
     <string name="vibrate_on_touch_title" msgid="9105544449810547716">"Вібрацыя пры націсканні"</string>
@@ -3671,7 +3676,7 @@
     <string name="allow_interruption" msgid="5237201780159482716">"Дазволіць перарыванні"</string>
     <string name="allow_interruption_summary" msgid="9044131663518112543">"Дазволіць праграме выкарыстоўваць гук, вібрацыю і/або ўсплываючыя апавяшчэнні на экране"</string>
     <string name="notification_priority_title" msgid="5554834239080425229">"Прыярытэт"</string>
-    <string name="notification_channel_summary_priority" msgid="7225362351439076913">"Паказваецца ўверсе раздзела размоў у выглядзе ўсплывальнага апавяшчэння, а на экране блакіроўкі – у выглядзе відарыса профілю"</string>
+    <string name="notification_channel_summary_priority" msgid="7225362351439076913">"Паказваецца ўверсе раздзела размоў, як усплывальнае апавяшчэнне, паказвае фота профілю на экране блакіроўкі"</string>
     <string name="convo_not_supported_summary" msgid="4285471045268268048">"<xliff:g id="APP_NAME">%1$s</xliff:g> не падтрымлівае большую частку функцый размоў. Вы не зможаце зрабіць размову прыярытэтнай, і размовы не будуць паказвацца ў выглядзе ўсплывальных апавяшчэнняў."</string>
     <string name="notification_channel_summary_min" msgid="8823399508450176842">"Згарнуць апавяшчэнні ў адзін радок на апушчанай шторцы"</string>
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"Без гуку ці вібрацыі"</string>

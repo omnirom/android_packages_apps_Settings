@@ -1039,7 +1039,7 @@
     <string name="wifi_hotspot_tethering_on_subtext" product="default" msgid="5451921191609178326">"ਇਸ ਫ਼ੋਨ ਦੇ ਇੰਟਰਨੈੱਟ ਕਨੈਕਸ਼ਨ ਨੂੰ ਹੌਟਸਪੌਟ ਰਾਹੀਂ ਸਾਂਝਾ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"</string>
     <string name="wifi_hotspot_on_local_only_subtext" msgid="965051079784031636">"ਐਪ ਸਮੱਗਰੀ ਨੂੰ ਸਾਂਝਾ ਕਰ ਰਹੀ ਹੈ। ਇੰਟਰਨੈੱਟ ਕਨੈਕਸ਼ਨ ਸਾਂਝਾ ਕਰਨ ਲਈ, ਹੌਟਸਪੌਟ ਨੂੰ ਬੰਦ ਕਰਕੇ ਫਿਰ ਚਾਲੂ ਕਰੋ"</string>
     <string name="wifi_hotspot_no_password_subtext" msgid="3685689196772398783">"ਕੋਈ ਪਾਸਵਰਡ ਸੈੱਟ ਨਹੀਂ ਹੈ"</string>
-    <string name="wifi_hotspot_name_title" msgid="6633480190014369846">"ਹੌਟਸਪੌਟ ਨਾਮ"</string>
+    <string name="wifi_hotspot_name_title" msgid="6633480190014369846">"ਹੌਟਸਪੌਟ ਦਾ ਨਾਮ"</string>
     <string name="wifi_hotspot_name_summary_connecting" msgid="6178719924661022928">"<xliff:g id="WIFI_HOTSPOT_NAME">%1$s</xliff:g> ਨੂੰ ਚਾਲੂ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."</string>
     <string name="wifi_hotspot_name_summary_connected" msgid="6935457127884928249">"ਹੋਰ ਡੀਵਾਈਸਾਂ <xliff:g id="WIFI_HOTSPOT_NAME">%1$s</xliff:g> ਨਾਲ ਕਨੈਕਟ ਹੋ ਸਕਦੀਆਂ ਹਨ"</string>
     <string name="wifi_hotspot_password_title" msgid="9096340919454296786">"ਹੌਟਸਪੌਟ ਪਾਸਵਰਡ"</string>
@@ -1190,7 +1190,7 @@
     <string name="display_white_balance_summary" msgid="7625456704950209050"></string>
     <string name="peak_refresh_rate_title" msgid="1878771412897140903">"ਸਮੂਥ ਡਿਸਪਲੇ"</string>
     <string name="peak_refresh_rate_summary" msgid="1527087897198455042">"ਸਵੈਚਲਿਤ ਤੌਰ \'ਤੇ ਕੁਝ ਸਮੱਗਰੀਆਂ ਲਈ ਰਿਫ੍ਰੈਸ਼ ਦਰ ਨੂੰ 60 ਤੋਂ ਵਧਾ ਕੇ 90 Hz ਕਰ ਦਿੰਦਾ ਹੈ। ਬੈਟਰੀ ਵਰਤੋਂ ਵੱਧ ਜਾਂਦੀ ਹੈ।"</string>
-    <string name="force_high_refresh_rate_toggle" msgid="7458268305727889355">"ਸਮੂਥ ਡਿਸਪਲੇ"</string>
+    <string name="force_high_refresh_rate_toggle" msgid="5861514655252832828">"90 Hz ਰਿਫ੍ਰੈਸ਼ ਦਰ ਸੈੱਟ ਕਰੋ"</string>
     <string name="force_high_refresh_rate_desc" msgid="7794566420873814875">"ਬਿਹਤਰ ਸਪਰਸ਼ ਪ੍ਰਤੀਕਿਰਿਆ ਅਤੇ ਐਨੀਮੇਸ਼ਨ ਕੁਆਲਿਟੀ ਲਈ ਉੱਚਤਮ ਰਿਫ੍ਰੈਸ਼ ਦਰ। ਬੈਟਰੀ ਵਰਤੋਂ ਵੱਧ ਜਾਂਦੀ ਹੈ।"</string>
     <string name="adaptive_sleep_title" msgid="2987961991423539233">"ਸਕ੍ਰੀਨ ਦਾ ਚੌਕੰਨਾਪਣ"</string>
     <string name="adaptive_sleep_summary_on" msgid="313187971631243800">"ਚਾਲੂ / ਸਕ੍ਰੀਨ ਬੰਦ ਨਹੀਂ ਹੋਵੇਗੀ ਜੇ ਤੁਸੀਂ ਉਸ ਵੱਲ ਦੇਖ ਰਹੇ ਹੋ"</string>
@@ -1329,7 +1329,6 @@
     <string name="firmware_version" msgid="1606901586501447275">"Android ਵਰਜਨ"</string>
     <string name="security_patch" msgid="4071756145347865382">"Android ਸੁਰੱਖਿਆ ਅੱਪਡੇਟ"</string>
     <string name="model_info" msgid="8997566254717810904">"ਮਾਡਲ"</string>
-    <string name="model_summary" msgid="2246651782442466213">"ਮਾਡਲ: %1$s"</string>
     <string name="hardware_info" msgid="7035211991066637019">"ਮਾਡਲ ਅਤੇ ਹਾਰਡਵੇਅਰ"</string>
     <string name="hardware_revision" msgid="3454709180861965025">"ਹਾਰਡਵੇਅਰ ਵਰਜਨ"</string>
     <string name="fcc_equipment_id" msgid="6596668314025646129">"ਉਪਕਰਨ ਆਈ.ਡੀ."</string>
@@ -1858,6 +1857,12 @@
     <string name="forgot_password_text" msgid="2583194470767613163">"ਉਹ ਤੁਹਾਨੂੰ ਆਪਣਾ ਪਿੰਨ, ਪੈਟਰਨ ਜਾਂ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰਨ ਵਿੱਚ ਮਦਦ ਕਰ ਸਕਦੇ ਹਨ"</string>
     <string name="install_all_warning" product="tablet" msgid="7010749217925069520">"ਤੁਹਾਡਾ ਟੈਬਲੈੱਟ ਅਤੇ ਨਿੱਜੀ ਡਾਟਾ ਅਗਿਆਤ ਐਪਾਂ ਤੋਂ ਹਮਲੇ ਪ੍ਰਤੀ ਵਧੇਰੇ ਕਮਜ਼ੋਰ ਹੈ। ਇਸ ਸਰੋਤ ਤੋਂ ਐਪਾਂ ਸਥਾਪਿਤ ਕਰਕੇ, ਤੁਸੀਂ ਸਹਿਮਤੀ ਦਿੰਦੇ ਹੋ ਕਿ ਆਪਣੇ ਟੈਬਲੈੱਟ ਨੂੰ ਹੋਣ ਵਾਲੇ ਕਿਸੇ ਵੀ ਨੁਕਸਾਨ ਜਾਂ ਡਾਟੇ ਦੇ ਗੁੰਮ ਹੋਣ ਲਈ ਤੁਸੀਂ ਜ਼ਿੰਮੇਵਾਰ ਹੋ, ਜੋ ਸ਼ਾਇਦ ਇਹਨਾਂ ਐਪਾਂ ਨੂੰ ਵਰਤਣ ਦੇ ਨਤੀਜੇ ਵਜੋਂ ਹੋ ਸਕਦਾ ਹੈ।"</string>
     <string name="install_all_warning" product="default" msgid="652516435709047343">"ਤੁਹਾਡਾ ਫ਼ੋਨ ਅਤੇ ਨਿੱਜੀ ਡਾਟਾ ਅਗਿਆਤ ਐਪਾਂ ਤੋਂ ਹਮਲੇ ਪ੍ਰਤੀ ਵਧੇਰੇ ਵਿੰਨਣਸ਼ੀਲ ਹਨ। ਇਸ ਸਰੋਤ ਤੋਂ ਐਪਾਂ ਸਥਾਪਤ ਕਰ ਕੇ, ਤੁਸੀਂ ਸਹਿਮਤੀ ਦਿੰਦੇ ਹੋ ਕਿ ਆਪਣੇ ਫ਼ੋਨ ਨੂੰ ਹੋਣ ਵਾਲੇ ਕਿਸੇ ਵੀ ਨੁਕਸਾਨ ਜਾਂ ਡਾਟੇ ਦੇ ਗੁੰਮ ਹੋਣ ਲਈ ਤੁਸੀਂ ਜ਼ਿੰਮੇਵਾਰ ਹੋ ਜੋ ਸ਼ਾਇਦ ਇਹਨਾਂ ਐਪਾਂ ਨੂੰ ਵਰਤਣ ਦੇ ਨਤੀਜੇ ਵਜੋਂ ਹੋ ਸਕਦਾ ਹੈ।"</string>
+    <string name="fdr_esim_failure_title" msgid="4776006228989385163">"ਡਾਊਨਲੋਡ ਕੀਤੇ ਸਿਮਾਂ ਨੂੰ ਮਿਟਾਉਣ ਵਿੱਚ ਕੋਈ ਸਮੱਸਿਆ ਹੈ"</string>
+    <string name="fdr_esim_failure_text" msgid="8353414537422446964">"ਕਿਰਪਾ ਕਰਕੇ ਡੀਵਾਈਸ ਨੂੰ ਰੀਬੂਟ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ। ਜੇ ਤੁਸੀਂ ਫੈਕਟਰੀ ਰੀਸੈੱਟ ਜਾਰੀ ਰੱਖਦੇ ਹੋ, ਤਾਂ ਸ਼ਾਇਦ ਡਾਊਨਲੋਡ ਕੀਤੇ ਸਿਮ ਡੀਵਾਈਸ \'ਤੇ ਰਹਿਣ।"</string>
+    <string name="fdr_esim_failure_reboot_btn" msgid="8629204185016602747">"ਰੀਬੂਟ ਕਰੋ"</string>
+    <string name="fdr_continue_title" msgid="5343622664826823937">"ਕੀ ਫੈਕਟਰੀ ਰੀਸੈੱਟ ਨੂੰ ਜਾਰੀ ਰੱਖਣਾ ਹੈ?"</string>
+    <string name="fdr_continue_text" msgid="860874694422515489">"ਡਾਊਨਲੋਡ ਕੀਤੇ ਸਿਮ ਡੀਵਾਈਸ \'ਤੇ ਰਹਿਣਗੇ।"</string>
+    <string name="fdr_continue_btn" msgid="1875421470422667092">"ਫੈਕਟਰੀ ਰੀਸੈੱਟ ਕਰੋ"</string>
     <string name="install_all_warning" product="device" msgid="2348262609815354500">"ਤੁਹਾਡਾ ਡੀਵਾਈਸ ਅਤੇ ਨਿੱਜੀ ਡਾਟਾ ਅਗਿਆਤ ਐਪਾਂ ਤੋਂ ਹਮਲੇ ਪ੍ਰਤੀ ਵਧੇਰੇ ਵਿੰਨਣਸ਼ੀਲ ਹਨ। ਇਸ ਸਰੋਤ ਤੋਂ ਐਪਾਂ ਸਥਾਪਤ ਕਰ ਕੇ, ਤੁਸੀਂ ਸਹਿਮਤੀ ਦਿੰਦੇ ਹੋ ਕਿ ਆਪਣੇ ਡੀਵਾਈਸ ਨੂੰ ਹੋਣ ਵਾਲੇ ਕਿਸੇ ਵੀ ਨੁਕਸਾਨ ਜਾਂ ਡਾਟੇ ਦੇ ਗੁੰਮ ਹੋਣ ਲਈ ਤੁਸੀਂ ਜ਼ਿੰਮੇਵਾਰ ਹੋ ਜੋ ਸ਼ਾਇਦ ਇਹਨਾਂ ਐਪਾਂ ਨੂੰ ਵਰਤਣ ਦੇ ਨਤੀਜੇ ਵਜੋਂ ਹੋ ਸਕਦਾ ਹੈ।"</string>
     <string name="advanced_settings" msgid="2368905204839169094">"ਉੱਨਤ ਸੈਟਿੰਗਾਂ"</string>
     <string name="advanced_settings_summary" msgid="1823765348195530035">"ਹੋਰ ਸੈਟਿੰਗਾਂ ਚੋਣਾਂ ਚਾਲੂ ਕਰੋ"</string>
@@ -3036,7 +3041,7 @@
     <string name="user_exit_guest_confirm_message" msgid="8995296853928816554">"ਇਸ ਸੈਸ਼ਨ ਵਿੱਚ ਸਾਰੀਆਂ ਐਪਾਂ ਅਤੇ ਡਾਟਾ ਨੂੰ ਮਿਟਾ ਦਿੱਤਾ ਜਾਏਗਾ।"</string>
     <string name="user_exit_guest_dialog_remove" msgid="7067727314172605181">"ਹਟਾਓ"</string>
     <string name="user_enable_calling" msgid="264875360626905535">"ਫ਼ੋਨ ਕਾਲਾਂ ਚਾਲੂ ਕਰੋ"</string>
-    <string name="user_enable_calling_sms" msgid="8546430559552381324">"ਫ਼ੋਨ ਕਾਲਾਂ &amp; SMS ਚਾਲੂ ਕਰੋ"</string>
+    <string name="user_enable_calling_sms" msgid="8546430559552381324">"ਫ਼ੋਨ ਕਾਲਾਂ ਅਤੇ SMS ਚਾਲੂ ਕਰੋ"</string>
     <string name="user_remove_user" msgid="8468203789739693845">"ਵਰਤੋਂਕਾਰ ਨੂੰ ਮਿਟਾਓ"</string>
     <string name="user_enable_calling_confirm_title" msgid="7868894792723368364">"ਕੀ ਫ਼ੋਨ ਕਾਲਾਂ ਚਾਲੂ ਕਰਨੀਆਂ ਹਨ?"</string>
     <string name="user_enable_calling_confirm_message" msgid="4924965198409050155">"ਕਾਲ ਇਤਿਹਾਸ ਇਸ ਵਰਤੋਂਕਾਰ ਨਾਲ ਸਾਂਝਾ ਕੀਤਾ ਜਾਏਗਾ।"</string>

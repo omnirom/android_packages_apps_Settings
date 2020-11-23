@@ -1190,7 +1190,7 @@
     <string name="display_white_balance_summary" msgid="7625456704950209050"></string>
     <string name="peak_refresh_rate_title" msgid="1878771412897140903">"Rahat Displey"</string>
     <string name="peak_refresh_rate_summary" msgid="1527087897198455042">"Bəzi məzmun üçün yeniləmə dərəcəsini 60 Hs-dən 90 Hs-ə avtomatik yüksəldir. Batareya istifadəsini artırır."</string>
-    <string name="force_high_refresh_rate_toggle" msgid="7458268305727889355">"Rahat Displey"</string>
+    <string name="force_high_refresh_rate_toggle" msgid="5861514655252832828">"90 Hs yeniləmə dərəcəsini məcbur tətbiq edin"</string>
     <string name="force_high_refresh_rate_desc" msgid="7794566420873814875">"Təkmilləşdirilmiş toxunuş həssaslığı və animasiya keyfiyyəti üçün yüksək yeniləmə dərəcəsi. Batareya istifadəsini artırır."</string>
     <string name="adaptive_sleep_title" msgid="2987961991423539233">"Ekran həssaslığı"</string>
     <string name="adaptive_sleep_summary_on" msgid="313187971631243800">"Aktiv/ Ekrana baxırsınızsa, sönməyəcək"</string>
@@ -1329,7 +1329,6 @@
     <string name="firmware_version" msgid="1606901586501447275">"Android versiyası"</string>
     <string name="security_patch" msgid="4071756145347865382">"Android güvənlik güncəlləməsi"</string>
     <string name="model_info" msgid="8997566254717810904">"Model"</string>
-    <string name="model_summary" msgid="2246651782442466213">"Model: %1$s"</string>
     <string name="hardware_info" msgid="7035211991066637019">"Model və avadanlıq"</string>
     <string name="hardware_revision" msgid="3454709180861965025">"Avadanlıq versiyası"</string>
     <string name="fcc_equipment_id" msgid="6596668314025646129">"Avadanlıq ID"</string>
@@ -1858,6 +1857,12 @@
     <string name="forgot_password_text" msgid="2583194470767613163">"PIN, model və ya parolu sıfırlamanıza yardım edə bilər"</string>
     <string name="install_all_warning" product="tablet" msgid="7010749217925069520">"Planşet və şəxsi datanız naməlum tətbiqlərin hücumuna qarşı daha həssasdır. Bu mənbədən tətbiq quraşdırmaqla planşetinə dəyə biləcək zərər və ya həmin tətbiqlərin istifadəsi nəticəsində baş verən data itkisinə görə məsuliyyət daşıdığınızı qəbul edirsiniz."</string>
     <string name="install_all_warning" product="default" msgid="652516435709047343">"Telefon və şəxsi datanız naməlum tətbiqlərin hücumuna qarşı daha həssasdır. Bu mənbədən tətbiq quraşdırmaqla telefona dəyə biləcək zərər və ya həmin tətbiqlərin istifadəsi nəticəsində baş verən data itkisinə görə məsuliyyət daşıdığınızı qəbul edirsiniz."</string>
+    <string name="fdr_esim_failure_title" msgid="4776006228989385163">"Endirilmiş SIM\'ləri silməklə bağlı problem var"</string>
+    <string name="fdr_esim_failure_text" msgid="8353414537422446964">"Cihazı yenidən başladıb cəhd edin. Zavod sıfırlamasına davam etsəniz, endirilmiş SIM\'lər cihazda qala bilər."</string>
+    <string name="fdr_esim_failure_reboot_btn" msgid="8629204185016602747">"Yenidən başladın"</string>
+    <string name="fdr_continue_title" msgid="5343622664826823937">"Zavod sıfırlamasına davam edilsin?"</string>
+    <string name="fdr_continue_text" msgid="860874694422515489">"Endirilmiş SIM\'lər cihazda qalacaq."</string>
+    <string name="fdr_continue_btn" msgid="1875421470422667092">"Zavod sıfırlaması edin"</string>
     <string name="install_all_warning" product="device" msgid="2348262609815354500">"Cihaz və şəxsi datanız naməlum tətbiqlərin hücumuna qarşı daha həssasdır. Bu mənbədən tətbiq quraşdırmaqla cihaza dəyə biləcək zərər və ya həmin tətbiqlərin istifadəsi nəticəsində baş verən data itkisinə görə məsuliyyət daşıdığınızı qəbul edirsiniz."</string>
     <string name="advanced_settings" msgid="2368905204839169094">"Qabaqcıl ayarlar"</string>
     <string name="advanced_settings_summary" msgid="1823765348195530035">"Daha çox parametr seçimlərini aktiv edin"</string>
@@ -2497,7 +2502,7 @@
     <string name="dialog_location_message" product="device" msgid="4606829479989940464">"Cihaz batareya istifadəsini normal idarə edə bilmir, çünki tətbiqdən istifadə etmədiyiniz zaman <xliff:g id="APP">%1$s</xliff:g> məkanı təklif etməyə davam edir.\n\n Bu problemi həll etmək üçün tətbiq məkanını deaktiv edə bilərsiniz."</string>
     <string name="dialog_location_ok" msgid="6338680851382069716">"Deaktiv edin"</string>
     <string name="power_screen" msgid="4596900105850963806">"Ekran"</string>
-    <string name="power_flashlight" msgid="8993388636332573202">"İşartı"</string>
+    <string name="power_flashlight" msgid="8993388636332573202">"Fənər"</string>
     <string name="power_camera" msgid="4778315081581293923">"Kamera"</string>
     <string name="power_wifi" msgid="4614007837288250325">"Wi-Fi"</string>
     <string name="power_bluetooth" msgid="5085900180846238196">"Bluetooth"</string>
@@ -3310,7 +3315,7 @@
     <string name="vibrate_when_ringing_option_always_vibrate" msgid="968652667232075466">"Həmişə vibrasiya etsin"</string>
     <string name="vibrate_when_ringing_option_ramping_ringer" msgid="2798848945803840348">"Əvvəlcə vibrasiya etsin, sonra tədricən zəng çalsın"</string>
     <string name="other_sound_settings" msgid="5468360269346162072">"Digər səslər"</string>
-    <string name="dial_pad_tones_title" msgid="3536945335367914892">"Klaviş tonları"</string>
+    <string name="dial_pad_tones_title" msgid="3536945335367914892">"Nömrə yığma tonları"</string>
     <string name="screen_locking_sounds_title" msgid="5695030983872787321">"Ekran kilidləmə səsi"</string>
     <string name="charging_sounds_title" msgid="5261683808537783668">"Batareya səs və vibrasiyası"</string>
     <string name="docking_sounds_title" msgid="5341616179210436159">"Toqquşma səsləri"</string>

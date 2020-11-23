@@ -133,7 +133,7 @@
     <string name="bluetooth_map_acceptance_dialog_text" msgid="2647611490952377156">"%1$s muốn truy cập tin nhắn của bạn. Bạn có muốn cấp quyền truy cập cho %2$s không?"</string>
     <string name="bluetooth_sap_request" msgid="473439406287008397">"Yêu cầu truy cập SIM"</string>
     <string name="bluetooth_sap_acceptance_dialog_text" msgid="2849083276356078655">"<xliff:g id="DEVICE_NAME_0">%1$s</xliff:g> muốn truy cập vào thẻ SIM của bạn. Cấp quyền truy cập vào thẻ SIM sẽ vô hiệu hóa khả năng kết nối dữ liệu trên thiết bị của bạn trong suốt thời gian kết nối. Cấp quyền truy cập vào <xliff:g id="DEVICE_NAME_1">%2$s?</xliff:g>"</string>
-    <string name="bluetooth_device_name_summary" msgid="8678342689845439583">"Hiển thị là \"<xliff:g id="DEVICE_NAME">^1</xliff:g>\" với các thiết bị khác"</string>
+    <string name="bluetooth_device_name_summary" msgid="8678342689845439583">"Tên xuất hiện trên các thiết bị khác: <xliff:g id="DEVICE_NAME">^1</xliff:g>"</string>
     <string name="bluetooth_off_footer" msgid="76578735660216295">"Bật Bluetooth để kết nối với các thiết bị khác."</string>
     <string name="bluetooth_paired_device_title" msgid="3240639218362342026">"Thiết bị của bạn"</string>
     <string name="bluetooth_pairing_page_title" msgid="3403981358823707692">"Ghép nối thiết bị mới"</string>
@@ -1190,7 +1190,7 @@
     <string name="display_white_balance_summary" msgid="7625456704950209050"></string>
     <string name="peak_refresh_rate_title" msgid="1878771412897140903">"Hình ảnh mượt"</string>
     <string name="peak_refresh_rate_summary" msgid="1527087897198455042">"Tự động tăng tốc độ làm mới từ 60 lên 90 Hz đối với một số nội dung. Làm tăng mức sử dụng pin."</string>
-    <string name="force_high_refresh_rate_toggle" msgid="7458268305727889355">"Hình ảnh mượt"</string>
+    <string name="force_high_refresh_rate_toggle" msgid="5861514655252832828">"Buộc làm mới ở tốc độ 90 Hz"</string>
     <string name="force_high_refresh_rate_desc" msgid="7794566420873814875">"Tốc độ làm mới cao nhất giúp cải thiện khả năng phản hồi khi chạm và chất lượng ảnh động. Làm tăng mức sử dụng pin."</string>
     <string name="adaptive_sleep_title" msgid="2987961991423539233">"Chú ý đến màn hình"</string>
     <string name="adaptive_sleep_summary_on" msgid="313187971631243800">"Bật / Màn hình sẽ không tắt nếu bạn đang nhìn vào màn hình"</string>
@@ -1329,7 +1329,6 @@
     <string name="firmware_version" msgid="1606901586501447275">"Phiên bản Android"</string>
     <string name="security_patch" msgid="4071756145347865382">"Bản cập nhật bảo mật Android"</string>
     <string name="model_info" msgid="8997566254717810904">"Kiểu máy"</string>
-    <string name="model_summary" msgid="2246651782442466213">"Kiểu máy: %1$s"</string>
     <string name="hardware_info" msgid="7035211991066637019">"Kiểu máy và phần cứng"</string>
     <string name="hardware_revision" msgid="3454709180861965025">"Phiên bản phần cứng"</string>
     <string name="fcc_equipment_id" msgid="6596668314025646129">"ID thiết bị"</string>
@@ -1858,6 +1857,12 @@
     <string name="forgot_password_text" msgid="2583194470767613163">"Họ có thể giúp bạn đặt lại mã PIN, hình mở khóa hoặc mật khẩu"</string>
     <string name="install_all_warning" product="tablet" msgid="7010749217925069520">"Máy tính bảng và dữ liệu cá nhân của bạn dễ bị các ứng dụng không xác định tấn công hơn. Bằng cách cài đặt ứng dụng từ nguồn này, bạn đồng ý tự chịu trách nhiệm cho mọi hỏng hóc đối với máy tính bảng của mình hoặc mất mát dữ liệu có thể phát sinh do sử dụng những ứng dụng này."</string>
     <string name="install_all_warning" product="default" msgid="652516435709047343">"Điện thoại và dữ liệu cá nhân của bạn dễ bị các ứng dụng không xác định tấn công hơn. Bằng cách cài đặt ứng dụng từ nguồn này, bạn đồng ý tự chịu trách nhiệm cho mọi hỏng hóc đối với điện thoại của mình hoặc mất mát dữ liệu có thể phát sinh do sử dụng những ứng dụng này."</string>
+    <string name="fdr_esim_failure_title" msgid="4776006228989385163">"Đã xảy ra vấn đề khi xóa các SIM đã tải xuống"</string>
+    <string name="fdr_esim_failure_text" msgid="8353414537422446964">"Vui lòng khởi động lại thiết bị rồi thử lại. Nếu bạn tiếp tục đặt lại về trạng thái ban đầu, các SIM đã tải xuống có thể vẫn còn trên thiết bị."</string>
+    <string name="fdr_esim_failure_reboot_btn" msgid="8629204185016602747">"Khởi động lại"</string>
+    <string name="fdr_continue_title" msgid="5343622664826823937">"Tiếp tục đặt lại về trạng thái ban đầu?"</string>
+    <string name="fdr_continue_text" msgid="860874694422515489">"Các SIM đã tải xuống sẽ vẫn còn trên thiết bị."</string>
+    <string name="fdr_continue_btn" msgid="1875421470422667092">"Đặt lại về trạng thái ban đầu"</string>
     <string name="install_all_warning" product="device" msgid="2348262609815354500">"Thiết bị và dữ liệu cá nhân của bạn dễ bị các ứng dụng không xác định tấn công hơn. Bằng cách cài đặt ứng dụng từ nguồn này, bạn đồng ý tự chịu trách nhiệm cho mọi hỏng hóc đối với thiết bị hoặc mất mát dữ liệu có thể phát sinh do sử dụng những ứng dụng này."</string>
     <string name="advanced_settings" msgid="2368905204839169094">"Cài đặt nâng cao"</string>
     <string name="advanced_settings_summary" msgid="1823765348195530035">"Bật thêm tùy chọn cài đặt"</string>
@@ -2371,7 +2376,7 @@
     <string name="power_usage_level_and_status" msgid="821521456989429593">"<xliff:g id="LEVEL">%1$s</xliff:g> - <xliff:g id="STATUS">%2$s</xliff:g>"</string>
     <string name="power_discharge_remaining" msgid="6997529817917076536">"<xliff:g id="REMAIN">%1$s</xliff:g> còn lại"</string>
     <string name="power_charge_remaining" msgid="7046064326172265116">"<xliff:g id="UNTIL_CHARGED">%1$s</xliff:g> để tính phí"</string>
-    <string name="background_activity_title" msgid="8214332017349791380">"Hạn chế trong nền"</string>
+    <string name="background_activity_title" msgid="8214332017349791380">"Hạn chế chạy trong nền"</string>
     <string name="background_activity_summary" msgid="3817376868497046016">"Cho phép ứng dụng chạy trong nền"</string>
     <string name="background_activity_summary_disabled" msgid="32459916080651444">"Ứng dụng không được phép chạy trong nền"</string>
     <string name="background_activity_summary_whitelisted" msgid="6808917852577742965">"Không thể hạn chế sử dụng trong nền"</string>
@@ -3574,7 +3579,7 @@
     <string name="notification_alert_title" msgid="1632401211722199217">"Mặc định"</string>
     <string name="allow_interruption" msgid="5237201780159482716">"Cho phép gián đoạn"</string>
     <string name="allow_interruption_summary" msgid="9044131663518112543">"Cho phép ứng dụng phát ra âm thanh, rung và/hoặc hiển thị thông báo trên màn hình"</string>
-    <string name="notification_priority_title" msgid="5554834239080425229">"Mức độ ưu tiên"</string>
+    <string name="notification_priority_title" msgid="5554834239080425229">"Ưu tiên"</string>
     <string name="notification_channel_summary_priority" msgid="7225362351439076913">"Hiển thị cuộc trò chuyện ở đầu phần cuộc trò chuyện và dưới dạng bong bóng nổi, hiển thị ảnh hồ sơ trên màn hình khóa"</string>
     <string name="convo_not_supported_summary" msgid="4285471045268268048">"<xliff:g id="APP_NAME">%1$s</xliff:g> không hỗ trợ hầu hết các tính năng trò chuyện. Bạn không thể đặt một cuộc trò chuyện là ưu tiên. Các cuộc trò chuyện sẽ không xuất hiện dưới dạng bong bóng nổi."</string>
     <string name="notification_channel_summary_min" msgid="8823399508450176842">"Thu gọn thông báo thành một dòng trong danh sách kéo xuống"</string>
@@ -3687,14 +3692,14 @@
     <string name="app_notification_override_dnd_summary" msgid="4894641191397562920">"Cho phép những thông báo này tiếp tục làm gián đoạn khi chế độ Không làm phiền đang bật"</string>
     <string name="app_notification_visibility_override_title" msgid="7778628150022065920">"Màn hình khóa"</string>
     <string name="app_notification_row_banned" msgid="4513523107019706924">"Bị chặn"</string>
-    <string name="app_notification_row_priority" msgid="8100777138078316446">"Mức độ ưu tiên"</string>
+    <string name="app_notification_row_priority" msgid="8100777138078316446">"Ưu tiên"</string>
     <string name="app_notification_row_sensitive" msgid="7374688948587174964">"Nhạy cảm"</string>
     <string name="app_notifications_dialog_done" msgid="573716608705273004">"Xong"</string>
     <string name="app_notification_importance_title" msgid="8293193440040799998">"Mức độ quan trọng"</string>
     <string name="notification_show_lights_title" msgid="5564315979007438583">"Nhấp nháy đèn"</string>
     <string name="notification_vibrate_title" msgid="1422330728336623351">"Rung"</string>
     <string name="notification_channel_sound_title" msgid="9018031231387273476">"Âm báo"</string>
-    <string name="notification_conversation_important" msgid="4365437037763608045">"Mức độ ưu tiên"</string>
+    <string name="notification_conversation_important" msgid="4365437037763608045">"Ưu tiên"</string>
     <string name="notification_conversation_add_to_home" msgid="8136269431130231389">"Thêm vào nhà"</string>
     <string name="zen_mode_rule_delete_button" msgid="7642063606919058862">"Xóa"</string>
     <string name="zen_mode_rule_rename_button" msgid="4158377587795511144">"Đổi tên"</string>
@@ -3912,7 +3917,7 @@
     <string name="imei_information_summary" msgid="4763358372990258786">"Thông tin liên quan đến IMEI"</string>
     <string name="slot_number" msgid="2663789411468530397">"(Khe cắm<xliff:g id="SLOT_NUM">%1$d</xliff:g>)"</string>
     <string name="launch_by_default" msgid="892824422067985734">"Mở theo mặc định"</string>
-    <string name="app_launch_domain_links_title" msgid="6702041169676128550">"Mở liên kết"</string>
+    <string name="app_launch_domain_links_title" msgid="6702041169676128550">"Mở đường liên kết"</string>
     <string name="app_launch_open_domain_urls_title" msgid="4805388403977096285">"Mở các liên kết được hỗ trợ"</string>
     <string name="app_launch_open_domain_urls_summary" msgid="3609156836041234957">"Mở không cần hỏi"</string>
     <string name="app_launch_supported_domain_urls_title" msgid="5088779668667217369">"Các liên kết được hỗ trợ"</string>
@@ -3972,7 +3977,7 @@
     <string name="app_permissions_summary_more" msgid="6247952473615352350">"Ứng dụng dùng <xliff:g id="APPS">%1$s</xliff:g> và hơn thế"</string>
     <string name="tap_to_wake" msgid="3313433536261440068">"Nhấn để đánh thức"</string>
     <string name="tap_to_wake_summary" msgid="6641039858241611072">"Nhấn đúp vào vị trí bất kỳ trên màn hình để đánh thức thiết bị"</string>
-    <string name="domain_urls_title" msgid="7012209752049678876">"Mở liên kết"</string>
+    <string name="domain_urls_title" msgid="7012209752049678876">"Mở đường liên kết"</string>
     <string name="domain_urls_summary_none" msgid="1132578967643384733">"Không mở các liên kết được hỗ trợ"</string>
     <string name="domain_urls_summary_one" msgid="3312008753802762892">"Mở <xliff:g id="DOMAIN">%s</xliff:g>"</string>
     <string name="domain_urls_summary_some" msgid="1197692164421314523">"Mở <xliff:g id="DOMAIN">%s</xliff:g> và các URL khác"</string>

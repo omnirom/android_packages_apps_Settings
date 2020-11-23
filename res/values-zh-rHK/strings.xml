@@ -1190,7 +1190,7 @@
     <string name="display_white_balance_summary" msgid="7625456704950209050"></string>
     <string name="peak_refresh_rate_title" msgid="1878771412897140903">"流暢顯示"</string>
     <string name="peak_refresh_rate_summary" msgid="1527087897198455042">"自動將部分內容的重新整理頻率，從 60 Hz 提升到 90 Hz。此功能會增加耗電量。"</string>
-    <string name="force_high_refresh_rate_toggle" msgid="7458268305727889355">"流暢畫面"</string>
+    <string name="force_high_refresh_rate_toggle" msgid="5861514655252832828">"提升重新整理頻率至 90 Hz"</string>
     <string name="force_high_refresh_rate_desc" msgid="7794566420873814875">"最高的重新整理頻率，帶來更靈敏的觸控反應和更高畫質的動畫。這會增加電池用量。"</string>
     <string name="adaptive_sleep_title" msgid="2987961991423539233">"螢幕感知"</string>
     <string name="adaptive_sleep_summary_on" msgid="313187971631243800">"啟用 / 假如正您望向螢幕，螢幕將不會關閉"</string>
@@ -1329,7 +1329,6 @@
     <string name="firmware_version" msgid="1606901586501447275">"Android 版本"</string>
     <string name="security_patch" msgid="4071756145347865382">"Android 安全性更新"</string>
     <string name="model_info" msgid="8997566254717810904">"型號"</string>
-    <string name="model_summary" msgid="2246651782442466213">"型號：%1$s"</string>
     <string name="hardware_info" msgid="7035211991066637019">"型號和硬件"</string>
     <string name="hardware_revision" msgid="3454709180861965025">"硬件版本"</string>
     <string name="fcc_equipment_id" msgid="6596668314025646129">"設備編號"</string>
@@ -1859,6 +1858,12 @@
     <string name="forgot_password_text" msgid="2583194470767613163">"他們可協助您重設 PIN、圖案或密碼"</string>
     <string name="install_all_warning" product="tablet" msgid="7010749217925069520">"來源不明的應用程式可能會侵害您的平板電腦和個人資料。安裝來自此來源的應用程式，即表示您同意承擔因使用這些應用程式而導致平板電腦損壞或資料遺失的責任。"</string>
     <string name="install_all_warning" product="default" msgid="652516435709047343">"來源不明的應用程式可能會侵害您的手機和個人資料。安裝來自此來源的應用程式，即表示您同意承擔因使用這些應用程式而導致手機損壞或資料遺失的責任。"</string>
+    <string name="fdr_esim_failure_title" msgid="4776006228989385163">"清除已下載的 SIM 卡時發生錯誤"</string>
+    <string name="fdr_esim_failure_text" msgid="8353414537422446964">"請重新啟動裝置，然後再試一次。如繼續回復原廠設定，已下載的 SIM 卡可能會保留在裝置上。"</string>
+    <string name="fdr_esim_failure_reboot_btn" msgid="8629204185016602747">"重新啟動"</string>
+    <string name="fdr_continue_title" msgid="5343622664826823937">"要繼續回復原廠設定嗎？"</string>
+    <string name="fdr_continue_text" msgid="860874694422515489">"已下載的 SIM 卡將會保留在裝置上。"</string>
+    <string name="fdr_continue_btn" msgid="1875421470422667092">"回復原廠設定"</string>
     <string name="install_all_warning" product="device" msgid="2348262609815354500">"來源不明的應用程式可能會侵害您的裝置和個人資料。安裝來自此來源的應用程式，即表示您同意承擔因使用這些應用程式而導致裝置損壞或資料遺失的責任。"</string>
     <string name="advanced_settings" msgid="2368905204839169094">"進階設定"</string>
     <string name="advanced_settings_summary" msgid="1823765348195530035">"啟用更多設定選項"</string>
@@ -3474,18 +3479,18 @@
     <string name="hide_silent_icons_summary" msgid="623763437631637232">"低重要性的通知圖示不會顯示在狀態列"</string>
     <string name="notification_badging_title" msgid="5469616894819568917">"應用程式圖示上的通知圓點"</string>
     <string name="notification_people_strip_title" msgid="1185857822541001139">"顯示最近的對話列"</string>
-    <string name="notification_bubbles_title" msgid="5681506665322329301">"小視窗"</string>
+    <string name="notification_bubbles_title" msgid="5681506665322329301">"對話泡"</string>
     <string name="bubbles_feature_education" msgid="4088275802688887634">"部分通知和其他內容可在螢幕中以小視窗形式顯示。輕按小視窗即可開啟。如要關閉小視窗，只需將之拖至螢幕下方。"</string>
-    <string name="bubbles_app_toggle_title" msgid="5319021259954576150">"小視窗"</string>
-    <string name="bubbles_conversation_app_link" msgid="5468779786387915337">"所有「小視窗」設定"</string>
-    <string name="bubbles_conversation_toggle_title" msgid="5225039214083311316">"以小視窗顯示此對話"</string>
+    <string name="bubbles_app_toggle_title" msgid="5319021259954576150">"對話泡"</string>
+    <string name="bubbles_conversation_app_link" msgid="5468779786387915337">"所有「對話泡」設定"</string>
+    <string name="bubbles_conversation_toggle_title" msgid="5225039214083311316">"以「對話泡」顯示此對話"</string>
     <string name="bubbles_conversation_toggle_summary" msgid="720229032254323578">"在應用程式上顯示浮動圖示"</string>
     <string name="bubbles_app_toggle_summary" msgid="1574515698567947948">"允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」以小視窗形式顯示部分通知"</string>
     <string name="bubbles_feature_disabled_dialog_title" msgid="1794193899792284007">"要開啟裝置的小視窗功能嗎？"</string>
     <string name="bubbles_feature_disabled_dialog_text" msgid="5275666953364031055">"如開啟此應用程式的小視窗功能，裝置的小視窗功能也會開啟。\n\n此操作會影響其他允許以小視窗顯示的應用程式或對話。"</string>
     <string name="bubbles_feature_disabled_button_approve" msgid="2042628067101419871">"開啟"</string>
     <string name="bubbles_feature_disabled_button_cancel" msgid="8963409459448350600">"取消"</string>
-    <string name="notifications_bubble_setting_on_summary" msgid="4641572377430901196">"開啟 / 對話可以浮動圖示顯示"</string>
+    <string name="notifications_bubble_setting_on_summary" msgid="4641572377430901196">"開啟 / 對話可透過浮動圖示顯示"</string>
     <string name="notifications_bubble_setting_title" msgid="8287649393774855268">"允許應用程式顯示小視窗"</string>
     <string name="notifications_bubble_setting_description" msgid="7336770088735025981">"部分對話會在其他應用程式上以浮動圖示顯示"</string>
     <string name="bubble_app_setting_all" msgid="312524752846978277">"所有對話均可以小視窗顯示"</string>
@@ -3553,7 +3558,7 @@
       <item quantity="one"><xliff:g id="COUNT_0">%d</xliff:g> 個優先對話</item>
     </plurals>
     <string name="important_conversations" msgid="1233893707189659401">"優先對話"</string>
-    <string name="important_conversations_summary_bubbles" msgid="614327166808117644">"以浮動對話氣泡顯示在對話部分的頂部"</string>
+    <string name="important_conversations_summary_bubbles" msgid="614327166808117644">"以浮動對話泡顯示在對話部分的頂部"</string>
     <string name="important_conversations_summary" msgid="3184022761562676418">"在對話部分的頂部顯示"</string>
     <string name="other_conversations" msgid="7218658664423361043">"其他對話"</string>
     <string name="other_conversations_summary" msgid="3487426787901236273">"已變更的對話"</string>

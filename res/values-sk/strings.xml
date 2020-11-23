@@ -1230,7 +1230,7 @@
     <string name="display_white_balance_summary" msgid="7625456704950209050"></string>
     <string name="peak_refresh_rate_title" msgid="1878771412897140903">"Plynulý obraz"</string>
     <string name="peak_refresh_rate_summary" msgid="1527087897198455042">"Automaticky zvyšuje frekvenciu obnovenia zo 60 na 90 Hz pre určitý obsah. Zvýši sa spotreba batérie."</string>
-    <string name="force_high_refresh_rate_toggle" msgid="7458268305727889355">"Plynulý obraz"</string>
+    <string name="force_high_refresh_rate_toggle" msgid="5861514655252832828">"Vynútiť frekvenciu obnovenia 90 Hz"</string>
     <string name="force_high_refresh_rate_desc" msgid="7794566420873814875">"Najvyššia frekvencia obnovenia zlepšujúca dotykovú odozvu a kvalitu animácií. Zvýši sa spotreba batérie."</string>
     <string name="adaptive_sleep_title" msgid="2987961991423539233">"Vnímavá obrazovka"</string>
     <string name="adaptive_sleep_summary_on" msgid="313187971631243800">"Zapnuté, obrazovka sa nevypne, keď sa na ňu budete pozerať"</string>
@@ -1371,7 +1371,6 @@
     <string name="firmware_version" msgid="1606901586501447275">"Verzia systému Android"</string>
     <string name="security_patch" msgid="4071756145347865382">"Aktualizácia zabezpečenia Androidu"</string>
     <string name="model_info" msgid="8997566254717810904">"Model"</string>
-    <string name="model_summary" msgid="2246651782442466213">"Model: %1$s"</string>
     <string name="hardware_info" msgid="7035211991066637019">"Model a hardvér"</string>
     <string name="hardware_revision" msgid="3454709180861965025">"Hardvérová verzia"</string>
     <string name="fcc_equipment_id" msgid="6596668314025646129">"ID zariadenia"</string>
@@ -1904,6 +1903,12 @@
     <string name="forgot_password_text" msgid="2583194470767613163">"Môže vám pomôcť resetovať PIN, vzor alebo heslo"</string>
     <string name="install_all_warning" product="tablet" msgid="7010749217925069520">"Váš tablet a osobné dáta sú náchylnejšie na útok z neznámych aplikácií. Inštaláciou aplikácií z tohto zdroja vyjadrujete súhlas s tým, že nesiete zodpovednosť za akékoľvek poškodenie tabletu alebo stratu dát, ktoré by mohli nastať pri ich používaní."</string>
     <string name="install_all_warning" product="default" msgid="652516435709047343">"Váš telefón a osobné dáta sú náchylnejšie na útok z neznámych aplikácií. Inštaláciou aplikácií z tohto zdroja vyjadrujete súhlas s tým, že nesiete zodpovednosť za akékoľvek poškodenie telefónu alebo stratu dát, ktoré by mohli nastať pri ich používaní."</string>
+    <string name="fdr_esim_failure_title" msgid="4776006228989385163">"Pri vymazávaní stiahnutých SIM sa vyskytol problém"</string>
+    <string name="fdr_esim_failure_text" msgid="8353414537422446964">"Reštartujte zariadenie a skúste to znova. Ak budete pokračovať v obnove výrobných nastavení, SIM karty môžu zostať v zariadení."</string>
+    <string name="fdr_esim_failure_reboot_btn" msgid="8629204185016602747">"Reštartovať"</string>
+    <string name="fdr_continue_title" msgid="5343622664826823937">"Pokračovať v obnove výrob. nastav?"</string>
+    <string name="fdr_continue_text" msgid="860874694422515489">"Stiahnuté SIM karty zostanú v zariadení."</string>
+    <string name="fdr_continue_btn" msgid="1875421470422667092">"Obnoviť výrobné nastavenia"</string>
     <string name="install_all_warning" product="device" msgid="2348262609815354500">"Vaše zariadenie a osobné údaje sú náchylnejšie na útok z neznámych aplikácií. Inštaláciou aplikácií z tohto zdroja vyjadrujete súhlas s tým, že nesiete zodpovednosť za akékoľvek poškodenie zariadenia alebo stratu údajov, ktoré by mohli nastať pri ich používaní."</string>
     <string name="advanced_settings" msgid="2368905204839169094">"Rozšírené nastavenia"</string>
     <string name="advanced_settings_summary" msgid="1823765348195530035">"Povoliť ďalšie možnosti nastavení"</string>
@@ -3530,7 +3535,7 @@
     <string name="sound_work_settings" msgid="752627453846309092">"Zvuky pracovného profilu"</string>
     <string name="work_use_personal_sounds_title" msgid="7729428677919173609">"Použiť zvuky osobného profilu"</string>
     <string name="work_use_personal_sounds_summary" msgid="4482832555278975008">"Zvuky sú rovnaké pre pracovný aj osobný profil"</string>
-    <string name="work_ringtone_title" msgid="4810802758746102589">"Tón zvonenia prac. telefónu"</string>
+    <string name="work_ringtone_title" msgid="4810802758746102589">"Tón zvonenia pracovného telefónu"</string>
     <string name="work_notification_ringtone_title" msgid="2955312017013255515">"Predvolený zvuk pracovného upozornenia"</string>
     <string name="work_alarm_ringtone_title" msgid="3369293796769537392">"Predvolený zvuk pracovného budíka"</string>
     <string name="work_sound_same_as_personal" msgid="1836913235401642334">"Rovnaké ako osobný profil"</string>
@@ -3602,7 +3607,7 @@
     <string name="gentle_notifications_display_summary_shade_status_lock" msgid="2068738866725616212">"Zobrazovať v rozbaľovacom paneli, stavovom riadku a na uzamknutej obrazovke"</string>
     <string name="silent_notifications_status_bar" msgid="6113307620588767516">"Skryť tiché upozornenia v stavovom riadku"</string>
     <string name="notification_pulse_title" msgid="8013178454646671529">"Blikať"</string>
-    <string name="lock_screen_notifications_title" msgid="3063951257121435570">"Upozornenia na uzamkn. obraz."</string>
+    <string name="lock_screen_notifications_title" msgid="3063951257121435570">"Upozornenia na uzamknutej obrazovke"</string>
     <string name="lockscreen_bypass_title" msgid="6519964196744088573">"Preskakovať uzamknutú obrazovku"</string>
     <string name="lockscreen_bypass_summary" msgid="6688592486830491144">"Po odomk. tvárou priamo prejsť na poslednú použitú obrazovku"</string>
     <string name="keywords_lockscreen_bypass" msgid="41035425468915498">"Uzamknutá obrazovka, preskočiť, obísť"</string>

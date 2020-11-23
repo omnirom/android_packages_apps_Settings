@@ -898,13 +898,13 @@
     <string name="wifi_subscription_summary" msgid="18802471063384598">"مشاهده یا تغییر اشتراک"</string>
     <string name="wifi_privacy_settings_ephemeral_summary" msgid="8502084692297249372">"‏MAC تصادفی"</string>
     <string name="wifi_dpp_add_device_to_network" msgid="6141246783457722976">"افزودن دستگاه"</string>
-    <string name="wifi_dpp_center_qr_code" msgid="5270782275746178104">"‏برای افزودن دستگاه به «<xliff:g id="SSID">%1$s</xliff:g>»،‌ کد QR را در مرکز پنجره زیر قرار دهید"</string>
-    <string name="wifi_dpp_scan_qr_code" msgid="3543923817779444434">"‏اسکن کد QR"</string>
-    <string name="wifi_dpp_scan_qr_code_join_network" msgid="969985020363459133">"‏برای اتصال به «<xliff:g id="SSID">%1$s</xliff:g>»،‌ کد QR را در مرکز پنجره زیر قرار دهید"</string>
-    <string name="wifi_dpp_scan_qr_code_join_unknown_network" msgid="3180020429793614145">"‏با اسکن کردن کد QR، به Wi‑Fi بپیوندید"</string>
+    <string name="wifi_dpp_center_qr_code" msgid="5270782275746178104">"برای افزودن دستگاه به «<xliff:g id="SSID">%1$s</xliff:g>»،‌ رمزینه پاسخ‌سریع را در مرکز پنجره زیر قرار دهید"</string>
+    <string name="wifi_dpp_scan_qr_code" msgid="3543923817779444434">"اسکن رمزینه پاسخ‌سریع"</string>
+    <string name="wifi_dpp_scan_qr_code_join_network" msgid="969985020363459133">"برای اتصال به «<xliff:g id="SSID">%1$s</xliff:g>»،‌ رمزینه پاسخ‌سریع را در مرکز پنجره زیر قرار دهید"</string>
+    <string name="wifi_dpp_scan_qr_code_join_unknown_network" msgid="3180020429793614145">"‏با اسکن کردن رمزینه پاسخ‌سریع، به Wi‑Fi بپیوندید"</string>
     <string name="wifi_dpp_share_wifi" msgid="2431744447544057866">"‏استفاده مشترک از Wi‑Fi"</string>
-    <string name="wifi_dpp_scan_qr_code_with_another_device" msgid="4405316188694088689">"‏برای اتصال به «<xliff:g id="SSID">%1$s</xliff:g>»، این کد QR را اسکن کنید و گذرواژه مربوطه را هم‌رسانی کنید"</string>
-    <string name="wifi_dpp_scan_open_network_qr_code_with_another_device" msgid="5398619697898444311">"‏برای اتصال به «<xliff:g id="SSID">%1$s</xliff:g>»، این کد QR را اسکن کنید"</string>
+    <string name="wifi_dpp_scan_qr_code_with_another_device" msgid="4405316188694088689">"برای اتصال به «<xliff:g id="SSID">%1$s</xliff:g>»، این رمزینه پاسخ‌سریع را اسکن کنید و گذرواژه مربوطه را هم‌رسانی کنید"</string>
+    <string name="wifi_dpp_scan_open_network_qr_code_with_another_device" msgid="5398619697898444311">"برای اتصال به «<xliff:g id="SSID">%1$s</xliff:g>»، این رمزینه پاسخ‌سریع را اسکن کنید"</string>
     <string name="wifi_dpp_failure_authentication_or_configuration" msgid="847551626830740204">"دوباره امتحان کنید. اگر مشکل همچنان ادامه دارد، با سازنده دستگاه تماس بگیرید"</string>
     <string name="wifi_dpp_failure_not_compatible" msgid="4453775826337805825">"مشکلی رخ داده است"</string>
     <string name="wifi_dpp_failure_timeout" msgid="7902971341771145564">"مطمئن شوید دستگاه متصل، شارژ و روشن شده است"</string>
@@ -932,8 +932,8 @@
     <string name="wifi_auto_connect_summary" product="default" msgid="5383749408911542382">"به تلفن اجازه داده شود نزدیک این شبکه به‌طور خودکار متصل شود"</string>
     <string name="wifi_auto_connect_summary" product="tablet" msgid="5209799194164396401">"به رایانه لوحی اجازه داده شود نزدیک این شبکه به‌طور خودکار متصل شود"</string>
     <string name="wifi_dpp_add_device" msgid="8695656122114721335">"افزودن دستگاه"</string>
-    <string name="wifi_dpp_connect_network_using_qr_code" msgid="6975258007798254937">"‏برای افزودن دستگاه به این شبکه، از کد QR استفاده کنید"</string>
-    <string name="wifi_dpp_qr_code_is_not_valid_format" msgid="5190689503019328279">"‏کد QR، قالب معتبری نیست"</string>
+    <string name="wifi_dpp_connect_network_using_qr_code" msgid="6975258007798254937">"برای افزودن دستگاه به این شبکه، از رمزینه پاسخ‌سریع استفاده کنید"</string>
+    <string name="wifi_dpp_qr_code_is_not_valid_format" msgid="5190689503019328279">"رمزینه پاسخ‌سریع، قالب معتبری نیست"</string>
     <string name="retry" msgid="7542103800274026915">"امتحان مجدد"</string>
     <string name="wifi_shared" msgid="8850748923537589782">"اشتراک‌گذاری با دیگر استفاده‌کنندگان از دستگاه"</string>
     <string name="wifi_unchanged" msgid="8026045290856150191">"(بی‌تغییر)"</string>
@@ -1190,7 +1190,7 @@
     <string name="display_white_balance_summary" msgid="7625456704950209050"></string>
     <string name="peak_refresh_rate_title" msgid="1878771412897140903">"نمایشگر روان"</string>
     <string name="peak_refresh_rate_summary" msgid="1527087897198455042">"به‌طور خودکار سرعت بازخوانی را برای بعضی محتواها، از ۶۰ هرتز تا ۹۰ هرتز بالا می‌برد. مصرف باتری را افزایش می‌دهد."</string>
-    <string name="force_high_refresh_rate_toggle" msgid="7458268305727889355">"نمایشگر روان"</string>
+    <string name="force_high_refresh_rate_toggle" msgid="5861514655252832828">"اجباری کردن نرخ بازخوانی ۹۰ هرتز"</string>
     <string name="force_high_refresh_rate_desc" msgid="7794566420873814875">"بالاترین نرخ بازخوانی برای پاسخ‌گویی بهبودیافته لمس و کیفیت پویانمایی. مصرف باتری را افزایش می‌دهد."</string>
     <string name="adaptive_sleep_title" msgid="2987961991423539233">"توجه به صفحه"</string>
     <string name="adaptive_sleep_summary_on" msgid="313187971631243800">"روشن / تازمانی‌که درحال تماشای صفحه‌نمایش باشید، صفحه خاموش نخواهد شد"</string>
@@ -1329,7 +1329,6 @@
     <string name="firmware_version" msgid="1606901586501447275">"‏نسخهٔ Android"</string>
     <string name="security_patch" msgid="4071756145347865382">"‏به‌روزرسانی امنیتی Android"</string>
     <string name="model_info" msgid="8997566254717810904">"مدل"</string>
-    <string name="model_summary" msgid="2246651782442466213">"‏مدل: %1$s"</string>
     <string name="hardware_info" msgid="7035211991066637019">"مدل و سخت‌افزار"</string>
     <string name="hardware_revision" msgid="3454709180861965025">"نسخه سخت‌افزار"</string>
     <string name="fcc_equipment_id" msgid="6596668314025646129">"شناسه دستگاه"</string>
@@ -1858,6 +1857,12 @@
     <string name="forgot_password_text" msgid="2583194470767613163">"او می‌تواند به شما کمک کند پین، الگو، یا گذرواژه را بازنشانی کنید"</string>
     <string name="install_all_warning" product="tablet" msgid="7010749217925069520">"رایانه لوحی و داده‌های شخصی شما بیشتر درمعرض خطر حمله برنامه‌های ناشناس هستند. با نصب برنامه از این منبع، موافقت می‌کنید که درقبال هرگونه آسیب وارده به رایانه لوحی یا از دست دادن داده‌هایتان که در نتیجه استفاده از این برنامه‌ها روی دهد، خودتان مسئول هستید."</string>
     <string name="install_all_warning" product="default" msgid="652516435709047343">"تلفن و داده‌های شخصی شما بیشتر درمعرض خطر حمله برنامه‌های ناشناس هستند. با نصب برنامه از این منبع، موافقت می‌کنید که درقبال هرگونه آسیب وارده به تلفن یا از دست دادن داده‌هایتان که در نتیجه استفاده از این برنامه‌ها روی دهد، خودتان مسئول هستید."</string>
+    <string name="fdr_esim_failure_title" msgid="4776006228989385163">"مشکلی در پاک کردن سیم‌کارت‌های بارگیری‌شده روی داد"</string>
+    <string name="fdr_esim_failure_text" msgid="8353414537422446964">"لطفاً دستگاه را راه‌اندازی مجدد کنید و دوباره امتحان کنید. اگر بازنشانی کارخانه‌ای را ادامه دهید، ممکن است سیم‌کارت‌های بارگیری‌شده در دستگاه باقی بمانند."</string>
+    <string name="fdr_esim_failure_reboot_btn" msgid="8629204185016602747">"راه‌اندازی مجدد"</string>
+    <string name="fdr_continue_title" msgid="5343622664826823937">"بازنشانی کارخانه‌ای ادامه یابد؟"</string>
+    <string name="fdr_continue_text" msgid="860874694422515489">"سیم‌کارت‌های بارگیری‌شده در دستگاه باقی خواهند ماند."</string>
+    <string name="fdr_continue_btn" msgid="1875421470422667092">"بازنشانی کارخانه‌ای"</string>
     <string name="install_all_warning" product="device" msgid="2348262609815354500">"دستگاه و داده‌های شخصی شما دربرابر حمله برنامه‌های ناشناس آسیب‌پذیری بیشتری دارند. با نصب برنامه از این منبع، موافقت می‌کنید خود شما مسئول هرگونه آسیب به دستگاه یا از دست رفتن داده‌ای هستید که ممکن است در اثر استفاده از این برنامه روی دهد."</string>
     <string name="advanced_settings" msgid="2368905204839169094">"تنظیمات پیشرفته"</string>
     <string name="advanced_settings_summary" msgid="1823765348195530035">"گزینه‌های تنظیمات بیشتری فعال شود"</string>
@@ -2027,24 +2032,24 @@
     <string name="spellchecker_quick_settings" msgid="6449414356743946577">"تنظیمات"</string>
     <string name="spellchecker_language" msgid="8905487366580285282">"زبان"</string>
     <string name="keyboard_and_input_methods_category" msgid="5296847777802891649">"صفحه‌کلیدها"</string>
-    <string name="virtual_keyboard_category" msgid="2339505603075527212">"صفحه‌کلید روی صفحه"</string>
+    <string name="virtual_keyboard_category" msgid="2339505603075527212">"صفحه‌کلید مجازی"</string>
     <string name="keywords_virtual_keyboard" msgid="1494726424879503434">"Gboard"</string>
-    <string name="available_virtual_keyboard_category" msgid="6930012948152749337">"صفحه‌کلیدِ دردسترسِ روی صفحه"</string>
+    <string name="available_virtual_keyboard_category" msgid="6930012948152749337">"صفحه‌کلید مجازی دردسترس است"</string>
     <string name="add_virtual_keyboard" msgid="2515850206289352606">"مدیریت صفحه‌کلیدهای روی صفحه"</string>
     <string name="keyboard_assistance_category" msgid="7320599809770932032">"دستیار صفحه‌کلید"</string>
     <string name="physical_keyboard_title" msgid="3328134097512350958">"صفحه‌کلید فیزیکی"</string>
-    <string name="show_ime" msgid="4334255501724746849">"استفاده از صفحه‌کلید روی صفحه"</string>
+    <string name="show_ime" msgid="4334255501724746849">"استفاده از صفحه‌کلید مجازی"</string>
     <string name="show_ime_summary" msgid="7293345791727205975">"وقتی صفحه‌کلید فیزیکی فعال است این ویرایشگر را روی صفحه نگه‌می‌دارد"</string>
     <string name="keyboard_shortcuts_helper" msgid="2553221039203165344">"میان‌برهای صفحه‌کلید"</string>
     <string name="keyboard_shortcuts_helper_summary" msgid="8649760728213630156">"میان‌برهای در دسترس نمایشگر"</string>
     <string name="language_and_input_for_work_category_title" msgid="2546950919124199743">"نمایه کاری صفحه‌کلیدها و ابزارها"</string>
-    <string name="virtual_keyboards_for_work_title" msgid="786459157034008675">"صفحه‌کلید روی صفحه برای کار"</string>
+    <string name="virtual_keyboards_for_work_title" msgid="786459157034008675">"صفحه‌کلید مجازی برای کار"</string>
     <string name="default_keyboard_layout" msgid="8690689331289452201">"پیش‌فرض"</string>
     <string name="pointer_speed" msgid="7398649279282675718">"سرعت اشاره‌گر"</string>
     <string name="game_controller_settings_category" msgid="8557472715034961918">"دسته کنترل بازی"</string>
     <string name="vibrate_input_devices" msgid="5192591087864449142">"تغییر مسیر لرزش"</string>
     <string name="vibrate_input_devices_summary" msgid="8791680891376689823">"وقتی متصل شد، لرزش به دسته کنترل بازی ارسال شود"</string>
-    <string name="keyboard_layout_dialog_title" msgid="8770130364048089954">"انتخاب طرح‌بندی صفحه‌کلید"</string>
+    <string name="keyboard_layout_dialog_title" msgid="8770130364048089954">"انتخاب جانمایی صفحه‌کلید"</string>
     <string name="keyboard_layout_dialog_setup_button" msgid="6546245862744626706">"تنظیم طرح‌بندی‌های صفحه‌کلید"</string>
     <string name="keyboard_layout_dialog_switch_hint" msgid="3303564123674979354">"‏برای تغییر، Control-کلید فاصله را فشار هید"</string>
     <string name="keyboard_layout_default_label" msgid="6078569989261528039">"پیش‌فرض"</string>
@@ -2072,7 +2077,7 @@
     <string name="testing" msgid="6294172343766732037">"تست کردن"</string>
     <string name="testing_phone_info" product="tablet" msgid="1910768200608214456">"اطلاعات رایانهٔ لوحی"</string>
     <string name="testing_phone_info" product="default" msgid="1150527695827743906">"اطلاعات تلفن"</string>
-    <string name="input_methods_settings_title" msgid="7796027458321225550">"ووردی متن"</string>
+    <string name="input_methods_settings_title" msgid="7796027458321225550">"ورودی نوشتاری"</string>
     <string name="input_method" msgid="2982805181425436775">"روش ورودی"</string>
     <string name="current_input_method" msgid="3471068842881330883">"صفحه‌کلید کنونی"</string>
     <string name="input_method_selector" msgid="8463209725824763600">"انتخابگر روش ورودی"</string>
@@ -2084,7 +2089,7 @@
     <string name="input_method_settings_button" msgid="5145039044301426311">"تنظیمات"</string>
     <string name="input_methods_settings_label_format" msgid="5809693308957109022">"<xliff:g id="IME_NAME">%1$s</xliff:g> تنظیمات"</string>
     <string name="input_methods_and_subtype_enabler_title" msgid="8940326108334307057">"انتخاب روش‌های ورودی فعال"</string>
-    <string name="onscreen_keyboard_settings_summary" msgid="3975358507879701606">"تنظیمات صفحه‌کلید روی صفحه"</string>
+    <string name="onscreen_keyboard_settings_summary" msgid="3975358507879701606">"تنظیمات صفحه‌کلید مجازی"</string>
     <string name="builtin_keyboard_settings_title" msgid="5096171620714179661">"صفحه‌کلید فیزیکی"</string>
     <string name="builtin_keyboard_settings_summary" msgid="4332792334499933856">"تنظیمات صفحه‌کلید فیزیکی"</string>
     <string name="gadget_picker_title" msgid="7615902510050731400">"انتخاب اسبابک"</string>
@@ -2611,7 +2616,7 @@
     <string name="process_stats_type_background" msgid="4094034441562453522">"پس‌زمینه"</string>
     <string name="process_stats_type_foreground" msgid="5043049335546793803">"پیش‌زمینه"</string>
     <string name="process_stats_type_cached" msgid="129788969589599563">"در حافظه پنهان"</string>
-    <string name="process_stats_os_label" msgid="2096501347732184886">"‏سیستم عامل Android"</string>
+    <string name="process_stats_os_label" msgid="2096501347732184886">"‏سیستم‌عامل Android"</string>
     <string name="process_stats_os_native" msgid="794547105037548539">"داخلی"</string>
     <string name="process_stats_os_kernel" msgid="5626269994512354996">"مرکزی"</string>
     <string name="process_stats_os_zram" msgid="3067278664868354143">"Z-Ram"</string>
@@ -3492,8 +3497,8 @@
     <string name="bubble_app_setting_none" msgid="8643594711863996418">"هیچ موردی نمی‌تواند در حبابک نشان داده شود"</string>
     <string name="bubble_app_setting_selected_conversation_title" msgid="3060958976857529933">"مکالمه‌ها"</string>
     <string name="bubble_app_setting_excluded_conversation_title" msgid="324818960338773945">"همه مکالمه‌ها می‌توانند در حبابک نشان داده شوند به‌جز"</string>
-    <string name="bubble_app_setting_unbubble_conversation" msgid="1769789500566080427">"خاموش کردن حباب‌ها برای این مکالمه"</string>
-    <string name="bubble_app_setting_bubble_conversation" msgid="1461981680982964285">"روشن کردن حباب‌ها برای این مکالمه"</string>
+    <string name="bubble_app_setting_unbubble_conversation" msgid="1769789500566080427">"خاموش کردن حبابک‌ها برای این مکالمه"</string>
+    <string name="bubble_app_setting_bubble_conversation" msgid="1461981680982964285">"روشن کردن حبابک‌ها برای این مکالمه"</string>
     <string name="swipe_direction_title" msgid="4260320464727178413">"کنش‌های تند کشیدن"</string>
     <string name="swipe_direction_ltr" msgid="5137180130142633085">"برای رد کردن تند به چپ بکشید و برای نمایش منو تند به راست بکشید"</string>
     <string name="swipe_direction_rtl" msgid="1707391213940663992">"برای رد کردن تند به راست بکشید و برای نمایش منو تند به چپ بکشید"</string>
@@ -3552,7 +3557,7 @@
       <item quantity="other"><xliff:g id="COUNT_1">%d</xliff:g> مکالمه اولویت‌دار</item>
     </plurals>
     <string name="important_conversations" msgid="1233893707189659401">"مکالمه‌های اولویت‌دار"</string>
-    <string name="important_conversations_summary_bubbles" msgid="614327166808117644">"در بالای بخش مکالمه و به‌شکل حباب‌های شناور نمایش داده می‌شود"</string>
+    <string name="important_conversations_summary_bubbles" msgid="614327166808117644">"در بالای بخش مکالمه و به‌شکل حبابک‌های شناور نمایش داده می‌شود"</string>
     <string name="important_conversations_summary" msgid="3184022761562676418">"در بالای بخش مکالمه نمایش داده می‌شود"</string>
     <string name="other_conversations" msgid="7218658664423361043">"دیگر مکالمه‌ها"</string>
     <string name="other_conversations_summary" msgid="3487426787901236273">"مکالمه‌هایی که در آن‌ها تغییر ایجاد کرده‌اید"</string>
@@ -3665,7 +3670,7 @@
     </plurals>
     <string name="no_channels" msgid="4716199078612071915">"این برنامه هیچ اعلانی پست نکرده است"</string>
     <string name="app_settings_link" msgid="6725453466705333311">"تنظیمات بیشتر در برنامه"</string>
-    <string name="notification_screen_summary" msgid="5984915275134654822">"سابقه اعلان، حباب‌ها، اخیراً ارسال‌شده"</string>
+    <string name="notification_screen_summary" msgid="5984915275134654822">"سابقه اعلان، حبابک‌ها، اخیراً ارسال‌شده"</string>
     <string name="app_notification_listing_summary_zero" msgid="2988400013221120744">"برای همه برنامه‌ها روشن‌ است"</string>
     <plurals name="app_notification_listing_summary_others" formatted="false" msgid="1506127395400503717">
       <item quantity="one">برای <xliff:g id="COUNT_1">%d</xliff:g> برنامه خاموش است</item>
@@ -4925,7 +4930,7 @@
     <string name="device_controls_setting_toggle" msgid="8972005569207737469">"نمایش کنترل‌های دستگاه"</string>
     <string name="cards_passes_setting_toggle" msgid="3380984848045396695">"نمایش کارت‌ها و مجوزها"</string>
     <string name="device_controls_setting_subtitle" msgid="4388544861427973600">"برای دسترسی به کنترل‌های دستگاه‌های متصل، دکمه روشن/خاموش را نگه دارید"</string>
-    <string name="cards_passes_setting_subtitle" msgid="4427459738229697469">"برای دسترسی به مواردی مانند روش‌های پرداخت و کارت پرواز، دکمه «روشن/خاموش» را فشار دهید و نگه‌دارید."</string>
+    <string name="cards_passes_setting_subtitle" msgid="4427459738229697469">"برای دسترسی به مواردی مانند روش‌های پرداخت و کارت پرواز، دکمه روشن/خاموش را فشار دهید و نگه‌دارید."</string>
     <string name="rtt_settings_title" msgid="7049259598645966354"></string>
     <string name="rtt_settings_no_visible" msgid="7440356831140948382"></string>
     <string name="rtt_settings_visible_during_call" msgid="7866181103286073700"></string>

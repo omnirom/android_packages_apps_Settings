@@ -1190,7 +1190,7 @@
     <string name="display_white_balance_summary" msgid="7625456704950209050"></string>
     <string name="peak_refresh_rate_title" msgid="1878771412897140903">"Smooth Display"</string>
     <string name="peak_refresh_rate_summary" msgid="1527087897198455042">"Øger automatisk opdateringshastigheden fra 60 til 90 Hz for noget indhold. Medfører højere batteriforbrug."</string>
-    <string name="force_high_refresh_rate_toggle" msgid="7458268305727889355">"Smooth Display"</string>
+    <string name="force_high_refresh_rate_toggle" msgid="5861514655252832828">"Gennemtving en opdateringshastighed på 90 Hz"</string>
     <string name="force_high_refresh_rate_desc" msgid="7794566420873814875">"Den højeste opdateringshastighed, som giver forbedret animationskvalitet og reaktionsevne ved berøring. Medfører højere batteriforbrug."</string>
     <string name="adaptive_sleep_title" msgid="2987961991423539233">"Opmærksom skærm"</string>
     <string name="adaptive_sleep_summary_on" msgid="313187971631243800">"Til – Skærmen slukker ikke, når du kigger på den"</string>
@@ -1329,7 +1329,6 @@
     <string name="firmware_version" msgid="1606901586501447275">"Android-version"</string>
     <string name="security_patch" msgid="4071756145347865382">"Sikkerhedsopdatering til Android"</string>
     <string name="model_info" msgid="8997566254717810904">"Model"</string>
-    <string name="model_summary" msgid="2246651782442466213">"Model: %1$s"</string>
     <string name="hardware_info" msgid="7035211991066637019">"Model og hardware"</string>
     <string name="hardware_revision" msgid="3454709180861965025">"Hardwareversion"</string>
     <string name="fcc_equipment_id" msgid="6596668314025646129">"Udstyrs-id"</string>
@@ -1858,6 +1857,12 @@
     <string name="forgot_password_text" msgid="2583194470767613163">"Vedkommende kan hjælpe dig med at nulstille din pinkode, dit mønster eller din adgangskode"</string>
     <string name="install_all_warning" product="tablet" msgid="7010749217925069520">"Din tablet og dine personlige data er mere sårbare over for angreb fra ukendte apps. Når du installerer apps fra denne kilde, accepterer du, at du er ansvarlig for skader på din tablet eller tab af data, der kan skyldes brug af disse apps."</string>
     <string name="install_all_warning" product="default" msgid="652516435709047343">"Din telefon og dine personlige data er mere sårbare over for angreb fra ukendte apps. Når du installerer apps fra denne kilde, accepterer du, at du er ansvarlig for skader på din telefon eller tab af data, der kan skyldes brug af disse apps."</string>
+    <string name="fdr_esim_failure_title" msgid="4776006228989385163">"De downloadede SIM-kort kunne ikke ryddes"</string>
+    <string name="fdr_esim_failure_text" msgid="8353414537422446964">"Genstart enheden, og prøv igen. Downloadede SIM-kort slettes ikke, hvis du gendanner fabriksindstillingerne."</string>
+    <string name="fdr_esim_failure_reboot_btn" msgid="8629204185016602747">"Genstart"</string>
+    <string name="fdr_continue_title" msgid="5343622664826823937">"Vil du gendanne fabriksindst.?"</string>
+    <string name="fdr_continue_text" msgid="860874694422515489">"Downloadede SIM-kort slettes ikke fra enheden."</string>
+    <string name="fdr_continue_btn" msgid="1875421470422667092">"Gendan fabriksindstillinger"</string>
     <string name="install_all_warning" product="device" msgid="2348262609815354500">"Din enhed og dine personlige data er mere sårbare over for angreb fra ukendte apps. Når du installerer apps fra denne kilde, accepterer du, at du er ansvarlig for skade på din enhed eller tab af data, der kan skyldes brug af disse apps."</string>
     <string name="advanced_settings" msgid="2368905204839169094">"Avancerede indstillinger"</string>
     <string name="advanced_settings_summary" msgid="1823765348195530035">"Aktivér flere indstillinger"</string>
@@ -3575,7 +3580,7 @@
     <string name="allow_interruption" msgid="5237201780159482716">"Tillad afbrydelser"</string>
     <string name="allow_interruption_summary" msgid="9044131663518112543">"Lad appen give lyd, vibrere og/eller vise notifikationer på skærmen"</string>
     <string name="notification_priority_title" msgid="5554834239080425229">"Prioritet"</string>
-    <string name="notification_channel_summary_priority" msgid="7225362351439076913">"Vises øverst i samtalesektionen, som en svævende boble og med profilbillede på låseskærmen"</string>
+    <string name="notification_channel_summary_priority" msgid="7225362351439076913">"Vises øverst i samtalesektionen som en svævende boble og med profilbillede på låseskærmen"</string>
     <string name="convo_not_supported_summary" msgid="4285471045268268048">"De fleste samtalefunktioner understøttes ikke af <xliff:g id="APP_NAME">%1$s</xliff:g>. Du kan ikke angive en samtale som prioriteret, og samtaler vises ikke som svævende bobler."</string>
     <string name="notification_channel_summary_min" msgid="8823399508450176842">"Begræns notifikationer til én linje i notifikationspanelet"</string>
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"Ingen lyd eller vibration"</string>
