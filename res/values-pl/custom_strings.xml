@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+**
+** Copyright 2017-2018 The OmniROM Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="style_settings_title">Styl</string>
+    <string name="header_category_omni">OmniGears</string>
+    <string name="omni_dashboard_summary">Omnifikuj swoje urządzenie</string>
+    <string name="style_settings_summary">Tapety i personalizacja</string>
+    <string name="omni_device_parts">Funkcje urządzenia</string>
+    <string name="columns_menu">Układ kolumn</string>
+    <string name="hide_summary_menu">Ukryj podsumowanie</string>
+    <string name="bars_settings_title">Paski i ekran blokady</string>
+    <string name="button_settings_title">Przyciski</string>
+    <string name="mod_version">Wersja Omni</string>
+    <string name="mod_version_default">Nieznany</string>
+    <string name="more_settings_title">Więcej</string>
+    <string name="global_actions_title">Menu zasilania</string>
+    <string name="display_rotation_title">Obracanie ekranu</string>
+    <string name="display_rotation_summary">Skonfiguruj możliwe stopnie obrotu</string>
+    <string name="battery_light_settings_title">Ustawienia diody LED baterii</string>
+    <string name="link_volume_option_title">Połącz głośność dzwonka i powiadomień</string>
+    <!-- Custom light color -->
+    <string name="light_customization">Powiadomienia LED</string>
+    <string name="custom_light_title">Kolor</string>
+    <string name="custom_light_on_time_title">"Czas włączenia diody w trybie pulsacji (ms)"</string>
+    <string name="custom_light_off_time_title">"Czas wyłączenia diody w trybie pulsacji (ms)"</string>
+    <string name="app_notifications_info_desc">Stuknij w jeden z powyższych kanałów, aby skonfigurować kolory i inne opcje</string>
+    <string name="value_equals_default">Automatyczny</string>
+    <string name="show_light_on_zen_title">Pulsuj podczas \"Nie przeszkadzać\"</string>
+    <!-- Android debugging over WiFi -->
+    <string name="adb_over_network">ADB przez sieć</string>
+    <string name="adb_over_network_summary">Aktywuj debugowanie TCP/IP przez interfejs sieciowy (Wi-Fi, sieci USB). Ustawienie zostanie zresetowane po ponownym uruchomieniu</string>
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">UWAGA: Kiedy ADB przez sieć jest aktywne, telefon jest otwarty na instrukcje w każdej połączonej sieci, w tym GSM!\n\nUżywaj tej funkcji tylko, gdy jesteś połączony z zaufanymi sieciami.\n\nCzy na pewno chcesz aktywować?</string>
+    <string name="adb_over_network_warning_title">Zezwolić na ADB przez sieć?</string>
+    <string name="battery_image">Wygląd ikony baterii</string>
+    <string name="battery_image_description">Pokazuj ikonę baterii na pasku stanu</string>
+    <string name="twilight_mode_location_dialog">Lokalizacja jest wyłączona</string>
+    <string name="twilight_mode_location_disabled">Dostęp do lokalizacji jest wyłączony</string>
+    <string name="twilight_mode_location_enable">Włącz</string>
+    <!-- Encryption and credential -->
+    <string name="custom_encryption_and_credential_settings_summary_on">Urządzenie jest zaszyfrowane</string>
+    <string name="custom_encryption_and_credential_settings_summary_off">Urządzenie jest odszyfrowane</string>
+    <string name="select_sim_for_sms">Wybierz kartę SIM do SMS</string>
+    <!-- Format string for fingerprint location message -->
+    <string name="security_settings_fingerprint_enroll_find_sensor_message_cm" product="tablet">Zlokalizuj czytnik linii papilarnych na <xliff:g id="sensor_location">%1$s</xliff:g> tabletu.</string>
+    <string name="security_settings_fingerprint_enroll_find_sensor_message_cm" product="device">Zlokalizuj czytnik linii papilarnych na <xliff:g id="sensor_location">%1$s</xliff:g> na urządzeniu.</string>
+    <string name="security_settings_fingerprint_enroll_find_sensor_message_cm" product="default">Określ lokalizację czujnika odcisków palców na <xliff:g id="sensor_location">%1$s</xliff:g> telefonu.</string>
+    <!-- Fingerprint sensor locations -->
+    <string name="security_settings_fingerprint_sensor_location_back">Wróć</string>
+    <string name="security_settings_fingerprint_sensor_location_front">przód</string>
+    <string name="security_settings_fingerprint_sensor_location_left">lewa strona</string>
+    <string name="security_settings_fingerprint_sensor_location_right">prawa strona</string>
+    <string name="screenshot_shutter_sound_title">Dźwięk zrzutu ekranu</string>
+    <string name="selinux_status">Stan SELinux</string>
+    <string name="selinux_status_disabled">Wyłączony</string>
+    <string name="selinux_status_permissive">Zezwolony</string>
+    <string name="selinux_status_enforcing">Restrykcyjny</string>
+    <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone1_title">Dzwonek telefonu - SIM 1</string>
+    <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone2_title">Dzwonek telefonu - SIM 2</string>
+    <string name="weather_title">Pogoda</string>
+    <string name="back_height_low_label">Pełny</string>
+    <string name="back_height_high_label">Dół</string>
+    <string name="back_options_dialog_title">Opcje</string>
+    <string name="back_height_message">Wysokość ekranu użyta jako obszar dotykowy dla gestu wstecz.</string>
+    <string name="back_block_ime_title">Zablokuj wysokość wirtualnej klawiatury jako obszar dotykowy gestu wstecz</string>
+    <string name="app_package_name_title">Pakiet</string>
+    <string name="app_version_title">Wersja</string>
+    <!-- String for removal of sensitive info on about, depending on tap -->
+    <string name="device_info_protected_single_press">Dotknij, aby wyświetlić informacje</string>
+    <string name="unknown_night_light_time">Nieznany - naciśnij aby zaktualizować</string>
+    <string name="night_display_location_text">\n\nHarmonogram od zachodu do wschodu słońca wymaga włączenia usług lokalizacyjnych, aby uzyskać odpowiednie ustawienia czasu dla Twojej lokalizacji.</string>
+    <string name="auto_brightness_min_title">Minimalny poziom jasności</string>
+    <string name="auto_brightness_description_new">Jasność ekranu zostanie automatycznie dostosowana do Twojego środowiska i aktywności.\n\nMożesz dostosować minimalny poziom jasności, który zostanie użyty.</string>
+</resources>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+**
+** Copyright 2017-2018 The OmniROM Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="style_settings_title">Aussehen</string>
+    <string name="header_category_omni">OmniGears</string>
+    <string name="omni_dashboard_summary">Omnifiziere dein Gerät</string>
+    <string name="style_settings_summary">Hintergrundbilder und sonstiges</string>
+    <string name="omni_device_parts">Gerätefunktionen</string>
+    <string name="columns_menu">Spalten-Layout</string>
+    <string name="hide_summary_menu">Zusammenfassung verbergen</string>
+    <string name="bars_settings_title">Balken und Sperrbildschirm</string>
+    <string name="button_settings_title">Tasten</string>
+    <string name="mod_version">Omni-Version</string>
+    <string name="mod_version_default">Unbekannt</string>
+    <string name="more_settings_title">Mehr</string>
+    <string name="global_actions_title">Power-Menü</string>
+    <string name="display_rotation_title">Bildschirmausrichtung</string>
+    <string name="display_rotation_summary">Konfiguriere die Bildschirmausrichtung</string>
+    <string name="battery_light_settings_title">Akku-LED Einstellungen</string>
+    <string name="link_volume_option_title">Klingel- und Benachrichtigungslautstärken verbinden</string>
+    <!-- Custom light color -->
+    <string name="light_customization">Benachrichtigungs-LED</string>
+    <string name="custom_light_title">LED-Farbe</string>
+    <string name="custom_light_on_time_title">"Länge des Aufleuchtens der LED pro Intervall (ms)"</string>
+    <string name="custom_light_off_time_title">"Länge des nicht Aufleuchtens der LED pro Intervall (ms)"</string>
+    <string name="app_notifications_info_desc">Tippen Sie zum Konfigurieren unf zur Farbgebung auf einen der oben dargestellten Kanäle</string>
+    <string name="value_equals_default">Automatisch</string>
+    <string name="show_light_on_zen_title">Aufleuchten im \"nicht stören\"-Modus</string>
+    <!-- Android debugging over WiFi -->
+    <string name="adb_over_network">ADB über Netzwerk</string>
+    <string name="adb_over_network_summary">Aktiviert TCP/IP Debugging über Netzwerk (WLAN, USB). Diese Einstellung wird bei einem Neustart zurückgesetzt</string>
+    <!-- Warning for Adb over Network -->
+    <string name="adb_over_network_warning">WARNUNG: Wenn ADB über Netzwerk aktiviert ist, ist dein Telefon anfällig für Angriffe über alle verbundenen Netzwerke, einschließlich GSM!\n\nBenutze diese Funktion nur, wenn du zu vertrauenswürdigen Netzwerken verbunden bist.\n\nMöchtest du diese Funktion wirklich aktivieren?</string>
+    <string name="adb_over_network_warning_title">ADB über Netzwerk zulassen?</string>
+    <string name="usb_enable_diagnostics">USB-Diagnose aktivieren</string>
+    <string name="usb_enable_diagnostics_summary">Gerät in den USB-Diagnosemodus setzen</string>
+    <string name="battery_image">Akkusymbol</string>
+    <string name="battery_image_description">Zeige Akkusymbol in der Statusleiste</string>
+    <string name="twilight_mode_location_dialog">Ortungsdienste deaktiviert</string>
+    <string name="twilight_mode_location_disabled">Ortungsdienste sind deaktiviert</string>
+    <string name="twilight_mode_location_enable">Aktivieren</string>
+    <!-- Encryption and credential -->
+    <string name="custom_encryption_and_credential_settings_summary_on">Gerät ist verschlüsselt</string>
+    <string name="custom_encryption_and_credential_settings_summary_off">Gerät ist nicht verschlüsselt</string>
+    <string name="select_sim_for_sms">Wähle eine SIM-Karte zum Versenden von SMS</string>
+    <!-- Format string for fingerprint location message -->
+    <string name="security_settings_fingerprint_enroll_find_sensor_message_cm" product="tablet">Suchen Sie den Fingerabdruck-Sensor auf der <xliff:g id="sensor_location">%1$s </xliff:g> des Tablets.</string>
+    <string name="security_settings_fingerprint_enroll_find_sensor_message_cm" product="device">Suchen Sie den Fingerabdruck-Sensor auf der <xliff:g id="sensor_location">%1$s </xliff:g> des Telefons.</string>
+    <string name="security_settings_fingerprint_enroll_find_sensor_message_cm" product="default">Suchen Sie den Fingerabdruck-Sensor auf der <xliff:g id="sensor_location">%1$s </xliff:g> des Telefons.</string>
+    <!-- Fingerprint sensor locations -->
+    <string name="security_settings_fingerprint_sensor_location_back">zurück</string>
+    <string name="security_settings_fingerprint_sensor_location_front">Vorderseite</string>
+    <string name="security_settings_fingerprint_sensor_location_left">linke Seite</string>
+    <string name="security_settings_fingerprint_sensor_location_right">rechte Seite</string>
+    <string name="screenshot_shutter_sound_title">Bildschirmfoto Auslöse-Ton</string>
+    <string name="selinux_status">SELinux-Status</string>
+    <string name="selinux_status_disabled">Deaktiviert</string>
+    <string name="selinux_status_permissive">Permissiv</string>
+    <string name="selinux_status_enforcing">Enforcing</string>
+    <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone1_title">Klingelton - SIM 1</string>
+    <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone2_title">Klingelton - SIM 2</string>
+    <string name="weather_title">Wetter</string>
+    <string name="back_height_low_label">Voll</string>
+    <string name="back_height_high_label">Unten</string>
+    <string name="back_options_dialog_title">Einstellungen</string>
+    <string name="back_height_message">Höhe des Bildschirms, der als berührbare Region für die Zurück-Geste verwendet wird.</string>
+    <string name="back_block_ime_title">Blockiere die Höhe der Tastatur als berührbare Region für die Zurück-Geste</string>
+    <string name="app_package_name_title">Paket</string>
+    <string name="app_version_title">Version</string>
+    <!-- String for removal of sensitive info on about, depending on tap -->
+    <string name="device_info_protected_single_press">Tippen, um Info anzuzeigen</string>
+    <string name="unknown_night_light_time">Unbekannt - zum Aktualisieren drücken</string>
+    <string name="night_display_location_text">\n\nDer Zeitplan von Sonnenuntergang bis zum Sonnenaufgang erfordert aktivierte Standortdienste, um die richtigen Zeiten für Ihren Standort zu erhalten.</string>
+    <string name="auto_brightness_min_title">Minimale Helligkeitsstufe</string>
+    <string name="auto_brightness_description_new">Ihre Bildschirmhelligkeit wird sich automatisch an Ihre Umgebung und Ihre Aktivitäten anpassen.\n\nSie können die minimale Helligkeitsstufe anpassen, die verwendet werden soll.</string>
+</resources>
