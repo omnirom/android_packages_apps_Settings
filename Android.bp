@@ -110,6 +110,7 @@ android_library {
         "device_policy_aconfig_flags_lib",
         "kotlinx-coroutines-core",
         "kotlinx-coroutines-android",
+        "OmniLib",
     ],
 
     plugins: ["androidx.room_room-compiler-plugin"],
