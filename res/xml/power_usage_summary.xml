@@ -57,6 +57,12 @@
         android:summary="@string/battery_percentage_description"
         settings:controller="com.android.settings.display.BatteryPercentagePreferenceController" />
 
+    <SwitchPreference
+        android:key="battery_image"
+        android:title="@string/battery_image"
+        android:summary="@string/battery_image_description"
+        settings:controller="com.android.settings.display.BatteryImagePreferenceController" />
+
     <com.android.settingslib.widget.FooterPreference
         android:key="power_usage_footer"
         android:title="@string/battery_footer_summary"

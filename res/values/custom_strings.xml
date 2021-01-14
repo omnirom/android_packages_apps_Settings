@@ -24,7 +24,8 @@
     <string name="selinux_status_disabled">Disabled</string>
     <string name="selinux_status_permissive">Permissive</string>
     <string name="selinux_status_enforcing">Enforcing</string>
-
     <string name="mod_version">Omni version</string>
     <string name="mod_version_default">Unknown</string>
+    <string name="battery_image">Show battery image</string>
+    <string name="battery_image_description">Show battery image in status bar</string>
 </resources>
