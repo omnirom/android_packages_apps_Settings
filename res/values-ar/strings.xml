@@ -341,6 +341,9 @@
     <string name="security_settings_face_enroll_education_title_unlock_disabled" msgid="8810954233979716906">"استخدام وجهك للمصادقة"</string>
     <string name="security_settings_face_enroll_education_message" msgid="4308030157487176799"></string>
     <string name="security_settings_face_enroll_education_start" msgid="8830924400907195590">"بدء"</string>
+    <string name="security_settings_face_enroll_education_accessibility_dialog_message" msgid="4681495507974718824">"‏إذا تم إيقاف ميزة \"فتح القفل بالوجه\" السهلة الاستخدام، قد لا تعمل بعض خطوات الإعداد بشكل سليم باستخدام TalkBack."</string>
+    <string name="security_settings_face_enroll_education_accessibility_dialog_negative" msgid="7872647360361245461">"رجوع"</string>
+    <string name="security_settings_face_enroll_education_accessibility_dialog_positive" msgid="3148077647572203458">"مواصلة الإعداد"</string>
     <string name="security_settings_face_enroll_introduction_accessibility" msgid="5748221179069430975">"استخدام إعدادات \"سهولة الاستخدام\""</string>
     <string name="security_settings_face_enroll_introduction_accessibility_expanded" msgid="6763509014732769185"></string>
     <string name="security_settings_face_enroll_introduction_accessibility_diversity" msgid="2774962371839179206"></string>
@@ -503,9 +506,9 @@
     <string name="crypt_keeper_data_corrupt_summary" product="default" msgid="3200498792238652367">"‏كلمة المرور التي أدخلتها صحيحة، ولكن للأسف بياناتك تالفة. \n\nلاستئناف استخدام هاتفك، يلزمك إجراء إعادة الضبط على الإعدادات الأصلية. عند إعداد الهاتف بعد إعادة الضبط، ستكون لديك فرصة لاستعادة أي بيانات تم نسخها احتياطيًا في حسابك على Google."</string>
     <string name="crypt_keeper_switch_input_method" msgid="7712732134989470573">"تبديل أسلوب الإدخال"</string>
     <string name="suggested_lock_settings_title" msgid="7836065447159730217">"تأمين هاتفك"</string>
-    <string name="suggested_lock_settings_summary" product="tablet" msgid="3213718550422761562">"تعيين قفل شاشة لحماية الجهاز اللوحي"</string>
-    <string name="suggested_lock_settings_summary" product="device" msgid="8479766049078378225">"تعيين قفل شاشة لحماية الجهاز"</string>
-    <string name="suggested_lock_settings_summary" product="default" msgid="2443273582716671033">"تعيين قفل شاشة لحماية الهاتف"</string>
+    <string name="suggested_lock_settings_summary" product="tablet" msgid="3213718550422761562">"ضبط قفل شاشة لحماية الجهاز اللوحي"</string>
+    <string name="suggested_lock_settings_summary" product="device" msgid="8479766049078378225">"ضبط قفل شاشة لحماية الجهاز"</string>
+    <string name="suggested_lock_settings_summary" product="default" msgid="2443273582716671033">"ضبط قفل شاشة لحماية الهاتف"</string>
     <string name="suggested_fingerprint_lock_settings_title" msgid="3140266181874137984">"إضافة بصمة الإصبع لإلغاء القفل"</string>
     <string name="suggested_fingerprint_lock_settings_summary" product="tablet" msgid="1040265358906410746"></string>
     <string name="suggested_fingerprint_lock_settings_summary" product="device" msgid="1040265358906410746"></string>
@@ -997,8 +1000,7 @@
     <string name="wifi_dpp_wifi_password" msgid="4992986319806934381">"‏كلمة مرور Wi-Fi هي:  <xliff:g id="PASSWORD">%1$s</xliff:g>"</string>
     <string name="wifi_dpp_hotspot_password" msgid="688464342650820420">"كلمة مرور نقطة الاتصال: <xliff:g id="PASSWORD">%1$s</xliff:g>"</string>
     <string name="wifi_auto_connect_title" msgid="1890342051674657892">"اتصال تلقائي"</string>
-    <string name="wifi_auto_connect_summary" product="default" msgid="5383749408911542382">"السماح للهاتف بالاتصال بالإنترنت تلقائيًا بالقرب من هذه الشبكة"</string>
-    <string name="wifi_auto_connect_summary" product="tablet" msgid="5209799194164396401">"السماح للجهاز اللوحي بالاتصال بالإنترنت تلقائيًا بالقرب من هذه الشبكة"</string>
+    <string name="wifi_auto_connect_summary" msgid="1707702705345670370">"السماح بالاتصال بهذه الشبكة عندما تكون في نطاقها"</string>
     <string name="wifi_dpp_add_device" msgid="8695656122114721335">"إضافة جهاز"</string>
     <string name="wifi_dpp_connect_network_using_qr_code" msgid="6975258007798254937">"استخدِم رمز استجابة سريعة لإضافة جهاز إلى هذه الشبكة."</string>
     <string name="wifi_dpp_qr_code_is_not_valid_format" msgid="5190689503019328279">"تنسيق رمز الاستجابة السريعة غير صالح."</string>
@@ -1010,7 +1012,6 @@
     <string name="wifi_use_system_certs" msgid="5587866698144996931">"استخدام شهادات النظام"</string>
     <string name="wifi_do_not_provide_eap_user_cert" msgid="6336636553673065145">"عدم التوفير"</string>
     <string name="wifi_do_not_validate_eap_server" msgid="4673867078988209732">"عدم التحقق"</string>
-    <string name="wifi_do_not_validate_eap_server_warning" msgid="5741728006175181647">"لم يتم تحديد أي شهادات. لن يكون اتصالك خاصًا."</string>
     <string name="wifi_ssid_too_long" msgid="5961719058705013875">"اسم الشبكة طويل جدًا."</string>
     <string name="wifi_no_domain_warning" msgid="1452133316532366772">"يجب تحديد نطاق."</string>
     <string name="wifi_no_user_cert_warning" msgid="8466376918835248956">"يجب تقديم شهادة."</string>
@@ -1230,7 +1231,7 @@
     <string name="accessibility_work_account_title" msgid="7622485151217943839">"حساب العمل - <xliff:g id="MANAGED_BY">%s</xliff:g>"</string>
     <string name="accessibility_personal_account_title" msgid="8535265881509557013">"الحساب الشخصي - <xliff:g id="MANAGED_BY">%s</xliff:g>"</string>
     <string name="search_settings" msgid="7573686516434589771">"بحث"</string>
-    <string name="display_settings" msgid="7197750639709493852">"العرض"</string>
+    <string name="display_settings" msgid="7197750639709493852">"الشاشة"</string>
     <string name="accelerometer_title" msgid="7745991950833748909">"التدوير التلقائي للشاشة"</string>
     <string name="color_mode_title" msgid="8666690832113906028">"الألوان"</string>
     <string name="color_mode_option_natural" msgid="6192875655101283303">"طبيعية"</string>
@@ -1759,7 +1760,7 @@
     <string name="bluetooth_tethering_overflow_error" msgid="5292358672240161566">"لا يمكن ربط أكثر من <xliff:g id="MAXCONNECTION">%1$d</xliff:g> من الأجهزة."</string>
     <string name="bluetooth_untether_blank" msgid="5087548945727762308">"سيتم إلغاء ربط <xliff:g id="DEVICE_NAME">%1$s</xliff:g>."</string>
     <string name="ethernet_tether_checkbox_text" msgid="959743110824197356">"التوصيل باستخدام إيثرنت"</string>
-    <string name="ethernet_tethering_subtext" product="default" msgid="7573587396552412231">"‏مشاركة اتصال الإنترنت الخاص بالهاتف عبر كابل USB يدعم إيثرنت"</string>
+    <string name="ethernet_tethering_subtext" product="default" msgid="5998100693350351694">"مشاركة اتصال الإنترنت الخاص بالهاتف عبر إيثرنت"</string>
     <string name="tethering_footer_info" msgid="6782375845587483281">"يمكنك استخدام نقطة الاتصال والتوصيل لتوفير اتصال بالإنترنت للأجهزة الأخرى من خلال اتصال بيانات الجوّال، كما يمكن للتطبيقات إنشاء نقطة اتصال لمشاركة المحتوى مع الأجهزة المجاورة."</string>
     <string name="tethering_footer_info_sta_ap_concurrency" msgid="2079039077487477676">"‏يمكنك استخدام نقطة الاتصال والتوصيل لتوفير اتصال بالإنترنت للأجهزة الأخرى من خلال شبكة Wi‑Fi أو اتصال بيانات الجوّال، كما يمكن للتطبيقات إنشاء نقطة اتصال لمشاركة المحتوى مع الأجهزة المجاورة."</string>
     <string name="tethering_help_button_text" msgid="2823655011510912001">"مساعدة"</string>
@@ -2815,6 +2816,8 @@
     <string name="tts_reset" msgid="9047681050813970031">"إعادة الضبط"</string>
     <string name="tts_play" msgid="2945513377250757221">"تشغيل"</string>
     <string name="vpn_settings_title" msgid="9131315656202257272">"الشبكة الافتراضية الخاصة"</string>
+    <string name="adaptive_connectivity_title" msgid="7464959640138428192">"التحكّم التلقائي بإمكانية الاتصال"</string>
+    <string name="adaptive_connectivity_summary" msgid="3648731530666326885">"إطالة عمر البطارية وتحسين أداء الجهاز عن طريق الإدارة التلقائية للاتصالات بالشبكات"</string>
     <string name="credentials_title" msgid="7535942196886123656">"تخزين بيانات الاعتماد"</string>
     <string name="credentials_install" msgid="3933218407598415827">"تثبيت شهادة"</string>
     <string name="credentials_install_summary" product="nosdcard" msgid="6644116499934553975">"تثبيت الشهادات من وحدة تخزين"</string>
@@ -4878,7 +4881,7 @@
       <item quantity="one"><xliff:g id="COUNT_0">%d</xliff:g> تطبيق</item>
     </plurals>
     <string name="enterprise_privacy_input_method" msgid="3278314982700662246">"لوحة المفاتيح التلقائية"</string>
-    <string name="enterprise_privacy_input_method_name" msgid="2974859490559054584">"تعيين على <xliff:g id="APP_LABEL">%s</xliff:g>"</string>
+    <string name="enterprise_privacy_input_method_name" msgid="2974859490559054584">"ضبط على <xliff:g id="APP_LABEL">%s</xliff:g>"</string>
     <string name="enterprise_privacy_always_on_vpn_device" msgid="1735829327405126695">"‏تم تفعيل إعداد \"شبكة افتراضية خاصة (VPN) دائمة التفعيل\""</string>
     <string name="enterprise_privacy_always_on_vpn_personal" msgid="8395903360175064841">"‏تم تفعيل إعداد \"شبكة افتراضية خاصة (VPN) دائمة التفعيل\" في الملف الشخصي"</string>
     <string name="enterprise_privacy_always_on_vpn_work" msgid="2496961514592522377">"‏تم تفعيل \"شبكة افتراضية خاصة (VPN) دائمة التفعيل\" في الملف الشخصي للعمل"</string>
@@ -5062,6 +5065,11 @@
     <string name="network_query_error" msgid="6406348372070035274">"تعذّر العثور على شبكات. حاوِل مرة أخرى."</string>
     <string name="forbidden_network" msgid="7404863971282262991">"(محظورة)"</string>
     <string name="no_sim_card" msgid="1497407489810953863">"‏ليست هناك شريحة SIM."</string>
+    <string name="sim_card" msgid="6381158752066377709">"‏شريحة SIM"</string>
+    <string name="wifi_no_sim_card" msgid="7144290066491585672">"‏ليس هناك شريحة SIM"</string>
+    <string name="wifi_no_related_sim_card" msgid="3568255415415630510">"بدون شريحة"</string>
+    <string name="wifi_require_sim_card_to_connect" msgid="1524984445750423666">"‏يجب توفّر شريحة SIM للاتصال بالشبكة"</string>
+    <string name="wifi_require_specific_sim_card_to_connect" msgid="8136020469861668506">"‏يجب توفّر شريحة SIM من <xliff:g id="WIRELESS_CARRIER">%s</xliff:g> للاتصال بالشبكة"</string>
     <string name="preferred_network_mode_wcdma_perf_summary" msgid="230527592752934655">"‏وضع الشبكة المُفضَّل: تمّ تفضيل WCDMA"</string>
     <string name="preferred_network_mode_gsm_only_summary" msgid="2936969642076535162">"‏وضع الشبكة المُفضَّل: GSM فقط"</string>
     <string name="preferred_network_mode_wcdma_only_summary" msgid="632816273979433076">"‏وضع الشبكة المُفضَّل: WCDMA فقط"</string>
@@ -5309,10 +5317,11 @@
     <string name="overlay_settings_title" msgid="1032863083496396365">"السماح بالظهور فوق المحتوى على الشاشة في \"الإعدادات\""</string>
     <string name="overlay_settings_summary" msgid="2745336273786148166">"السماح للتطبيقات التي يمكن عرضها على التطبيقات الأخرى بالظهور فوق المحتوى على شاشات \"الإعدادات\"."</string>
     <string name="media_controls_title" msgid="403271085636252597">"الوسائط"</string>
-    <string name="media_controls_summary" msgid="5032071475867165587">"إخفاء المشغِّل عندما تنتهي جلسة الوسائط"</string>
-    <string name="media_controls_resume_description" msgid="2333689676163363582">"يسمح لك المشغِّل باستئناف جلسة من اللوحة الموسَّعة \"الإعدادات السريعة\"."</string>
+    <string name="media_controls_summary" msgid="3573121049460596520">"مشغّل الوسائط في \"الإعدادات السريعة\""</string>
+    <string name="media_controls_resume_description" msgid="7702723104730495227">"عرض مشغّل الوسائط لمدة أطول لاستئناف التشغيل بسهولة"</string>
     <string name="media_controls_hide_player" msgid="2751439192580884015">"إخفاء المشغِّل"</string>
     <string name="media_controls_show_player" msgid="8504571042365814021">"إظهار المشغِّل"</string>
     <string name="media_controls_no_players" msgid="3493023121892175946">"ما مِن مشغِّلات متاحة"</string>
     <string name="keywords_media_controls" msgid="8345490568291778638">"الوسائط"</string>
+    <string name="connected_device_see_all_summary" msgid="2056010318537268108">"سيتم تفعيل البلوتوث."</string>
 </resources>

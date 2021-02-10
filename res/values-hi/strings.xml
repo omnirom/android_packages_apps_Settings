@@ -329,6 +329,9 @@
     <string name="security_settings_face_enroll_education_title_unlock_disabled" msgid="8810954233979716906">"चेहरे का इस्तेमाल कर पुष्टि करें"</string>
     <string name="security_settings_face_enroll_education_message" msgid="4308030157487176799"></string>
     <string name="security_settings_face_enroll_education_start" msgid="8830924400907195590">"शुरू करें"</string>
+    <string name="security_settings_face_enroll_education_accessibility_dialog_message" msgid="4681495507974718824">"अगर सुलभता सुविधा में मालिक का चेहरा पहचानकर अनलॉक करने की सुविधा बंद है, तो हो सकता है कि सेट अप के कुछ चरण, टॉकबैक के साथ ठीक से काम न करें."</string>
+    <string name="security_settings_face_enroll_education_accessibility_dialog_negative" msgid="7872647360361245461">"वापस जाएं"</string>
+    <string name="security_settings_face_enroll_education_accessibility_dialog_positive" msgid="3148077647572203458">"सेट अप जारी रखें"</string>
     <string name="security_settings_face_enroll_introduction_accessibility" msgid="5748221179069430975">"सुलभता सेटअप का इस्तेमाल करें"</string>
     <string name="security_settings_face_enroll_introduction_accessibility_expanded" msgid="6763509014732769185"></string>
     <string name="security_settings_face_enroll_introduction_accessibility_diversity" msgid="2774962371839179206"></string>
@@ -929,8 +932,7 @@
     <string name="wifi_dpp_wifi_password" msgid="4992986319806934381">"वाई-फ़ाई पासवर्ड: <xliff:g id="PASSWORD">%1$s</xliff:g>"</string>
     <string name="wifi_dpp_hotspot_password" msgid="688464342650820420">"हॉटस्पॉट का पासवर्ड: <xliff:g id="PASSWORD">%1$s</xliff:g>"</string>
     <string name="wifi_auto_connect_title" msgid="1890342051674657892">"अपने-आप कनेक्ट हो जाए"</string>
-    <string name="wifi_auto_connect_summary" product="default" msgid="5383749408911542382">"अनुमति दें कि इस वाई-फ़ाई नेटवर्क के पास आते ही आपका फ़ोन अपने-आप इससे कनेक्ट हो जाए"</string>
-    <string name="wifi_auto_connect_summary" product="tablet" msgid="5209799194164396401">"अनुमति दें कि इस वाई-फ़ाई नेटवर्क के पास आते ही आपका टैबलेट अपने-आप इससे कनेक्ट हो जाए"</string>
+    <string name="wifi_auto_connect_summary" msgid="1707702705345670370">"जब रेंज में हो, तब डिवाइस काे इस वाई-फ़ाई नेटवर्क से जुड़ने की अनुमति दें"</string>
     <string name="wifi_dpp_add_device" msgid="8695656122114721335">"डिवाइस जोड़ें"</string>
     <string name="wifi_dpp_connect_network_using_qr_code" msgid="6975258007798254937">"इस नेटवर्क से किसी डिवाइस को जोड़ने के लिए QR कोड का इस्तेमाल करें"</string>
     <string name="wifi_dpp_qr_code_is_not_valid_format" msgid="5190689503019328279">"QR कोड का फ़ॉर्मैट गलत है"</string>
@@ -942,7 +944,6 @@
     <string name="wifi_use_system_certs" msgid="5587866698144996931">"सिस्टम प्रमाणपत्रों का उपयोग करें"</string>
     <string name="wifi_do_not_provide_eap_user_cert" msgid="6336636553673065145">"मुहैया न कराएं"</string>
     <string name="wifi_do_not_validate_eap_server" msgid="4673867078988209732">"मान्‍य न करें"</string>
-    <string name="wifi_do_not_validate_eap_server_warning" msgid="5741728006175181647">"कोई प्रमाणपत्र मौजूद नहीं है. आपका कनेक्‍शन निजी नहीं होगा."</string>
     <string name="wifi_ssid_too_long" msgid="5961719058705013875">"नेटवर्क का नाम बहुत लंबा है."</string>
     <string name="wifi_no_domain_warning" msgid="1452133316532366772">"डोमेन बताना ज़रूरी है."</string>
     <string name="wifi_no_user_cert_warning" msgid="8466376918835248956">"प्रमाणपत्र ज़रूरी है."</string>
@@ -1206,7 +1207,7 @@
     <string name="night_display_auto_mode_title" msgid="5869128421470824381">"शेड्यूल करें"</string>
     <string name="night_display_auto_mode_never" msgid="2721729920187175239">"कोई नहीं"</string>
     <string name="night_display_auto_mode_custom" msgid="3938791496034086916">"अपने मुताबिक तय समय पर चालू करें"</string>
-    <string name="night_display_auto_mode_twilight" msgid="4291855156158833997">"शाम से सुबह तक चालू रहती है"</string>
+    <string name="night_display_auto_mode_twilight" msgid="4291855156158833997">"सूर्योदय से सूर्यास्त तक चालू रहती है"</string>
     <string name="night_display_start_time_title" msgid="2611541851596977786">"शुरू करने का समय"</string>
     <string name="night_display_end_time_title" msgid="5243112480391192111">"खत्म होने का समय"</string>
     <string name="night_display_status_title" msgid="9006282950657941820">"स्थिति"</string>
@@ -1221,8 +1222,8 @@
     <string name="night_display_summary_on_auto_mode_twilight" msgid="8070517472000680361">"सूर्योदय होने पर अपने आप बंद हो जाएगा"</string>
     <string name="night_display_activation_on_manual" msgid="7999294858026069365">"अभी चालू करें"</string>
     <string name="night_display_activation_off_manual" msgid="4842907786868153218">"अभी बंद करें"</string>
-    <string name="night_display_activation_on_twilight" msgid="3440889451767582067">"सुबह तक के लिए चालू करें"</string>
-    <string name="night_display_activation_off_twilight" msgid="2853594955401726956">"शाम तक के लिए बंद करें"</string>
+    <string name="night_display_activation_on_twilight" msgid="3440889451767582067">"सूर्योदय तक के लिए चालू करें"</string>
+    <string name="night_display_activation_off_twilight" msgid="2853594955401726956">"सूर्यास्त तक के लिए बंद करें"</string>
     <string name="night_display_activation_on_custom" msgid="4951143503599226846">"<xliff:g id="ID_1">%1$s</xliff:g> तक के लिए चालू करें"</string>
     <string name="night_display_activation_off_custom" msgid="79965738861100371">"<xliff:g id="ID_1">%1$s</xliff:g> तक बंद रखें"</string>
     <string name="night_display_not_currently_on" msgid="6600205753103093827">"नाइट लाइट इस समय चालू नहीं है"</string>
@@ -1230,12 +1231,12 @@
     <string name="twilight_mode_launch_location" msgid="7799112373591153956">"जगह की सेटिंग"</string>
     <string name="dark_ui_activation_on_manual" msgid="1541006734577325234">"अभी चालू करें"</string>
     <string name="dark_ui_activation_off_manual" msgid="2395333709291250065">"अभी बंद करें"</string>
-    <string name="dark_ui_activation_on_auto" msgid="4824339634784765049">"सुबह तक के लिए चालू करें"</string>
-    <string name="dark_ui_activation_off_auto" msgid="9136717444658505208">"शाम तक के लिए बंद करें"</string>
+    <string name="dark_ui_activation_on_auto" msgid="4824339634784765049">"सूर्योदय तक के लिए चालू करें"</string>
+    <string name="dark_ui_activation_off_auto" msgid="9136717444658505208">"सूर्यास्त तक के लिए बंद करें"</string>
     <string name="dark_ui_title" msgid="3373976268671557416">"गहरे रंग वाला मोड"</string>
     <string name="dark_ui_auto_mode_title" msgid="9027528859262295099">"शेड्यूल करें"</string>
     <string name="dark_ui_auto_mode_never" msgid="3980412582267787662">"कभी नहीं"</string>
-    <string name="dark_ui_auto_mode_auto" msgid="6658909029498623375">"शाम से सुबह तक चालू रहती है"</string>
+    <string name="dark_ui_auto_mode_auto" msgid="6658909029498623375">"सूर्योदय से सूर्यास्त तक चालू रहती है"</string>
     <string name="dark_ui_auto_mode_custom" msgid="3800138185265182170">"अपने मुताबिक तय समय पर चालू करें"</string>
     <string name="dark_ui_status_title" msgid="3505119141437774329">"स्थिति"</string>
     <string name="dark_ui_summary_off" msgid="3897438633224959099">"बंद है / <xliff:g id="ID_1">%1$s</xliff:g>"</string>
@@ -1675,7 +1676,7 @@
     <string name="bluetooth_tethering_overflow_error" msgid="5292358672240161566">"<xliff:g id="MAXCONNECTION">%1$d</xliff:g> डिवाइस से ज़्यादा को टेदर नहीं कर सकता."</string>
     <string name="bluetooth_untether_blank" msgid="5087548945727762308">"<xliff:g id="DEVICE_NAME">%1$s</xliff:g> को अनटेदर किया जाएगा."</string>
     <string name="ethernet_tether_checkbox_text" msgid="959743110824197356">"ईथरनेट टेदरिंग"</string>
-    <string name="ethernet_tethering_subtext" product="default" msgid="7573587396552412231">"यूएसबी ईथरनेट से फ़ोन का इंटरनेट कनेक्शन शेयर करें"</string>
+    <string name="ethernet_tethering_subtext" product="default" msgid="5998100693350351694">"ईथरनेट से फ़ोन का इंटरनेट कनेक्शन शेयर करें"</string>
     <string name="tethering_footer_info" msgid="6782375845587483281">"अपने मोबाइल डेटा कनेक्शन के ज़रिए दूसरे डिवाइस को इंटरनेट देने के लिए हॉटस्पॉट और टेदरिंग का इस्तेमाल करें. आस-पास के डिवाइस के साथ कॉन्टेंट शेयर करने के लिए, ऐप्लिकेशन भी हॉटस्पॉट बना सकते हैं."</string>
     <string name="tethering_footer_info_sta_ap_concurrency" msgid="2079039077487477676">"अपने मोबाइल डेटा कनेक्शन के ज़रिए दूसरे डिवाइस को इंटरनेट देने के लिए हॉटस्पॉट और टेदरिंग का इस्तेमाल करें. आस-पास के डिवाइस के साथ कॉन्टेंट शेयर करने के लिए, ऐप्लिकेशन भी हॉटस्पॉट बना सकते हैं."</string>
     <string name="tethering_help_button_text" msgid="2823655011510912001">"सहायता"</string>
@@ -2663,6 +2664,8 @@
     <string name="tts_reset" msgid="9047681050813970031">"रीसेट करें"</string>
     <string name="tts_play" msgid="2945513377250757221">"चलाएं"</string>
     <string name="vpn_settings_title" msgid="9131315656202257272">"वीपीएन"</string>
+    <string name="adaptive_connectivity_title" msgid="7464959640138428192">"अडैप्टिव कनेक्टिविटी"</string>
+    <string name="adaptive_connectivity_summary" msgid="3648731530666326885">"अडैप्टिव कनेक्टिविटी का विकल्प चुनने पर, आपका इंटरनेट कनेक्शन अपने-आप मैनेज हो जाएगा. इससे बैटरी लाइफ़ बढ़ती है और डिवाइस की परफ़ॉर्मेंस बेहतर होती है"</string>
     <string name="credentials_title" msgid="7535942196886123656">"क्रेडेंशियल स्टोरेज"</string>
     <string name="credentials_install" msgid="3933218407598415827">"कोई प्रमाणपत्र इंस्टॉल करें"</string>
     <string name="credentials_install_summary" product="nosdcard" msgid="6644116499934553975">"मेमोरी से प्रमाणपत्र इंस्‍टॉल करें"</string>
@@ -3298,10 +3301,10 @@
     <string name="sound_settings_summary_vibrate" msgid="7192223433295988890">"रिंगर, कंपन (वाइब्रेशन) पर सेट है"</string>
     <string name="sound_settings_summary_silent" msgid="746662794579344761">"रिंगर मौन पर सेट है"</string>
     <string name="sound_settings_example_summary" msgid="8125110691864707925">"घंटी और सूचना की आवाज़ 80% है"</string>
-    <string name="media_volume_option_title" msgid="5966569685119475630">"मीडिया की आवाज़"</string>
+    <string name="media_volume_option_title" msgid="5966569685119475630">"मीडिया वॉल्यूम"</string>
     <string name="remote_media_volume_option_title" msgid="8760846743943305764">"आवाज़ कास्ट करें"</string>
-    <string name="call_volume_option_title" msgid="1461105986437268924">"कॉल की आवाज़"</string>
-    <string name="alarm_volume_option_title" msgid="6398641749273697140">"अलार्म की आवाज़"</string>
+    <string name="call_volume_option_title" msgid="1461105986437268924">"कॉल वॉल्‍यूम"</string>
+    <string name="alarm_volume_option_title" msgid="6398641749273697140">"अलार्म वॉल्यूम"</string>
     <string name="ring_volume_option_title" msgid="1520802026403038560">"घंटी और सूचना की आवाज़"</string>
     <string name="notification_volume_option_title" msgid="4838818791683615978">"सूचना की आवाज़"</string>
     <string name="ringtone_title" msgid="3271453110387368088">"फ़ोन रिंगटोन"</string>
@@ -4710,6 +4713,11 @@
     <string name="network_query_error" msgid="6406348372070035274">"कोई नेटवर्क नहीं मिला. फिर से कोशिश करें."</string>
     <string name="forbidden_network" msgid="7404863971282262991">"(मना है)"</string>
     <string name="no_sim_card" msgid="1497407489810953863">"कोई सिम कार्ड नहीं है"</string>
+    <string name="sim_card" msgid="6381158752066377709">"सिम कार्ड"</string>
+    <string name="wifi_no_sim_card" msgid="7144290066491585672">"कोई सिम कार्ड नहीं लगाया गया है"</string>
+    <string name="wifi_no_related_sim_card" msgid="3568255415415630510">"इस वाई-फ़ाई नेटवर्क पर सिम कार्ड की कोई जानकारी नहीं है"</string>
+    <string name="wifi_require_sim_card_to_connect" msgid="1524984445750423666">"वाई-फ़ाई नेटवर्क से कनेक्ट करने के लिए, सिम कार्ड लगा होना चाहिए"</string>
+    <string name="wifi_require_specific_sim_card_to_connect" msgid="8136020469861668506">"वाई-फ़ाई नेटवर्क से कनेक्ट करने के लिए, <xliff:g id="WIRELESS_CARRIER">%s</xliff:g> का सिम कार्ड लगा होना चाहिए"</string>
     <string name="preferred_network_mode_wcdma_perf_summary" msgid="230527592752934655">"पसंदीदा नेटवर्क मोड: WCDMA को प्राथमिकता"</string>
     <string name="preferred_network_mode_gsm_only_summary" msgid="2936969642076535162">"पसंदीदा नेटवर्क मोड: सिर्फ़ GSM"</string>
     <string name="preferred_network_mode_wcdma_only_summary" msgid="632816273979433076">"पसंदीदा नेटवर्क मोड: सिर्फ़ WCDMA"</string>
@@ -4945,10 +4953,11 @@
     <string name="overlay_settings_title" msgid="1032863083496396365">"\'सेटिंग\' पर स्क्रीन ओवरले करने की अनुमति दें"</string>
     <string name="overlay_settings_summary" msgid="2745336273786148166">"\'सेटिंग\' में जाकर उन ऐप्लिकेशन को स्क्रीन ओवरले करने की अनुमति दें जो दूसरे ऐप्लिकेशन के ऊपर दिख सकते हैं"</string>
     <string name="media_controls_title" msgid="403271085636252597">"मीडिया"</string>
-    <string name="media_controls_summary" msgid="5032071475867165587">"मीडिया सेशन के खत्म होने पर, प्लेयर छिपाएं"</string>
-    <string name="media_controls_resume_description" msgid="2333689676163363582">"आप मीडिया प्लेयर का इस्तेमाल करके, फटाफट सेटिंग के बड़े किए गए पैनल से सेशन फिर से शुरू कर सकते हैं."</string>
+    <string name="media_controls_summary" msgid="3573121049460596520">"फटाफट सेटिंग में मीडिया प्लेयर की सेटिंग"</string>
+    <string name="media_controls_resume_description" msgid="7702723104730495227">"वीडियो को फिर से चलाने के लिए, मीडिया प्लेयर को लंबे समय तक दिखाएं"</string>
     <string name="media_controls_hide_player" msgid="2751439192580884015">"मीडिया प्लेयर को छिपाएं"</string>
     <string name="media_controls_show_player" msgid="8504571042365814021">"मीडिया प्लेयर दिखाएं"</string>
     <string name="media_controls_no_players" msgid="3493023121892175946">"कोई मीडिया प्लेयर उपलब्ध नहीं है"</string>
     <string name="keywords_media_controls" msgid="8345490568291778638">"मीडिया"</string>
+    <string name="connected_device_see_all_summary" msgid="2056010318537268108">"ब्लूटूथ चालू हो जाएगा"</string>
 </resources>
