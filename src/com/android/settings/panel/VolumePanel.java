@@ -62,8 +62,8 @@ public class VolumePanel implements PanelContent {
         uris.add(MEDIA_OUTPUT_INDICATOR_SLICE_URI);
         uris.add(VOLUME_CALL_URI);
         uris.add(VOLUME_RINGER_URI);
-        if (Utils.isVoiceCapable(mContext) && Settings.Secure.getInt(
-                mContext.getContentResolver(), Settings.Secure.VOLUME_LINK_NOTIFICATION, 1) == 0) {
+        if (Utils.isVoiceCapable(mContext) && Settings.System.getInt(
+                mContext.getContentResolver(), Settings.System.OMNI_VOLUME_LINK_NOTIFICATION, 1) == 0) {
             uris.add(VOLUME_NOTIFICATION_URI);
         }
         uris.add(VOLUME_ALARM_URI);
