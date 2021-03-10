@@ -77,4 +77,19 @@ public class NotificationVolumePreferenceController extends
             }
         }
     }
+
+    @Override
+    protected void updateTitle() {
+        // do nothing
+    }
+
+    @Override
+    public boolean useDynamicSliceTitle() {
+        return false;
+    }
+
+    @Override
+    public String getSliceTitle() {
+        return null;
+    }
 }

@@ -306,7 +306,7 @@ public class SliceBuilderUtils {
             cur = sliderController.getMax();
         }
         final InputRangeBuilder inputRangeBuilder = new InputRangeBuilder()
-                .setTitle(sliceData.getTitle())
+                .setTitle(getTitleText(context, controller, sliceData))
                 .setPrimaryAction(primaryAction)
                 .setMax(sliderController.getMax())
                 .setMin(sliderController.getMin())
@@ -459,5 +459,16 @@ public class SliceBuilderUtils {
                     + data.getUri(), e);
             return IconCompat.createWithResource(context, R.drawable.ic_settings_accent);
         }
+    }
+
+    /**
+     * @return the title text for a {@link Slice} built for {@param sliceData}.
+     */
+    public static CharSequence getTitleText(Context context,
+            BasePreferenceController controller, SliceData sliceData) {
+        if (controller.useDynamicSliceTitle() && controller.getSliceTitle() != null) {
+            return controller.getSliceTitle();
+        }
+        return sliceData.getTitle();
     }
 }

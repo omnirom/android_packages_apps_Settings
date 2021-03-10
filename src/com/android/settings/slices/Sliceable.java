@@ -106,6 +106,14 @@ public interface Sliceable {
         return false;
     }
 
+    default boolean useDynamicSliceTitle() {
+        return false;
+    }
+
+    default String getSliceTitle() {
+        return null;
+    }
+
     /**
      * Set the copy content to the clipboard and show the toast.
      */

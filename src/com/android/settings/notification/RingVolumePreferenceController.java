@@ -17,6 +17,7 @@
 package com.android.settings.notification;
 
 import android.app.NotificationManager;
+import android.database.ContentObserver;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -27,6 +28,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.text.TextUtils;
 
 import androidx.lifecycle.OnLifecycleEvent;
@@ -50,6 +52,14 @@ public class RingVolumePreferenceController extends VolumeSeekBarPreferenceContr
 
     protected int mMuteIcon;
 
+    private final ContentObserver mContentObserver =
+        new ContentObserver(mHandler) {
+            @Override
+            public void onChange(boolean selfChange) {
+                updateTitle();
+            }
+    };
+
     public RingVolumePreferenceController(Context context) {
         this(context, KEY_RING_VOLUME);
     }
@@ -70,6 +80,10 @@ public class RingVolumePreferenceController extends VolumeSeekBarPreferenceContr
         mReceiver.register(true);
         updateEffectsSuppressor();
         updatePreferenceIcon();
+        updateTitle();
+        mContext.getContentResolver().registerContentObserver(
+                Settings.System.getUriFor(Settings.System.OMNI_VOLUME_LINK_NOTIFICATION),
+                false, mContentObserver);
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
@@ -77,6 +91,7 @@ public class RingVolumePreferenceController extends VolumeSeekBarPreferenceContr
     public void onPause() {
         super.onPause();
         mReceiver.register(false);
+        mContext.getContentResolver().unregisterContentObserver(mContentObserver);
     }
 
     @Override
@@ -145,6 +160,27 @@ public class RingVolumePreferenceController extends VolumeSeekBarPreferenceContr
                 mPreference.showIcon(R.drawable.ic_audio_ring);
             }
         }
+    }
+
+    protected void updateTitle() {
+        if (mPreference != null) {
+            mPreference.setTitle(getSliceTitle());
+        }
+    }
+
+    @Override
+    public String getSliceTitle() {
+        if (Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.OMNI_VOLUME_LINK_NOTIFICATION, 1) == 0) {
+            return mContext.getResources().getString(R.string.ring_volume_title_split);
+        } else {
+            return mContext.getResources().getString(R.string.ring_volume_title);
+        }
+    }
+
+    @Override
+    public boolean useDynamicSliceTitle() {
+        return true;
     }
 
     private final class H extends Handler {

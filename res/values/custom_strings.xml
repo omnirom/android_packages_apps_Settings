@@ -64,4 +64,6 @@
 
     <!-- Volume link notification -->
     <string name="volume_link_notification_title">Link ring &amp; notification volumes</string>
+    <string name="ring_volume_title_split">Ring volume</string>
+
 </resources>
