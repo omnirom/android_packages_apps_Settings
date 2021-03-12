@@ -18,13 +18,7 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- Custom light color -->
-    <!-- Android debugging over WiFi -->
-    <!-- Warning for Adb over Network -->
-    <!-- Encryption and credential -->
     <!-- Format string for fingerprint location message -->
     <!-- Fingerprint sensor locations -->
-    <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
-    <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
-    <!-- String for removal of sensitive info on about, depending on tap -->
+    <!-- Back gesture height -->
 </resources>

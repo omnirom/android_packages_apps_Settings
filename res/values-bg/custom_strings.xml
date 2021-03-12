@@ -18,23 +18,11 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="style_settings_title">Стил</string>
-    <string name="button_settings_title">Бутони</string>
     <string name="mod_version">Версия на Omni</string>
     <string name="mod_version_default">Неизвестно</string>
-    <string name="more_settings_title">Още</string>
-    <string name="global_actions_title">Меню за захранването</string>
-    <string name="display_rotation_title">Завъртане</string>
-    <!-- Custom light color -->
-    <string name="value_equals_default">Автоматично</string>
-    <!-- Android debugging over WiFi -->
-    <!-- Warning for Adb over Network -->
-    <!-- Encryption and credential -->
     <!-- Format string for fingerprint location message -->
     <!-- Fingerprint sensor locations -->
     <string name="security_settings_fingerprint_sensor_location_left">лява страна</string>
     <string name="security_settings_fingerprint_sensor_location_right">дясна страна</string>
-    <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
-    <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
-    <!-- String for removal of sensitive info on about, depending on tap -->
+    <!-- Back gesture height -->
 </resources>
