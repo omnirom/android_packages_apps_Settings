@@ -66,4 +66,6 @@
     <string name="volume_link_notification_title">Link ring &amp; notification volumes</string>
     <string name="ring_volume_title_split">Ring volume</string>
 
+    <!-- String for removal of sensitive info on about, depending on tap -->
+    <string name="device_info_protected_single_press">Tap to show info</string>
 </resources>
