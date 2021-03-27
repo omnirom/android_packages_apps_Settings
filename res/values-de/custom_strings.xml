@@ -44,4 +44,8 @@
     <string name="back_height_high_label">Unten</string>
     <string name="back_options_dialog_title">Einstellungen</string>
     <string name="back_height_message">Höhe des Bildschirms, der als berührbare Region für die Zurück-Geste verwendet wird.</string>
+    <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <!-- Volume link notification -->
+    <!-- String for removal of sensitive info on about, depending on tap -->
 </resources>

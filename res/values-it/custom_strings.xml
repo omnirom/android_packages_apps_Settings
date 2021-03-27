@@ -18,11 +18,21 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="usb_enable_diagnostics">Abilita diagnostica USB</string>
+    <string name="usb_enable_diagnostics_summary">Metti il dispositivo in modalità diagnostica USB</string>
+    <string name="selinux_status">Stato di SELinux</string>
+    <string name="selinux_status_disabled">Disattivato</string>
+    <string name="selinux_status_permissive">Permissivo</string>
+    <string name="selinux_status_enforcing">Enforcing</string>
+    <string name="app_package_name_title">Pacchetto</string>
+    <string name="app_version_title">Versione</string>
     <string name="mod_version">Versione Omni</string>
     <string name="mod_version_default">Sconosciuta</string>
     <string name="header_category_omni">OmniGears</string>
     <string name="omni_dashboard_summary">Personalizza il tuo dispositivo</string>
     <!-- Format string for fingerprint location message -->
+    <string name="security_settings_fingerprint_enroll_find_sensor_message_cm" product="tablet">Individua il sensore di impronte digitali sul <xliff:g id="sensor_location">%1$s</xliff:g> del tuo tablet.</string>
+    <string name="security_settings_fingerprint_enroll_find_sensor_message_cm" product="device">Individua il sensore di impronte digitali sul <xliff:g id="sensor_location">%1$s</xliff:g> del tuo dispositivo.</string>
     <string name="security_settings_fingerprint_enroll_find_sensor_message_cm" product="default">Individuare il sensore di impronte digitali sul <xliff:g id="sensor_location">%1$s </xliff:g> del telefono.</string>
     <!-- Fingerprint sensor locations -->
     <string name="security_settings_fingerprint_sensor_location_back">posteriore</string>
@@ -30,4 +40,19 @@
     <string name="security_settings_fingerprint_sensor_location_left">lato sinistro</string>
     <string name="security_settings_fingerprint_sensor_location_right">lato destro</string>
     <!-- Back gesture height -->
+    <string name="back_height_low_label">Massima</string>
+    <string name="back_height_high_label">Minima</string>
+    <string name="back_options_dialog_title">Opzioni</string>
+    <string name="back_height_message">Quantità di altezza dello schermo usata come area toccabile per il gesto posteriore.</string>
+    <string name="battery_image">Mostra icona batteria</string>
+    <string name="battery_image_description">Visualizza l\'icona della batteria nella barra di stato</string>
+    <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone1_title">Suoneria telefono - SIM 1</string>
+    <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone2_title">Suoneria telefono - SIM 2</string>
+    <!-- Volume link notification -->
+    <string name="volume_link_notification_title">Collega volumi suoneria &amp; notifiche</string>
+    <string name="ring_volume_title_split">Volume suoneria</string>
+    <!-- String for removal of sensitive info on about, depending on tap -->
+    <string name="device_info_protected_single_press">Tocca per mostrare le informazioni</string>
 </resources>

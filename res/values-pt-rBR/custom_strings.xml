@@ -44,4 +44,8 @@
     <string name="back_height_high_label">Inferior</string>
     <string name="back_options_dialog_title">Opções</string>
     <string name="back_height_message">Quantidade de altura da tela usada como região sensível ao toque para trás.</string>
+    <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <!-- Volume link notification -->
+    <!-- String for removal of sensitive info on about, depending on tap -->
 </resources>
