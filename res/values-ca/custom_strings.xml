@@ -30,4 +30,8 @@
     <string name="security_settings_fingerprint_sensor_location_left">costat esquerre</string>
     <string name="security_settings_fingerprint_sensor_location_right">costat dret</string>
     <!-- Back gesture height -->
+    <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <!-- Volume link notification -->
+    <!-- String for removal of sensitive info on about, depending on tap -->
 </resources>
