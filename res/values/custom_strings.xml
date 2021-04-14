@@ -68,4 +68,9 @@
 
     <!-- String for removal of sensitive info on about, depending on tap -->
     <string name="device_info_protected_single_press">Tap to show info</string>
+
+    <string name="navbar_gesture_handle_category">Gesture handle</string>
+
+    <string name="navbar_gesture_handle_hide_title">Hide gesture handle</string>
+    <string name="navbar_gesture_handle_hide_summary">Hide horizontal line</string>
 </resources>
