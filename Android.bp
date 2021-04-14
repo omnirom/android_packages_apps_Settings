@@ -102,6 +102,7 @@ android_library {
         "androidx.room_room-runtime",
         "SystemUIUnfoldLib",
         "OmniLib",
+        "OmniPreference",
     ],
 
     plugins: ["androidx.room_room-compiler-plugin"],
