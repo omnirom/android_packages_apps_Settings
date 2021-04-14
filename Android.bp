@@ -111,6 +111,7 @@ android_library {
         "kotlinx-coroutines-core",
         "kotlinx-coroutines-android",
         "OmniLib",
+        "OmniPreference",
     ],
 
     plugins: ["androidx.room_room-compiler-plugin"],
