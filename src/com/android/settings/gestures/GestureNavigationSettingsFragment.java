@@ -44,6 +44,7 @@ public class GestureNavigationSettingsFragment extends DashboardFragment {
     private static final String LEFT_EDGE_SEEKBAR_KEY = "gesture_left_back_sensitivity";
     private static final String RIGHT_EDGE_SEEKBAR_KEY = "gesture_right_back_sensitivity";
     private static final String KEY_BACK_HEIGHT = "gesture_back_height";
+    private static final String KEY_HIDE_HANDLE = "gesture_hide_handle";
 
     private WindowManager mWindowManager;
     private BackGestureIndicatorView mIndicatorView;
