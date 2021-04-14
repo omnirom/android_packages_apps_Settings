@@ -65,6 +65,20 @@
             settings:textEnd="@string/back_height_high_label"/>
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="navbar_gesture_handle_category"
+        android:persistent="false"
+        android:title="@string/navbar_gesture_handle_category">
+
+        <org.omnirom.omnilib.preference.SystemSettingSwitchPreference
+            android:key="navbar_gesture_handle_hide"
+            android:title="@string/navbar_gesture_handle_hide_title"
+            android:summary="@string/navbar_gesture_handle_hide_summary"
+            android:defaultValue="false"
+            settings:controller="com.android.settings.gestures.GestureHandlePreferenceController"/>
+
+    </PreferenceCategory>
+
     <com.android.settingslib.widget.FooterPreference
         android:key="gesture_navigation_settings_footer"
         android:title="@string/back_sensitivity_dialog_message"
