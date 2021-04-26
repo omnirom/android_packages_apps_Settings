@@ -65,6 +65,20 @@
             android:defaultValue="false"
             settings:controller="com.android.settings.gestures.GestureHandlePreferenceController"/>
 
+        <!--<org.omnirom.omnilib.preference.SystemSettingSwitchPreference
+            android:key="navbar_gesture_handle_action"
+            android:title="@string/navbar_gesture_handle_action_title"
+            android:summary="@string/navbar_gesture_handle_action_summary"
+            android:defaultValue="true"
+            settings:controller="com.android.settings.gestures.GestureActionPreferenceController"/>-->
+
+        <org.omnirom.omnilib.preference.SystemSettingSwitchPreference
+            android:key="navbar_gesture_handle_small"
+            android:title="@string/navbar_gesture_handle_small_title"
+            android:summary="@string/navbar_gesture_handle_small_summary"
+            android:defaultValue="false"
+            settings:controller="com.android.settings.gestures.GestureSmallPreferenceController"/>
+
     </PreferenceCategory>
 
     <com.android.settingslib.widget.FooterPreference
