@@ -38,4 +38,8 @@
     <string name="navbar_gesture_handle_category">Gesture handle</string>
     <string name="navbar_gesture_handle_hide_title">Hide gesture handle</string>
     <string name="navbar_gesture_handle_hide_summary">Hide horizontal line</string>
+
+    <string name="navbar_gesture_handle_small_title">Small size</string>
+    <string name="navbar_gesture_handle_small_summary">Use small gesture handle</string>
+
 </resources>
