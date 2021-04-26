@@ -77,6 +77,13 @@
             android:defaultValue="false"
             settings:controller="com.android.settings.gestures.GestureHandlePreferenceController"/>
 
+        <omnirom.preference.SystemSettingSwitchPreference
+            android:key="navbar_gesture_handle_small"
+            android:title="@string/navbar_gesture_handle_small_title"
+            android:summary="@string/navbar_gesture_handle_small_summary"
+            android:defaultValue="false"
+            settings:controller="com.android.settings.gestures.GestureSmallPreferenceController"/>
+
     </PreferenceCategory>
 
     <com.android.settingslib.widget.FooterPreference
