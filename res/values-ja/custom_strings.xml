@@ -20,7 +20,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="usb_enable_diagnostics">USB 診断を有効化</string>
     <string name="usb_enable_diagnostics_summary">端末を USB 診断モードにする</string>
-    <string name="selinux_status">SELinuxステータス</string>
+    <string name="selinux_status">SELinux ステータス</string>
     <string name="selinux_status_disabled">Disabled</string>
     <string name="selinux_status_permissive">Permissive</string>
     <string name="selinux_status_enforcing">Enforcing</string>
@@ -44,8 +44,18 @@
     <string name="back_height_high_label">下部</string>
     <string name="back_options_dialog_title">オプション</string>
     <string name="back_height_message">戻るジェスチャーの入力領域に用いる画面の高さ</string>
+    <string name="battery_image">バッテリー画像を表示</string>
+    <string name="battery_image_description">ステータスバーにバッテリーアイコンを表示する</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone1_title">着信音 - SIM 1</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone2_title">着信音 - SIM 2</string>
     <!-- Volume link notification -->
+    <string name="volume_link_notification_title">着信音量と通知音量をリンク</string>
+    <string name="ring_volume_title_split">着信音の音量</string>
     <!-- String for removal of sensitive info on about, depending on tap -->
+    <string name="device_info_protected_single_press">タップして情報を表示</string>
+    <string name="navbar_gesture_handle_category">ジェスチャー管理</string>
+    <string name="navbar_gesture_handle_hide_title">ジェスチャー管理を非表示にする</string>
+    <string name="navbar_gesture_handle_hide_summary">水平の線を非表示にする</string>
 </resources>

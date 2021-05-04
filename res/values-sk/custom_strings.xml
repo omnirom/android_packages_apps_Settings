@@ -44,8 +44,18 @@
     <string name="back_height_high_label">Dolu</string>
     <string name="back_options_dialog_title">Možnosti</string>
     <string name="back_height_message">Hodnota výšky obrazovky použitá ako dotyková oblasť pre gesto Späť.</string>
+    <string name="battery_image">Zobraziť ikonu batérie</string>
+    <string name="battery_image_description">Zobraziť ikonu batérie v stavovom riadku</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot1 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone1_title">Vyzváňanie telefónu - SIM 1</string>
     <!-- Sound: Title for the option defining the phone ringtone for slot2 on Muilti SIM device. [CHAR LIMIT=50] -->
+    <string name="ringtone2_title">Vyzváňanie telefónu - SIM 2</string>
     <!-- Volume link notification -->
+    <string name="volume_link_notification_title">Prepojiť hlasitosť zvonenia a upozornení</string>
+    <string name="ring_volume_title_split">Hlasitosť zvonenia</string>
     <!-- String for removal of sensitive info on about, depending on tap -->
+    <string name="device_info_protected_single_press">Kliknutím zobraziť informácie</string>
+    <string name="navbar_gesture_handle_category">Úchop gesta</string>
+    <string name="navbar_gesture_handle_hide_title">Skryť úchop gesta</string>
+    <string name="navbar_gesture_handle_hide_summary">Skryť vodorovnú čiaru</string>
 </resources>

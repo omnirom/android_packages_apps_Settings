@@ -55,4 +55,7 @@
     <string name="ring_volume_title_split">Hlasitost vyzvánění</string>
     <!-- String for removal of sensitive info on about, depending on tap -->
     <string name="device_info_protected_single_press">Klepnutím zobrazit informace</string>
+    <string name="navbar_gesture_handle_category">Úchop gesta</string>
+    <string name="navbar_gesture_handle_hide_title">Skrýt úchop gesta</string>
+    <string name="navbar_gesture_handle_hide_summary">Skrýt vodorovnou čáru</string>
 </resources>
