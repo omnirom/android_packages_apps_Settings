@@ -38,6 +38,7 @@ import android.provider.Settings.System;
 import android.text.TextUtils;
 
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
@@ -58,6 +59,7 @@ public class BrightnessLevelPreferenceController extends BasePreferenceControlle
         PreferenceControllerMixin, LifecycleObserver, OnStart, OnStop {
 
     private static final String TAG = "BrightnessPrefCtrl";
+    private static final String KEY_CATEGORY_BRIGHTNESS = "category_brightness";
 
     private static final Uri BRIGHTNESS_ADJ_URI;
     private final ContentResolver mContentResolver;
@@ -66,6 +68,8 @@ public class BrightnessLevelPreferenceController extends BasePreferenceControlle
     @Nullable
     private Preference mPreference;
     private boolean mInSetupWizard;
+    private PreferenceCategory mBrightnessCategory;
+    private boolean mHideBrightnessCategory;
 
     static {
         BRIGHTNESS_ADJ_URI = System.getUriFor(System.SCREEN_AUTO_BRIGHTNESS_ADJ);
@@ -106,6 +110,7 @@ public class BrightnessLevelPreferenceController extends BasePreferenceControlle
             lifecycle.addObserver(this);
         }
         mContentResolver = mContext.getContentResolver();
+        mHideBrightnessCategory = !mContext.getResources().getBoolean(R.bool.config_show_brightness);
     }
 
     public void setInSetupWizard(boolean inSetupWizard) {
@@ -124,6 +129,8 @@ public class BrightnessLevelPreferenceController extends BasePreferenceControlle
     public void displayPreference(PreferenceScreen screen) {
         super.displayPreference(screen);
         mPreference = screen.findPreference(getPreferenceKey());
+        mBrightnessCategory = (PreferenceCategory) screen.findPreference(KEY_CATEGORY_BRIGHTNESS);
+        mBrightnessCategory.setVisible(!mHideBrightnessCategory);
     }
 
     @Override
