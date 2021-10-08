@@ -22,6 +22,7 @@
     settings:keywords="@string/keywords_display">
 
     <PreferenceCategory
+        android:key="category_brightness"
         android:title="@string/category_name_brightness">
 
         <com.android.settingslib.RestrictedPreference
