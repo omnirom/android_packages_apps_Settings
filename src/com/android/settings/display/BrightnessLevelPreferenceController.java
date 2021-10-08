@@ -39,8 +39,10 @@ import android.util.Log;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
 
+import com.android.settings.R;
 import com.android.settings.core.PreferenceControllerMixin;
 import com.android.settings.core.SettingsBaseActivity;
 import com.android.settingslib.core.AbstractPreferenceController;
@@ -57,6 +59,8 @@ public class BrightnessLevelPreferenceController extends AbstractPreferenceContr
 
     private static final String TAG = "BrightnessPrefCtrl";
     private static final String KEY_BRIGHTNESS = "brightness";
+    private static final String KEY_CATEGORY_BRIGHTNESS = "category_brightness";
+
     private static final Uri BRIGHTNESS_FOR_VR_URI;
     private static final Uri BRIGHTNESS_ADJ_URI;
 
@@ -67,6 +71,8 @@ public class BrightnessLevelPreferenceController extends AbstractPreferenceContr
     private final DisplayManager mDisplayManager;
 
     private Preference mPreference;
+    private PreferenceCategory mBrightnessCategory;
+    private boolean mHideBrightnessCategory;
 
     static {
         BRIGHTNESS_FOR_VR_URI = System.getUriFor(System.SCREEN_BRIGHTNESS_FOR_VR);
@@ -111,6 +117,7 @@ public class BrightnessLevelPreferenceController extends AbstractPreferenceContr
         mMaxVrBrightness = powerManager.getBrightnessConstraint(
                 PowerManager.BRIGHTNESS_CONSTRAINT_TYPE_MAXIMUM_VR);
         mContentResolver = mContext.getContentResolver();
+        mHideBrightnessCategory = !mContext.getResources().getBoolean(R.bool.config_show_brightness);
     }
 
     @Override
@@ -127,6 +134,8 @@ public class BrightnessLevelPreferenceController extends AbstractPreferenceContr
     public void displayPreference(PreferenceScreen screen) {
         super.displayPreference(screen);
         mPreference = screen.findPreference(KEY_BRIGHTNESS);
+        mBrightnessCategory = (PreferenceCategory) screen.findPreference(KEY_CATEGORY_BRIGHTNESS);
+        mBrightnessCategory.setVisible(!mHideBrightnessCategory);
     }
 
     @Override
