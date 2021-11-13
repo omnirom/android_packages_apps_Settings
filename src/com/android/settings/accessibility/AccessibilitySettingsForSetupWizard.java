@@ -88,8 +88,10 @@ public class AccessibilitySettingsForSetupWizard extends SettingsPreferenceFragm
 
         if (ThemeHelper.shouldApplyExtendedPartnerConfig(getActivity())) {
             final LinearLayout headerLayout = layout.findManagedViewById(R.id.sud_layout_header);
-            headerLayout.setPadding(0, headerLayout.getPaddingTop(), 0,
-                    headerLayout.getPaddingBottom());
+            if (headerLayout != null) {
+                headerLayout.setPadding(0, headerLayout.getPaddingTop(), 0,
+                        headerLayout.getPaddingBottom());
+            }
         }
     }
 
