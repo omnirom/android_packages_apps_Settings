@@ -448,7 +448,7 @@
     <style name="ActionSecondaryButton" parent="android:Widget.DeviceDefault.Button"/>
 
     <style name="RoundedCornerThemeOverlay">
-        <item name="android:buttonCornerRadius">24dp</item>
+        <item name="android:buttonCornerRadius">@dimen/rounded_corner_theme_overlay_radius</item>
         <item name="android:paddingHorizontal">16dp</item>
         <item name="android:colorControlHighlight">@color/ripple_material_inverse</item>
     </style>
