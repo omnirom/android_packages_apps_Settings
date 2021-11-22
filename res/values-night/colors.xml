@@ -18,7 +18,8 @@
     xmlns:androidprv="http://schemas.android.com/apk/prv/res/android">
     <color name="homepage_accessibility_background">#783BE5</color>
     <color name="homepage_support_background">#3F5FBD</color>
-    <color name="contextual_card_background">@*android:color/material_grey_900</color>
+    <color name="contextual_card_background">@*android:color/background_device_default_dark</color>
+    <color name="panel_background_color">@*android:color/background_device_default_dark</color>
     <color name="search_bar_background">?androidprv:attr/materialColorSurfaceBright</color>
     <color name="notification_importance_button_unselected">#5F6368</color>
 
