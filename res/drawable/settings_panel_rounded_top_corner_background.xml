@@ -21,6 +21,6 @@
             android:topRightRadius="@dimen/settings_panel_corner_radius"
             android:bottomLeftRadius="0dp"
             android:bottomRightRadius="0dp"/>
-        <solid android:color="?android:attr/colorBackground" />
+        <solid android:color="@color/panel_background_color" />
     </shape>
 </inset>
