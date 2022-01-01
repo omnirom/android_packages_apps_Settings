@@ -77,6 +77,9 @@ public class GesturesSettingPreferenceController extends BasePreferenceControlle
         controllers.add(new DoubleTapScreenPreferenceController(context, FAKE_PREF_KEY)
                 .setConfig(ambientDisplayConfiguration));
         controllers.add(new PreventRingingParentPreferenceController(context, FAKE_PREF_KEY));
+        controllers.add(new PowerMenuPreferenceController(context, FAKE_PREF_KEY));
+        controllers.add(new OneHandedPreferenceCategoryController(context, FAKE_PREF_KEY));
+        controllers.add(new SystemNavigationPreferenceController(context, FAKE_PREF_KEY));
         return controllers;
     }
 }
