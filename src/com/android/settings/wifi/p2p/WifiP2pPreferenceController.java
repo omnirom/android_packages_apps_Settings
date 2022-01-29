@@ -27,6 +27,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
+import com.android.settings.R;
 import com.android.settings.core.PreferenceControllerMixin;
 import com.android.settingslib.core.AbstractPreferenceController;
 import com.android.settingslib.core.lifecycle.Lifecycle;
@@ -101,8 +102,7 @@ public class WifiP2pPreferenceController extends AbstractPreferenceController
 
     @Override
     public boolean isAvailable() {
-        // Always show preference.
-        return true;
+        return mContext.getResources().getBoolean(R.bool.config_show_p2p_config);
     }
     @Override
     public String getPreferenceKey() {
