@@ -15,6 +15,8 @@
  */
 package com.android.settings.wifi.p2p;
 
+import static android.content.pm.PackageManager.FEATURE_WIFI_DIRECT;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -92,8 +94,7 @@ public class WifiP2pPreferenceController extends AbstractPreferenceController
 
     @Override
     public boolean isAvailable() {
-        // Always show preference.
-        return true;
+        return mContext.getPackageManager().hasSystemFeature(FEATURE_WIFI_DIRECT);
     }
     @Override
     public String getPreferenceKey() {
