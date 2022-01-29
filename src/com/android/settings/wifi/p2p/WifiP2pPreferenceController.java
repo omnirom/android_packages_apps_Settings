@@ -101,8 +101,7 @@ public class WifiP2pPreferenceController extends AbstractPreferenceController
 
     @Override
     public boolean isAvailable() {
-        // Always show preference.
-        return true;
+        return mContext.getResources().getBoolean(R.bool.config_show_p2p_config);
     }
     @Override
     public String getPreferenceKey() {
