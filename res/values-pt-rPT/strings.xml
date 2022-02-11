@@ -2093,7 +2093,7 @@
     <string name="internal_storage" msgid="999496851424448809">"Armaz. interno"</string>
     <string name="recompute_size" msgid="1098091228370999128">"A recalcular tamanho..."</string>
     <string name="clear_data_dlg_title" msgid="180446967743732410">"Eliminar dados da app?"</string>
-    <string name="clear_data_dlg_text" msgid="7870723948123690332">"Todos os dados desta aplicação serão eliminados permanentemente. Isto inclui todos os ficheiros, definições, contas, bases de dados, etc."</string>
+    <string name="clear_data_dlg_text" msgid="1107610960337399006">"Os dados desta app serão permanentemente eliminados. Estão incluídos ficheiros, definições, bases de dados e outros dados de apps."</string>
     <string name="dlg_ok" msgid="1421350367857960997">"OK"</string>
     <string name="dlg_cancel" msgid="5164705061530774899">"Cancelar"</string>
     <string name="app_not_found_dlg_title" msgid="7122106240981109930"></string>
@@ -5478,6 +5478,7 @@
     <string name="default_active_sim_calls" msgid="2390973682556353558">"chamadas"</string>
     <string name="default_active_sim_sms" msgid="8041498593025994921">"SMS"</string>
     <string name="default_active_sim_mobile_data" msgid="6798083892814045301">"dados móveis"</string>
+    <string name="wifi_scan_notify_message" msgid="4130641837826688879">"Para melhorar a experiência do dispositivo, as apps e os serviços podem continuar a procurar redes Wi-Fi em qualquer altura, mesmo quando o Wi-Fi está desativado. Pode utilizar esta opção, por exemplo, para melhorar as funcionalidades e os serviços baseados na localização. Pode alterar esta opção nas definições de procura de Wi-Fi. "<annotation id="link">"Alterar"</annotation></string>
     <string name="preference_summary_default_combination" msgid="4643585915107796253">"<xliff:g id="STATE">%1$s</xliff:g>/<xliff:g id="NETWORKMODE">%2$s</xliff:g>"</string>
     <string name="mobile_data_connection_active" msgid="2422223108911581552">"Ligado"</string>
     <string name="mobile_data_no_connection" msgid="905897142426974030">"Sem ligação"</string>
