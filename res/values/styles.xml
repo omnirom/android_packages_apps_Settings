@@ -575,11 +575,13 @@
 
     <style name="PanelOptionRoundedOutlinedButton" parent="@android:style/Widget.Material.Button">
         <item name="android:background">@drawable/volume_dialog_button_background_outline</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="PanelOptionRoundedSolidButton" parent="@android:style/Widget.Material.Button">
         <item name="android:textColor">@android:color/system_neutral1_900</item>
         <item name="android:background">@drawable/volume_dialog_button_background_solid</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="SetupWizardPartnerResource">
