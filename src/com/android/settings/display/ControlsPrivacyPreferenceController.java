@@ -80,11 +80,11 @@ public class ControlsPrivacyPreferenceController extends TogglePreferenceControl
     }
 
     private boolean isSecure() {
-        final LockPatternUtils utils = FeatureFactory.getFactory(mContext)
+        LockPatternUtils utils = FeatureFactory.getFactory(mContext)
                 .getSecurityFeatureProvider()
                 .getLockPatternUtils(mContext);
         final int userId = UserHandle.myUserId();
-        return utils.isSecure(userId);
+        return !utils.isLockScreenDisabled(userId);
     }
 
     private boolean isControlsAvailable() {
