@@ -64,6 +64,8 @@ public class TopLevelBatteryPreferenceController extends BasePreferenceControlle
                 // Update the preference summary text to the latest state.
                 setSummaryAsync(info);
             }, true /* shortString */);
+            // mIsBatteryPresent could change
+            mPreference.setVisible(getAvailabilityStatus() == AVAILABLE);
         });
 
         mBatteryStatusFeatureProvider = FeatureFactory.getFactory(context)
@@ -72,7 +74,7 @@ public class TopLevelBatteryPreferenceController extends BasePreferenceControlle
 
     @Override
     public int getAvailabilityStatus() {
-        return mContext.getResources().getBoolean(R.bool.config_show_top_level_battery)
+        return mContext.getResources().getBoolean(R.bool.config_show_top_level_battery) && mIsBatteryPresent
                 ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
     }
 
