@@ -15,8 +15,6 @@
  */
 package com.android.settings.display;
 
-import static android.provider.Settings.System.OMNI_SHOW_BATTERY_IMAGE;
-
 import android.content.Context;
 import android.provider.Settings;
 
@@ -26,6 +24,8 @@ import androidx.preference.SwitchPreference;
 import com.android.internal.R;
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.core.PreferenceControllerMixin;
+
+import static org.omnirom.omnilib.utils.OmniSettings.OMNI_SHOW_BATTERY_IMAGE;
 
 /**
  * A controller to manage the switch for showing battery image in the status bar.
