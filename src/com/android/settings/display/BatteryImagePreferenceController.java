@@ -15,8 +15,6 @@
  */
 package com.android.settings.display;
 
-import static android.provider.Settings.System.OMNI_SHOW_BATTERY_IMAGE;
-
 import android.content.Context;
 import android.provider.Settings;
 
@@ -46,7 +44,7 @@ public class BatteryImagePreferenceController extends BasePreferenceController i
     @Override
     public void updateState(Preference preference) {
         int setting = Settings.System.getInt(mContext.getContentResolver(),
-                OMNI_SHOW_BATTERY_IMAGE, 1);
+                "show_battery_image", 1);
 
         ((SwitchPreference) preference).setChecked(setting == 1);
     }
@@ -54,7 +52,7 @@ public class BatteryImagePreferenceController extends BasePreferenceController i
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         boolean showImage = (Boolean) newValue;
-        Settings.System.putInt(mContext.getContentResolver(), OMNI_SHOW_BATTERY_IMAGE,
+        Settings.System.putInt(mContext.getContentResolver(), "show_battery_image",
                 showImage ? 1 : 0);
         return true;
     }
