@@ -52,6 +52,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.settings.R;
 import com.android.settings.biometrics.BiometricEnrollSidecar;
 import com.android.settings.biometrics.BiometricUtils;
@@ -139,6 +140,15 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
     private OrientationEventListener mOrientationEventListener;
     private int mPreviousRotation = 0;
 
+    @VisibleForTesting
+    protected boolean shouldShowLottie() {
+        DisplayDensityUtils displayDensity = new DisplayDensityUtils(getApplicationContext());
+        int currentDensityIndex = displayDensity.getCurrentIndex();
+        final int currentDensity = displayDensity.getValues()[currentDensityIndex];
+        final int defaultDensity = displayDensity.getDefaultDensity();
+        return defaultDensity == currentDensity;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,12 +182,7 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
             setHeaderText(R.string.security_settings_fingerprint_enroll_repeat_title);
         }
 
-        DisplayDensityUtils displayDensity =
-                new DisplayDensityUtils(getApplicationContext());
-        int currentDensityIndex = displayDensity.getCurrentIndex();
-        final int currentDensity = displayDensity.getValues()[currentDensityIndex];
-        final int defaultDensity = displayDensity.getDefaultDensity();
-        mShouldShowLottie = defaultDensity == currentDensity;
+        mShouldShowLottie = shouldShowLottie();
         // Only show the lottie if the current display density is the default density.
         // Otherwise, the lottie will overlap with the settings header text.
         boolean isLandscape = BiometricUtils.isReverseLandscape(getApplicationContext())
@@ -509,6 +514,7 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
             mErrorText.removeCallbacks(mTouchAgainRunnable);
             mErrorText.postDelayed(mTouchAgainRunnable, HINT_TIMEOUT_DURATION);
         } else {
+
             if (mIsAccessibilityEnabled) {
                 final int percent = (int) (((float)(steps - remaining) / (float) steps) * 100);
                 CharSequence cs = getString(
@@ -580,7 +586,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
                 mErrorText.setTranslationY(0f);
             }
         }
-
         if (isResumed() && mIsAccessibilityEnabled && !mCanAssumeUdfps) {
             mVibrator.vibrate(Process.myUid(), getApplicationContext().getOpPackageName(),
                     VIBRATE_EFFECT_ERROR, getClass().getSimpleName() + "::showError",
