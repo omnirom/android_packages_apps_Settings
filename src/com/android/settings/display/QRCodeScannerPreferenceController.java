@@ -87,7 +87,7 @@ public class QRCodeScannerPreferenceController extends TogglePreferenceControlle
 
     @Override
     public int getAvailabilityStatus() {
-        return isScannerActivityAvailable() ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
+        return isScannerEnabledOnLockscreen() ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
     }
 
     @Override
@@ -104,5 +104,10 @@ public class QRCodeScannerPreferenceController extends TogglePreferenceControlle
     private boolean isScannerActivityAvailable() {
         return Settings.Secure.getString(mContext.getContentResolver(),
                 SHOW_QR_CODE_SCANNER_SETTING) != null;
+    }
+
+    private boolean isScannerEnabledOnLockscreen() {
+        return mContext.getResources().getBoolean(
+            com.android.internal.R.bool.config_enableQrCodeScannerOnLockScreen);
     }
 }
