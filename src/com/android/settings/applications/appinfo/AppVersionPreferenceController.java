@@ -37,6 +37,6 @@ public class AppVersionPreferenceController extends AppInfoPreferenceControllerB
             return null;
         }
         return mContext.getString(R.string.version_text,
-                BidiFormatter.getInstance().unicodeWrap(packageInfo.versionName));
+                BidiFormatter.getInstance().unicodeWrap(packageInfo.versionName) + " / " + packageInfo.versionCode);
     }
 }
