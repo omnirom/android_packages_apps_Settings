@@ -89,6 +89,7 @@ android_library {
         "SettingsLibActivityEmbedding",
         "Settings-change-ids",
         "OmniLib",
+        "SystemUIUnfoldLib",
     ],
 
     libs: [
