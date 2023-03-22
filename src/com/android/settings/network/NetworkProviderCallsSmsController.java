@@ -190,7 +190,7 @@ public class NetworkProviderCallsSmsController extends AbstractPreferenceControl
 
     @Override
     public boolean isAvailable() {
-        return com.android.settings.Utils.isVoiceCapable(mContext) && mUserManager.isAdminUser();
+        return mUserManager.isAdminUser();
     }
 
     @Override
