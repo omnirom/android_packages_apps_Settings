@@ -2,7 +2,4 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <bool name="config_show_brightness">true</bool>
-
-    <!-- Whether to show or hide sensitive info (like IMEI and Phone Number) on About phone -->
-    <bool name="configShowDeviceSensitiveInfo">false</bool>
 </resources>

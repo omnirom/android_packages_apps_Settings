@@ -21,9 +21,6 @@
 
     <string name="app_package_name_title">Package</string>
 
-    <!-- String for removal of sensitive info on about, depending on tap -->
-    <string name="device_info_protected_single_press">Tap to show info</string>
-
     <string name="battery_image">Show battery image</string>
     <string name="battery_image_description">Show battery image in status bar</string>
 
