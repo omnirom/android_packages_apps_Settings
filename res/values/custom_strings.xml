@@ -21,9 +21,6 @@
 
     <string name="app_package_name_title">Package</string>
 
-    <string name="battery_image">Show battery image</string>
-    <string name="battery_image_description">Show battery image in status bar</string>
-
     <string name="selinux_status">SELinux status</string>
     <string name="selinux_status_disabled">Disabled</string>
     <string name="selinux_status_permissive">Permissive</string>
