@@ -17,6 +17,7 @@
 package com.android.settings.applications.appinfo;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.text.BidiFormatter;
 
 import com.android.settings.R;
@@ -29,6 +30,12 @@ public class AppPackagePreferenceController extends AppInfoPreferenceControllerB
 
     @Override
     public CharSequence getSummary() {
-        return BidiFormatter.getInstance().unicodeWrap(mParent.getPackageInfo().packageName);
+        // TODO(b/168333280): Review the null case in detail since this is just a quick
+        // workaround to fix NPE.
+        final PackageInfo packageInfo = mParent.getPackageInfo();
+        if (packageInfo == null) {
+            return null;
+        }
+        return BidiFormatter.getInstance().unicodeWrap(packageInfo.getPackageInfo().packageName);
     }
 }
