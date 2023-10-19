@@ -15,7 +15,7 @@
  */
 package com.android.settings.display;
 
-import static android.provider.Settings.System.OMNI_SHOW_BATTERY_IMAGE;
+import static org.omnirom.omnilib.utils.OmniSettings.OMNI_SHOW_BATTERY_IMAGE;
 
 import android.content.Context;
 import android.provider.Settings;

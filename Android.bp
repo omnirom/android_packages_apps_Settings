@@ -101,6 +101,7 @@ android_library {
         "Settings-change-ids",
         "androidx.room_room-runtime",
         "SystemUIUnfoldLib",
+        "OmniLib",
     ],
 
     plugins: ["androidx.room_room-compiler-plugin"],
