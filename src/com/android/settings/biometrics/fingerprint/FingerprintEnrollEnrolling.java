@@ -330,6 +330,9 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
 
         final Configuration config = getApplicationContext().getResources().getConfiguration();
         maybeHideSfpsText(config);
+        
+        Log.d(TAG, "onCreate mCanAssumeUdfps = " + mCanAssumeUdfps + " mCanAssumeSfps = " + mCanAssumeSfps);
+
     }
 
     private void setHelpAnimation() {
@@ -499,6 +502,7 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
     }
 
     private void updateTitleAndDescriptionForUdfps() {
+        Log.d(TAG, "updateTitleAndDescriptionForUdfps currentStage = " + getCurrentStage());
         switch (getCurrentStage()) {
             case STAGE_CENTER:
                 setHeaderText(R.string.security_settings_fingerprint_enroll_repeat_title);
