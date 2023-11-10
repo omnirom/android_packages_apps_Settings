@@ -75,7 +75,7 @@ public final class CustomizableLockScreenUtils {
      * <p>This is a slow, blocking call that shouldn't be made on the main thread.
      */
     public static boolean isFeatureEnabled(Context context) {
-        if (!isWallpaperPickerInstalled(context)) {
+        if (!isWallpaperPickerInstalled(context) || true) {
             return false;
         }
 
