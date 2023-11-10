@@ -75,7 +75,9 @@ public final class CustomizableLockScreenUtils {
      * <p>This is a slow, blocking call that shouldn't be made on the main thread.
      */
     public static boolean isFeatureEnabled(Context context) {
-        if (!isWallpaperPickerInstalled(context)) {
+        // TODO omni we need to enable custom_lockscreen_shortcuts_enabled=true
+        // but still want to use old settings so we have this here for now
+        if (!isWallpaperPickerInstalled(context) || true) {
             return false;
         }
 
