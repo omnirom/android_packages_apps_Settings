@@ -33,6 +33,7 @@
     <uses-permission android:name="android.permission.HARDWARE_TEST" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS_PRIVILEGED" />
     <uses-permission android:name="android.permission.QUERY_AUDIO_STATE" />
     <uses-permission android:name="android.permission.MASTER_CLEAR" />
     <uses-permission android:name="com.google.android.googleapps.permission.GOOGLE_AUTH" />
@@ -658,6 +659,7 @@
         <activity android:name="Settings$FaceSettingsActivity"
             android:label="@string/security_settings_face_preference_title"
             android:exported="true"
+            android:theme="@style/Theme.Settings.NoActionBar"
             android:icon="@drawable/ic_face_header">
             <intent-filter>
                 <action android:name="android.settings.FACE_SETTINGS" />
@@ -672,6 +674,7 @@
         <activity android:name="Settings$FaceSettingsInternalActivity"
                   android:label="@string/security_settings_face_preference_title"
                   android:exported="false"
+                  android:theme="@style/Theme.Settings.NoActionBar"
                   android:icon="@drawable/ic_face_header"
                   android:taskAffinity="com.android.settings.root">
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
@@ -1577,6 +1580,33 @@
                        android:value="@string/menu_key_apps"/>
         </activity-alias>
 
+        <activity android:name="Settings$UserAspectRatioAppListActivity"
+            android:exported="true"
+            android:label="@string/aspect_ratio_experimental_title">
+            <intent-filter android:priority="1">
+                <action android:name="android.settings.MANAGE_USER_ASPECT_RATIO_SETTINGS"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="com.android.settings.applications.manageapplications.ManageApplications" />
+            <meta-data android:name="com.android.settings.HIGHLIGHT_MENU_KEY"
+                android:value="@string/menu_key_apps"/>
+        </activity>
+
+        <activity android:name="Settings$UserAspectRatioAppActivity"
+                  android:exported="true"
+                  android:label="@string/aspect_ratio_experimental_title">
+            <intent-filter>
+                <action android:name="android.settings.MANAGE_USER_ASPECT_RATIO_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="package" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                       android:value="com.android.settings.applications.appcompat.UserAspectRatioDetails" />
+            <meta-data android:name="com.android.settings.HIGHLIGHT_MENU_KEY"
+                       android:value="@string/menu_key_apps"/>
+        </activity>
+
         <activity
             android:name="Settings$ManageDomainUrlsActivity"
             android:exported="true"
@@ -2395,6 +2425,8 @@
             <intent-filter android:priority="1">
                 <action android:name="android.app.action.CONFIRM_DEVICE_CREDENTIAL" />
                 <action android:name="android.app.action.CONFIRM_FRP_CREDENTIAL" />
+                <action android:name="android.app.action.PREPARE_REPAIR_MODE_DEVICE_CREDENTIAL" />
+                <action android:name="android.app.action.CONFIRM_REPAIR_MODE_DEVICE_CREDENTIAL" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -3263,6 +3295,7 @@
             android:name="Settings$DataUsageSummaryActivity"
             android:label="@string/data_usage_summary_title"
             android:exported="true"
+            android:enabled="@bool/config_show_sim_info"
             android:icon="@drawable/ic_homepage_data_usage">
             <intent-filter android:priority="1">
                 <action android:name="android.settings.DATA_USAGE_SETTINGS" />
@@ -4837,7 +4870,7 @@
         </activity>
 
         <activity android:name="Settings$FactoryResetActivity"
-                  android:permission="android.permission.BACKUP"
+                  android:permission="android.permission.MASTER_CLEAR"
                   android:label="@string/main_clear_title"
                   android:exported="true"
                   android:theme="@style/SudThemeGlif.Light">
@@ -4901,6 +4934,20 @@
             android:exported="false" />
         <activity android:name=".spa.SpaBridgeActivity" android:exported="false"/>
         <activity android:name=".spa.SpaAppBridgeActivity" android:exported="false"/>
+
+        <activity android:name=".Settings$FingerprintSettingsActivityV2"
+            android:label="@string/security_settings_fingerprint_preference_title"
+            android:exported="false"
+            android:icon="@drawable/ic_fingerprint_header">
+            <intent-filter>
+                <action android:name="android.settings.FINGERPRINT_SETTINGS_V2" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="com.android.settings.biometrics.fingerprint2.ui.fragment.FingerprintSettingsV2Fragment" />
+            <meta-data android:name="com.android.settings.HIGHLIGHT_MENU_KEY"
+                android:value="@string/menu_key_security"/>
+        </activity>
 
         <activity-alias android:name="UsageStatsActivity"
                         android:exported="true"
