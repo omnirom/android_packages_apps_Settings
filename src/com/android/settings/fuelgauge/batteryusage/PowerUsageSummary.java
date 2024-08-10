@@ -30,6 +30,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
@@ -46,6 +47,8 @@ import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.SearchIndexable;
 
+import static com.android.settingslib.flags.Flags.newStatusBarIcons;
+
 import java.util.List;
 
 /**
@@ -57,6 +60,7 @@ public class PowerUsageSummary extends PowerUsageBase
         implements BatteryTipPreferenceController.BatteryTipListener {
 
     static final String TAG = "PowerUsageSummary";
+    private static final String KEY_BATTERY_IMAGE = "battery_image";
 
     @VisibleForTesting static final String KEY_BATTERY_ERROR = "battery_help_message";
     @VisibleForTesting static final String KEY_BATTERY_USAGE = "battery_usage_summary";
@@ -153,6 +157,11 @@ public class PowerUsageSummary extends PowerUsageBase
         }
         mBatteryTipPreferenceController.restoreInstanceState(icicle);
         updateBatteryTipFlag(icicle);
+
+        PreferenceScreen prefSet = getPreferenceScreen();
+        if (newStatusBarIcons()) {
+            prefSet.removePreference(prefSet.findPreference(KEY_BATTERY_IMAGE));
+        }
     }
 
     @Override
