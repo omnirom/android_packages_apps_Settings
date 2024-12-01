@@ -21,7 +21,7 @@ import android.content.Context;
 import android.provider.Settings;
 
 import androidx.preference.Preference;
-import androidx.preference.SwitchPreference;
+import androidx.preference.TwoStatePreference;
 
 import com.android.internal.R;
 import com.android.settings.core.BasePreferenceController;
@@ -48,7 +48,7 @@ public class BatteryImagePreferenceController extends BasePreferenceController i
         int setting = Settings.System.getInt(mContext.getContentResolver(),
                 OMNI_SHOW_BATTERY_IMAGE, 1);
 
-        ((SwitchPreference) preference).setChecked(setting == 1);
+        ((TwoStatePreference) preference).setChecked(setting == 1);
     }
 
     @Override
