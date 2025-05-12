@@ -18,6 +18,7 @@ package com.android.settings.notification;
 
 import android.content.Context;
 import android.media.RingtoneManager;
+import android.media.audio.Flags;
 
 import android.telephony.TelephonyManager;
 
@@ -59,6 +60,9 @@ public class PhoneRingtonePreferenceController extends RingtonePreferenceControl
 
     @Override
     public boolean isAvailable() {
+        if (isRingtoneVibrationEnabled()) {
+            return false;
+        }
         return Utils.isVoiceCapable(mContext);
     }
 
@@ -71,5 +75,10 @@ public class PhoneRingtonePreferenceController extends RingtonePreferenceControl
         TelephonyManager telephonyManager =
                 (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.hasIccCard(SLOT_ID);
+    }
+
+    private boolean isRingtoneVibrationEnabled() {
+        return Flags.enableRingtoneHapticsCustomization() && mContext.getResources().getBoolean(
+                com.android.internal.R.bool.config_ringtoneVibrationSettingsSupported);
     }
 }
