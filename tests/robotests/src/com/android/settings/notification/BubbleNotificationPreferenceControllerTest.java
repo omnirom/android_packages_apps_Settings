@@ -31,7 +31,6 @@ import static org.mockito.Mockito.when;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.provider.Settings;
-import android.widget.Switch;
 
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ApplicationProvider;
@@ -65,9 +64,6 @@ public class BubbleNotificationPreferenceControllerTest {
     private Context mContext;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private PreferenceScreen mScreen;
-
-    @Mock
-    private Switch mSwitch;
 
     private BubbleNotificationPreferenceController mController;
     private MainSwitchPreference mPreference;
@@ -104,7 +100,7 @@ public class BubbleNotificationPreferenceControllerTest {
         assertThat(Settings.Global.getInt(mContext.getContentResolver(),
                 NOTIFICATION_BUBBLES, ON)).isEqualTo(OFF);
 
-        mPreference.updateStatus(false);
+        mPreference.setChecked(false);
 
         assertThat(mPreference.isChecked()).isFalse();
     }
@@ -113,7 +109,7 @@ public class BubbleNotificationPreferenceControllerTest {
     public void onSwitchChanged_true_settingIsOff_flagShouldOn() {
         Settings.Global.putInt(mContext.getContentResolver(), NOTIFICATION_BUBBLES, OFF);
 
-        mController.onCheckedChanged(mSwitch, true);
+        mController.setChecked(true);
 
         assertThat(Settings.Global.getInt(mContext.getContentResolver(),
                 NOTIFICATION_BUBBLES, OFF)).isEqualTo(ON);
@@ -123,7 +119,7 @@ public class BubbleNotificationPreferenceControllerTest {
     public void onSwitchChanged_false_settingIsOn_flagShouldOff() {
         Settings.Global.putInt(mContext.getContentResolver(), NOTIFICATION_BUBBLES, ON);
 
-        mController.onCheckedChanged(mSwitch, false);
+        mController.setChecked(false);
 
         assertThat(Settings.Global.getInt(mContext.getContentResolver(),
                 NOTIFICATION_BUBBLES, ON)).isEqualTo(OFF);

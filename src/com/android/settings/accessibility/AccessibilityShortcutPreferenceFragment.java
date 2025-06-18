@@ -20,10 +20,8 @@ import static com.android.internal.accessibility.common.ShortcutConstants.UserSh
 import static com.android.settings.accessibility.AccessibilityDialogUtils.DialogEnums;
 import static com.android.settings.accessibility.AccessibilityUtil.getShortcutSummaryList;
 import static com.android.settings.accessibility.ToggleFeaturePreferenceFragment.KEY_GENERAL_CATEGORY;
-import static com.android.settings.accessibility.ToggleFeaturePreferenceFragment.KEY_SAVED_QS_TOOLTIP_TYPE;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.settings.SettingsEnums;
 import android.content.ComponentName;
@@ -43,8 +41,8 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
 
 import com.android.internal.accessibility.common.ShortcutConstants;
+import com.android.internal.accessibility.util.ShortcutUtils;
 import com.android.settings.R;
-import com.android.settings.accessibility.AccessibilityUtil.QuickSettingsTooltipType;
 import com.android.settings.accessibility.shortcuts.EditShortcutsPreferenceFragment;
 import com.android.settings.dashboard.RestrictedDashboardFragment;
 
@@ -60,16 +58,12 @@ import java.util.Set;
 public abstract class AccessibilityShortcutPreferenceFragment extends RestrictedDashboardFragment
         implements ShortcutPreference.OnClickCallback {
     private static final String KEY_SHORTCUT_PREFERENCE = "shortcut_preference";
-    protected static final String KEY_SAVED_QS_TOOLTIP_RESHOW = "qs_tooltip_reshow";
 
     protected ShortcutPreference mShortcutPreference;
     protected Dialog mDialog;
     private AccessibilityManager.TouchExplorationStateChangeListener
             mTouchExplorationStateChangeListener;
     private AccessibilitySettingsContentObserver mSettingsContentObserver;
-    private AccessibilityQuickSettingsTooltipWindow mTooltipWindow;
-    private boolean mNeedsQSTooltipReshow = false;
-    private int mNeedsQSTooltipType = QuickSettingsTooltipType.GUIDE_TO_EDIT;
 
     public AccessibilityShortcutPreferenceFragment(String restrictionKey) {
         super(restrictionKey);
@@ -81,25 +75,9 @@ public abstract class AccessibilityShortcutPreferenceFragment extends Restricted
     /** Returns the accessibility feature name. */
     protected abstract CharSequence getLabelName();
 
-    /** Returns the accessibility tile component name. */
-    protected abstract ComponentName getTileComponentName();
-
-    /** Returns the accessibility tile tooltip content. */
-    protected abstract CharSequence getTileTooltipContent(@QuickSettingsTooltipType int type);
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Restore the user shortcut type and tooltip.
-        if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(KEY_SAVED_QS_TOOLTIP_RESHOW)) {
-                mNeedsQSTooltipReshow = savedInstanceState.getBoolean(KEY_SAVED_QS_TOOLTIP_RESHOW);
-            }
-            if (savedInstanceState.containsKey(KEY_SAVED_QS_TOOLTIP_TYPE)) {
-                mNeedsQSTooltipType = savedInstanceState.getInt(KEY_SAVED_QS_TOOLTIP_TYPE);
-            }
-        }
 
         final int resId = getPreferenceScreenResId();
         if (resId <= 0) {
@@ -126,34 +104,22 @@ public abstract class AccessibilityShortcutPreferenceFragment extends Restricted
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mShortcutPreference = new ShortcutPreference(getPrefContext(), /* attrs= */ null);
-        mShortcutPreference.setPersistent(false);
-        mShortcutPreference.setKey(getShortcutPreferenceKey());
+        mShortcutPreference =
+                getPreferenceScreen().findPreference(getShortcutPreferenceKey());
+        if (mShortcutPreference == null) {
+            mShortcutPreference = new ShortcutPreference(getPrefContext(), /* attrs= */ null);
+            mShortcutPreference.setPersistent(false);
+            mShortcutPreference.setKey(getShortcutPreferenceKey());
+            getPreferenceScreen().addPreference(mShortcutPreference);
+        }
+
         mShortcutPreference.setOnClickCallback(this);
         mShortcutPreference.setTitle(getShortcutTitle());
-
-        getPreferenceScreen().addPreference(mShortcutPreference);
-
         mTouchExplorationStateChangeListener = isTouchExplorationEnabled -> {
             mShortcutPreference.setSummary(getShortcutTypeSummary(getPrefContext()));
         };
 
         return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // Reshow tooltip when activity recreate, such as rotate device.
-        if (mNeedsQSTooltipReshow) {
-            view.post(() -> {
-                final Activity activity = getActivity();
-                if (activity != null && !activity.isFinishing()) {
-                    showQuickSettingsTooltipIfNeeded();
-                }
-            });
-        }
     }
 
     @Override
@@ -175,16 +141,6 @@ public abstract class AccessibilityShortcutPreferenceFragment extends Restricted
         am.removeTouchExplorationStateChangeListener(mTouchExplorationStateChangeListener);
         mSettingsContentObserver.unregister(getContentResolver());
         super.onPause();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        final boolean isTooltipWindowShowing = mTooltipWindow != null && mTooltipWindow.isShowing();
-        if (mNeedsQSTooltipReshow || isTooltipWindowShowing) {
-            outState.putBoolean(KEY_SAVED_QS_TOOLTIP_RESHOW, /* value= */ true);
-            outState.putInt(KEY_SAVED_QS_TOOLTIP_TYPE, mNeedsQSTooltipType);
-        }
-        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -289,7 +245,6 @@ public abstract class AccessibilityShortcutPreferenceFragment extends Restricted
      */
     private void callOnTutorialDialogButtonClicked(DialogInterface dialog, int which) {
         dialog.dismiss();
-        showQuickSettingsTooltipIfNeeded();
     }
 
     @VisibleForTesting
@@ -357,29 +312,9 @@ public abstract class AccessibilityShortcutPreferenceFragment extends Restricted
 
         final int shortcutTypes = getUserPreferredShortcutTypes();
         mShortcutPreference.setChecked(
-                AccessibilityUtil.hasValuesInSettings(getPrefContext(), shortcutTypes,
-                        getComponentName()));
+                ShortcutUtils.isShortcutContained(
+                        getPrefContext(), shortcutTypes, getComponentName().flattenToString()));
         mShortcutPreference.setSummary(getShortcutTypeSummary(getPrefContext()));
-    }
-
-    /**
-     * Shows the quick settings tooltip if the quick settings feature is assigned. The tooltip only
-     * shows once.
-     *
-     * @param type The quick settings tooltip type
-     */
-    protected void showQuickSettingsTooltipIfNeeded(@QuickSettingsTooltipType int type) {
-        mNeedsQSTooltipType = type;
-        showQuickSettingsTooltipIfNeeded();
-    }
-
-    /**
-     * @deprecated made obsolete by quick settings rollout.
-     *
-     * (TODO 367414968: finish removal.)
-     */
-    @Deprecated
-    private void showQuickSettingsTooltipIfNeeded() {
     }
 
     /**

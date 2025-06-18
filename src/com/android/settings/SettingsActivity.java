@@ -162,6 +162,12 @@ public class SettingsActivity extends SettingsBaseActivity
     public static final String EXTRA_SHOW_FRAGMENT_TAB =
             ":settings:show_fragment_tab";
 
+    /**
+     * Whether the settings homepage activity is initiated from a search result deeplink.
+     */
+    public static final String EXTRA_IS_DEEPLINK_HOME_STARTED_FROM_SEARCH =
+            ":settings:is_deeplink_home_started_from_search";
+
     public static final String META_DATA_KEY_FRAGMENT_CLASS =
             "com.android.settings.FRAGMENT_CLASS";
 
@@ -315,6 +321,12 @@ public class SettingsActivity extends SettingsBaseActivity
         if (mMainSwitch != null) {
             mMainSwitch.setMetricsCategory(lookupMetricsCategory());
             mMainSwitch.setTranslationZ(findViewById(R.id.main_content).getTranslationZ() + 1);
+            if (SettingsThemeHelper.isExpressiveTheme(this)) {
+                final int paddingHorizontal = getResources().getDimensionPixelSize(
+                        com.android.settingslib.widget.theme
+                                .R.dimen.settingslib_expressive_space_small1);
+                mMainSwitch.setPadding(paddingHorizontal, 0, paddingHorizontal, 0);
+            }
         }
 
         getSupportFragmentManager().addOnBackStackChangedListener(this);

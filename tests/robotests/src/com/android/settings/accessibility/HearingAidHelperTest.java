@@ -118,6 +118,22 @@ public class HearingAidHelperTest {
     }
 
     @Test
+    public void isAshaProfileSupported_supported_returnTrue() {
+        mShadowBluetoothAdapter.clearSupportedProfiles();
+        mShadowBluetoothAdapter.addSupportedProfiles(BluetoothProfile.HEARING_AID);
+
+        assertThat(mHelper.isAshaProfileSupported()).isTrue();
+    }
+
+    @Test
+    public void isHapClientProfileSupported_supported_returnTrue() {
+        mShadowBluetoothAdapter.clearSupportedProfiles();
+        mShadowBluetoothAdapter.addSupportedProfiles(BluetoothProfile.HAP_CLIENT);
+
+        assertThat(mHelper.isHapClientProfileSupported()).isTrue();
+    }
+
+    @Test
     public void isAllHearingAidRelatedProfilesReady_allReady_returnTrue() {
         when(mHearingAidProfile.isProfileReady()).thenReturn(true);
         when(mHapClientProfile.isProfileReady()).thenReturn(true);

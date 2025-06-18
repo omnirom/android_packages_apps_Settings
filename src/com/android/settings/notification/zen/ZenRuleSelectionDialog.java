@@ -181,7 +181,7 @@ public class ZenRuleSelectionDialog extends InstrumentedDialogFragment {
         rt.title = mContext.getString(R.string.zen_schedule_rule_type_name);
         rt.packageName = ZenModeConfig.getEventConditionProvider().getPackageName();
         rt.defaultConditionId = ZenModeConfig.toScheduleConditionId(schedule);
-        if (Flags.modesApi() && Flags.modesUi()) {
+        if (Flags.modesUi()) {
             rt.type = AutomaticZenRule.TYPE_SCHEDULE_TIME;
             rt.defaultTriggerDescription = SystemZenRules.getTriggerDescriptionForScheduleTime(
                     mContext, schedule);
@@ -201,7 +201,7 @@ public class ZenRuleSelectionDialog extends InstrumentedDialogFragment {
         rt.title = mContext.getString(R.string.zen_event_rule_type_name);
         rt.packageName = ZenModeConfig.getScheduleConditionProvider().getPackageName();
         rt.defaultConditionId = ZenModeConfig.toEventConditionId(event);
-        if (Flags.modesApi() && Flags.modesUi()) {
+        if (Flags.modesUi()) {
             rt.type = AutomaticZenRule.TYPE_SCHEDULE_CALENDAR;
             rt.defaultTriggerDescription = SystemZenRules.getTriggerDescriptionForScheduleEvent(
                     mContext, event);

@@ -25,6 +25,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -43,6 +44,11 @@ public class AudioSharingDashboardFragment extends DashboardFragment
     private static final String TAG = "AudioSharingDashboardFrag";
 
     public static final int SHARE_THEN_PAIR_REQUEST_CODE = 1002;
+
+    public static final String IS_SHOWING_AUDIO_SHARING_DASHBOARD_KEY =
+            "is_showing_audio_sharing_dashboard";
+    public static final int SHOWING_AUDIO_SHARING_DASHBOARD = 1;
+    public static final int NOT_SHOWING_AUDIO_SHARING_DASHBOARD = 0;
 
     SettingsMainSwitchBar mMainSwitchBar;
     private Context mContext;
@@ -104,6 +110,35 @@ public class AudioSharingDashboardFragment extends DashboardFragment
         mAudioSharingSwitchBarController.init(this);
         getSettingsLifecycle().addObserver(mAudioSharingSwitchBarController);
         mMainSwitchBar.show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // TODO(b/395058868): Remove this if it's decided this is not needed.
+        setAudioSharingDashboardSettingsGlobal(true);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // TODO(b/395058868): Remove this if it's decided this is not needed.
+        setAudioSharingDashboardSettingsGlobal(false);
+    }
+
+    private void setAudioSharingDashboardSettingsGlobal(Boolean isShowingAudioSharingDashboard) {
+        var unused =
+                ThreadUtils.postOnBackgroundThread(
+                        () -> {
+                            int value =
+                                    isShowingAudioSharingDashboard
+                                            ? SHOWING_AUDIO_SHARING_DASHBOARD
+                                            : NOT_SHOWING_AUDIO_SHARING_DASHBOARD;
+                            Settings.Global.putInt(
+                                    mContext.getContentResolver(),
+                                    IS_SHOWING_AUDIO_SHARING_DASHBOARD_KEY,
+                                    value);
+                        });
     }
 
     @Override

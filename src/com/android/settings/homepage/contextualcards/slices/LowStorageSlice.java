@@ -73,7 +73,7 @@ public class LowStorageSlice implements CustomSliceable {
         if (usedPercentage < LOW_STORAGE_THRESHOLD) {
             // For clients that ignore error checking, a generic storage slice will be given.
             final CharSequence titleStorage = mContext.getText(R.string.storage_settings);
-            final String summaryStorage = mContext.getString(R.string.storage_summary,
+            final String summaryStorage = mContext.getString(R.string.storage_toplevel_summary,
                     percentageString, freeSizeString);
 
             return listBuilder

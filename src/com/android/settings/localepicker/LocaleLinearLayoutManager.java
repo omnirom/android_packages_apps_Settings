@@ -151,7 +151,7 @@ public class LocaleLinearLayoutManager extends LinearLayoutManager {
         }
 
         if (result) {
-            mLocaleListEditor.showConfirmDialog(false, mAdapter.getFeedItemList().get(0));
+            mLocaleListEditor.showConfirmDialog(mAdapter.getFeedItemList().get(0), null);
         }
         return result;
     }

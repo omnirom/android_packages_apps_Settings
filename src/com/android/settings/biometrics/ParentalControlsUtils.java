@@ -17,6 +17,7 @@
 package com.android.settings.biometrics;
 
 import android.app.admin.DevicePolicyManager;
+import android.app.supervision.SupervisionManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.hardware.biometrics.BiometricAuthenticator;
@@ -30,6 +31,7 @@ import androidx.annotation.Nullable;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.settingslib.RestrictedLockUtils;
+import com.android.settingslib.supervision.SupervisionRestrictionsHelper;
 
 /**
  * Utilities for things at the cross-section of biometrics and parental controls. For example,
@@ -44,6 +46,7 @@ public class ParentalControlsUtils {
      * {@link android.hardware.biometrics.ParentalControlsUtilsInternal#getTestComponentName}
      * @return non-null EnforcedAdmin if parental consent is required
      */
+    @Nullable
     public static RestrictedLockUtils.EnforcedAdmin parentConsentRequired(@NonNull Context context,
             @BiometricAuthenticator.Modality int modality) {
 
@@ -57,8 +60,7 @@ public class ParentalControlsUtils {
                     UserManager.DISALLOW_BIOMETRIC, userHandle);
         }
 
-        final DevicePolicyManager dpm = context.getSystemService(DevicePolicyManager.class);
-        return parentConsentRequiredInternal(dpm, modality, userHandle);
+        return parentConsentRequiredInternal(context, modality, userHandle);
     }
 
     /**
@@ -68,16 +70,27 @@ public class ParentalControlsUtils {
     @Nullable
     @VisibleForTesting
     static RestrictedLockUtils.EnforcedAdmin parentConsentRequiredInternal(
-            @NonNull DevicePolicyManager dpm, @BiometricAuthenticator.Modality int modality,
+            @NonNull Context context,
+            @BiometricAuthenticator.Modality int modality,
             @NonNull UserHandle userHandle) {
-        if (ParentalControlsUtilsInternal.parentConsentRequired(dpm, modality,
-                userHandle)) {
+        final DevicePolicyManager dpm = context.getSystemService(DevicePolicyManager.class);
+        final SupervisionManager sm =
+                android.app.supervision.flags.Flags.deprecateDpmSupervisionApis()
+                        ? context.getSystemService(SupervisionManager.class)
+                        : null;
+
+        if (!ParentalControlsUtilsInternal.parentConsentRequired(
+                dpm, sm, modality, userHandle)) {
+            return null;
+        }
+        if (android.app.supervision.flags.Flags.deprecateDpmSupervisionApis()) {
+            return SupervisionRestrictionsHelper.createEnforcedAdmin(
+                    context, UserManager.DISALLOW_BIOMETRIC, userHandle);
+        } else {
             final ComponentName cn =
                     ParentalControlsUtilsInternal.getSupervisionComponentName(dpm, userHandle);
             return new RestrictedLockUtils.EnforcedAdmin(cn, UserManager.DISALLOW_BIOMETRIC,
                     userHandle);
-        } else {
-            return null;
         }
     }
 }

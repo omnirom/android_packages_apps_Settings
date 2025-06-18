@@ -74,6 +74,9 @@ import com.android.settings.network.SubscriptionUtil;
 import com.android.settings.utils.AndroidKeystoreAliasLoader;
 import com.android.settings.wifi.details2.WifiPrivacyPreferenceController;
 import com.android.settings.wifi.dpp.WifiDppUtils;
+import com.android.settings.wifi.utils.TextInputGroup;
+import com.android.settings.wifi.utils.TextInputValidator;
+import com.android.settings.wifi.utils.WifiPasswordInput;
 import com.android.settingslib.Utils;
 import com.android.settingslib.utils.ThreadUtils;
 import com.android.settingslib.wifi.AccessPoint;
@@ -215,7 +218,10 @@ public class WifiConfigController implements TextWatcher,
 
     private String[] mLevels;
     private int mMode;
-    private TextView mSsidView;
+
+    private TextInputValidator mValidator = new TextInputValidator();
+    private TextInputGroup mSsidInput;
+    private WifiPasswordInput mPasswordInput;
 
     private Context mContext;
 
@@ -287,6 +293,12 @@ public class WifiConfigController implements TextWatcher,
                     (LinearLayout) mView.findViewById(R.id.wep_warning_layout);
             wepWarningLayout.setVisibility(View.VISIBLE);
         }
+
+        mSsidInput = new TextInputGroup(mView, R.id.ssid_layout, R.id.ssid,
+                R.string.wifi_ssid_hint);
+        mPasswordInput = new WifiPasswordInput(mView, mAccessPointSecurity);
+        mValidator.addTextInput(mSsidInput);
+        mValidator.addTextInput(mPasswordInput);
 
         mSsidScanButton = (ImageButton) mView.findViewById(R.id.ssid_scanner_button);
         mIpSettingsSpinner = (Spinner) mView.findViewById(R.id.ip_settings);
@@ -517,45 +529,8 @@ public class WifiConfigController implements TextWatcher,
         submit.setEnabled(isSubmittable());
     }
 
-    boolean isValidPsk(String password) {
-        if (password.length() == 64 && password.matches("[0-9A-Fa-f]{64}")) {
-            return true;
-        } else if (password.length() >= 8 && password.length() <= 63) {
-            return true;
-        }
-        return false;
-    }
-
-    boolean isValidSaePassword(String password) {
-        if (password.length() >= 1 && password.length() <= 63) {
-            return true;
-        }
-        return false;
-    }
-
     boolean isSubmittable() {
-        boolean enabled = false;
-        boolean passwordInvalid = false;
-        if (mPasswordView != null
-                && ((mAccessPointSecurity == AccessPoint.SECURITY_WEP
-                        && mPasswordView.length() == 0)
-                    || (mAccessPointSecurity == AccessPoint.SECURITY_PSK
-                           && !isValidPsk(mPasswordView.getText().toString()))
-                    || (mAccessPointSecurity == AccessPoint.SECURITY_SAE
-                        && !isValidSaePassword(mPasswordView.getText().toString())))) {
-            passwordInvalid = true;
-        }
-        if ((mSsidView != null && mSsidView.length() == 0)
-                // If Accesspoint is not saved, apply passwordInvalid check
-                || ((mAccessPoint == null || !mAccessPoint.isSaved()) && passwordInvalid
-                // If AccessPoint is saved (modifying network) and password is changed, apply
-                // Invalid password check
-                || mAccessPoint != null && mAccessPoint.isSaved() && passwordInvalid
-                    && mPasswordView.length() > 0)) {
-            enabled = false;
-        } else {
-            enabled = ipAndProxyFieldsAreValid();
-        }
+        boolean enabled = ipAndProxyFieldsAreValid();
         if ((mAccessPointSecurity == AccessPoint.SECURITY_EAP
                 || mAccessPointSecurity == AccessPoint.SECURITY_EAP_WPA3_ENTERPRISE
                 || mAccessPointSecurity == AccessPoint.SECURITY_EAP_SUITE_B)
@@ -592,11 +567,8 @@ public class WifiConfigController implements TextWatcher,
         mView.findViewById(R.id.no_domain_warning).setVisibility(View.GONE);
         mView.findViewById(R.id.ssid_too_long_warning).setVisibility(View.GONE);
 
-        if (mSsidView != null) {
-            final String ssid = mSsidView.getText().toString();
-            if (WifiUtils.isSSIDTooLong(ssid)) {
-                mView.findViewById(R.id.ssid_too_long_warning).setVisibility(View.VISIBLE);
-            }
+        if (WifiUtils.isSSIDTooLong(mSsidInput.getText())) {
+            mView.findViewById(R.id.ssid_too_long_warning).setVisibility(View.VISIBLE);
         }
         if (mEapCaCertSpinner != null
                 && mView.findViewById(R.id.l_ca_cert).getVisibility() != View.GONE) {
@@ -626,8 +598,7 @@ public class WifiConfigController implements TextWatcher,
         WifiConfiguration config = new WifiConfiguration();
 
         if (mAccessPoint == null) {
-            config.SSID = AccessPoint.convertToQuotedString(
-                    mSsidView.getText().toString());
+            config.SSID = AccessPoint.convertToQuotedString(mSsidInput.getText());
             // If the user adds a network manually, assume that it is hidden.
             config.hiddenSSID = mHiddenSettingsSpinner.getSelectedItemPosition() == HIDDEN_NETWORK;
         } else if (!mAccessPoint.isSaved()) {
@@ -1677,6 +1648,7 @@ public class WifiConfigController implements TextWatcher,
             // Convert menu position to actual Wi-Fi security type
             mAccessPointSecurity = mSecurityInPosition[position];
             showSecurityFields(/* refreshEapMethods */ true, /* refreshCertificates */ true);
+            mPasswordInput.setSecurity(mAccessPointSecurity);
 
             if (WifiDppUtils.isSupportEnrolleeQrCodeScanner(mContext, mAccessPointSecurity)) {
                 mSsidScanButton.setVisibility(View.VISIBLE);
@@ -1725,8 +1697,7 @@ public class WifiConfigController implements TextWatcher,
     private void configureSecuritySpinner() {
         mConfigUi.setTitle(R.string.wifi_add_network);
 
-        mSsidView = (TextView) mView.findViewById(R.id.ssid);
-        mSsidView.addTextChangedListener(this);
+        mSsidInput.addTextChangedListener(this);
         mSecuritySpinner = ((Spinner) mView.findViewById(R.id.security));
         mSecuritySpinner.setOnItemSelectedListener(this);
 
@@ -1893,5 +1864,12 @@ public class WifiConfigController implements TextWatcher,
                 info.addAction(customClick);
             }
         });
+    }
+
+    /**
+     * Provides a validator to verify that the Wi-Fi configuration is ready.
+     */
+    public TextInputValidator getValidator() {
+        return mValidator;
     }
 }

@@ -185,6 +185,16 @@ class PackageInfoPresenter(
         }
     }
 
+    /* stops application without durable effects of the full-scale "forec stop" */
+    fun stopPackage() {
+        requireAuthAndExecute {
+            coroutineScope.launch(Dispatchers.Default) {
+                Log.d(TAG, "Stopping package $packageName for user")
+                userContext.activityManager.stopPackageForUser(packageName)
+            }
+        }
+    }
+
     fun logAction(category: Int) {
         metricsFeatureProvider.action(context, category, packageName)
     }

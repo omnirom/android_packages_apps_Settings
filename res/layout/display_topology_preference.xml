@@ -14,12 +14,19 @@
      limitations under the License.
 -->
 
+<!-- TODO(b/396116157): I cannot find the correct src of ImageView to set to
+     match the other preference items. I tried
+     @drawable/android:selectable_item_background but this is private so will
+     not compile. It should match the other items so that theme migration will
+     switch to the correct final color. -->
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/display_topology_pane_holder"
     android:importantForAccessibility="no"
-    android:layout_height="160dp"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:paddingHorizontal="@dimen/display_topology_pane_margin"
+    android:layout_marginVertical="@dimen/display_topology_pane_vertical_margin"
+    android:layout_marginHorizontal="@dimen/display_topology_pane_margin"
     android:orientation="horizontal">
     <ImageView
         android:importantForAccessibility="no"
@@ -27,14 +34,30 @@
         android:layout_width="match_parent"
         android:src="@drawable/display_topology_background"/>
     <FrameLayout
-        android:id="@+id/display_topology_container"
+        android:id="@+id/display_topology_pane_content"
+        android:clipToOutline="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@+id/topology_hint"
+        android:layout_height="match_parent"/>
+
+    <!-- Give the textview a solid-color background (the same as the pane) in
+         order to make the text clear when a DisplayBlock is drawn under it as
+         part of display_topology_pane_content.
+
+         If the padding is in the TextView, then the background will fill the
+         padding, which we don't want vertically, as there is a lot of vertical
+         padding. We do need some horizontal padding because otherwise the
+         rounded corners will touch the edge of the text. -->
+    <FrameLayout
+        android:importantForAccessibility="no"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_gravity="top|center_horizontal"
-        android:paddingTop="10dp"
-        android:text="@string/external_display_topology_hint"/>
+        android:paddingVertical="10dp">
+        <TextView
+            android:id="@+id/topology_hint"
+            android:background="@drawable/display_topology_background"
+            android:paddingHorizontal="5dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+    </FrameLayout>
 </FrameLayout>

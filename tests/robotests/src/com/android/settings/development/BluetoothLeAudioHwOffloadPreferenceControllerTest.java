@@ -20,6 +20,8 @@ import static android.bluetooth.BluetoothStatusCodes.FEATURE_SUPPORTED;
 
 import static com.android.settings.development.BluetoothA2dpHwOffloadPreferenceController
         .A2DP_OFFLOAD_DISABLED_PROPERTY;
+import static com.android.settings.development.BluetoothA2dpHwOffloadPreferenceController
+        .A2DP_OFFLOAD_SUPPORTED_PROPERTY;
 import static com.android.settings.development.BluetoothLeAudioHwOffloadPreferenceController
         .LE_AUDIO_OFFLOAD_DISABLED_PROPERTY;
 import static com.android.settings.development.BluetoothLeAudioHwOffloadPreferenceController
@@ -119,5 +121,18 @@ public class BluetoothLeAudioHwOffloadPreferenceControllerTest {
         mController.updateState(null);
         leAueioDisabled = SystemProperties.getBoolean(LE_AUDIO_OFFLOAD_DISABLED_PROPERTY, false);
         assertThat(leAueioDisabled).isTrue();
+    }
+
+    @Test
+    public void asDisableDeveloperOption_ResetLEOffloadBasedOnA2dpLeAudioOffloadSupported() {
+        SystemProperties.set(LE_AUDIO_OFFLOAD_SUPPORTED_PROPERTY, Boolean.toString(true));
+        SystemProperties.set(A2DP_OFFLOAD_SUPPORTED_PROPERTY, Boolean.toString(true));
+
+        SystemProperties.set(
+                LE_AUDIO_OFFLOAD_DISABLED_PROPERTY, Boolean.toString(true));
+        mController.onDeveloperOptionsSwitchDisabled();
+        boolean leAueioDisabled =
+                SystemProperties.getBoolean(LE_AUDIO_OFFLOAD_DISABLED_PROPERTY, false);
+        assertThat(leAueioDisabled).isFalse();
     }
 }

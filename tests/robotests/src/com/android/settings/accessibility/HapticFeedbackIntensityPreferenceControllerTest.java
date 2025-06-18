@@ -32,8 +32,8 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.testutils.shadow.ShadowInteractionJankMonitor;
-import com.android.settings.widget.SeekBarPreference;
 import com.android.settingslib.core.lifecycle.Lifecycle;
+import com.android.settingslib.widget.SliderPreference;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -58,7 +58,7 @@ public class HapticFeedbackIntensityPreferenceControllerTest {
     private Context mContext;
     private Vibrator mVibrator;
     private HapticFeedbackIntensityPreferenceController mController;
-    private SeekBarPreference mPreference;
+    private SliderPreference mPreference;
 
     @Before
     public void setUp() {
@@ -71,7 +71,7 @@ public class HapticFeedbackIntensityPreferenceControllerTest {
         mController = new HapticFeedbackIntensityPreferenceController(mContext, PREFERENCE_KEY,
                 Vibrator.VIBRATION_INTENSITY_HIGH);
         mLifecycle.addObserver(mController);
-        mPreference = new SeekBarPreference(mContext);
+        mPreference = new SliderPreference(mContext);
         mPreference.setSummary("Test summary");
         when(mScreen.findPreference(mController.getPreferenceKey())).thenReturn(mPreference);
         mController.displayPreference(mScreen);
@@ -91,7 +91,7 @@ public class HapticFeedbackIntensityPreferenceControllerTest {
         Settings.System.putString(mContext.getContentResolver(),
                 Settings.System.HAPTIC_FEEDBACK_INTENSITY, /* value= */ null);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress())
+        assertThat(mPreference.getValue())
                 .isEqualTo(mVibrator.getDefaultVibrationIntensity(VibrationAttributes.USAGE_TOUCH));
     }
 
@@ -101,17 +101,17 @@ public class HapticFeedbackIntensityPreferenceControllerTest {
 
         when(mAudioManager.getRingerModeInternal()).thenReturn(AudioManager.RINGER_MODE_NORMAL);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
         assertThat(mPreference.isEnabled()).isTrue();
 
         when(mAudioManager.getRingerModeInternal()).thenReturn(AudioManager.RINGER_MODE_SILENT);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
         assertThat(mPreference.isEnabled()).isTrue();
 
         when(mAudioManager.getRingerModeInternal()).thenReturn(AudioManager.RINGER_MODE_VIBRATE);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
         assertThat(mPreference.isEnabled()).isTrue();
     }
 
@@ -121,44 +121,44 @@ public class HapticFeedbackIntensityPreferenceControllerTest {
 
         updateSetting(Settings.System.HAPTIC_FEEDBACK_INTENSITY, Vibrator.VIBRATION_INTENSITY_HIGH);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
 
         updateSetting(Settings.System.HAPTIC_FEEDBACK_INTENSITY,
                 Vibrator.VIBRATION_INTENSITY_MEDIUM);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
 
         updateSetting(Settings.System.HAPTIC_FEEDBACK_INTENSITY, Vibrator.VIBRATION_INTENSITY_LOW);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
 
         updateSetting(Settings.System.HAPTIC_FEEDBACK_INTENSITY, Vibrator.VIBRATION_INTENSITY_OFF);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
     }
 
     @Test
     public void updateState_shouldDisplayIntensityInSliderPosition() {
         updateSetting(Settings.System.HAPTIC_FEEDBACK_INTENSITY, Vibrator.VIBRATION_INTENSITY_HIGH);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_HIGH);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_HIGH);
 
         updateSetting(Settings.System.HAPTIC_FEEDBACK_INTENSITY,
                 Vibrator.VIBRATION_INTENSITY_MEDIUM);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_MEDIUM);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_MEDIUM);
 
         updateSetting(Settings.System.HAPTIC_FEEDBACK_INTENSITY, Vibrator.VIBRATION_INTENSITY_LOW);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
 
         updateSetting(Settings.System.HAPTIC_FEEDBACK_INTENSITY, Vibrator.VIBRATION_INTENSITY_OFF);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
     }
 
     @Test
-    public void setProgress_updatesIntensityAndDependentSettings() throws Exception {
+    public void setSliderPosition_updatesIntensityAndDependentSettings() throws Exception {
         mController.setSliderPosition(Vibrator.VIBRATION_INTENSITY_OFF);
         assertThat(readSetting(Settings.System.HAPTIC_FEEDBACK_INTENSITY))
                 .isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);

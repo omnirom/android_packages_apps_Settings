@@ -17,11 +17,13 @@
 package com.android.settings.notification.modes;
 
 import android.app.Application;
+import android.app.Flags;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.UserHandle;
+import android.os.UserManager;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -44,7 +46,11 @@ import com.android.settingslib.utils.ThreadUtils;
 import com.android.settingslib.widget.AppPreference;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -58,6 +64,8 @@ public class ZenModeAddBypassingAppsPreferenceController extends AbstractPrefere
     private static final String KEY = "zen_mode_non_bypassing_apps_list";
     private static final String KEY_ADD = "zen_mode_bypassing_apps_add";
     @Nullable private final NotificationBackend mNotificationBackend;
+    @Nullable private final ZenHelperBackend mHelperBackend;
+    @Nullable private final UserManager mUserManager;
 
     @Nullable @VisibleForTesting ApplicationsState mApplicationsState;
     @VisibleForTesting PreferenceScreen mPreferenceScreen;
@@ -69,18 +77,22 @@ public class ZenModeAddBypassingAppsPreferenceController extends AbstractPrefere
     @Nullable private Fragment mHostFragment;
 
     public ZenModeAddBypassingAppsPreferenceController(Context context, @Nullable Application app,
-            @Nullable Fragment host, @Nullable NotificationBackend notificationBackend) {
+            @Nullable Fragment host, @Nullable NotificationBackend notificationBackend,
+            @Nullable ZenHelperBackend helperBackend) {
         this(context, app == null ? null : ApplicationsState.getInstance(app), host,
-                notificationBackend);
+                notificationBackend, helperBackend);
     }
 
     private ZenModeAddBypassingAppsPreferenceController(Context context,
             @Nullable ApplicationsState appState, @Nullable Fragment host,
-            @Nullable NotificationBackend notificationBackend) {
+            @Nullable NotificationBackend notificationBackend,
+            @Nullable ZenHelperBackend helperBackend) {
         super(context);
         mNotificationBackend = notificationBackend;
         mApplicationsState = appState;
         mHostFragment = host;
+        mHelperBackend = helperBackend;
+        mUserManager = context.getSystemService(UserManager.class);
     }
 
     @Override
@@ -147,7 +159,7 @@ public class ZenModeAddBypassingAppsPreferenceController extends AbstractPrefere
 
     @VisibleForTesting
     void updateAppList(List<ApplicationsState.AppEntry> apps) {
-        if (apps == null) {
+        if (apps == null || mNotificationBackend == null) {
             return;
         }
 
@@ -157,21 +169,49 @@ public class ZenModeAddBypassingAppsPreferenceController extends AbstractPrefere
             mPreferenceScreen.addPreference(mPreferenceCategory);
         }
 
+        Map<Integer, Set<String>> packagesByUser = new HashMap<>();
+        Map<Integer, Map<String, Boolean>> packagesBypassingDndByUser = new HashMap<>();
+        if (Flags.nmBinderPerfGetAppsWithChannels()) {
+            if (mHelperBackend == null || mUserManager == null) {
+                return;
+            }
+            for (UserHandle userHandle : mUserManager.getUserProfiles()) {
+                int userId = userHandle.getIdentifier();
+                packagesByUser.put(userId, mNotificationBackend.getPackagesWithAnyChannels(userId));
+                packagesBypassingDndByUser.put(userId,
+                        mHelperBackend.getPackagesBypassingDnd(userId));
+            }
+        }
         boolean doAnyAppsPassCriteria = false;
         for (ApplicationsState.AppEntry app : apps) {
             String pkg = app.info.packageName;
             final String key = getKey(pkg, app.info.uid);
-            final int appChannels = mNotificationBackend.getChannelCount(pkg, app.info.uid);
-            final int appChannelsBypassingDnd = mNotificationBackend
-                    .getNotificationChannelsBypassingDnd(pkg, app.info.uid).getList().size();
-            if (appChannelsBypassingDnd == 0 && appChannels > 0) {
+            int userId = UserHandle.getUserId(app.info.uid);
+
+            boolean doesAppBypassDnd, doesAppHaveAnyChannels;
+            if (Flags.nmBinderPerfGetAppsWithChannels()) {
+                Set<String> packagesWithChannels = packagesByUser.getOrDefault(userId,
+                        Collections.EMPTY_SET);
+                Map<String, Boolean> packagesBypassingDnd =
+                        packagesBypassingDndByUser.getOrDefault(userId, new HashMap<>());
+                doesAppBypassDnd = packagesBypassingDnd.containsKey(pkg);
+                doesAppHaveAnyChannels = packagesWithChannels.contains(pkg);
+            } else {
+                final int appChannels = mNotificationBackend.getChannelCount(pkg, app.info.uid);
+                final int appChannelsBypassingDnd = mNotificationBackend
+                        .getNotificationChannelsBypassingDnd(pkg, app.info.uid).getList().size();
+                doesAppBypassDnd = (appChannelsBypassingDnd != 0);
+                doesAppHaveAnyChannels = (appChannels > 0);
+            }
+
+            if (!doesAppBypassDnd && doesAppHaveAnyChannels) {
                 doAnyAppsPassCriteria = true;
             }
 
             Preference pref = mPreferenceCategory.findPreference(key);
 
             if (pref == null) {
-                if (appChannelsBypassingDnd == 0 && appChannels > 0) {
+                if (!doesAppBypassDnd && doesAppHaveAnyChannels) {
                     // does not exist but should
                     pref = new AppPreference(mPrefContext);
                     pref.setKey(key);
@@ -193,7 +233,7 @@ public class ZenModeAddBypassingAppsPreferenceController extends AbstractPrefere
                     updateIcon(pref, app);
                     mPreferenceCategory.addPreference(pref);
                 }
-            } else if (appChannelsBypassingDnd != 0 || appChannels == 0) {
+            } else if (doesAppBypassDnd || !doesAppHaveAnyChannels) {
                 // exists but shouldn't anymore
                 mPreferenceCategory.removePreference(pref);
             }

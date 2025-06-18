@@ -42,6 +42,7 @@ import com.android.internal.accessibility.util.AccessibilityUtils;
 import com.android.internal.content.PackageMonitor;
 import com.android.settings.R;
 import com.android.settings.accessibility.AccessibilityUtil.AccessibilityServiceFragmentType;
+import com.android.settings.accessibility.actionbar.FeedbackMenuController;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.search.BaseSearchIndexProvider;
@@ -94,6 +95,7 @@ public class AccessibilitySettings extends DashboardFragment implements
     static final String EXTRA_HTML_DESCRIPTION = "html_description";
     static final String EXTRA_TIME_FOR_LOGGING = "start_time_to_log_a11y_tool";
     static final String EXTRA_METRICS_CATEGORY = "metrics_category";
+    static final String EXTRA_FEEDBACK_CATEGORY = "feedback_category";
 
     // Timeout before we update the services if packages are added/removed
     // since the AccessibilityManagerService has to do that processing first
@@ -143,14 +145,11 @@ public class AccessibilitySettings extends DashboardFragment implements
         }
     };
 
-    @VisibleForTesting
-    AccessibilitySettingsContentObserver mSettingsContentObserver;
+    private AccessibilitySettingsContentObserver mSettingsContentObserver;
 
     private final Map<String, PreferenceCategory> mCategoryToPrefCategoryMap =
             new ArrayMap<>();
-    @VisibleForTesting
-    final Map<Preference, PreferenceCategory> mServicePreferenceToPreferenceCategoryMap =
-            new ArrayMap<>();
+    private final List<Preference> mServicePreferences = new ArrayList<>();
     private final Map<ComponentName, PreferenceCategory> mPreBundledServiceComponentToCategoryMap =
             new ArrayMap<>();
 
@@ -211,6 +210,7 @@ public class AccessibilitySettings extends DashboardFragment implements
         mNeedPreferencesUpdate = false;
         registerContentMonitors();
         registerInputDeviceListener();
+        FeedbackMenuController.init(this, SettingsEnums.ACCESSIBILITY);
     }
 
     @Override
@@ -372,13 +372,10 @@ public class AccessibilitySettings extends DashboardFragment implements
         // Since services category is auto generated we have to do a pass
         // to generate it since services can come and go and then based on
         // the global accessibility state to decided whether it is enabled.
-        final ArrayList<Preference> servicePreferences =
-                new ArrayList<>(mServicePreferenceToPreferenceCategoryMap.keySet());
-        for (int i = 0; i < servicePreferences.size(); i++) {
-            Preference service = servicePreferences.get(i);
-            PreferenceCategory category = mServicePreferenceToPreferenceCategoryMap.get(service);
-            category.removePreference(service);
+        for (Preference service : mServicePreferences) {
+            service.getParent().removePreference(service);
         }
+        mServicePreferences.clear();
 
         initializePreBundledServicesMapFromArray(CATEGORY_SCREEN_READER,
                 R.array.config_preinstalled_screen_reader_services);
@@ -423,7 +420,7 @@ public class AccessibilitySettings extends DashboardFragment implements
                 prefCategory = mPreBundledServiceComponentToCategoryMap.get(componentName);
             }
             prefCategory.addPreference(preference);
-            mServicePreferenceToPreferenceCategoryMap.put(preference, prefCategory);
+            mServicePreferences.add(preference);
         }
 
         // Update the order of all the category according to the order defined in xml file.

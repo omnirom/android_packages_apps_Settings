@@ -17,6 +17,8 @@
 package com.android.settings.accessibility;
 
 import static com.android.settings.accessibility.AccessibilityStatsLogUtils.logAccessibilityServiceEnabled;
+import static com.android.settingslib.widget.ButtonPreference.SIZE_EXTRA_LARGE;
+import static com.android.settingslib.widget.ButtonPreference.TYPE_TONAL;
 
 import android.accessibilityservice.AccessibilityShortcutInfo;
 import android.app.ActivityOptions;
@@ -31,8 +33,6 @@ import android.os.UserHandle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityManager;
@@ -41,7 +41,8 @@ import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 
 import com.android.settings.R;
-import com.android.settings.accessibility.AccessibilityUtil.QuickSettingsTooltipType;
+import com.android.settingslib.widget.ButtonPreference;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,11 @@ public class LaunchAccessibilityActivityPreferenceFragment extends ToggleFeature
     }
 
     @Override
+    public int getFeedbackCategory() {
+        return getArguments().getInt(AccessibilitySettings.EXTRA_FEEDBACK_CATEGORY);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         // Init new preference to replace the switch preference instead.
@@ -69,11 +75,6 @@ public class LaunchAccessibilityActivityPreferenceFragment extends ToggleFeature
         final View view = super.onCreateView(inflater, container, savedInstanceState);
         removePreference(getUseServicePreferenceKey());
         return view;
-    }
-
-    @Override
-    protected void onPreferenceToggled(String preferenceKey, boolean enabled) {
-        // Do nothing.
     }
 
     @Override
@@ -121,31 +122,6 @@ public class LaunchAccessibilityActivityPreferenceFragment extends ToggleFeature
         return mTileComponentName;
     }
 
-    @Override
-    CharSequence getTileTooltipContent(@QuickSettingsTooltipType int type) {
-        final ComponentName componentName = getTileComponentName();
-        if (componentName == null) {
-            return null;
-        }
-
-        final CharSequence tileName = loadTileLabel(getPrefContext(), componentName);
-        if (tileName == null) {
-            return null;
-        }
-
-        final int titleResId = type == QuickSettingsTooltipType.GUIDE_TO_EDIT
-                ? R.string.accessibility_service_qs_tooltip_content
-                : R.string.accessibility_service_auto_added_qs_tooltip_content;
-        return getString(titleResId, tileName);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Do not call super. We don't want to see the "Help & feedback" option on this page so as
-        // not to confuse users who think they might be able to send feedback about a specific
-        // accessibility service from this page.
-    }
-
     // IMPORTANT: Refresh the info since there are dynamically changing capabilities.
     private AccessibilityShortcutInfo getAccessibilityShortcutInfo() {
         final List<AccessibilityShortcutInfo> infos = AccessibilityManager.getInstance(
@@ -175,8 +151,14 @@ public class LaunchAccessibilityActivityPreferenceFragment extends ToggleFeature
     }
 
     private void initLaunchPreference() {
-        final Preference launchPreference = new Preference(getPrefContext());
-        launchPreference.setLayoutResource(R.layout.accessibility_launch_activity_preference);
+        final Preference launchPreference;
+        if (SettingsThemeHelper.isExpressiveTheme(getPrefContext())) {
+            launchPreference = new ButtonPreference(getPrefContext());
+            ((ButtonPreference) launchPreference).setButtonStyle(TYPE_TONAL, SIZE_EXTRA_LARGE);
+        } else {
+            launchPreference = new Preference(getPrefContext());
+            launchPreference.setLayoutResource(R.layout.accessibility_launch_activity_preference);
+        }
         launchPreference.setKey(KEY_LAUNCH_PREFERENCE);
 
         final AccessibilityShortcutInfo info = getAccessibilityShortcutInfo();

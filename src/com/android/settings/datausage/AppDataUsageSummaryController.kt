@@ -17,7 +17,6 @@
 package com.android.settings.datausage
 
 import android.content.Context
-import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
@@ -28,6 +27,7 @@ import com.android.settings.datausage.lib.NetworkUsageDetailsData
 import com.android.settings.spa.preference.ComposePreferenceController
 import com.android.settingslib.spa.widget.preference.Preference
 import com.android.settingslib.spa.widget.preference.PreferenceModel
+import com.android.settingslib.spa.widget.ui.Category
 import com.android.settingslib.spaprivileged.framework.compose.getPlaceholder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -37,8 +37,7 @@ class AppDataUsageSummaryController(context: Context, preferenceKey: String) :
 
     private val dataFlow = MutableStateFlow(NetworkUsageDetailsData.AllZero)
     private val dataUsageFormatter = DataUsageFormatter(context)
-    private val emptyDataUsage =
-        DataUsageFormatter.FormattedDataUsage(context.getPlaceholder(), context.getPlaceholder())
+    private val emptyDataUsage = context.getPlaceholder()
 
     private val totalUsageFlow = dataFlow.map {
         dataUsageFormatter.formatDataUsage(it.totalUsage)
@@ -60,24 +59,21 @@ class AppDataUsageSummaryController(context: Context, preferenceKey: String) :
 
     @Composable
     override fun Content() {
-        Column {
+        Category {
             val totalUsage by totalUsageFlow.collectAsStateWithLifecycle(emptyDataUsage)
             val foregroundUsage by foregroundUsageFlow.collectAsStateWithLifecycle(emptyDataUsage)
             val backgroundUsage by backgroundUsageFlow.collectAsStateWithLifecycle(emptyDataUsage)
             Preference(object : PreferenceModel {
                 override val title = stringResource(R.string.total_size_label)
-                override val summary = { totalUsage.displayText }
-                override val summaryContentDescription = { totalUsage.contentDescription }
+                override val summary = { totalUsage }
             })
             Preference(object : PreferenceModel {
                 override val title = stringResource(R.string.data_usage_label_foreground)
-                override val summary = { foregroundUsage.displayText }
-                override val summaryContentDescription = { foregroundUsage.contentDescription }
+                override val summary = { foregroundUsage }
             })
             Preference(object : PreferenceModel {
                 override val title = stringResource(R.string.data_usage_label_background)
-                override val summary = { backgroundUsage.displayText }
-                override val summaryContentDescription = { backgroundUsage.contentDescription }
+                override val summary = { backgroundUsage }
             })
         }
     }

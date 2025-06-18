@@ -117,11 +117,7 @@ public class ZenModeSliceBuilderTest {
 
         ZenModeSliceBuilder.handleUriChange(mContext, intent);
 
-        if (android.app.Flags.modesApi()) {
-            verify(mNm).setZenMode(eq(ZEN_MODE_IMPORTANT_INTERRUPTIONS), any(), any(), eq(true));
-        } else {
-            verify(mNm).setZenMode(eq(ZEN_MODE_IMPORTANT_INTERRUPTIONS), any(), any());
-        }
+        verify(mNm).setZenMode(eq(ZEN_MODE_IMPORTANT_INTERRUPTIONS), any(), any(), eq(true));
     }
 
     @Test
@@ -131,10 +127,6 @@ public class ZenModeSliceBuilderTest {
 
         ZenModeSliceBuilder.handleUriChange(mContext, intent);
 
-        if (android.app.Flags.modesApi()) {
-            verify(mNm).setZenMode(eq(ZEN_MODE_OFF), any(), any(), eq(true));
-        } else {
-            verify(mNm).setZenMode(eq(ZEN_MODE_OFF), any(), any());
-        }
+        verify(mNm).setZenMode(eq(ZEN_MODE_OFF), any(), any(), eq(true));
     }
 }

@@ -16,6 +16,7 @@
 
 package com.android.settings.display
 
+import android.app.settings.SettingsEnums.ACTION_SCREEN_ATTENTION_CHANGED
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -26,26 +27,28 @@ import android.hardware.SensorPrivacyManager.Sensors.CAMERA
 import android.os.PowerManager
 import android.os.UserManager
 import android.provider.Settings
-import com.android.settings.PreferenceRestrictionMixin
 import com.android.settings.R
+import com.android.settings.contract.KEY_SCREEN_ATTENTION
+import com.android.settings.metrics.PreferenceActionMetricsProvider
+import com.android.settings.restriction.PreferenceRestrictionMixin
 import com.android.settingslib.RestrictedSwitchPreference
 import com.android.settingslib.datastore.KeyValueStore
-import com.android.settingslib.datastore.KeyedObservableDelegate
+import com.android.settingslib.datastore.KeyValueStoreDelegate
 import com.android.settingslib.datastore.SettingsSecureStore
-import com.android.settingslib.datastore.SettingsStore
+import com.android.settingslib.metadata.BooleanValuePreference
 import com.android.settingslib.metadata.PreferenceAvailabilityProvider
 import com.android.settingslib.metadata.PreferenceLifecycleContext
 import com.android.settingslib.metadata.PreferenceLifecycleProvider
 import com.android.settingslib.metadata.ReadWritePermit
 import com.android.settingslib.metadata.SensitivityLevel
-import com.android.settingslib.metadata.TwoStatePreference
 import com.android.settingslib.preference.PreferenceBindingPlaceholder
 import com.android.settingslib.preference.SwitchPreferenceBinding
 
 // LINT.IfChange
 class AdaptiveSleepPreference :
-    TwoStatePreference,
+    BooleanValuePreference,
     SwitchPreferenceBinding,
+    PreferenceActionMetricsProvider,
     PreferenceLifecycleProvider,
     PreferenceBindingPlaceholder, // not needed once controller class is cleaned up
     PreferenceAvailabilityProvider,
@@ -63,6 +66,11 @@ class AdaptiveSleepPreference :
     override val summary: Int
         get() = R.string.adaptive_sleep_description
 
+    override val preferenceActionMetrics: Int
+        get() = ACTION_SCREEN_ATTENTION_CHANGED
+
+    override fun tags(context: Context) = arrayOf(KEY_SCREEN_ATTENTION)
+
     override fun isIndexable(context: Context) = false
 
     override fun isEnabled(context: Context) =
@@ -77,11 +85,19 @@ class AdaptiveSleepPreference :
 
     override fun storage(context: Context): KeyValueStore = Storage(context)
 
-    override fun getReadPermit(context: Context, myUid: Int, callingUid: Int) =
+    override fun getReadPermissions(context: Context) = SettingsSecureStore.getReadPermissions()
+
+    override fun getWritePermissions(context: Context) = SettingsSecureStore.getWritePermissions()
+
+    override fun getReadPermit(context: Context, callingPid: Int, callingUid: Int) =
         ReadWritePermit.ALLOW
 
-    override fun getWritePermit(context: Context, value: Boolean?, myUid: Int, callingUid: Int) =
-        ReadWritePermit.ALLOW
+    override fun getWritePermit(
+        context: Context,
+        value: Boolean?,
+        callingPid: Int,
+        callingUid: Int,
+    ) = ReadWritePermit.ALLOW
 
     override val sensitivityLevel
         get() = SensitivityLevel.NO_SENSITIVITY
@@ -89,16 +105,14 @@ class AdaptiveSleepPreference :
     @Suppress("UNCHECKED_CAST")
     private class Storage(
         private val context: Context,
-        private val settingsStore: SettingsStore = SettingsSecureStore.get(context),
-    ) : KeyedObservableDelegate<String>(settingsStore), KeyValueStore {
+        private val settingsStore: KeyValueStore = SettingsSecureStore.get(context),
+    ) : KeyValueStoreDelegate {
 
-        override fun contains(key: String) = settingsStore.contains(key)
+        override val keyValueStoreDelegate
+            get() = settingsStore
 
         override fun <T : Any> getValue(key: String, valueType: Class<T>) =
             (context.canBeEnabled() && settingsStore.getBoolean(key) == true) as T
-
-        override fun <T : Any> setValue(key: String, valueType: Class<T>, value: T?) =
-            settingsStore.setBoolean(key, value as Boolean?)
     }
 
     override fun onStart(context: PreferenceLifecycleContext) {

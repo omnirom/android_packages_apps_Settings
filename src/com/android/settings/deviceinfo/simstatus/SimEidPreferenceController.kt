@@ -64,8 +64,12 @@ class SimEidPreferenceController(context: Context, preferenceKey: String) :
      * Also check [getIsAvailableAndUpdateEid] for other availability check which retrieved
      * asynchronously later.
      */
-    override fun getAvailabilityStatus() =
-        if (SubscriptionUtil.isSimHardwareVisible(mContext)) AVAILABLE else UNSUPPORTED_ON_DEVICE
+    override fun getAvailabilityStatus() = when {
+        !SubscriptionUtil.isSimHardwareVisible(mContext)
+            || Utils.isWifiOnly(mContext) -> UNSUPPORTED_ON_DEVICE
+        !mContext.userManager.isAdminUser -> DISABLED_FOR_USER
+        else -> AVAILABLE
+    }
 
     override fun displayPreference(screen: PreferenceScreen) {
         super.displayPreference(screen)
@@ -97,7 +101,6 @@ class SimEidPreferenceController(context: Context, preferenceKey: String) :
     }
 
     private fun getIsAvailableAndUpdateEid(): Boolean {
-        if (!mContext.userManager.isAdminUser || Utils.isWifiOnly(mContext)) return false
         eid = eidStatus?.eid ?: ""
         return eid.isNotEmpty()
     }

@@ -28,6 +28,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -80,8 +81,10 @@ public class ScreenTimeoutSettingsTest {
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
-    private static final String[] TIMEOUT_ENTRIES = new String[]{"15 secs", "30 secs"};
-    private static final String[] TIMEOUT_VALUES = new String[]{"15000", "30000"};
+    private static final String[] TIMEOUT_ENTRIES =
+            new String[]{"15 secs", "30 secs", "1 min", "2 min", "5 min"};
+    private static final String[] TIMEOUT_VALUES =
+            new String[]{"15000", "30000", "60000", "120000", "300000"};
 
     private ScreenTimeoutSettings mSettings;
     private Context mContext;
@@ -110,6 +113,9 @@ public class ScreenTimeoutSettingsTest {
     FooterPreference mPowerConsumptionPreference;
 
     @Mock
+    DevicePolicyManager mDevicePolicyManager;
+
+    @Mock
     private PackageManager mPackageManager;
 
     @Before
@@ -132,7 +138,7 @@ public class ScreenTimeoutSettingsTest {
                 attentionServiceResolveInfo);
 
         doReturn(TIMEOUT_ENTRIES).when(mResources).getStringArray(R.array.screen_timeout_entries);
-        doReturn(TIMEOUT_VALUES).when(mResources).getStringArray(R.array.screen_timeout_entries);
+        doReturn(TIMEOUT_VALUES).when(mResources).getStringArray(R.array.screen_timeout_values);
         doReturn(true).when(mResources).getBoolean(
                 com.android.internal.R.bool.config_adaptive_sleep_available);
 
@@ -221,6 +227,79 @@ public class ScreenTimeoutSettingsTest {
 
         verify(mPreferenceScreen, never()).addPreference(mDisableOptionsPreference);
         verify(mPreferenceScreen, atLeast(1)).addPreference(mPowerConsumptionPreference);
+    }
+
+    @Test
+    public void getCandidates_enforcedAdmin_timeoutIsLimited() {
+        mSettings.mAdmin = new RestrictedLockUtils.EnforcedAdmin();
+        mSettings.mDisableOptionsPreference = mDisableOptionsPreference;
+        doNothing().when(mSettings).setupDisabledFooterPreference();
+        doReturn(mDevicePolicyManager).when(mContext).getSystemService(DevicePolicyManager.class);
+        // Admin-enforced max timeout of 30000
+        when(mDevicePolicyManager.getMaximumTimeToLock(any(), anyInt())).thenReturn(30000L);
+        // No configured max timeout
+        doThrow(new Resources.NotFoundException("Invalid resource")).when(mResources)
+                .getInteger(R.integer.config_max_screen_timeout);
+
+        List<? extends CandidateInfo> candidates = mSettings.getCandidates();
+
+        // Assert that candidates are truncated at the admin-controlled timeout
+        assertThat(candidates.size()).isEqualTo(2);
+        assertThat(candidates.get(candidates.size() - 1).getKey()).isEqualTo(TIMEOUT_VALUES[1]);
+    }
+
+    @Test
+    public void getCandidates_configuredMaxTimeout_65000_timeoutIsLimited() {
+        when(mContext.getSystemService(DevicePolicyManager.class)).thenCallRealMethod();
+        doReturn(65000).when(mResources).getInteger(R.integer.config_max_screen_timeout);
+
+        List<? extends CandidateInfo> candidates = mSettings.getCandidates();
+
+        // Assert that candidates are truncated at the highest timeout that is below the max timeout
+        assertThat(candidates.size()).isEqualTo(3);
+        assertThat(candidates.get(candidates.size() - 1).getKey()).isEqualTo(TIMEOUT_VALUES[2]);
+    }
+
+    @Test
+    public void getCandidates_configuredAndAdminEnforcedMaxTimeout_lowestTimeoutIsApplied() {
+        mSettings.mAdmin = new RestrictedLockUtils.EnforcedAdmin();
+        mSettings.mDisableOptionsPreference = mDisableOptionsPreference;
+        doNothing().when(mSettings).setupDisabledFooterPreference();
+        doReturn(mDevicePolicyManager).when(mContext).getSystemService(DevicePolicyManager.class);
+        // Admin-enforced max timeout of 30000
+        when(mDevicePolicyManager.getMaximumTimeToLock(any(), anyInt())).thenReturn(30000L);
+        // Configured max timeout of 120000
+        doReturn(120000).when(mResources).getInteger(R.integer.config_max_screen_timeout);
+
+        List<? extends CandidateInfo> candidates = mSettings.getCandidates();
+
+        // Assert that candidates are truncated at the lowest of the two timeouts
+        assertThat(candidates.size()).isEqualTo(2);
+        assertThat(candidates.get(candidates.size() - 1).getKey()).isEqualTo(TIMEOUT_VALUES[1]);
+    }
+
+    @Test
+    public void getCandidates_configuredMaxTimeout_300000_timeoutIsNotLimited() {
+        when(mContext.getSystemService(DevicePolicyManager.class)).thenCallRealMethod();
+        doReturn(300000).when(mResources).getInteger(R.integer.config_max_screen_timeout);
+
+        List<? extends CandidateInfo> candidates = mSettings.getCandidates();
+
+        // Assert that candidates are not truncated if configured max timeout is higher than the
+        // highest available timeout
+        assertThat(candidates.size()).isEqualTo(TIMEOUT_VALUES.length);
+    }
+
+    @Test
+    public void getCandidates_configuredMaxTimeout_notSet_timeoutIsNotLimited() {
+        when(mContext.getSystemService(DevicePolicyManager.class)).thenCallRealMethod();
+        doThrow(new Resources.NotFoundException("Invalid resource")).when(mResources)
+                .getInteger(R.integer.config_max_screen_timeout);
+
+        List<? extends CandidateInfo> candidates = mSettings.getCandidates();
+
+        // Assert that candidates are not truncated if there is no configured max timeout
+        assertThat(candidates.size()).isEqualTo(TIMEOUT_VALUES.length);
     }
 
     @Test

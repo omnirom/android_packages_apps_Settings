@@ -23,9 +23,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.android.settings.R
-import com.android.settings.bluetooth.ui.layout.DeviceSettingLayout
-import com.android.settings.bluetooth.ui.layout.DeviceSettingLayoutColumn
-import com.android.settings.bluetooth.ui.layout.DeviceSettingLayoutRow
 import com.android.settings.bluetooth.ui.model.DeviceSettingPreferenceModel
 import com.android.settings.bluetooth.ui.model.FragmentTypeModel
 import com.android.settings.overlay.FeatureFactory.Companion.featureFactory
@@ -39,11 +36,8 @@ import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 
 class BluetoothDeviceDetailsViewModel(
     private val application: Application,
@@ -139,43 +133,6 @@ class BluetoothDeviceDetailsViewModel(
                 )
             is DeviceSettingModel.Unknown -> null
         }
-    }
-
-    suspend fun getLayout(fragment: FragmentTypeModel): DeviceSettingLayout? {
-        val configItems = getItems(fragment) ?: return null
-        val idToDeviceSetting =
-            configItems
-                .filterIsInstance<DeviceSettingConfigItemModel.AppProvidedItem>()
-                .associateBy({ it.settingId }, { getDeviceSetting(cachedDevice, it.settingId) })
-
-        val configDeviceSetting =
-            configItems.map { idToDeviceSetting[it.settingId] ?: flowOf(null) }
-        val positionToSettingIds =
-            combine(configDeviceSetting) { settings ->
-                    val positionMapping = mutableMapOf<Int, List<DeviceSettingLayoutColumn>>()
-                    for (i in settings.indices) {
-                        val configItem = configItems[i]
-                        val setting = settings[i]
-                        val isXmlPreference = configItem is DeviceSettingConfigItemModel.BuiltinItem
-                        if (!isXmlPreference && setting == null) {
-                            continue
-                        }
-                        positionMapping[i] =
-                            listOf(
-                                DeviceSettingLayoutColumn(
-                                    configItem.settingId,
-                                    configItem.highlighted,
-                                )
-                            )
-                    }
-                    positionMapping
-                }
-                .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = mapOf())
-        return DeviceSettingLayout(
-            configItems.indices.map { idx ->
-                DeviceSettingLayoutRow(positionToSettingIds.map { it[idx] ?: emptyList() })
-            }
-        )
     }
 
     class Factory(

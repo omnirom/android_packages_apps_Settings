@@ -81,6 +81,7 @@ import com.google.android.setupcompat.template.FooterBarMixin;
 import com.google.android.setupcompat.template.FooterButton;
 import com.google.android.setupcompat.template.FooterButton.ButtonType;
 import com.google.android.setupdesign.GlifLayout;
+import com.google.android.setupdesign.util.ThemeHelper;
 
 import java.util.List;
 
@@ -482,7 +483,6 @@ public class MainClear extends InstrumentedFragment implements OnGlobalLayoutLis
                         .setText(R.string.main_clear_button_text)
                         .setListener(mInitiateListener)
                         .setButtonType(ButtonType.OTHER)
-                        .setTheme(com.google.android.setupdesign.R.style.SudGlifButton_Primary)
                         .build());
         if (Flags.showFactoryResetCancelButton()) {
             mixin.setSecondaryButton(
@@ -490,8 +490,6 @@ public class MainClear extends InstrumentedFragment implements OnGlobalLayoutLis
                             .setText(android.R.string.cancel)
                             .setListener(view -> activity.onBackPressed())
                             .setButtonType(ButtonType.CANCEL)
-                            .setTheme(
-                                    com.google.android.setupdesign.R.style.SudGlifButton_Secondary)
                             .build());
         }
         mInitiateButton = mixin.getPrimaryButton();
@@ -627,6 +625,7 @@ public class MainClear extends InstrumentedFragment implements OnGlobalLayoutLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         final Context context = getContext();
+        ThemeHelper.trySetSuwTheme(context);
         final EnforcedAdmin admin = RestrictedLockUtilsInternal.checkIfRestrictionEnforced(context,
                 UserManager.DISALLOW_FACTORY_RESET, UserHandle.myUserId());
         final UserManager um = UserManager.get(context);

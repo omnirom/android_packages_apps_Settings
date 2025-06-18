@@ -17,10 +17,10 @@ package com.android.settings.connecteddevice.display;
 
 import static android.content.Context.DISPLAY_SERVICE;
 import static android.hardware.display.DisplayManager.DISPLAY_CATEGORY_ALL_INCLUDING_DISABLED;
-import static android.hardware.display.DisplayManager.EVENT_FLAG_DISPLAY_ADDED;
-import static android.hardware.display.DisplayManager.EVENT_FLAG_DISPLAY_CHANGED;
-import static android.hardware.display.DisplayManager.EVENT_FLAG_DISPLAY_REMOVED;
-import static android.hardware.display.DisplayManager.PRIVATE_EVENT_FLAG_DISPLAY_CONNECTION_CHANGED;
+import static android.hardware.display.DisplayManager.EVENT_TYPE_DISPLAY_ADDED;
+import static android.hardware.display.DisplayManager.EVENT_TYPE_DISPLAY_CHANGED;
+import static android.hardware.display.DisplayManager.EVENT_TYPE_DISPLAY_REMOVED;
+import static android.hardware.display.DisplayManager.PRIVATE_EVENT_TYPE_DISPLAY_CONNECTION_CHANGED;
 import static android.view.Display.INVALID_DISPLAY;
 
 import static com.android.server.display.feature.flags.Flags.enableModeLimitForExternalDisplay;
@@ -43,6 +43,10 @@ import androidx.annotation.Nullable;
 import com.android.settings.R;
 import com.android.settings.flags.FeatureFlags;
 import com.android.settings.flags.FeatureFlagsImpl;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class ExternalDisplaySettingsConfiguration {
     static final String VIRTUAL_DISPLAY_PACKAGE_NAME_SYSTEM_PROPERTY =
@@ -105,7 +109,8 @@ public class ExternalDisplaySettingsConfiguration {
         private final Handler mHandler;
 
         Injector(@Nullable Context context) {
-            this(context, new FeatureFlagsImpl(), new Handler(Looper.getMainLooper()));
+            this(context, new DesktopExperienceFlags(new FeatureFlagsImpl()),
+                    new Handler(Looper.getMainLooper()));
         }
 
         Injector(@Nullable Context context, @NonNull FeatureFlags flags, @NonNull Handler handler) {
@@ -114,40 +119,57 @@ public class ExternalDisplaySettingsConfiguration {
             mHandler = handler;
         }
 
+        private static DisplayDevice wrapDmDisplay(Display display, DisplayIsEnabled isEnabled) {
+            return new DisplayDevice(display.getDisplayId(), display.getName(),
+                        display.getMode(), List.<Mode>of(display.getSupportedModes()), isEnabled);
+        }
+
         /**
          * @return all displays including disabled.
          */
         @NonNull
-        public Display[] getAllDisplays() {
+        public List<DisplayDevice> getConnectedDisplays() {
             var dm = getDisplayManager();
             if (dm == null) {
-                return new Display[0];
+                return List.of();
             }
-            return dm.getDisplays(DISPLAY_CATEGORY_ALL_INCLUDING_DISABLED);
-        }
 
-        /**
-         * @return enabled displays only.
-         */
-        @NonNull
-        public Display[] getEnabledDisplays() {
-            var dm = getDisplayManager();
-            if (dm == null) {
-                return new Display[0];
+            var enabledIds = new HashSet<Integer>();
+            for (Display d : dm.getDisplays()) {
+                enabledIds.add(d.getDisplayId());
             }
-            return dm.getDisplays();
-        }
 
-        /**
-         * @return true if the display is enabled
-         */
-        public boolean isDisplayEnabled(@NonNull Display display) {
-            for (var enabledDisplay : getEnabledDisplays()) {
-                if (enabledDisplay.getDisplayId() == display.getDisplayId()) {
-                    return true;
+            var displays = new ArrayList<DisplayDevice>();
+            for (Display d : dm.getDisplays(DISPLAY_CATEGORY_ALL_INCLUDING_DISABLED)) {
+                if (!isDisplayAllowed(d, this)) {
+                    continue;
                 }
+                var isEnabled = enabledIds.contains(d.getDisplayId())
+                        ? DisplayIsEnabled.YES : DisplayIsEnabled.NO;
+                displays.add(wrapDmDisplay(d, isEnabled));
             }
-            return false;
+            return displays;
+        }
+
+        /**
+         * @param displayId which must be returned
+         * @return display object for the displayId, or null if display is not a connected display,
+         *         the ID was not found, or the ID was invalid
+         */
+        @Nullable
+        public DisplayDevice getDisplay(int displayId) {
+            if (displayId == INVALID_DISPLAY) {
+                return null;
+            }
+            var dm = getDisplayManager();
+            if (dm == null) {
+                return null;
+            }
+            var display = dm.getDisplay(displayId);
+            if (display == null || !isDisplayAllowed(display, this)) {
+                return null;
+            }
+            return wrapDmDisplay(display, DisplayIsEnabled.UNKNOWN);
         }
 
         /**
@@ -158,9 +180,9 @@ public class ExternalDisplaySettingsConfiguration {
             if (dm == null) {
                 return;
             }
-            dm.registerDisplayListener(listener, mHandler, EVENT_FLAG_DISPLAY_ADDED
-                    | EVENT_FLAG_DISPLAY_CHANGED | EVENT_FLAG_DISPLAY_REMOVED,
-                    PRIVATE_EVENT_FLAG_DISPLAY_CONNECTION_CHANGED);
+            dm.registerDisplayListener(listener, mHandler, EVENT_TYPE_DISPLAY_ADDED
+                    | EVENT_TYPE_DISPLAY_CHANGED | EVENT_TYPE_DISPLAY_REMOVED,
+                    PRIVATE_EVENT_TYPE_DISPLAY_CONNECTION_CHANGED);
         }
 
         /**
@@ -204,22 +226,6 @@ public class ExternalDisplaySettingsConfiguration {
             }
             dm.disableConnectedDisplay(displayId);
             return true;
-        }
-
-        /**
-         * @param displayId which must be returned
-         * @return display object for the displayId
-         */
-        @Nullable
-        public Display getDisplay(int displayId) {
-            if (displayId == INVALID_DISPLAY) {
-                return null;
-            }
-            var dm = getDisplayManager();
-            if (dm == null) {
-                return null;
-            }
-            return dm.getDisplay(displayId);
         }
 
         /**
@@ -323,22 +329,17 @@ public class ExternalDisplaySettingsConfiguration {
                 || flags.displayTopologyPaneInDisplayList();
     }
 
-    /**
-     * If true, indicates the display list activity should be shown even if there is only one
-     * display.
-     */
-    public static boolean forceShowDisplayList(@NonNull FeatureFlags flags) {
-        return flags.displayTopologyPaneInDisplayList();
-    }
-
-    static boolean isDisplayAllowed(@NonNull Display display,
-            @NonNull SystemServicesProvider props) {
+    private static boolean isDisplayAllowed(Display display, SystemServicesProvider props) {
         return display.getType() == Display.TYPE_EXTERNAL
                 || display.getType() == Display.TYPE_OVERLAY
                 || isVirtualDisplayAllowed(display, props);
     }
 
-    static boolean isVirtualDisplayAllowed(@NonNull Display display,
+    static boolean isTopologyPaneEnabled(@Nullable Injector injector) {
+        return injector != null && injector.getFlags().displayTopologyPaneInDisplayList();
+    }
+
+    private static boolean isVirtualDisplayAllowed(@NonNull Display display,
             @NonNull SystemServicesProvider properties) {
         var sysProp = properties.getSystemProperty(VIRTUAL_DISPLAY_PACKAGE_NAME_SYSTEM_PROPERTY);
         return !sysProp.isEmpty() && display.getType() == Display.TYPE_VIRTUAL
@@ -346,7 +347,8 @@ public class ExternalDisplaySettingsConfiguration {
     }
 
     static boolean isUseDisplaySettingEnabled(@Nullable Injector injector) {
-        return injector != null && injector.getFlags().resolutionAndEnableConnectedDisplaySetting();
+        return injector != null && injector.getFlags().resolutionAndEnableConnectedDisplaySetting()
+                && !injector.getFlags().displayTopologyPaneInDisplayList();
     }
 
     static boolean isResolutionSettingEnabled(@Nullable Injector injector) {
@@ -355,5 +357,9 @@ public class ExternalDisplaySettingsConfiguration {
 
     static boolean isRotationSettingEnabled(@Nullable Injector injector) {
         return injector != null && injector.getFlags().rotationConnectedDisplaySetting();
+    }
+
+    static boolean isDisplaySizeSettingEnabled(@Nullable Injector injector) {
+        return injector != null && injector.getFlags().displaySizeConnectedDisplaySetting();
     }
 }

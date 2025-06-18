@@ -23,6 +23,7 @@ import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 
+import static com.android.settings.biometrics.BiometricEnrollActivity.EXTRA_LAUNCH_FACE_ENROLL_FIRST;
 import static com.android.settings.password.ChooseLockSettingsHelper.EXTRA_KEY_FOR_BIOMETRICS;
 import static com.android.settings.password.ChooseLockSettingsHelper.EXTRA_KEY_FOR_FACE;
 import static com.android.settings.password.ChooseLockSettingsHelper.EXTRA_KEY_FOR_FINGERPRINT;
@@ -39,6 +40,7 @@ import android.hardware.face.FaceManager;
 import android.hardware.face.FaceSensorPropertiesInternal;
 import android.hardware.fingerprint.FingerprintManager;
 import android.hardware.fingerprint.FingerprintSensorPropertiesInternal;
+import android.os.Bundle;
 import android.os.UserHandle;
 import android.provider.Settings;
 
@@ -51,8 +53,8 @@ import androidx.test.filters.MediumTest;
 import com.android.internal.widget.LockPatternChecker;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.internal.widget.LockscreenCredential;
-import com.android.settings.biometrics.face.FaceEnrollIntroduction;
-import com.android.settings.biometrics.fingerprint.FingerprintEnrollIntroduction;
+import com.android.settings.biometrics.face.FaceEnroll;
+import com.android.settings.biometrics.fingerprint.FingerprintEnroll;
 import com.android.settings.password.ChooseLockGeneric;
 import com.android.settings.password.ChooseLockSettingsHelper;
 import com.android.settings.password.ConfirmLockPassword;
@@ -145,7 +147,7 @@ public class BiometricEnrollActivityTest {
         assumeTrue(mHasFace || mHasFingerprint);
 
         setPin();
-        final Intent intent = getIntent(true /* useInternal */);
+        final Intent intent = getIntent(true /* useInternal */, null);
         LockPatternChecker.verifyCredential(new LockPatternUtils(mContext),
                 LockscreenCredential.createPin(TEST_PIN), UserHandle.myUserId(),
                 LockPatternUtils.VERIFY_FLAG_REQUEST_GK_PW_HANDLE, (response, timeoutMs) -> {
@@ -157,8 +159,28 @@ public class BiometricEnrollActivityTest {
         try (ActivityScenario<BiometricEnrollActivity> scenario =
                      ActivityScenario.launch(intent)) {
             intended(hasComponent(mHasFace && !mHasFingerprint
-                    ? FaceEnrollIntroduction.class.getName()
-                    : FingerprintEnrollIntroduction.class.getName()));
+                    ? FaceEnroll.class.getName()
+                    : FingerprintEnroll.class.getName()));
+        }
+    }
+
+    @Test
+    public void launchWithPinAndPwHandle_confirmsPin_firstEnrollmentIsFace() throws Exception {
+        assumeTrue(mHasFace && mHasFingerprint);
+
+        setPin();
+        final Intent intent = getFaceEnrollFirstIntent();
+        LockPatternChecker.verifyCredential(new LockPatternUtils(mContext),
+                LockscreenCredential.createPin(TEST_PIN), UserHandle.myUserId(),
+                LockPatternUtils.VERIFY_FLAG_REQUEST_GK_PW_HANDLE, (response, timeoutMs) -> {
+                    assertThat(response.containsGatekeeperPasswordHandle()).isTrue();
+                    intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_GK_PW_HANDLE,
+                            response.getGatekeeperPasswordHandle());
+                }).get();
+
+        try (ActivityScenario<BiometricEnrollActivity> scenario =
+                     ActivityScenario.launch(intent)) {
+            intended(hasComponent(FaceEnroll.class.getName()));
         }
     }
 
@@ -184,13 +206,22 @@ public class BiometricEnrollActivityTest {
     }
 
     private Intent getIntent() {
-        return getIntent(false /* useInternal */);
+        return getIntent(false /* useInternal */, null);
     }
 
-    private Intent getIntent(boolean useInternal) {
+    private Intent getFaceEnrollFirstIntent() {
+        final Bundle bundle = new Bundle();
+        bundle.putBoolean(EXTRA_LAUNCH_FACE_ENROLL_FIRST, true);
+        return getIntent(true /* useInternal */, bundle);
+    }
+
+    private Intent getIntent(boolean useInternal, Bundle bundle) {
         final Intent intent = new Intent(mContext, useInternal
                 ? BiometricEnrollActivity.InternalActivity.class : BiometricEnrollActivity.class);
         intent.setAction(ACTION_BIOMETRIC_ENROLL);
+        if (bundle != null && !bundle.isEmpty()) {
+            intent.putExtras(bundle);
+        }
         return intent;
     }
 

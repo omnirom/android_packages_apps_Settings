@@ -31,6 +31,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.PowerManager;
 
@@ -98,6 +99,7 @@ public class DarkModeScheduleSelectorControllerTest {
         mPreference.setEntryValues(new CharSequence[]{"never", "auto", "custom"});
         doNothing().when(mPreference).setValueIndex(anyInt());
         when(mLocationManager.isLocationEnabled()).thenReturn(true);
+        when(mLocationManager.getLastLocation()).thenReturn(new Location("mock"));
         when(mScreen.findPreference(anyString())).thenReturn(mPreference);
         when(mUiService.setNightModeActivated(anyBoolean())).thenReturn(true);
         mController = new DarkModeScheduleSelectorController(mContext, mPreferenceKey);

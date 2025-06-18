@@ -78,7 +78,7 @@ open class SystemUpdatePreferenceController(context: Context, preferenceKey: Str
 
         val status = updateInfo.getInt(SystemUpdateManager.KEY_STATUS)
         if (status == SystemUpdateManager.STATUS_UNKNOWN) {
-            Log.d(TAG, "Update statue unknown")
+            Log.d(TAG, "Update status unknown")
         }
         when (status) {
             SystemUpdateManager.STATUS_WAITING_DOWNLOAD,

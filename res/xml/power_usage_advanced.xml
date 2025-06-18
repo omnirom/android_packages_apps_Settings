@@ -21,18 +21,11 @@
     android:title="@string/advanced_battery_title"
     settings:keywords="@string/keywords_battery_usage">
 
-    <PreferenceCategory
-        android:key="battery_tips_category"
-        android:layout="@layout/preference_category_no_label"
+    <com.android.settingslib.widget.BannerMessagePreference
+        android:key="battery_tips_card"
         settings:controller=
             "com.android.settings.fuelgauge.batteryusage.BatteryTipsController"
-        settings:isPreferenceVisible="false">
-
-        <com.android.settings.widget.TipCardPreference
-            android:key="battery_tips_card"
-            settings:isPreferenceVisible="false" />
-
-    </PreferenceCategory>
+        settings:isPreferenceVisible="false" />
 
     <com.android.settings.fuelgauge.batteryusage.BatteryHistoryPreference
         android:key="battery_chart"

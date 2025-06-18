@@ -29,8 +29,9 @@ import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.ProvidePreferenceScreen
 import com.android.settingslib.metadata.preferenceHierarchy
 import com.android.settingslib.preference.PreferenceScreenCreator
+import com.android.settingslib.widget.SettingsThemeHelper.isExpressiveTheme
 
-@ProvidePreferenceScreen
+@ProvidePreferenceScreen(DisplayScreen.KEY)
 open class DisplayScreen :
     PreferenceScreenCreator, PreferenceAvailabilityProvider, PreferenceIconProvider {
     override val key: String
@@ -41,6 +42,7 @@ open class DisplayScreen :
 
     override fun getIcon(context: Context) =
         when {
+            isExpressiveTheme(context) -> R.drawable.ic_homepage_display
             Flags.homepageRevamp() -> R.drawable.ic_settings_display_filled
             else -> R.drawable.ic_settings_display_white
         }
@@ -52,7 +54,7 @@ open class DisplayScreen :
     override fun fragmentClass() = DisplaySettings::class.java
 
     override fun getPreferenceHierarchy(context: Context) =
-        preferenceHierarchy(this) {
+        preferenceHierarchy(context, this) {
             +BrightnessLevelPreference()
             +AutoBrightnessScreen.KEY
             +LockScreenPreferenceScreen.KEY

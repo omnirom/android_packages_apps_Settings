@@ -23,7 +23,6 @@ import android.app.settings.SettingsEnums;
 import android.content.Context;
 
 import com.android.settings.R;
-import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.widget.PreferenceCategoryController;
 import com.android.settingslib.core.AbstractPreferenceController;
@@ -33,7 +32,7 @@ import java.util.List;
 
 /** Accessibility settings for pointer and touchpad. */
 @SearchIndexable(forTarget = SearchIndexable.ALL & ~SearchIndexable.ARC)
-public class PointerTouchpadFragment extends DashboardFragment {
+public class PointerTouchpadFragment extends InputDeviceDashboardFragment {
 
     private static final String TAG = "PointerTouchpadFragment";
 
@@ -80,4 +79,9 @@ public class PointerTouchpadFragment extends DashboardFragment {
                     return buildPreferenceControllers(context);
                 }
             };
+
+    @Override
+    protected boolean needToFinishEarly() {
+        return isMouseDetached() && isTouchpadDetached();
+    }
 }

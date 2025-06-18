@@ -25,12 +25,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.settings.R;
 
 import com.google.android.setupcompat.template.FooterBarMixin;
 import com.google.android.setupdesign.GlifPreferenceLayout;
+import com.google.android.setupdesign.util.ThemeHelper;
 
 public class ToggleScreenMagnificationPreferenceFragmentForSetupWizard
         extends ToggleScreenMagnificationPreferenceFragment {
@@ -58,6 +60,14 @@ public class ToggleScreenMagnificationPreferenceFragmentForSetupWizard
         }
 
         hidePreferenceSettingComponents();
+    }
+
+    @Override
+    protected RecyclerView.Adapter onCreateAdapter(PreferenceScreen preferenceScreen) {
+        if (ThemeHelper.shouldApplyGlifExpressiveStyle(getContext())) {
+            return new PreferenceAdapterInSuw(preferenceScreen);
+        }
+        return super.onCreateAdapter(preferenceScreen);
     }
 
     /**

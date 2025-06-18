@@ -35,18 +35,13 @@
             settings:userRestriction="no_config_brightness"/>
 
         <com.android.settingslib.PrimarySwitchPreference
-            android:key="screen_brightness_mode"
+            android:key="@string/preference_key_auto_brightness"
             android:title="@string/auto_brightness_title"
             android:fragment="com.android.settings.display.AutoBrightnessSettings"
             settings:useAdminDisabledSummary="true"
             settings:userRestriction="no_config_brightness"
             settings:controller="com.android.settings.display.AutoBrightnessPreferenceController" />
 
-        <SwitchPreferenceCompat
-            android:key="even_dimmer_activated"
-            android:title="@string/even_dimmer_display_title"
-            android:summary="@string/even_dimmer_display_summary"
-            settings:controller="com.android.settings.display.EvenDimmerPreferenceController"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -94,6 +89,12 @@
             android:persistent="false"
             android:title="@string/accessibility_text_reading_options_title"
             settings:controller="com.android.settings.accessibility.TextReadingFragmentForDisplaySettingsController"/>
+
+        <Preference
+            android:key="widgets_on_lockscreen"
+            android:title="@string/widgets_on_lockscreen_title"
+            android:fragment="com.android.settings.communal.WidgetsOnLockscreenFragment"
+            settings:controller="com.android.settings.display.WidgetsOnLockscreenPreferenceController"/>
     </PreferenceCategory>
 
     <PreferenceCategory

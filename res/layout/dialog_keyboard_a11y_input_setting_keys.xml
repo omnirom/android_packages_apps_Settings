@@ -15,118 +15,179 @@
   limitations under the License.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center_horizontal"
-              android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/input_setting_keys_dialog_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="20sp"
-        android:gravity="center_horizontal"
-        android:textColor="?android:attr/textColorPrimary"
-        android:fontFamily="@*android:string/config_headlineFontFamilyMedium"
-    />
-
-    <TextView
-        android:id="@+id/input_setting_keys_dialog_subtitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="26dp"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:textColor="?android:attr/textColorSecondary"
-    />
-
-    <RadioGroup
-        android:id="@+id/input_setting_keys_value_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp">
-
-        <RadioButton
-            android:id="@+id/input_setting_keys_value_200"
-            android:text="@string/input_setting_keys_dialog_option_200"
-            android:paddingStart="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
-            android:background="@null"/>
-        <RadioButton
-            android:id="@+id/input_setting_keys_value_400"
-            android:text="@string/input_setting_keys_dialog_option_400"
-            android:paddingStart="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
-            android:layout_marginTop="12dp"
-            android:background="@null"/>
-        <RadioButton
-            android:id="@+id/input_setting_keys_value_600"
-            android:text="@string/input_setting_keys_dialog_option_600"
-            android:paddingStart="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
-            android:layout_marginTop="12dp"
-            android:background="@null"/>
-
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:androidprv="http://schemas.android.com/apk/prv/res/android"
+    android:id="@+id/input_keys_dialog_scroll_view"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
         <LinearLayout
-            android:orientation="horizontal"
+            android:id="@+id/modifier_key_fragment_container"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/input_setting_keys_dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="12dp">
+            android:layout_marginTop="16dp"
+            android:textSize="20sp"
+            android:gravity="center_horizontal"
+            android:textColor="?android:attr/textColorPrimary"
+            android:fontFamily="@*android:string/config_headlineFontFamilyMedium"
+        />
+
+        <TextView
+            android:id="@+id/input_setting_keys_dialog_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="26dp"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textColor="?android:attr/textColorSecondary"
+        />
+
+        <RadioGroup
+            android:id="@+id/input_setting_keys_value_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp">
+
             <RadioButton
-                android:id="@+id/input_setting_keys_value_custom"
+                android:id="@+id/input_setting_keys_value_200"
+                android:text="@string/input_setting_keys_dialog_option_200"
                 android:paddingStart="12dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="start|center_vertical"
                 android:background="@null"/>
+            <RadioButton
+                android:id="@+id/input_setting_keys_value_400"
+                android:text="@string/input_setting_keys_dialog_option_400"
+                android:paddingStart="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginTop="6dp"
+                android:background="@null"/>
+            <RadioButton
+                android:id="@+id/input_setting_keys_value_600"
+                android:text="@string/input_setting_keys_dialog_option_600"
+                android:paddingStart="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginTop="6dp"
+                android:background="@null"/>
+
             <LinearLayout
-                android:id="@+id/input_setting_keys_custom_value_option"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:paddingEnd="16dp">
-                <TextView
-                    android:id="@+id/input_setting_keys_value_custom_title"
-                    android:text="@string/input_setting_keys_custom_title"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"/>
-                <TextView
-                    android:id="@+id/input_setting_keys_value_custom_value"
-                    android:text="@string/input_setting_keys_custom_value"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                android:layout_marginVertical="6dp">
+                <RadioButton
+                    android:id="@+id/input_setting_keys_value_custom"
+                    android:paddingStart="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginTop="8dp"
-                    android:visibility="gone"/>
-                <SeekBar
-                    android:id="@+id/input_setting_keys_value_custom_slider"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="36dp"
-                    android:min="1"
-                    android:max="50"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginTop="8dp"
-                    android:visibility="gone"
+                    android:contentDescription="@string/input_setting_keys_custom_title"
                     android:background="@null"/>
+                <LinearLayout
+                    android:id="@+id/input_setting_keys_custom_value_option"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:paddingEnd="16dp">
+                    <TextView
+                        android:id="@+id/input_setting_keys_value_custom_title"
+                        android:text="@string/input_setting_keys_custom_title"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"/>
+                    <TextView
+                        android:id="@+id/input_setting_keys_value_custom_value"
+                        android:text="@string/input_setting_keys_custom_value"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="8dp"
+                        android:visibility="gone"/>
+                    <LinearLayout
+                        android:id="@+id/input_setting_keys_custom_seekbar_layout"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingEnd="36dp">
+                        <ImageView
+                            android:layout_marginTop="8dp"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:tint="@androidprv:color/materialColorPrimary"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_remove_24dp" />
+                        <SeekBar
+                            android:id="@+id/input_setting_keys_value_custom_slider"
+                            style="@android:style/Widget.Material.SeekBar"
+                            android:min="1"
+                            android:max="50"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="8dp" />
+                        <ImageView
+                            android:layout_marginTop="8dp"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:tint="@androidprv:color/materialColorPrimary"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_add_24dp" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </RadioGroup>
+        </RadioGroup>
 
-</LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="6dp">
+
+            <Button
+                android:id="@+id/cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:paddingVertical="14dp"
+                android:layout_toStartOf="@+id/done_button"
+                style="@style/SettingsLibActionButton"
+                android:text="@string/cancel"/>
+
+            <Button
+                android:id="@+id/done_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginEnd="8dp"
+                android:layout_alignParentEnd="true"
+                android:paddingVertical="14dp"
+                style="@style/SettingsLibActionButton"
+                android:text="@string/done"/>
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

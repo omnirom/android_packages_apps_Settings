@@ -135,7 +135,7 @@ public class PrivateDnsPreferenceController extends BasePreferenceController
                                 com.android.settingslib.R.string.private_dns_mode_opportunistic);
             case PRIVATE_DNS_MODE_PROVIDER_HOSTNAME:
                 return dnsesResolved
-                        ? PrivateDnsModeDialogPreference.getHostnameFromSettings(cr)
+                        ? ConnectivitySettingsManager.getPrivateDnsHostname(mContext)
                         : res.getString(
                                 com.android.settingslib.R.string.private_dns_mode_provider_failure);
         }

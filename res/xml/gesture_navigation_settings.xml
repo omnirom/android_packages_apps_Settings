@@ -24,6 +24,17 @@
     settings:keywords="@string/keywords_gesture_navigation_settings">
 
     <PreferenceCategory
+        android:persistent="false">
+
+        <com.android.settingslib.widget.ButtonPreference
+            android:key="assistant_gesture_navigation_tutorial"
+            android:title="@string/gesture_navigation_tutorial_title"
+            android:icon="@drawable/tile_icon_show_taps"
+            settings:buttonPreferenceSize="normal"
+            settings:buttonPreferenceType="filled" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="assistant_gesture_category"
         android:persistent="false"
         android:title="@string/assistant_gesture_category_title">

@@ -15,10 +15,19 @@
  */
 package com.android.settings.network;
 
+import static android.platform.test.flag.junit.SetFlagsRule.DefaultInitValueType.DEVICE_DEFAULT;
+
+import static com.android.settings.flags.Flags.FLAG_CATALYST;
+import static com.android.settings.network.AirplaneModePreferenceController.REQUEST_CODE_EXIT_ECM;
+
 import static com.google.common.truth.Truth.assertThat;
+
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 import android.app.Instrumentation;
 import android.content.Context;
+import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.SearchIndexableResource;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -28,21 +37,29 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.android.settingslib.drawer.CategoryKey;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class NetworkDashboardFragmentTest {
 
-    private Context mContext;
+    @Rule
+    public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule(DEVICE_DEFAULT);
+    @Spy
+    private Context mContext = ApplicationProvider.getApplicationContext();
 
     private NetworkDashboardFragment mFragment;
 
     @Before
     public void setUp() {
-        mContext = ApplicationProvider.getApplicationContext();
         final Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
 
         instrumentation.runOnMainSync(() -> {
@@ -64,5 +81,14 @@ public class NetworkDashboardFragmentTest {
 
         assertThat(indexRes).hasSize(1);
         assertThat(indexRes.get(0).xmlResId).isEqualTo(mFragment.getPreferenceScreenResId());
+    }
+
+    @Test
+    public void onActivityResult_catalystIsEnabled_doNotCrash() {
+        mSetFlagsRule.enableFlags(FLAG_CATALYST);
+        NetworkDashboardFragment spyFragment = spy(mFragment);
+        when(spyFragment.getContext()).thenReturn(mContext);
+
+        spyFragment.onActivityResult(REQUEST_CODE_EXIT_ECM, 0, null);
     }
 }

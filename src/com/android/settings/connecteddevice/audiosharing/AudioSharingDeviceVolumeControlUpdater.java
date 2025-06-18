@@ -31,7 +31,6 @@ import com.android.settings.connecteddevice.DevicePreferenceCallback;
 import com.android.settingslib.bluetooth.BluetoothUtils;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
-import com.android.settingslib.bluetooth.VolumeControlProfile;
 
 public class AudioSharingDeviceVolumeControlUpdater extends BluetoothDeviceUpdater
         implements Preference.OnPreferenceClickListener {
@@ -42,7 +41,6 @@ public class AudioSharingDeviceVolumeControlUpdater extends BluetoothDeviceUpdat
     static final String PREF_KEY_PREFIX = "audio_sharing_volume_control_";
 
     @Nullable private final LocalBluetoothManager mBtManager;
-    @Nullable private final VolumeControlProfile mVolumeControl;
 
     public AudioSharingDeviceVolumeControlUpdater(
             Context context,
@@ -50,10 +48,6 @@ public class AudioSharingDeviceVolumeControlUpdater extends BluetoothDeviceUpdat
             int metricsCategory) {
         super(context, devicePreferenceCallback, metricsCategory);
         mBtManager = Utils.getLocalBluetoothManager(context);
-        mVolumeControl =
-                mBtManager == null
-                        ? null
-                        : mBtManager.getProfileManager().getVolumeControlProfile();
     }
 
     @Override
@@ -62,7 +56,8 @@ public class AudioSharingDeviceVolumeControlUpdater extends BluetoothDeviceUpdat
         if (isDeviceConnected(cachedDevice) && isDeviceInCachedDevicesList(cachedDevice)) {
             // If device is LE audio device and in a sharing session on current sharing device,
             // it would show in volume control group.
-            if (cachedDevice.isConnectedLeAudioDevice()
+            if ((cachedDevice.isConnectedLeAudioDevice()
+                    || cachedDevice.hasConnectedLeAudioMemberDevice())
                     && BluetoothUtils.isBroadcasting(mBtManager)
                     && BluetoothUtils.hasConnectedBroadcastSource(cachedDevice, mBtManager)) {
                 isFilterMatched = true;
@@ -99,6 +94,40 @@ public class AudioSharingDeviceVolumeControlUpdater extends BluetoothDeviceUpdat
     }
 
     @Override
+    public void refreshPreference() {
+        mPreferenceMap.forEach((key, preference) -> {
+            if (isDeviceOfMapInCachedDevicesList(key)) {
+                ((AudioSharingDeviceVolumePreference) preference).onPreferenceAttributesChanged();
+            } else {
+                // Remove staled preference.
+                Log.d(TAG, "removePreference key: " + key.getAnonymizedAddress());
+                removePreference(key);
+            }
+        });
+    }
+
+    @Override
+    protected void removePreference(BluetoothDevice device) {
+        if (mPreferenceMap.containsKey(device)) {
+            if (mPreferenceMap.get(device) instanceof AudioSharingDeviceVolumePreference pref) {
+                BluetoothDevice prefDevice = pref.getCachedDevice().getDevice();
+                // For CSIP device, when it {@link CachedBluetoothDevice}#switchMemberDeviceContent,
+                // it will change its mDevice and lead to the hashcode change for this preference.
+                // This will cause unintended remove preference, see b/394765052
+                if (device.equals(prefDevice) || !mPreferenceMap.containsKey(prefDevice)) {
+                    mDevicePreferenceCallback.onDeviceRemoved(pref);
+                } else {
+                    Log.w(TAG, "Inconsistent key and preference when removePreference");
+                }
+                mPreferenceMap.remove(device);
+            } else {
+                mDevicePreferenceCallback.onDeviceRemoved(mPreferenceMap.get(device));
+                mPreferenceMap.remove(device);
+            }
+        }
+    }
+
+    @Override
     protected String getPreferenceKeyPrefix() {
         return PREF_KEY_PREFIX;
     }
@@ -120,7 +149,4 @@ public class AudioSharingDeviceVolumeControlUpdater extends BluetoothDeviceUpdat
 
     @Override
     protected void launchDeviceDetails(Preference preference) {}
-
-    @Override
-    public void refreshPreference() {}
 }

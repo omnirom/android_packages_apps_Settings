@@ -27,6 +27,7 @@ import com.android.settings.core.TogglePreferenceController;
 /**
  * Toggle for media control resumption on lock screen.
  */
+// LINT.IfChange
 public class MediaControlsLockScreenPreferenceController extends TogglePreferenceController {
     public MediaControlsLockScreenPreferenceController(Context context, String key) {
         super(context, key);
@@ -56,3 +57,4 @@ public class MediaControlsLockScreenPreferenceController extends TogglePreferenc
         return R.string.menu_key_sound;
     }
 }
+// LINT.ThenChange(MediaControlsLockScreenSwitchPreference.kt)

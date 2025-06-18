@@ -23,6 +23,8 @@ import static android.content.pm.LauncherApps.ShortcutQuery.FLAG_MATCH_PINNED_BY
 
 import static com.android.server.notification.Flags.notificationHideUnusedChannels;
 
+import android.annotation.FlaggedApi;
+import android.app.Flags;
 import android.app.INotificationManager;
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
@@ -53,6 +55,7 @@ import android.text.format.DateUtils;
 import android.util.IconDrawableFactory;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
 import com.android.internal.util.CollectionUtils;
@@ -65,6 +68,7 @@ import com.android.settingslib.utils.StringUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -102,6 +106,9 @@ public class NotificationBackend {
         row.blockedChannelCount = getBlockedChannelCount(row.pkg, row.uid);
         row.channelCount = getChannelCount(row.pkg, row.uid);
         recordAggregatedUsageEvents(context, row);
+        if (Flags.uiRichOngoing()) {
+            row.canBePromoted = canBePromoted(row.pkg, row.uid);
+        }
         return row;
     }
 
@@ -365,6 +372,20 @@ public class NotificationBackend {
         }
     }
 
+    /**
+     * Returns a set of all apps that have any notification channels (not including deleted ones).
+     */
+    @FlaggedApi(Flags.FLAG_NM_BINDER_PERF_GET_APPS_WITH_CHANNELS)
+    public @NonNull Set<String> getPackagesWithAnyChannels(int userId) {
+        try {
+            List<String> packages = sINM.getPackagesWithAnyChannels(userId);
+            return new HashSet<>(packages);
+        } catch (Exception e) {
+            Log.w(TAG, "Error calling NoMan", e);
+            return Collections.EMPTY_SET;
+        }
+    }
+
     public void updateChannel(String pkg, int uid, NotificationChannel channel) {
         try {
             sINM.updateNotificationChannelForPackage(pkg, uid, channel);
@@ -434,7 +455,7 @@ public class NotificationBackend {
         }
     }
 
-    public List<String> getAssistantAdjustments(String pkg) {
+    public List<String> getAllowedAssistantAdjustments(String pkg) {
         try {
             return sINM.getAllowedAssistantAdjustments(pkg);
         } catch (Exception e) {
@@ -685,6 +706,37 @@ public class NotificationBackend {
         }
     }
 
+    public boolean isNotificationSummarizationSupported() {
+        try {
+            return !sINM.getUnsupportedAdjustmentTypes().contains(Adjustment.KEY_SUMMARIZATION);
+        } catch (Exception e) {
+            Log.w(TAG, "Error calling NoMan", e);
+        }
+        return false;
+    }
+
+    public boolean isNotificationSummarizationEnabled(Context context) {
+        try {
+            return sINM.getAllowedAssistantAdjustments(context.getPackageName())
+                    .contains(Adjustment.KEY_SUMMARIZATION);
+        } catch (Exception e) {
+            Log.w(TAG, "Error calling NoMan", e);
+        }
+        return false;
+    }
+
+    public void setNotificationSummarizationEnabled(boolean enabled) {
+        try {
+            if (enabled) {
+                sINM.allowAssistantAdjustment(Adjustment.KEY_SUMMARIZATION);
+            } else {
+                sINM.disallowAssistantAdjustment(Adjustment.KEY_SUMMARIZATION);
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "Error calling NoMan", e);
+        }
+    }
+
     public boolean isBundleTypeApproved(@Adjustment.Types int type) {
         try {
             int[] approved = sINM.getAllowedAdjustmentKeyTypes();
@@ -699,9 +751,68 @@ public class NotificationBackend {
         return false;
     }
 
+    public Set<Integer> getAllowedBundleTypes() {
+        try {
+            Set<Integer> allowed = new HashSet<>();
+            for (int type : sINM.getAllowedAdjustmentKeyTypes()) {
+                allowed.add(type);
+            }
+            return allowed;
+        } catch (Exception e) {
+            Log.w(TAG, "Error calling NoMan", e);
+            return new HashSet<>();
+        }
+    }
+
     public void setBundleTypeState(@Adjustment.Types int type, boolean enabled) {
         try {
             sINM.setAssistantAdjustmentKeyTypeState(type, enabled);
+        } catch (Exception e) {
+            Log.w(TAG, "Error calling NoMan", e);
+        }
+    }
+
+    /**
+     * Retrieves whether the app with given package and uid is permitted to post promoted
+     * notifications.
+     */
+    public boolean canBePromoted(String pkg, int uid) {
+        try {
+            return sINM.appCanBePromoted(pkg, uid);
+        } catch (Exception e) {
+            Log.w(TAG, "Error calling NoMan", e);
+            return false;
+        }
+    }
+
+    /**
+     * Sets whether the app with given package and uid is permitted to post promoted notifications.
+     */
+    public void setCanBePromoted(String pkg, int uid, boolean allowed) {
+        // We shouldn't get here with the flag off, but just in case, do nothing.
+        if (!Flags.uiRichOngoing()) {
+            Log.wtf(TAG, "tried to setCanBePromoted without flag on");
+            return;
+        }
+        try {
+            sINM.setCanBePromoted(pkg, uid, allowed, /* fromUser= */ true);
+        } catch (Exception e) {
+            Log.w(TAG, "Error calling NoMan", e);
+        }
+    }
+
+    public @NonNull String[] getAdjustmentDeniedPackages(String key) {
+        try {
+            return sINM.getAdjustmentDeniedPackages(key);
+        } catch (Exception e) {
+            Log.w(TAG, "Error calling NoMan", e);
+            return new String[]{};
+        }
+    }
+
+    public @NonNull void setAdjustmentSupportedForPackage(String key, String pkg, boolean enabled) {
+        try {
+            sINM.setAdjustmentSupportedForPackage(key, pkg, enabled);
         } catch (Exception e) {
             Log.w(TAG, "Error calling NoMan", e);
         }
@@ -748,5 +859,6 @@ public class NotificationBackend {
         public Map<String, NotificationsSentState> sentByChannel;
         public NotificationsSentState sentByApp;
         public boolean showAllChannels = true;
+        public boolean canBePromoted;
     }
 }

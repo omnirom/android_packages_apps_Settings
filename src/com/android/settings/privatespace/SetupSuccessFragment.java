@@ -49,6 +49,8 @@ import java.util.List;
 public class SetupSuccessFragment extends InstrumentedFragment {
     private static final String TAG = "SetupSuccessFragment";
 
+    private boolean mIsAnimationPlaying = true;
+
     @Override
     public View onCreateView(
             LayoutInflater inflater,
@@ -80,6 +82,9 @@ public class SetupSuccessFragment extends InstrumentedFragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
         LottieAnimationView lottieAnimationView = rootView.findViewById(R.id.lottie_animation);
         LottieColorUtils.applyDynamicColors(getContext(), lottieAnimationView);
+        lottieAnimationView.setOnClickListener(v -> handleAnimationClick(lottieAnimationView));
+        PrivateSpaceAccessibilityUtils.updateAccessibilityActionForAnimation(getContext(),
+                lottieAnimationView, mIsAnimationPlaying);
 
         return rootView;
     }
@@ -140,5 +145,16 @@ public class SetupSuccessFragment extends InstrumentedFragment {
         for (var task : tasks) {
             task.finishAndRemoveTask();
         }
+    }
+
+    private void handleAnimationClick(LottieAnimationView lottieAnimationView) {
+        if (mIsAnimationPlaying) {
+            lottieAnimationView.pauseAnimation();
+        } else {
+            lottieAnimationView.playAnimation();
+        }
+        mIsAnimationPlaying = !mIsAnimationPlaying;
+        PrivateSpaceAccessibilityUtils.updateAccessibilityActionForAnimation(getContext(),
+                lottieAnimationView, mIsAnimationPlaying);
     }
 }

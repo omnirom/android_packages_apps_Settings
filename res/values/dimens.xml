@@ -64,13 +64,13 @@
     <dimen name="actionbar_subsettings_contentInsetStart">72dp</dimen>
 
     <!-- Dashboard image tile size -->
-    <dimen name="dashboard_tile_image_size">36dp</dimen>
+    <dimen name="dashboard_tile_image_size">40dp</dimen>
 
     <!-- Dashboard foreground image size -->
     <dimen name="dashboard_tile_foreground_image_size">24dp</dimen>
 
     <!-- Dashboard foreground image inset (from background edge to foreground edge) -->
-    <dimen name="dashboard_tile_foreground_image_inset">6dp</dimen>
+    <dimen name="dashboard_tile_foreground_image_inset">8dp</dimen>
 
     <!-- Preference icon foreground image inset (from background edge to foreground edge) -->
     <dimen name="preference_icon_foreground_image_inset">12dp</dimen>
@@ -87,6 +87,7 @@
     <dimen name="search_bar_padding_end_two_pane">24dp</dimen>
     <dimen name="search_bar_title_padding_start">-4dp</dimen>
     <dimen name="search_bar_title_padding_start_regular_two_pane">8dp</dimen>
+    <dimen name="search_bar_container_top_padding">8dp</dimen>
 
     <!-- Avatar -->
     <dimen name="avatar_length">48dp</dimen>
@@ -105,6 +106,7 @@
     <dimen name="homepage_preference_icon_padding_start_two_pane">8dp</dimen>
     <dimen name="homepage_preference_text_padding_start">16dp</dimen>
     <dimen name="homepage_preference_text_padding_start_two_pane">24dp</dimen>
+    <dimen name="homepage_preference_text_padding_start_expressive">12dp</dimen>
     <dimen name="homepage_app_bar_corner_radius">32dp</dimen>
     <dimen name="homepage_app_bar_padding_two_pane">6dp</dimen>
     <!-- bottom: search_bar_margin - homepage_app_bar_padding_two_pane -->
@@ -180,23 +182,32 @@
     <dimen name="keyboard_picker_text_size">16sp</dimen>
 
     <!-- Pointer -->
-    <dimen name="pointer_fill_container_height">88dp</dimen>
-    <dimen name="pointer_fill_container_max_width">448dp</dimen>
-    <dimen name="pointer_fill_style_container_padding">32dp</dimen>
-    <dimen name="pointer_fill_style_circle_diameter">56dp</dimen>
-    <dimen name="pointer_fill_style_circle_hover_selected_diameter">52dp</dimen>
-    <dimen name="pointer_fill_style_circle_hover_diameter">56dp</dimen>
-    <dimen name="pointer_fill_style_circle_selected_diameter">50dp</dimen>
-    <dimen name="pointer_fill_style_circle_inner_diameter">40dp</dimen>
-    <dimen name="pointer_fill_style_circle_offset">8dp</dimen>
+    <dimen name="pointer_fill_container_height">80dp</dimen>
+    <dimen name="pointer_fill_container_max_width">344dp</dimen>
+    <dimen name="pointer_fill_style_container_padding">22dp</dimen>
+    <dimen name="pointer_fill_style_target_width">54dp</dimen>
+    <dimen name="pointer_fill_style_circle_diameter">34dp</dimen>
+    <dimen name="pointer_fill_style_circle_outline_diameter">34.5dp</dimen>
+    <dimen name="pointer_fill_style_circle_background_corner_radius">20dp</dimen>
+    <dimen name="pointer_fill_style_circle_background_corner_inner_radius">16dp</dimen>
+    <dimen name="pointer_fill_style_circle_background_outer_diameter">54dp</dimen>
+    <dimen name="pointer_fill_style_circle_background_outer_diameter_less_stroke">52dp</dimen>
+    <dimen name="pointer_fill_style_circle_background_outer_diameter_selected">42dp</dimen>
+    <dimen name="pointer_fill_style_circle_background_outline_offset">1dp</dimen>
+    <dimen name="pointer_fill_style_circle_offset">8.5dp</dimen>
+    <dimen name="pointer_fill_style_circle_offset_selected">9.25dp</dimen>
+    <dimen name="pointer_fill_style_circle_outline_offset">8.25dp</dimen>
+    <dimen name="pointer_fill_style_circle_outline_offset_selected">9dp</dimen>
+    <dimen name="pointer_fill_style_circle_background_offset">7dp</dimen>
+    <dimen name="pointer_fill_style_circle_outline_stroke">1dp</dimen>
+    <dimen name="pointer_fill_style_circle_background_selected_outline_stroke">2dp</dimen>
     <dimen name="pointer_fill_style_circle_padding">16dp</dimen>
-    <dimen name="pointer_fill_style_circle_selected_offset">3dp</dimen>
-    <dimen name="pointer_fill_style_checkmark_selected_padding">14dp</dimen>
-    <dimen name="pointer_fill_style_checkmark_hovered_padding">17dp</dimen>
-    <dimen name="pointer_fill_style_shape_selected_stroke">2dp</dimen>
-    <dimen name="pointer_fill_style_shape_hovered_stroke">4dp</dimen>
+    <dimen name="pointer_fill_style_circle_spacer">6dp</dimen>
+    <dimen name="pointer_fill_style_checkmark_selected_padding">16dp</dimen>
+    <dimen name="pointer_fill_style_checkmark_size">24dp</dimen>
     <dimen name="pointer_stroke_style_padding">8dp</dimen>
     <dimen name="pointer_stroke_style_text_padding">21dp</dimen>
+    <dimen name="pointer_stroke_style_radio_button_height">48dp</dimen>
     <dimen name="pointer_scale_padding">8dp</dimen>
     <item name="pointer_scale_size_start" format="float" type="dimen">1.0</item>
     <item name="pointer_scale_size_end" format="float" type="dimen">2.5</item>
@@ -520,6 +531,7 @@
     <dimen name="contrast_button_horizontal_spacing">16dp</dimen>
 
     <dimen name="audio_streams_qrcode_size">264dp</dimen>
+    <dimen name="audio_streams_qrcode_margin">1.8dp</dimen>
     <dimen name="audio_streams_qrcode_preview_size">300dp</dimen>
     <dimen name="audio_streams_qrcode_preview_radius">30dp</dimen>
     <dimen name="audio_streams_qrcode_scanner_fragment_padding">16dp</dimen>
@@ -542,4 +554,14 @@
 
     <!-- Connected displays -->
     <dimen name="display_topology_pane_margin">24dp</dimen>
+    <dimen name="display_topology_pane_vertical_margin">24dp</dimen>
+    <dimen name="display_block_padding">5dp</dimen>
+    <dimen name="display_block_highlight_width">2dp</dimen>
+    <dimen name="display_block_corner_radius">10dp</dimen>
+
+    <!-- Locale Picker -->
+    <dimen name="locale_picker_dialog_icon_padding">10dp</dimen>
+    <dimen name="locale_picker_dialog_title_padding">16dp</dimen>
+    <dimen name="locale_picker_dialog_message_padding_left_right">24dp</dimen>
+    <dimen name="locale_picker_dialog_message_padding_bottom">32dp</dimen>
 </resources>

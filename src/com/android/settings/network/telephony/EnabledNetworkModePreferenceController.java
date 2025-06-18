@@ -911,15 +911,11 @@ public class EnabledNetworkModePreferenceController extends
 
             // assign current call state so that it helps to show correct preference state even
             // before first onCallStateChanged() by initial registration.
-            if (Flags.enforceTelephonyFeatureMappingForPublicApis()) {
-                try {
-                    mCallState = mTelephonyManager.getCallState(subId);
-                } catch (UnsupportedOperationException e) {
-                    // Device doesn't support FEATURE_TELEPHONY_CALLING
-                    mCallState = TelephonyManager.CALL_STATE_IDLE;
-                }
-            } else {
+            try {
                 mCallState = mTelephonyManager.getCallState(subId);
+            } catch (UnsupportedOperationException e) {
+                // Device doesn't support FEATURE_TELEPHONY_CALLING
+                mCallState = TelephonyManager.CALL_STATE_IDLE;
             }
             mTelephonyManager.registerTelephonyCallback(
                     mContext.getMainExecutor(), mTelephonyCallback);

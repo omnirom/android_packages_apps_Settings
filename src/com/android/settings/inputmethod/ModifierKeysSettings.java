@@ -21,12 +21,11 @@ import android.content.Context;
 import android.util.FeatureFlagUtils;
 
 import com.android.settings.R;
-import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.SearchIndexable;
 
 @SearchIndexable
-public class ModifierKeysSettings extends DashboardFragment {
+public class ModifierKeysSettings extends InputDeviceDashboardFragment {
 
     private static final String TAG = "ModifierKeysSettings";
 
@@ -50,6 +49,11 @@ public class ModifierKeysSettings extends DashboardFragment {
     @Override
     protected int getPreferenceScreenResId() {
         return R.xml.modifier_keys_settings;
+    }
+
+    @Override
+    protected boolean needToFinishEarly() {
+        return isHardKeyboardDetached();
     }
 
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =

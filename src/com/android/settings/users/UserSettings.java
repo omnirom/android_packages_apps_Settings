@@ -18,6 +18,9 @@ package com.android.settings.users;
 
 import static com.android.settingslib.Utils.getColorAttrDefaultColor;
 
+import android.Manifest;
+import android.annotation.Nullable;
+import android.annotation.RequiresPermission;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
@@ -83,6 +86,7 @@ import com.android.settingslib.RestrictedPreference;
 import com.android.settingslib.drawable.CircleFramedDrawable;
 import com.android.settingslib.search.SearchIndexable;
 import com.android.settingslib.search.SearchIndexableRaw;
+import com.android.settingslib.users.CreateUserActivity;
 import com.android.settingslib.users.CreateUserDialogController;
 import com.android.settingslib.users.EditUserInfoController;
 import com.android.settingslib.users.GrantAdminDialogController;
@@ -91,6 +95,7 @@ import com.android.settingslib.utils.ThreadUtils;
 
 import com.google.android.setupcompat.util.WizardManagerHelper;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -171,6 +176,7 @@ public class UserSettings extends SettingsPreferenceFragment
 
     private static final int REQUEST_CHOOSE_LOCK = 10;
     private static final int REQUEST_EDIT_GUEST = 11;
+    private static final int REQUEST_ADD_USER = 12;
 
     static final int RESULT_GUEST_REMOVED = 100;
 
@@ -234,6 +240,8 @@ public class UserSettings extends SettingsPreferenceFragment
     private final ExecutorService mExecutor = Executors.newSingleThreadExecutor();
 
     private CharSequence mPendingUserName;
+    @Nullable
+    private String mPendingUserIconPath;
     private Drawable mPendingUserIcon;
     private boolean mPendingUserIsAdmin;
 
@@ -569,6 +577,14 @@ public class UserSettings extends SettingsPreferenceFragment
         if (requestCode == REQUEST_CHOOSE_LOCK) {
             if (resultCode != Activity.RESULT_CANCELED && hasLockscreenSecurity()) {
                 addUserNow(USER_TYPE_RESTRICTED_PROFILE);
+            }
+        } else if (Flags.placeAddUserDialogWithinActivity() && requestCode == REQUEST_ADD_USER) {
+            if (resultCode == Activity.RESULT_OK) {
+                mPendingUserName = data.getStringExtra(CreateUserActivity.EXTRA_USER_NAME);
+                mPendingUserIsAdmin = data.getBooleanExtra(CreateUserActivity.EXTRA_IS_ADMIN,
+                        false);
+                mPendingUserIconPath = data.getStringExtra(CreateUserActivity.EXTRA_USER_ICON_PATH);
+                addUserNow(USER_TYPE_USER);
             }
         } else if (mGuestUserAutoCreated && requestCode == REQUEST_EDIT_GUEST
                 && resultCode == RESULT_GUEST_REMOVED) {
@@ -921,7 +937,7 @@ public class UserSettings extends SettingsPreferenceFragment
                     getActivity(),
                     this::startActivityForResult,
                     canCreateAdminUser(),
-                    (userName, userIcon, isAdmin) -> {
+                    (userName, userIcon, iconPath, isAdmin) -> {
                         mPendingUserIcon = userIcon;
                         mPendingUserName = userName;
                         mPendingUserIsAdmin = isAdmin;
@@ -1040,6 +1056,8 @@ public class UserSettings extends SettingsPreferenceFragment
         createUser(userType, mAddingUserName);
     }
 
+    @RequiresPermission(allOf = {Manifest.permission.MANAGE_USERS,
+            Manifest.permission.INTERACT_ACROSS_USERS_FULL})
     @VisibleForTesting
     void createUser(final int userType, String userName) {
         Context context = getContext();
@@ -1065,18 +1083,25 @@ public class UserSettings extends SettingsPreferenceFragment
                     mAddingUser = false;
                     mPendingUserIcon = null;
                     mPendingUserName = null;
+                    mPendingUserIconPath = null;
                     onUserCreationFailed();
                     return;
                 }
 
                 Future<?> unusedSettingIconFuture = ThreadUtils.postOnBackgroundThread(() -> {
-                    Drawable newUserIcon = selectedUserIcon;
-                    if (newUserIcon == null) {
-                        newUserIcon = UserIcons.getDefaultUserIcon(resources, user.id, false);
+                    if (Flags.placeAddUserDialogWithinActivity() && mPendingUserIconPath != null) {
+                        Bitmap bitmap = BitmapFactory.decodeFile(mPendingUserIconPath);
+                        mUserManager.setUserIcon(user.id, bitmap);
+                        new File(mPendingUserIconPath).delete();
+                        mPendingUserIconPath = null;
+                    } else {
+                        Drawable newUserIcon = selectedUserIcon;
+                        if (newUserIcon == null) {
+                            newUserIcon = UserIcons.getDefaultUserIcon(resources, user.id, false);
+                        }
+                        mUserManager.setUserIcon(user.id, UserIcons.convertToBitmapAtUserIconSize(
+                                resources, newUserIcon));
                     }
-                    mUserManager.setUserIcon(
-                            user.id, UserIcons.convertToBitmapAtUserIconSize(
-                                    resources, newUserIcon));
                 });
 
                 mPendingUserIcon = null;
@@ -1687,7 +1712,13 @@ public class UserSettings extends SettingsPreferenceFragment
             if (mUserCaps.mCanAddRestrictedProfile) {
                 showDialog(DIALOG_CHOOSE_USER_TYPE);
             } else {
-                onAddUserClicked(USER_TYPE_USER);
+                if (Flags.placeAddUserDialogWithinActivity()) {
+                    startActivityForResult(CreateUserActivity.createIntentForStart(getActivity(),
+                                    canCreateAdminUser(), Utils.FILE_PROVIDER_AUTHORITY),
+                            REQUEST_ADD_USER);
+                } else {
+                    onAddUserClicked(USER_TYPE_USER);
+                }
             }
             return true;
         } else if (pref == mAddSupervisedUser) {

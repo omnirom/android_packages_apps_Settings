@@ -170,7 +170,7 @@ private fun AppInfoSettings(packageInfoPresenter: PackageInfoPresenter) {
             InteractAcrossProfilesDetailsPreference(app)
             AlarmsAndRemindersAppListProvider.InfoPageEntryItem(app)
             WriteSystemPreferencesAppListProvider.InfoPageEntryItem(app)
-            Enable16KbAppCompatPreference(app)
+            Enable16KbAppCompatPreference(app, packageInfoPresenter)
         }
 
         Category(title = stringResource(R.string.app_install_details_group_title)) {

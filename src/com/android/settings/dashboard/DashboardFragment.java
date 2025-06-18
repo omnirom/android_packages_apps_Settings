@@ -48,13 +48,11 @@ import com.android.settings.core.CategoryMixin.CategoryListener;
 import com.android.settings.core.PreferenceControllerListHelper;
 import com.android.settings.flags.Flags;
 import com.android.settings.overlay.FeatureFactory;
-import com.android.settings.restriction.UserRestrictionBindingHelper;
 import com.android.settingslib.PrimarySwitchPreference;
 import com.android.settingslib.core.AbstractPreferenceController;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 import com.android.settingslib.drawer.DashboardCategory;
 import com.android.settingslib.drawer.Tile;
-import com.android.settingslib.preference.PreferenceScreenBindingHelper;
 import com.android.settingslib.preference.PreferenceScreenCreator;
 import com.android.settingslib.search.Indexable;
 
@@ -93,8 +91,6 @@ public abstract class DashboardFragment extends SettingsPreferenceFragment
     private DashboardTilePlaceholderPreferenceController mPlaceholderPreferenceController;
     private boolean mListeningToCategoryChange;
     private List<String> mSuppressInjectedTileKeys;
-
-    private @Nullable UserRestrictionBindingHelper mUserRestrictionBindingHelper;
 
     @Override
     public void onAttach(Context context) {
@@ -181,13 +177,6 @@ public abstract class DashboardFragment extends SettingsPreferenceFragment
             // Upon rotation configuration change we need to update preference states before any
             // editing dialog is recreated (that would happen before onResume is called).
             updatePreferenceStates();
-        }
-        if (isCatalystEnabled()) {
-            PreferenceScreenBindingHelper helper = getPreferenceScreenBindingHelper();
-            if (helper != null) {
-                mUserRestrictionBindingHelper = new UserRestrictionBindingHelper(requireContext(),
-                        helper);
-            }
         }
     }
 
@@ -300,15 +289,6 @@ public abstract class DashboardFragment extends SettingsPreferenceFragment
     }
 
     @Override
-    public void onDestroy() {
-        if (mUserRestrictionBindingHelper != null) {
-            mUserRestrictionBindingHelper.close();
-            mUserRestrictionBindingHelper = null;
-        }
-        super.onDestroy();
-    }
-
-    @Override
     protected abstract int getPreferenceScreenResId();
 
     @Override
@@ -403,10 +383,6 @@ public abstract class DashboardFragment extends SettingsPreferenceFragment
      * Displays resource based tiles.
      */
     private void displayResourceTiles() {
-        final int resId = getPreferenceScreenResId();
-        if (resId <= 0) {
-            return;
-        }
         PreferenceScreen screen;
         PreferenceScreenCreator preferenceScreenCreator = getPreferenceScreenCreator();
         if (preferenceScreenCreator != null) {
@@ -415,8 +391,11 @@ public abstract class DashboardFragment extends SettingsPreferenceFragment
                 removeControllersForHybridMode();
             }
             setPreferenceScreen(screen);
-            updateActivityTitleWithScreenTitle(screen);
         } else {
+            final int resId = getPreferenceScreenResId();
+            if (resId <= 0) {
+                return;
+            }
             addPreferencesFromResource(resId);
             screen = getPreferenceScreen();
         }

@@ -32,6 +32,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+// LINT.IfChange
 @RunWith(AndroidJUnit4.class)
 public class MediaControlsLockScreenPreferenceControllerTest {
 
@@ -87,3 +88,4 @@ public class MediaControlsLockScreenPreferenceControllerTest {
                 Settings.Secure.MEDIA_CONTROLS_LOCK_SCREEN, -1)).isEqualTo(1);
     }
 }
+// LINT.ThenChange(MediaControlsLockScreenSwitchPreferenceTest.kt)

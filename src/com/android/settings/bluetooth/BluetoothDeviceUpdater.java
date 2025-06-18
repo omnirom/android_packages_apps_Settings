@@ -37,9 +37,8 @@ import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Update the bluetooth devices. It gets bluetooth event from {@link LocalBluetoothManager} using
@@ -53,7 +52,7 @@ public abstract class BluetoothDeviceUpdater implements BluetoothCallback,
         LocalBluetoothProfileManager.ServiceListener {
     protected final MetricsFeatureProvider mMetricsFeatureProvider;
     protected final DevicePreferenceCallback mDevicePreferenceCallback;
-    protected final Map<BluetoothDevice, Preference> mPreferenceMap;
+    protected final ConcurrentHashMap<BluetoothDevice, Preference> mPreferenceMap;
     protected Context mContext;
     protected Context mPrefContext;
     @VisibleForTesting
@@ -79,7 +78,7 @@ public abstract class BluetoothDeviceUpdater implements BluetoothCallback,
             int metricsCategory) {
         mContext = context;
         mDevicePreferenceCallback = devicePreferenceCallback;
-        mPreferenceMap = new HashMap<>();
+        mPreferenceMap = new ConcurrentHashMap<>();
         mLocalManager = localManager;
         mMetricsCategory = metricsCategory;
         mMetricsFeatureProvider = FeatureFactory.getFeatureFactory().getMetricsFeatureProvider();
@@ -155,11 +154,13 @@ public abstract class BluetoothDeviceUpdater implements BluetoothCallback,
 
     @Override
     public void onDeviceAdded(CachedBluetoothDevice cachedDevice) {
+        Log.d(getLogTag(), "onDeviceAdded() device: " + cachedDevice.getName());
         update(cachedDevice);
     }
 
     @Override
     public void onDeviceDeleted(CachedBluetoothDevice cachedDevice) {
+        Log.d(getLogTag(), "onDeviceDeleted() device: " + cachedDevice.getName());
         // Used to combine the hearing aid entries just after pairing. Once both the hearing aids
         // get connected and their hiSyncId gets populated, this gets called for one of the
         // 2 hearing aids so that only one entry in the connected devices list will be seen.
@@ -276,10 +277,26 @@ public abstract class BluetoothDeviceUpdater implements BluetoothCallback,
         }
     }
 
-    private void removePreference(BluetoothDevice device) {
+    /**
+     * Remove the {@link Preference} that represents the {@code device}
+     */
+    protected void removePreference(BluetoothDevice device) {
         if (mPreferenceMap.containsKey(device)) {
-            mDevicePreferenceCallback.onDeviceRemoved(mPreferenceMap.get(device));
-            mPreferenceMap.remove(device);
+            if (mPreferenceMap.get(device) instanceof BluetoothDevicePreference preference) {
+                BluetoothDevice prefDevice = preference.getBluetoothDevice().getDevice();
+                // For CSIP device, when it {@link CachedBluetoothDevice}#switchMemberDeviceContent,
+                // it will change its mDevice and lead to the hashcode change for this preference.
+                // This will cause unintended remove preference, see b/394765052
+                if (device.equals(prefDevice) || !mPreferenceMap.containsKey(prefDevice)) {
+                    mDevicePreferenceCallback.onDeviceRemoved(preference);
+                } else {
+                    Log.w(getLogTag(), "Inconsistent key and preference when removePreference");
+                }
+                mPreferenceMap.remove(device);
+            } else {
+                mDevicePreferenceCallback.onDeviceRemoved(mPreferenceMap.get(device));
+                mPreferenceMap.remove(device);
+            }
         }
     }
 
@@ -348,7 +365,7 @@ public abstract class BluetoothDeviceUpdater implements BluetoothCallback,
         return mLocalManager.getCachedDeviceManager().getCachedDevicesCopy().contains(cachedDevice);
     }
 
-    private boolean isDeviceOfMapInCachedDevicesList(BluetoothDevice inputBluetoothDevice) {
+    protected boolean isDeviceOfMapInCachedDevicesList(BluetoothDevice inputBluetoothDevice) {
         Collection<CachedBluetoothDevice> cachedDevices =
                 mLocalManager.getCachedDeviceManager().getCachedDevicesCopy();
         if (cachedDevices == null || cachedDevices.isEmpty()) {

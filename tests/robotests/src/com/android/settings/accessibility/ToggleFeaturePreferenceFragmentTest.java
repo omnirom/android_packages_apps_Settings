@@ -26,6 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,7 +36,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.icu.text.CaseMap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -43,18 +46,21 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.PopupWindow;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
+import androidx.preference.PreferenceViewHolder;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
-import com.android.settings.accessibility.AccessibilityUtil.QuickSettingsTooltipType;
 import com.android.settings.flags.Flags;
+import com.android.settings.testutils.shadow.ShadowAccessibilityManager;
 import com.android.settings.testutils.shadow.ShadowFragment;
+import com.android.settingslib.widget.IllustrationPreference;
 import com.android.settingslib.widget.TopIntroPreference;
 
 import com.google.android.setupcompat.util.WizardManagerHelper;
@@ -65,21 +71,27 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadow.api.Shadow;
 import org.robolectric.shadows.ShadowApplication;
+import org.robolectric.shadows.ShadowLooper;
 
+import java.util.List;
 import java.util.Locale;
 
 /** Tests for {@link ToggleFeaturePreferenceFragment} */
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {
         ShadowFragment.class,
+        ShadowAccessibilityManager.class
 })
 public class ToggleFeaturePreferenceFragmentTest {
+    @Rule
+    public final MockitoRule mocks = MockitoJUnit.rule();
     @Rule
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
@@ -91,17 +103,9 @@ public class ToggleFeaturePreferenceFragmentTest {
             PLACEHOLDER_PACKAGE_NAME + "tile.placeholder";
     private static final ComponentName PLACEHOLDER_TILE_COMPONENT_NAME = new ComponentName(
             PLACEHOLDER_PACKAGE_NAME, PLACEHOLDER_TILE_CLASS_NAME);
-    private static final String PLACEHOLDER_TILE_TOOLTIP_CONTENT =
-            PLACEHOLDER_PACKAGE_NAME + "tooltip_content";
-    private static final String PLACEHOLDER_DIALOG_TITLE = "title";
     private static final String DEFAULT_SUMMARY = "default summary";
     private static final String DEFAULT_DESCRIPTION = "default description";
     private static final String DEFAULT_TOP_INTRO = "default top intro";
-
-    private static final String SOFTWARE_SHORTCUT_KEY =
-            Settings.Secure.ACCESSIBILITY_BUTTON_TARGETS;
-    private static final String HARDWARE_SHORTCUT_KEY =
-            Settings.Secure.ACCESSIBILITY_SHORTCUT_TARGET_SERVICE;
 
     private TestToggleFeaturePreferenceFragment mFragment;
     @Spy
@@ -109,6 +113,7 @@ public class ToggleFeaturePreferenceFragmentTest {
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private PreferenceManager mPreferenceManager;
+    private ShadowAccessibilityManager mShadowAccessibilityManager;
 
     @Mock
     private FragmentActivity mActivity;
@@ -116,10 +121,13 @@ public class ToggleFeaturePreferenceFragmentTest {
     private ContentResolver mContentResolver;
     @Mock
     private PackageManager mPackageManager;
+    @Mock
+    private Resources mResources;
 
     @Before
     public void setUpTestFragment() {
-        MockitoAnnotations.initMocks(this);
+        mShadowAccessibilityManager = Shadow.extract(
+                mContext.getSystemService(AccessibilityManager.class));
 
         mFragment = spy(new TestToggleFeaturePreferenceFragment());
         when(mFragment.getPreferenceManager()).thenReturn(mPreferenceManager);
@@ -127,6 +135,7 @@ public class ToggleFeaturePreferenceFragmentTest {
         when(mFragment.getContext()).thenReturn(mContext);
         when(mFragment.getActivity()).thenReturn(mActivity);
         when(mActivity.getContentResolver()).thenReturn(mContentResolver);
+        when(mActivity.getResources()).thenReturn(mResources);
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
         final PreferenceScreen screen = spy(new PreferenceScreen(mContext, null));
         when(screen.getPreferenceManager()).thenReturn(mPreferenceManager);
@@ -178,10 +187,10 @@ public class ToggleFeaturePreferenceFragmentTest {
     @Test
     public void updateShortcutPreferenceData_hasValueInSettings_assignToVariable() {
         mFragment.mComponentName = PLACEHOLDER_COMPONENT_NAME;
-        putSecureStringIntoSettings(SOFTWARE_SHORTCUT_KEY,
-                PLACEHOLDER_COMPONENT_NAME.flattenToString());
-        putSecureStringIntoSettings(HARDWARE_SHORTCUT_KEY,
-                PLACEHOLDER_COMPONENT_NAME.flattenToString());
+        mShadowAccessibilityManager.setAccessibilityShortcutTargets(
+                SOFTWARE, List.of(PLACEHOLDER_COMPONENT_NAME.flattenToString()));
+        mShadowAccessibilityManager.setAccessibilityShortcutTargets(
+                HARDWARE, List.of(PLACEHOLDER_COMPONENT_NAME.flattenToString()));
 
         mFragment.updateShortcutPreferenceData();
 
@@ -239,6 +248,45 @@ public class ToggleFeaturePreferenceFragmentTest {
         mFragment.initTopIntroPreference();
 
         assertThat(mFragment.getPreferenceScreen().getPreferenceCount()).isEqualTo(0);
+    }
+
+    @Test
+    public void initAnimatedImagePreference_isAnimatable_setContentDescription() {
+        mFragment.mFeatureName = "Test Feature";
+        final View view =
+                LayoutInflater.from(mContext).inflate(
+                        com.android.settingslib.widget.preference.illustration
+                                .R.layout.illustration_preference,
+                        null);
+        IllustrationPreference preference = spy(new IllustrationPreference(mFragment.getContext()));
+        when(preference.isAnimatable()).thenReturn(true);
+        mFragment.initAnimatedImagePreference(mock(Uri.class), preference);
+
+        preference.onBindViewHolder(PreferenceViewHolder.createInstanceForTests(view));
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+        String expectedContentDescription = mFragment.getString(
+                R.string.accessibility_illustration_content_description, mFragment.mFeatureName);
+        assertThat(preference.getContentDescription().toString())
+                .isEqualTo(expectedContentDescription);
+    }
+
+    @Test
+    public void initAnimatedImagePreference_isNotAnimatable_notSetContentDescription() {
+        mFragment.mFeatureName = "Test Feature";
+        final View view =
+                LayoutInflater.from(mContext).inflate(
+                        com.android.settingslib.widget.preference.illustration
+                                .R.layout.illustration_preference,
+                        null);
+        IllustrationPreference preference = spy(new IllustrationPreference(mFragment.getContext()));
+        when(preference.isAnimatable()).thenReturn(false);
+        mFragment.initAnimatedImagePreference(mock(Uri.class), preference);
+
+        preference.onBindViewHolder(PreferenceViewHolder.createInstanceForTests(view));
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+        verify(preference, never()).setContentDescription(any());
     }
 
     @Test
@@ -316,14 +364,6 @@ public class ToggleFeaturePreferenceFragmentTest {
     }
 
     @Test
-    @Config(shadows = ShadowFragment.class)
-    public void showQuickSettingsTooltipIfNeeded_dontShowTooltipView() {
-        mFragment.showQuickSettingsTooltipIfNeeded(QuickSettingsTooltipType.GUIDE_TO_EDIT);
-
-        assertThat(getLatestPopupWindow()).isNull();
-    }
-
-    @Test
     public void getShortcutTypeSummary_shortcutSummaryIsCorrectlySet() {
         final PreferredShortcut userPreferredShortcut = new PreferredShortcut(
                 PLACEHOLDER_COMPONENT_NAME.flattenToString(),
@@ -345,10 +385,6 @@ public class ToggleFeaturePreferenceFragmentTest {
         String summary = mFragment.getShortcutTypeSummary(mContext).toString();
 
         assertThat(summary).isEqualTo(expected);
-    }
-
-    private void putSecureStringIntoSettings(String key, String componentName) {
-        Settings.Secure.putString(mContext.getContentResolver(), key, componentName);
     }
 
     private String getSecureStringFromSettings(String key) {
@@ -381,11 +417,6 @@ public class ToggleFeaturePreferenceFragmentTest {
         @Override
         ComponentName getTileComponentName() {
             return PLACEHOLDER_TILE_COMPONENT_NAME;
-        }
-
-        @Override
-        protected CharSequence getTileTooltipContent(@QuickSettingsTooltipType int type) {
-            return PLACEHOLDER_TILE_TOOLTIP_CONTENT;
         }
 
         @Override

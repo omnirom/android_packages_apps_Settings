@@ -51,10 +51,9 @@ import com.android.settingslib.bluetooth.LocalBluetoothManager;
 import com.android.settingslib.bluetooth.LocalBluetoothProfileManager;
 import com.android.settingslib.bluetooth.VolumeControlProfile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -73,8 +72,9 @@ public class AudioSharingDeviceVolumeGroupController extends AudioSharingBasePre
     private final Executor mExecutor;
     private final ContentObserver mSettingsObserver;
     @Nullable private PreferenceGroup mPreferenceGroup;
-    private List<AudioSharingDeviceVolumePreference> mVolumePreferences = new ArrayList<>();
-    private Map<Integer, Integer> mValueMap = new HashMap<Integer, Integer>();
+    private CopyOnWriteArraySet<AudioSharingDeviceVolumePreference> mVolumePreferences =
+            new CopyOnWriteArraySet<>();
+    private ConcurrentHashMap<Integer, Integer> mValueMap = new ConcurrentHashMap<>();
     private AtomicBoolean mCallbacksRegistered = new AtomicBoolean(false);
 
     @VisibleForTesting
@@ -104,8 +104,8 @@ public class AudioSharingDeviceVolumeGroupController extends AudioSharingBasePre
                                             + finalVolume
                                             + " for "
                                             + device.getAnonymizedAddress());
-                            mContext.getMainExecutor()
-                                    .execute(() -> preference.setProgress(finalVolume));
+                            AudioSharingUtils.postOnMainThread(mContext,
+                                    () -> preference.setProgress(finalVolume));
                             break;
                         }
                     }
@@ -196,7 +196,9 @@ public class AudioSharingDeviceVolumeGroupController extends AudioSharingBasePre
         public void onChange(boolean selfChange) {
             Log.d(TAG, "onChange, fallback device group id has been changed");
             for (AudioSharingDeviceVolumePreference preference : mVolumePreferences) {
-                preference.setOrder(getPreferenceOrderForDevice(preference.getCachedDevice()));
+                int order = getPreferenceOrderForDevice(preference.getCachedDevice());
+                Log.d(TAG, "onChange: set order to " + order + " for " + preference);
+                AudioSharingUtils.postOnMainThread(mContext, () -> preference.setOrder(order));
             }
         }
     }
@@ -240,52 +242,54 @@ public class AudioSharingDeviceVolumeGroupController extends AudioSharingBasePre
 
     @Override
     public void onDeviceAdded(Preference preference) {
-        if (mPreferenceGroup != null) {
-            if (mPreferenceGroup.getPreferenceCount() == 0) {
-                mPreferenceGroup.setVisible(true);
+        if (!(preference instanceof AudioSharingDeviceVolumePreference)) {
+            Log.d(TAG, "Skip onDeviceAdded, invalid preference type");
+            return;
+        }
+        var volumePref = (AudioSharingDeviceVolumePreference) preference;
+        mVolumePreferences.add(volumePref);
+        AudioSharingUtils.postOnMainThread(mContext, () -> {
+            if (mPreferenceGroup != null) {
+                if (mPreferenceGroup.getPreferenceCount() == 0) {
+                    mPreferenceGroup.setVisible(true);
+                }
+                mPreferenceGroup.addPreference(volumePref);
             }
-            mPreferenceGroup.addPreference(preference);
-        }
-        if (preference instanceof AudioSharingDeviceVolumePreference) {
-            var volumePref = (AudioSharingDeviceVolumePreference) preference;
-            CachedBluetoothDevice cachedDevice = volumePref.getCachedDevice();
-            volumePref.setOrder(getPreferenceOrderForDevice(cachedDevice));
-            mVolumePreferences.add(volumePref);
-            if (volumePref.getProgress() > 0) return;
-            int volume = mValueMap.getOrDefault(BluetoothUtils.getGroupId(cachedDevice), -1);
-            // If the volume is invalid, try to get the volume from AudioManager.STREAM_MUSIC
-            int finalVolume = getAudioVolumeIfNeeded(volume);
-            Log.d(
-                    TAG,
-                    "onDeviceAdded: set volume to "
-                            + finalVolume
-                            + " for "
-                            + cachedDevice.getDevice().getAnonymizedAddress());
-            AudioSharingUtils.postOnMainThread(mContext, () -> volumePref.setProgress(finalVolume));
-        }
+        });
+        CachedBluetoothDevice cachedDevice = volumePref.getCachedDevice();
+        String address = cachedDevice.getDevice() == null ? "null"
+                : cachedDevice.getDevice().getAnonymizedAddress();
+        int order = getPreferenceOrderForDevice(cachedDevice);
+        Log.d(TAG, "onDeviceAdded: set order to " + order + " for " + address);
+        AudioSharingUtils.postOnMainThread(mContext, () -> volumePref.setOrder(order));
+        int volume = mValueMap.getOrDefault(BluetoothUtils.getGroupId(cachedDevice), -1);
+        // If the volume is invalid, try to get the volume from AudioManager.STREAM_MUSIC
+        int finalVolume = getAudioVolumeIfNeeded(volume);
+        Log.d(TAG, "onDeviceAdded: set volume to " + finalVolume + " for " + address);
+        AudioSharingUtils.postOnMainThread(mContext, () -> volumePref.setProgress(finalVolume));
     }
 
     @Override
     public void onDeviceRemoved(Preference preference) {
-        if (mPreferenceGroup != null) {
-            mPreferenceGroup.removePreference(preference);
-            if (mPreferenceGroup.getPreferenceCount() == 0) {
-                mPreferenceGroup.setVisible(false);
-            }
+        if (!(preference instanceof AudioSharingDeviceVolumePreference)) {
+            Log.d(TAG, "Skip onDeviceRemoved, invalid preference type");
+            return;
         }
-        if (preference instanceof AudioSharingDeviceVolumePreference) {
-            var volumePref = (AudioSharingDeviceVolumePreference) preference;
-            if (mVolumePreferences.contains(volumePref)) {
-                mVolumePreferences.remove(volumePref);
-            }
-            CachedBluetoothDevice device = volumePref.getCachedDevice();
-            Log.d(
-                    TAG,
-                    "onDeviceRemoved: "
-                            + (device == null
-                                    ? "null"
-                                    : device.getDevice().getAnonymizedAddress()));
+        var volumePref = (AudioSharingDeviceVolumePreference) preference;
+        if (mVolumePreferences.contains(volumePref)) {
+            mVolumePreferences.remove(volumePref);
         }
+        String address = volumePref.getCachedDevice().getDevice() == null ? "null"
+                : volumePref.getCachedDevice().getDevice().getAnonymizedAddress();
+        Log.d(TAG, "onDeviceRemoved: " + address);
+        AudioSharingUtils.postOnMainThread(mContext, () -> {
+            if (mPreferenceGroup != null) {
+                mPreferenceGroup.removePreference(volumePref);
+                if (mPreferenceGroup.getPreferenceCount() == 0) {
+                    mPreferenceGroup.setVisible(false);
+                }
+            }
+        });
     }
 
     @Override
@@ -364,6 +368,7 @@ public class AudioSharingDeviceVolumeGroupController extends AudioSharingBasePre
             mAssistant.registerServiceCallBack(mExecutor, mBroadcastAssistantCallback);
             mVolumeControl.registerCallback(mExecutor, mVolumeControlCallback);
             mBluetoothDeviceUpdater.registerCallback();
+            mBluetoothDeviceUpdater.refreshPreference();
             mContentResolver.registerContentObserver(
                     Settings.Secure.getUriFor(BluetoothUtils.getPrimaryGroupIdUriForBroadcast()),
                     false,
@@ -414,7 +419,8 @@ public class AudioSharingDeviceVolumeGroupController extends AudioSharingBasePre
         int groupId = BluetoothUtils.getGroupId(cachedDevice);
         // The fallback device rank first among the audio sharing device list.
         return (groupId != BluetoothCsipSetCoordinator.GROUP_ID_INVALID
-                && groupId == BluetoothUtils.getPrimaryGroupIdForBroadcast(mContentResolver))
+                && groupId == BluetoothUtils.getPrimaryGroupIdForBroadcast(mContentResolver,
+                mBtManager))
                 ? 0
                 : 1;
     }

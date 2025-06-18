@@ -16,6 +16,8 @@
 
 package com.android.settings.notification.modes;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import android.content.Context;
 import android.service.notification.ZenModeConfig;
 
@@ -24,6 +26,7 @@ import androidx.preference.Preference;
 import androidx.preference.TwoStatePreference;
 
 import com.android.settingslib.notification.modes.ZenMode;
+import com.android.settingslib.notification.modes.ZenModeSchedules;
 import com.android.settingslib.notification.modes.ZenModesBackend;
 
 /**
@@ -40,7 +43,7 @@ class ZenModeExitAtAlarmPreferenceController extends
 
     @Override
     public void updateState(Preference preference, @NonNull ZenMode zenMode) {
-        mSchedule = ZenModeConfig.tryParseScheduleConditionId(zenMode.getRule().getConditionId());
+        mSchedule = checkNotNull(ZenModeSchedules.getTimeSchedule(zenMode));
         ((TwoStatePreference) preference).setChecked(mSchedule.exitAtAlarm);
     }
 

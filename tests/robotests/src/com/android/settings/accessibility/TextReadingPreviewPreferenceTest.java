@@ -49,7 +49,6 @@ import org.robolectric.RobolectricTestRunner;
  */
 @RunWith(RobolectricTestRunner.class)
 public class TextReadingPreviewPreferenceTest {
-
     private TextReadingPreviewPreference mTextReadingPreviewPreference;
     private PreferenceViewHolder mHolder;
     private ViewPager mViewPager;

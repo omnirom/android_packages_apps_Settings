@@ -15,39 +15,58 @@
  */
 package com.android.settings.fuelgauge.batterysaver
 
+import android.Manifest
+import android.app.settings.SettingsEnums.ACTION_BATTERY_SAVER
 import android.content.Context
 import android.os.PowerManager
 import com.android.settings.R
+import com.android.settings.contract.KEY_BATTERY_SAVER
 import com.android.settings.fuelgauge.BatterySaverReceiver
 import com.android.settings.fuelgauge.BatterySaverReceiver.BatterySaverListener
+import com.android.settings.metrics.PreferenceActionMetricsProvider
+import com.android.settingslib.datastore.AbstractKeyedDataObservable
 import com.android.settingslib.datastore.KeyValueStore
-import com.android.settingslib.datastore.NoOpKeyedObservable
+import com.android.settingslib.datastore.Permissions
 import com.android.settingslib.fuelgauge.BatterySaverLogging.SAVER_ENABLED_SETTINGS
 import com.android.settingslib.fuelgauge.BatterySaverUtils
 import com.android.settingslib.fuelgauge.BatteryStatus
 import com.android.settingslib.fuelgauge.BatteryUtils
 import com.android.settingslib.metadata.MainSwitchPreference
-import com.android.settingslib.metadata.PreferenceLifecycleContext
-import com.android.settingslib.metadata.PreferenceLifecycleProvider
+import com.android.settingslib.metadata.PreferenceChangeReason
 import com.android.settingslib.metadata.ReadWritePermit
 import com.android.settingslib.metadata.SensitivityLevel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 // LINT.IfChange
 class BatterySaverPreference :
     MainSwitchPreference(KEY, R.string.battery_saver_master_switch_title),
-    PreferenceLifecycleProvider {
+    PreferenceActionMetricsProvider {
 
-    private var batterySaverReceiver: BatterySaverReceiver? = null
+    override val preferenceActionMetrics: Int
+        get() = ACTION_BATTERY_SAVER
+
+    override fun tags(context: Context) = arrayOf(KEY_BATTERY_SAVER)
 
     override fun storage(context: Context) = BatterySaverStore(context)
 
-    override fun getReadPermit(context: Context, myUid: Int, callingUid: Int) =
+    override fun getReadPermissions(context: Context) = Permissions.EMPTY
+
+    override fun getWritePermissions(context: Context) =
+        Permissions.anyOf(Manifest.permission.DEVICE_POWER, Manifest.permission.POWER_SAVER)
+
+    override fun getReadPermit(context: Context, callingPid: Int, callingUid: Int) =
         ReadWritePermit.ALLOW
 
-    override fun getWritePermit(context: Context, value: Boolean?, myUid: Int, callingUid: Int) =
-        ReadWritePermit.ALLOW
+    override fun getWritePermit(
+        context: Context,
+        value: Boolean?,
+        callingPid: Int,
+        callingUid: Int,
+    ) = ReadWritePermit.ALLOW
 
     override val sensitivityLevel
         get() = SensitivityLevel.NO_SENSITIVITY
@@ -55,34 +74,12 @@ class BatterySaverPreference :
     override fun isEnabled(context: Context) =
         !BatteryStatus(BatteryUtils.getBatteryIntent(context)).isPluggedIn
 
-    override fun onStart(context: PreferenceLifecycleContext) {
-        BatterySaverReceiver(context).apply {
-            batterySaverReceiver = this
-            setBatterySaverListener(
-                object : BatterySaverListener {
-                    override fun onPowerSaveModeChanged() {
-                        context.lifecycleScope.launch {
-                            delay(SWITCH_ANIMATION_DURATION)
-                            context.notifyPreferenceChange(KEY)
-                        }
-                    }
-
-                    override fun onBatteryChanged(pluggedIn: Boolean) =
-                        context.notifyPreferenceChange(KEY)
-                }
-            )
-            setListening(true)
-        }
-    }
-
-    override fun onStop(context: PreferenceLifecycleContext) {
-        batterySaverReceiver?.setListening(false)
-        batterySaverReceiver = null
-    }
-
     @Suppress("UNCHECKED_CAST")
     class BatterySaverStore(private val context: Context) :
-        NoOpKeyedObservable<String>(), KeyValueStore {
+        AbstractKeyedDataObservable<String>(), KeyValueStore, BatterySaverListener {
+        private lateinit var batterySaverReceiver: BatterySaverReceiver
+        private lateinit var scope: CoroutineScope
+
         override fun contains(key: String) = key == KEY
 
         override fun <T : Any> getValue(key: String, valueType: Class<T>) =
@@ -99,6 +96,30 @@ class BatterySaverPreference :
 
         private fun Context.isPowerSaveMode() =
             getSystemService(PowerManager::class.java)?.isPowerSaveMode == true
+
+        override fun onFirstObserverAdded() {
+            scope = CoroutineScope(Dispatchers.Main)
+            batterySaverReceiver =
+                BatterySaverReceiver(context).apply {
+                    setBatterySaverListener(this@BatterySaverStore)
+                    setListening(true)
+                }
+        }
+
+        override fun onLastObserverRemoved() {
+            scope.cancel()
+            batterySaverReceiver.setListening(false)
+        }
+
+        override fun onPowerSaveModeChanged() {
+            scope.launch {
+                delay(SWITCH_ANIMATION_DURATION)
+                notifyChange(KEY, PreferenceChangeReason.VALUE)
+            }
+        }
+
+        override fun onBatteryChanged(pluggedIn: Boolean) =
+            notifyChange(KEY, PreferenceChangeReason.STATE)
     }
 
     companion object {

@@ -74,6 +74,14 @@ class PowerUsageSummaryScreenTest : CatalystScreenTestCase() {
     }
 
     @Test
+    @EnableFlags(com.android.settingslib.widget.theme.flags.Flags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
+    fun getIcon_isExpressiveTheme() {
+        assertThat(preferenceScreenCreator.getIcon(context))
+            .isEqualTo(R.drawable.ic_homepage_battery)
+    }
+
+    @Test
+    @DisableFlags(com.android.settingslib.widget.theme.flags.Flags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
     @EnableFlags(Flags.FLAG_HOMEPAGE_REVAMP)
     fun getIcon_whenHomePageRevampFlagOn() {
         assertThat(preferenceScreenCreator.getIcon(context))

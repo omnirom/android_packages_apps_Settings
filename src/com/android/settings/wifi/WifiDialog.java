@@ -28,6 +28,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.android.settings.R;
+import com.android.settings.wifi.utils.WifiDialogHelper;
 import com.android.settingslib.RestrictedLockUtils;
 import com.android.settingslib.RestrictedLockUtilsInternal;
 import com.android.settingslib.wifi.AccessPoint;
@@ -62,6 +63,7 @@ public class WifiDialog extends AlertDialog implements WifiConfigUiBase,
     private View mView;
     private WifiConfigController mController;
     private boolean mHideSubmitButton;
+    private WifiDialogHelper mDialogHelper;
 
     /**
      * Creates a WifiDialog with no additional style. It displays as a dialog above the current
@@ -115,6 +117,8 @@ public class WifiDialog extends AlertDialog implements WifiConfigUiBase,
         if (mAccessPoint == null) {
             mController.hideForgetButton();
         }
+
+        mDialogHelper = new WifiDialogHelper(this, this, mController.getValidator());
     }
 
     @SuppressWarnings("MissingSuperCall") // TODO: Fix me

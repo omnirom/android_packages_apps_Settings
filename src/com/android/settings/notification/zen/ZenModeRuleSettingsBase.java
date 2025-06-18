@@ -104,16 +104,11 @@ public abstract class ZenModeRuleSettingsBase extends ZenModeSettingsBase {
                         Bundle bundle = new Bundle();
                         bundle.putString(ZenCustomRuleSettings.RULE_ID, mId);
 
-                        // When modes_api flag is on, we skip the radio button screen distinguishing
-                        // between "default" and "custom" and take users directly to the custom
-                        // settings screen.
-                        String destination = ZenCustomRuleSettings.class.getName();
-                        int sourceMetricsCategory = 0;
-                        if (Flags.modesApi()) {
-                            // From ZenRuleCustomPolicyPreferenceController#launchCustomSettings
-                            destination = ZenCustomRuleConfigSettings.class.getName();
-                            sourceMetricsCategory = SettingsEnums.ZEN_CUSTOM_RULE_SOUND_SETTINGS;
-                        }
+                        // Skip the radio button screen distinguishing between "default" and
+                        // "custom" and take users directly to the custom settings screen.
+                        // From ZenRuleCustomPolicyPreferenceController#launchCustomSettings
+                        String destination = ZenCustomRuleConfigSettings.class.getName();
+                        int sourceMetricsCategory = SettingsEnums.ZEN_CUSTOM_RULE_SOUND_SETTINGS;
                         new SubSettingLauncher(mContext)
                                 .setDestination(destination)
                                 .setArguments(bundle)
@@ -165,7 +160,7 @@ public abstract class ZenModeRuleSettingsBase extends ZenModeSettingsBase {
 
     protected void updateScheduleRule(ZenModeConfig.ScheduleInfo schedule) {
         mRule.setConditionId(ZenModeConfig.toScheduleConditionId(schedule));
-        if (Flags.modesApi() && Flags.modesUi()) {
+        if (Flags.modesUi()) {
             mRule.setTriggerDescription(
                     SystemZenRules.getTriggerDescriptionForScheduleTime(mContext, schedule));
         }
@@ -174,7 +169,7 @@ public abstract class ZenModeRuleSettingsBase extends ZenModeSettingsBase {
 
     protected void updateEventRule(ZenModeConfig.EventInfo event) {
         mRule.setConditionId(ZenModeConfig.toEventConditionId(event));
-        if (Flags.modesApi() && Flags.modesUi()) {
+        if (Flags.modesUi()) {
             mRule.setTriggerDescription(
                     SystemZenRules.getTriggerDescriptionForScheduleEvent(mContext, event));
         }

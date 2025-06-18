@@ -16,31 +16,38 @@
 
 package com.android.settings.notification
 
+import android.Manifest.permission.MODIFY_AUDIO_SETTINGS
+import android.Manifest.permission.MODIFY_AUDIO_SETTINGS_PRIVILEGED
+import android.Manifest.permission.MODIFY_PHONE_STATE
+import android.app.settings.SettingsEnums.ACTION_CALL_VOLUME
 import android.content.Context
+import android.content.pm.PackageManager.FEATURE_AUTOMOTIVE
 import android.media.AudioManager
 import android.media.AudioManager.STREAM_BLUETOOTH_SCO
 import android.media.AudioManager.STREAM_VOICE_CALL
 import android.os.UserManager
 import androidx.preference.Preference
-import com.android.settings.PreferenceRestrictionMixin
 import com.android.settings.R
+import com.android.settings.contract.KEY_CALL_VOLUME
+import com.android.settings.metrics.PreferenceActionMetricsProvider
+import com.android.settings.restriction.PreferenceRestrictionMixin
 import com.android.settingslib.datastore.KeyValueStore
 import com.android.settingslib.datastore.NoOpKeyedObservable
-import com.android.settingslib.metadata.PersistentPreference
+import com.android.settingslib.datastore.Permissions
+import com.android.settingslib.datastore.and
+import com.android.settingslib.metadata.IntRangeValuePreference
 import com.android.settingslib.metadata.PreferenceAvailabilityProvider
 import com.android.settingslib.metadata.PreferenceIconProvider
 import com.android.settingslib.metadata.PreferenceMetadata
-import com.android.settingslib.metadata.RangeValue
 import com.android.settingslib.metadata.ReadWritePermit
 import com.android.settingslib.metadata.SensitivityLevel
 import com.android.settingslib.preference.PreferenceBinding
 
 // LINT.IfChange
 open class CallVolumePreference :
-    PreferenceMetadata,
+    IntRangeValuePreference,
     PreferenceBinding,
-    PersistentPreference<Int>,
-    RangeValue,
+    PreferenceActionMetricsProvider,
     PreferenceAvailabilityProvider,
     PreferenceIconProvider,
     PreferenceRestrictionMixin {
@@ -49,6 +56,11 @@ open class CallVolumePreference :
 
     override val title: Int
         get() = R.string.call_volume_option_title
+
+    override val preferenceActionMetrics: Int
+        get() = ACTION_CALL_VOLUME
+
+    override fun tags(context: Context) = arrayOf(KEY_CALL_VOLUME)
 
     override fun getIcon(context: Context) = R.drawable.ic_local_phone_24_lib
 
@@ -76,10 +88,20 @@ open class CallVolumePreference :
         }
     }
 
-    override fun getReadPermit(context: Context, myUid: Int, callingUid: Int) =
+    override fun getReadPermissions(context: Context) = Permissions.EMPTY
+
+    override fun getReadPermit(context: Context, callingPid: Int, callingUid: Int) =
         ReadWritePermit.ALLOW
 
-    override fun getWritePermit(context: Context, value: Int?, myUid: Int, callingUid: Int) =
+    override fun getWritePermissions(context: Context): Permissions? {
+        var permissions = Permissions.allOf(MODIFY_AUDIO_SETTINGS, MODIFY_PHONE_STATE)
+        if (context.packageManager.hasSystemFeature(FEATURE_AUTOMOTIVE)) {
+            permissions = permissions and MODIFY_AUDIO_SETTINGS_PRIVILEGED
+        }
+        return permissions
+    }
+
+    override fun getWritePermit(context: Context, value: Int?, callingPid: Int, callingUid: Int) =
         ReadWritePermit.ALLOW
 
     override val sensitivityLevel

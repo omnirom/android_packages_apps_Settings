@@ -87,6 +87,7 @@ public class BluetoothDeviceDetailsFragmentTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     private static final String TEST_ADDRESS = "55:66:77:88:99:AA";
+    private static final int TEST_DEVICE_ID = 123;
 
     private BluetoothDeviceDetailsFragment mFragment;
     private Context mContext;
@@ -115,10 +116,12 @@ public class BluetoothDeviceDetailsFragmentTest {
         MockitoAnnotations.initMocks(this);
         mContext = spy(RuntimeEnvironment.application);
         doReturn(mInputManager).when(mContext).getSystemService(InputManager.class);
+        doReturn(new int[]{TEST_DEVICE_ID}).when(mInputManager).getInputDeviceIds();
+        doReturn(TEST_ADDRESS).when(mInputManager).getInputDeviceBluetoothAddress(TEST_DEVICE_ID);
+
         doReturn(mCompanionDeviceManager).when(mContext)
                 .getSystemService(CompanionDeviceManager.class);
         when(mCompanionDeviceManager.getAllAssociations()).thenReturn(ImmutableList.of());
-        removeInputDeviceWithMatchingBluetoothAddress();
         FakeFeatureFactory fakeFeatureFactory = FakeFeatureFactory.setupForTest();
         when(fakeFeatureFactory.mBluetoothFeatureProvider.getDeviceDetailsFragmentFormatter(any(),
                 any(), any(), eq(mCachedDevice), any())).thenReturn(mFormatter);
@@ -142,10 +145,10 @@ public class BluetoothDeviceDetailsFragmentTest {
     public void verifyOnAttachResult_flagEnabledAndInputDeviceSet_returnsInputDevice() {
         FeatureFlagUtils.setEnabled(mContext, FeatureFlagUtils.SETTINGS_SHOW_STYLUS_PREFERENCES,
                 true);
-        InputDevice inputDevice = createInputDeviceWithMatchingBluetoothAddress();
+        InputDevice inputDevice = mock(InputDevice.class);
         BluetoothDeviceDetailsFragment fragment = setupFragment();
         FragmentActivity activity = mock(FragmentActivity.class);
-        doReturn(inputDevice).when(fragment).getInputDevice(any());
+        doReturn(inputDevice).when(mInputManager).getInputDevice(TEST_DEVICE_ID);
         doReturn(activity).when(fragment).getActivity();
 
         fragment.onAttach(mContext);
@@ -160,10 +163,10 @@ public class BluetoothDeviceDetailsFragmentTest {
     public void verifyOnAttachResult_flagDisabled_returnsNullInputDevice() {
         FeatureFlagUtils.setEnabled(mContext, FeatureFlagUtils.SETTINGS_SHOW_STYLUS_PREFERENCES,
                 false);
-        InputDevice inputDevice = createInputDeviceWithMatchingBluetoothAddress();
+        InputDevice inputDevice = mock(InputDevice.class);
         BluetoothDeviceDetailsFragment fragment = setupFragment();
         FragmentActivity activity = mock(FragmentActivity.class);
-        doReturn(inputDevice).when(fragment).getInputDevice(any());
+        doReturn(inputDevice).when(mInputManager).getInputDevice(TEST_DEVICE_ID);
         doReturn(activity).when(fragment).getActivity();
 
         fragment.onAttach(mContext);
@@ -190,7 +193,7 @@ public class BluetoothDeviceDetailsFragmentTest {
                 true);
         InputDevice inputDevice = mock(InputDevice.class);
         doReturn(true).when(inputDevice).supportsSource(InputDevice.SOURCE_STYLUS);
-        doReturn(inputDevice).when(mFragment).getInputDevice(mContext);
+        doReturn(inputDevice).when(mInputManager).getInputDevice(TEST_DEVICE_ID);
         mFragment.onAttach(mContext);
 
         mFragment.setTitleForInputDevice();
@@ -203,7 +206,7 @@ public class BluetoothDeviceDetailsFragmentTest {
     public void getTitle_inputDeviceNull_doesNotSetTitle() {
         FeatureFlagUtils.setEnabled(mContext, FeatureFlagUtils.SETTINGS_SHOW_STYLUS_PREFERENCES,
                 true);
-        doReturn(null).when(mFragment).getInputDevice(mContext);
+        doReturn(null).when(mInputManager).getInputDevice(TEST_DEVICE_ID);
         mFragment.onAttach(mContext);
 
         mFragment.setTitleForInputDevice();
@@ -266,20 +269,6 @@ public class BluetoothDeviceDetailsFragmentTest {
         assertThat(controllerList.stream()
                 .anyMatch(controller -> controller.getPreferenceKey().equals(
                         KEY_HEARING_DEVICE_SETTINGS))).isTrue();
-    }
-
-    private InputDevice createInputDeviceWithMatchingBluetoothAddress() {
-        doReturn(new int[]{0}).when(mInputManager).getInputDeviceIds();
-        InputDevice device = mock(InputDevice.class);
-        doReturn(TEST_ADDRESS).when(mInputManager).getInputDeviceBluetoothAddress(0);
-        doReturn(device).when(mInputManager).getInputDevice(0);
-        return device;
-    }
-
-    private InputDevice removeInputDeviceWithMatchingBluetoothAddress() {
-        doReturn(new int[]{0}).when(mInputManager).getInputDeviceIds();
-        doReturn(null).when(mInputManager).getInputDeviceBluetoothAddress(0);
-        return null;
     }
 
     private BluetoothDeviceDetailsFragment setupFragment() {

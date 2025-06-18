@@ -60,7 +60,7 @@ public class ZenModeSelectBypassingAppsFragment extends ZenModeFragmentBase impl
         controllers.add(new ZenModeAllBypassingAppsPreferenceController(context, app, host,
                 zenHelperBackend));
         controllers.add(new ZenModeAddBypassingAppsPreferenceController(context, app, host,
-                notificationBackend));
+                notificationBackend, zenHelperBackend));
         return controllers;
     }
 

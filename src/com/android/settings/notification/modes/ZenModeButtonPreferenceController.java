@@ -27,7 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 
 import com.android.settings.R;
-import com.android.settings.notification.SettingsEnableZenModeDialog;
+import com.android.settings.notification.EnableDndDialogFragment;
 import com.android.settingslib.notification.modes.ZenMode;
 import com.android.settingslib.notification.modes.ZenModesBackend;
 import com.android.settingslib.widget.LayoutPreference;
@@ -51,7 +51,7 @@ class ZenModeButtonPreferenceController extends AbstractZenModePreferenceControl
     @Override
     public boolean isAvailable(ZenMode zenMode) {
         return zenMode.isEnabled()
-                && (zenMode.isActive() || zenMode.getRule().isManualInvocationAllowed());
+                && (zenMode.isActive() || zenMode.isManualInvocationAllowed());
     }
 
     @Override
@@ -69,7 +69,7 @@ class ZenModeButtonPreferenceController extends AbstractZenModePreferenceControl
                     int zenDuration = mDurationHelper.getZenDuration();
                     switch (zenDuration) {
                         case Settings.Secure.ZEN_DURATION_PROMPT:
-                            new SettingsEnableZenModeDialog().show(
+                            new EnableDndDialogFragment().show(
                                     mParent.getParentFragmentManager(), TAG);
                             break;
                         case Settings.Secure.ZEN_DURATION_FOREVER:

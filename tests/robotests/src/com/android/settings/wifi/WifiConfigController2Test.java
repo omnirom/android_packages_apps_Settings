@@ -194,61 +194,6 @@ public class WifiConfigController2Test {
     }
 
     @Test
-    public void isSubmittable_noSSID_shouldReturnFalse() {
-        createController(mWifiEntry, WifiConfigUiBase2.MODE_CONNECT, false);
-        final TextView ssid = mView.findViewById(R.id.ssid);
-        assertThat(ssid).isNotNull();
-        ssid.setText("");
-        assertThat(mController.isSubmittable()).isFalse();
-    }
-
-    @Test
-    public void isSubmittable_longPsk_shouldReturnFalse() {
-        createController(mWifiEntry, WifiConfigUiBase2.MODE_CONNECT, false);
-        final TextView password = mView.findViewById(R.id.password);
-        assertThat(password).isNotNull();
-        password.setText(LONG_PSK);
-        assertThat(mController.isSubmittable()).isFalse();
-    }
-
-    @Test
-    public void isSubmittable_shortPsk_shouldReturnFalse() {
-        createController(mWifiEntry, WifiConfigUiBase2.MODE_CONNECT, false);
-        final TextView password = mView.findViewById(R.id.password);
-        assertThat(password).isNotNull();
-        password.setText(SHORT_PSK);
-        assertThat(mController.isSubmittable()).isFalse();
-    }
-
-    @Test
-    public void isSubmittable_goodPsk_shouldReturnTrue() {
-        createController(mWifiEntry, WifiConfigUiBase2.MODE_CONNECT, false);
-        final TextView password = mView.findViewById(R.id.password);
-        assertThat(password).isNotNull();
-        password.setText(GOOD_PSK);
-        assertThat(mController.isSubmittable()).isTrue();
-    }
-
-    @Test
-    public void isSubmittable_hexPsk_shouldReturnTrue() {
-        createController(mWifiEntry, WifiConfigUiBase2.MODE_CONNECT, false);
-        final TextView password = mView.findViewById(R.id.password);
-        assertThat(password).isNotNull();
-        password.setText(HEX_PSK);
-        assertThat(mController.isSubmittable()).isTrue();
-    }
-
-    @Test
-    public void isSubmittable_savedConfigZeroLengthPassword_shouldReturnTrue() {
-        createController(mWifiEntry, WifiConfigUiBase2.MODE_CONNECT, false);
-        final TextView password = mView.findViewById(R.id.password);
-        assertThat(password).isNotNull();
-        password.setText("");
-        when(mWifiEntry.isSaved()).thenReturn(true);
-        assertThat(mController.isSubmittable()).isTrue();
-    }
-
-    @Test
     public void isSubmittable_nullWifiEntry_noException() {
         createController(null, WifiConfigUiBase2.MODE_CONNECT, false);
         mController.isSubmittable();

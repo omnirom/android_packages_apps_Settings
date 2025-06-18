@@ -32,8 +32,8 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.testutils.shadow.ShadowInteractionJankMonitor;
-import com.android.settings.widget.SeekBarPreference;
 import com.android.settingslib.core.lifecycle.Lifecycle;
+import com.android.settingslib.widget.SliderPreference;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -56,7 +56,7 @@ public class AlarmVibrationIntensityPreferenceControllerTest {
     private Context mContext;
     private Vibrator mVibrator;
     private AlarmVibrationIntensityPreferenceController mController;
-    private SeekBarPreference mPreference;
+    private SliderPreference mPreference;
 
     @Before
     public void setUp() {
@@ -69,7 +69,7 @@ public class AlarmVibrationIntensityPreferenceControllerTest {
         mController = new AlarmVibrationIntensityPreferenceController(mContext, PREFERENCE_KEY,
                 Vibrator.VIBRATION_INTENSITY_HIGH);
         mLifecycle.addObserver(mController);
-        mPreference = new SeekBarPreference(mContext);
+        mPreference = new SliderPreference(mContext);
         mPreference.setSummary("Test summary");
         when(mScreen.findPreference(mController.getPreferenceKey())).thenReturn(mPreference);
         mController.displayPreference(mScreen);
@@ -91,7 +91,7 @@ public class AlarmVibrationIntensityPreferenceControllerTest {
 
         mController.updateState(mPreference);
 
-        assertThat(mPreference.getProgress()).isEqualTo(
+        assertThat(mPreference.getValue()).isEqualTo(
                 mVibrator.getDefaultVibrationIntensity(VibrationAttributes.USAGE_ALARM));
     }
 
@@ -101,17 +101,17 @@ public class AlarmVibrationIntensityPreferenceControllerTest {
 
         when(mAudioManager.getRingerModeInternal()).thenReturn(AudioManager.RINGER_MODE_NORMAL);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
         assertThat(mPreference.isEnabled()).isTrue();
 
         when(mAudioManager.getRingerModeInternal()).thenReturn(AudioManager.RINGER_MODE_SILENT);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
         assertThat(mPreference.isEnabled()).isTrue();
 
         when(mAudioManager.getRingerModeInternal()).thenReturn(AudioManager.RINGER_MODE_VIBRATE);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
         assertThat(mPreference.isEnabled()).isTrue();
     }
 
@@ -119,25 +119,25 @@ public class AlarmVibrationIntensityPreferenceControllerTest {
     public void updateState_shouldDisplayIntensityInSliderPosition() {
         updateSetting(Settings.System.ALARM_VIBRATION_INTENSITY, Vibrator.VIBRATION_INTENSITY_HIGH);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_HIGH);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_HIGH);
 
         updateSetting(Settings.System.ALARM_VIBRATION_INTENSITY,
                 Vibrator.VIBRATION_INTENSITY_MEDIUM);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_MEDIUM);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_MEDIUM);
 
         updateSetting(Settings.System.ALARM_VIBRATION_INTENSITY, Vibrator.VIBRATION_INTENSITY_LOW);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
 
         updateSetting(Settings.System.ALARM_VIBRATION_INTENSITY, Vibrator.VIBRATION_INTENSITY_OFF);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
     }
 
 
     @Test
-    public void setProgress_updatesIntensitySetting() throws Exception {
+    public void setSliderPosition_updatesIntensitySetting() throws Exception {
         mController.setSliderPosition(Vibrator.VIBRATION_INTENSITY_OFF);
         assertThat(readSetting(Settings.System.ALARM_VIBRATION_INTENSITY))
                 .isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);

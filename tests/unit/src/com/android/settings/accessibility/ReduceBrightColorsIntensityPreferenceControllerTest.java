@@ -18,61 +18,140 @@ package com.android.settings.accessibility;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
-
-import android.content.Context;
-import android.content.res.Resources;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.Settings;
+import android.testing.TestableContext;
+import android.testing.TestableResources;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.internal.R;
+import com.android.server.display.feature.flags.Flags;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/** Tests for {@link ReduceBrightColorsIntensityPreferenceController} */
 @RunWith(AndroidJUnit4.class)
 public class ReduceBrightColorsIntensityPreferenceControllerTest {
 
-    private Context mContext;
-    private Resources mResources;
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule
+    public final TestableContext mContext =
+            new TestableContext(ApplicationProvider.getApplicationContext());
+
+    private TestableResources mResources = mContext.getOrCreateTestableResources();
     private ReduceBrightColorsIntensityPreferenceController mPreferenceController;
 
     @Before
     public void setUp() {
-        mContext = spy(ApplicationProvider.getApplicationContext());
-        mResources = spy(mContext.getResources());
-        when(mContext.getResources()).thenReturn(mResources);
         mPreferenceController = new ReduceBrightColorsIntensityPreferenceController(mContext,
                 "rbc_intensity");
     }
 
     @Test
-    public void isAvailable_configuredRbcAvailable_enabledRbc_shouldReturnTrue() {
+    @DisableFlags(Flags.FLAG_EVEN_DIMMER)
+    public void isAvailable_whenEvenDimmerOffAndDisabled_RbcOnAndAvailable_returnTrue() {
+        mResources.addOverride(com.android.internal.R.bool.config_evenDimmerEnabled, false);
         Settings.Secure.putInt(mContext.getContentResolver(),
                 Settings.Secure.REDUCE_BRIGHT_COLORS_ACTIVATED, 1);
-        doReturn(true).when(mResources).getBoolean(
-                R.bool.config_reduceBrightColorsAvailable);
+        mResources.addOverride(R.bool.config_reduceBrightColorsAvailable, true);
+
         assertThat(mPreferenceController.isAvailable()).isTrue();
     }
+
     @Test
-    public void isAvailable_configuredRbcAvailable_disabledRbc_shouldReturnTrue() {
+    @DisableFlags(Flags.FLAG_EVEN_DIMMER)
+    public void isAvailable_whenEvenDimmerOffAndDisabled_RbcOffAndAvailable_returnTrue() {
+        mResources.addOverride(com.android.internal.R.bool.config_evenDimmerEnabled, false);
         Settings.Secure.putInt(mContext.getContentResolver(),
                 Settings.Secure.REDUCE_BRIGHT_COLORS_ACTIVATED, 0);
-        doReturn(true).when(mResources).getBoolean(
-                R.bool.config_reduceBrightColorsAvailable);
+        mResources.addOverride(
+                R.bool.config_reduceBrightColorsAvailable, true);
+
         assertThat(mPreferenceController.isAvailable()).isTrue();
     }
+
     @Test
-    public void isAvailable_configuredRbcUnavailable_enabledRbc_shouldReturnFalse() {
+    @DisableFlags(Flags.FLAG_EVEN_DIMMER)
+    public void isAvailable_whenEvenDimmerOffAndDisabled_RbcOnAndUnavailable_returnFalse() {
+        mResources.addOverride(com.android.internal.R.bool.config_evenDimmerEnabled, false);
         Settings.Secure.putInt(mContext.getContentResolver(),
                 Settings.Secure.REDUCE_BRIGHT_COLORS_ACTIVATED, 1);
-        doReturn(false).when(mResources).getBoolean(
-                R.bool.config_reduceBrightColorsAvailable);
+        mResources.addOverride(R.bool.config_reduceBrightColorsAvailable, false);
+
+        assertThat(mPreferenceController.isAvailable()).isFalse();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_EVEN_DIMMER)
+    public void isAvailable_whenEvenDimmerOnAndDisabled_RbcOnAndAvailable_returnTrue() {
+        mResources.addOverride(com.android.internal.R.bool.config_evenDimmerEnabled, false);
+        Settings.Secure.putInt(mContext.getContentResolver(),
+                Settings.Secure.REDUCE_BRIGHT_COLORS_ACTIVATED, 1);
+        mResources.addOverride(R.bool.config_reduceBrightColorsAvailable, true);
+
+        assertThat(mPreferenceController.isAvailable()).isTrue();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_EVEN_DIMMER)
+    public void isAvailable_whenEvenDimmerOnAndDisabled_RbcOffAndAvailable_returnTrue() {
+        mResources.addOverride(com.android.internal.R.bool.config_evenDimmerEnabled, false);
+        Settings.Secure.putInt(mContext.getContentResolver(),
+                Settings.Secure.REDUCE_BRIGHT_COLORS_ACTIVATED, 0);
+        mResources.addOverride(R.bool.config_reduceBrightColorsAvailable, true);
+
+        assertThat(mPreferenceController.isAvailable()).isTrue();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_EVEN_DIMMER)
+    public void isAvailable_whenEvenDimmerOnAndDisabled_RbcOnAndUnavailable_returnFalse() {
+        mResources.addOverride(com.android.internal.R.bool.config_evenDimmerEnabled, false);
+        Settings.Secure.putInt(mContext.getContentResolver(),
+                Settings.Secure.REDUCE_BRIGHT_COLORS_ACTIVATED, 1);
+        mResources.addOverride(R.bool.config_reduceBrightColorsAvailable, false);
+
+        assertThat(mPreferenceController.isAvailable()).isFalse();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_EVEN_DIMMER)
+    public void isAvailable_whenEvenDimmerOnAndEnabled_RbcOnAndAvailable_returnFalse() {
+        mResources.addOverride(com.android.internal.R.bool.config_evenDimmerEnabled, true);
+        Settings.Secure.putInt(mContext.getContentResolver(),
+                Settings.Secure.REDUCE_BRIGHT_COLORS_ACTIVATED, 1);
+        mResources.addOverride(R.bool.config_reduceBrightColorsAvailable, true);
+
+        assertThat(mPreferenceController.isAvailable()).isFalse();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_EVEN_DIMMER)
+    public void isAvailable_whenEvenDimmerOnAndEnabled_RbcOffAndAvailable_returnFalse() {
+        mResources.addOverride(com.android.internal.R.bool.config_evenDimmerEnabled, true);
+        Settings.Secure.putInt(mContext.getContentResolver(),
+                Settings.Secure.REDUCE_BRIGHT_COLORS_ACTIVATED, 0);
+        mResources.addOverride(R.bool.config_reduceBrightColorsAvailable, true);
+
+        assertThat(mPreferenceController.isAvailable()).isFalse();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_EVEN_DIMMER)
+    public void isAvailable_whenEvenDimmerOnAndEnabled_RbcOnAndUnavailable_returnFalse() {
+        mResources.addOverride(com.android.internal.R.bool.config_evenDimmerEnabled, true);
+        Settings.Secure.putInt(mContext.getContentResolver(),
+                Settings.Secure.REDUCE_BRIGHT_COLORS_ACTIVATED, 1);
+        mResources.addOverride(R.bool.config_reduceBrightColorsAvailable, false);
+
         assertThat(mPreferenceController.isAvailable()).isFalse();
     }
 
@@ -87,15 +166,24 @@ public class ReduceBrightColorsIntensityPreferenceControllerTest {
                 .isEqualTo(80);
     }
 
+    // Slider range should represent percentage.
     @Test
-    public void rangeOfSlider_staysWithinValidRange() {
-        when(mResources.getInteger(
-                R.integer.config_reduceBrightColorsStrengthMax)).thenReturn(90);
-        when(mResources.getInteger(
-                R.integer.config_reduceBrightColorsStrengthMin)).thenReturn(15);
-        assertThat(mPreferenceController.getMax()).isEqualTo(85);
-        assertThat(mPreferenceController.getMin()).isEqualTo(10);
+    public void rangeOfSlider_isPercentage() {
+        assertThat(mPreferenceController.getMax()).isEqualTo(100);
+        assertThat(mPreferenceController.getMin()).isEqualTo(0);
         assertThat(mPreferenceController.getMax() - mPreferenceController.getMin())
-                .isEqualTo(75);
+                .isEqualTo(100);
+    }
+
+    // Slider should be of range 100 - 0.
+    @Test
+    public void rangeOfSlider_isInverted() {
+        Settings.Secure.putInt(mContext.getContentResolver(),
+                Settings.Secure.REDUCE_BRIGHT_COLORS_ACTIVATED, 1);
+        mPreferenceController.onPreferenceChange(/* preference= */ null, 2);
+        assertThat(
+                Settings.Secure.getInt(mContext.getContentResolver(),
+                        Settings.Secure.REDUCE_BRIGHT_COLORS_LEVEL, 0))
+                .isEqualTo(98);
     }
 }

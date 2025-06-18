@@ -20,9 +20,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.settings.R;
@@ -67,14 +67,19 @@ public class PasswordRequirementAdapter extends
     }
 
     @Override
-    public void onViewAttachedToWindow(@NonNull PasswordRequirementViewHolder holder) {
-        holder.mDescriptionText.announceForAccessibility(holder.mDescriptionText.getText());
-    }
-
-    @Override
     public void onBindViewHolder(PasswordRequirementViewHolder holder, int position) {
         final int fontSize = mContext.getResources().getDimensionPixelSize(
                 R.dimen.password_requirement_font_size);
+
+        final String requirement = mRequirements[position];
+        holder.mDescriptionText.setAccessibilityDelegate(new View.AccessibilityDelegate() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo info) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+                holder.mDescriptionText.setStateDescription(requirement);
+            }
+        });
+
         holder.mDescriptionText.setText(mRequirements[position]);
         if (mIsTooShortError) {
             holder.mDescriptionText.setTextAppearance(R.style.ScreenLockPasswordHintTextFontStyle);

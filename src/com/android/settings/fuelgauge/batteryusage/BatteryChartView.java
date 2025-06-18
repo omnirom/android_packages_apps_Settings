@@ -17,6 +17,8 @@ package com.android.settings.fuelgauge.batteryusage;
 
 import static com.android.settings.Utils.formatPercentage;
 import static com.android.settings.fuelgauge.batteryusage.BatteryChartViewModel.AxisLabelPosition.BETWEEN_TRAPEZOIDS;
+import static com.android.settings.fuelgauge.batteryusage.BatteryChartViewModel.SELECTED_INDEX_ALL;
+import static com.android.settings.fuelgauge.batteryusage.BatteryChartViewModel.SELECTED_INDEX_INVALID;
 import static com.android.settingslib.fuelgauge.BatteryStatus.BATTERY_LEVEL_UNKNOWN;
 
 import static java.lang.Math.abs;
@@ -81,7 +83,7 @@ public class BatteryChartView extends AppCompatImageView implements View.OnClick
             getContext().getResources().getConfiguration().getLayoutDirection();
 
     private BatteryChartViewModel mViewModel;
-    private int mHoveredIndex = BatteryChartViewModel.SELECTED_INDEX_INVALID;
+    private int mHoveredIndex = SELECTED_INDEX_INVALID;
     private int mDividerWidth;
     private int mDividerHeight;
     private float mTrapezoidVOffset;
@@ -245,9 +247,9 @@ public class BatteryChartView extends AppCompatImageView implements View.OnClick
                 // sent here.
                 return true;
             case MotionEvent.ACTION_HOVER_EXIT:
-                if (mHoveredIndex != BatteryChartViewModel.SELECTED_INDEX_INVALID) {
+                if (mHoveredIndex != SELECTED_INDEX_INVALID) {
                     sendAccessibilityEventForHover(AccessibilityEvent.TYPE_VIEW_HOVER_EXIT);
-                    mHoveredIndex = BatteryChartViewModel.SELECTED_INDEX_INVALID; // reset
+                    mHoveredIndex = SELECTED_INDEX_INVALID; // reset
                     invalidate();
                 }
                 // Ignore the super.onHoverEvent() because the hovered trapezoid has already been
@@ -262,7 +264,7 @@ public class BatteryChartView extends AppCompatImageView implements View.OnClick
     public void onHoverChanged(boolean hovered) {
         super.onHoverChanged(hovered);
         if (!hovered) {
-            mHoveredIndex = BatteryChartViewModel.SELECTED_INDEX_INVALID; // reset
+            mHoveredIndex = SELECTED_INDEX_INVALID; // reset
             invalidate();
         }
     }
@@ -295,9 +297,7 @@ public class BatteryChartView extends AppCompatImageView implements View.OnClick
         if (mOnSelectListener != null) {
             // Selects all if users click the same trapezoid item two times.
             mOnSelectListener.onSelect(
-                    index == mViewModel.selectedIndex()
-                            ? BatteryChartViewModel.SELECTED_INDEX_ALL
-                            : index);
+                    index == mViewModel.selectedIndex() ? SELECTED_INDEX_ALL : index);
         }
         view.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK);
     }
@@ -333,8 +333,7 @@ public class BatteryChartView extends AppCompatImageView implements View.OnClick
         mTrapezoidSolidColor = Utils.getColorAccentDefaultColor(context);
         mTrapezoidColor = Utils.getDisabled(context, mTrapezoidSolidColor);
         mTrapezoidHoverColor =
-                Utils.getColorAttrDefaultColor(
-                        context, com.android.internal.R.attr.materialColorSecondaryContainer);
+                context.getColor(com.android.internal.R.color.materialColorSecondaryContainer);
         // Initializes the divider line paint.
         final Resources resources = getContext().getResources();
         mDividerWidth = resources.getDimensionPixelSize(R.dimen.chartview_divider_width);
@@ -378,7 +377,9 @@ public class BatteryChartView extends AppCompatImageView implements View.OnClick
         mTransomTop = resources.getDimensionPixelSize(R.dimen.chartview_transom_padding_top);
         mTransomLineDefaultColor = Utils.getDisabled(mContext, DIVIDER_COLOR);
         mTransomLineSelectedColor =
-                resources.getColor(R.color.color_battery_anomaly_app_warning_selector);
+                resources.getColor(
+                        com.android.settingslib.widget.preference.banner.R.color
+                                .settingslib_banner_button_background_medium);
         final int slotHighlightColor = Utils.getDisabled(mContext, mTransomLineSelectedColor);
         mTransomIconSize = resources.getDimensionPixelSize(R.dimen.chartview_transom_icon_size);
         mTransomLinePaint = new Paint();
@@ -622,8 +623,7 @@ public class BatteryChartView extends AppCompatImageView implements View.OnClick
             // Configures the trapezoid paint color.
             final int trapezoidColor =
                     (mViewModel.selectedIndex() == index
-                                    || mViewModel.selectedIndex()
-                                            == BatteryChartViewModel.SELECTED_INDEX_ALL)
+                                    || mViewModel.selectedIndex() == SELECTED_INDEX_ALL)
                             ? mTrapezoidSolidColor
                             : mTrapezoidColor;
             final boolean isHoverState =
@@ -658,9 +658,7 @@ public class BatteryChartView extends AppCompatImageView implements View.OnClick
     }
 
     private boolean isHighlightSlotValid() {
-        return mViewModel != null
-                && mViewModel.getHighlightSlotIndex()
-                        != BatteryChartViewModel.SELECTED_INDEX_INVALID;
+        return mViewModel != null && mViewModel.getHighlightSlotIndex() != SELECTED_INDEX_INVALID;
     }
 
     private void drawTransomLine(Canvas canvas) {
@@ -714,7 +712,7 @@ public class BatteryChartView extends AppCompatImageView implements View.OnClick
     // Searches the corresponding trapezoid index from x location.
     private int getTrapezoidIndex(float x) {
         if (mTrapezoidSlots == null) {
-            return BatteryChartViewModel.SELECTED_INDEX_INVALID;
+            return SELECTED_INDEX_INVALID;
         }
         for (int index = 0; index < mTrapezoidSlots.length; index++) {
             final TrapezoidSlot slot = mTrapezoidSlots[index];
@@ -722,7 +720,7 @@ public class BatteryChartView extends AppCompatImageView implements View.OnClick
                 return index;
             }
         }
-        return BatteryChartViewModel.SELECTED_INDEX_INVALID;
+        return SELECTED_INDEX_INVALID;
     }
 
     private void initializeAxisLabelsBounds() {
@@ -795,7 +793,11 @@ public class BatteryChartView extends AppCompatImageView implements View.OnClick
             childInfo.setText(slotTimeInfo);
             childInfo.setContentDescription(
                     mContext.getString(
-                            R.string.battery_usage_time_info_and_battery_level,
+                            R.string.battery_usage_status_time_info_and_battery_level,
+                            mContext.getString(
+                                    mViewModel.selectedIndex() == virtualViewId
+                                            ? R.string.battery_chart_slot_status_selected
+                                            : R.string.battery_chart_slot_status_unselected),
                             slotTimeInfo,
                             batteryLevelInfo));
             childInfo.setAccessibilityFocused(virtualViewId == mAccessibilityFocusNodeViewId);

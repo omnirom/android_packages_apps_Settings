@@ -44,6 +44,7 @@ import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settingslib.notification.modes.TestModeBuilder;
 import com.android.settingslib.notification.modes.ZenMode;
+import com.android.settingslib.notification.modes.ZenModeSchedules;
 import com.android.settingslib.notification.modes.ZenModesBackend;
 
 import org.junit.Before;
@@ -123,7 +124,7 @@ public class ZenModeTriggerAddPreferenceControllerTest {
 
     @Test
     public void isAvailable_manualDND_false() {
-        mController.setZenMode(TestModeBuilder.MANUAL_DND_INACTIVE);
+        mController.setZenMode(TestModeBuilder.MANUAL_DND);
         assertThat(mController.isAvailable()).isFalse();
     }
 
@@ -168,9 +169,9 @@ public class ZenModeTriggerAddPreferenceControllerTest {
         verify(mBackend).updateMode(captor.capture());
         ZenMode updatedMode = captor.getValue();
         assertThat(updatedMode.getType()).isEqualTo(TYPE_SCHEDULE_TIME);
-        assertThat(updatedMode.getRule().getConditionId()).isEqualTo(scheduleUri);
-        assertThat(updatedMode.getRule().getTriggerDescription()).isNotEmpty();
-        assertThat(updatedMode.getRule().getOwner()).isEqualTo(
+        assertThat(ZenModeSchedules.getTimeSchedule(updatedMode)).isEqualTo(scheduleInfo);
+        assertThat(updatedMode.getTriggerDescription()).isNotEmpty();
+        assertThat(updatedMode.getOwner().conditionProvider()).isEqualTo(
                 ZenModeConfig.getScheduleConditionProvider());
     }
 }

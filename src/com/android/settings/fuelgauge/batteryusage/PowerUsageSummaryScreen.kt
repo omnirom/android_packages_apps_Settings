@@ -25,8 +25,9 @@ import com.android.settingslib.metadata.PreferenceIconProvider
 import com.android.settingslib.metadata.ProvidePreferenceScreen
 import com.android.settingslib.metadata.preferenceHierarchy
 import com.android.settingslib.preference.PreferenceScreenCreator
+import com.android.settingslib.widget.SettingsThemeHelper.isExpressiveTheme
 
-@ProvidePreferenceScreen
+@ProvidePreferenceScreen(PowerUsageSummaryScreen.KEY)
 class PowerUsageSummaryScreen :
     PreferenceScreenCreator, PreferenceAvailabilityProvider, PreferenceIconProvider {
     override val key: String
@@ -47,17 +48,18 @@ class PowerUsageSummaryScreen :
     override fun isAvailable(context: Context) =
         context.resources.getBoolean(R.bool.config_show_top_level_battery)
 
-    override fun getIcon(context: Context): Int =
-        if (Flags.homepageRevamp()) {
-            R.drawable.ic_settings_battery_filled
-        } else {
-            R.drawable.ic_settings_battery_white
+    override fun getIcon(context: Context) =
+        when {
+            isExpressiveTheme(context) -> R.drawable.ic_homepage_battery
+            Flags.homepageRevamp() -> R.drawable.ic_settings_battery_filled
+            else -> R.drawable.ic_settings_battery_white
         }
 
-    override fun getPreferenceHierarchy(context: Context) = preferenceHierarchy(this) {
-        +BatteryHeaderPreference()
-        +BatteryPercentageSwitchPreference()
-    }
+    override fun getPreferenceHierarchy(context: Context) =
+        preferenceHierarchy(context, this) {
+            +BatteryHeaderPreference()
+            +BatteryPercentageSwitchPreference()
+        }
 
     companion object {
         const val KEY = "power_usage_summary_screen"

@@ -16,17 +16,22 @@
 
 package com.android.settings.datausage
 
+import android.app.settings.SettingsEnums.ACTION_DATA_SAVER_MODE
 import android.content.Context
 import com.android.settings.R
+import com.android.settings.contract.KEY_DATA_SAVER
+import com.android.settings.metrics.PreferenceActionMetricsProvider
 import com.android.settings.widget.MainSwitchBarMetadata
 import com.android.settingslib.datastore.AbstractKeyedDataObservable
-import com.android.settingslib.datastore.DataChangeReason
 import com.android.settingslib.datastore.KeyValueStore
+import com.android.settingslib.datastore.Permissions
+import com.android.settingslib.metadata.PreferenceChangeReason
 import com.android.settingslib.metadata.PreferenceLifecycleProvider
 import com.android.settingslib.metadata.ReadWritePermit
 import com.android.settingslib.metadata.SensitivityLevel
 
-class DataSaverMainSwitchPreference : MainSwitchBarMetadata, PreferenceLifecycleProvider {
+class DataSaverMainSwitchPreference :
+    MainSwitchBarMetadata, PreferenceActionMetricsProvider, PreferenceLifecycleProvider {
 
     override val key
         get() = KEY
@@ -34,13 +39,29 @@ class DataSaverMainSwitchPreference : MainSwitchBarMetadata, PreferenceLifecycle
     override val title
         get() = R.string.data_saver_switch_title
 
+    override val disableWidgetOnCheckedChanged: Boolean
+        get() = false
+
+    override val preferenceActionMetrics: Int
+        get() = ACTION_DATA_SAVER_MODE
+
+    override fun tags(context: Context) = arrayOf(KEY_DATA_SAVER)
+
     override fun storage(context: Context) = createDataStore(context)
 
-    override fun getReadPermit(context: Context, myUid: Int, callingUid: Int) =
+    override fun getReadPermissions(context: Context) = Permissions.EMPTY
+
+    override fun getWritePermissions(context: Context) = Permissions.EMPTY
+
+    override fun getReadPermit(context: Context, callingPid: Int, callingUid: Int) =
         ReadWritePermit.ALLOW
 
-    override fun getWritePermit(context: Context, value: Boolean?, myUid: Int, callingUid: Int) =
-        ReadWritePermit.ALLOW
+    override fun getWritePermit(
+        context: Context,
+        value: Boolean?,
+        callingPid: Int,
+        callingUid: Int,
+    ) = ReadWritePermit.ALLOW
 
     override val sensitivityLevel
         get() = SensitivityLevel.NO_SENSITIVITY
@@ -63,7 +84,7 @@ class DataSaverMainSwitchPreference : MainSwitchBarMetadata, PreferenceLifecycle
         override fun onLastObserverRemoved() = dataSaverBackend.remListener(this)
 
         override fun onDataSaverChanged(isDataSaving: Boolean) =
-            notifyChange(KEY, DataChangeReason.UPDATE)
+            notifyChange(KEY, PreferenceChangeReason.VALUE)
     }
 
     companion object {

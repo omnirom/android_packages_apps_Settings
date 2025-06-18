@@ -20,6 +20,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import java.util.Objects;
 
 public final class AudioSharingDeviceItem implements Parcelable {
     private final String mName;
@@ -79,5 +82,17 @@ public final class AudioSharingDeviceItem implements Parcelable {
     @NonNull
     public String toString() {
         return "AudioSharingDeviceItem groupId = " + mGroupId + ", isActive = " + mIsActive;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof AudioSharingDeviceItem other)) return false;
+        return mName.equals(other.getName()) && mGroupId == other.getGroupId()
+                && mIsActive == other.isActive();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mName, mGroupId, mIsActive);
     }
 }

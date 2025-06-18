@@ -183,7 +183,7 @@ public final class ZenModeAppsPreferenceControllerTest {
         // NONE is not actually propagated to the backend as an interruption filter;
         // the filter is set to priority, and sounds and visual effects are disallowed.
         // See AbstractZenModePreferenceController.
-        assertThat(captor.getValue().getRule().getInterruptionFilter())
+        assertThat(captor.getValue().getInterruptionFilter())
                 .isEqualTo(INTERRUPTION_FILTER_PRIORITY);
 
         // After screen is refreshed, NONE is now checked; others are unchecked.
@@ -217,7 +217,7 @@ public final class ZenModeAppsPreferenceControllerTest {
         ArgumentCaptor<ZenMode> captor = ArgumentCaptor.forClass(ZenMode.class);
         verify(mBackend).updateMode(captor.capture());
         // Checks the policy value for PRIORITY is propagated to the backend.
-        assertThat(captor.getValue().getRule().getInterruptionFilter())
+        assertThat(captor.getValue().getInterruptionFilter())
                 .isEqualTo(INTERRUPTION_FILTER_PRIORITY);
 
         // After screen is refreshed, PRIORITY is now checked; others are unchecked.

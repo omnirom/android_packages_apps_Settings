@@ -1,0 +1,3 @@
+include platform/frameworks/base:/services/core/java/com/android/server/wm/OWNERS
+include platform/frameworks/base:/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/OWNERS
+include platform/frameworks/base:/libs/WindowManager/Shell/OWNERS

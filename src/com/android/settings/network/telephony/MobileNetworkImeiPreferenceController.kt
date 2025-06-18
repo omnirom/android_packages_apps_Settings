@@ -64,12 +64,12 @@ class MobileNetworkImeiPreferenceController(context: Context, key: String) :
     }
 
     override fun getAvailabilityStatus(subId: Int): Int = when {
-        !Flags.isDualSimOnboardingEnabled() -> CONDITIONALLY_UNAVAILABLE
-        SubscriptionManager.isValidSubscriptionId(subId)
-                && SubscriptionUtil.isSimHardwareVisible(mContext)
-                && mContext.userManager.isAdminUser
-                && !Utils.isWifiOnly(mContext) -> AVAILABLE
-        else -> CONDITIONALLY_UNAVAILABLE
+        !SubscriptionUtil.isSimHardwareVisible(mContext)
+            || Utils.isWifiOnly(mContext) -> UNSUPPORTED_ON_DEVICE
+        !Flags.isDualSimOnboardingEnabled()
+            || !SubscriptionManager.isValidSubscriptionId(subId) -> CONDITIONALLY_UNAVAILABLE
+        !mContext.userManager.isAdminUser -> DISABLED_FOR_USER
+        else -> AVAILABLE
     }
 
     override fun displayPreference(screen: PreferenceScreen) {

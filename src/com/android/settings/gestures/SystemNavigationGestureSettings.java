@@ -78,15 +78,6 @@ public class SystemNavigationGestureSettings extends RadioButtonPickerFragment i
 
     private static final String KEY_SHOW_A11Y_TUTORIAL_DIALOG = "show_a11y_tutorial_dialog_bool";
 
-    static final String LAUNCHER_PACKAGE_NAME = "com.google.android.apps.nexuslauncher";
-
-    static final String ACTION_GESTURE_SANDBOX = "com.android.quickstep.action.GESTURE_SANDBOX";
-
-    final Intent mLaunchSandboxIntent = new Intent(ACTION_GESTURE_SANDBOX)
-            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            .putExtra("use_tutorial_menu", true)
-            .setPackage(LAUNCHER_PACKAGE_NAME);
-
     private static final int MIN_LARGESCREEN_WIDTH_DP = 600;
 
     private boolean mA11yTutorialDialogShown = false;
@@ -133,7 +124,6 @@ public class SystemNavigationGestureSettings extends RadioButtonPickerFragment i
             mVideoPreference.applyDynamicColor();
         }
         setIllustrationVideo(mVideoPreference, getDefaultKey());
-        setIllustrationClickListener(mVideoPreference, getDefaultKey());
 
         migrateOverlaySensitivityToSettings(context, mOverlayManager);
     }
@@ -150,6 +140,7 @@ public class SystemNavigationGestureSettings extends RadioButtonPickerFragment i
         final PreferenceScreen screen = getPreferenceScreen();
         screen.removeAll();
         screen.addPreference(mVideoPreference);
+
         addPreferencesFromResource(getPreferenceScreenResId());
         final List<BasePreferenceController> preferenceControllers = PreferenceControllerListHelper
                 .getPreferenceControllersFromXml(getContext(), getPreferenceScreenResId());
@@ -246,38 +237,7 @@ public class SystemNavigationGestureSettings extends RadioButtonPickerFragment i
         if (!android.provider.Flags.a11yStandaloneGestureEnabled()) {
             setGestureNavigationTutorialDialog(key);
         }
-        setIllustrationClickListener(mVideoPreference, key);
         return true;
-    }
-
-    private boolean isGestureTutorialAvailable() {
-        Context context = getContext();
-        return context != null
-                && mLaunchSandboxIntent.resolveActivity(context.getPackageManager()) != null;
-    }
-
-    private void setIllustrationClickListener(IllustrationPreference videoPref,
-            String systemNavKey) {
-
-        switch (systemNavKey) {
-            case KEY_SYSTEM_NAV_GESTURAL:
-                if (isGestureTutorialAvailable()){
-                    videoPref.setContentDescription(R.string.nav_tutorial_button_description);
-                    videoPref.setOnPreferenceClickListener(preference -> {
-                        startActivity(mLaunchSandboxIntent);
-                        return true;
-                    });
-                } else {
-                    videoPref.setOnPreferenceClickListener(null);
-                }
-
-                break;
-            case KEY_SYSTEM_NAV_2BUTTONS:
-            case KEY_SYSTEM_NAV_3BUTTONS:
-            default:
-                videoPref.setOnPreferenceClickListener(null);
-                break;
-        }
     }
 
     static void migrateOverlaySensitivityToSettings(Context context,
@@ -338,12 +298,7 @@ public class SystemNavigationGestureSettings extends RadioButtonPickerFragment i
             String systemNavKey) {
         switch (systemNavKey) {
             case KEY_SYSTEM_NAV_GESTURAL:
-                if (isGestureTutorialAvailable()) {
-                    videoPref.setLottieAnimationResId(
-                            R.raw.lottie_system_nav_fully_gestural_with_nav);
-                } else {
-                    videoPref.setLottieAnimationResId(R.raw.lottie_system_nav_fully_gestural);
-                }
+                videoPref.setLottieAnimationResId(R.raw.lottie_system_nav_fully_gestural);
                 break;
             case KEY_SYSTEM_NAV_2BUTTONS:
                 videoPref.setLottieAnimationResId(R.raw.lottie_system_nav_2_button);

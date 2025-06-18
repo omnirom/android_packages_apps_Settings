@@ -122,9 +122,10 @@ class SimOnboardingActivity : SpaBaseDialogActivity() {
             return
         }
 
-        if (onboardingService.activeSubInfoList.isEmpty()) {
+        if (onboardingService.activeSubInfoList.isEmpty()
+            || (!onboardingService.isMultiSimEnabled && !onboardingService.isMultiSimSupported)) {
             // TODO: refactor and replace the ToggleSubscriptionDialogActivity
-            Log.d(TAG, "onboardingService.activeSubInfoList is empty" +
+            Log.d(TAG, "onboardingService.activeSubInfoList is empty or restricted ss mode " +
                     ", start ToggleSubscriptionDialogActivity")
             this.startActivity(ToggleSubscriptionDialogActivity
                     .getIntent(this.applicationContext, targetSubId, true))

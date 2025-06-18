@@ -51,6 +51,8 @@ public class PrivateSpaceSetLockFragment extends InstrumentedFragment {
     private static final String TAG = "PrivateSpaceSetLockFrag";
     private static final int HEADER_TEXT_MAX_LINES = 4;
 
+    private boolean mIsAnimationPlaying = true;
+
     @Override
     public View onCreateView(
             LayoutInflater inflater,
@@ -91,6 +93,9 @@ public class PrivateSpaceSetLockFragment extends InstrumentedFragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
         LottieAnimationView lottieAnimationView = rootView.findViewById(R.id.lottie_animation);
         LottieColorUtils.applyDynamicColors(getContext(), lottieAnimationView);
+        lottieAnimationView.setOnClickListener(v -> handleAnimationClick(lottieAnimationView));
+        PrivateSpaceAccessibilityUtils.updateAccessibilityActionForAnimation(getContext(),
+                lottieAnimationView, mIsAnimationPlaying);
 
         return rootView;
     }
@@ -129,5 +134,16 @@ public class PrivateSpaceSetLockFragment extends InstrumentedFragment {
         } else {
             Log.w(TAG, "Private profile user handle is null");
         }
+    }
+
+    private void handleAnimationClick(LottieAnimationView lottieAnimationView) {
+        if (mIsAnimationPlaying) {
+            lottieAnimationView.pauseAnimation();
+        } else {
+            lottieAnimationView.playAnimation();
+        }
+        mIsAnimationPlaying = !mIsAnimationPlaying;
+        PrivateSpaceAccessibilityUtils.updateAccessibilityActionForAnimation(getContext(),
+                lottieAnimationView, mIsAnimationPlaying);
     }
 }

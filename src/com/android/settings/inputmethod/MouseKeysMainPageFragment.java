@@ -20,6 +20,7 @@ import static com.android.settings.inputmethod.PhysicalKeyboardFragment.getHardK
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.hardware.input.InputManager;
 import android.os.Bundle;
 import android.view.InputDevice;
@@ -32,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.internal.util.Preconditions;
 import com.android.settings.R;
+import com.android.settings.activityembedding.ActivityEmbeddingUtils;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.keyboard.Flags;
 import com.android.settings.search.BaseSearchIndexProvider;
@@ -61,7 +63,8 @@ public class MouseKeysMainPageFragment extends DashboardFragment
         mMouseKeyImagesPreference = screen.findPreference(KEY_MOUSE_KEY_LIST);
         mInputManager = Preconditions.checkNotNull(getActivity()
                 .getSystemService(InputManager.class));
-        String title = mCurrentInputDevice == null ? getActivity().getString(R.string.mouse_keys)
+        String title = mCurrentInputDevice == null || getHardKeyboards(getContext()).size() == 1
+                ? getActivity().getString(R.string.mouse_keys)
                 : getActivity().getString(R.string.mouse_key_main_page_title,
                         mCurrentInputDevice.getName());
         getActivity().setTitle(title);
@@ -83,7 +86,7 @@ public class MouseKeysMainPageFragment extends DashboardFragment
 
     @Override
     public int getMetricsCategory() {
-        return SettingsEnums.PHYSICAL_KEYBOARD_A11Y;
+        return SettingsEnums.SETTINGS_PHYSICAL_KEYBOARD_MOUSE_KEYS;
     }
 
     @Override
@@ -125,7 +128,11 @@ public class MouseKeysMainPageFragment extends DashboardFragment
     private void configureImagesPreference() {
         final RecyclerView recyclerView = mMouseKeyImagesPreference.findViewById(
                 R.id.mouse_keys_image_recycler_list);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        boolean isPortrait = getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_PORTRAIT;
+        boolean isTwoPaneState = ActivityEmbeddingUtils.isAlreadyEmbedded(this.getActivity());
+        int column = isPortrait && !isTwoPaneState ? 1 : 2;
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), column));
         recyclerView.setAdapter(new MouseKeysImageListAdapter(getActivity(), mCurrentInputDevice));
     }
 

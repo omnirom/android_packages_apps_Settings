@@ -119,6 +119,11 @@ public class PowerUsageFeatureProviderImpl implements PowerUsageFeatureProvider 
     }
 
     @Override
+    public int getDataRetentionDays() {
+        return 9;
+    }
+
+    @Override
     public boolean isLocationSettingEnabled(String[] packages) {
         return false;
     }

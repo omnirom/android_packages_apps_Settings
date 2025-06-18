@@ -1,5 +1,5 @@
 package: "com.android.settings.flags"
-container: "system"
+container: "system_ext"
 
 flag {
   name: "enable_offload_bluetooth_operations_to_background_thread"
@@ -26,16 +26,6 @@ flag {
 }
 
 flag {
-  name: "disable_bonding_cancellation_for_orientation_change"
-  namespace: "cross_device_experiences"
-  description: "Stop cancelling bonding process when there is an orientation change"
-  bug: "349542301"
-  metadata {
-      purpose: PURPOSE_BUGFIX
-  }
-}
-
-flag {
   name: "enable_bluetooth_key_missing_dialog"
   namespace: "cross_device_experiences"
   description: "Show a dialog if the bluetooth key is missing when reconnecting"
@@ -44,3 +34,31 @@ flag {
       purpose: PURPOSE_BUGFIX
   }
 }
+
+flag {
+  name: "enable_battery_level_display"
+  namespace: "cross_device_experiences"
+  description: "Show battery level when available"
+  bug: "380790573"
+  metadata {
+      purpose: PURPOSE_BUGFIX
+  }
+}
+
+flag {
+  name: "enable_nearby_share_entrypoint"
+  namespace: "cross_device_experiences"
+  description: "Show Nearby Share entrypoint in Bluetooth Sharing page"
+  bug: "381799866"
+  metadata {
+      purpose: PURPOSE_BUGFIX
+  }
+}
+
+flag {
+  name: "enable_remove_association_bt_unpair"
+  is_exported: true
+  namespace: "companion"
+  description: "Allow to disassociate when to forget a BT pair device"
+  bug: "365613753"
+ }

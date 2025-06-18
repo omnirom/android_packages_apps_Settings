@@ -47,8 +47,7 @@ public class ZenModeNewCustomFragment extends ZenModeEditNameIconFragmentBase {
                 ? requireContext().getString(R.string.zen_mode_new_custom_default_name)
                 : mode.getName();
 
-        ZenMode created = requireBackend().addCustomManualMode(modeName,
-                mode.getRule().getIconResId());
+        ZenMode created = requireBackend().addCustomManualMode(modeName, mode.getIconResId());
         if (created != null) {
             // Open the mode view fragment and close the "add mode" fragment, so exiting the mode
             // view goes back to previous screen (which should be the modes list).

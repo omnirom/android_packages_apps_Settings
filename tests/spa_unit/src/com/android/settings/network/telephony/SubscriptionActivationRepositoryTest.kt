@@ -17,12 +17,15 @@
 package com.android.settings.network.telephony
 
 import android.content.Context
+import android.content.Intent
+import android.os.UserHandle
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
 import android.telephony.TelephonyManager.ACTION_SHOW_NOTICE_ECM_BLOCK_OTHERS
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.settings.network.SatelliteRepository
+import com.android.settings.network.SimOnboardingActivity
 import com.android.settingslib.spa.testutils.firstWithTimeoutOrNull
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
@@ -33,6 +36,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.spy
@@ -108,6 +112,17 @@ class SubscriptionActivationRepositoryTest {
     }
 
     @Test
+    fun setActive_turnOnAndIsEmergencyCallbackMode() = runBlocking {
+        mockTelephonyManager.stub {
+            on { emergencyCallbackMode } doReturn true
+        }
+
+        repository.setActive(subId = SUB_ID, active = true)
+
+        verify(context).startActivity(argThat { action == ACTION_SHOW_NOTICE_ECM_BLOCK_OTHERS })
+    }
+
+    @Test
     fun setActive_turnOffAndIsEmergencyCallbackMode() = runBlocking {
         mockTelephonyManager.stub {
             on { emergencyCallbackMode } doReturn true
@@ -129,6 +144,19 @@ class SubscriptionActivationRepositoryTest {
         verify(context).startActivity(argThat {
             component?.className == ToggleSubscriptionDialogActivity::class.qualifiedName
         })
+    }
+
+    @Test
+    fun setActive_turnOnAndNotEmergencyCallbackMode() = runBlocking {
+        mockTelephonyManager.stub {
+            on { emergencyCallbackMode } doReturn false
+        }
+
+        repository.setActive(subId = SUB_ID, active = true)
+
+        verify(context).startActivityAsUser(argThat {
+            component?.className == SimOnboardingActivity::class.qualifiedName
+        }, eq(UserHandle.CURRENT))
     }
 
     private companion object {

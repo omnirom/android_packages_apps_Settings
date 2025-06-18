@@ -17,46 +17,46 @@
 package com.android.settings.network
 
 import android.app.Activity
+import android.app.settings.SettingsEnums.ACTION_AIRPLANE_TOGGLE
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Looper
 import android.os.UserHandle
 import android.os.UserManager
 import android.provider.Settings
-import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.preference.Preference
 import com.android.settings.AirplaneModeEnabler
-import com.android.settings.PreferenceRestrictionMixin
 import com.android.settings.R
 import com.android.settings.Utils
+import com.android.settings.contract.KEY_AIRPLANE_MODE
+import com.android.settings.metrics.PreferenceActionMetricsProvider
+import com.android.settings.network.SatelliteRepository.Companion.isSatelliteOn
+import com.android.settings.restriction.PreferenceRestrictionMixin
 import com.android.settingslib.RestrictedSwitchPreference
-import com.android.settingslib.datastore.AbstractKeyedDataObservable
-import com.android.settingslib.datastore.DataChangeReason
 import com.android.settingslib.datastore.KeyValueStore
+import com.android.settingslib.datastore.KeyValueStoreDelegate
 import com.android.settingslib.datastore.SettingsGlobalStore
-import com.android.settingslib.datastore.SettingsStore
 import com.android.settingslib.metadata.PreferenceAvailabilityProvider
 import com.android.settingslib.metadata.PreferenceLifecycleContext
 import com.android.settingslib.metadata.PreferenceLifecycleProvider
 import com.android.settingslib.metadata.ReadWritePermit
 import com.android.settingslib.metadata.SensitivityLevel
 import com.android.settingslib.metadata.SwitchPreference
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 
 // LINT.IfChange
 class AirplaneModePreference :
     SwitchPreference(KEY, R.string.airplane_mode),
+    PreferenceActionMetricsProvider,
     PreferenceAvailabilityProvider,
     PreferenceLifecycleProvider,
     PreferenceRestrictionMixin {
 
     override val icon: Int
         @DrawableRes get() = R.drawable.ic_airplanemode_active
+
+    override fun tags(context: Context) = arrayOf(KEY_AIRPLANE_MODE)
 
     override fun isAvailable(context: Context) =
         (context.resources.getBoolean(R.bool.config_show_toggle_airplane) &&
@@ -67,10 +67,14 @@ class AirplaneModePreference :
     override val restrictionKeys
         get() = arrayOf(UserManager.DISALLOW_AIRPLANE_MODE)
 
-    override fun getReadPermit(context: Context, myUid: Int, callingUid: Int) =
+    override fun getReadPermissions(context: Context) = SettingsGlobalStore.getReadPermissions()
+
+    override fun getWritePermissions(context: Context) = SettingsGlobalStore.getWritePermissions()
+
+    override fun getReadPermit(context: Context, callingPid: Int, callingUid: Int) =
         ReadWritePermit.ALLOW
 
-    override fun getWritePermit(context: Context, value: Boolean?, myUid: Int, callingUid: Int) =
+    override fun getWritePermit(context: Context, callingPid: Int, callingUid: Int) =
         when {
             isSatelliteOn(context) || isInEcmMode(context) -> ReadWritePermit.DISALLOW
             else -> ReadWritePermit.ALLOW
@@ -79,54 +83,29 @@ class AirplaneModePreference :
     override val sensitivityLevel
         get() = SensitivityLevel.HIGH_SENSITIVITY
 
-    override fun storage(context: Context): KeyValueStore =
-        AirplaneModeStorage(context, SettingsGlobalStore.get(context))
+    override val preferenceActionMetrics: Int
+        get() = ACTION_AIRPLANE_TOGGLE
 
-    @Suppress("DEPRECATION", "MissingPermission", "UNCHECKED_CAST")
+    override fun storage(context: Context): KeyValueStore = AirplaneModeStorage(context)
+
+    @Suppress("UNCHECKED_CAST")
     private class AirplaneModeStorage(
         private val context: Context,
-        private val settingsStore: SettingsStore,
-    ) : AbstractKeyedDataObservable<String>(), KeyValueStore {
-        private var phoneStateListener: PhoneStateListener? = null
+        private val settingsStore: KeyValueStore = SettingsGlobalStore.get(context),
+    ) : KeyValueStoreDelegate {
 
-        override fun contains(key: String) =
-            settingsStore.contains(KEY) &&
-                context.getSystemService(TelephonyManager::class.java) != null
+        override val keyValueStoreDelegate
+            get() = settingsStore
 
         override fun <T : Any> getDefaultValue(key: String, valueType: Class<T>) =
             DEFAULT_VALUE as T
 
-        override fun <T : Any> getValue(key: String, valueType: Class<T>): T =
-            (settingsStore.getBoolean(key) ?: DEFAULT_VALUE) as T
-
         override fun <T : Any> setValue(key: String, valueType: Class<T>, value: T?) {
-            if (value is Boolean) {
-                settingsStore.setBoolean(key, value)
+            settingsStore.setValue(key, valueType, value)
 
-                val intent = Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED)
-                intent.putExtra("state", value)
-                context.sendBroadcastAsUser(intent, UserHandle.ALL)
-            }
-        }
-
-        override fun onFirstObserverAdded() {
-            context.getSystemService(TelephonyManager::class.java)?.let {
-                phoneStateListener =
-                    object : PhoneStateListener(Looper.getMainLooper()) {
-                        @Deprecated("Deprecated in Java")
-                        override fun onRadioPowerStateChanged(state: Int) {
-                            Log.d(TAG, "onRadioPowerStateChanged(), state=$state")
-                            notifyChange(KEY, DataChangeReason.UPDATE)
-                        }
-                    }
-                it.listen(phoneStateListener, PhoneStateListener.LISTEN_RADIO_POWER_STATE_CHANGED)
-            }
-        }
-
-        override fun onLastObserverRemoved() {
-            context
-                .getSystemService(TelephonyManager::class.java)
-                ?.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE)
+            val intent = Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+            intent.putExtra("state", getBoolean(KEY)!!)
+            context.sendBroadcastAsUser(intent, UserHandle.ALL)
         }
     }
 
@@ -163,17 +142,6 @@ class AirplaneModePreference :
             context.getSystemService(TelephonyManager::class.java),
         )
 
-    private fun isSatelliteOn(context: Context): Boolean {
-        try {
-            return SatelliteRepository(context)
-                .requestIsSessionStarted(Executors.newSingleThreadExecutor())
-                .get(2000, TimeUnit.MILLISECONDS)
-        } catch (e: Exception) {
-            Log.e(TAG, "Error to get satellite status : $e")
-        }
-        return false
-    }
-
     private fun showEcmDialog(context: PreferenceLifecycleContext) {
         val intent =
             Intent(TelephonyManager.ACTION_SHOW_NOTICE_ECM_BLOCK_OTHERS, null)
@@ -192,12 +160,11 @@ class AirplaneModePreference :
     }
 
     companion object {
-        const val TAG = "AirplaneModePreference"
         const val KEY = Settings.Global.AIRPLANE_MODE_ON
         const val DEFAULT_VALUE = false
         const val REQUEST_CODE_EXIT_ECM = 1
 
-        fun Context.isAirplaneModeOn() = SettingsGlobalStore.get(this).getBoolean(KEY) == true
+        fun Context.isAirplaneModeOn() = AirplaneModeStorage(this).getBoolean(KEY) == true
     }
 }
 // LINT.ThenChange(AirplaneModePreferenceController.java)

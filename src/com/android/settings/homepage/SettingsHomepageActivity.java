@@ -20,6 +20,7 @@ import static android.provider.Settings.ACTION_SETTINGS_EMBED_DEEP_LINK_ACTIVITY
 import static android.provider.Settings.EXTRA_SETTINGS_EMBEDDED_DEEP_LINK_HIGHLIGHT_MENU_KEY;
 import static android.provider.Settings.EXTRA_SETTINGS_EMBEDDED_DEEP_LINK_INTENT_URI;
 
+import static com.android.settings.SettingsActivity.EXTRA_IS_DEEPLINK_HOME_STARTED_FROM_SEARCH;
 import static com.android.settings.SettingsActivity.EXTRA_USER_HANDLE;
 
 import android.animation.LayoutTransition;
@@ -232,7 +233,9 @@ public class SettingsHomepageActivity extends FragmentActivity implements
             }
         }
 
-        if (!isTaskRoot) {
+        final boolean isDeepLinkStartedFromSearch = getIntent().getBooleanExtra(
+                EXTRA_IS_DEEPLINK_HOME_STARTED_FROM_SEARCH, false /* defaultValue */);
+        if (!isTaskRoot && !isDeepLinkStartedFromSearch) {
             if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_NEW_TASK) != 0) {
                 Log.i(TAG, "Activity has been started, finishing");
             } else {
@@ -395,9 +398,18 @@ public class SettingsHomepageActivity extends FragmentActivity implements
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content),
                 (v, windowInsets) -> {
-                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()
+                            | WindowInsetsCompat.Type.displayCutout());
                     // Apply the insets paddings to the view.
-                    v.setPadding(insets.left, insets.top, insets.right, insets.bottom);
+                    v.setPadding(insets.left, 0, insets.right, insets.bottom);
+
+                    // reset the top padding of search bar container to original top padding
+                    // plus insets top.
+                    View container = findViewById(R.id.app_bar_container);
+                    final int top_padding = getResources().getDimensionPixelSize(
+                            R.dimen.search_bar_container_top_padding);
+                    container.setPadding(container.getPaddingLeft(), top_padding + insets.top,
+                            container.getPaddingRight(), container.getPaddingBottom());
 
                     // Return CONSUMED if you don't want the window insets to keep being
                     // passed down to descendant views.
@@ -466,8 +478,7 @@ public class SettingsHomepageActivity extends FragmentActivity implements
                 : Utils.getColorAttrDefaultColor(this, android.R.attr.colorBackground);
 
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        // Update status bar color
-        window.setStatusBarColor(color);
+
         // Update content background.
         findViewById(android.R.id.content).setBackgroundColor(color);
         if (Flags.homepageRevamp()) {
@@ -767,6 +778,16 @@ public class SettingsHomepageActivity extends FragmentActivity implements
         // Prevent inner RecyclerView gets focus and invokes scrolling.
         view.setFocusableInTouchMode(true);
         view.requestFocus();
+
+        if (Flags.extendedScreenshotsExcludeNestedScrollables()) {
+            // Force scroll capture to select the NestedScrollView, instead of the non-scrollable
+            // RecyclerView which is contained inside it with no height constraint.
+            final View scrollableContainer = findViewById(R.id.main_content_scrollable_container);
+            if (scrollableContainer != null) {
+                scrollableContainer.setScrollCaptureHint(
+                        View.SCROLL_CAPTURE_HINT_EXCLUDE_DESCENDANTS);
+            }
+        }
     }
 
     private void updateHomepageAppBar() {

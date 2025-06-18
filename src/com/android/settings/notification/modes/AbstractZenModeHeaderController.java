@@ -59,7 +59,7 @@ abstract class AbstractZenModeHeaderController extends AbstractZenModePreference
 
     @Override
     public boolean isAvailable() {
-        return Flags.modesApi() && Flags.modesUi();
+        return Flags.modesUi();
     }
 
     protected void setUpHeader(PreferenceScreen screen, int iconSizePx) {

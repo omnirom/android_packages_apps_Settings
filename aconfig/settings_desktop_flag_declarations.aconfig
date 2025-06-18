@@ -1,0 +1,12 @@
+package: "com.android.settings.flags"
+container: "system_ext"
+
+flag {
+    name: "settings_search_result_deep_link_in_same_task"
+    namespace: "desktop_personalization"
+    description: "Show the search result deep link in the same task (same window)"
+    bug: "381127948"
+    metadata {
+        purpose: PURPOSE_BUGFIX
+    }
+}

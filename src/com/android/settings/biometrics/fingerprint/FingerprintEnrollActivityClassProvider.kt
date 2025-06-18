@@ -28,6 +28,10 @@ open class FingerprintEnrollActivityClassProvider {
         get() = FingerprintEnrollIntroductionInternal::class.java
     open val addAnother: Class<out Activity>
         get() = FingerprintEnrollEnrolling::class.java
+    open val setupSkipIntro: Class<out Activity>
+        get() = SetupFingerprintEnrollFindSensor::class.java
+    open val skipIntro: Class<out Activity>
+        get() = FingerprintEnrollFindSensor::class.java
 
     companion object {
         @JvmStatic

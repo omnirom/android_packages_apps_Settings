@@ -91,10 +91,15 @@ private class AppInstallerInfoPresenter(
         }
     }.sharedFlow()
 
-    val isAvailableFlow = installerLabelFlow.map { installerLabel ->
-        withContext(Dispatchers.IO) {
-            !AppUtils.isMainlineModule(packageManager, app.packageName) &&
-                    installerLabel != null
+    val isAvailableFlow = installerLabelFlow.map() { installerLabel ->
+        // Do not show the install info for the special case of the Play Store app.
+        if (app.packageName == context.getString(R.string.config_mainline_module_update_package)) {
+            false
+        } else {
+            withContext(Dispatchers.IO) {
+                val isMainlineModule = AppUtils.isMainlineModule(packageManager, app.packageName)
+                !isMainlineModule && installerLabel != null
+            }
         }
     }
 

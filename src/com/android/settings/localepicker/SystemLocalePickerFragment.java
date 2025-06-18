@@ -47,6 +47,7 @@ import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.core.AbstractPreferenceController;
 import com.android.settingslib.core.lifecycle.Lifecycle;
+import com.android.settingslib.widget.TopIntroPreference;
 
 import com.google.android.material.appbar.AppBarLayout;
 
@@ -68,16 +69,16 @@ public class SystemLocalePickerFragment extends DashboardFragment implements
 
     private static final String TAG = "SystemLocalePickerFragment";
     private static final String EXTRA_EXPAND_SEARCH_VIEW = "expand_search_view";
+    private static final String EXTRA_SEARCH_VIEW_QUERY = "search_view_query";
     private static final String KEY_PREFERENCE_SYSTEM_LOCALE_LIST = "system_locale_list";
     private static final String KEY_PREFERENCE_SYSTEM_LOCALE_SUGGESTED_LIST =
             "system_locale_suggested_list";
+    private static final String KEY_TOP_INTRO_PREFERENCE = "top_intro_region";
 
     @Nullable
     private SearchView mSearchView = null;
     @Nullable
     private SearchFilter mSearchFilter = null;
-    @Nullable
-    private Set<LocaleStore.LocaleInfo> mLocaleList;
     @Nullable
     private List<LocaleStore.LocaleInfo> mLocaleOptions;
     @Nullable
@@ -90,6 +91,7 @@ public class SystemLocalePickerFragment extends DashboardFragment implements
     private RecyclerView mRecyclerView;
     private Activity mActivity;
     private boolean mExpandSearch;
+    private CharSequence mPreviousSearch = null;
 
     @Override
     public void onCreate(@NonNull Bundle icicle) {
@@ -103,11 +105,19 @@ public class SystemLocalePickerFragment extends DashboardFragment implements
         mExpandSearch = mActivity.getIntent().getBooleanExtra(EXTRA_EXPAND_SEARCH_VIEW, false);
         if (icicle != null) {
             mExpandSearch = icicle.getBoolean(EXTRA_EXPAND_SEARCH_VIEW);
+            mPreviousSearch = icicle.getCharSequence(EXTRA_SEARCH_VIEW_QUERY);
         }
 
         SystemLocaleCollector systemLocaleCollector = new SystemLocaleCollector(getContext(), null);
-        mLocaleList = systemLocaleCollector.getSupportedLocaleList(null, false, false);
-        mLocaleOptions = new ArrayList<>(mLocaleList.size());
+        Set<LocaleStore.LocaleInfo> localeList = systemLocaleCollector.getSupportedLocaleList(null,
+                false, false);
+        mLocaleOptions = new ArrayList<>(localeList.size());
+
+        TopIntroPreference topIntroPreference = findPreference(KEY_TOP_INTRO_PREFERENCE);
+        if (topIntroPreference != null) {
+            topIntroPreference.setVisible(false);
+        }
+
     }
 
     @Override
@@ -128,6 +138,7 @@ public class SystemLocalePickerFragment extends DashboardFragment implements
         super.onSaveInstanceState(outState);
         if (mSearchView != null) {
             outState.putBoolean(EXTRA_EXPAND_SEARCH_VIEW, !mSearchView.isIconified());
+            outState.putCharSequence(EXTRA_SEARCH_VIEW_QUERY, mSearchView.getQuery());
         }
     }
 
@@ -145,6 +156,15 @@ public class SystemLocalePickerFragment extends DashboardFragment implements
             mSearchView.setMaxWidth(Integer.MAX_VALUE);
             if (mExpandSearch) {
                 searchMenuItem.expandActionView();
+            }
+            // Restore previous search status
+            if (!TextUtils.isEmpty(mPreviousSearch)) {
+                searchMenuItem.expandActionView();
+                mSearchView.setIconified(false);
+                mSearchView.setActivated(true);
+                mSearchView.setQuery(mPreviousSearch, true /* submit */);
+            } else {
+                mSearchView.setQuery(null, false /* submit */);
             }
         }
     }
@@ -175,7 +195,7 @@ public class SystemLocalePickerFragment extends DashboardFragment implements
             FilterResults results = new FilterResults();
 
             if (mOriginalLocaleInfos == null) {
-                mOriginalLocaleInfos = new ArrayList<>(mLocaleList);
+                mOriginalLocaleInfos = new ArrayList<>(mLocaleOptions);
             }
 
             if (TextUtils.isEmpty(prefix)) {
@@ -222,8 +242,9 @@ public class SystemLocalePickerFragment extends DashboardFragment implements
             if (mRecyclerView != null) {
                 mRecyclerView.post(() -> mRecyclerView.scrollToPosition(0));
             }
-            mSystemLocaleAllListPreferenceController.onSearchListChanged(mLocaleOptions);
-            mSuggestedListPreferenceController.onSearchListChanged(mLocaleOptions);
+
+            mSystemLocaleAllListPreferenceController.onSearchListChanged(mLocaleOptions, null);
+            mSuggestedListPreferenceController.onSearchListChanged(mLocaleOptions, null);
         }
 
         // TODO: decide if this is enough, or we want to use a BreakIterator...
@@ -287,11 +308,11 @@ public class SystemLocalePickerFragment extends DashboardFragment implements
 
     @Override
     protected List<AbstractPreferenceController> createPreferenceControllers(Context context) {
-        return buildPreferenceControllers(context, getSettingsLifecycle());
+        return buildPreferenceControllers(context);
     }
 
     private List<AbstractPreferenceController> buildPreferenceControllers(
-            @NonNull Context context, @Nullable Lifecycle lifecycle) {
+            @NonNull Context context) {
         LocaleList explicitLocales = null;
         if (isDeviceDemoMode()) {
             Bundle bundle = getIntent().getExtras();
@@ -306,6 +327,8 @@ public class SystemLocalePickerFragment extends DashboardFragment implements
         mSystemLocaleAllListPreferenceController = new SystemLocaleAllListPreferenceController(
                 context, KEY_PREFERENCE_SYSTEM_LOCALE_LIST, explicitLocales);
         final List<AbstractPreferenceController> controllers = new ArrayList<>();
+        mSuggestedListPreferenceController.setFragmentManager(getFragmentManager());
+        mSystemLocaleAllListPreferenceController.setFragmentManager(getFragmentManager());
         controllers.add(mSuggestedListPreferenceController);
         controllers.add(mSystemLocaleAllListPreferenceController);
 

@@ -15,30 +15,31 @@
  */
 package com.android.settings.display
 
-import android.app.settings.SettingsEnums
+import android.app.settings.SettingsEnums.OPEN_BATTERY_PERCENTAGE
 import android.content.Context
 import android.provider.Settings
-import androidx.preference.Preference
 import com.android.settings.R
 import com.android.settings.Utils
-import com.android.settings.overlay.FeatureFactory.Companion.featureFactory
+import com.android.settings.contract.KEY_BATTERY_PERCENTAGE
+import com.android.settings.metrics.PreferenceActionMetricsProvider
 import com.android.settingslib.datastore.KeyValueStore
-import com.android.settingslib.datastore.KeyedObservableDelegate
-import com.android.settingslib.datastore.SettingsStore
+import com.android.settingslib.datastore.KeyValueStoreDelegate
 import com.android.settingslib.datastore.SettingsSystemStore
 import com.android.settingslib.metadata.PreferenceAvailabilityProvider
-import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.ReadWritePermit
 import com.android.settingslib.metadata.SensitivityLevel
 import com.android.settingslib.metadata.SwitchPreference
-import com.android.settingslib.preference.SwitchPreferenceBinding
 
 // LINT.IfChange
 class BatteryPercentageSwitchPreference :
     SwitchPreference(KEY, R.string.battery_percentage, R.string.battery_percentage_description),
-    SwitchPreferenceBinding,
-    PreferenceAvailabilityProvider,
-    Preference.OnPreferenceChangeListener {
+    PreferenceActionMetricsProvider,
+    PreferenceAvailabilityProvider {
+
+    override val preferenceActionMetrics: Int
+        get() = OPEN_BATTERY_PERCENTAGE
+
+    override fun tags(context: Context) = arrayOf(KEY_BATTERY_PERCENTAGE)
 
     override fun storage(context: Context): KeyValueStore =
         BatteryPercentageStorage(context, SettingsSystemStore.get(context))
@@ -49,45 +50,31 @@ class BatteryPercentageSwitchPreference :
                 com.android.internal.R.bool.config_battery_percentage_setting_available
             )
 
-    override fun getReadPermit(context: Context, myUid: Int, callingUid: Int) =
+    override fun getReadPermissions(context: Context) = SettingsSystemStore.getReadPermissions()
+
+    override fun getReadPermit(context: Context, callingPid: Int, callingUid: Int) =
         ReadWritePermit.ALLOW
 
-    override fun getWritePermit(context: Context, value: Boolean?, myUid: Int, callingUid: Int) =
-        ReadWritePermit.ALLOW
+    override fun getWritePermissions(context: Context) = SettingsSystemStore.getWritePermissions()
+
+    override fun getWritePermit(
+        context: Context,
+        value: Boolean?,
+        callingPid: Int,
+        callingUid: Int,
+    ) = ReadWritePermit.ALLOW
 
     override val sensitivityLevel
         get() = SensitivityLevel.NO_SENSITIVITY
 
-    override fun bind(preference: Preference, metadata: PreferenceMetadata) {
-        super.bind(preference, metadata)
-        preference.onPreferenceChangeListener = this
-    }
-
-    override fun onPreferenceChange(preference: Preference, newValue: Any?): Boolean {
-        val showPercentage = newValue as Boolean
-
-        featureFactory.metricsFeatureProvider.action(
-            preference.context,
-            SettingsEnums.OPEN_BATTERY_PERCENTAGE,
-            showPercentage,
-        )
-        return true
-    }
-
     @Suppress("UNCHECKED_CAST")
     private class BatteryPercentageStorage(
         private val context: Context,
-        private val settingsStore: SettingsStore,
-    ) : KeyedObservableDelegate<String>(settingsStore), KeyValueStore {
+        private val settingsStore: KeyValueStore,
+    ) : KeyValueStoreDelegate {
 
-        override fun contains(key: String) = settingsStore.contains(KEY)
-
-        override fun <T : Any> getValue(key: String, valueType: Class<T>) =
-            (settingsStore.getBoolean(key) ?: getDefaultValue(key, valueType)) as T
-
-        override fun <T : Any> setValue(key: String, valueType: Class<T>, value: T?) {
-            settingsStore.setBoolean(key, value as Boolean)
-        }
+        override val keyValueStoreDelegate
+            get() = settingsStore
 
         override fun <T : Any> getDefaultValue(key: String, valueType: Class<T>) =
             context.resources.getBoolean(

@@ -21,8 +21,8 @@ import android.content.Context;
 /** Listens to summary updates from the content provider and fetches the latest value. */
 public class ActiveUnlockSummaryListener {
     private static final String TAG = "ActiveUnlockSummaryListener";
-    private static final String METHOD_NAME = "getSummary";
-    private static final String SUMMARY_KEY = "com.android.settings.summary";
+    static final String METHOD_NAME = "getSummary";
+    static final String SUMMARY_KEY = "com.android.settings.summary";
 
     private final ActiveUnlockContentListener mContentListener;
     public ActiveUnlockSummaryListener(

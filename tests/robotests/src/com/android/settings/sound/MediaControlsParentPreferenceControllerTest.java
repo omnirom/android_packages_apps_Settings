@@ -38,7 +38,7 @@ import org.robolectric.RuntimeEnvironment;
 @RunWith(RobolectricTestRunner.class)
 public class MediaControlsParentPreferenceControllerTest {
 
-    private static final String KEY = "media_controls_summary";
+    private static final String KEY = "media_controls";
 
     private Context mContext;
     private int mOriginalQs;

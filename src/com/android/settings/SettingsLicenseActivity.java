@@ -17,6 +17,7 @@
 package com.android.settings;
 
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -103,6 +104,9 @@ public class SettingsLicenseActivity extends FragmentActivity implements
                             | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
         }
         intent.addCategory(Intent.CATEGORY_DEFAULT);
+        ComponentName componentName = new ComponentName(
+                "com.android.htmlviewer", "com.android.htmlviewer.HTMLViewerActivity");
+        intent.setComponent(componentName);
         intent.setPackage("com.android.htmlviewer");
 
         try {

@@ -21,14 +21,12 @@ import static android.net.ConnectivitySettingsManager.PRIVATE_DNS_MODE_OPPORTUNI
 import static android.net.ConnectivitySettingsManager.PRIVATE_DNS_MODE_PROVIDER_HOSTNAME;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.ConnectivitySettingsManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,31 +86,31 @@ public class PrivateDnsModeDialogPreferenceTest {
     }
 
     @Test
-    public void testOnCheckedChanged_dnsModeOff_disableEditText() {
+    public void onCheckedChanged_dnsModeOff_disableHostnameText() {
         mPreference.onCheckedChanged(null, R.id.private_dns_mode_off);
 
         assertThat(mPreference.mMode).isEqualTo(PRIVATE_DNS_MODE_OFF);
-        assertThat(mPreference.mEditText.isEnabled()).isFalse();
+        assertThat(mPreference.mHostnameText.isEnabled()).isFalse();
     }
 
     @Test
-    public void testOnCheckedChanged_dnsModeOpportunistic_disableEditText() {
+    public void onCheckedChanged_dnsModeOpportunistic_disableHostnameText() {
         mPreference.onCheckedChanged(null, R.id.private_dns_mode_opportunistic);
 
         assertThat(mPreference.mMode).isEqualTo(PRIVATE_DNS_MODE_OPPORTUNISTIC);
-        assertThat(mPreference.mEditText.isEnabled()).isFalse();
+        assertThat(mPreference.mHostnameText.isEnabled()).isFalse();
     }
 
     @Test
-    public void testOnCheckedChanged_dnsModeProvider_enableEditText() {
+    public void onCheckedChanged_dnsModeProvider_enableHostnameText() {
         mPreference.onCheckedChanged(null, R.id.private_dns_mode_provider);
 
         assertThat(mPreference.mMode).isEqualTo(PRIVATE_DNS_MODE_PROVIDER_HOSTNAME);
-        assertThat(mPreference.mEditText.isEnabled()).isTrue();
+        assertThat(mPreference.mHostnameText.isEnabled()).isTrue();
     }
 
     @Test
-    public void testOnBindDialogView_containsCorrectData() {
+    public void onBindDialogView_containsCorrectData() {
         // Don't set settings to the default value ("opportunistic") as that
         // risks masking failure to read the mode from settings.
         ConnectivitySettingsManager.setPrivateDnsMode(mContext, PRIVATE_DNS_MODE_OFF);
@@ -123,57 +121,74 @@ public class PrivateDnsModeDialogPreferenceTest {
                 new LinearLayout(mContext), false);
         mPreference.onBindDialogView(view);
 
-        assertThat(mPreference.mEditText.getText().toString()).isEqualTo(HOST_NAME);
+        assertThat(mPreference.mHostnameText.getText().toString()).isEqualTo(HOST_NAME);
         assertThat(mPreference.mRadioGroup.getCheckedRadioButtonId()).isEqualTo(
                 R.id.private_dns_mode_off);
     }
 
     @Test
-    public void testOnCheckedChanged_switchMode_saveButtonHasCorrectState() {
-        final String[] INVALID_HOST_NAMES = new String[] {
-                INVALID_HOST_NAME,
-                "2001:db8::53",  // IPv6 string literal
-                "192.168.1.1",   // IPv4 string literal
-        };
+    public void doSaveButton_changeToOffMode_saveData() {
+        // Set the default settings to OPPORTUNISTIC
+        ConnectivitySettingsManager.setPrivateDnsMode(mContext, PRIVATE_DNS_MODE_OPPORTUNISTIC);
 
-        for (String invalid : INVALID_HOST_NAMES) {
-            // Set invalid hostname
-            mPreference.mEditText.setText(invalid);
-
-            mPreference.onCheckedChanged(null, R.id.private_dns_mode_off);
-            assertWithMessage("off: " + invalid).that(mSaveButton.isEnabled()).isTrue();
-
-            mPreference.onCheckedChanged(null, R.id.private_dns_mode_opportunistic);
-            assertWithMessage("opportunistic: " + invalid).that(mSaveButton.isEnabled()).isTrue();
-
-            mPreference.onCheckedChanged(null, R.id.private_dns_mode_provider);
-            assertWithMessage("provider: " + invalid).that(mSaveButton.isEnabled()).isFalse();
-        }
-    }
-
-    @Test
-    public void testOnClick_positiveButtonClicked_saveData() {
-        // Set the default settings to OFF
-        ConnectivitySettingsManager.setPrivateDnsMode(mContext, PRIVATE_DNS_MODE_OFF);
-
-        mPreference.mMode = PRIVATE_DNS_MODE_OPPORTUNISTIC;
-        mPreference.onClick(null, DialogInterface.BUTTON_POSITIVE);
+        mPreference.mMode = PRIVATE_DNS_MODE_OFF;
+        mPreference.doSaveButton();
 
         // Change to OPPORTUNISTIC
-        assertThat(ConnectivitySettingsManager.getPrivateDnsMode(mContext)).isEqualTo(
-                PRIVATE_DNS_MODE_OPPORTUNISTIC);
+        assertThat(ConnectivitySettingsManager.getPrivateDnsMode(mContext))
+                .isEqualTo(PRIVATE_DNS_MODE_OFF);
     }
 
     @Test
-    public void testOnClick_negativeButtonClicked_doNothing() {
+    public void doSaveButton_changeToOpportunisticMode_saveData() {
         // Set the default settings to OFF
         ConnectivitySettingsManager.setPrivateDnsMode(mContext, PRIVATE_DNS_MODE_OFF);
 
         mPreference.mMode = PRIVATE_DNS_MODE_OPPORTUNISTIC;
-        mPreference.onClick(null, DialogInterface.BUTTON_NEGATIVE);
+        mPreference.doSaveButton();
 
-        // Still equal to OFF
-        assertThat(ConnectivitySettingsManager.getPrivateDnsMode(mContext)).isEqualTo(
-                PRIVATE_DNS_MODE_OFF);
+        // Change to OPPORTUNISTIC
+        assertThat(ConnectivitySettingsManager.getPrivateDnsMode(mContext))
+                .isEqualTo(PRIVATE_DNS_MODE_OPPORTUNISTIC);
+    }
+
+    @Test
+    public void doSaveButton_changeToProviderHostnameMode_saveData() {
+        // Set the default settings to OFF
+        ConnectivitySettingsManager.setPrivateDnsMode(mContext, PRIVATE_DNS_MODE_OFF);
+
+        mPreference.onCheckedChanged(null, R.id.private_dns_mode_provider);
+        mPreference.mHostnameText.setText(HOST_NAME);
+        mPreference.doSaveButton();
+
+        // Change to PROVIDER_HOSTNAME
+        assertThat(ConnectivitySettingsManager.getPrivateDnsMode(mContext))
+                .isEqualTo(PRIVATE_DNS_MODE_PROVIDER_HOSTNAME);
+        assertThat(ConnectivitySettingsManager.getPrivateDnsHostname(mContext))
+                .isEqualTo(HOST_NAME);
+    }
+
+    @Test
+    public void doSaveButton_providerHostnameIsEmpty_setHostnameError() {
+        ConnectivitySettingsManager.setPrivateDnsMode(mContext, PRIVATE_DNS_MODE_PROVIDER_HOSTNAME);
+        ConnectivitySettingsManager.setPrivateDnsHostname(mContext, HOST_NAME);
+        mPreference.onCheckedChanged(null, R.id.private_dns_mode_provider);
+
+        mPreference.mHostnameText.setText("");
+        mPreference.doSaveButton();
+
+        assertThat(mPreference.mHostnameLayout.isErrorEnabled()).isTrue();
+    }
+
+    @Test
+    public void doSaveButton_providerHostnameIsInvalid_setHostnameError() {
+        ConnectivitySettingsManager.setPrivateDnsMode(mContext, PRIVATE_DNS_MODE_PROVIDER_HOSTNAME);
+        ConnectivitySettingsManager.setPrivateDnsHostname(mContext, HOST_NAME);
+        mPreference.onCheckedChanged(null, R.id.private_dns_mode_provider);
+
+        mPreference.mHostnameText.setText(INVALID_HOST_NAME);
+        mPreference.doSaveButton();
+
+        assertThat(mPreference.mHostnameLayout.isErrorEnabled()).isTrue();
     }
 }

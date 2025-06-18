@@ -32,11 +32,20 @@ import com.android.settingslib.wifi.WifiUtils
 /** A dialog to show the warning message when device is under satellite mode. */
 class SatelliteWarningDialogActivity : SpaDialogWindowTypeActivity() {
     private var warningType = TYPE_IS_UNKNOWN
-
+    private var customizedContent: HashMap<Int, String> = HashMap<Int, String>()
+    private var isCustomizedContent = false
     override fun onCreate(savedInstanceState: Bundle?) {
-        warningType = intent.getIntExtra(EXTRA_TYPE_OF_SATELLITE_WARNING_DIALOG, TYPE_IS_UNKNOWN)
-        if (warningType == TYPE_IS_UNKNOWN) {
-            finish()
+        isCustomizedContent = intent.hasExtra(EXTRA_TYPE_OF_SATELLITE_CUSTOMIZED_CONTENT)
+        if (isCustomizedContent) {
+            customizedContent =
+                intent.getSerializableExtra(EXTRA_TYPE_OF_SATELLITE_CUSTOMIZED_CONTENT)
+                        as HashMap<Int, String>
+        } else {
+            warningType =
+                intent.getIntExtra(EXTRA_TYPE_OF_SATELLITE_WARNING_DIALOG, TYPE_IS_UNKNOWN)
+            if (warningType == TYPE_IS_UNKNOWN) {
+                finish()
+            }
         }
         super.onCreate(savedInstanceState)
     }
@@ -48,23 +57,52 @@ class SatelliteWarningDialogActivity : SpaDialogWindowTypeActivity() {
         )
     }
 
+    fun getBodyString(): String {
+        if (isCustomizedContent) {
+            // For customized content
+            return customizedContent.get(CUSTOM_CONTENT_DESCRIPTION).toString()
+        } else {
+            // For wifi, bluetooth, airplane mode
+            return String.format(
+                getString(R.string.satellite_warning_dialog_content),
+                getTypeString(warningType)
+            )
+        }
+    }
+
+    fun getButtonString(): String {
+        if (isCustomizedContent)
+            // For customized content
+            return customizedContent.get(CUSTOM_CONTENT_BUTTON_NAME).toString()
+        else
+            // For wifi, bluetooth, airplane mode
+            return getString(com.android.settingslib.R.string.okay)
+    }
+
+    fun getTitleString(): String {
+        if (isCustomizedContent)
+            // For customized content
+            return customizedContent.get(CUSTOM_CONTENT_TITLE).toString()
+        else
+            // For wifi, bluetooth, airplane mode
+            return String.format(
+                getString(R.string.satellite_warning_dialog_title),
+                getTypeString(warningType)
+            )
+
+    }
+
     @Composable
     override fun Content() {
         SettingsAlertDialogContent(
             dismissButton = null,
             confirmButton = AlertDialogButton(
-                getString(com.android.settingslib.R.string.okay)
+                getButtonString()
             ) { finish() },
-            title = String.format(
-                getString(R.string.satellite_warning_dialog_title),
-                getTypeString(warningType)
-            ),
+            title = getTitleString(),
             text = {
                 Text(
-                    String.format(
-                        getString(R.string.satellite_warning_dialog_content),
-                        getTypeString(warningType)
-                    ),
+                    getBodyString(),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
@@ -83,9 +121,14 @@ class SatelliteWarningDialogActivity : SpaDialogWindowTypeActivity() {
     companion object {
         const val EXTRA_TYPE_OF_SATELLITE_WARNING_DIALOG: String =
             "extra_type_of_satellite_warning_dialog"
+        const val EXTRA_TYPE_OF_SATELLITE_CUSTOMIZED_CONTENT: String =
+            "extra_type_of_satellite_customized_content"
         const val TYPE_IS_UNKNOWN = -1
         const val TYPE_IS_WIFI = 0
         const val TYPE_IS_BLUETOOTH = 1
         const val TYPE_IS_AIRPLANE_MODE = 2
+        const val CUSTOM_CONTENT_TITLE = 0
+        const val CUSTOM_CONTENT_DESCRIPTION = 1
+        const val CUSTOM_CONTENT_BUTTON_NAME = 2
     }
 }

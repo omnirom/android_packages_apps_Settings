@@ -143,8 +143,7 @@ public class ZenRulePreference extends PrimarySwitchPreference {
 
     private String computeRuleSummary(AutomaticZenRule rule) {
         if (rule != null) {
-            if (Flags.modesApi() && Flags.modesUi()
-                    && !TextUtils.isEmpty(rule.getTriggerDescription())) {
+            if (Flags.modesUi() && !TextUtils.isEmpty(rule.getTriggerDescription())) {
                 return rule.getTriggerDescription();
             }
 

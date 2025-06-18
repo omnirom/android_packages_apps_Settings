@@ -48,21 +48,22 @@ class ConfigurationActivityHelper {
     Intent getConfigurationActivityIntentForMode(ZenMode zenMode,
             Function<ComponentName, ComponentInfo> approvedServiceFinder) {
 
-        String owner = zenMode.getRule().getPackageName();
+        ZenMode.Owner owner = zenMode.getOwner();
         ComponentName configActivity = null;
-        if (zenMode.getRule().getConfigurationActivity() != null) {
+        if (owner.configurationActivity() != null) {
             // If a configuration activity is present, use that directly in the intent
-            configActivity = zenMode.getRule().getConfigurationActivity();
+            configActivity = owner.configurationActivity();
         } else {
             // Otherwise, look for a condition provider service for the rule's package
-            ComponentInfo ci = approvedServiceFinder.apply(zenMode.getRule().getOwner());
+            ComponentInfo ci = approvedServiceFinder.apply(owner.conditionProvider());
             if (ci != null) {
                 configActivity = extractConfigurationActivityFromComponent(ci);
             }
         }
 
         if (configActivity != null
-                && (owner == null || isSameOwnerPackage(owner, configActivity))
+                && (owner.packageName() == null
+                    || isSameOwnerPackage(owner.packageName(), configActivity))
                 && isResolvableActivity(configActivity)) {
             return new Intent()
                     .setComponent(configActivity)

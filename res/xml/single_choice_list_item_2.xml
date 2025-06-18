@@ -27,7 +27,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:clickable="false" />
+        android:clickable="false"
+        android:focusable="false"/>
 
     <LinearLayout
         android:layout_width="0dp"

@@ -25,12 +25,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.settings.R;
 
 import com.google.android.setupcompat.template.FooterBarMixin;
 import com.google.android.setupdesign.GlifPreferenceLayout;
+import com.google.android.setupdesign.util.ThemeHelper;
 
 public class ToggleScreenReaderPreferenceFragmentForSetupWizard
         extends ToggleAccessibilityServicePreferenceFragment {
@@ -75,8 +77,22 @@ public class ToggleScreenReaderPreferenceFragmentForSetupWizard
     }
 
     @Override
+    protected RecyclerView.Adapter onCreateAdapter(PreferenceScreen preferenceScreen) {
+        if (ThemeHelper.shouldApplyGlifExpressiveStyle(getContext())) {
+            return new PreferenceAdapterInSuw(preferenceScreen);
+        }
+        return super.onCreateAdapter(preferenceScreen);
+    }
+
+    @Override
     public int getMetricsCategory() {
         return SettingsEnums.SUW_ACCESSIBILITY_TOGGLE_SCREEN_READER;
+    }
+
+    @Override
+    public int getFeedbackCategory() {
+        // The feedback options should not be displayed on the setup wizard page.
+        return SettingsEnums.PAGE_UNKNOWN;
     }
 
     @Override

@@ -17,6 +17,9 @@
 package com.android.settings.connecteddevice.audiosharing.audiostreams;
 
 import static com.android.settings.connecteddevice.audiosharing.audiostreams.AudioStreamsDashboardFragment.KEY_BROADCAST_METADATA;
+import static com.android.settings.connecteddevice.audiosharing.audiostreams.AudioStreamsHelper.getEnabledScreenReaderServices;
+import static com.android.settings.connecteddevice.audiosharing.audiostreams.AudioStreamsHelper.setAccessibilityServiceOff;
+import static com.android.settingslib.bluetooth.BluetoothBroadcastUtils.SCHEME_BT_BROADCAST_METADATA;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -40,6 +43,7 @@ import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
 import com.android.settingslib.bluetooth.BluetoothLeBroadcastMetadataExt;
 import com.android.settingslib.bluetooth.BluetoothUtils;
 import com.android.settingslib.bluetooth.LocalBluetoothLeBroadcastAssistant;
+import com.android.settingslib.utils.ThreadUtils;
 
 public class AudioStreamConfirmDialog extends InstrumentedDialogFragment {
     private static final String TAG = "AudioStreamConfirmDialog";
@@ -48,9 +52,13 @@ public class AudioStreamConfirmDialog extends InstrumentedDialogFragment {
     static final int DEFAULT_DEVICE_NAME = R.string.audio_streams_dialog_default_device;
 
     private Context mContext;
-    @VisibleForTesting @Nullable Activity mActivity;
-    @Nullable private BluetoothLeBroadcastMetadata mBroadcastMetadata;
-    @Nullable private BluetoothDevice mConnectedDevice;
+    @VisibleForTesting
+    @Nullable
+    Activity mActivity;
+    @Nullable
+    private BluetoothLeBroadcastMetadata mBroadcastMetadata;
+    @Nullable
+    private BluetoothDevice mConnectedDevice;
     private int mAudioStreamConfirmDialogId = SettingsEnums.PAGE_UNKNOWN;
 
     @Override
@@ -81,6 +89,8 @@ public class AudioStreamConfirmDialog extends InstrumentedDialogFragment {
             case SettingsEnums.DIALOG_AUDIO_STREAM_CONFIRM_FEATURE_UNSUPPORTED ->
                     getUnsupportedDialog();
             case SettingsEnums.DIALOG_AUDIO_STREAM_CONFIRM_NO_LE_DEVICE -> getNoLeDeviceDialog();
+            case SettingsEnums.DIALOG_AUDIO_STREAM_CONFIRM_TURN_OFF_TALKBACK ->
+                    getTurnOffTalkbackDialog();
             case SettingsEnums.DIALOG_AUDIO_STREAM_CONFIRM_LISTEN -> getConfirmDialog();
             default -> getErrorDialog();
         };
@@ -163,6 +173,36 @@ public class AudioStreamConfirmDialog extends InstrumentedDialogFragment {
                 .build();
     }
 
+    private Dialog getTurnOffTalkbackDialog() {
+        return new AudioStreamsDialogFragment.DialogBuilder(getActivity())
+                .setTitle(getString(R.string.audio_streams_dialog_turn_off_talkback_title))
+                .setSubTitle2(getString(R.string.audio_streams_dialog_turn_off_talkback_subtitle))
+                .setLeftButtonText(getString(R.string.cancel))
+                .setLeftButtonOnClickListener(
+                        unused -> {
+                            dismiss();
+                            if (mActivity != null) {
+                                mActivity.finish();
+                            }
+                        })
+                .setRightButtonText(
+                        getString(R.string.audio_streams_dialog_turn_off_talkback_button))
+                .setRightButtonOnClickListener(
+                        dialog -> {
+                            var unused = ThreadUtils.postOnBackgroundThread(() -> {
+                                var enabledScreenReader = getEnabledScreenReaderServices(mContext);
+                                if (!enabledScreenReader.isEmpty()) {
+                                    setAccessibilityServiceOff(mContext, enabledScreenReader);
+                                }
+                            });
+                            dismiss();
+                            if (mActivity != null) {
+                                mActivity.finish();
+                            }
+                        })
+                .build();
+    }
+
     private Dialog getNoLeDeviceDialog() {
         return new AudioStreamsDialogFragment.DialogBuilder(getActivity())
                 .setTitle(getString(R.string.audio_streams_dialog_no_le_device_title))
@@ -206,17 +246,31 @@ public class AudioStreamConfirmDialog extends InstrumentedDialogFragment {
     }
 
     private @Nullable BluetoothLeBroadcastMetadata getMetadata(Intent intent) {
+        // Get the metadata from the intent extras
         String metadata = intent.getStringExtra(KEY_BROADCAST_METADATA);
-        if (metadata == null || metadata.isEmpty()) {
-            return null;
+        if (metadata != null && !metadata.isEmpty()) {
+            return BluetoothLeBroadcastMetadataExt.INSTANCE.convertToBroadcastMetadata(metadata);
         }
-        return BluetoothLeBroadcastMetadataExt.INSTANCE.convertToBroadcastMetadata(metadata);
+        // Retrieve the generic data string from the intent
+        String genericData = intent.getDataString();
+        if (genericData != null && !genericData.isEmpty()) {
+            // Normalize the prefix by replacing lowercase "bluetooth" with uppercase "BLUETOOTH"
+            genericData = genericData.replaceFirst("bluetooth", "BLUETOOTH");
+            if (genericData.startsWith(SCHEME_BT_BROADCAST_METADATA)) {
+                return BluetoothLeBroadcastMetadataExt.INSTANCE.convertToBroadcastMetadata(
+                        genericData);
+            }
+        }
+        return null;
     }
 
     private int getDialogId(boolean hasMetadata, boolean hasConnectedDevice) {
         if (BluetoothUtils.isAudioSharingUIAvailable(mContext)) {
             if (!hasConnectedDevice) {
                 return SettingsEnums.DIALOG_AUDIO_STREAM_CONFIRM_NO_LE_DEVICE;
+            }
+            if (!getEnabledScreenReaderServices(mContext).isEmpty()) {
+                return SettingsEnums.DIALOG_AUDIO_STREAM_CONFIRM_TURN_OFF_TALKBACK;
             }
             return hasMetadata
                     ? SettingsEnums.DIALOG_AUDIO_STREAM_CONFIRM_LISTEN

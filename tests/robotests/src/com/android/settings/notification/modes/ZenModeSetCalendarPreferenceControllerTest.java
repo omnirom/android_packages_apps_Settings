@@ -41,6 +41,7 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settingslib.notification.modes.TestModeBuilder;
 import com.android.settingslib.notification.modes.ZenMode;
+import com.android.settingslib.notification.modes.ZenModeSchedules;
 import com.android.settingslib.notification.modes.ZenModesBackend;
 
 import org.junit.Before;
@@ -85,7 +86,7 @@ public class ZenModeSetCalendarPreferenceControllerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_MODES_API, Flags.FLAG_MODES_UI})
+    @EnableFlags(Flags.FLAG_MODES_UI)
     public void updateEventMode_updatesConditionAndTriggerDescription() {
         ZenMode mode = new TestModeBuilder()
                 .setPackage(SystemZenRules.PACKAGE_ANDROID)
@@ -102,10 +103,10 @@ public class ZenModeSetCalendarPreferenceControllerTest {
         // apply event mode updater to existing mode
         ZenMode out = mPrefController.updateEventMode(eventInfo).apply(mode);
 
-        assertThat(out.getRule().getOwner()).isEqualTo(ZenModeConfig.getEventConditionProvider());
-        assertThat(out.getRule().getConditionId()).isEqualTo(
-                ZenModeConfig.toEventConditionId(eventInfo));
-        assertThat(out.getRule().getTriggerDescription()).isEqualTo("My events");
+        assertThat(ZenModeSchedules.getCalendarSchedule(out)).isEqualTo(eventInfo);
+        assertThat(out.getOwner().conditionProvider()).isEqualTo(
+                ZenModeConfig.getEventConditionProvider());
+        assertThat(out.getTriggerDescription()).isEqualTo("My events");
     }
 
     @Test

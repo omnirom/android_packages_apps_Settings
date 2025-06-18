@@ -31,6 +31,13 @@
         <com.android.settingslib.widget.LayoutPreference
             android:key="languages_picker"
             android:layout="@layout/locale_order_list" />
+
+        <Preference
+            android:key="add_a_language"
+            android:title="@string/add_a_language"
+            android:icon="@drawable/ic_add_24dp"
+            settings:isPreferenceVisible="false"
+            settings:fragment="com.android.settings.localepicker.SystemLocalePickerFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory

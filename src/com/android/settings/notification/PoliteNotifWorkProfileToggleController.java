@@ -102,12 +102,12 @@ public class PoliteNotifWorkProfileToggleController extends TogglePreferenceCont
             return CONDITIONALLY_UNAVAILABLE;
         }
 
-        return (mManagedProfileId != UserHandle.USER_NULL) ? AVAILABLE : DISABLED_FOR_USER;
+        return hasManagedProfileUser() ? AVAILABLE : DISABLED_FOR_USER;
     }
 
     @Override
     public boolean isChecked() {
-        if (!isCoolDownEnabledForPrimary()) {
+        if (!isCoolDownEnabledForPrimary() || !hasManagedProfileUser()) {
             return false;
         }
         return Settings.System.getIntForUser(mContext.getContentResolver(),
@@ -131,6 +131,13 @@ public class PoliteNotifWorkProfileToggleController extends TogglePreferenceCont
     public void updateState(@Nullable Preference preference) {
         if (preference == null) return;
         preference.setVisible(isAvailable());
+        if (isAvailable()) {
+            super.updateState(preference);
+        }
+    }
+
+    private boolean hasManagedProfileUser() {
+        return mManagedProfileId != UserHandle.USER_NULL;
     }
 
     private boolean isCoolDownEnabledForPrimary() {

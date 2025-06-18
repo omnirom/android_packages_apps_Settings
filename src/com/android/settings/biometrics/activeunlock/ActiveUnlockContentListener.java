@@ -28,6 +28,7 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.settingslib.utils.ThreadUtils;
@@ -76,15 +77,20 @@ public class ActiveUnlockContentListener {
         mContentKey = contentKey;
         String authority = new ActiveUnlockStatusUtils(mContext).getAuthority();
         if (authority != null) {
-            mUri = new Uri.Builder()
-                    .scheme(ContentResolver.SCHEME_CONTENT)
-                    .authority(authority)
-                    .appendPath(CONTENT_PROVIDER_PATH)
-                    .build();
+            mUri = getUri(authority);
         } else {
             mUri = null;
         }
 
+    }
+
+    /** Returns Active Unlock Uri. */
+    public static @NonNull Uri getUri(@NonNull String authority) {
+        return new Uri.Builder()
+                    .scheme(ContentResolver.SCHEME_CONTENT)
+                    .authority(authority)
+                    .appendPath(CONTENT_PROVIDER_PATH)
+                    .build();
     }
 
     /** Returns true if start listening for updates from the ContentProvider, false otherwise. */
@@ -123,25 +129,43 @@ public class ActiveUnlockContentListener {
             Log.e(mLogTag, "Uri null when trying to fetch content");
             return;
         }
-        ContentResolver contentResolver = mContext.getContentResolver();
-        ContentProviderClient client = contentResolver.acquireContentProviderClient(mUri);
-        Bundle bundle;
-        try {
-            bundle = client.call(mMethodName, null /* arg */, null /* extras */);
-        } catch (RemoteException e) {
-            Log.e(mLogTag, "Failed to call contentProvider", e);
-            return;
-        } finally {
-            client.close();
-        }
-        if (bundle == null) {
-            Log.e(mLogTag, "Null bundle returned from contentProvider");
-            return;
-        }
-        String newValue = bundle.getString(mContentKey);
+
+        @Nullable String newValue = getContentFromUri(
+            mContext, mUri, mLogTag, mMethodName, mContentKey);
         if (!TextUtils.equals(mContent, newValue)) {
             mContent = newValue;
             mContentChangedListener.onContentChanged(mContent);
         }
+    }
+
+    /** Get the content from Uri. */
+    public static @Nullable String getContentFromUri(
+            @NonNull Context context,
+            @NonNull Uri uri,
+            @NonNull String logTag,
+            @NonNull String methodName,
+            @NonNull String contentKey) {
+        ContentResolver contentResolver = context.getContentResolver();
+        ContentProviderClient client = contentResolver.acquireContentProviderClient(uri);
+        if (client == null) {
+            return null;
+        }
+
+        @Nullable Bundle bundle = null;
+
+        try {
+            bundle = client.call(methodName, /* arg= */ null, /* extras = */ null);
+        } catch (RemoteException e) {
+            Log.e(logTag, "Failed to call contentProvider", e);
+        } finally {
+            client.close();
+        }
+
+        if (bundle == null) {
+            Log.e(logTag, "Null bundle returned from contentProvider");
+            return null;
+        }
+
+        return bundle.getString(contentKey);
     }
 }

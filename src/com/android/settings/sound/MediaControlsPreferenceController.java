@@ -29,6 +29,7 @@ import com.android.settings.core.TogglePreferenceController;
 /**
  * Toggle for media controls resumption setting
  */
+// LINT.IfChange
 public class MediaControlsPreferenceController extends TogglePreferenceController {
 
     public MediaControlsPreferenceController(Context context, String key) {
@@ -56,4 +57,6 @@ public class MediaControlsPreferenceController extends TogglePreferenceControlle
     public int getSliceHighlightMenuRes() {
         return R.string.menu_key_sound;
     }
+
 }
+// LINT.ThenChange(MediaControlsSwitchPreference.kt)

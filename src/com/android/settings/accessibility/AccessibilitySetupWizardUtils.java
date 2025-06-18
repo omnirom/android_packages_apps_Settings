@@ -99,7 +99,6 @@ public class AccessibilitySetupWizardUtils {
                         .setText(text)
                         .setListener(l -> runnable.run())
                         .setButtonType(FooterButton.ButtonType.DONE)
-                        .setTheme(R.style.SudGlifButton_Primary)
                         .build());
     }
 
@@ -120,7 +119,6 @@ public class AccessibilitySetupWizardUtils {
                         .setText(text)
                         .setListener(l -> runnable.run())
                         .setButtonType(FooterButton.ButtonType.CLEAR)
-                        .setTheme(R.style.SudGlifButton_Secondary)
                         .build());
     }
 }

@@ -21,8 +21,8 @@ import android.content.Context;
 /** Listens to device name updates from the content provider and fetches the latest value. */
 public class ActiveUnlockDeviceNameListener  {
     private static final String TAG = "ActiveUnlockDeviceNameListener";
-    private static final String METHOD_NAME = "getDeviceName";
-    private static final String DEVICE_NAME_KEY = "com.android.settings.active_unlock.device_name";
+    static final String METHOD_NAME = "getDeviceName";
+    static final String DEVICE_NAME_KEY = "com.android.settings.active_unlock.device_name";
 
     private final ActiveUnlockContentListener mActiveUnlockContentListener;
     public ActiveUnlockDeviceNameListener(

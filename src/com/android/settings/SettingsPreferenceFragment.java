@@ -17,7 +17,6 @@
 package com.android.settings;
 
 import static com.android.settings.SettingsActivity.EXTRA_FRAGMENT_ARG_KEY;
-import static com.android.settingslib.media.PhoneMediaDevice.isDesktop;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -51,12 +50,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.settings.core.InstrumentedPreferenceFragment;
 import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
 import com.android.settings.flags.Flags;
+import com.android.settings.restriction.UserRestrictionBindingHelper;
 import com.android.settings.support.actionbar.HelpResourceProvider;
 import com.android.settings.widget.HighlightablePreferenceGroupAdapter;
 import com.android.settings.widget.LoadingViewController;
 import com.android.settingslib.CustomDialogPreferenceCompat;
 import com.android.settingslib.CustomEditTextPreferenceCompat;
 import com.android.settingslib.core.instrumentation.Instrumentable;
+import com.android.settingslib.preference.PreferenceScreenBindingHelper;
 import com.android.settingslib.preference.PreferenceScreenCreator;
 import com.android.settingslib.search.Indexable;
 import com.android.settingslib.widget.LayoutPreference;
@@ -131,6 +132,8 @@ public abstract class SettingsPreferenceFragment extends InstrumentedPreferenceF
     public HighlightablePreferenceGroupAdapter mAdapter;
     private boolean mPreferenceHighlighted = false;
 
+    private @Nullable UserRestrictionBindingHelper mUserRestrictionBindingHelper;
+
     @Override
     public void onAttach(Context context) {
         if (shouldSkipForInitialSUW() && !WizardManagerHelper.isDeviceProvisioned(getContext())) {
@@ -149,6 +152,14 @@ public abstract class SettingsPreferenceFragment extends InstrumentedPreferenceF
             mPreferenceHighlighted = icicle.getBoolean(SAVE_HIGHLIGHTED_KEY);
         }
         HighlightablePreferenceGroupAdapter.adjustInitialExpandedChildCount(this /* host */);
+
+        if (isCatalystEnabled()) {
+            PreferenceScreenBindingHelper helper = getPreferenceScreenBindingHelper();
+            if (helper != null) {
+                mUserRestrictionBindingHelper = new UserRestrictionBindingHelper(requireContext(),
+                        helper);
+            }
+        }
     }
 
     @Override
@@ -187,13 +198,6 @@ public abstract class SettingsPreferenceFragment extends InstrumentedPreferenceF
 
     /** Returns if catalyst is enabled on current screen. */
     public final boolean isCatalystEnabled() {
-        // TODO(b/379130874): make Catalyst compatible with desktop device, such as user restriction
-        // check.
-        Context context = getContext();
-        if (context != null && isDesktop(context)) {
-            return false;
-        }
-
         return getPreferenceScreenCreator() != null;
     }
 
@@ -506,6 +510,15 @@ public abstract class SettingsPreferenceFragment extends InstrumentedPreferenceF
      */
     protected PackageManager getPackageManager() {
         return getActivity().getPackageManager();
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mUserRestrictionBindingHelper != null) {
+            mUserRestrictionBindingHelper.close();
+            mUserRestrictionBindingHelper = null;
+        }
+        super.onDestroy();
     }
 
     @Override

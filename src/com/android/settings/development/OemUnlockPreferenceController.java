@@ -236,7 +236,13 @@ public class OemUnlockPreferenceController extends DeveloperOptionsPreferenceCon
 
     @VisibleForTesting
     boolean isOemUnlockedAllowed() {
-        return mOemLockManager.isOemUnlockAllowed();
+        try {
+            return mOemLockManager.isOemUnlockAllowed();
+        } catch (SecurityException e) {
+            // This exception is thrown if the device is not allowed to check (or change) the OEM
+            // unlock setting because Factory Reset Protection is active.
+            Log.e(TAG, "Failed to check OEM unlock allowed", e);
+            return false;
+        }
     }
-
 }

@@ -21,13 +21,13 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string-array name="screen_timeout_entries">
-    <item msgid="8386012403457852396">"nach 15 Sekunden"</item>
-    <item msgid="4572123773028439079">"nach 30 Sekunden"</item>
-    <item msgid="7016081293774377048">"nach 1 Minute"</item>
-    <item msgid="838575533670111144">"nach 2 Minuten"</item>
-    <item msgid="2693197579676214668">"nach 5 Minuten"</item>
-    <item msgid="1955784331962974678">"nach 10 Minuten"</item>
-    <item msgid="5578717731965793584">"nach 30 Minuten"</item>
+    <item msgid="8386012403457852396">"Nach 15 Sekunden"</item>
+    <item msgid="4572123773028439079">"Nach 30 Sekunden"</item>
+    <item msgid="7016081293774377048">"Nach 1 Minute"</item>
+    <item msgid="838575533670111144">"Nach 2 Minuten"</item>
+    <item msgid="2693197579676214668">"Nach 5 Minuten"</item>
+    <item msgid="1955784331962974678">"Nach 10 Minuten"</item>
+    <item msgid="5578717731965793584">"Nach 30 Minuten"</item>
   </string-array>
     <!-- no translation found for dark_ui_scheduler_preference_titles:0 (7465697698048662118) -->
     <!-- no translation found for dark_ui_scheduler_preference_titles:1 (4057198235664064478) -->

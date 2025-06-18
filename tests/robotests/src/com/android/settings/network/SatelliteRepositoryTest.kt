@@ -18,10 +18,12 @@ package com.android.settings.network
 
 import android.content.Context
 import android.os.OutcomeReceiver
+import android.platform.test.annotations.EnableFlags
 import android.telephony.satellite.SatelliteManager
 import android.telephony.satellite.SatelliteManager.SatelliteException
 import android.telephony.satellite.SatelliteModemStateCallback
 import androidx.test.core.app.ApplicationProvider
+import com.android.internal.telephony.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import com.google.common.util.concurrent.ListenableFuture
 import kotlinx.coroutines.flow.first
@@ -38,9 +40,9 @@ import org.mockito.Mockito.*
 import org.mockito.Spy
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
+import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
 import java.util.concurrent.Executor
-
 
 @RunWith(RobolectricTestRunner::class)
 class SatelliteRepositoryTest {
@@ -266,5 +268,36 @@ class SatelliteRepositoryTest {
         val flow = repository.getIsSessionStartedFlow()
 
         assertThat(flow.first()).isFalse()
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_SATELLITE_25Q4_APIS)
+    fun getSatelliteDataOptimizedApps_returnPackageNameList() = runBlocking {
+        whenever(
+            mockSatelliteManager.getSatelliteDataOptimizedApps()
+        ).thenReturn(
+            listOf(
+                "com.android.settings",
+                "com.android.apps.messaging",
+                "com.android.dialer",
+                "com.android.systemui"
+            )
+        )
+
+        val result = repository.getSatelliteDataOptimizedApps()
+
+        assertThat(result.size == 4).isTrue()
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_SATELLITE_25Q4_APIS)
+    fun getSatelliteDataOptimizedApps_noTelephony_returnEmptyList() = runBlocking {
+        whenever(
+            mockSatelliteManager.getSatelliteDataOptimizedApps()
+        ).thenThrow(IllegalStateException("Telephony is null"))
+
+        val result = repository.getSatelliteDataOptimizedApps()
+
+        assertThat(result.isEmpty()).isTrue()
     }
 }

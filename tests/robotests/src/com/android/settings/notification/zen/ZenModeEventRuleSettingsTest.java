@@ -107,7 +107,7 @@ public class ZenModeEventRuleSettingsTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_MODES_API, Flags.FLAG_MODES_UI})
+    @EnableFlags(Flags.FLAG_MODES_UI)
     public void updateEventRule_updatesConditionAndTriggerDescription() {
         mFragment.setBackend(mBackend);
         mFragment.mId = "id";

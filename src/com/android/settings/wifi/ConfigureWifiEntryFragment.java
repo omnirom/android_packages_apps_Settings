@@ -203,6 +203,9 @@ public class ConfigureWifiEntryFragment extends InstrumentedFragment implements 
 
     @VisibleForTesting
     void handleSubmitAction() {
+        if (!mUiController.getValidator().validate()) {
+            return;
+        }
         final Intent intent = new Intent();
         final Activity activity = getActivity();
         intent.putExtra(NETWORK_CONFIG_KEY, mUiController.getConfig());

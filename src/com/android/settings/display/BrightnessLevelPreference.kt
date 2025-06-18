@@ -16,6 +16,7 @@
 package com.android.settings.display
 
 import android.app.ActivityOptions
+import android.app.settings.SettingsEnums.ACTION_BRIGHTNESS_LEVEL
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_SHOW_BRIGHTNESS_DIALOG
@@ -26,36 +27,41 @@ import android.hardware.display.DisplayManager.DisplayListener
 import android.os.UserManager
 import android.provider.Settings.System
 import androidx.preference.Preference
-import com.android.settings.PreferenceRestrictionMixin
 import com.android.settings.R
 import com.android.settings.Utils
+import com.android.settings.contract.KEY_BRIGHTNESS_LEVEL
 import com.android.settings.core.SettingsBaseActivity
+import com.android.settings.metrics.PreferenceActionMetricsProvider
+import com.android.settings.restriction.PreferenceRestrictionMixin
 import com.android.settingslib.RestrictedPreference
+import com.android.settingslib.datastore.AbstractKeyedDataObservable
 import com.android.settingslib.datastore.HandlerExecutor
+import com.android.settingslib.datastore.KeyValueStore
 import com.android.settingslib.datastore.KeyedObserver
+import com.android.settingslib.datastore.Permissions
 import com.android.settingslib.datastore.SettingsSystemStore
 import com.android.settingslib.display.BrightnessUtils.GAMMA_SPACE_MAX
 import com.android.settingslib.display.BrightnessUtils.GAMMA_SPACE_MIN
 import com.android.settingslib.display.BrightnessUtils.convertLinearToGammaFloat
-import com.android.settingslib.metadata.PreferenceLifecycleContext
-import com.android.settingslib.metadata.PreferenceLifecycleProvider
+import com.android.settingslib.metadata.IntRangeValuePreference
+import com.android.settingslib.metadata.PreferenceChangeReason
 import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.PreferenceSummaryProvider
+import com.android.settingslib.metadata.ReadWritePermit
+import com.android.settingslib.metadata.SensitivityLevel
 import com.android.settingslib.preference.PreferenceBinding
 import com.android.settingslib.transition.SettingsTransitionHelper
+import java.math.BigDecimal
 import java.text.NumberFormat
 
 // LINT.IfChange
 class BrightnessLevelPreference :
-    PreferenceMetadata,
+    IntRangeValuePreference,
     PreferenceBinding,
     PreferenceRestrictionMixin,
+    PreferenceActionMetricsProvider,
     PreferenceSummaryProvider,
-    PreferenceLifecycleProvider,
     Preference.OnPreferenceClickListener {
-
-    private var brightnessObserver: KeyedObserver<String>? = null
-    private var displayListener: DisplayListener? = null
 
     override val key: String
         get() = KEY
@@ -66,8 +72,13 @@ class BrightnessLevelPreference :
     override val keywords: Int
         get() = R.string.keywords_display_brightness_level
 
+    override val preferenceActionMetrics: Int
+        get() = ACTION_BRIGHTNESS_LEVEL
+
+    override fun tags(context: Context) = arrayOf(KEY_BRIGHTNESS_LEVEL)
+
     override fun getSummary(context: Context): CharSequence? =
-        NumberFormat.getPercentInstance().format(getCurrentBrightness(context))
+        NumberFormat.getPercentInstance().format(context.brightnessPercent)
 
     override fun isEnabled(context: Context) = super<PreferenceRestrictionMixin>.isEnabled(context)
 
@@ -77,91 +88,129 @@ class BrightnessLevelPreference :
     override val useAdminDisabledSummary: Boolean
         get() = true
 
+    override fun intent(context: Context): Intent? =
+        Intent(ACTION_SHOW_BRIGHTNESS_DIALOG)
+            .setPackage(Utils.SYSTEMUI_PACKAGE_NAME)
+            .putExtra(
+                SettingsBaseActivity.EXTRA_PAGE_TRANSITION_TYPE,
+                SettingsTransitionHelper.TransitionType.TRANSITION_NONE,
+            )
+            .putExtra(EXTRA_BRIGHTNESS_DIALOG_IS_FULL_WIDTH, true)
+
     override fun createWidget(context: Context) = RestrictedPreference(context)
 
     override fun bind(preference: Preference, metadata: PreferenceMetadata) {
         super.bind(preference, metadata)
         preference.onPreferenceClickListener = this
+        preference.isPersistent = false
     }
 
-    override fun onStart(context: PreferenceLifecycleContext) {
-        val observer = KeyedObserver<String> { _, _ -> context.notifyPreferenceChange(KEY) }
-        brightnessObserver = observer
-        SettingsSystemStore.get(context)
-            .addObserver(System.SCREEN_AUTO_BRIGHTNESS_ADJ, observer, HandlerExecutor.main)
+    // Note that we *currently* use restricted APIs to obtain the brightness value, but the
+    // brightness value itself is not data that requires permission restriction (as evidence this
+    // value is already available via the summary field). As long as we only
+    // expose the brightness value and not the other data obtained from BrightnessInfo, we do not
+    // require a permission control to obtain this value. A new API is in the works for Brightness
+    // that we can later migrate to that doesn't use any of these permission controls.
+    // Reference ticket: b/388557367
+    override fun getReadPermissions(context: Context) = Permissions.EMPTY
 
-        val listener =
-            object : DisplayListener {
-                override fun onDisplayAdded(displayId: Int) {}
+    override fun getWritePermissions(context: Context) = Permissions.EMPTY
 
-                override fun onDisplayRemoved(displayId: Int) {}
+    override fun getReadPermit(context: Context, callingPid: Int, callingUid: Int) =
+        ReadWritePermit.ALLOW
 
-                override fun onDisplayChanged(displayId: Int) {
-                    context.notifyPreferenceChange(KEY)
-                }
-            }
-        displayListener = listener
-        context.displayManager.registerDisplayListener(
-            listener,
-            HandlerExecutor.main,
-            /* eventFlags= */ 0,
-            DisplayManager.PRIVATE_EVENT_FLAG_DISPLAY_BRIGHTNESS,
-        )
-    }
+    override fun getWritePermit(context: Context, callingPid: Int, callingUid: Int) =
+        ReadWritePermit.DISALLOW
 
-    override fun onStop(context: PreferenceLifecycleContext) {
-        brightnessObserver?.let {
-            SettingsSystemStore.get(context).removeObserver(System.SCREEN_AUTO_BRIGHTNESS_ADJ, it)
-            brightnessObserver = null
+    override val sensitivityLevel
+        get() = SensitivityLevel.NO_SENSITIVITY
+
+    override fun storage(context: Context): KeyValueStore = BrightnessStorage(context)
+
+    override fun getMinValue(context: Context) = 0
+
+    override fun getMaxValue(context: Context) = 100
+
+    private class BrightnessStorage(private val context: Context) :
+        AbstractKeyedDataObservable<String>(),
+        KeyValueStore,
+        KeyedObserver<String>,
+        DisplayListener {
+
+        override fun contains(key: String) = key == KEY
+
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : Any> getValue(key: String, valueType: Class<T>) =
+            BigDecimal(context.brightnessPercent * 100)
+                .setScale(0, NumberFormat.getPercentInstance().roundingMode)
+                .toInt() as T
+
+        override fun <T : Any> setValue(key: String, valueType: Class<T>, value: T?) {}
+
+        override fun onFirstObserverAdded() {
+            SettingsSystemStore.get(context)
+                .addObserver(System.SCREEN_AUTO_BRIGHTNESS_ADJ, this, HandlerExecutor.main)
+
+            context.displayManager.registerDisplayListener(
+                this,
+                HandlerExecutor.main,
+                /* eventFilter= */ 0,
+                DisplayManager.PRIVATE_EVENT_TYPE_DISPLAY_BRIGHTNESS,
+            )
         }
 
-        displayListener?.let {
-            context.displayManager.unregisterDisplayListener(it)
-            displayListener = null
+        override fun onLastObserverRemoved() {
+            SettingsSystemStore.get(context).removeObserver(System.SCREEN_AUTO_BRIGHTNESS_ADJ, this)
+
+            context.displayManager.unregisterDisplayListener(this)
+        }
+
+        override fun onKeyChanged(key: String, reason: Int) {
+            notifyChange(KEY, reason)
+        }
+
+        override fun onDisplayAdded(displayId: Int) {}
+
+        override fun onDisplayRemoved(displayId: Int) {}
+
+        override fun onDisplayChanged(displayId: Int) {
+            notifyChange(KEY, PreferenceChangeReason.STATE)
         }
     }
-
-    private val Context.displayManager: DisplayManager
-        get() = getSystemService(DisplayManager::class.java)!!
 
     override fun onPreferenceClick(preference: Preference): Boolean {
         val context = preference.context
-        val intent =
-            Intent(ACTION_SHOW_BRIGHTNESS_DIALOG)
-                .setPackage(Utils.SYSTEMUI_PACKAGE_NAME)
-                .putExtra(
-                    SettingsBaseActivity.EXTRA_PAGE_TRANSITION_TYPE,
-                    SettingsTransitionHelper.TransitionType.TRANSITION_NONE,
-                )
-                .putExtra(EXTRA_BRIGHTNESS_DIALOG_IS_FULL_WIDTH, true)
         val options =
             ActivityOptions.makeCustomAnimation(
                 context,
                 android.R.anim.fade_in,
                 android.R.anim.fade_out,
             )
-        context.startActivityForResult(preference.key, intent, 0, options.toBundle())
+        context.startActivityForResult(preference.key, intent(context), 0, options.toBundle())
         return true
     }
 
-    private fun getCurrentBrightness(context: Context): Double {
-        val info: BrightnessInfo? = context.display.brightnessInfo
-        val value =
-            info?.run {
-                convertLinearToGammaFloat(brightness, brightnessMinimum, brightnessMaximum)
-            }
-        return getPercentage(value?.toDouble() ?: 0.0)
-    }
-
-    private fun getPercentage(value: Double): Double =
-        when {
-            value > GAMMA_SPACE_MAX -> 1.0
-            value < GAMMA_SPACE_MIN -> 0.0
-            else -> (value - GAMMA_SPACE_MIN) / (GAMMA_SPACE_MAX - GAMMA_SPACE_MIN)
-        }
-
     companion object {
         const val KEY = "brightness"
+
+        private val Context.displayManager: DisplayManager
+            get() = getSystemService(DisplayManager::class.java)!!
+
+        private val Context.brightnessPercent: Double
+            get() {
+                val info: BrightnessInfo = display.brightnessInfo ?: return 0.0
+                return info.brightnessInGammaSpace.toPercentage()
+            }
+
+        private val BrightnessInfo.brightnessInGammaSpace: Int
+            get() = convertLinearToGammaFloat(brightness, brightnessMinimum, brightnessMaximum)
+
+        private fun Int.toPercentage(): Double =
+            when {
+                this > GAMMA_SPACE_MAX -> 1.0
+                this < GAMMA_SPACE_MIN -> 0.0
+                else -> (this - GAMMA_SPACE_MIN).toDouble() / (GAMMA_SPACE_MAX - GAMMA_SPACE_MIN)
+            }
     }
 }
 // LINT.ThenChange(BrightnessLevelPreferenceController.java)

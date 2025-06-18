@@ -381,15 +381,15 @@ public class BatteryUsageBreakdownController extends BasePreferenceController
                 continue;
             }
             final String prefKey = entry.getKey();
-            AnomalyAppItemPreference preference = mRootPreferenceGroup.findPreference(prefKey);
+            PowerGaugePreference preference = mRootPreferenceGroup.findPreference(prefKey);
             if (preference != null) {
                 isAdded = true;
             } else {
-                preference = (AnomalyAppItemPreference) mPreferenceCache.get(prefKey);
+                preference = (PowerGaugePreference) mPreferenceCache.get(prefKey);
             }
             // Creates new instance if cached preference is not found.
             if (preference == null) {
-                preference = new AnomalyAppItemPreference(mPrefContext);
+                preference = new PowerGaugePreference(mPrefContext);
                 preference.setKey(prefKey);
                 mPreferenceCache.put(prefKey, preference);
             }
@@ -398,7 +398,7 @@ public class BatteryUsageBreakdownController extends BasePreferenceController
             preference.setOrder(++preferenceOrder);
             preference.setSingleLineTitle(true);
             // Updates App item preference style
-            preference.setAnomalyHint(isAnomalyBatteryDiffEntry(entry) ? mAnomalyHintString : null);
+            preference.setHint(isAnomalyBatteryDiffEntry(entry) ? mAnomalyHintString : null);
             // Sets the BatteryDiffEntry to preference for launching detailed page.
             preference.setBatteryDiffEntry(entry);
             preference.setSelectable(entry.validForRestriction());

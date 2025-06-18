@@ -29,7 +29,6 @@
         android:paddingEnd="24dp">
 
         <ImageView
-            android:id="@id/preview_placeholder"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center"
@@ -41,14 +40,16 @@
             android:id="@+id/bluetooth_key_missing_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:gravity="center"
             android:textAppearance="@*android:style/TextAppearance.DeviceDefault.Title" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp"
+            android:gravity="center"
             android:text="@string/bluetooth_key_missing_message"
             android:textAppearance="@*android:style/TextAppearance.DeviceDefault.Body1" />
 

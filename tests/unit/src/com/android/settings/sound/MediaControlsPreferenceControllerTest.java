@@ -34,6 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+// LINT.IfChange
 @RunWith(AndroidJUnit4.class)
 public class MediaControlsPreferenceControllerTest {
 
@@ -88,3 +89,4 @@ public class MediaControlsPreferenceControllerTest {
                 Settings.Secure.MEDIA_CONTROLS_RESUME, -1)).isEqualTo(1);
     }
 }
+// LINT.ThenChange(MediaControlsSwitchPreferenceTest.kt)

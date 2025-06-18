@@ -47,6 +47,8 @@ public class ImsQueryEnhanced4gLteModeUserSetting implements ImsQuery {
             return imsMmTelManager.isAdvancedCallingSettingEnabled();
         } catch (IllegalArgumentException exception) {
             Log.w(LOG_TAG, "fail to get VoLte settings. subId=" + mSubId, exception);
+        } catch (UnsupportedOperationException ex) {
+            // expected on devices without IMS
         }
         return false;
     }

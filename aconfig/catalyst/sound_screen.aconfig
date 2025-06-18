@@ -1,16 +1,44 @@
 package: "com.android.settings.flags"
-container: "system"
+container: "system_ext"
 
 flag {
     name: "catalyst_sound_screen"
     namespace: "android_settings"
-    description: "Flag for sound and vibration page"
+    description: "Flag for Sound & vibration"
     bug: "323791114"
+}
+
+flag {
+    name: "catalyst_sound_screen_25q3"
+    namespace: "android_settings"
+    description: "Flag for Sound & vibration in 25Q3"
+    bug: "352179685"
+}
+
+flag {
+    name: "catalyst_media_controls"
+    namespace: "android_settings"
+    description: "Flag for Media"
+    bug: "337243570"
 }
 
 flag {
     name: "catalyst_vibration_intensity_screen"
     namespace: "android_settings"
-    description: "Flag for vibration and haptics page"
+    description: "Flag for Vibration & haptics"
     bug: "323791114"
+}
+
+flag {
+    name: "catalyst_vibration_screen"
+    namespace: "android_settings"
+    description: "Flag for Vibration & haptics full page migration"
+    bug: "323791114"
+}
+
+flag {
+    name: "catalyst_spatial_audio"
+    namespace: "android_settings"
+    description: "Flag for Spatial audio in 25Q3"
+    bug: "352179685"
 }

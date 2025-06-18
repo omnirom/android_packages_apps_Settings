@@ -23,9 +23,12 @@ import android.telephony.satellite.SatelliteModemStateCallback
 import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.concurrent.futures.CallbackToFutureAdapter
+import com.android.internal.telephony.flags.Flags
 import com.google.common.util.concurrent.Futures.immediateFuture
 import com.google.common.util.concurrent.ListenableFuture
 import java.util.concurrent.Executor
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
@@ -38,7 +41,7 @@ import kotlinx.coroutines.flow.flowOn
 /**
  * A repository class for interacting with the SatelliteManager API.
  */
-class SatelliteRepository(
+open class SatelliteRepository(
     private val context: Context,
 ) {
 
@@ -194,6 +197,25 @@ class SatelliteRepository(
         }
     }
 
+    /**
+     *  @return A list with application package names which support Satellite service.
+     *  e.g. "com.android.settings"
+     */
+    open fun getSatelliteDataOptimizedApps(): List<String> {
+        val satelliteManager: SatelliteManager? =
+            context.getSystemService(SatelliteManager::class.java)
+        if (satelliteManager == null) {
+            Log.d(TAG, "SatelliteManager is null")
+            return emptyList()
+        }
+        try {
+            return satelliteManager.getSatelliteDataOptimizedApps();
+        } catch (e: IllegalStateException) {
+            Log.w(TAG, "IllegalStateException $e")
+        }
+        return emptyList()
+    }
+
     companion object {
         private const val TAG: String = "SatelliteRepository"
 
@@ -203,5 +225,15 @@ class SatelliteRepository(
         fun setIsSessionStartedForTesting(isEnabled: Boolean) {
             this.isSessionStarted = isEnabled
         }
+
+        fun isSatelliteOn(context: Context, timeoutMs: Long = 2000): Boolean =
+            try {
+                SatelliteRepository(context)
+                    .requestIsSessionStarted(Executors.newSingleThreadExecutor())
+                    .get(timeoutMs, TimeUnit.MILLISECONDS)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error to get satellite status : $e")
+                false
+            }
     }
 }

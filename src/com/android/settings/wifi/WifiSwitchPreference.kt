@@ -16,6 +16,10 @@
 
 package com.android.settings.wifi
 
+import android.Manifest
+import android.app.settings.SettingsEnums.ACTION_WIFI
+import android.app.settings.SettingsEnums.ACTION_WIFI_OFF
+import android.app.settings.SettingsEnums.ACTION_WIFI_ON
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -23,38 +27,48 @@ import android.content.IntentFilter
 import android.net.wifi.WifiManager
 import android.os.UserManager
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceChangeListener
-import com.android.settings.PreferenceRestrictionMixin
 import com.android.settings.R
-import com.android.settings.network.SatelliteRepository
+import com.android.settings.contract.KEY_WIFI
+import com.android.settings.metrics.PreferenceActionMetricsProvider
+import com.android.settings.network.SatelliteRepository.Companion.isSatelliteOn
 import com.android.settings.network.SatelliteWarningDialogActivity
+import com.android.settings.overlay.FeatureFactory.Companion.featureFactory
+import com.android.settings.restriction.PreferenceRestrictionMixin
+import com.android.settings.wifi.utils.isDefaultNetworkWifi
+import com.android.settings.wifi.utils.isWifiEnabled
+import com.android.settings.wifi.utils.wifiManager
 import com.android.settingslib.RestrictedSwitchPreference
 import com.android.settingslib.WirelessUtils
 import com.android.settingslib.datastore.AbstractKeyedDataObservable
-import com.android.settingslib.datastore.DataChangeReason
 import com.android.settingslib.datastore.KeyValueStore
+import com.android.settingslib.datastore.Permissions
+import com.android.settingslib.metadata.PreferenceChangeReason
 import com.android.settingslib.metadata.PreferenceLifecycleProvider
 import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.ReadWritePermit
 import com.android.settingslib.metadata.SensitivityLevel
 import com.android.settingslib.metadata.SwitchPreference
 import com.android.settingslib.preference.SwitchPreferenceBinding
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 
 // LINT.IfChange
 class WifiSwitchPreference :
     SwitchPreference(KEY, R.string.wifi),
     SwitchPreferenceBinding,
+    PreferenceActionMetricsProvider,
     OnPreferenceChangeListener,
     PreferenceLifecycleProvider,
     PreferenceRestrictionMixin {
 
     override val keywords: Int
         get() = R.string.keywords_wifi
+
+    override val preferenceActionMetrics: Int
+        get() = ACTION_WIFI
+
+    override fun tags(context: Context) = arrayOf(KEY_WIFI)
 
     override fun isEnabled(context: Context) = super<PreferenceRestrictionMixin>.isEnabled(context)
 
@@ -75,7 +89,7 @@ class WifiSwitchPreference :
         val context = preference.context
 
         // Show dialog and do nothing under satellite mode.
-        if (context.isSatelliteOn()) {
+        if (isSatelliteOn(context)) {
             context.startActivity(
                 Intent(context, SatelliteWarningDialogActivity::class.java)
                     .putExtra(
@@ -95,12 +109,26 @@ class WifiSwitchPreference :
         return true
     }
 
-    override fun getReadPermit(context: Context, myUid: Int, callingUid: Int) =
+    override fun getReadPermissions(context: Context) =
+        Permissions.allOf(Manifest.permission.ACCESS_WIFI_STATE)
+
+    override fun getWritePermissions(context: Context) =
+        Permissions.anyOf(
+            Manifest.permission.NETWORK_SETTINGS,
+            Manifest.permission.CHANGE_WIFI_STATE,
+        )
+
+    override fun getReadPermit(context: Context, callingPid: Int, callingUid: Int) =
         ReadWritePermit.ALLOW
 
-    override fun getWritePermit(context: Context, value: Boolean?, myUid: Int, callingUid: Int) =
+    override fun getWritePermit(
+        context: Context,
+        value: Boolean?,
+        callingPid: Int,
+        callingUid: Int,
+    ) =
         when {
-            (value == true && !context.isRadioAllowed()) || context.isSatelliteOn() ->
+            (value == true && !context.isRadioAllowed()) || isSatelliteOn(context) ->
                 ReadWritePermit.DISALLOW
             else -> ReadWritePermit.ALLOW
         }
@@ -116,16 +144,21 @@ class WifiSwitchPreference :
 
         private var broadcastReceiver: BroadcastReceiver? = null
 
-        override fun contains(key: String) =
-            key == KEY && context.getSystemService(WifiManager::class.java) != null
+        override fun contains(key: String) = key == KEY && context.wifiManager != null
 
         override fun <T : Any> getValue(key: String, valueType: Class<T>): T? =
-            context.getSystemService(WifiManager::class.java)?.isWifiEnabled as T?
+            context.isWifiEnabled as T?
 
-        @Suppress("DEPRECATION")
         override fun <T : Any> setValue(key: String, valueType: Class<T>, value: T?) {
-            if (value is Boolean) {
-                context.getSystemService(WifiManager::class.java)?.isWifiEnabled = value
+            if (value !is Boolean) return
+
+            context.isWifiEnabled = value
+
+            val metricsFeature = featureFactory.metricsFeatureProvider
+            if (value) {
+                metricsFeature.action(context, ACTION_WIFI_ON)
+            } else {
+                metricsFeature.action(context, ACTION_WIFI_OFF, context.isDefaultNetworkWifi)
             }
         }
 
@@ -139,7 +172,7 @@ class WifiSwitchPreference :
                             wifiState == WifiManager.WIFI_STATE_ENABLED ||
                                 wifiState == WifiManager.WIFI_STATE_DISABLED
                         ) {
-                            notifyChange(KEY, DataChangeReason.UPDATE)
+                            notifyChange(KEY, PreferenceChangeReason.VALUE)
                         }
                     }
                 }
@@ -155,21 +188,10 @@ class WifiSwitchPreference :
     }
 
     companion object {
-        const val TAG = "WifiSwitchPreference"
         const val KEY = "main_toggle_wifi"
 
         private fun Context.isRadioAllowed() =
             WirelessUtils.isRadioAllowed(this, Settings.Global.RADIO_WIFI)
-
-        private fun Context.isSatelliteOn() =
-            try {
-                SatelliteRepository(this)
-                    .requestIsSessionStarted(Executors.newSingleThreadExecutor())
-                    .get(2000, TimeUnit.MILLISECONDS)
-            } catch (e: Exception) {
-                Log.e(TAG, "Error to get satellite status : $e")
-                false
-            }
 
         private val Intent.wifiState
             get() = getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN)

@@ -40,7 +40,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.FragmentActivity;
 
 import com.android.settings.R;
-import com.android.settings.SetupWizardUtils;
 import com.android.settings.SubSettings;
 import com.android.settings.Utils;
 import com.android.settings.core.CategoryMixin.CategoryHandler;
@@ -117,9 +116,8 @@ public class SettingsBaseActivity extends FragmentActivity implements CategoryHa
         }
         // Apply SetupWizard light theme during setup flow. This is for SubSettings pages.
         if (isAnySetupWizard && this instanceof SubSettings) {
-            setTheme(SetupWizardUtils.getTheme(this, getIntent()));
             setTheme(R.style.SettingsPreferenceTheme_SetupWizard);
-            ThemeHelper.trySetDynamicColor(this);
+            ThemeHelper.trySetSuwTheme(this);
         }
 
         if (isToolbarEnabled() && !isAnySetupWizard) {

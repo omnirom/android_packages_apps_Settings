@@ -39,6 +39,10 @@ import android.hardware.face.FaceManager;
 import android.hardware.fingerprint.Fingerprint;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.UserHandle;
+import android.platform.test.annotations.RequiresFlagsDisabled;
+import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 import android.safetycenter.SafetyEvent;
 import android.safetycenter.SafetySourceData;
 import android.safetycenter.SafetySourceStatus;
@@ -50,6 +54,7 @@ import com.android.internal.widget.LockPatternUtils;
 import com.android.settings.Settings;
 import com.android.settings.biometrics.face.FaceEnrollIntroductionInternal;
 import com.android.settings.biometrics.fingerprint.FingerprintSettings;
+import com.android.settings.flags.Flags;
 import com.android.settings.testutils.ActiveUnlockTestUtils;
 import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settings.testutils.ResourcesUtils;
@@ -57,6 +62,7 @@ import com.android.settingslib.utils.StringUtil;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -74,6 +80,9 @@ public class BiometricsSafetySourceTest {
     private static final UserHandle USER_HANDLE = new UserHandle(UserHandle.myUserId());
     private static final SafetyEvent EVENT_SOURCE_STATE_CHANGED =
             new SafetyEvent.Builder(SAFETY_EVENT_TYPE_SOURCE_STATE_CHANGED).build();
+
+    @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
     private Context mApplicationContext;
 
@@ -121,6 +130,19 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsEnabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
+    public void setSafetySourceData_whenSeparateBiometricsFlagOn_setsNullData() {
+        when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
+
+        BiometricsSafetySource.setSafetySourceData(mApplicationContext, EVENT_SOURCE_STATE_CHANGED);
+
+        verify(mSafetyCenterManagerWrapper)
+                .setSafetySourceData(
+                        any(), eq(BiometricsSafetySource.SAFETY_SOURCE_ID), eq(null), any());
+    }
+
+    @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_whenSafetyCenterIsEnabled_withoutBiometrics_setsNullData() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(false);
@@ -134,6 +156,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_setsDataForBiometricSource() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
@@ -149,6 +172,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_setsDataWithCorrectSafetyEvent() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
@@ -163,6 +187,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_withFingerprintNotEnrolled_whenDisabledByAdmin_setsData() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
@@ -179,6 +204,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_withFingerprintNotEnrolled_whenNotDisabledByAdmin_setsData() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
@@ -195,8 +221,9 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_withFingerprintsEnrolled_whenDisabledByAdmin_setsData() {
-        final int enrolledFingerprintsCount = 2;
+        int enrolledFingerprintsCount = 2;
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
         when(mFaceManager.isHardwareDetected()).thenReturn(false);
@@ -215,8 +242,9 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_withFingerprintsEnrolled_whenNotDisabledByAdmin_setsData() {
-        final int enrolledFingerprintsCount = 2;
+        int enrolledFingerprintsCount = 2;
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
         when(mFaceManager.isHardwareDetected()).thenReturn(false);
@@ -235,6 +263,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_withFaceNotEnrolled_whenDisabledByAdmin_setsData() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(false);
@@ -251,6 +280,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_withFaceNotEnrolled_whenNotDisabledByAdmin_setsData() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(false);
@@ -267,6 +297,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_withFaceEnrolled_whenDisabledByAdmin_setsData() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(false);
@@ -283,6 +314,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_withFaceEnrolled_whenNotDisabledByAdmin_setsData() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(false);
@@ -299,6 +331,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_withFaceAndFingerprint_whenBothNotDisabledByAdmin_setsData() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
@@ -314,6 +347,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_withFaceAndFingerprint_whenFaceDisabledByAdmin_setsData() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
@@ -330,6 +364,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_faceAndFingerprint_whenFingerprintDisabledByAdmin_setsData() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
@@ -346,6 +381,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_faceAndFingerprint_whenBothDisabledByAdmin_setsData() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
@@ -363,8 +399,9 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_faceAndFingerprint_whenFaceEnrolled_withMpFingers_setsData() {
-        final int enrolledFingerprintsCount = 2;
+        int enrolledFingerprintsCount = 2;
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
         when(mFaceManager.isHardwareDetected()).thenReturn(true);
@@ -381,8 +418,9 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_faceAndFingerprint_whenFaceEnrolled_withOneFinger_setsData() {
-        final int enrolledFingerprintsCount = 1;
+        int enrolledFingerprintsCount = 1;
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
         when(mFaceManager.isHardwareDetected()).thenReturn(true);
@@ -399,6 +437,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_faceAndFingerprint_whenFaceEnrolled_withNoFingers_setsData() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
@@ -416,8 +455,9 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_activeUnlockEnabled_withFingerprintOnly_setsData() {
-        final int enrolledFingerprintsCount = 1;
+        int enrolledFingerprintsCount = 1;
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
         when(mFaceManager.isHardwareDetected()).thenReturn(false);
@@ -436,6 +476,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_activeUnlockEnabled_withFaceOnly_setsData() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(false);
@@ -452,8 +493,9 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_activeUnlockEnabled_withFaceAndFingerprint_setsData() {
-        final int enrolledFingerprintsCount = 1;
+        int enrolledFingerprintsCount = 1;
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
         when(mFaceManager.isHardwareDetected()).thenReturn(true);
@@ -471,8 +513,9 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_faceAndFingerprint_whenNoFaceEnrolled_withFingers_setsData() {
-        final int enrolledFingerprintsCount = 1;
+        int enrolledFingerprintsCount = 1;
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
         when(mFaceManager.isHardwareDetected()).thenReturn(true);
@@ -490,6 +533,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_faceAndFingerprint_whenFaceEnrolled_setsInfoSeverity() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
@@ -512,6 +556,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_faceAndFingerprint_whenFingerprintEnrolled_setsInfoSeverity() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
@@ -534,6 +579,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_faceAndFingerprint_whenNotEnrolled_setsUnspSeverity() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
@@ -556,6 +602,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_fingerprint_whenEnrolled_setsInfoSeverity() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
@@ -577,6 +624,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_fingerprint_whenNotEnrolled_setsUnspSeverity() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
@@ -598,6 +646,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_face_whenEnrolled_setsInfoSeverity() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(false);
@@ -619,6 +668,7 @@ public class BiometricsSafetySourceTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void setSafetySourceData_face_whenNotEnrolled_setsUnspSeverity() {
         when(mSafetyCenterManagerWrapper.isEnabled(mApplicationContext)).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(false);
@@ -660,7 +710,7 @@ public class BiometricsSafetySourceTest {
             String expectedTitleResName,
             String expectedSummaryResName,
             int expectedSummaryQuantity) {
-        final int stringResId =
+        int stringResId =
                 ResourcesUtils.getResourcesId(
                         ApplicationProvider.getApplicationContext(),
                         "string",
@@ -676,7 +726,7 @@ public class BiometricsSafetySourceTest {
             String expectedSummaryResName,
             int expectedSummaryQuantity,
             String expectedSettingsClassName) {
-        final int stringResId =
+        int stringResId =
                 ResourcesUtils.getResourcesId(
                         ApplicationProvider.getApplicationContext(),
                         "string",
@@ -705,7 +755,7 @@ public class BiometricsSafetySourceTest {
         assertThat(safetySourceStatus.getSeverityLevel())
                 .isEqualTo(SafetySourceData.SEVERITY_LEVEL_UNSPECIFIED);
 
-        final Intent clickIntent = safetySourceStatus.getPendingIntent().getIntent();
+        Intent clickIntent = safetySourceStatus.getPendingIntent().getIntent();
         assertThat(clickIntent).isNotNull();
         assertThat(clickIntent.getAction()).isEqualTo(ACTION_SHOW_ADMIN_SUPPORT_DETAILS);
     }
@@ -725,14 +775,14 @@ public class BiometricsSafetySourceTest {
         assertThat(safetySourceStatus.getTitle().toString()).isEqualTo(expectedTitle);
         assertThat(safetySourceStatus.getSummary().toString()).isEqualTo(expectedSummary);
         assertThat(safetySourceStatus.isEnabled()).isTrue();
-        final Intent clickIntent = safetySourceStatus.getPendingIntent().getIntent();
+        Intent clickIntent = safetySourceStatus.getPendingIntent().getIntent();
         assertThat(clickIntent).isNotNull();
         assertThat(clickIntent.getComponent().getPackageName()).isEqualTo("com.android.settings");
         assertThat(clickIntent.getComponent().getClassName()).isEqualTo(expectedSettingsClassName);
     }
 
     private List<Fingerprint> createFingerprintList(int size) {
-        final List<Fingerprint> fingerprintList = new ArrayList<>(size);
+        List<Fingerprint> fingerprintList = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             fingerprintList.add(new Fingerprint("fingerprint" + i, 0, 0));
         }

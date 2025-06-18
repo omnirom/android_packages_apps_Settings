@@ -16,6 +16,8 @@
 
 package com.android.settings.communal;
 
+import static com.android.systemui.Flags.FLAG_GLANCEABLE_HUB_V2;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,12 +27,16 @@ import static org.mockito.Mockito.spy;
 
 import android.content.Context;
 import android.os.UserHandle;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import com.android.settings.R;
 import com.android.settings.testutils.shadow.SettingsShadowResources;
 import com.android.settings.testutils.shadow.ShadowUserManager;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -40,6 +46,9 @@ import org.robolectric.annotation.Config;
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {SettingsShadowResources.class, ShadowUserManager.class})
 public class CommunalPreferenceControllerTest {
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
     private ShadowUserManager mShadowUserManager;
     private CommunalPreferenceController mController;
 
@@ -54,22 +63,33 @@ public class CommunalPreferenceControllerTest {
     }
 
     @Test
-    public void isAvailable_communalEnabled_shouldBeTrueForDockUser() {
+    @DisableFlags(FLAG_GLANCEABLE_HUB_V2)
+    public void isAvailable_communalEnabled_shouldBeTrueForPrimaryUser() {
         setCommunalEnabled(true);
         mShadowUserManager.setUserForeground(true);
         assertTrue(mController.isAvailable());
     }
 
     @Test
-    public void isAvailable_communalEnabled_shouldBeFalseForNonDockUser() {
+    @DisableFlags(FLAG_GLANCEABLE_HUB_V2)
+    public void isAvailable_communalEnabled_shouldBeFalseForSecondaryUser() {
         setCommunalEnabled(true);
         mShadowUserManager.setUserForeground(false);
         assertFalse(mController.isAvailable());
     }
 
     @Test
-    public void isAvailable_communalDisabled_shouldBeFalseForDockUser() {
+    @DisableFlags(FLAG_GLANCEABLE_HUB_V2)
+    public void isAvailable_communalDisabled_shouldBeFalseForPrimaryUser() {
         setCommunalEnabled(false);
+        mShadowUserManager.setUserForeground(true);
+        assertFalse(mController.isAvailable());
+    }
+
+    @Test
+    @EnableFlags(FLAG_GLANCEABLE_HUB_V2)
+    public void isAvailable_glanceableHubV2Enabled_shouldBeFalseForPrimaryUser() {
+        setCommunalEnabled(true);
         mShadowUserManager.setUserForeground(true);
         assertFalse(mController.isAvailable());
     }

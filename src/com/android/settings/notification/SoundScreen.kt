@@ -20,14 +20,16 @@ import androidx.fragment.app.Fragment
 import com.android.settings.R
 import com.android.settings.Settings.SoundSettingsActivity
 import com.android.settings.flags.Flags
+import com.android.settings.sound.MediaControlsScreen
 import com.android.settings.utils.makeLaunchIntent
 import com.android.settingslib.metadata.PreferenceIconProvider
 import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.ProvidePreferenceScreen
 import com.android.settingslib.metadata.preferenceHierarchy
 import com.android.settingslib.preference.PreferenceScreenCreator
+import com.android.settingslib.widget.SettingsThemeHelper.isExpressiveTheme
 
-@ProvidePreferenceScreen
+@ProvidePreferenceScreen(SoundScreen.KEY)
 class SoundScreen : PreferenceScreenCreator, PreferenceIconProvider {
     override val key: String
         get() = KEY
@@ -40,6 +42,7 @@ class SoundScreen : PreferenceScreenCreator, PreferenceIconProvider {
 
     override fun getIcon(context: Context) =
         when {
+            isExpressiveTheme(context) -> R.drawable.ic_homepage_sound
             Flags.homepageRevamp() -> R.drawable.ic_volume_up_filled
             else -> R.drawable.ic_volume_up_24dp
         }
@@ -51,10 +54,11 @@ class SoundScreen : PreferenceScreenCreator, PreferenceIconProvider {
     override fun fragmentClass(): Class<out Fragment>? = SoundSettings::class.java
 
     override fun getPreferenceHierarchy(context: Context) =
-        preferenceHierarchy(this) {
+        preferenceHierarchy(context, this) {
             +MediaVolumePreference() order -180
             +CallVolumePreference() order -170
             +SeparateRingVolumePreference() order -155
+            +MediaControlsScreen.KEY order -100
             +DialPadTonePreference() order -50
         }
 

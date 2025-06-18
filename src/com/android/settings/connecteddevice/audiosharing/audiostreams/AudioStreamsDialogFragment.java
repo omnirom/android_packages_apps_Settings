@@ -68,7 +68,10 @@ public class AudioStreamsDialogFragment extends InstrumentedDialogFragment {
      * @param dialogBuilder The builder for constructing the dialog.
      * @param dialogId The dialog settings enum for logging
      */
-    public static void show(Fragment host, DialogBuilder dialogBuilder, int dialogId) {
+    public static void show(@Nullable Fragment host, DialogBuilder dialogBuilder, int dialogId) {
+        if (host == null) {
+            return;
+        }
         if (!host.isAdded()) {
             Log.w(TAG, "The host fragment is not added to the activity!");
             return;
@@ -77,7 +80,10 @@ public class AudioStreamsDialogFragment extends InstrumentedDialogFragment {
         (new AudioStreamsDialogFragment(dialogBuilder, dialogId)).show(manager, TAG);
     }
 
-    static void dismissAll(Fragment host) {
+    static void dismissAll(@Nullable Fragment host) {
+        if (host == null) {
+            return;
+        }
         if (!host.isAdded()) {
             Log.w(TAG, "The host fragment is not added to the activity!");
             return;

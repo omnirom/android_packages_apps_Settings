@@ -16,7 +16,6 @@
 
 package com.android.settings.homepage.contextualcards.conditional;
 
-import android.app.Flags;
 import android.app.NotificationManager;
 import android.app.settings.SettingsEnums;
 import android.content.BroadcastReceiver;
@@ -87,12 +86,8 @@ public class DndConditionCardController implements ConditionalCardController {
 
     @Override
     public void onActionClick() {
-        if (Flags.modesApi()) {
-            mNotificationManager.setZenMode(Settings.Global.ZEN_MODE_OFF, null, TAG,
-                    /* fromUser= */ true);
-        } else {
-            mNotificationManager.setZenMode(Settings.Global.ZEN_MODE_OFF, null, TAG);
-        }
+        mNotificationManager.setZenMode(Settings.Global.ZEN_MODE_OFF, null, TAG,
+                /* fromUser= */ true);
     }
 
     @Override

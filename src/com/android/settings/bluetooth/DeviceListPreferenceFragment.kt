@@ -40,7 +40,6 @@ import com.android.settingslib.bluetooth.BluetoothUtils
 import com.android.settingslib.bluetooth.CachedBluetoothDevice
 import com.android.settingslib.bluetooth.CachedBluetoothDeviceManager
 import com.android.settingslib.bluetooth.LocalBluetoothManager
-import com.android.settingslib.flags.Flags
 import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -219,13 +218,11 @@ abstract class DeviceListPreferenceFragment(restrictedKey: String?) :
             )
             return
         }
-        if (Flags.enableHideExclusivelyManagedBluetoothDevice()) {
-            if (cachedDevice.device.bondState == BluetoothDevice.BOND_BONDED
-                && BluetoothUtils.isExclusivelyManagedBluetoothDevice(
-                    prefContext, cachedDevice.device)) {
-                Log.d(TAG, "Trying to create preference for a exclusively managed device")
-                return
-            }
+        if (cachedDevice.device.bondState == BluetoothDevice.BOND_BONDED
+            && BluetoothUtils.isExclusivelyManagedBluetoothDevice(
+                prefContext, cachedDevice.device)) {
+            Log.d(TAG, "Trying to create preference for a exclusively managed device")
+            return
         }
         // Only add device preference when it's not found in the map and there's no other state
         // message showing in the list

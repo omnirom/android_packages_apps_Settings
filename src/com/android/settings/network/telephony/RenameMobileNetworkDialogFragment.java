@@ -167,7 +167,8 @@ public class RenameMobileNetworkDialogFragment extends InstrumentedDialogFragmen
                 info, getContext());
         mNameView.setText(displayName);
         if (!TextUtils.isEmpty(displayName)) {
-            mNameView.setSelection(displayName.length());
+            mNameView.setSelection(Math.min(displayName.length(),
+                    getResources().getInteger(R.integer.sim_label_max_length)));
         }
 
         mColorSpinner = view.findViewById(R.id.color_spinner);
@@ -176,7 +177,7 @@ public class RenameMobileNetworkDialogFragment extends InstrumentedDialogFragmen
         mColorSpinner.setAdapter(adapter);
         mColorSpinner.setSelection(getSimColorIndex(info.getIconTint()));
 
-        if(Flags.isDualSimOnboardingEnabled()){
+        if (Flags.isDualSimOnboardingEnabled()) {
             return;
         }
 
@@ -293,10 +294,10 @@ public class RenameMobileNetworkDialogFragment extends InstrumentedDialogFragmen
     }
 
     /*
-    * Get the color index from previous color that defined in Android OS
-    * (frameworks/base/core/res/res/values/arrays.xml). If can't find the color, continue to look
-    * for it in the new color plattee. If not, give it the first index.
-    */
+     * Get the color index from previous color that defined in Android OS
+     * (frameworks/base/core/res/res/values/arrays.xml). If can't find the color, continue to look
+     * for it in the new color plattee. If not, give it the first index.
+     */
 
     private int getSimColorIndex(int color) {
         int index = -1;

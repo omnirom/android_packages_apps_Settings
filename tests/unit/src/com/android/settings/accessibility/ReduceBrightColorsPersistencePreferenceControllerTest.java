@@ -18,13 +18,14 @@ package com.android.settings.accessibility;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.content.Context;
 import android.provider.Settings;
+import android.testing.TestableContext;
 
 import androidx.preference.SwitchPreference;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -37,7 +38,9 @@ public class ReduceBrightColorsPersistencePreferenceControllerTest {
     private static final int OFF = 0;
     private static final int UNKNOWN = -1;
 
-    private final Context mContext = ApplicationProvider.getApplicationContext();
+    @Rule
+    public final TestableContext mContext =
+            new TestableContext(ApplicationProvider.getApplicationContext());
     private final SwitchPreference mPreference = new SwitchPreference(mContext);
     private final ReduceBrightColorsPersistencePreferenceController mController =
             new ReduceBrightColorsPersistencePreferenceController(mContext, PREF_KEY);

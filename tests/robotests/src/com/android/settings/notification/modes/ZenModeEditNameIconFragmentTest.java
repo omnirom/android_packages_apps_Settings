@@ -124,7 +124,7 @@ public class ZenModeEditNameIconFragmentTest {
         verify(mBackend).updateMode(captor.capture());
         ZenMode savedMode = captor.getValue();
         assertThat(savedMode.getName()).isEqualTo("A newer name");
-        assertThat(savedMode.getRule().getIconResId()).isEqualTo(
+        assertThat(savedMode.getIconKey().resId()).isEqualTo(
                 R.drawable.ic_zen_mode_type_theater);
 
         assertThat(mActivity.isFinishing()).isTrue();

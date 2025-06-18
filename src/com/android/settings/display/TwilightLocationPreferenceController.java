@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
 
+import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
@@ -57,8 +58,13 @@ public class TwilightLocationPreferenceController extends BasePreferenceControll
 
     @Override
     public int getAvailabilityStatus() {
-        return mLocationManager.isLocationEnabled() ? CONDITIONALLY_UNAVAILABLE
+        return mLocationManager.isLocationEnabled() ? DISABLED_DEPENDENT_SETTING
                 : AVAILABLE_UNSEARCHABLE;
+    }
+
+    @Override
+    public void updateState(Preference preference) {
+        preference.setVisible(!mLocationManager.isLocationEnabled());
     }
 
     private void launchLocationSettings() {

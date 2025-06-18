@@ -143,12 +143,14 @@ public class SwitchToEuiccSubscriptionSidecar extends EuiccOperationSidecar {
             return 0;
         }
 
+        Collection<UiccSlotMapping> uiccSlotMappings = mTelephonyManager.getSimSlotMapping();
+        Log.d(TAG, "The UiccSlotMapping: " + uiccSlotMappings);
         if (!mTelephonyManager.isMultiSimEnabled()) {
             // In the 'SS mode'
             // If there is the esim slot is active, the port is from the current esim slot.
             // If there is no esim slot in device, then the esim's port is 0.
-            Collection<UiccSlotMapping> uiccSlotMappings = mTelephonyManager.getSimSlotMapping();
-            Log.d(TAG, "In SS mode, the UiccSlotMapping: " + uiccSlotMappings);
+            Log.d(TAG, "In SS mode, to find the active esim slot's port."
+                    + "If no active esim slot, the port is 0");
             return uiccSlotMappings.stream()
                     .filter(i -> i.getPhysicalSlotIndex() == physicalEsimSlotIndex)
                     .mapToInt(i -> i.getPortIndex())
@@ -164,7 +166,8 @@ public class SwitchToEuiccSubscriptionSidecar extends EuiccOperationSidecar {
         // In DSDS+MEP mode, the removedSubInfo is psim or is null, it means this esim needs
         // a new corresponding port in the esim slot.
         // For example:
-        // 1) If there is no enabled esim and the user add new esim. This new esim's port is 0.
+        // 1) If there is no enabled esim and the user add new esim. This new esim's port is
+        // active esim slot's port.
         // 2) If there is one enabled esim in port0 and the user add new esim. This new esim's
         // port is 1.
         // 3) If there is one enabled esim in port1 and the user add new esim. This new esim's
@@ -180,6 +183,20 @@ public class SwitchToEuiccSubscriptionSidecar extends EuiccOperationSidecar {
                         .filter(i -> i.isEmbedded())
                         .sorted(Comparator.comparingInt(SubscriptionInfo::getPortIndex))
                         .collect(Collectors.toList());
+
+        // In DSDS+MEP mode, if there is the active esim slot and no active esim at that slot,
+        // then using this active esim slot's port.
+        // If there is no esim slot in device, then the esim's port is 0.
+        if (activeEsimSubInfos.isEmpty()) {
+            Log.d(TAG, "In DSDS+MEP mode, no active esim. return the active esim slot's port."
+                    + "If no active esim slot, the port is 0");
+            return uiccSlotMappings.stream()
+                    .filter(i -> i.getPhysicalSlotIndex() == physicalEsimSlotIndex)
+                    .mapToInt(i -> i.getPortIndex())
+                    .sorted()
+                    .findFirst().orElse(0);
+        }
+
         for (SubscriptionInfo subscriptionInfo : activeEsimSubInfos) {
             if (subscriptionInfo.getPortIndex() == port) {
                 port++;

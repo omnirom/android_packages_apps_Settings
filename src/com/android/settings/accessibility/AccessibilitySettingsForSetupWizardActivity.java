@@ -97,9 +97,8 @@ public class AccessibilitySettingsForSetupWizardActivity extends SettingsActivit
     private void applyTheme() {
         final boolean isAnySetupWizard = WizardManagerHelper.isAnySetupWizard(getIntent());
         if (isAnySetupWizard) {
-            setTheme(SetupWizardUtils.getTheme(this, getIntent()));
             setTheme(R.style.SettingsPreferenceTheme_SetupWizard);
-            ThemeHelper.trySetDynamicColor(this);
+            ThemeHelper.trySetSuwTheme(this);
         }
     }
 }

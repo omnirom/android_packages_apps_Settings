@@ -18,7 +18,7 @@
     xmlns:settings="http://schemas.android.com/apk/res-auto"
     android:key="mobile_network_pref_screen">
 
-    <com.android.settings.spa.preference.ComposeMainSwitchPreference
+    <com.android.settings.spa.preference.ComposeGroupSectionPreference
         android:key="use_sim_switch"
         settings:controller="com.android.settings.network.telephony.MobileNetworkSwitchController"/>
 
@@ -52,7 +52,6 @@
             android:key="mobile_network_spn"
             android:title="@string/mobile_network_spn_title"
             android:summary="@string/summary_placeholder"
-            android:selectable="false"
             settings:controller="com.android.settings.network.telephony.MobileNetworkSpnPreferenceController"
             settings:allowDividerAbove="true" />
 
@@ -60,7 +59,6 @@
             android:key="phone_number"
             android:title="@string/status_number"
             android:summary="@string/summary_placeholder"
-            android:selectable="false"
             settings:controller="com.android.settings.network.telephony.MobileNetworkPhoneNumberPreferenceController"
             settings:allowDividerBelow="true"
             settings:enableCopying="true"/>
@@ -206,16 +204,16 @@
 
         <PreferenceCategory
             android:key="telephony_satellite_settings_category_key"
-            android:title="@string/satellite_setting_title"
-            settings:controller="com.android.settings.network.telephony.SatelliteSettingsPreferenceCategoryController">
+            android:title="@string/category_title_satellite_connectivity"
+            settings:controller="com.android.settings.network.telephony.satellite.SatelliteSettingsPreferenceCategoryController">
 
             <com.android.settingslib.RestrictedPreference
                 android:key="telephony_satellite_setting_key"
                 android:persistent="false"
-                android:title="@string/satellite_setting_title"
+                android:title="@string/title_satellite_setting_connectivity"
                 settings:keywords="@string/keywords_satellite_setting"
                 settings:controller=
-                    "com.android.settings.network.telephony.SatelliteSettingPreferenceController"/>
+                    "com.android.settings.network.telephony.satellite.SatelliteSettingPreferenceController"/>
 
         </PreferenceCategory>
 

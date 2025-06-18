@@ -59,12 +59,12 @@ public class FriendlyWarningDialogFragment extends InstrumentedDialogFragment {
         final String label = args.getString(KEY_LABEL);
 
         final String title = getResources().getString(
-                Flags.modesApi() && Flags.modesUi()
+                Flags.modesUi()
                         ? R.string.zen_modes_access_revoke_warning_dialog_title
                         : R.string.zen_access_revoke_warning_dialog_title,
                 label);
         final String summary = getResources()
-                .getString(Flags.modesApi() && Flags.modesUi()
+                .getString(Flags.modesUi()
                         ? R.string.zen_modes_access_revoke_warning_dialog_summary
                         : R.string.zen_access_revoke_warning_dialog_summary);
 

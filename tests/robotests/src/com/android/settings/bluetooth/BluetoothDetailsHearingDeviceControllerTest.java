@@ -25,7 +25,6 @@ import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
-import com.android.settings.accessibility.Flags;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
 import com.android.settingslib.bluetooth.LocalBluetoothProfileManager;
 
@@ -53,11 +52,13 @@ public class BluetoothDetailsHearingDeviceControllerTest extends
     @Mock
     private LocalBluetoothProfileManager mProfileManager;
     @Mock
-    private BluetoothDetailsHearingDeviceController mHearingDeviceController;
-    @Mock
     private BluetoothDetailsHearingAidsPresetsController mPresetsController;
     @Mock
     private BluetoothDetailsHearingDeviceSettingsController mHearingDeviceSettingsController;
+    @Mock
+    private BluetoothDetailsHearingDeviceInputRoutingController mInputRoutingController;
+
+    private BluetoothDetailsHearingDeviceController mHearingDeviceController;
 
     @Override
     public void setUp() {
@@ -67,7 +68,7 @@ public class BluetoothDetailsHearingDeviceControllerTest extends
         mHearingDeviceController = new BluetoothDetailsHearingDeviceController(mContext,
                 mFragment, mLocalManager, mCachedDevice, mLifecycle);
         mHearingDeviceController.setSubControllers(mHearingDeviceSettingsController,
-                mPresetsController);
+                mPresetsController, mInputRoutingController);
     }
 
     @Test
@@ -80,6 +81,13 @@ public class BluetoothDetailsHearingDeviceControllerTest extends
     @Test
     public void isAvailable_presetsControlsAvailable_returnTrue() {
         when(mPresetsController.isAvailable()).thenReturn(true);
+
+        assertThat(mHearingDeviceController.isAvailable()).isTrue();
+    }
+
+    @Test
+    public void isAvailable_inputRoutingControllersAvailable_returnFalse() {
+        when(mInputRoutingController.isAvailable()).thenReturn(true);
 
         assertThat(mHearingDeviceController.isAvailable()).isTrue();
     }
@@ -110,8 +118,7 @@ public class BluetoothDetailsHearingDeviceControllerTest extends
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_ENABLE_HEARING_AID_PRESET_CONTROL)
-    public void initSubControllers_flagEnabled_presetControllerExist() {
+    public void initSubControllers_presetControllerExist() {
         mHearingDeviceController.initSubControllers(false);
 
         assertThat(mHearingDeviceController.getSubControllers().stream().anyMatch(
@@ -119,11 +126,42 @@ public class BluetoothDetailsHearingDeviceControllerTest extends
     }
 
     @Test
-    @RequiresFlagsDisabled(Flags.FLAG_ENABLE_HEARING_AID_PRESET_CONTROL)
-    public void initSubControllers_flagDisabled_presetControllerNotExist() {
+    @RequiresFlagsEnabled(
+            com.android.settingslib.flags.Flags.FLAG_HEARING_DEVICES_AMBIENT_VOLUME_CONTROL)
+    public void initSubControllers_flagEnabled_ambientVolumeControllerExist() {
         mHearingDeviceController.initSubControllers(false);
 
         assertThat(mHearingDeviceController.getSubControllers().stream().anyMatch(
-                c -> c instanceof BluetoothDetailsHearingAidsPresetsController)).isFalse();
+                c -> c instanceof BluetoothDetailsAmbientVolumePreferenceController)).isTrue();
+    }
+
+    @Test
+    @RequiresFlagsDisabled(
+            com.android.settingslib.flags.Flags.FLAG_HEARING_DEVICES_AMBIENT_VOLUME_CONTROL)
+    public void initSubControllers_flagDisabled_ambientVolumeControllerNotExist() {
+        mHearingDeviceController.initSubControllers(false);
+
+        assertThat(mHearingDeviceController.getSubControllers().stream().anyMatch(
+                c -> c instanceof BluetoothDetailsAmbientVolumePreferenceController)).isFalse();
+    }
+
+    @Test
+    @RequiresFlagsEnabled(
+            com.android.settingslib.flags.Flags.FLAG_HEARING_DEVICES_INPUT_ROUTING_CONTROL)
+    public void initSubControllers_flagEnabled_inputRoutingControllerExist() {
+        mHearingDeviceController.initSubControllers(false);
+
+        assertThat(mHearingDeviceController.getSubControllers().stream().anyMatch(
+                c -> c instanceof BluetoothDetailsHearingDeviceInputRoutingController)).isTrue();
+    }
+
+    @Test
+    @RequiresFlagsDisabled(
+            com.android.settingslib.flags.Flags.FLAG_HEARING_DEVICES_INPUT_ROUTING_CONTROL)
+    public void initSubControllers_flagDisabled_inputRoutingControllerNotExist() {
+        mHearingDeviceController.initSubControllers(false);
+
+        assertThat(mHearingDeviceController.getSubControllers().stream().anyMatch(
+                c -> c instanceof BluetoothDetailsHearingDeviceInputRoutingController)).isFalse();
     }
 }

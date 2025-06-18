@@ -40,6 +40,7 @@ import com.android.internal.net.VpnProfile;
 import com.android.net.module.util.ProxyUtils;
 import com.android.settings.R;
 import com.android.settings.utils.AndroidKeystoreAliasLoader;
+import com.android.settings.wifi.utils.TextInputGroup;
 
 import java.util.Collection;
 import java.util.List;
@@ -70,16 +71,16 @@ class ConfigDialog extends AlertDialog implements TextWatcher,
 
     private View mView;
 
-    private TextView mName;
+    private TextInputGroup mNameInput;
     private Spinner mType;
-    private TextView mServer;
-    private TextView mUsername;
-    private TextView mPassword;
+    private TextInputGroup mServerInput;
+    private TextInputGroup mUsernameInput;
+    private TextInputGroup mPasswordInput;
     private Spinner mProxySettings;
     private TextView mProxyHost;
     private TextView mProxyPort;
-    private TextView mIpsecIdentifier;
-    private TextView mIpsecSecret;
+    private TextInputGroup mIpsecIdentifierInput;
+    private TextInputGroup mIpsecSecretInput;
     private Spinner mIpsecUserCert;
     private Spinner mIpsecCaCert;
     private Spinner mIpsecServerCert;
@@ -106,16 +107,22 @@ class ConfigDialog extends AlertDialog implements TextWatcher,
         Context context = getContext();
 
         // First, find out all the fields.
-        mName = (TextView) mView.findViewById(R.id.name);
+        mNameInput = new TextInputGroup(mView, R.id.name_layout, R.id.name,
+                R.string.vpn_field_required);
         mType = (Spinner) mView.findViewById(R.id.type);
-        mServer = (TextView) mView.findViewById(R.id.server);
-        mUsername = (TextView) mView.findViewById(R.id.username);
-        mPassword = (TextView) mView.findViewById(R.id.password);
+        mServerInput = new TextInputGroup(mView, R.id.server_layout, R.id.server,
+                R.string.vpn_field_required);
+        mUsernameInput = new TextInputGroup(mView, R.id.username_layout, R.id.username,
+                R.string.vpn_field_required);
+        mPasswordInput = new TextInputGroup(mView, R.id.password_layout, R.id.password,
+                R.string.vpn_field_required);
         mProxySettings = (Spinner) mView.findViewById(R.id.vpn_proxy_settings);
         mProxyHost = (TextView) mView.findViewById(R.id.vpn_proxy_host);
         mProxyPort = (TextView) mView.findViewById(R.id.vpn_proxy_port);
-        mIpsecIdentifier = (TextView) mView.findViewById(R.id.ipsec_identifier);
-        mIpsecSecret = (TextView) mView.findViewById(R.id.ipsec_secret);
+        mIpsecIdentifierInput = new TextInputGroup(mView, R.id.ipsec_identifier_layout,
+                R.id.ipsec_identifier, R.string.vpn_field_required);
+        mIpsecSecretInput = new TextInputGroup(mView, R.id.ipsec_secret_layout, R.id.ipsec_secret,
+                R.string.vpn_field_required);
         mIpsecUserCert = (Spinner) mView.findViewById(R.id.ipsec_user_cert);
         mIpsecCaCert = (Spinner) mView.findViewById(R.id.ipsec_ca_cert);
         mIpsecServerCert = (Spinner) mView.findViewById(R.id.ipsec_server_cert);
@@ -125,21 +132,21 @@ class ConfigDialog extends AlertDialog implements TextWatcher,
         mAlwaysOnInvalidReason = (TextView) mView.findViewById(R.id.always_on_invalid_reason);
 
         // Second, copy values from the profile.
-        mName.setText(mProfile.name);
+        mNameInput.setText(mProfile.name);
         setTypesByFeature(mType);
         mType.setSelection(convertVpnProfileConstantToTypeIndex(mProfile.type));
-        mServer.setText(mProfile.server);
+        mServerInput.setText(mProfile.server);
         if (mProfile.saveLogin) {
-            mUsername.setText(mProfile.username);
-            mPassword.setText(mProfile.password);
+            mUsernameInput.setText(mProfile.username);
+            mPasswordInput.setText(mProfile.password);
         }
         if (mProfile.proxy != null) {
             mProxyHost.setText(mProfile.proxy.getHost());
             int port = mProfile.proxy.getPort();
             mProxyPort.setText(port == 0 ? "" : Integer.toString(port));
         }
-        mIpsecIdentifier.setText(mProfile.ipsecIdentifier);
-        mIpsecSecret.setText(mProfile.ipsecSecret);
+        mIpsecIdentifierInput.setText(mProfile.ipsecIdentifier);
+        mIpsecSecretInput.setText(mProfile.ipsecSecret);
         final AndroidKeystoreAliasLoader androidKeystoreAliasLoader =
                 new AndroidKeystoreAliasLoader(null);
         loadCertificates(mIpsecUserCert, androidKeystoreAliasLoader.getKeyCertAliases(), 0,
@@ -150,7 +157,8 @@ class ConfigDialog extends AlertDialog implements TextWatcher,
                 R.string.vpn_no_server_cert, mProfile.ipsecServerCert);
         mSaveLogin.setChecked(mProfile.saveLogin);
         mAlwaysOnVpn.setChecked(mProfile.key.equals(VpnUtils.getLockdownVpn()));
-        mPassword.setTextAppearance(android.R.style.TextAppearance_DeviceDefault_Medium);
+        mPasswordInput.getEditText()
+                .setTextAppearance(android.R.style.TextAppearance_DeviceDefault_Medium);
 
         // Hide lockdown VPN on devices that require IMS authentication
         if (SystemProperties.getBoolean("persist.radio.imsregrequired", false)) {
@@ -158,16 +166,16 @@ class ConfigDialog extends AlertDialog implements TextWatcher,
         }
 
         // Third, add listeners to required fields.
-        mName.addTextChangedListener(this);
+        mNameInput.addTextChangedListener(this);
         mType.setOnItemSelectedListener(this);
-        mServer.addTextChangedListener(this);
-        mUsername.addTextChangedListener(this);
-        mPassword.addTextChangedListener(this);
+        mServerInput.addTextChangedListener(this);
+        mUsernameInput.addTextChangedListener(this);
+        mPasswordInput.addTextChangedListener(this);
         mProxySettings.setOnItemSelectedListener(this);
         mProxyHost.addTextChangedListener(this);
         mProxyPort.addTextChangedListener(this);
-        mIpsecIdentifier.addTextChangedListener(this);
-        mIpsecSecret.addTextChangedListener(this);
+        mIpsecIdentifierInput.addTextChangedListener(this);
+        mIpsecSecretInput.addTextChangedListener(this);
         mIpsecUserCert.setOnItemSelectedListener(this);
         mShowOptions.setOnClickListener(this);
         mAlwaysOnVpn.setOnCheckedChangeListener(this);
@@ -202,6 +210,10 @@ class ConfigDialog extends AlertDialog implements TextWatcher,
             setTitle(context.getString(R.string.vpn_connect_to, mProfile.name));
 
             setUsernamePasswordVisibility(mProfile.type);
+            mUsernameInput.setLabel(context.getString(R.string.vpn_username_required));
+            mUsernameInput.setHelperText(context.getString(R.string.vpn_field_required));
+            mPasswordInput.setLabel(context.getString(R.string.vpn_password_required));
+            mPasswordInput.setHelperText(context.getString(R.string.vpn_field_required));
 
             // Create a button to connect the network.
             setButton(DialogInterface.BUTTON_POSITIVE,
@@ -260,6 +272,10 @@ class ConfigDialog extends AlertDialog implements TextWatcher,
             updateProxyFieldsVisibility(position);
         }
         updateUiControls();
+        mNameInput.setError("");
+        mServerInput.setError("");
+        mIpsecIdentifierInput.setError("");
+        mIpsecSecretInput.setError("");
     }
 
     @Override
@@ -375,35 +391,44 @@ class ConfigDialog extends AlertDialog implements TextWatcher,
             return false;
         }
 
-        final int position = mType.getSelectedItemPosition();
-        final int type = VPN_TYPES.get(position);
-        if (!editing && requiresUsernamePassword(type)) {
-            return mUsername.getText().length() != 0 && mPassword.getText().length() != 0;
-        }
-        if (mName.getText().length() == 0 || mServer.getText().length() == 0) {
-            return false;
-        }
-
-        // All IKEv2 methods require an identifier
-        if (mIpsecIdentifier.getText().length() == 0) {
-            return false;
-        }
-
         if (!validateProxy()) {
             return false;
         }
 
-        switch (type) {
+        switch (getVpnType()) {
             case VpnProfile.TYPE_IKEV2_IPSEC_USER_PASS:
                 return true;
 
             case VpnProfile.TYPE_IKEV2_IPSEC_PSK:
-                return mIpsecSecret.getText().length() != 0;
+                return true;
 
             case VpnProfile.TYPE_IKEV2_IPSEC_RSA:
                 return mIpsecUserCert.getSelectedItemPosition() != 0;
         }
         return false;
+    }
+
+    public boolean validate() {
+        boolean isValidate = true;
+        int type = getVpnType();
+        if (!mEditing && requiresUsernamePassword(type)) {
+            if (!mUsernameInput.validate()) isValidate = false;
+            if (!mPasswordInput.validate()) isValidate = false;
+            return isValidate;
+        }
+
+        if (!mNameInput.validate()) isValidate = false;
+        if (!mServerInput.validate()) isValidate = false;
+        if (!mIpsecIdentifierInput.validate()) isValidate = false;
+        if (type == VpnProfile.TYPE_IKEV2_IPSEC_PSK && !mIpsecSecretInput.validate()) {
+            isValidate = false;
+        }
+        if (!isValidate) Log.w(TAG, "Failed to validate VPN profile!");
+        return isValidate;
+    }
+
+    private int getVpnType() {
+        return VPN_TYPES.get(mType.getSelectedItemPosition());
     }
 
     private void setTypesByFeature(Spinner typeSpinner) {
@@ -487,15 +512,14 @@ class ConfigDialog extends AlertDialog implements TextWatcher,
     VpnProfile getProfile() {
         // First, save common fields.
         VpnProfile profile = new VpnProfile(mProfile.key);
-        profile.name = mName.getText().toString();
-        final int position = mType.getSelectedItemPosition();
-        profile.type = VPN_TYPES.get(position);
-        profile.server = mServer.getText().toString().trim();
-        profile.username = mUsername.getText().toString();
-        profile.password = mPassword.getText().toString();
+        profile.name = mNameInput.getText();
+        profile.type = getVpnType();
+        profile.server = mServerInput.getText().trim();
+        profile.username = mUsernameInput.getText();
+        profile.password = mPasswordInput.getText();
 
         // Save fields based on VPN type.
-        profile.ipsecIdentifier = mIpsecIdentifier.getText().toString();
+        profile.ipsecIdentifier = mIpsecIdentifierInput.getText();
 
         if (hasProxy()) {
             String proxyHost = mProxyHost.getText().toString().trim();
@@ -517,7 +541,7 @@ class ConfigDialog extends AlertDialog implements TextWatcher,
         // Then, save type-specific fields.
         switch (profile.type) {
             case VpnProfile.TYPE_IKEV2_IPSEC_PSK:
-                profile.ipsecSecret = mIpsecSecret.getText().toString();
+                profile.ipsecSecret = mIpsecSecretInput.getText();
                 break;
 
             case VpnProfile.TYPE_IKEV2_IPSEC_RSA:

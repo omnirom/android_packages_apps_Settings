@@ -20,6 +20,13 @@
     android:title="@string/device_details_title">
 
     <com.android.settingslib.widget.LayoutPreference
+        android:key="bluetooth_details_banner"
+        android:layout="@layout/bluetooth_details_banner"
+        android:selectable="false"
+        settings:allowDividerBelow="true"
+        settings:searchable="false"/>
+
+    <com.android.settingslib.widget.LayoutPreference
         android:key="bluetooth_device_header"
         android:layout="@layout/settings_entity_header"
         android:selectable="false"
@@ -67,6 +74,10 @@
         android:key="bt_extra_control"
         settings:controller="com.android.settings.slices.SlicePreferenceController"
         settings:allowDividerAbove="true"/>
+
+    <PreferenceCategory
+        android:key="audio_sharing_control"
+        android:layout="@layout/settingslib_preference_category_no_title"/>
 
     <PreferenceCategory
         android:key="bt_device_slice_category"

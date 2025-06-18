@@ -23,13 +23,12 @@ import android.app.settings.SettingsEnums;
 import android.content.Context;
 
 import com.android.settings.R;
-import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.SearchIndexable;
 
 /** Settings for pointer and touchpad. */
 @SearchIndexable(forTarget = SearchIndexable.ALL & ~SearchIndexable.ARC)
-public class PointerColorCustomizationFragment extends DashboardFragment {
+public class PointerColorCustomizationFragment extends InputDeviceDashboardFragment {
 
     private static final String TAG = "PointerColorCustomizationFragment";
 
@@ -56,4 +55,9 @@ public class PointerColorCustomizationFragment extends DashboardFragment {
                     return isTouchpad() || isMouse();
                 }
             };
+
+    @Override
+    protected boolean needToFinishEarly() {
+        return isMouseDetached() && isTouchpadDetached();
+    }
 }

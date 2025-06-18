@@ -333,7 +333,7 @@ public class ExternalSourcesDetailsTest {
 
     @RequiresFlagsEnabled(android.security.Flags.FLAG_AAPM_FEATURE_DISABLE_INSTALL_UNKNOWN_SOURCES)
     @Test
-    public void getPreferenceSummary_restrictedGlobally_adminString() {
+    public void getPreferenceSummary_restrictedGloballyByAdmin_adminString() {
         final EnforcingAdmin nonAdvancedProtectionEnforcingAdmin = new EnforcingAdmin("test.pkg",
                 UnknownAuthority.UNKNOWN_AUTHORITY, mUserHandle, new ComponentName("", ""));
 
@@ -353,7 +353,7 @@ public class ExternalSourcesDetailsTest {
 
     @RequiresFlagsEnabled(Flags.FLAG_AAPM_FEATURE_DISABLE_INSTALL_UNKNOWN_SOURCES)
     @Test
-    public void getPreferenceSummary_restrictedGlobally_advancedProtectionString() {
+    public void getPreferenceSummary_restrictedGloballyByAdvancedProtection_disabledString() {
         final EnforcingAdmin advancedProtectionEnforcingAdmin = new EnforcingAdmin("test.pkg",
                 new UnknownAuthority(ADVANCED_PROTECTION_SYSTEM_ENTITY), mUserHandle,
                 new ComponentName("", ""));
@@ -363,12 +363,10 @@ public class ExternalSourcesDetailsTest {
                         advancedProtectionEnforcingAdmin);
         when(mUserManager.hasUserRestrictionForUser(DISALLOW_INSTALL_UNKNOWN_SOURCES_GLOBALLY,
                 mUserHandle)).thenReturn(true);
-        when(mContext.getString(
-                com.android.settingslib.widget.restricted.R.string.disabled_by_advanced_protection))
-                .thenReturn("disabled_by_advanced_protection");
+        when(mContext.getString(com.android.settingslib.R.string.disabled)).thenReturn("disabled");
 
         CharSequence summary = ExternalSourcesDetails.getPreferenceSummary(mContext, mAppEntry);
 
-        assertEquals("disabled_by_advanced_protection", summary.toString());
+        assertEquals("disabled", summary.toString());
     }
 }

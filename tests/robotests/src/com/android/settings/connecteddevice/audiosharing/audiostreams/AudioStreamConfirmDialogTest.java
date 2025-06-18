@@ -34,8 +34,10 @@ import android.app.settings.SettingsEnums;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothStatusCodes;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +47,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
+import com.android.settings.connecteddevice.audiosharing.audiostreams.testshadows.ShadowAudioStreamsHelper;
 import com.android.settings.testutils.shadow.ShadowBluetoothAdapter;
 import com.android.settings.testutils.shadow.ShadowBluetoothUtils;
 import com.android.settingslib.bluetooth.LocalBluetoothLeBroadcast;
@@ -73,23 +76,35 @@ import java.util.List;
 @RunWith(RobolectricTestRunner.class)
 @Config(
         shadows = {
-            ShadowBluetoothAdapter.class,
-            ShadowBluetoothUtils.class,
+                ShadowBluetoothAdapter.class,
+                ShadowBluetoothUtils.class,
+                ShadowAudioStreamsHelper.class,
         })
 public class AudioStreamConfirmDialogTest {
-    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
-    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule
+    public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     private static final String VALID_METADATA =
             "BLUETOOTH:UUID:184F;BN:VGVzdA==;AT:1;AD:00A1A1A1A1A1;BI:1E240;BC:VGVzdENvZGU=;"
                     + "MD:BgNwVGVzdA==;AS:1;PI:A0;NS:1;BS:3;NB:2;SM:BQNUZXN0BARlbmc=;;";
+    private static final String VALID_METADATA_LOWERCASE =
+            "bluetooth:UUID:184F;BN:VGVzdA==;AT:1;AD:00A1A1A1A1A1;BI:1E240;BC:VGVzdENvZGU=;"
+                    + "MD:BgNwVGVzdA==;AS:1;PI:A0;NS:1;BS:3;NB:2;SM:BQNUZXN0BARlbmc=;;";
     private static final String DEVICE_NAME = "device_name";
     private final Context mContext = ApplicationProvider.getApplicationContext();
-    @Mock private LocalBluetoothManager mLocalBluetoothManager;
-    @Mock private LocalBluetoothProfileManager mLocalBluetoothProfileManager;
-    @Mock private LocalBluetoothLeBroadcast mBroadcast;
-    @Mock private LocalBluetoothLeBroadcastAssistant mAssistant;
-    @Mock private VolumeControlProfile mVolumeControl;
-    @Mock private BluetoothDevice mBluetoothDevice;
+    @Mock
+    private LocalBluetoothManager mLocalBluetoothManager;
+    @Mock
+    private LocalBluetoothProfileManager mLocalBluetoothProfileManager;
+    @Mock
+    private LocalBluetoothLeBroadcast mBroadcast;
+    @Mock
+    private LocalBluetoothLeBroadcastAssistant mAssistant;
+    @Mock
+    private VolumeControlProfile mVolumeControl;
+    @Mock
+    private BluetoothDevice mBluetoothDevice;
     private AudioStreamConfirmDialog mDialogFragment;
 
     @Before
@@ -322,6 +337,125 @@ public class AudioStreamConfirmDialogTest {
 
         Intent intent = new Intent();
         intent.putExtra(KEY_BROADCAST_METADATA, VALID_METADATA);
+        FragmentController.of(mDialogFragment, intent)
+                .create(/* containerViewId= */ 0, /* bundle= */ null)
+                .start()
+                .resume()
+                .visible()
+                .get();
+        shadowMainLooper().idle();
+
+        assertThat(mDialogFragment.getMetricsCategory())
+                .isEqualTo(DIALOG_AUDIO_STREAM_CONFIRM_LISTEN);
+        assertThat(mDialogFragment.mActivity).isNotNull();
+        mDialogFragment.mActivity = spy(mDialogFragment.mActivity);
+
+        Dialog dialog = mDialogFragment.getDialog();
+        assertThat(dialog).isNotNull();
+        assertThat(dialog.isShowing()).isTrue();
+        TextView title = dialog.findViewById(R.id.dialog_title);
+        assertThat(title).isNotNull();
+        assertThat(title.getText())
+                .isEqualTo(
+                        mContext.getString(R.string.audio_streams_dialog_listen_to_audio_stream));
+        TextView subtitle1 = dialog.findViewById(R.id.dialog_subtitle);
+        assertThat(subtitle1).isNotNull();
+        assertThat(subtitle1.getVisibility()).isEqualTo(View.VISIBLE);
+        TextView subtitle2 = dialog.findViewById(R.id.dialog_subtitle_2);
+        assertThat(subtitle2).isNotNull();
+        var defaultName = mContext.getString(DEFAULT_DEVICE_NAME);
+        assertThat(subtitle2.getText())
+                .isEqualTo(
+                        mContext.getString(
+                                R.string.audio_streams_dialog_control_volume, defaultName));
+        View leftButton = dialog.findViewById(R.id.left_button);
+        assertThat(leftButton).isNotNull();
+        assertThat(leftButton.getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(leftButton.hasOnClickListeners()).isTrue();
+
+        leftButton.callOnClick();
+        assertThat(dialog.isShowing()).isFalse();
+
+        Button rightButton = dialog.findViewById(R.id.right_button);
+        assertThat(rightButton).isNotNull();
+        assertThat(rightButton.getText())
+                .isEqualTo(mContext.getString(R.string.audio_streams_dialog_listen));
+        assertThat(rightButton.hasOnClickListeners()).isTrue();
+
+        rightButton.callOnClick();
+        assertThat(dialog.isShowing()).isFalse();
+        verify(mDialogFragment.mActivity, times(2)).finish();
+    }
+
+    @Test
+    public void showDialog_turnOffTalkback() {
+        List<BluetoothDevice> devices = new ArrayList<>();
+        devices.add(mBluetoothDevice);
+        when(mAssistant.getAllConnectedDevices()).thenReturn(devices);
+        when(mBluetoothDevice.getAlias()).thenReturn("");
+        ShadowAudioStreamsHelper.setEnabledScreenReaderService(new ComponentName("pkg", "class"));
+
+        Intent intent = new Intent();
+        intent.putExtra(KEY_BROADCAST_METADATA, VALID_METADATA);
+        FragmentController.of(mDialogFragment, intent)
+                .create(/* containerViewId= */ 0, /* bundle= */ null)
+                .start()
+                .resume()
+                .visible()
+                .get();
+        shadowMainLooper().idle();
+
+        assertThat(mDialogFragment.getMetricsCategory())
+                .isEqualTo(SettingsEnums.DIALOG_AUDIO_STREAM_CONFIRM_TURN_OFF_TALKBACK);
+        assertThat(mDialogFragment.mActivity).isNotNull();
+        mDialogFragment.mActivity = spy(mDialogFragment.mActivity);
+
+        var dialog = mDialogFragment.getDialog();
+        assertThat(dialog).isNotNull();
+        assertThat(dialog.isShowing()).isTrue();
+
+        TextView title = dialog.findViewById(R.id.dialog_title);
+        assertThat(title).isNotNull();
+        assertThat(title.getText())
+                .isEqualTo(
+                        mContext.getString(R.string.audio_streams_dialog_turn_off_talkback_title));
+        TextView subtitle1 = dialog.findViewById(R.id.dialog_subtitle);
+        assertThat(subtitle1).isNotNull();
+        assertThat(subtitle1.getVisibility()).isEqualTo(View.GONE);
+        TextView subtitle2 = dialog.findViewById(R.id.dialog_subtitle_2);
+        assertThat(subtitle2).isNotNull();
+        assertThat(subtitle2.getText())
+                .isEqualTo(mContext.getString(
+                        R.string.audio_streams_dialog_turn_off_talkback_subtitle));
+        View leftButton = dialog.findViewById(R.id.left_button);
+        assertThat(leftButton).isNotNull();
+        assertThat(leftButton.getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(leftButton.hasOnClickListeners()).isTrue();
+
+        leftButton.callOnClick();
+        assertThat(dialog.isShowing()).isFalse();
+
+        Button rightButton = dialog.findViewById(R.id.right_button);
+        assertThat(rightButton).isNotNull();
+        assertThat(rightButton.getText())
+                .isEqualTo(
+                        mContext.getString(R.string.audio_streams_dialog_turn_off_talkback_button));
+        assertThat(rightButton.hasOnClickListeners()).isTrue();
+
+        rightButton.callOnClick();
+        assertThat(dialog.isShowing()).isFalse();
+        verify(mDialogFragment.mActivity, times(2)).finish();
+    }
+
+    @Test
+    public void showDialog_getDataStringFromIntent_confirmListen() {
+        List<BluetoothDevice> devices = new ArrayList<>();
+        devices.add(mBluetoothDevice);
+        when(mAssistant.getAllConnectedDevices()).thenReturn(devices);
+        when(mBluetoothDevice.getAlias()).thenReturn("");
+
+        Intent intent = new Intent();
+        intent.setData(Uri.parse(VALID_METADATA_LOWERCASE));
         FragmentController.of(mDialogFragment, intent)
                 .create(/* containerViewId= */ 0, /* bundle= */ null)
                 .start()

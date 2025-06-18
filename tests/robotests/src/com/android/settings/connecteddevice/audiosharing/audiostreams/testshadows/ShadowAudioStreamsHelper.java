@@ -16,8 +16,13 @@
 
 package com.android.settings.connecteddevice.audiosharing.audiostreams.testshadows;
 
+import static com.android.settingslib.bluetooth.LocalBluetoothLeBroadcastAssistant.LocalBluetoothLeBroadcastSourceState;
+
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothLeBroadcastMetadata;
 import android.bluetooth.BluetoothLeBroadcastReceiveState;
+import android.content.ComponentName;
+import android.content.Context;
 
 import androidx.annotation.Nullable;
 
@@ -30,13 +35,17 @@ import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 import org.robolectric.annotation.Resetter;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Implements(value = AudioStreamsHelper.class, callThroughByDefault = true)
 public class ShadowAudioStreamsHelper {
     private static AudioStreamsHelper sMockHelper;
     @Nullable private static CachedBluetoothDevice sCachedBluetoothDevice;
+    @Nullable private static ComponentName sEnabledScreenReaderService;
 
     public static void setUseMock(AudioStreamsHelper mockAudioStreamsHelper) {
         sMockHelper = mockAudioStreamsHelper;
@@ -47,6 +56,7 @@ public class ShadowAudioStreamsHelper {
     public static void reset() {
         sMockHelper = null;
         sCachedBluetoothDevice = null;
+        sEnabledScreenReaderService = null;
     }
 
     public static void setCachedBluetoothDeviceInSharingOrLeConnected(
@@ -54,14 +64,19 @@ public class ShadowAudioStreamsHelper {
         sCachedBluetoothDevice = cachedBluetoothDevice;
     }
 
-    @Implementation
-    public List<BluetoothLeBroadcastReceiveState> getAllConnectedSources() {
-        return sMockHelper.getAllConnectedSources();
+    public static void setEnabledScreenReaderService(ComponentName componentName) {
+        sEnabledScreenReaderService = componentName;
     }
 
     @Implementation
-    public List<BluetoothLeBroadcastReceiveState> getAllPresentSources() {
-        return sMockHelper.getAllPresentSources();
+    public Map<Integer, LocalBluetoothLeBroadcastSourceState> getConnectedBroadcastIdAndState(
+            boolean hysteresisModeFixAvailable) {
+        return sMockHelper.getConnectedBroadcastIdAndState(hysteresisModeFixAvailable);
+    }
+
+    @Implementation
+    public Map<BluetoothDevice, List<BluetoothLeBroadcastReceiveState>> getAllSourcesByDevice() {
+        return sMockHelper.getAllSourcesByDevice();
     }
 
     /** Gets {@link CachedBluetoothDevice} in sharing or le connected */
@@ -69,6 +84,15 @@ public class ShadowAudioStreamsHelper {
     public static Optional<CachedBluetoothDevice> getCachedBluetoothDeviceInSharingOrLeConnected(
             LocalBluetoothManager manager) {
         return Optional.ofNullable(sCachedBluetoothDevice);
+    }
+
+    /** Retrieves a set of enabled screen reader services that are pre-installed. */
+    @Implementation
+    public static Set<ComponentName> getEnabledScreenReaderServices(Context context) {
+        if (sEnabledScreenReaderService != null) {
+            return Set.of(sEnabledScreenReaderService);
+        }
+        return Collections.emptySet();
     }
 
     @Implementation

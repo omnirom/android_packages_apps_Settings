@@ -147,7 +147,7 @@ public class RestrictedPreferenceHelper {
                 && android.security.Flags.extendEcmToAllSettings()) {
             preference.checkEcmRestrictionAndSetDisabled(
                     AppOpsManager.OPSTR_BIND_ACCESSIBILITY_SERVICE,
-                    preference.getPackageName());
+                    preference.getPackageName(), serviceEnabled);
             if (preference.isDisabledByEcm()) {
                 serviceAllowed = false;
             }
@@ -217,6 +217,7 @@ public class RestrictedPreferenceHelper {
         extras.putInt(AccessibilitySettings.EXTRA_ANIMATED_IMAGE_RES, imageRes);
         extras.putString(AccessibilitySettings.EXTRA_HTML_DESCRIPTION, htmlDescription);
         extras.putInt(AccessibilitySettings.EXTRA_METRICS_CATEGORY, metricsCategory);
+        extras.putInt(AccessibilitySettings.EXTRA_FEEDBACK_CATEGORY, metricsCategory);
     }
 
     /**

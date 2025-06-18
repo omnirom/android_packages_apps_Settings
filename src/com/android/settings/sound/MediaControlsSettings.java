@@ -17,6 +17,10 @@
 package com.android.settings.sound;
 
 import android.app.settings.SettingsEnums;
+import android.content.Context;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
@@ -26,6 +30,7 @@ import com.android.settingslib.search.SearchIndexable;
 /**
  * Media control settings located in the sound menu
  */
+// LINT.IfChange
 @SearchIndexable
 public class MediaControlsSettings extends DashboardFragment {
 
@@ -48,4 +53,10 @@ public class MediaControlsSettings extends DashboardFragment {
 
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(R.xml.media_controls_settings);
+
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return MediaControlsScreen.KEY;
+    }
 }
+// LINT.ThenChange(MediaControlsScreen.kt)

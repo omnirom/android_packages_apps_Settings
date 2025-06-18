@@ -36,6 +36,16 @@
         android:layout="@layout/airplane_mode_message_preference"
         settings:allowDividerBelow="true"/>
 
+    <com.android.settingslib.RestrictedSwitchPreference
+        android:key="main_toggle_ethernet"
+        android:title="@string/ethernet"
+        settings:restrictedSwitchSummary="@string/not_allowed_by_ent"
+        settings:allowDividerAbove="true"/>
+
+    <PreferenceCategory
+        android:key="ethernet_interfaces"
+        android:layout="@layout/preference_category_no_label"/>
+
     <Preference
         android:key="connected_ethernet_network"
         android:title="@string/ethernet"

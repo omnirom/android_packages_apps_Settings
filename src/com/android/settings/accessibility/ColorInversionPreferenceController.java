@@ -22,6 +22,7 @@ import android.provider.Settings;
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 
+// LINT.IfChange
 /** Controller that shows the color inversion summary. */
 public class ColorInversionPreferenceController extends BasePreferenceController {
 
@@ -45,3 +46,4 @@ public class ColorInversionPreferenceController extends BasePreferenceController
         return AVAILABLE;
     }
 }
+// LINT.ThenChange(/src/com/android/settings/accessibility/ColorInversionPreference.kt)

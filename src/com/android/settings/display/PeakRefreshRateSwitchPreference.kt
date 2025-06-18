@@ -15,6 +15,7 @@
  */
 package com.android.settings.display
 
+import android.app.settings.SettingsEnums.ACTION_SMOOTH_DISPLAY
 import android.content.Context
 import android.hardware.display.DisplayManager
 import android.provider.DeviceConfig
@@ -24,10 +25,11 @@ import com.android.internal.display.RefreshRateSettingsUtils.findHighestRefreshR
 import com.android.internal.display.RefreshRateSettingsUtils.findHighestRefreshRateForDefaultDisplay
 import com.android.server.display.feature.flags.Flags
 import com.android.settings.R
+import com.android.settings.contract.KEY_SMOOTH_DISPLAY
+import com.android.settings.metrics.PreferenceActionMetricsProvider
 import com.android.settingslib.datastore.HandlerExecutor
 import com.android.settingslib.datastore.KeyValueStore
-import com.android.settingslib.datastore.KeyedObservableDelegate
-import com.android.settingslib.datastore.SettingsStore
+import com.android.settingslib.datastore.KeyValueStoreDelegate
 import com.android.settingslib.datastore.SettingsSystemStore
 import com.android.settingslib.metadata.PreferenceAvailabilityProvider
 import com.android.settingslib.metadata.PreferenceLifecycleContext
@@ -41,20 +43,34 @@ import kotlin.math.roundToInt
 // LINT.IfChange
 class PeakRefreshRateSwitchPreference :
     SwitchPreference(KEY, R.string.peak_refresh_rate_title),
+    PreferenceActionMetricsProvider,
     PreferenceAvailabilityProvider,
     PreferenceSummaryProvider,
     PreferenceLifecycleProvider {
 
     private var propertiesChangedListener: DeviceConfig.OnPropertiesChangedListener? = null
 
+    override val preferenceActionMetrics: Int
+        get() = ACTION_SMOOTH_DISPLAY
+
+    override fun tags(context: Context) = arrayOf(KEY_SMOOTH_DISPLAY)
+
     override fun storage(context: Context): KeyValueStore =
         PeakRefreshRateStore(context, SettingsSystemStore.get(context))
 
-    override fun getReadPermit(context: Context, myUid: Int, callingUid: Int) =
+    override fun getReadPermissions(context: Context) = SettingsSystemStore.getReadPermissions()
+
+    override fun getWritePermissions(context: Context) = SettingsSystemStore.getWritePermissions()
+
+    override fun getReadPermit(context: Context, callingPid: Int, callingUid: Int) =
         ReadWritePermit.ALLOW
 
-    override fun getWritePermit(context: Context, value: Boolean?, myUid: Int, callingUid: Int) =
-        ReadWritePermit.ALLOW
+    override fun getWritePermit(
+        context: Context,
+        value: Boolean?,
+        callingPid: Int,
+        callingUid: Int,
+    ) = ReadWritePermit.ALLOW
 
     override val sensitivityLevel
         get() = SensitivityLevel.NO_SENSITIVITY
@@ -95,18 +111,16 @@ class PeakRefreshRateSwitchPreference :
     @Suppress("UNCHECKED_CAST")
     private class PeakRefreshRateStore(
         private val context: Context,
-        private val settingsStore: SettingsStore,
-    ) : KeyedObservableDelegate<String>(settingsStore), KeyValueStore {
+        private val settingsStore: KeyValueStore,
+    ) : KeyValueStoreDelegate {
 
-        override fun contains(key: String) = settingsStore.contains(key)
+        override val keyValueStoreDelegate
+            get() = settingsStore
 
-        override fun <T : Any> getDefaultValue(key: String, valueType: Class<T>): T? {
-            if (key != KEY) return super.getDefaultValue(key, valueType)
-            return context.defaultPeakRefreshRate.refreshRateAsBoolean(context) as T
-        }
+        override fun <T : Any> getDefaultValue(key: String, valueType: Class<T>) =
+            context.defaultPeakRefreshRate.refreshRateAsBoolean(context) as T
 
         override fun <T : Any> getValue(key: String, valueType: Class<T>): T? {
-            if (key != KEY) return null
             val refreshRate = settingsStore.getFloat(KEY) ?: context.defaultPeakRefreshRate
             return refreshRate.refreshRateAsBoolean(context) as T
         }

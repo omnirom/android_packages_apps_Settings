@@ -137,10 +137,13 @@ public class ImeiInfoPreferenceController extends BasePreferenceController {
 
     @Override
     public int getAvailabilityStatus() {
-        boolean isAvailable = SubscriptionUtil.isSimHardwareVisible(mContext) &&
-                mContext.getSystemService(UserManager.class).isAdminUser() &&
-                !Utils.isWifiOnly(mContext);
-        return isAvailable ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
+        if (!SubscriptionUtil.isSimHardwareVisible(mContext) || Utils.isWifiOnly(mContext)) {
+            return UNSUPPORTED_ON_DEVICE;
+        }
+        if (!mContext.getSystemService(UserManager.class).isAdminUser()) {
+            return DISABLED_FOR_USER;
+        }
+        return AVAILABLE;
     }
 
     @Override

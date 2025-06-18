@@ -28,14 +28,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.app.AppOpsManager;
-import android.app.Flags;
 import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.annotations.RequiresFlagsDisabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
@@ -50,7 +48,6 @@ import com.android.settingslib.RestrictedSwitchPreference;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -188,7 +185,6 @@ public class ApprovalPreferenceControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_API)
     public void disable() {
         when(mNm.isNotificationPolicyAccessGrantedForPackage(anyString())).thenReturn(false);
         mController.disable(mCn);

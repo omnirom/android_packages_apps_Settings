@@ -35,6 +35,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.settings.R
 import com.android.settings.Utils
+import com.android.settings.network.SatelliteWarningDialogActivity
+import com.android.settings.network.SatelliteWarningDialogActivity.Companion.CUSTOM_CONTENT_BUTTON_NAME
+import com.android.settings.network.SatelliteWarningDialogActivity.Companion.CUSTOM_CONTENT_DESCRIPTION
+import com.android.settings.network.SatelliteWarningDialogActivity.Companion.CUSTOM_CONTENT_TITLE
 import com.android.settings.network.SubscriptionUtil
 import com.android.settings.network.telephony.MobileNetworkUtils
 import com.android.settings.network.telephony.SubscriptionActivationRepository
@@ -142,4 +146,15 @@ fun startAddSimFlow(context: Context) = context.startActivity(getAddSimIntent())
 fun getAddSimIntent() = Intent(EuiccManager.ACTION_PROVISION_EMBEDDED_SUBSCRIPTION).apply {
     setPackage(Utils.PHONE_PACKAGE_NAME)
     putExtra(EuiccManager.EXTRA_FORCE_PROVISION, true)
+}
+
+fun startSatelliteWarningDialogFlow(context: Context) = context.startActivity(getSatelliteWarningDialogIntent(context))
+
+fun getSatelliteWarningDialogIntent(context: Context) = Intent(context,
+    SatelliteWarningDialogActivity::class.java).apply {
+    val content = HashMap<Int, String>()
+    content.put(CUSTOM_CONTENT_TITLE, context.getString(R.string.title_satellite_dialog_for_sim_restriction))
+    content.put(CUSTOM_CONTENT_DESCRIPTION, context.getString(R.string.description_satellite_dialog_for_sim_restriction))
+    content.put(CUSTOM_CONTENT_BUTTON_NAME, context.getString(R.string.okay))
+    putExtra(SatelliteWarningDialogActivity.EXTRA_TYPE_OF_SATELLITE_CUSTOMIZED_CONTENT, content)
 }

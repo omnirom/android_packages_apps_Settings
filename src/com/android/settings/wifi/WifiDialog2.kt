@@ -28,6 +28,7 @@ import android.widget.TextView
 import androidx.annotation.OpenForTesting
 import androidx.appcompat.app.AlertDialog
 import com.android.settings.R
+import com.android.settings.wifi.utils.WifiDialogHelper
 import com.android.settingslib.RestrictedLockUtils
 import com.android.settingslib.RestrictedLockUtilsInternal
 import com.android.wifitrackerlib.WifiEntry
@@ -68,6 +69,7 @@ open class WifiDialog2 @JvmOverloads constructor(
 
     private lateinit var view: View
     private lateinit var controller: WifiConfigController2
+    private lateinit var dialogHelper: WifiDialogHelper
 
     override fun getController(): WifiConfigController2 = controller
 
@@ -89,6 +91,7 @@ open class WifiDialog2 @JvmOverloads constructor(
         if (wifiEntry == null) {
             controller.hideForgetButton()
         }
+        dialogHelper = WifiDialogHelper(this, this, controller.validator)
     }
 
     private fun setWindowsOverlay() {

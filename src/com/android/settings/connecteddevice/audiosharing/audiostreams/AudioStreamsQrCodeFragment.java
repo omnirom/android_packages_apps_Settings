@@ -18,7 +18,10 @@ package com.android.settings.connecteddevice.audiosharing.audiostreams;
 
 import android.app.settings.SettingsEnums;
 import android.bluetooth.BluetoothLeBroadcastMetadata;
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,14 +32,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import com.android.settings.R;
 import com.android.settings.bluetooth.Utils;
+import com.android.settings.connecteddevice.audiosharing.AudioSharingFeatureProvider;
 import com.android.settings.core.InstrumentedFragment;
 import com.android.settingslib.bluetooth.BluetoothLeBroadcastMetadataExt;
 import com.android.settingslib.bluetooth.LocalBluetoothLeBroadcast;
 import com.android.settingslib.qrcode.QrCodeGenerator;
 import com.android.settingslib.utils.ThreadUtils;
+import com.android.settings.overlay.FeatureFactory;
 
 import com.google.zxing.WriterException;
 
@@ -46,6 +53,9 @@ import java.util.Optional;
 
 public class AudioStreamsQrCodeFragment extends InstrumentedFragment {
     private static final String TAG = "AudioStreamsQrCodeFragment";
+
+    AudioSharingFeatureProvider audioSharingFeatureProvider =
+            FeatureFactory.getFeatureFactory().getAudioSharingFeatureProvider();
 
     @Override
     public int getMetricsCategory() {
@@ -63,63 +73,81 @@ public class AudioStreamsQrCodeFragment extends InstrumentedFragment {
         super.onViewCreated(view, savedInstanceState);
         // Collapse or expand the app bar based on orientation for better display the qr code image.
         AudioStreamsHelper.configureAppBarByOrientation(getActivity());
-        var unused = ThreadUtils.postOnBackgroundThread(
-                () -> {
-                    BluetoothLeBroadcastMetadata broadcastMetadata = getBroadcastMetadata();
-                    if (broadcastMetadata == null) {
-                        return;
-                    }
-                    Bitmap bm = getQrCodeBitmap(broadcastMetadata).orElse(null);
-                    if (bm == null) {
-                        return;
-                    }
+        var unused =
+                ThreadUtils.postOnBackgroundThread(
+                        () -> {
+                            BluetoothLeBroadcastMetadata broadcastMetadata = getBroadcastMetadata();
+                            if (broadcastMetadata == null) {
+                                return;
+                            }
+                            Drawable drawable =
+                                    getQrCodeDrawable(broadcastMetadata, getActivity())
+                                            .orElse(null);
+                            if (drawable == null) {
+                                return;
+                            }
 
-                    ThreadUtils.postOnMainThread(
-                            () -> {
-                                ((ImageView) view.requireViewById(R.id.qrcode_view))
-                                        .setImageBitmap(bm);
-                                if (broadcastMetadata.getBroadcastCode() != null) {
-                                    String password =
-                                            new String(
-                                                    broadcastMetadata.getBroadcastCode(),
-                                                    StandardCharsets.UTF_8);
-                                    String passwordText =
-                                            getString(
-                                                    R.string.audio_streams_qr_code_page_password,
-                                                    password);
-                                    ((TextView) view.requireViewById(R.id.password))
-                                            .setText(passwordText);
-                                }
-                                TextView summaryView = view.requireViewById(android.R.id.summary);
-                                String summary =
-                                        getString(
-                                                R.string.audio_streams_qr_code_page_description,
-                                                broadcastMetadata.getBroadcastName());
-                                summaryView.setText(summary);
-                            });
-                });
+                            ThreadUtils.postOnMainThread(
+                                    () -> {
+                                        audioSharingFeatureProvider.setQrCode(
+                                                this,
+                                                view,
+                                                R.id.qrcode_view,
+                                                drawable,
+                                                BluetoothLeBroadcastMetadataExt.INSTANCE
+                                                        .toQrCodeString(broadcastMetadata));
+                                        if (broadcastMetadata.getBroadcastCode() != null) {
+                                            String password =
+                                                    new String(
+                                                            broadcastMetadata.getBroadcastCode(),
+                                                            StandardCharsets.UTF_8);
+                                            String passwordText =
+                                                    getString(
+                                                            R.string
+                                                                    .audio_streams_qr_code_page_password,
+                                                            password);
+                                            ((TextView) view.requireViewById(R.id.password))
+                                                    .setText(passwordText);
+                                        }
+                                        TextView summaryView =
+                                                view.requireViewById(android.R.id.summary);
+                                        String summary =
+                                                getString(
+                                                        R.string
+                                                                .audio_streams_qr_code_page_description,
+                                                        broadcastMetadata.getBroadcastName());
+                                        summaryView.setText(summary);
+                                    });
+                        });
     }
 
-    private Optional<Bitmap> getQrCodeBitmap(@Nullable BluetoothLeBroadcastMetadata metadata) {
+    /** Gets an optional drawable from metadata. */
+    public static Optional<Drawable> getQrCodeDrawable(
+            @Nullable BluetoothLeBroadcastMetadata metadata,
+            Context context) {
         if (metadata == null) {
-            Log.d(TAG, "getQrCodeBitmap: broadcastMetadata is empty!");
+            Log.d(TAG, "getQrCodeDrawable: broadcastMetadata is empty!");
             return Optional.empty();
         }
         String metadataStr = BluetoothLeBroadcastMetadataExt.INSTANCE.toQrCodeString(metadata);
         if (metadataStr.isEmpty()) {
-            Log.d(TAG, "getQrCodeBitmap: metadataStr is empty!");
+            Log.d(TAG, "getQrCodeDrawable: metadataStr is empty!");
             return Optional.empty();
         }
-        Log.d(TAG, "getQrCodeBitmap: metadata : " + metadata);
+        Log.d(TAG, "getQrCodeDrawable: metadata : " + metadata);
         try {
-            int qrcodeSize =
-                    getResources().getDimensionPixelSize(R.dimen.audio_streams_qrcode_size);
-            Bitmap bitmap = QrCodeGenerator.encodeQrCode(metadataStr, qrcodeSize);
-            return Optional.of(bitmap);
+            Resources resources = context.getResources();
+            int qrcodeSize = resources.getDimensionPixelSize(R.dimen.audio_streams_qrcode_size);
+            int margin = resources.getDimensionPixelSize(R.dimen.audio_streams_qrcode_margin);
+            Bitmap bitmap = QrCodeGenerator.encodeQrCode(metadataStr, qrcodeSize, margin);
+            RoundedBitmapDrawable drawable = RoundedBitmapDrawableFactory.create(resources, bitmap);
+            drawable.setCornerRadius(resources.getDimensionPixelSize(
+                    R.dimen.audio_streams_qrcode_preview_radius));
+            return Optional.of(drawable);
         } catch (WriterException e) {
             Log.d(
                     TAG,
-                    "getQrCodeBitmap: broadcastMetadata "
+                    "getQrCodeDrawable: broadcastMetadata "
                             + metadata
                             + " qrCode generation exception "
                             + e);

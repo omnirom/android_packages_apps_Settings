@@ -36,6 +36,13 @@ import com.android.settingslib.utils.StringUtil;
  */
 public class CombinedBiometricStatusUtils {
 
+    /**
+     * An intent extra indicates that the enrollment process is launched from biometric
+     * SafetySourceIssue action.
+     */
+    public static final String EXTRA_LAUNCH_FROM_SAFETY_SOURCE_ISSUE =
+            "launch_from_safety_source_issue";
+
     private final int mUserId;
     private final Context mContext;
     @Nullable

@@ -16,6 +16,8 @@
 
 package com.android.settings.widget;
 
+import static android.view.accessibility.Flags.triStateChecked;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -90,10 +92,16 @@ public class CheckableRelativeLayout extends RelativeLayout implements Checkable
             if (mCheckable != null) {
                 mCheckable.setChecked(checked);
             }
+            if (triStateChecked()) {
+                notifyViewAccessibilityStateChangedIfNeeded(
+                        AccessibilityEvent.CONTENT_CHANGE_TYPE_CHECKED);
+            }
         }
         setStateDescriptionIfNeeded();
-        notifyViewAccessibilityStateChangedIfNeeded(
-                AccessibilityEvent.CONTENT_CHANGE_TYPE_UNDEFINED);
+        if (!triStateChecked()) {
+            notifyViewAccessibilityStateChangedIfNeeded(
+                    AccessibilityEvent.CONTENT_CHANGE_TYPE_UNDEFINED);
+        }
     }
 
     private void setStateDescriptionIfNeeded() {
@@ -122,6 +130,11 @@ public class CheckableRelativeLayout extends RelativeLayout implements Checkable
     @Override
     public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
         super.onInitializeAccessibilityNodeInfo(info);
-        info.setChecked(mChecked);
+        if (triStateChecked()) {
+            info.setChecked(mChecked ? AccessibilityNodeInfo.CHECKED_STATE_TRUE :
+                    AccessibilityNodeInfo.CHECKED_STATE_FALSE);
+        } else {
+            info.setChecked(mChecked);
+        }
     }
 }

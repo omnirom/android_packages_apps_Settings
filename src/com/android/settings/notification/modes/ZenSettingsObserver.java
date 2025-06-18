@@ -43,7 +43,7 @@ class ZenSettingsObserver extends ContentObserver {
     }
 
     void register() {
-        if (Flags.modesApi() && Flags.modesUi()) {
+        if (Flags.modesUi()) {
             mContext.getContentResolver().registerContentObserver(ZEN_MODE_URI, false, this);
             mContext.getContentResolver().registerContentObserver(ZEN_MODE_CONFIG_ETAG_URI, false,
                     this);
@@ -51,7 +51,7 @@ class ZenSettingsObserver extends ContentObserver {
     }
 
     void unregister() {
-        if (Flags.modesApi() && Flags.modesUi()) {
+        if (Flags.modesUi()) {
             mContext.getContentResolver().unregisterContentObserver(this);
         }
     }

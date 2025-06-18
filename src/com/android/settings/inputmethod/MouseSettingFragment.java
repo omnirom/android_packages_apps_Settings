@@ -20,13 +20,12 @@ import android.app.settings.SettingsEnums;
 import android.content.Context;
 
 import com.android.settings.R;
-import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.keyboard.Flags;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.SearchIndexable;
 
 @SearchIndexable
-public class MouseSettingFragment extends DashboardFragment {
+public class MouseSettingFragment extends InputDeviceDashboardFragment {
     private static final String TAG = MouseSettingFragment.class.getSimpleName();
 
     @Override
@@ -52,4 +51,9 @@ public class MouseSettingFragment extends DashboardFragment {
                             && InputPeripheralsSettingsUtils.isMouse();
                 }
             };
+
+    @Override
+    protected boolean needToFinishEarly() {
+        return isMouseDetached();
+    }
 }

@@ -67,6 +67,9 @@ public class ValidatedEditTextPreference extends CustomEditTextPreferenceCompat 
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
         final EditText editText = view.findViewById(android.R.id.edit);
+        if (editText != null) {
+            editText.setHint(getDialogTitle());
+        }
         if (editText != null && !TextUtils.isEmpty(editText.getText())) {
             editText.setSelection(editText.getText().length());
         }

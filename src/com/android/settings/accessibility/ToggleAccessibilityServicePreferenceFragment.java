@@ -39,8 +39,6 @@ import android.os.SystemClock;
 import android.text.BidiFormatter;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.CompoundButton;
 
@@ -48,7 +46,6 @@ import androidx.annotation.Nullable;
 
 import com.android.internal.accessibility.common.ShortcutConstants;
 import com.android.settings.R;
-import com.android.settings.accessibility.AccessibilityUtil.QuickSettingsTooltipType;
 import com.android.settings.accessibility.shortcuts.EditShortcutsPreferenceFragment;
 import com.android.settingslib.accessibility.AccessibilityUtils;
 
@@ -77,10 +74,8 @@ public class ToggleAccessibilityServicePreferenceFragment extends
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Do not call super. We don't want to see the "Help & feedback" option on this page so as
-        // not to confuse users who think they might be able to send feedback about a specific
-        // accessibility service from this page.
+    public int getFeedbackCategory() {
+        return getArguments().getInt(AccessibilitySettings.EXTRA_FEEDBACK_CATEGORY);
     }
 
     @Override
@@ -243,24 +238,6 @@ public class ToggleAccessibilityServicePreferenceFragment extends
     @Override
     ComponentName getTileComponentName() {
         return mTileComponentName;
-    }
-
-    @Override
-    CharSequence getTileTooltipContent(@QuickSettingsTooltipType int type) {
-        final ComponentName componentName = getTileComponentName();
-        if (componentName == null) {
-            return null;
-        }
-
-        final CharSequence tileName = loadTileLabel(getPrefContext(), componentName);
-        if (tileName == null) {
-            return null;
-        }
-
-        final int titleResId = type == QuickSettingsTooltipType.GUIDE_TO_EDIT
-                ? R.string.accessibility_service_qs_tooltip_content
-                : R.string.accessibility_service_auto_added_qs_tooltip_content;
-        return getString(titleResId, tileName);
     }
 
     @Override

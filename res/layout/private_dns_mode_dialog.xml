@@ -16,8 +16,10 @@
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:theme="@style/Theme.AppCompat.DayNight">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,17 +45,24 @@
                 android:id="@+id/private_dns_mode_provider"
                 layout="@layout/preference_widget_dialog_radiobutton"/>
 
-            <EditText
-                android:id="@+id/private_dns_mode_provider_hostname"
-                android:hint="@string/private_dns_mode_provider_hostname_hint"
-                style="@android:style/Widget.CompoundButton.RadioButton"
-                android:imeOptions="actionDone"
-                android:inputType="textFilter|textUri|textMultiLine"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/private_dns_mode_provider_hostname_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:layout_marginEnd="8dp"
-                android:minHeight="@dimen/developer_option_dialog_min_height"/>
+                android:hint="@string/private_dns_title"
+                android:theme="@style/Theme.Settings"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/private_dns_mode_provider_hostname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="textFilter|textUri|textMultiLine"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="8dp"/>
+            </com.google.android.material.textfield.TextInputLayout>
         </RadioGroup>
 
         <include

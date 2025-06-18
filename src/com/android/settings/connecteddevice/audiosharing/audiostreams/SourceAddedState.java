@@ -26,6 +26,7 @@ import androidx.preference.Preference;
 import com.android.settings.R;
 import com.android.settings.core.SubSettingLauncher;
 import com.android.settings.dashboard.DashboardFragment;
+import com.android.settingslib.flags.Flags;
 
 class SourceAddedState extends AudioStreamStateHandler {
     @VisibleForTesting
@@ -55,10 +56,12 @@ class SourceAddedState extends AudioStreamStateHandler {
         if (cached != null) {
             mAudioStreamsRepository.saveMetadata(context, cached);
         }
-        helper.startMediaService(
-                context,
-                preference.getAudioStreamBroadcastId(),
-                String.valueOf(preference.getTitle()));
+        if (!Flags.audioStreamMediaServiceByReceiveState()) {
+            helper.startMediaService(
+                    context,
+                    preference.getAudioStreamBroadcastId(),
+                    String.valueOf(preference.getTitle()));
+        }
         mMetricsFeatureProvider.action(
                 preference.getContext(),
                 SettingsEnums.ACTION_AUDIO_STREAM_JOIN_SUCCEED,

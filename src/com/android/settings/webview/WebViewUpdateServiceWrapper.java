@@ -61,7 +61,7 @@ public class WebViewUpdateServiceWrapper {
      * validity of a package is not dependent on whether the package is installed/enabled.
      */
     public List<ApplicationInfo> getValidWebViewApplicationInfos(Context context) {
-        WebViewProviderInfo[] providers = null;
+        WebViewProviderInfo[] providers = new WebViewProviderInfo[0];
         try {
             if (android.webkit.Flags.updateServiceIpcWrapper()) {
                 providers = context.getSystemService(WebViewUpdateManager.class)

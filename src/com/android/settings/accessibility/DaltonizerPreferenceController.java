@@ -22,6 +22,7 @@ import android.provider.Settings;
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 
+// LINT.IfChange
 /** Controller that shows and updates the color correction summary. */
 public class DaltonizerPreferenceController extends BasePreferenceController {
     private static final String DALTONIZER_ENABLED =
@@ -44,3 +45,4 @@ public class DaltonizerPreferenceController extends BasePreferenceController {
                 R.string.daltonizer_state_on, R.string.daltonizer_state_off);
     }
 }
+// LINT.ThenChange(/src/com/android/settings/accessibility/DaltonizerPreference.kt)

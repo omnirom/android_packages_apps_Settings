@@ -26,7 +26,6 @@ import androidx.preference.Preference;
 import com.android.settings.connecteddevice.DevicePreferenceCallback;
 import com.android.settingslib.bluetooth.BluetoothUtils;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
-import com.android.settingslib.flags.Flags;
 
 /**
  * Controller to maintain connected bluetooth devices
@@ -39,26 +38,29 @@ public class ConnectedBluetoothDeviceUpdater extends BluetoothDeviceUpdater {
     private static final String PREF_KEY_PREFIX = "connected_bt_";
 
     private final AudioManager mAudioManager;
+    private int mAudioMode;
 
     public ConnectedBluetoothDeviceUpdater(Context context,
             DevicePreferenceCallback devicePreferenceCallback, int metricsCategory) {
         super(context, devicePreferenceCallback, metricsCategory);
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        mAudioMode = mAudioManager.getMode();
     }
 
     @Override
     public void onAudioModeChanged() {
+        // TODO: move to background thread
+        mAudioMode = mAudioManager.getMode();
         forceUpdate();
     }
 
     @Override
     public boolean isFilterMatched(CachedBluetoothDevice cachedDevice) {
-        final int audioMode = mAudioManager.getMode();
         final int currentAudioProfile;
 
-        if (audioMode == AudioManager.MODE_RINGTONE
-                || audioMode == AudioManager.MODE_IN_CALL
-                || audioMode == AudioManager.MODE_IN_COMMUNICATION) {
+        if (mAudioMode == AudioManager.MODE_RINGTONE
+                || mAudioMode == AudioManager.MODE_IN_CALL
+                || mAudioMode == AudioManager.MODE_IN_COMMUNICATION) {
             // in phone call
             currentAudioProfile = BluetoothProfile.HEADSET;
         } else {
@@ -74,7 +76,12 @@ public class ConnectedBluetoothDeviceUpdater extends BluetoothDeviceUpdater {
             // If device is Hearing Aid or LE Audio, it is compatible with HFP and A2DP.
             // It would not show in Connected Devices group.
             if (cachedDevice.isConnectedAshaHearingAidDevice()
-                    || cachedDevice.isConnectedLeAudioDevice()) {
+                    || cachedDevice.isConnectedLeAudioDevice()
+                    || cachedDevice.hasConnectedLeAudioMemberDevice()) {
+                if (DBG) {
+                    Log.d(TAG, "isFilterMatched() device : " + cachedDevice.getName()
+                            + ", isFilterMatched : false, ha or lea device");
+                }
                 return false;
             }
             // According to the current audio profile type,
@@ -97,14 +104,12 @@ public class ConnectedBluetoothDeviceUpdater extends BluetoothDeviceUpdater {
                         cachedDevice.getName() + ", isFilterMatched : " + isFilterMatched);
             }
         }
-        if (Flags.enableHideExclusivelyManagedBluetoothDevice()) {
-            if (BluetoothUtils.isExclusivelyManagedBluetoothDevice(mContext,
-                    cachedDevice.getDevice())) {
-                if (DBG) {
-                    Log.d(TAG, "isFilterMatched() hide BluetoothDevice with exclusive manager");
-                }
-                return false;
+        if (BluetoothUtils.isExclusivelyManagedBluetoothDevice(mContext,
+                cachedDevice.getDevice())) {
+            if (DBG) {
+                Log.d(TAG, "isFilterMatched() hide BluetoothDevice with exclusive manager");
             }
+            return false;
         }
         return isFilterMatched;
     }

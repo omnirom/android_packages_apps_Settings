@@ -56,7 +56,7 @@ public class FriendlyWarningDialogFragment extends InstrumentedDialogFragment {
         NotificationAccessDetails parent = (NotificationAccessDetails) getTargetFragment();
 
         final String summary = getResources().getString(
-                Flags.modesApi() && Flags.modesUi()
+                Flags.modesUi()
                         ? R.string.notification_listener_disable_modes_warning_summary
                         : R.string.notification_listener_disable_warning_summary,
                 label);

@@ -20,12 +20,10 @@ import android.app.Activity;
 import android.app.settings.SettingsEnums;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.database.ContentObserver;
 import android.hardware.input.InputDeviceIdentifier;
 import android.hardware.input.InputManager;
 import android.hardware.input.InputSettings;
-import android.hardware.input.KeyboardLayout;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,7 +45,6 @@ import androidx.preference.TwoStatePreference;
 
 import com.android.internal.util.Preconditions;
 import com.android.settings.R;
-import com.android.settings.Settings;
 import com.android.settings.core.SubSettingLauncher;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.keyboard.Flags;
@@ -66,8 +63,7 @@ import java.util.Objects;
 //  controllers between here and A11y Setting page.
 @SearchIndexable
 public final class PhysicalKeyboardFragment extends DashboardFragment
-        implements InputManager.InputDeviceListener,
-        KeyboardLayoutDialogFragment.OnSetupKeyboardLayoutsListener {
+        implements InputManager.InputDeviceListener {
 
     private static final String KEYBOARD_OPTIONS_CATEGORY = "keyboard_options_category";
     private static final String KEYBOARD_A11Y_CATEGORY = "keyboard_a11y_category";
@@ -79,6 +75,7 @@ public final class PhysicalKeyboardFragment extends DashboardFragment
     private static final String KEYBOARD_SHORTCUTS_HELPER = "keyboard_shortcuts_helper";
     private static final String MODIFIER_KEYS_SETTINGS = "modifier_keys_settings";
     private static final String EXTRA_AUTO_SELECTION = "auto_selection";
+    public static final String EXTRA_INPUT_DEVICE_IDENTIFIER = "input_device_identifier";
     private static final String TAG = "KeyboardAndTouchA11yFragment";
     private static final Uri sVirtualKeyboardSettingsUri = Secure.getUriFor(
             Secure.SHOW_IME_WITH_HARD_KEYBOARD);
@@ -112,12 +109,7 @@ public final class PhysicalKeyboardFragment extends DashboardFragment
     private TwoStatePreference mAccessibilityStickyKeys = null;
     @Nullable
     private TwoStatePreference mAccessibilityMouseKeys = null;
-
-    private Intent mIntentWaitingForResult;
     private boolean mSupportsFirmwareUpdate;
-
-    static final String EXTRA_BT_ADDRESS = "extra_bt_address";
-    private String mBluetoothAddress;
 
     @Override
     protected String getLogTag() {
@@ -177,16 +169,13 @@ public final class PhysicalKeyboardFragment extends DashboardFragment
             mKeyboardAssistanceCategory.removePreference(
                     findPreference(ACCESSIBILITY_PHYSICAL_KEYBOARD_A11Y));
         }
-        if (!InputSettings.isAccessibilityBounceKeysFeatureEnabled()
-                || isKeyboardAndTouchpadA11yNewPageEnabled) {
+        if (isKeyboardAndTouchpadA11yNewPageEnabled) {
             mKeyboardA11yCategory.removePreference(mAccessibilityBounceKeys);
         }
-        if (!InputSettings.isAccessibilitySlowKeysFeatureFlagEnabled()
-                || isKeyboardAndTouchpadA11yNewPageEnabled) {
+        if (isKeyboardAndTouchpadA11yNewPageEnabled) {
             mKeyboardA11yCategory.removePreference(mAccessibilitySlowKeys);
         }
-        if (!InputSettings.isAccessibilityStickyKeysFeatureEnabled()
-                || isKeyboardAndTouchpadA11yNewPageEnabled) {
+        if (isKeyboardAndTouchpadA11yNewPageEnabled) {
             mKeyboardA11yCategory.removePreference(mAccessibilityStickyKeys);
         }
         if (!InputSettings.isAccessibilityMouseKeysFeatureFlagEnabled()
@@ -197,8 +186,7 @@ public final class PhysicalKeyboardFragment extends DashboardFragment
             mKeyboardA11yCategory.setVisible(false);
         }
         InputDeviceIdentifier inputDeviceIdentifier = activity.getIntent().getParcelableExtra(
-                KeyboardLayoutPickerFragment.EXTRA_INPUT_DEVICE_IDENTIFIER,
-                InputDeviceIdentifier.class);
+                EXTRA_INPUT_DEVICE_IDENTIFIER, InputDeviceIdentifier.class);
         int intentFromWhere =
                 activity.getIntent().getIntExtra(android.provider.Settings.EXTRA_ENTRYPOINT, -1);
         if (intentFromWhere != -1) {
@@ -347,24 +335,14 @@ public final class PhysicalKeyboardFragment extends DashboardFragment
             mFeatureProvider.registerKeyboardInformationCategory(preferenceScreen);
         }
 
-        if (InputSettings.isAccessibilityBounceKeysFeatureEnabled()
-                || InputSettings.isAccessibilityStickyKeysFeatureEnabled()
-                || InputSettings.isAccessibilitySlowKeysFeatureFlagEnabled()
-                || InputSettings.isAccessibilityMouseKeysFeatureFlagEnabled()) {
-            Objects.requireNonNull(mKeyboardA11yCategory).setOrder(2);
-            preferenceScreen.addPreference(mKeyboardA11yCategory);
-            updateAccessibilityBounceKeysSwitch(context);
-            updateAccessibilitySlowKeysSwitch(context);
-            updateAccessibilityStickyKeysSwitch(context);
+        Objects.requireNonNull(mKeyboardA11yCategory).setOrder(2);
+        preferenceScreen.addPreference(mKeyboardA11yCategory);
+        updateAccessibilityStickyKeysSwitch(context);
+        updateAccessibilityBounceKeysSwitch(context);
+        updateAccessibilitySlowKeysSwitch(context);
+        if (InputSettings.isAccessibilityMouseKeysFeatureFlagEnabled()) {
             updateAccessibilityMouseKeysSwitch(context);
         }
-    }
-
-    private void showKeyboardLayoutDialog(InputDeviceIdentifier inputDeviceIdentifier) {
-        KeyboardLayoutDialogFragment fragment = new KeyboardLayoutDialogFragment(
-                inputDeviceIdentifier);
-        fragment.setTargetFragment(this, 0);
-        fragment.show(getActivity().getSupportFragmentManager(), "keyboardLayout");
     }
 
     private void showEnabledLocalesKeyboardLayoutList(InputDeviceIdentifier inputDeviceIdentifier) {
@@ -386,27 +364,21 @@ public final class PhysicalKeyboardFragment extends DashboardFragment
                 false,
                 mContentObserver,
                 UserHandle.myUserId());
-        if (InputSettings.isAccessibilityBounceKeysFeatureEnabled()) {
-            contentResolver.registerContentObserver(
-                    sAccessibilityBounceKeysUri,
-                    false,
-                    mContentObserver,
-                    UserHandle.myUserId());
-        }
-        if (InputSettings.isAccessibilitySlowKeysFeatureFlagEnabled()) {
-            contentResolver.registerContentObserver(
-                    sAccessibilitySlowKeysUri,
-                    false,
-                    mContentObserver,
-                    UserHandle.myUserId());
-        }
-        if (InputSettings.isAccessibilityStickyKeysFeatureEnabled()) {
-            contentResolver.registerContentObserver(
-                    sAccessibilityStickyKeysUri,
-                    false,
-                    mContentObserver,
-                    UserHandle.myUserId());
-        }
+        contentResolver.registerContentObserver(
+                sAccessibilityBounceKeysUri,
+                false,
+                mContentObserver,
+                UserHandle.myUserId());
+        contentResolver.registerContentObserver(
+                sAccessibilitySlowKeysUri,
+                false,
+                mContentObserver,
+                UserHandle.myUserId());
+        contentResolver.registerContentObserver(
+                sAccessibilityStickyKeysUri,
+                false,
+                mContentObserver,
+                UserHandle.myUserId());
         if (InputSettings.isAccessibilityMouseKeysFeatureFlagEnabled()) {
             contentResolver.registerContentObserver(
                     sAccessibilityMouseKeysUri,
@@ -429,25 +401,16 @@ public final class PhysicalKeyboardFragment extends DashboardFragment
     }
 
     private void updateAccessibilityBounceKeysSwitch(@NonNull Context context) {
-        if (!InputSettings.isAccessibilityBounceKeysFeatureEnabled()) {
-            return;
-        }
         Objects.requireNonNull(mAccessibilityBounceKeys).setChecked(
                 InputSettings.isAccessibilityBounceKeysEnabled(context));
     }
 
     private void updateAccessibilitySlowKeysSwitch(@NonNull Context context) {
-        if (!InputSettings.isAccessibilitySlowKeysFeatureFlagEnabled()) {
-            return;
-        }
         Objects.requireNonNull(mAccessibilitySlowKeys).setChecked(
                 InputSettings.isAccessibilitySlowKeysEnabled(context));
     }
 
     private void updateAccessibilityStickyKeysSwitch(@NonNull Context context) {
-        if (!InputSettings.isAccessibilityStickyKeysFeatureEnabled()) {
-            return;
-        }
         Objects.requireNonNull(mAccessibilityStickyKeys).setChecked(
                 InputSettings.isAccessibilityStickyKeysEnabled(context));
     }
@@ -505,45 +468,6 @@ public final class PhysicalKeyboardFragment extends DashboardFragment
         }
     };
 
-    @Override
-    public void onSetupKeyboardLayouts(InputDeviceIdentifier inputDeviceIdentifier) {
-        final Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setClass(getActivity(), Settings.KeyboardLayoutPickerActivity.class);
-        intent.putExtra(KeyboardLayoutPickerFragment.EXTRA_INPUT_DEVICE_IDENTIFIER,
-                inputDeviceIdentifier);
-        mIntentWaitingForResult = intent;
-        startActivityForResult(intent, 0);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (mIntentWaitingForResult != null) {
-            InputDeviceIdentifier inputDeviceIdentifier = mIntentWaitingForResult
-                    .getParcelableExtra(KeyboardLayoutPickerFragment.EXTRA_INPUT_DEVICE_IDENTIFIER,
-                            InputDeviceIdentifier.class);
-            mIntentWaitingForResult = null;
-            showKeyboardLayoutDialog(inputDeviceIdentifier);
-        }
-    }
-
-    private static String getLayoutLabel(@NonNull InputDevice device,
-            @NonNull Context context, @NonNull InputManager im) {
-        final String currentLayoutDesc =
-                im.getCurrentKeyboardLayoutForInputDevice(device.getIdentifier());
-        if (currentLayoutDesc == null) {
-            return context.getString(R.string.keyboard_layout_default_label);
-        }
-        final KeyboardLayout currentLayout = im.getKeyboardLayout(currentLayoutDesc);
-        if (currentLayout == null) {
-            return context.getString(R.string.keyboard_layout_default_label);
-        }
-        // If current layout is specified but the layout is null, just return an empty string
-        // instead of falling back to R.string.keyboard_layout_default_label.
-        return TextUtils.emptyIfNull(currentLayout.getLabel());
-    }
-
     @NonNull
     static List<HardKeyboardDeviceInfo> getHardKeyboards(@NonNull Context context) {
         final List<HardKeyboardDeviceInfo> keyboards = new ArrayList<>();
@@ -559,7 +483,6 @@ public final class PhysicalKeyboardFragment extends DashboardFragment
             keyboards.add(new HardKeyboardDeviceInfo(
                     device.getName(),
                     device.getIdentifier(),
-                    getLayoutLabel(device, context, im),
                     device.getBluetoothAddress(),
                     device.getVendorId(),
                     device.getProductId()));
@@ -572,12 +495,8 @@ public final class PhysicalKeyboardFragment extends DashboardFragment
             if (result != 0) {
                 return result;
             }
-            result = a.mDeviceIdentifier.getDescriptor().compareTo(
+            return a.mDeviceIdentifier.getDescriptor().compareTo(
                     b.mDeviceIdentifier.getDescriptor());
-            if (result != 0) {
-                return result;
-            }
-            return collator.compare(a.mLayoutLabel, b.mLayoutLabel);
         });
         return keyboards;
     }
@@ -587,8 +506,6 @@ public final class PhysicalKeyboardFragment extends DashboardFragment
         public final String mDeviceName;
         @NonNull
         public final InputDeviceIdentifier mDeviceIdentifier;
-        @NonNull
-        public final String mLayoutLabel;
         @Nullable
         public final String mBluetoothAddress;
         @NonNull
@@ -599,13 +516,11 @@ public final class PhysicalKeyboardFragment extends DashboardFragment
         public HardKeyboardDeviceInfo(
                 @Nullable String deviceName,
                 @NonNull InputDeviceIdentifier deviceIdentifier,
-                @NonNull String layoutLabel,
                 @Nullable String bluetoothAddress,
                 @NonNull int vendorId,
                 @NonNull int productId) {
             mDeviceName = TextUtils.emptyIfNull(deviceName);
             mDeviceIdentifier = deviceIdentifier;
-            mLayoutLabel = layoutLabel;
             mBluetoothAddress = bluetoothAddress;
             mVendorId = vendorId;
             mProductId = productId;
@@ -623,9 +538,6 @@ public final class PhysicalKeyboardFragment extends DashboardFragment
                 return false;
             }
             if (!Objects.equals(mDeviceIdentifier, that.mDeviceIdentifier)) {
-                return false;
-            }
-            if (!TextUtils.equals(mLayoutLabel, that.mLayoutLabel)) {
                 return false;
             }
             if (!TextUtils.equals(mBluetoothAddress, that.mBluetoothAddress)) {

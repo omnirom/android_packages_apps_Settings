@@ -39,7 +39,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.preference.Preference;
-import androidx.preference.SwitchPreference;
+import androidx.preference.SwitchPreferenceCompat;
 
 import com.android.settings.R;
 import com.android.settings.core.PreferenceControllerMixin;
@@ -139,7 +139,7 @@ public class Enable16kPagesPreferenceController extends DeveloperOptionsPreferen
                         Settings.Global.ENABLE_16K_PAGES,
                         defaultOptionValue /* default */);
 
-        ((SwitchPreference) mPreference).setChecked(optionValue == ENABLE_16K_PAGE_SIZE);
+        ((SwitchPreferenceCompat) mPreference).setChecked(optionValue == ENABLE_16K_PAGE_SIZE);
     }
 
     @Override
@@ -150,7 +150,7 @@ public class Enable16kPagesPreferenceController extends DeveloperOptionsPreferen
                 mContext.getContentResolver(),
                 Settings.Global.ENABLE_16K_PAGES,
                 ENABLE_4K_PAGE_SIZE);
-        ((SwitchPreference) mPreference).setChecked(false);
+        ((SwitchPreferenceCompat) mPreference).setChecked(false);
     }
 
     @Override
@@ -186,7 +186,13 @@ public class Enable16kPagesPreferenceController extends DeveloperOptionsPreferen
                     public void onFailure(@NonNull Throwable t) {
                         hideProgressDialog();
                         Log.e(TAG, "Failed to call applyPayload of UpdateEngineStable!", t);
-                        displayToast(mContext.getString(R.string.toast_16k_update_failed_text));
+                        // installUpdate will always throw localized messages.
+                        String message = t.getMessage();
+                        if (message != null) {
+                            displayToast(message);
+                        } else {
+                            displayToast(mContext.getString(R.string.toast_16k_update_failed_text));
+                        }
                     }
                 },
                 ContextCompat.getMainExecutor(mContext));
@@ -208,10 +214,8 @@ public class Enable16kPagesPreferenceController extends DeveloperOptionsPreferen
         int status = data.getInt(SystemUpdateManager.KEY_STATUS);
         if (status != SystemUpdateManager.STATUS_UNKNOWN
                 && status != SystemUpdateManager.STATUS_IDLE) {
-            throw new RuntimeException(
-                    "System has pending update! Please restart the device to complete applying"
-                            + " pending update. If you are seeing this after using 16KB developer"
-                            + " options, please check configuration and OTA packages!");
+            Log.e(TAG, "SystemUpdateManager is not available. Status :" + status);
+            throw new RuntimeException(mContext.getString(R.string.error_pending_updates));
         }
 
         // Publish system update info
@@ -223,7 +227,11 @@ public class Enable16kPagesPreferenceController extends DeveloperOptionsPreferen
             Log.i(TAG, "Update file path is " + updateFile.getAbsolutePath());
             applyUpdateFile(updateFile);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Log.e(TAG, "Error occurred while applying OTA ", e);
+            throw new RuntimeException(mContext.getString(R.string.error_ota_failed));
+        } catch (Exception e) {
+            Log.e(TAG, "Unknown error occurred while applying OTA ", e);
+            throw new RuntimeException(mContext.getString(R.string.toast_16k_update_failed_text));
         }
     }
 

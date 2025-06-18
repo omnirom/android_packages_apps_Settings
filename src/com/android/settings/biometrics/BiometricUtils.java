@@ -17,6 +17,8 @@
 package com.android.settings.biometrics;
 
 
+import static com.android.settings.biometrics.BiometricEnrollActivity.EXTRA_SKIP_INTRO;
+
 import android.annotation.IntDef;
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -43,16 +45,17 @@ import com.android.internal.widget.LockPatternUtils;
 import com.android.internal.widget.VerifyCredentialResponse;
 import com.android.settings.R;
 import com.android.settings.SetupWizardUtils;
-import com.android.settings.biometrics.face.FaceEnrollIntroduction;
+import com.android.settings.biometrics.face.FaceEnroll;
 import com.android.settings.biometrics.fingerprint.FingerprintEnroll;
-import com.android.settings.biometrics.fingerprint.FingerprintEnrollFindSensor;
-import com.android.settings.biometrics.fingerprint.SetupFingerprintEnrollFindSensor;
+import com.android.settings.biometrics.fingerprint.FingerprintEnrollActivityClassProvider;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.password.ChooseLockGeneric;
 import com.android.settings.password.ChooseLockSettingsHelper;
 import com.android.settings.password.SetupChooseLockGeneric;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 import com.google.android.setupcompat.util.WizardManagerHelper;
+import com.google.android.setupdesign.util.ThemeHelper;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -250,8 +253,12 @@ public class BiometricUtils {
     public static Intent getFingerprintFindSensorIntent(@NonNull Context context,
             @NonNull Intent activityIntent) {
         final boolean isSuw =  WizardManagerHelper.isAnySetupWizard(activityIntent);
+        FingerprintEnrollActivityClassProvider clsProvider = FeatureFactory
+                .getFeatureFactory().getFingerprintFeatureProvider()
+                .getEnrollActivityClassProvider(context);
         final Intent intent = new Intent(context, isSuw
-                ? SetupFingerprintEnrollFindSensor.class : FingerprintEnrollFindSensor.class);
+                ? clsProvider.getSetupSkipIntro() : clsProvider.getSkipIntro());
+        intent.putExtra(EXTRA_SKIP_INTRO, true);
         if (isSuw) {
             SetupWizardUtils.copySetupExtras(activityIntent, intent);
         }
@@ -281,7 +288,7 @@ public class BiometricUtils {
      */
     public static Intent getFaceIntroIntent(@NonNull Context context,
             @NonNull Intent activityIntent) {
-        final Intent intent = new Intent(context, FaceEnrollIntroduction.class);
+        final Intent intent = new Intent(context, FaceEnroll.class);
         WizardManagerHelper.copyWizardManagerExtras(activityIntent, intent);
         return intent;
     }
@@ -527,6 +534,18 @@ public class BiometricUtils {
         }
 
         return ssb.toString();
+    }
+
+    /**
+     * Check if device is using Expressive Style theme.
+     * @param context that for applying Expressive Style
+     * @param isSettingsPreference Apply Expressive style on Settings Preference or not.
+     * @return true if device using Expressive Style theme, otherwise false.
+     */
+    public static boolean isExpressiveStyle(@NonNull Context context,
+            boolean isSettingsPreference) {
+        return isSettingsPreference ? SettingsThemeHelper.isExpressiveTheme(context) :
+                ThemeHelper.shouldApplyGlifExpressiveStyle(context);
     }
 
     private static String capitalize(final String input) {

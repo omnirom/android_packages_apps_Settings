@@ -37,7 +37,6 @@ import com.android.settings.network.SubscriptionUtil;
 import com.android.settingslib.Utils;
 import com.android.settingslib.search.SearchIndexableRaw;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SimStatusPreferenceController extends BasePreferenceController {
@@ -74,13 +73,15 @@ public class SimStatusPreferenceController extends BasePreferenceController {
 
     @Override
     public int getAvailabilityStatus() {
-        if (getSimSlotIndex() == SubscriptionManager.INVALID_SIM_SLOT_INDEX) {
+        if (!SubscriptionUtil.isSimHardwareVisible(mContext)
+                || Utils.isWifiOnly(mContext)
+                || getSimSlotIndex() == SubscriptionManager.INVALID_SIM_SLOT_INDEX) {
             return UNSUPPORTED_ON_DEVICE;
         }
-        boolean isAvailable = SubscriptionUtil.isSimHardwareVisible(mContext) &&
-                mContext.getSystemService(UserManager.class).isAdminUser() &&
-                !Utils.isWifiOnly(mContext);
-        return isAvailable ? AVAILABLE : CONDITIONALLY_UNAVAILABLE;
+        if (!mContext.getSystemService(UserManager.class).isAdminUser()) {
+            return DISABLED_FOR_USER;
+        }
+        return AVAILABLE;
     }
 
     @Override

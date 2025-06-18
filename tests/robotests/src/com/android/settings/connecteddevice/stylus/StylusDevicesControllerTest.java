@@ -190,46 +190,6 @@ public class StylusDevicesControllerTest {
     }
 
     @Test
-    public void isDeviceStylus_noDevices_false() {
-        assertThat(StylusDevicesController.isDeviceStylus(null, null)).isFalse();
-    }
-
-    @Test
-    public void isDeviceStylus_nonStylusInputDevice_false() {
-        InputDevice inputDevice = new InputDevice.Builder()
-                .setSources(InputDevice.SOURCE_DPAD)
-                .build();
-
-        assertThat(StylusDevicesController.isDeviceStylus(inputDevice, null)).isFalse();
-    }
-
-    @Test
-    public void isDeviceStylus_stylusInputDevice_true() {
-        InputDevice inputDevice = new InputDevice.Builder()
-                .setSources(InputDevice.SOURCE_STYLUS)
-                .build();
-
-        assertThat(StylusDevicesController.isDeviceStylus(inputDevice, null)).isTrue();
-    }
-
-    @Test
-    public void isDeviceStylus_nonStylusBluetoothDevice_false() {
-        when(mBluetoothDevice.getMetadata(BluetoothDevice.METADATA_DEVICE_TYPE)).thenReturn(
-                BluetoothDevice.DEVICE_TYPE_WATCH.getBytes());
-
-        assertThat(StylusDevicesController.isDeviceStylus(null, mCachedBluetoothDevice)).isFalse();
-    }
-
-    @Test
-    public void isDeviceStylus_stylusBluetoothDevice_true() {
-        when(mBluetoothDevice.getMetadata(BluetoothDevice.METADATA_DEVICE_TYPE)).thenReturn(
-                BluetoothDevice.DEVICE_TYPE_STYLUS.getBytes());
-        when(mCachedBluetoothDevice.getDevice()).thenReturn(mBluetoothDevice);
-
-        assertThat(StylusDevicesController.isDeviceStylus(null, mCachedBluetoothDevice)).isTrue();
-    }
-
-    @Test
     public void noInputDevice_noBluetoothDevice_noPreference() {
         StylusDevicesController controller = new StylusDevicesController(
                 mContext, null, null, mLifecycle

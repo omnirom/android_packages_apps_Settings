@@ -18,11 +18,9 @@ package com.android.settings.display.darkmode;
 import android.app.UiModeManager;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
+import androidx.annotation.NonNull;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceScreen;
 
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.overlay.FeatureFactory;
@@ -32,12 +30,11 @@ import com.android.settingslib.widget.MainSwitchPreference;
 /**
  * Controller for activate/deactivate night mode button
  */
-public class DarkModeActivationPreferenceController extends BasePreferenceController implements
-        OnCheckedChangeListener {
+public class DarkModeActivationPreferenceController extends BasePreferenceController
+        implements Preference.OnPreferenceChangeListener {
 
     private final UiModeManager mUiModeManager;
     private final MetricsFeatureProvider mMetricsFeatureProvider;
-    private MainSwitchPreference mPreference;
 
     public DarkModeActivationPreferenceController(Context context, String preferenceKey) {
         super(context, preferenceKey);
@@ -49,7 +46,7 @@ public class DarkModeActivationPreferenceController extends BasePreferenceContro
     public final void updateState(Preference preference) {
         final boolean active = (mContext.getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_YES) != 0;
-        mPreference.updateStatus(active);
+        ((MainSwitchPreference) preference).setChecked(active);
     }
 
     @Override
@@ -60,18 +57,12 @@ public class DarkModeActivationPreferenceController extends BasePreferenceContro
     }
 
     @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mMetricsFeatureProvider.logClickedPreference(mPreference, getMetricsCategory());
+    public boolean onPreferenceChange(@NonNull Preference preference, @NonNull Object newValue) {
+        mMetricsFeatureProvider.logClickedPreference(preference, getMetricsCategory());
         final boolean active = (mContext.getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_YES) != 0;
         mUiModeManager.setNightModeActivated(!active);
-    }
-
-    @Override
-    public void displayPreference(PreferenceScreen screen) {
-        super.displayPreference(screen);
-        mPreference = (MainSwitchPreference) screen.findPreference(getPreferenceKey());
-        mPreference.addOnSwitchChangeListener(this);
+        return true;
     }
 
     @Override

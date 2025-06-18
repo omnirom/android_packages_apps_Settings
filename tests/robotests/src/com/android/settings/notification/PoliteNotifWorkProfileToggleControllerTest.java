@@ -26,6 +26,7 @@ import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.os.UserHandle;
+import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.Settings;
 
@@ -143,6 +144,17 @@ public class PoliteNotifWorkProfileToggleControllerTest {
 
     @Test
     @Config(shadows = ShadowSystemSettings.class)
+    @EnableFlags(Flags.FLAG_POLITE_NOTIFICATIONS)
+    public void isChecked_coolDownEnabled_noWorkProfile_shouldReturnFalse() {
+        when(mAudioHelper.getManagedProfileId(any())).thenReturn(UserHandle.USER_NULL);
+        mController = new PoliteNotifWorkProfileToggleController(mContext, PREFERENCE_KEY,
+                mAudioHelper);
+        assertThat(mController.isChecked()).isFalse();
+    }
+
+
+    @Test
+    @Config(shadows = ShadowSystemSettings.class)
     public void setChecked_coolDownEnabled_setTrue_shouldEnablePoliteNotifForWorkProfile() {
         Settings.System.putIntForUser(mContext.getContentResolver(),
                 Settings.System.NOTIFICATION_COOLDOWN_ENABLED, OFF,
@@ -185,7 +197,6 @@ public class PoliteNotifWorkProfileToggleControllerTest {
         mController.updateState(mPreference);
         assertThat(mPreference.isVisible()).isTrue();
     }
-
 
     private void setCoolDownEnabled(boolean enabled) {
         Settings.System.putInt(mContext.getContentResolver(),

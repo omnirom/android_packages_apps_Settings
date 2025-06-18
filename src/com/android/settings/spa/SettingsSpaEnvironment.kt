@@ -45,7 +45,6 @@ import com.android.settings.spa.app.specialaccess.WifiControlAppListProvider
 import com.android.settings.spa.app.specialaccess.WriteSystemPreferencesAppListProvider
 import com.android.settings.spa.app.storage.StorageAppListPageProvider
 import com.android.settings.spa.core.instrumentation.SpaLogMetricsProvider
-import com.android.settings.spa.core.instrumentation.SpaLogProvider
 import com.android.settings.spa.development.UsageStatsPageProvider
 import com.android.settings.spa.development.compat.PlatformCompatAppListPageProvider
 import com.android.settings.spa.home.HomePageProvider
@@ -64,6 +63,7 @@ import com.android.settingslib.spa.framework.common.SpaLogger
 import com.android.settingslib.spa.framework.common.createSettingsPage
 import com.android.settingslib.spaprivileged.template.app.TogglePermissionAppListProvider
 import com.android.settingslib.spaprivileged.template.app.TogglePermissionAppListTemplate
+import com.android.settingslib.widget.theme.flags.Flags
 
 open class SettingsSpaEnvironment(context: Context) : SpaEnvironment(context) {
     open fun getTogglePermissionAppListProviders(): List<TogglePermissionAppListProvider> {
@@ -106,7 +106,9 @@ open class SettingsSpaEnvironment(context: Context) : SpaEnvironment(context) {
         AppInfoSettingsProvider,
         SpecialAppAccessPageProvider,
         NotificationMainPageProvider,
-        AppListNotificationsPageProvider,
+        AppListNotificationsPageProvider.AllApps,
+        AppListNotificationsPageProvider.ExcludeClassification,
+        AppListNotificationsPageProvider.ExcludeSummarization,
         SystemMainPageProvider,
         LanguageAndInputPageProvider,
         AppLanguagesPageProvider,
@@ -132,4 +134,8 @@ open class SettingsSpaEnvironment(context: Context) : SpaEnvironment(context) {
         )
     ) SpaLogMetricsProvider // ToDo: Implement 'SpaLogProvider' for SPA settings.
     else object : SpaLogger {}
+
+    override val isSpaExpressiveEnabled by lazy {
+        super.isSpaExpressiveEnabled || Flags.isExpressiveDesignEnabled()
+    }
 }

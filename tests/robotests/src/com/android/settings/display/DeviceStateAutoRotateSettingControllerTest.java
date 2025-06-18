@@ -18,14 +18,17 @@ package com.android.settings.display;
 
 import static com.android.settings.core.BasePreferenceController.AVAILABLE;
 import static com.android.settings.core.BasePreferenceController.UNSUPPORTED_ON_DEVICE;
+import static com.android.settings.testutils.DeviceStateAutoRotateSettingTestUtils.setDeviceStateRotationLockEnabled;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;
+import android.content.res.Resources;
 import android.hardware.devicestate.DeviceState;
 import android.hardware.devicestate.DeviceStateManager;
 
@@ -34,10 +37,9 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
-import com.android.settings.testutils.shadow.ShadowDeviceStateRotationLockSettingsManager;
 import com.android.settings.testutils.shadow.ShadowRotationPolicy;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
-import com.android.settingslib.devicestate.DeviceStateRotationLockSettingsManager;
+import com.android.settingslib.devicestate.DeviceStateAutoRotateSettingManager;
 import com.android.settingslib.search.SearchIndexableRaw;
 
 import org.junit.Before;
@@ -54,10 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(shadows = {
-        ShadowRotationPolicy.class,
-        ShadowDeviceStateRotationLockSettingsManager.class
-})
+@Config(shadows = {ShadowRotationPolicy.class})
 public class DeviceStateAutoRotateSettingControllerTest {
 
     private static final DeviceState DEFAULT_DEVICE_STATE = new DeviceState(
@@ -66,10 +65,11 @@ public class DeviceStateAutoRotateSettingControllerTest {
     private static final int DEFAULT_ORDER = -10;
 
     private final Context mContext = Mockito.spy(RuntimeEnvironment.application);
-    private DeviceStateRotationLockSettingsManager mAutoRotateSettingsManager;
+    private DeviceStateAutoRotateSettingManager mAutoRotateSettingsManager;
 
     @Mock private MetricsFeatureProvider mMetricsFeatureProvider;
     @Mock private DeviceStateManager mDeviceStateManager;
+    @Mock private Resources mResources;
 
     private DeviceStateAutoRotateSettingController mController;
 
@@ -78,11 +78,14 @@ public class DeviceStateAutoRotateSettingControllerTest {
         MockitoAnnotations.initMocks(this);
 
         doReturn(mContext).when(mContext).getApplicationContext();
+        when(mContext.getResources()).thenReturn(mResources);
         doReturn(mDeviceStateManager).when(mContext).getSystemService(DeviceStateManager.class);
         doReturn(List.of(DEFAULT_DEVICE_STATE)).when(
                 mDeviceStateManager).getSupportedDeviceStates();
+        setDeviceStateRotationLockEnabled(false, mResources);
         mAutoRotateSettingsManager =
-                DeviceStateRotationLockSettingsManager.getInstance(mContext);
+                DeviceStateAutoRotateSettingManagerProvider.getSingletonInstance(mContext);
+
         mController = new DeviceStateAutoRotateSettingController(
                 mContext,
                 DEFAULT_DEVICE_STATE.getIdentifier(),
@@ -108,7 +111,7 @@ public class DeviceStateAutoRotateSettingControllerTest {
     @Test
     public void getAvailabilityStatus_rotationAndDeviceStateRotationEnabled_returnsAvailable() {
         ShadowRotationPolicy.setRotationSupported(true);
-        ShadowDeviceStateRotationLockSettingsManager.setDeviceStateRotationLockEnabled(true);
+        setDeviceStateRotationLockEnabled(true, mResources);
 
         int availability = mController.getAvailabilityStatus();
 
@@ -118,7 +121,7 @@ public class DeviceStateAutoRotateSettingControllerTest {
     @Test
     public void getAvailabilityStatus_deviceStateRotationDisabled_returnsUnsupported() {
         ShadowRotationPolicy.setRotationSupported(true);
-        ShadowDeviceStateRotationLockSettingsManager.setDeviceStateRotationLockEnabled(false);
+        setDeviceStateRotationLockEnabled(false, mResources);
 
         int availability = mController.getAvailabilityStatus();
 
@@ -128,7 +131,7 @@ public class DeviceStateAutoRotateSettingControllerTest {
     @Test
     public void getAvailabilityStatus_rotationDisabled_returnsUnsupported() {
         ShadowRotationPolicy.setRotationSupported(false);
-        ShadowDeviceStateRotationLockSettingsManager.setDeviceStateRotationLockEnabled(true);
+        setDeviceStateRotationLockEnabled(true, mResources);
 
         int availability = mController.getAvailabilityStatus();
 

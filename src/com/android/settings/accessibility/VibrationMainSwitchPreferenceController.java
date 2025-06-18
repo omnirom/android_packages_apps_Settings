@@ -28,8 +28,13 @@ import android.os.VibrationAttributes;
 import android.os.Vibrator;
 import android.provider.Settings;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
+
 import com.android.settings.R;
-import com.android.settings.widget.SettingsMainSwitchPreferenceController;
+import com.android.settings.core.TogglePreferenceController;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnStart;
 import com.android.settingslib.core.lifecycle.events.OnStop;
@@ -42,11 +47,12 @@ import com.android.settingslib.core.lifecycle.events.OnStop;
  * be disabled by this setting, except the flagged alerts and accessibility touch feedback.
  */
 // LINT.IfChange
-public class VibrationMainSwitchPreferenceController extends SettingsMainSwitchPreferenceController
+public class VibrationMainSwitchPreferenceController extends TogglePreferenceController
         implements LifecycleObserver, OnStart, OnStop {
 
     private final ContentObserver mSettingObserver;
     private final Vibrator mVibrator;
+    private @Nullable Preference mPreference;
 
     public VibrationMainSwitchPreferenceController(Context context, String preferenceKey) {
         super(context, preferenceKey);
@@ -55,7 +61,9 @@ public class VibrationMainSwitchPreferenceController extends SettingsMainSwitchP
         mSettingObserver = new ContentObserver(handler) {
             @Override
             public void onChange(boolean selfChange, Uri uri) {
-                updateState(mSwitchPreference);
+                if (mPreference != null) {
+                    updateState(mPreference);
+                }
             }
         };
     }
@@ -63,6 +71,12 @@ public class VibrationMainSwitchPreferenceController extends SettingsMainSwitchP
     @Override
     public int getAvailabilityStatus() {
         return AVAILABLE;
+    }
+
+    @Override
+    public void displayPreference(@NonNull PreferenceScreen screen) {
+        super.displayPreference(screen);
+        mPreference = screen.findPreference(getPreferenceKey());
     }
 
     @Override

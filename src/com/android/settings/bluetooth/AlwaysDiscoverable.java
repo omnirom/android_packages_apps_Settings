@@ -24,6 +24,8 @@ import android.content.IntentFilter;
 
 import androidx.annotation.VisibleForTesting;
 
+import com.android.settingslib.utils.ThreadUtils;
+
 /** Helper class, intended to be used by an Activity, to keep the local Bluetooth adapter in
  *  discoverable mode indefinitely. By default setting the scan mode to
  *  BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE will time out after some time, but some
@@ -55,10 +57,12 @@ public class AlwaysDiscoverable extends BroadcastReceiver {
         mContext.registerReceiver(this, mIntentFilter,
                 Context.RECEIVER_EXPORTED_UNAUDITED);
         mStarted = true;
-        if (mBluetoothAdapter.getScanMode()
-                != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-            mBluetoothAdapter.setScanMode(BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE);
-        }
+        ThreadUtils.postOnBackgroundThread(() -> {
+            if (mBluetoothAdapter.getScanMode()
+                    != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+                mBluetoothAdapter.setScanMode(BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE);
+            }
+        });
     }
 
     public void stop() {
@@ -67,7 +71,8 @@ public class AlwaysDiscoverable extends BroadcastReceiver {
         }
         mContext.unregisterReceiver(this);
         mStarted = false;
-        mBluetoothAdapter.setScanMode(BluetoothAdapter.SCAN_MODE_CONNECTABLE);
+        ThreadUtils.postOnBackgroundThread(
+                () -> mBluetoothAdapter.setScanMode(BluetoothAdapter.SCAN_MODE_CONNECTABLE));
     }
 
     @Override
@@ -76,9 +81,11 @@ public class AlwaysDiscoverable extends BroadcastReceiver {
         if (action != BluetoothAdapter.ACTION_SCAN_MODE_CHANGED) {
             return;
         }
-        if (mBluetoothAdapter.getScanMode()
-                != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-            mBluetoothAdapter.setScanMode(BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE);
-        }
+        ThreadUtils.postOnBackgroundThread(() -> {
+            if (mBluetoothAdapter.getScanMode()
+                    != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+                mBluetoothAdapter.setScanMode(BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE);
+            }
+        });
     }
 }

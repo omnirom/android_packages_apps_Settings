@@ -39,6 +39,8 @@ import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.CachedBluetoothDeviceManager;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
 
+import com.google.common.collect.ImmutableList;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -99,6 +101,7 @@ public class BluetoothDeviceUpdaterTest {
         when(mLocalManager.getCachedDeviceManager()).thenReturn(mCachedDeviceManager);
         when(mCachedDeviceManager.getCachedDevicesCopy()).thenReturn(mCachedDevices);
         when(mCachedBluetoothDevice.getAddress()).thenReturn(MAC_ADDRESS);
+        when(mBluetoothDevice.getAddress()).thenReturn(MAC_ADDRESS);
         when(mSubBluetoothDevice.getAddress()).thenReturn(SUB_MAC_ADDRESS);
         when(mCachedBluetoothDevice.getDrawableWithDescription()).thenReturn(pairs);
 
@@ -252,7 +255,7 @@ public class BluetoothDeviceUpdaterTest {
     }
 
     @Test
-    public void havePreference_refreshPreference() {
+    public void refreshPreference_havePreference_refresh() {
         mBluetoothDeviceUpdater.mPreferenceMap.put(mBluetoothDevice, mPreference);
         mPreference.setTitle("fake_name");
 
@@ -260,6 +263,45 @@ public class BluetoothDeviceUpdaterTest {
         mBluetoothDeviceUpdater.refreshPreference();
 
         assertThat(mPreference.getTitle()).isEqualTo(TEST_NAME);
+    }
+
+    @Test
+    public void refreshPreference_staledPreference_remove() {
+        mBluetoothDeviceUpdater.mPreferenceMap.put(mBluetoothDevice, mPreference);
+        mPreference.setTitle("fake_name");
+
+        when(mCachedBluetoothDevice.getName()).thenReturn(TEST_NAME);
+        when(mCachedDeviceManager.getCachedDevicesCopy()).thenReturn(ImmutableList.of());
+        mBluetoothDeviceUpdater.refreshPreference();
+
+        verify(mDevicePreferenceCallback).onDeviceRemoved(mPreference);
+        assertThat(mBluetoothDeviceUpdater.mPreferenceMap.containsKey(mBluetoothDevice)).isFalse();
+    }
+
+    @Test
+    public void refreshPreference_inconsistentPreference_doNothing() {
+        when(mCachedBluetoothDevice.getDevice()).thenReturn(mSubBluetoothDevice);
+        mBluetoothDeviceUpdater.mPreferenceMap.put(mBluetoothDevice, mPreference);
+        mBluetoothDeviceUpdater.mPreferenceMap.put(mSubBluetoothDevice, mPreference);
+
+        when(mCachedDeviceManager.getCachedDevicesCopy()).thenReturn(
+                ImmutableList.of(mSubCachedBluetoothDevice));
+        mBluetoothDeviceUpdater.refreshPreference();
+
+        verify(mDevicePreferenceCallback, never()).onDeviceRemoved(mPreference);
+        assertThat(mBluetoothDeviceUpdater.mPreferenceMap.containsKey(mBluetoothDevice)).isFalse();
+    }
+
+    @Test
+    public void refreshPreference_staledInconsistentPreference_remove() {
+        when(mCachedBluetoothDevice.getDevice()).thenReturn(mSubBluetoothDevice);
+        mBluetoothDeviceUpdater.mPreferenceMap.put(mBluetoothDevice, mPreference);
+
+        when(mCachedDeviceManager.getCachedDevicesCopy()).thenReturn(ImmutableList.of());
+        mBluetoothDeviceUpdater.refreshPreference();
+
+        verify(mDevicePreferenceCallback).onDeviceRemoved(mPreference);
+        assertThat(mBluetoothDeviceUpdater.mPreferenceMap.containsKey(mBluetoothDevice)).isFalse();
     }
 
     public static class TestBluetoothDeviceUpdater extends BluetoothDeviceUpdater {

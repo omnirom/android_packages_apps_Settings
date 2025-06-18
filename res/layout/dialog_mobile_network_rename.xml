@@ -41,11 +41,12 @@
 
             <EditText
                 android:id="@+id/name_edittext"
+                android:hint="@string/mobile_network_sim_name_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:paddingTop="@dimen/sim_label_padding"
-                android:maxLength="50"
+                android:maxLength="@integer/sim_label_max_length"
                 android:singleLine="true"/>
 
             <TextView

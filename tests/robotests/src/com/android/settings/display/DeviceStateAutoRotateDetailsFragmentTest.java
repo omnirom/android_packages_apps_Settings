@@ -39,7 +39,6 @@ import android.hardware.devicestate.DeviceStateManager;
 
 import com.android.settings.R;
 import com.android.settingslib.core.AbstractPreferenceController;
-import com.android.settingslib.devicestate.DeviceStateRotationLockSettingsManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -144,16 +143,15 @@ public class DeviceStateAutoRotateDetailsFragmentTest {
     }
 
     private void enableDeviceStateSettableRotationStates(String[] settableStates,
-            String[] settableStatesDescriptions) {
+                                                         String[] settableStatesDescriptions) {
         when(mResources.getStringArray(
                 com.android.internal.R.array.config_perDeviceStateRotationLockDefaults)).thenReturn(
                 settableStates);
         when(mResources.getStringArray(
                 R.array.config_settableAutoRotationDeviceStatesDescriptions)).thenReturn(
                 settableStatesDescriptions);
-        DeviceStateRotationLockSettingsManager.resetInstance();
-        DeviceStateRotationLockSettingsManager.getInstance(mContext)
-                .resetStateForTesting(mResources);
+        DeviceStateAutoRotateSettingManagerProvider.resetInstance();
+        when(mContext.getResources()).thenReturn(mResources);
     }
 
     // Sets up posture mappings for PosturesHelper

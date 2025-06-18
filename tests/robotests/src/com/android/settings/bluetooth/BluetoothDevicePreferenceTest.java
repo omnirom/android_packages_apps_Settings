@@ -28,11 +28,18 @@ import static org.mockito.Mockito.when;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothLeBroadcastReceiveState;
+import android.bluetooth.BluetoothStatusCodes;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Looper;
 import android.os.UserManager;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.Pair;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
@@ -42,8 +49,13 @@ import com.android.settings.testutils.shadow.ShadowAlertDialogCompat;
 import com.android.settings.testutils.shadow.ShadowBluetoothUtils;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.CachedBluetoothDeviceManager;
+import com.android.settingslib.bluetooth.LocalBluetoothLeBroadcast;
+import com.android.settingslib.bluetooth.LocalBluetoothLeBroadcastAssistant;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
+import com.android.settingslib.bluetooth.LocalBluetoothProfileManager;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
+import com.android.settingslib.flags.Flags;
+import com.android.settingslib.testutils.shadow.ShadowBluetoothAdapter;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -57,7 +69,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadow.api.Shadow;
 import org.robolectric.util.ReflectionHelpers;
 
 import java.util.ArrayList;
@@ -81,6 +95,8 @@ public class BluetoothDevicePreferenceTest {
 
     @Rule
     public final MockitoRule mockito = MockitoJUnit.rule();
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Mock
     private CachedBluetoothDevice mCachedBluetoothDevice;
     @Mock
@@ -107,6 +123,7 @@ public class BluetoothDevicePreferenceTest {
     private CachedBluetoothDeviceManager mDeviceManager;
 
     private Context mContext = ApplicationProvider.getApplicationContext();
+    private ShadowBluetoothAdapter mShadowBluetoothAdapter;
     private FakeFeatureFactory mFakeFeatureFactory;
     private MetricsFeatureProvider mMetricsFeatureProvider;
 
@@ -159,6 +176,7 @@ public class BluetoothDevicePreferenceTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI)
     public void onClicked_deviceNotBonded_shouldLogBluetoothPairEvent() {
         when(mCachedBluetoothDevice.isConnected()).thenReturn(false);
         when(mCachedBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_NONE);
@@ -166,6 +184,7 @@ public class BluetoothDevicePreferenceTest {
         when(mCachedBluetoothDevice.hasHumanReadableName()).thenReturn(true);
 
         mPreference.onClicked();
+        Shadows.shadowOf(Looper.getMainLooper()).idle();
 
         verify(mMetricsFeatureProvider)
                 .action(mContext, MetricsEvent.ACTION_SETTINGS_BLUETOOTH_PAIR);
@@ -175,6 +194,7 @@ public class BluetoothDevicePreferenceTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI)
     public void onClicked_deviceNotBonded_shouldLogBluetoothPairEventAndPairWithoutNameEvent() {
         when(mCachedBluetoothDevice.isConnected()).thenReturn(false);
         when(mCachedBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_NONE);
@@ -182,12 +202,65 @@ public class BluetoothDevicePreferenceTest {
         when(mCachedBluetoothDevice.hasHumanReadableName()).thenReturn(false);
 
         mPreference.onClicked();
+        Shadows.shadowOf(Looper.getMainLooper()).idle();
 
         verify(mMetricsFeatureProvider)
                 .action(mContext, MetricsEvent.ACTION_SETTINGS_BLUETOOTH_PAIR);
         verify(mMetricsFeatureProvider)
                 .action(mContext,
                         MetricsEvent.ACTION_SETTINGS_BLUETOOTH_PAIR_DEVICES_WITHOUT_NAMES);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_ENABLE_LE_AUDIO_SHARING, Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI})
+    public void onClicked_deviceNotBonded_blockPairing() {
+        mShadowBluetoothAdapter = Shadow.extract(BluetoothAdapter.getDefaultAdapter());
+        mShadowBluetoothAdapter.setEnabled(true);
+        mShadowBluetoothAdapter.setIsLeAudioBroadcastSourceSupported(
+                BluetoothStatusCodes.FEATURE_SUPPORTED);
+        mShadowBluetoothAdapter.setIsLeAudioBroadcastAssistantSupported(
+                BluetoothStatusCodes.FEATURE_SUPPORTED);
+        LocalBluetoothProfileManager profileManager = mock(LocalBluetoothProfileManager.class);
+        LocalBluetoothLeBroadcast broadcast = mock(LocalBluetoothLeBroadcast.class);
+        LocalBluetoothLeBroadcastAssistant assistant = mock(
+                LocalBluetoothLeBroadcastAssistant.class);
+        when(mLocalBluetoothManager.getProfileManager()).thenReturn(profileManager);
+        when(profileManager.getLeAudioBroadcastProfile()).thenReturn(broadcast);
+        when(profileManager.getLeAudioBroadcastAssistantProfile()).thenReturn(assistant);
+        when(broadcast.isEnabled(null)).thenReturn(true);
+        when(broadcast.getLatestBroadcastId()).thenReturn(1);
+        BluetoothDevice device1 = mock(BluetoothDevice.class);
+        BluetoothDevice device2 = mock(BluetoothDevice.class);
+        CachedBluetoothDevice cachedDevice1 = mock(CachedBluetoothDevice.class);
+        CachedBluetoothDevice cachedDevice2 = mock(CachedBluetoothDevice.class);
+        when(cachedDevice1.getDevice()).thenReturn(device1);
+        when(cachedDevice2.getDevice()).thenReturn(device2);
+        when(cachedDevice1.getGroupId()).thenReturn(1);
+        when(cachedDevice2.getGroupId()).thenReturn(2);
+        when(mDeviceManager.findDevice(device1)).thenReturn(cachedDevice1);
+        when(mDeviceManager.findDevice(device2)).thenReturn(cachedDevice2);
+        when(assistant.getAllConnectedDevices()).thenReturn(ImmutableList.of(device1, device2));
+        BluetoothLeBroadcastReceiveState state = mock(BluetoothLeBroadcastReceiveState.class);
+        when(state.getBroadcastId()).thenReturn(1);
+        when(assistant.getAllSources(any())).thenReturn(ImmutableList.of(state));
+        when(mCachedBluetoothDevice.isConnected()).thenReturn(false);
+        when(mCachedBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_NONE);
+        when(mCachedBluetoothDevice.startPairing()).thenReturn(true);
+        when(mCachedBluetoothDevice.hasHumanReadableName()).thenReturn(true);
+
+        mPreference.onClicked();
+        Shadows.shadowOf(Looper.getMainLooper()).idle();
+
+        AlertDialog dialog = ShadowAlertDialogCompat.getLatestAlertDialog();
+        assertThat(dialog).isNotNull();
+
+        ShadowAlertDialogCompat shadowAlertDialog = ShadowAlertDialogCompat.shadowOf(dialog);
+        assertThat(shadowAlertDialog.getTitle().toString()).isEqualTo(
+                mContext.getString(R.string.audio_sharing_block_pairing_dialog_title));
+
+        verify(mMetricsFeatureProvider, never())
+                .action(mContext, MetricsEvent.ACTION_SETTINGS_BLUETOOTH_PAIR);
+        verify(mCachedBluetoothDevice, never()).startPairing();
     }
 
     @Test

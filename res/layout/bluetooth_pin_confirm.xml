@@ -101,7 +101,8 @@
                     android:hyphenationFrequency="normalFast"
                     android:textAppearance="@*android:style/TextAppearance.DeviceDefault.Caption" />
             </LinearLayout>
-            <Switch
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:theme="@style/Theme.Material3.DynamicColors.DayNight"
                 android:id="@+id/phonebook_sharing_message_confirm_pin"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"

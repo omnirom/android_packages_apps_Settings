@@ -93,10 +93,10 @@ public class PowerUsageTimeController extends BasePreferenceController {
                 || (summaryTimeMs == 0 && !TextUtils.equals(anomalyHintKey, preference.getKey()))) {
             return false;
         }
-        preference.setTimeTitle(mContext.getString(titleResId));
-        preference.setTimeSummary(getPowerUsageTimeInfo(summaryTimeMs));
+        preference.setTitle(mContext.getString(titleResId));
+        preference.setSummary(getPowerUsageTimeInfo(summaryTimeMs));
         if (TextUtils.equals(anomalyHintKey, preference.getKey())) {
-            preference.setAnomalyHint(anomalyHintText);
+            preference.setHint(anomalyHintText);
         }
         preference.setVisible(true);
         return true;

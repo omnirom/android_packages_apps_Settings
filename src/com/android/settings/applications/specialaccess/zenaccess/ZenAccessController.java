@@ -56,7 +56,7 @@ public class ZenAccessController extends BasePreferenceController {
     public void displayPreference(PreferenceScreen screen) {
         Preference preference = screen.findPreference(getPreferenceKey());
         if (preference != null) {
-            preference.setTitle(Flags.modesApi() && Flags.modesUi()
+            preference.setTitle(Flags.modesUi()
                     ? R.string.manage_zen_modes_access_title
                     : R.string.manage_zen_access_title);
         }
@@ -116,11 +116,7 @@ public class ZenAccessController extends BasePreferenceController {
 
     public static void deleteRules(final Context context, final String pkg) {
         final NotificationManager mgr = context.getSystemService(NotificationManager.class);
-        if (android.app.Flags.modesApi()) {
-            mgr.removeAutomaticZenRules(pkg, /* fromUser= */ true);
-        } else {
-            mgr.removeAutomaticZenRules(pkg);
-        }
+        mgr.removeAutomaticZenRules(pkg, /* fromUser= */ true);
     }
 
     @VisibleForTesting

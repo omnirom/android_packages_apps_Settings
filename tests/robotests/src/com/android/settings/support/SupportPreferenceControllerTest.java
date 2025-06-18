@@ -22,16 +22,20 @@ import static com.android.settings.core.BasePreferenceController.UNSUPPORTED_ON_
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import android.app.Activity;
 
 import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
 
 import com.android.settings.testutils.FakeFeatureFactory;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.util.ReflectionHelpers;
@@ -44,12 +48,16 @@ public class SupportPreferenceControllerTest {
     private FakeFeatureFactory mFeatureFactory;
     private Preference mPreference;
 
+    @Mock private PreferenceScreen mPreferenceScreen;
+
     @Before
     public void setUp() {
+        MockitoAnnotations.initMocks(this);
         mActivity = Robolectric.setupActivity(Activity.class);
         mFeatureFactory = FakeFeatureFactory.setupForTest();
         mPreference = new Preference(mActivity);
         mPreference.setKey("test_key");
+        when(mPreferenceScreen.findPreference(mPreference.getKey())).thenReturn(mPreference);
     }
 
     @Test
@@ -73,5 +81,15 @@ public class SupportPreferenceControllerTest {
 
         assertThat(controller.handlePreferenceTreeClick(mPreference)).isTrue();
         verify(mFeatureFactory.supportFeatureProvider).startSupport(mActivity);
+    }
+
+    @Test
+    public void displayPreference_shouldApplyOverrides() {
+        final SupportPreferenceController controller = new SupportPreferenceController(mActivity,
+                mPreference.getKey());
+        controller.setActivity(mActivity);
+
+        controller.displayPreference(mPreferenceScreen);
+        verify(mFeatureFactory.supportFeatureProvider).applyOverrides(mActivity, mPreference);
     }
 }

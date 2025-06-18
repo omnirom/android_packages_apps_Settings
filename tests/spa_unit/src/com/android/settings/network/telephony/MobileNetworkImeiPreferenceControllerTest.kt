@@ -17,6 +17,7 @@
 package com.android.settings.network.telephony
 
 import android.content.Context
+import android.os.UserManager
 import android.telephony.SubscriptionInfo
 import android.telephony.TelephonyManager
 import androidx.fragment.app.Fragment
@@ -29,6 +30,7 @@ import com.android.settings.R
 import com.android.settings.core.BasePreferenceController
 import com.android.settings.network.SubscriptionInfoListViewModel
 import com.android.settings.network.SubscriptionUtil
+import com.android.settingslib.Utils
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -48,6 +50,8 @@ import org.mockito.quality.Strictness
 class MobileNetworkImeiPreferenceControllerTest {
     private lateinit var mockSession: MockitoSession
 
+    private val mockUserManager = mock<UserManager>()
+
     private val mockViewModels =  mock<Lazy<SubscriptionInfoListViewModel>>()
     private val mockFragment = mock<Fragment>{
         val viewmodel = mockViewModels
@@ -66,6 +70,7 @@ class MobileNetworkImeiPreferenceControllerTest {
 
     private val context: Context = spy(ApplicationProvider.getApplicationContext()) {
         on { getSystemService(TelephonyManager::class.java) } doReturn mockTelephonyManager
+        on { getSystemService(UserManager::class.java) } doReturn mockUserManager
     }
 
     private val controller = MobileNetworkImeiPreferenceController(context, TEST_KEY)
@@ -77,8 +82,16 @@ class MobileNetworkImeiPreferenceControllerTest {
         mockSession = ExtendedMockito.mockitoSession()
             .initMocks(this)
             .mockStatic(SubscriptionUtil::class.java)
+            .mockStatic(Utils::class.java)
             .strictness(Strictness.LENIENT)
             .startMocking()
+
+        // By default, available
+        whenever(SubscriptionUtil.isSimHardwareVisible(context)).thenReturn(true)
+        whenever(Utils.isWifiOnly(context)).thenReturn(false)
+        mockUserManager.stub {
+            on { isAdminUser } doReturn true
+        }
 
         preferenceScreen.addPreference(preference)
         controller.displayPreference(preferenceScreen)
@@ -91,15 +104,13 @@ class MobileNetworkImeiPreferenceControllerTest {
 
     @Test
     fun refreshData_getImei_preferenceSummaryIsExpected() = runBlocking {
-        whenever(SubscriptionUtil.isSimHardwareVisible(context)).thenReturn(true)
         whenever(SubscriptionUtil.getActiveSubscriptions(any())).thenReturn(
             listOf(
                 SUB_INFO_1,
                 SUB_INFO_2
             )
         )
-        var mockSubId = 2
-        controller.init(mockFragment, mockSubId)
+        controller.init(mockFragment, SUB_ID_1)
         mockImei = "test imei"
         mockTelephonyManager.stub {
             on { imei } doReturn mockImei
@@ -112,15 +123,13 @@ class MobileNetworkImeiPreferenceControllerTest {
 
     @Test
     fun refreshData_getImeiTitle_showImei() = runBlocking {
-        whenever(SubscriptionUtil.isSimHardwareVisible(context)).thenReturn(true)
         whenever(SubscriptionUtil.getActiveSubscriptions(any())).thenReturn(
             listOf(
                 SUB_INFO_1,
                 SUB_INFO_2
             )
         )
-        var mockSubId = 2
-        controller.init(mockFragment, mockSubId)
+        controller.init(mockFragment, SUB_ID_2)
         mockImei = "test imei"
         mockTelephonyManager.stub {
             on { imei } doReturn mockImei
@@ -134,15 +143,13 @@ class MobileNetworkImeiPreferenceControllerTest {
 
     @Test
     fun refreshData_getPrimaryImeiTitle_showPrimaryImei() = runBlocking {
-        whenever(SubscriptionUtil.isSimHardwareVisible(context)).thenReturn(true)
         whenever(SubscriptionUtil.getActiveSubscriptions(any())).thenReturn(
             listOf(
                 SUB_INFO_1,
                 SUB_INFO_2
             )
         )
-        var mockSubId = 2
-        controller.init(mockFragment, mockSubId)
+        controller.init(mockFragment, SUB_ID_2)
         mockImei = "test imei"
         mockTelephonyManager.stub {
             on { imei } doReturn mockImei
@@ -155,26 +162,57 @@ class MobileNetworkImeiPreferenceControllerTest {
     }
 
     @Test
-    fun getAvailabilityStatus_notSimHardwareVisible() {
+    fun getAvailabilityStatus_simHardwareVisible_userAdmin_notWifiOnly_displayed() {
+        controller.init(mockFragment, SUB_ID_1)
+
+        // Use defaults from setup()
+        val availabilityStatus = controller.availabilityStatus
+        assertThat(availabilityStatus).isEqualTo(BasePreferenceController.AVAILABLE)
+    }
+
+    @Test
+    fun getAvailabilityStatus_notSimHardwareVisible_userAdmin_notWifiOnly_notDisplayed() {
+        controller.init(mockFragment, SUB_ID_1)
         whenever(SubscriptionUtil.isSimHardwareVisible(context)).thenReturn(false)
 
         val availabilityStatus = controller.availabilityStatus
+        assertThat(availabilityStatus).isEqualTo(BasePreferenceController.UNSUPPORTED_ON_DEVICE)
+    }
 
-        assertThat(availabilityStatus).isEqualTo(BasePreferenceController.CONDITIONALLY_UNAVAILABLE)
+    @Test
+    fun getAvailabilityStatus_simHardwareVisible_notUserAdmin_notWifiOnly_notDisplayed() {
+        controller.init(mockFragment, SUB_ID_1)
+        mockUserManager.stub {
+            on { isAdminUser } doReturn false
+        }
+
+        val availabilityStatus = controller.availabilityStatus
+        assertThat(availabilityStatus).isEqualTo(BasePreferenceController.DISABLED_FOR_USER)
+    }
+
+    @Test
+    fun getAvailabilityStatus_simHardwareVisible_userAdmin_wifiOnly_notDisplayed() {
+        controller.init(mockFragment, SUB_ID_1)
+        whenever(Utils.isWifiOnly(context)).thenReturn(true)
+
+        val availabilityStatus = controller.availabilityStatus
+        assertThat(availabilityStatus).isEqualTo(BasePreferenceController.UNSUPPORTED_ON_DEVICE)
     }
 
     private companion object {
         const val TEST_KEY = "test_key"
+        const val SUB_ID_1 = 1
+        const val SUB_ID_2 = 2
         const val DISPLAY_NAME_1 = "Sub 1"
         const val DISPLAY_NAME_2 = "Sub 2"
 
         val SUB_INFO_1: SubscriptionInfo = SubscriptionInfo.Builder().apply {
-            setId(1)
+            setId(SUB_ID_1)
             setDisplayName(DISPLAY_NAME_1)
         }.build()
 
         val SUB_INFO_2: SubscriptionInfo = SubscriptionInfo.Builder().apply {
-            setId(2)
+            setId(SUB_ID_2)
             setDisplayName(DISPLAY_NAME_2)
         }.build()
 

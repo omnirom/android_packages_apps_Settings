@@ -270,6 +270,8 @@ public class ManageApplications extends InstrumentedFragment
     public static final int LIST_TYPE_NFC_TAG_APPS = 18;
     public static final int LIST_TYPE_TURN_SCREEN_ON = 19;
     public static final int LIST_TYPE_USER_ASPECT_RATIO_APPS = 20;
+    public static final int LIST_TYPE_NOTIFICATION_EXCLUDE_SUMMARIZATION = 21;
+    public static final int LIST_TYPE_NOTIFICATION_EXCLUDE_CLASSIFICATION = 22;
 
     // List types that should show instant apps.
     public static final Set<Integer> LIST_TYPES_WITH_INSTANT = new ArraySet<>(Arrays.asList(

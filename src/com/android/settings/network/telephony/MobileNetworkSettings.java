@@ -58,6 +58,8 @@ import com.android.settings.network.telephony.cdma.CdmaSubscriptionPreferenceCon
 import com.android.settings.network.telephony.cdma.CdmaSystemSelectPreferenceController;
 import com.android.settings.network.telephony.gsm.AutoSelectPreferenceController;
 import com.android.settings.network.telephony.gsm.OpenNetworkSelectPagePreferenceController;
+import com.android.settings.network.telephony.satellite.SatelliteSettingPreferenceController;
+import com.android.settings.network.telephony.satellite.SatelliteSettingsPreferenceCategoryController;
 import com.android.settings.network.telephony.wificalling.CrossSimCallingViewModel;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.wifi.WifiPickerTrackerHelper;
@@ -286,7 +288,7 @@ public class MobileNetworkSettings extends AbstractMobileNetworkSettings impleme
         final SatelliteSettingPreferenceController satelliteSettingPreferenceController = use(
                 SatelliteSettingPreferenceController.class);
         if (satelliteSettingPreferenceController != null) {
-            satelliteSettingPreferenceController.init(mSubId);
+            satelliteSettingPreferenceController.initialize(mSubId);
         }
 
         use(ApnPreferenceController.class).init(mSubId);
@@ -468,7 +470,7 @@ public class MobileNetworkSettings extends AbstractMobileNetworkSettings impleme
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (mSubId != SubscriptionManager.INVALID_SUBSCRIPTION_ID) {
             final MenuItem item = menu.add(Menu.NONE, R.id.edit_sim_name, Menu.NONE,
-                    R.string.mobile_network_sim_name);
+                    R.string.mobile_network_sim_label_color_title);
             item.setIcon(com.android.internal.R.drawable.ic_mode_edit);
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }

@@ -17,9 +17,12 @@
 package com.android.settings.accessibility
 
 import android.annotation.DrawableRes
+import android.app.settings.SettingsEnums.ACTION_REMOVE_ANIMATION
 import android.content.Context
 import android.provider.Settings
 import com.android.settings.R
+import com.android.settings.contract.KEY_REMOVE_ANIMATION
+import com.android.settings.metrics.PreferenceActionMetricsProvider
 import com.android.settingslib.datastore.HandlerExecutor
 import com.android.settingslib.datastore.KeyValueStore
 import com.android.settingslib.datastore.KeyedObserver
@@ -37,12 +40,18 @@ class RemoveAnimationsPreference :
         R.string.accessibility_disable_animations,
         R.string.accessibility_disable_animations_summary,
     ),
+    PreferenceActionMetricsProvider,
     PreferenceLifecycleProvider {
 
     private var mSettingsKeyedObserver: KeyedObserver<String>? = null
 
     override val icon: Int
         @DrawableRes get() = R.drawable.ic_accessibility_animation
+
+    override val preferenceActionMetrics: Int
+        get() = ACTION_REMOVE_ANIMATION
+
+    override fun tags(context: Context) = arrayOf(KEY_REMOVE_ANIMATION)
 
     override fun onStart(context: PreferenceLifecycleContext) {
         val observer = KeyedObserver<String> { _, _ -> context.notifyPreferenceChange(KEY) }
@@ -65,11 +74,19 @@ class RemoveAnimationsPreference :
 
     override fun storage(context: Context): KeyValueStore = RemoveAnimationsStorage(context)
 
-    override fun getReadPermit(context: Context, myUid: Int, callingUid: Int) =
+    override fun getReadPermissions(context: Context) = SettingsGlobalStore.getReadPermissions()
+
+    override fun getWritePermissions(context: Context) = SettingsGlobalStore.getWritePermissions()
+
+    override fun getReadPermit(context: Context, callingPid: Int, callingUid: Int) =
         ReadWritePermit.ALLOW
 
-    override fun getWritePermit(context: Context, value: Boolean?, myUid: Int, callingUid: Int) =
-        ReadWritePermit.ALLOW
+    override fun getWritePermit(
+        context: Context,
+        value: Boolean?,
+        callingPid: Int,
+        callingUid: Int,
+    ) = ReadWritePermit.ALLOW
 
     override val sensitivityLevel
         get() = SensitivityLevel.NO_SENSITIVITY

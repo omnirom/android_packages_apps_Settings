@@ -16,6 +16,8 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/Theme.Network"
     android:id="@+id/l_wifidialog"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -50,30 +52,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/wifi_item">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/wifi_item_label"
-                android:text="@string/wifi_ssid"
-                android:textDirection="locale"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <EditText android:id="@+id/ssid"
-                          android:layout_width="0dp"
-                          android:layout_height="wrap_content"
-                          android:layout_weight="1"
-                          style="@style/wifi_item_edit_content"
-                          android:hint="@string/wifi_ssid_hint"
-                          android:singleLine="true"
-                          android:inputType="textNoSuggestions"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ssid_layout"
+                    style="@style/Widget.Network.TextInputLayout.WifiConfig"
+                    android:layout_weight="1"
+                    android:hint="@string/wifi_ssid"
+                    android:textDirection="locale"
+                    app:helperTextEnabled="true"
+                    app:helperText="@string/wifi_field_required"
+                    app:endIconMode="clear_text">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ssid"
+                        style="@style/Widget.Network.TextInputLayout.WifiConfig.EditText"
+                        android:inputType="textNoSuggestions"
+                        android:singleLine="true"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageButton
                     android:id="@+id/ssid_scanner_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:minWidth="@dimen/min_tap_target_size"
                     android:minHeight="@dimen/min_tap_target_size"
                     android:background="?android:attr/selectableItemBackground"
@@ -340,18 +343,19 @@
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       style="@style/wifi_item">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/wifi_item_label"
-                android:text="@string/wifi_password"/>
-
-            <EditText android:id="@+id/password"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      style="@style/wifi_item_edit_content"
-                      android:inputType="textPassword"
-                      android:singleLine="true"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/password_input_layout"
+                style="@style/Widget.Network.TextInputLayout.WifiConfig"
+                android:hint="@string/wifi_password"
+                app:helperTextEnabled="true"
+                app:helperText="@string/wifi_field_required"
+                app:endIconMode="password_toggle">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password"
+                    style="@style/Widget.Network.TextInputLayout.WifiConfig.EditText"
+                    android:inputType="textPassword"
+                    android:singleLine="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout android:id="@+id/show_password_layout"
@@ -362,13 +366,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/wifi_item_label"/>
+                style="@style/wifi_item_label"
+                android:visibility="gone"/>
 
             <CheckBox android:id="@+id/show_password"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       style="@style/wifi_item_content"
-                      android:text="@string/wifi_show_password"/>
+                      android:text="@string/wifi_show_password"
+                      android:visibility="gone"/>
         </LinearLayout>
     </LinearLayout>
 

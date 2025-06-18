@@ -33,4 +33,15 @@
         android:title="@string/adaptive_connectivity_main_switch_title"
         settings:controller="com.android.settings.network.AdaptiveConnectivityTogglePreferenceController"/>
 
+    <SwitchPreferenceCompat
+        android:key="adaptive_connectivity_wifi_enabled"
+        android:title="@string/adaptive_connectivity_wifi_switch_title"
+        android:summary="@string/adaptive_connectivity_wifi_switch_summary"
+        settings:isPreferenceVisible="false"/>
+
+    <SwitchPreferenceCompat
+        android:key="adaptive_connectivity_mobile_network_enabled"
+        android:title="@string/adaptive_connectivity_mobile_network_switch_title"
+        android:summary="@string/adaptive_connectivity_mobile_network_switch_summary"
+        settings:isPreferenceVisible="false"/>
 </PreferenceScreen>

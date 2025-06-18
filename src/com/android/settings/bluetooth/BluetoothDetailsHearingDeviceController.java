@@ -22,7 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
-import com.android.settings.accessibility.Flags;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
 import com.android.settingslib.core.lifecycle.Lifecycle;
@@ -42,6 +41,8 @@ public class BluetoothDetailsHearingDeviceController extends BluetoothDetailsCon
 
     public static final int ORDER_HEARING_DEVICE_SETTINGS = 1;
     public static final int ORDER_HEARING_AIDS_PRESETS = 2;
+    public static final int ORDER_HEARING_DEVICE_INPUT_ROUTING = 3;
+    public static final int ORDER_AMBIENT_VOLUME = 4;
     static final String KEY_HEARING_DEVICE_GROUP = "hearing_device_group";
 
     private final List<BluetoothDetailsController> mControllers = new ArrayList<>();
@@ -61,10 +62,12 @@ public class BluetoothDetailsHearingDeviceController extends BluetoothDetailsCon
     @VisibleForTesting
     void setSubControllers(
             BluetoothDetailsHearingDeviceSettingsController hearingDeviceSettingsController,
-            BluetoothDetailsHearingAidsPresetsController presetsController) {
+            BluetoothDetailsHearingAidsPresetsController presetsController,
+            BluetoothDetailsHearingDeviceInputRoutingController inputRoutingController) {
         mControllers.clear();
         mControllers.add(hearingDeviceSettingsController);
         mControllers.add(presetsController);
+        mControllers.add(inputRoutingController);
     }
 
     @Override
@@ -103,9 +106,16 @@ public class BluetoothDetailsHearingDeviceController extends BluetoothDetailsCon
             mControllers.add(new BluetoothDetailsHearingDeviceSettingsController(mContext,
                     mFragment, mCachedDevice, mLifecycle));
         }
-        if (Flags.enableHearingAidPresetControl()) {
-            mControllers.add(new BluetoothDetailsHearingAidsPresetsController(mContext, mFragment,
-                    mManager, mCachedDevice, mLifecycle));
+        mControllers.add(new BluetoothDetailsHearingAidsPresetsController(mContext, mFragment,
+                mManager, mCachedDevice, mLifecycle));
+        if (com.android.settingslib.flags.Flags.hearingDevicesAmbientVolumeControl()) {
+            mControllers.add(new BluetoothDetailsAmbientVolumePreferenceController(mContext,
+                    mManager, mFragment, mCachedDevice, mLifecycle));
+        }
+        if (com.android.settingslib.flags.Flags.hearingDevicesInputRoutingControl()) {
+            mControllers.add(
+                    new BluetoothDetailsHearingDeviceInputRoutingController(mContext, mFragment,
+                            mCachedDevice, mLifecycle));
         }
     }
 

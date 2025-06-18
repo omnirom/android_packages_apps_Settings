@@ -16,10 +16,15 @@
 
 package com.android.settings.accessibility;
 
+import static com.android.settings.accessibility.ToggleAutoclickPreferenceFragment.KEY_AUTOCLICK_SHORTCUT_PREFERENCE;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -27,6 +32,7 @@ import com.android.settings.R;
 import com.android.settings.testutils.XmlTestUtils;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -36,6 +42,8 @@ import java.util.List;
 /** Tests for {@link ToggleAutoclickPreferenceFragment}. */
 @RunWith(RobolectricTestRunner.class)
 public class ToggleAutoclickPreferenceFragmentTest {
+
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     private final Context mContext = ApplicationProvider.getApplicationContext();
     private ToggleAutoclickPreferenceFragment mFragment;
@@ -76,5 +84,23 @@ public class ToggleAutoclickPreferenceFragmentTest {
                         R.xml.accessibility_autoclick_settings);
 
         assertThat(keys).containsAtLeastElementsIn(niks);
+    }
+
+    @Test
+    @DisableFlags(com.android.server.accessibility.Flags.FLAG_ENABLE_AUTOCLICK_INDICATOR)
+    public void getNonIndexableKeys_flagDisabled_doesNotContainShortcut() {
+        final List<String> niks = ToggleAutoclickPreferenceFragment.SEARCH_INDEX_DATA_PROVIDER
+                .getNonIndexableKeys(mContext);
+
+        assertThat(niks).contains(KEY_AUTOCLICK_SHORTCUT_PREFERENCE);
+    }
+
+    @Test
+    @EnableFlags(com.android.server.accessibility.Flags.FLAG_ENABLE_AUTOCLICK_INDICATOR)
+    public void getNonIndexableKeys_returnsOnlyShortcutKey() {
+        final List<String> niks = ToggleAutoclickPreferenceFragment.SEARCH_INDEX_DATA_PROVIDER
+                .getNonIndexableKeys(mContext);
+
+        assertThat(niks).doesNotContain(KEY_AUTOCLICK_SHORTCUT_PREFERENCE);
     }
 }

@@ -1059,6 +1059,20 @@
         <item>either_charging_or_docked</item>
     </string-array>
 
+    <string-array name="when_to_start_hubmode_entries" translatable="false">
+        <item>@string/when_to_show_hubmode_never</item>
+        <item>@string/when_to_show_hubmode_charging</item>
+        <item>@string/when_to_show_hubmode_charging_and_upright</item>
+        <item>@string/when_to_show_hubmode_docked</item>
+    </string-array>
+
+    <string-array name="when_to_start_hubmode_values" translatable="false">
+        <item>never</item>
+        <item>while_charging</item>
+        <item>while_charging_and_upright</item>
+        <item>while_docked</item>
+    </string-array>
+
     <string-array name="zen_mode_contacts_calls_entries" translatable="false">
         <item>@string/zen_mode_from_anyone</item>
         <item>@string/zen_mode_from_contacts</item>
@@ -1425,6 +1439,14 @@
         <item>sat</item>
     </string-array>
 
+    <!-- A list for measurement system. [DO NOT TRANSLATE] -->
+    <string-array name="measurement_system">
+        <item>default</item>
+        <item>metric</item>
+        <item>ussystem</item>
+        <item>uksystem</item>
+    </string-array>
+
     <!-- Screen flash notification color when activating -->
     <array name="screen_flash_notification_preset_opacity_colors">
         <item>@color/screen_flash_preset_opacity_color_01</item>
@@ -1449,11 +1471,6 @@
     <string-array name="battery_tips_card_icons" translatable="false">
         <item>ic_battery_tips_lightbulb</item>
         <item>ic_battery_tips_warning_icon</item>
-    </string-array>
-
-    <string-array name="battery_tips_card_colors" translatable="false">
-        <item>color_accent_selector</item>
-        <item>color_battery_anomaly_app_warning_selector</item>
     </string-array>
 
     <!-- The following 4 arrays are for power anomaly tips card. Please keep them the same size. -->

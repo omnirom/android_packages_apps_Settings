@@ -25,6 +25,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -45,6 +46,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -59,7 +61,6 @@ public class GraphicsDriverEnableAngleAsSystemDriverControllerTest {
     @Mock private PreferenceScreen mScreen;
     @Mock private SwitchPreference mPreference;
     @Mock private DevelopmentSettingsDashboardFragment mFragment;
-    @Mock private FragmentActivity mActivity;
     @Mock private FragmentManager mFragmentManager;
     @Mock private FragmentTransaction mTransaction;
 
@@ -70,11 +71,13 @@ public class GraphicsDriverEnableAngleAsSystemDriverControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        FragmentActivity activity = spy(Robolectric.buildActivity(
+                FragmentActivity.class).create().get());
         mContext = RuntimeEnvironment.application;
         ShadowSystemProperties.override(PROPERTY_DEBUG_ANGLE_DEVELOPER_OPTION, "true");
         doReturn(mTransaction).when(mFragmentManager).beginTransaction();
-        doReturn(mFragmentManager).when(mActivity).getSupportFragmentManager();
-        doReturn(mActivity).when(mFragment).getActivity();
+        doReturn(mFragmentManager).when(activity).getSupportFragmentManager();
+        doReturn(activity).when(mFragment).requireActivity();
         mController = new GraphicsDriverEnableAngleAsSystemDriverController(mContext, mFragment);
         when(mScreen.findPreference(mController.getPreferenceKey())).thenReturn(mPreference);
         mController.displayPreference(mScreen);

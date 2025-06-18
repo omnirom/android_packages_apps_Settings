@@ -364,9 +364,22 @@ class LocaleDragAndDropAdapter
     }
 
     public void notifyListChanged(LocaleStore.LocaleInfo localeInfo) {
-        if (!localeInfo.getLocale().equals(mCacheItemList.get(0).getLocale())) {
+        if (listChanged()) {
             mFeedItemList = new ArrayList<>(mCacheItemList);
             notifyDataSetChanged();
+        }
+    }
+
+    private boolean listChanged() {
+        if (mFeedItemList.size() == mCacheItemList.size()) {
+            for (int i = 0; i < mFeedItemList.size(); i++) {
+                if (!mFeedItemList.get(i).getLocale().equals(mCacheItemList.get(i).getLocale())) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return true;
         }
     }
 

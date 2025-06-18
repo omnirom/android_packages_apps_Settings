@@ -53,7 +53,7 @@ public class BluetoothDetailsHearingDeviceSettingsController extends BluetoothDe
 
     @Override
     public boolean isAvailable() {
-        return mCachedDevice.isHearingAidDevice();
+        return mCachedDevice.isHearingDevice();
     }
 
     @Override

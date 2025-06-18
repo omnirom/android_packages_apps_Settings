@@ -66,7 +66,6 @@ import com.android.internal.widget.LockscreenCredential;
 import com.android.internal.widget.TextViewInputDisabler;
 import com.android.settings.R;
 import com.android.settings.SetupRedactionInterstitial;
-import com.android.settings.SetupWizardUtils;
 import com.android.settings.Utils;
 import com.android.settingslib.animation.AppearAnimationUtils;
 import com.android.settingslib.animation.DisappearAnimationUtils;
@@ -211,12 +210,12 @@ public class ConfirmLockPassword extends ConfirmDeviceCredentialBaseActivity {
             if (mIsAlpha) {
                 mPasswordEntry.setInputType(currentType);
                 mPasswordEntry.setContentDescription(
-                        getContext().getString(R.string.unlock_set_unlock_password_title));
+                        getContext().getString(R.string.unlock_accessibility_password));
             } else {
                 mPasswordEntry.setInputType(
                         InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
                 mPasswordEntry.setContentDescription(
-                        getContext().getString(R.string.unlock_set_unlock_pin_title));
+                        getContext().getString(R.string.unlock_accessibility_pin_area));
             }
             // Can't set via XML since setInputType resets the fontFamily to null
             mPasswordEntry.setTypeface(Typeface.create(

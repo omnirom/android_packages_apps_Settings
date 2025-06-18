@@ -33,10 +33,10 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
 import com.android.server.notification.Flags;
-import com.android.settings.widget.SettingsMainSwitchPreferenceController;
+import com.android.settings.core.TogglePreferenceController;
 
 public class LockScreenNotificationsGlobalPreferenceController
-        extends SettingsMainSwitchPreferenceController
+        extends TogglePreferenceController
         implements LifecycleEventObserver {
 
     public static final int ON = 1;

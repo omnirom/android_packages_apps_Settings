@@ -93,7 +93,7 @@ public class TopLevelStoragePreferenceController extends BasePreferenceControlle
     private String getSummary(long usedBytes, long totalBytes) {
         NumberFormat percentageFormat = NumberFormat.getPercentInstance();
 
-        return mContext.getString(R.string.storage_summary,
+        return mContext.getString(R.string.storage_toplevel_summary,
                 totalBytes == 0L ? "0" : percentageFormat.format(((double) usedBytes) / totalBytes),
                 Formatter.formatFileSize(mContext, totalBytes - usedBytes));
     }

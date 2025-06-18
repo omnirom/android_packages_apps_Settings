@@ -22,7 +22,7 @@ import android.net.Uri;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
-import com.android.settings.widget.SettingsMainSwitchPreferenceController;
+import com.android.settings.core.TogglePreferenceController;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnStart;
 import com.android.settingslib.core.lifecycle.events.OnStop;
@@ -32,7 +32,7 @@ import com.android.settingslib.widget.MainSwitchPreference;
  * The controller to handle one-handed mode main switch enable or disable state.
  **/
 public class OneHandedMainSwitchPreferenceController extends
-        SettingsMainSwitchPreferenceController implements OneHandedSettingsUtils.TogglesCallback,
+        TogglePreferenceController implements OneHandedSettingsUtils.TogglesCallback,
         LifecycleObserver, OnStart, OnStop {
 
     private final OneHandedSettingsUtils mUtils;

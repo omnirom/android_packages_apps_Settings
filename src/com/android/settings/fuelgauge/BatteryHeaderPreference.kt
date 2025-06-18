@@ -16,31 +16,34 @@
 
 package com.android.settings.fuelgauge
 
+import android.app.settings.SettingsEnums.ACTION_BATTERY_LEVEL
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.preference.Preference
 import com.android.settings.R
+import com.android.settings.contract.KEY_BATTERY_LEVEL
 import com.android.settings.fuelgauge.BatteryBroadcastReceiver.BatteryUpdateType.BATTERY_NOT_PRESENT
+import com.android.settings.metrics.PreferenceActionMetricsProvider
 import com.android.settingslib.Utils
 import com.android.settingslib.datastore.KeyValueStore
 import com.android.settingslib.datastore.NoOpKeyedObservable
+import com.android.settingslib.datastore.Permissions
 import com.android.settingslib.fuelgauge.BatteryUtils
-import com.android.settingslib.metadata.PersistentPreference
+import com.android.settingslib.metadata.IntRangeValuePreference
 import com.android.settingslib.metadata.PreferenceLifecycleContext
 import com.android.settingslib.metadata.PreferenceLifecycleProvider
 import com.android.settingslib.metadata.PreferenceMetadata
-import com.android.settingslib.metadata.RangeValue
 import com.android.settingslib.metadata.ReadWritePermit
+import com.android.settingslib.metadata.SensitivityLevel
 import com.android.settingslib.preference.PreferenceBinding
 import com.android.settingslib.widget.UsageProgressBarPreference
 
 // LINT.IfChange
 class BatteryHeaderPreference :
-    PersistentPreference<Int>,
-    PreferenceMetadata,
+    IntRangeValuePreference,
     PreferenceBinding,
-    PreferenceLifecycleProvider,
-    RangeValue {
+    PreferenceActionMetricsProvider,
+    PreferenceLifecycleProvider {
 
     @VisibleForTesting var batteryBroadcastReceiver: BatteryBroadcastReceiver? = null
 
@@ -49,6 +52,11 @@ class BatteryHeaderPreference :
 
     override val title: Int
         get() = R.string.summary_placeholder
+
+    override val preferenceActionMetrics: Int
+        get() = ACTION_BATTERY_LEVEL
+
+    override fun tags(context: Context) = arrayOf(KEY_BATTERY_LEVEL)
 
     override fun createWidget(context: Context) = UsageProgressBarPreference(context)
 
@@ -102,11 +110,18 @@ class BatteryHeaderPreference :
 
     override fun getMaxValue(context: Context): Int = 100
 
-    override fun getReadPermit(context: Context, myUid: Int, callingUid: Int) =
+    override fun getReadPermissions(context: Context) = Permissions.EMPTY
+
+    override fun getReadPermit(context: Context, callingPid: Int, callingUid: Int) =
         ReadWritePermit.ALLOW
 
-    override fun getWritePermit(context: Context, value: Int?, myUid: Int, callingUid: Int) =
+    override fun getWritePermissions(context: Context) = Permissions.EMPTY
+
+    override fun getWritePermit(context: Context, callingPid: Int, callingUid: Int) =
         ReadWritePermit.DISALLOW
+
+    override val sensitivityLevel: Int
+        get() = SensitivityLevel.NO_SENSITIVITY
 
     companion object {
         private const val KEY = "battery_header"

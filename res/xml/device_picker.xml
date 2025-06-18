@@ -15,12 +15,21 @@
 -->
 
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:settings="http://schemas.android.com/apk/res-auto">
 
     <com.android.settings.bluetooth.BluetoothProgressCategory
         android:key="bt_device_list"
         android:orderingFromXml="false"
         android:title="@string/bluetooth_preference_found_media_devices" />
+
+    <com.android.settingslib.widget.LayoutPreference
+        android:key="nearby_share_key"
+        android:layout="@layout/nearby_sharing_suggestion_card"
+        android:selectable="false"
+        settings:allowDividerBelow="true"
+        settings:searchable="false"
+        settings:controller="com.android.settings.bluetooth.NearbySharePreferenceController" />
 
 </PreferenceScreen>
 

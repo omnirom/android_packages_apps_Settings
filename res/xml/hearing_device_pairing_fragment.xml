@@ -20,8 +20,10 @@
     android:title="@string/bluetooth_pairing_pref_title">
 
     <com.android.settingslib.widget.TopIntroPreference
+        android:key="hearing_device_pairing_intro"
         settings:searchable="false"
-        android:title="@string/accessibility_hearing_device_pairing_intro" />
+        android:title="@string/accessibility_hearing_device_pairing_intro"
+        settings:controller="com.android.settings.accessibility.HearingDevicePairingIntroPreferenceController"/>
 
     <com.android.settings.bluetooth.BluetoothProgressCategory
         android:key="available_hearing_devices"

@@ -17,17 +17,16 @@
 package com.android.settings.restriction
 
 import android.content.Context
-import com.android.settings.PreferenceRestrictionMixin
 import com.android.settingslib.datastore.HandlerExecutor
 import com.android.settingslib.datastore.KeyedObserver
+import com.android.settingslib.metadata.PreferenceChangeReason
 import com.android.settingslib.preference.PreferenceScreenBindingHelper
-import com.android.settingslib.preference.PreferenceScreenBindingHelper.Companion.CHANGE_REASON_STATE
 
 /** Helper to rebind preference immediately when user restriction is changed. */
 class UserRestrictionBindingHelper(
-    context: Context,
+    private val context: Context,
     private val screenBindingHelper: PreferenceScreenBindingHelper,
-) : AutoCloseable {
+) : KeyedObserver<String>, AutoCloseable {
     private val restrictionKeysToPreferenceKeys: Map<String, MutableSet<String>> =
         mutableMapOf<String, MutableSet<String>>()
             .apply {
@@ -42,27 +41,29 @@ class UserRestrictionBindingHelper(
             }
             .toMap()
 
-    private val userRestrictionObserver: KeyedObserver<String?>?
-
     init {
-        if (restrictionKeysToPreferenceKeys.isEmpty()) {
-            userRestrictionObserver = null
-        } else {
-            val observer =
-                KeyedObserver<String?> { restrictionKey, _ ->
-                    restrictionKey?.let { notifyRestrictionChanged(it) }
-                }
-            UserRestrictions.addObserver(context, observer, HandlerExecutor.main)
-            userRestrictionObserver = observer
+        val restrictionKeys = restrictionKeysToPreferenceKeys.keys
+        if (restrictionKeys.isNotEmpty()) {
+            val userRestrictions = UserRestrictions.get(context)
+            val executor = HandlerExecutor.main
+            for (restrictionKey in restrictionKeys) {
+                userRestrictions.addObserver(restrictionKey, this, executor)
+            }
         }
     }
 
-    private fun notifyRestrictionChanged(restrictionKey: String) {
+    override fun onKeyChanged(restrictionKey: String, reason: Int) {
         val keys = restrictionKeysToPreferenceKeys[restrictionKey] ?: return
-        for (key in keys) screenBindingHelper.notifyChange(key, CHANGE_REASON_STATE)
+        for (key in keys) screenBindingHelper.notifyChange(key, PreferenceChangeReason.STATE)
     }
 
     override fun close() {
-        userRestrictionObserver?.let { UserRestrictions.removeObserver(it) }
+        val restrictionKeys = restrictionKeysToPreferenceKeys.keys
+        if (restrictionKeys.isNotEmpty()) {
+            val userRestrictions = UserRestrictions.get(context)
+            for (restrictionKey in restrictionKeys) {
+                userRestrictions.removeObserver(restrictionKey, this)
+            }
+        }
     }
 }

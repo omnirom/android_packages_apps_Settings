@@ -13,7 +13,10 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/Theme.Network"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -45,12 +48,18 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                <TextView style="@style/vpn_label"
-                        android:text="@string/vpn_name"
-                        android:labelFor="@+id/name"/>
-                <EditText style="@style/vpn_value"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/vpn_input_label"
+                    android:id="@+id/name_layout"
+                    android:hint="@string/vpn_name"
+                    app:endIconMode="clear_text"
+                    app:helperTextEnabled="true"
+                    app:helperText="@string/vpn_field_required">
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/vpn_value"
                         android:id="@+id/name"
                         android:inputType="textCapWords"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView style="@style/vpn_label"
                         android:text="@string/vpn_type"
@@ -60,23 +69,34 @@
                         android:prompt="@string/vpn_type"
                         android:entries="@array/vpn_types"/>
 
-                <TextView style="@style/vpn_label"
-                        android:text="@string/vpn_server"
-                        android:labelFor="@+id/server"/>
-                <EditText style="@style/vpn_value"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/vpn_input_label"
+                    android:id="@+id/server_layout"
+                    android:hint="@string/vpn_server"
+                    app:endIconMode="clear_text"
+                    app:helperTextEnabled="true"
+                    app:helperText="@string/vpn_field_required">
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/vpn_value"
                         android:id="@+id/server"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout android:id="@+id/options_ipsec_identity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:visibility="gone">
-                    <TextView style="@style/vpn_label"
-                            android:text="@string/vpn_ipsec_identifier"
-                            android:labelFor="@+id/ipsec_identifier"/>
-                    <EditText style="@style/vpn_value"
-                            android:id="@+id/ipsec_identifier"
-                            android:hint="@string/vpn_not_used"/>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/vpn_input_label"
+                        android:id="@+id/ipsec_identifier_layout"
+                        android:hint="@string/vpn_ipsec_identifier"
+                        app:endIconMode="clear_text"
+                        app:helperTextEnabled="true"
+                        app:helperText="@string/vpn_field_required">
+                        <com.google.android.material.textfield.TextInputEditText
+                            style="@style/vpn_value"
+                            android:id="@+id/ipsec_identifier"/>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
                 <LinearLayout android:id="@+id/ipsec_psk"
@@ -84,12 +104,18 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:visibility="gone">
-                    <TextView style="@style/vpn_label"
-                            android:text="@string/vpn_ipsec_secret"
-                            android:labelFor="@+id/ipsec_secret"/>
-                    <EditText style="@style/vpn_value"
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/vpn_input_label"
+                        android:id="@+id/ipsec_secret_layout"
+                        android:hint="@string/vpn_ipsec_secret"
+                        app:endIconMode="password_toggle"
+                        app:helperTextEnabled="true"
+                        app:helperText="@string/vpn_field_required">
+                        <com.google.android.material.textfield.TextInputEditText
+                            style="@style/vpn_value"
                             android:id="@+id/ipsec_secret"
-                            android:password="true"/>
+                            android:inputType="textPassword"/>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
                 <LinearLayout android:id="@+id/ipsec_user"
@@ -153,27 +179,27 @@
                     android:orientation="vertical"
                     android:visibility="gone" >
 
-                    <TextView
-                        style="@style/vpn_label"
-                        android:text="@string/proxy_hostname_label"
-                        android:labelFor="@+id/vpn_proxy_host" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/vpn_input_label"
+                        android:id="@+id/vpn_proxy_host_layout"
+                        android:hint="@string/proxy_hostname_label"
+                        app:endIconMode="clear_text">
+                        <com.google.android.material.textfield.TextInputEditText
+                            style="@style/vpn_value"
+                            android:id="@+id/vpn_proxy_host"
+                            android:inputType="textNoSuggestions"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/vpn_proxy_host"
-                        style="@style/vpn_value"
-                        android:hint="@string/proxy_hostname_hint"
-                        android:inputType="textNoSuggestions" />
-
-                    <TextView
-                        style="@style/vpn_label"
-                        android:text="@string/proxy_port_label"
-                        android:labelFor="@+id/vpn_proxy_port" />
-
-                    <EditText
-                        android:id="@+id/vpn_proxy_port"
-                        style="@style/vpn_value"
-                        android:hint="@string/proxy_port_hint"
-                        android:inputType="number" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/vpn_input_label"
+                        android:id="@+id/vpn_proxy_port_layout"
+                        android:hint="@string/proxy_port_label"
+                        app:endIconMode="clear_text">
+                        <com.google.android.material.textfield.TextInputEditText
+                            style="@style/vpn_value"
+                            android:id="@+id/vpn_proxy_port"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </LinearLayout>
 
@@ -182,18 +208,26 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                <TextView style="@style/vpn_label"
-                        android:text="@string/vpn_username"
-                        android:labelFor="@+id/username"/>
-                <EditText style="@style/vpn_value"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/vpn_input_label"
+                    android:id="@+id/username_layout"
+                    android:hint="@string/vpn_username_optional"
+                    app:endIconMode="clear_text">
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/vpn_value"
                         android:id="@+id/username"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView style="@style/vpn_label"
-                        android:text="@string/vpn_password"
-                        android:labelFor="@+id/password"/>
-                <EditText style="@style/vpn_value"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/vpn_input_label"
+                    android:id="@+id/password_layout"
+                    android:hint="@string/vpn_password_optional"
+                    app:endIconMode="password_toggle">
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/vpn_value"
                         android:id="@+id/password"
-                        android:password="true"/>
+                        android:inputType="textPassword"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <CheckBox style="@style/vpn_value"
                         android:id="@+id/save_login"

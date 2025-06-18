@@ -19,19 +19,14 @@ package com.android.settings.notification.zen;
 import android.app.AutomaticZenRule;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
-import com.android.internal.logging.nano.MetricsProto;
 import com.android.settings.R;
 import com.android.settings.core.PreferenceControllerMixin;
-import com.android.settings.core.SubSettingLauncher;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 import com.android.settingslib.widget.ActionButtonsPreference;
 
@@ -87,7 +82,6 @@ public class ZenRuleButtonsPreferenceController extends AbstractZenModePreferenc
                             mMetricsFeatureProvider.action(mContext,
                                     SettingsEnums.ACTION_ZEN_MODE_RULE_NAME_CHANGE_OK);
                             mRule.setName(ruleName);
-                            mRule.setModified(true);
                             mBackend.updateZenRule(mId, mRule);
                         }
                     });

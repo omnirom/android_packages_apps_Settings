@@ -335,6 +335,7 @@ public class AvailableMediaDeviceGroupController extends BasePreferenceControlle
         var unused =
                 ThreadUtils.postOnBackgroundThread(
                         () -> {
+                            Log.d(TAG, "updateTitle, check current status");
                             int titleResId;
                             if (isAudioModeOngoingCall(mContext)) {
                                 // in phone call
@@ -347,6 +348,7 @@ public class AvailableMediaDeviceGroupController extends BasePreferenceControlle
                                 // without phone call, not audio sharing
                                 titleResId = R.string.connected_device_media_device_title;
                             }
+                            Log.d(TAG, "updateTitle, title = " + titleResId);
                             mContext.getMainExecutor()
                                     .execute(
                                             () -> {

@@ -22,6 +22,7 @@ import static com.android.settingslib.drawer.SwitchesProvider.EXTRA_SWITCH_SET_C
 import static com.android.settingslib.drawer.TileUtils.META_DATA_KEY_ORDER;
 import static com.android.settingslib.drawer.TileUtils.META_DATA_KEY_PROFILE;
 import static com.android.settingslib.drawer.TileUtils.META_DATA_PREFERENCE_ICON;
+import static com.android.settingslib.drawer.TileUtils.META_DATA_PREFERENCE_ICON_COLOR_SCHEME;
 import static com.android.settingslib.drawer.TileUtils.META_DATA_PREFERENCE_ICON_URI;
 import static com.android.settingslib.drawer.TileUtils.META_DATA_PREFERENCE_KEYHINT;
 import static com.android.settingslib.drawer.TileUtils.META_DATA_PREFERENCE_SUMMARY;
@@ -820,6 +821,135 @@ public class DashboardFeatureProviderImplTest {
                 .startActivityAsUser(any(Intent.class), argument.capture());
         assertThat(argument.getValue().getIdentifier()).isEqualTo(0);
         verify(mActivity, never()).getSupportFragmentManager();
+    }
+
+    @Test
+    public void getSchemedColors_schemeNotSpecified_returnNull() {
+        Tile tile = new ActivityTile(mActivityInfo, CategoryKey.CATEGORY_HOMEPAGE);
+
+        Pair<Integer, Integer> colors = mImpl.getSchemedColors(tile);
+
+        assertThat(colors).isNull();
+    }
+
+    @Test
+    public void getSchemedColors_undefinedScheme_returnNull() {
+        Tile tile = new ActivityTile(mActivityInfo, CategoryKey.CATEGORY_HOMEPAGE);
+        mActivityInfo.metaData.putString(META_DATA_PREFERENCE_ICON_COLOR_SCHEME, "abc");
+
+        Pair<Integer, Integer> colors = mImpl.getSchemedColors(tile);
+
+        assertThat(colors).isNull();
+    }
+
+    @Test
+    public void getSchemedColors_blueVariantScheme_returnCorrectColors() {
+        Tile tile = new ActivityTile(mActivityInfo, CategoryKey.CATEGORY_HOMEPAGE);
+        mActivityInfo.metaData.putString(META_DATA_PREFERENCE_ICON_COLOR_SCHEME, "blue_variant");
+
+        Pair<Integer, Integer> colors = mImpl.getSchemedColors(tile);
+
+        assertThat(colors.first).isEqualTo(R.color.homepage_blue_variant_fg);
+        assertThat(colors.second).isEqualTo(R.color.homepage_blue_variant_bg);
+    }
+
+    @Test
+    public void getSchemedColors_blueScheme_returnCorrectColors() {
+        Tile tile = new ActivityTile(mActivityInfo, CategoryKey.CATEGORY_HOMEPAGE);
+        mActivityInfo.metaData.putString(META_DATA_PREFERENCE_ICON_COLOR_SCHEME, "blue");
+
+        Pair<Integer, Integer> colors = mImpl.getSchemedColors(tile);
+
+        assertThat(colors.first).isEqualTo(R.color.homepage_blue_fg);
+        assertThat(colors.second).isEqualTo(R.color.homepage_blue_bg);
+    }
+
+    @Test
+    public void getSchemedColors_pinkScheme_returnCorrectColors() {
+        Tile tile = new ActivityTile(mActivityInfo, CategoryKey.CATEGORY_HOMEPAGE);
+        mActivityInfo.metaData.putString(META_DATA_PREFERENCE_ICON_COLOR_SCHEME, "pink");
+
+        Pair<Integer, Integer> colors = mImpl.getSchemedColors(tile);
+
+        assertThat(colors.first).isEqualTo(R.color.homepage_pink_fg);
+        assertThat(colors.second).isEqualTo(R.color.homepage_pink_bg);
+    }
+
+    @Test
+    public void getSchemedColors_orangeScheme_returnCorrectColors() {
+        Tile tile = new ActivityTile(mActivityInfo, CategoryKey.CATEGORY_HOMEPAGE);
+        mActivityInfo.metaData.putString(META_DATA_PREFERENCE_ICON_COLOR_SCHEME, "orange");
+
+        Pair<Integer, Integer> colors = mImpl.getSchemedColors(tile);
+
+        assertThat(colors.first).isEqualTo(R.color.homepage_orange_fg);
+        assertThat(colors.second).isEqualTo(R.color.homepage_orange_bg);
+    }
+
+    @Test
+    public void getSchemedColors_yellowScheme_returnCorrectColors() {
+        Tile tile = new ActivityTile(mActivityInfo, CategoryKey.CATEGORY_HOMEPAGE);
+        mActivityInfo.metaData.putString(META_DATA_PREFERENCE_ICON_COLOR_SCHEME, "yellow");
+
+        Pair<Integer, Integer> colors = mImpl.getSchemedColors(tile);
+
+        assertThat(colors.first).isEqualTo(R.color.homepage_yellow_fg);
+        assertThat(colors.second).isEqualTo(R.color.homepage_yellow_bg);
+    }
+
+    @Test
+    public void getSchemedColors_greenScheme_returnCorrectColors() {
+        Tile tile = new ActivityTile(mActivityInfo, CategoryKey.CATEGORY_HOMEPAGE);
+        mActivityInfo.metaData.putString(META_DATA_PREFERENCE_ICON_COLOR_SCHEME, "green");
+
+        Pair<Integer, Integer> colors = mImpl.getSchemedColors(tile);
+
+        assertThat(colors.first).isEqualTo(R.color.homepage_green_fg);
+        assertThat(colors.second).isEqualTo(R.color.homepage_green_bg);
+    }
+
+    @Test
+    public void getSchemedColors_greyScheme_returnCorrectColors() {
+        Tile tile = new ActivityTile(mActivityInfo, CategoryKey.CATEGORY_HOMEPAGE);
+        mActivityInfo.metaData.putString(META_DATA_PREFERENCE_ICON_COLOR_SCHEME, "grey");
+
+        Pair<Integer, Integer> colors = mImpl.getSchemedColors(tile);
+
+        assertThat(colors.first).isEqualTo(R.color.homepage_grey_fg);
+        assertThat(colors.second).isEqualTo(R.color.homepage_grey_bg);
+    }
+
+    @Test
+    public void getSchemedColors_cyanScheme_returnCorrectColors() {
+        Tile tile = new ActivityTile(mActivityInfo, CategoryKey.CATEGORY_HOMEPAGE);
+        mActivityInfo.metaData.putString(META_DATA_PREFERENCE_ICON_COLOR_SCHEME, "cyan");
+
+        Pair<Integer, Integer> colors = mImpl.getSchemedColors(tile);
+
+        assertThat(colors.first).isEqualTo(R.color.homepage_cyan_fg);
+        assertThat(colors.second).isEqualTo(R.color.homepage_cyan_bg);
+    }
+
+    @Test
+    public void getSchemedColors_redScheme_returnCorrectColors() {
+        Tile tile = new ActivityTile(mActivityInfo, CategoryKey.CATEGORY_HOMEPAGE);
+        mActivityInfo.metaData.putString(META_DATA_PREFERENCE_ICON_COLOR_SCHEME, "red");
+
+        Pair<Integer, Integer> colors = mImpl.getSchemedColors(tile);
+
+        assertThat(colors.first).isEqualTo(R.color.homepage_red_fg);
+        assertThat(colors.second).isEqualTo(R.color.homepage_red_bg);
+    }
+
+    @Test
+    public void getSchemedColors_purpleScheme_returnCorrectColors() {
+        Tile tile = new ActivityTile(mActivityInfo, CategoryKey.CATEGORY_HOMEPAGE);
+        mActivityInfo.metaData.putString(META_DATA_PREFERENCE_ICON_COLOR_SCHEME, "purple");
+
+        Pair<Integer, Integer> colors = mImpl.getSchemedColors(tile);
+
+        assertThat(colors.first).isEqualTo(R.color.homepage_purple_fg);
+        assertThat(colors.second).isEqualTo(R.color.homepage_purple_bg);
     }
 
     private static class TestFragment extends DashboardFragment {

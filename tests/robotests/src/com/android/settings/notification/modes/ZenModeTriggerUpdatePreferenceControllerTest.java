@@ -148,7 +148,7 @@ public class ZenModeTriggerUpdatePreferenceControllerTest {
 
     @Test
     public void isAvailable_manualDND_false() {
-        mController.setZenMode(TestModeBuilder.MANUAL_DND_INACTIVE);
+        mController.setZenMode(TestModeBuilder.MANUAL_DND);
         assertThat(mController.isAvailable()).isFalse();
     }
 
@@ -161,7 +161,7 @@ public class ZenModeTriggerUpdatePreferenceControllerTest {
         assertThat(mPreference.getCheckedState()).isFalse();
 
         // Now with the rule enabled
-        zenMode.getRule().setEnabled(true);
+        zenMode.setEnabled(true);
         mController.updateZenMode(mPreference, zenMode);
         assertThat(mPreference.getCheckedState()).isTrue();
     }
@@ -189,7 +189,7 @@ public class ZenModeTriggerUpdatePreferenceControllerTest {
         // Verify the backend got asked to update the mode to be enabled
         ArgumentCaptor<ZenMode> captor = ArgumentCaptor.forClass(ZenMode.class);
         verify(mBackend).updateMode(captor.capture());
-        assertThat(captor.getValue().getRule().isEnabled()).isTrue();
+        assertThat(captor.getValue().isEnabled()).isTrue();
         assertThat(ShadowAlertDialog.getLatestAlertDialog().isShowing()).isFalse();
     }
 
@@ -216,7 +216,7 @@ public class ZenModeTriggerUpdatePreferenceControllerTest {
         // Verify the backend got asked to update the mode to be disabled
         ArgumentCaptor<ZenMode> captor = ArgumentCaptor.forClass(ZenMode.class);
         verify(mBackend).updateMode(captor.capture());
-        assertThat(captor.getValue().getRule().isEnabled()).isFalse();
+        assertThat(captor.getValue().isEnabled()).isFalse();
         assertThat(ShadowAlertDialog.getLatestAlertDialog().isShowing()).isFalse();
     }
 

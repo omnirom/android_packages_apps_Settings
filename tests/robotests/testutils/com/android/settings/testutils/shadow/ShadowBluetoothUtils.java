@@ -18,22 +18,46 @@ package com.android.settings.testutils.shadow;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.android.settings.bluetooth.Utils;
+import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
 
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 import org.robolectric.annotation.Resetter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /** Robolectric shadow for the bluetooth utils. */
 @Implements(Utils.class)
 public class ShadowBluetoothUtils {
 
     public static LocalBluetoothManager sLocalBluetoothManager;
+    private static final  Map<CachedBluetoothDevice, Boolean> sLeAudioState = new HashMap<>();
 
     @Implementation
     protected static LocalBluetoothManager getLocalBtManager(Context context) {
         return sLocalBluetoothManager;
+    }
+
+    /** Sets le audio state for the device. */
+    @Implementation
+    public static void setLeAudioEnabled(
+            @NonNull LocalBluetoothManager manager,
+            @NonNull CachedBluetoothDevice cachedDevice,
+            boolean enable) {
+        sLeAudioState.put(cachedDevice, enable);
+    }
+
+    /** Checks whether le audio is enabled for the device. */
+    public static boolean isLeAudioEnabled(@NonNull CachedBluetoothDevice cachedDevice) {
+        if (sLeAudioState.containsKey(cachedDevice)) {
+            return sLeAudioState.get(cachedDevice);
+        }
+        return false;
     }
 
     /** Resets the local bluetooth manager to null. */

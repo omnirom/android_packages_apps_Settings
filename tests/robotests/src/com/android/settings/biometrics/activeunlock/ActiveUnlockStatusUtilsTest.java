@@ -243,4 +243,11 @@ public class ActiveUnlockStatusUtilsTest {
                 .isEqualTo(mApplicationContext.getString(
                         R.string.biometric_settings_use_watch_for));
     }
+
+    @Test
+    public void getTitleForActiveUnlockOnly_returnsTile() {
+        assertThat(mActiveUnlockStatusUtils.getTitleForActiveUnlockOnly())
+                .isEqualTo(mApplicationContext.getString(
+                        R.string.security_settings_activeunlock));
+    }
 }

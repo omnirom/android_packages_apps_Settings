@@ -102,7 +102,7 @@ public class DndConditionalCardControllerTest {
     private ZenModeConfig getMutedAllConfig() {
         final ZenModeConfig config = new ZenModeConfig();
         config.applyNotificationPolicy(new NotificationManager.Policy(0, 0, 0));
-        config.areChannelsBypassingDnd = false;
+        config.hasPriorityChannels = false;
         return config;
     }
 }

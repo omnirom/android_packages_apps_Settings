@@ -36,6 +36,9 @@ import android.content.pm.PackageManager;
 import android.hardware.face.Face;
 import android.hardware.face.FaceManager;
 import android.os.UserManager;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.preference.Preference;
@@ -50,6 +53,7 @@ import com.android.settingslib.core.lifecycle.Lifecycle;
 
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -67,6 +71,8 @@ public class FaceStatusPreferenceControllerTest {
 
     private static final String TEST_PREF_KEY = "baz";
 
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Mock
     private LockPatternUtils mLockPatternUtils;
     @Mock
@@ -125,13 +131,26 @@ public class FaceStatusPreferenceControllerTest {
     }
 
     @Test
-    public void updateState_noFace_shouldShowDefaultSummary() {
+    @DisableFlags(com.android.settings.flags.Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
+    public void updateState_noFace_flagOff_shouldShowDefaultSummary() {
         when(mFaceManager.isHardwareDetected()).thenReturn(true);
 
         mController.updateState(mPreference);
 
         assertThat(mPreference.getSummary()).isEqualTo(
                 mContext.getString(R.string.security_settings_face_preference_summary_none));
+        assertThat(mPreference.isVisible()).isTrue();
+    }
+
+    @Test
+    @EnableFlags(com.android.settings.flags.Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
+    public void updateState_noFace_flagOn_shouldShowDefaultSummary() {
+        when(mFaceManager.isHardwareDetected()).thenReturn(true);
+
+        mController.updateState(mPreference);
+
+        assertThat(mPreference.getSummary()).isEqualTo(
+                mContext.getString(R.string.security_settings_face_preference_summary_none_new));
         assertThat(mPreference.isVisible()).isTrue();
     }
 

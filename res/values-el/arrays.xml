@@ -79,7 +79,7 @@
   </string-array>
   <string-array name="bt_stack_log_level_entries">
     <item msgid="7872226620825638673">"Λεπτομερής"</item>
-    <item msgid="4414817955073540319">"Εντοπισμός σφαλμάτων"</item>
+    <item msgid="4414817955073540319">"Αποσφαλμάτωση"</item>
     <item msgid="9152250562693119681">"Πληροφορίες"</item>
     <item msgid="8884807223431437262">"Προειδοποίηση"</item>
     <item msgid="1154843682335941096">"Σφάλμα"</item>
@@ -429,7 +429,7 @@
   </string-array>
   <string-array name="autofill_logging_level_entries">
     <item msgid="2263571982739726576">"Ανενεργή"</item>
-    <item msgid="4295717421282345505">"Εντοπισμός σφαλμάτων"</item>
+    <item msgid="4295717421282345505">"Αποσφαλμάτωση"</item>
     <item msgid="8657797891533816070">"Λεπτομερής"</item>
   </string-array>
   <string-array name="cdma_system_select_choices">

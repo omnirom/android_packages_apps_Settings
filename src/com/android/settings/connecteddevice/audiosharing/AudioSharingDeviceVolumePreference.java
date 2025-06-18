@@ -46,6 +46,7 @@ public class AudioSharingDeviceVolumePreference extends SeekBarPreference {
 
     private final Context mContext;
     private final CachedBluetoothDevice mCachedDevice;
+    @Nullable private final LocalBluetoothManager mBtManager;
     @Nullable protected SeekBar mSeekBar;
     private Boolean mTrackingTouch = false;
     private MetricsFeatureProvider mMetricsFeatureProvider =
@@ -57,6 +58,7 @@ public class AudioSharingDeviceVolumePreference extends SeekBarPreference {
         setLayoutResource(R.layout.preference_volume_slider);
         mContext = context;
         mCachedDevice = device;
+        mBtManager = Utils.getLocalBtManager(mContext);
     }
 
     @NonNull
@@ -102,6 +104,39 @@ public class AudioSharingDeviceVolumePreference extends SeekBarPreference {
         handleProgressChange(seekBar.getProgress());
     }
 
+    @Override
+    public boolean equals(@Nullable Object o) {
+        if ((o == null) || !(o instanceof AudioSharingDeviceVolumePreference)) {
+            return false;
+        }
+        return mCachedDevice.equals(
+                ((AudioSharingDeviceVolumePreference) o).mCachedDevice);
+    }
+
+    @Override
+    public int hashCode() {
+        return mCachedDevice.hashCode();
+    }
+
+    @Override
+    @NonNull
+    public String toString() {
+        StringBuilder builder = new StringBuilder("Preference{");
+        builder.append("preference=").append(super.toString());
+        if (mCachedDevice.getDevice() != null) {
+            builder.append(", device=").append(mCachedDevice.getDevice().getAnonymizedAddress());
+        }
+        builder.append("}");
+        return builder.toString();
+    }
+
+    void onPreferenceAttributesChanged() {
+        var unused = ThreadUtils.postOnBackgroundThread(() -> {
+            String name = mCachedDevice.getName();
+            AudioSharingUtils.postOnMainThread(mContext, () -> setTitle(name));
+        });
+    }
+
     private void handleProgressChange(int progress) {
         var unused =
                 ThreadUtils.postOnBackgroundThread(
@@ -110,7 +145,7 @@ public class AudioSharingDeviceVolumePreference extends SeekBarPreference {
                             if (groupId != BluetoothCsipSetCoordinator.GROUP_ID_INVALID
                                     && groupId
                                             == BluetoothUtils.getPrimaryGroupIdForBroadcast(
-                                                    mContext.getContentResolver())) {
+                                                    mContext.getContentResolver(), mBtManager)) {
                                 // Set media stream volume for primary buds, audio manager will
                                 // update all buds volume in the audio sharing.
                                 setAudioManagerStreamVolume(progress);
@@ -126,9 +161,8 @@ public class AudioSharingDeviceVolumePreference extends SeekBarPreference {
             Log.d(TAG, "Skip set device volume, device is null");
             return;
         }
-        LocalBluetoothManager btManager = Utils.getLocalBtManager(mContext);
-        VolumeControlProfile vc =
-                btManager == null ? null : btManager.getProfileManager().getVolumeControlProfile();
+        VolumeControlProfile vc = mBtManager == null ? null
+                : mBtManager.getProfileManager().getVolumeControlProfile();
         if (vc != null) {
             vc.setDeviceVolume(device, progress, /* isGroupOp= */ true);
             mMetricsFeatureProvider.action(

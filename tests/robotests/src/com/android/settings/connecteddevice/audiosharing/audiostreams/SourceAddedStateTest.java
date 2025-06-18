@@ -22,9 +22,12 @@ import static com.android.settings.connecteddevice.audiosharing.audiostreams.Sou
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -33,6 +36,9 @@ import android.bluetooth.BluetoothLeBroadcastMetadata;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.Preference;
@@ -43,6 +49,7 @@ import com.android.settings.SettingsActivity;
 import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settings.testutils.shadow.ShadowFragment;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
+import com.android.settingslib.flags.Flags;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -62,6 +69,7 @@ import org.robolectric.annotation.Config;
         })
 public class SourceAddedStateTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     private static final int BROADCAST_ID = 1;
     private static final String BROADCAST_TITLE = "title";
     private final Context mContext = ApplicationProvider.getApplicationContext();
@@ -105,7 +113,8 @@ public class SourceAddedStateTest {
     }
 
     @Test
-    public void testPerformAction() {
+    @DisableFlags(Flags.FLAG_AUDIO_STREAM_MEDIA_SERVICE_BY_RECEIVE_STATE)
+    public void testPerformAction_startService() {
         mInstance.setAudioStreamsRepositoryForTesting(mRepository);
         BluetoothLeBroadcastMetadata mockMetadata = mock(BluetoothLeBroadcastMetadata.class);
         when(mRepository.getCachedMetadata(anyInt())).thenReturn(mockMetadata);
@@ -122,6 +131,27 @@ public class SourceAddedStateTest {
                         eq(SettingsEnums.ACTION_AUDIO_STREAM_JOIN_SUCCEED),
                         eq(SourceOriginForLogging.QR_CODE_SCAN_SETTINGS.ordinal()));
         verify(mHelper).startMediaService(eq(mContext), eq(BROADCAST_ID), eq(BROADCAST_TITLE));
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_AUDIO_STREAM_MEDIA_SERVICE_BY_RECEIVE_STATE)
+    public void testPerformAction_skipStartService() {
+        mInstance.setAudioStreamsRepositoryForTesting(mRepository);
+        BluetoothLeBroadcastMetadata mockMetadata = mock(BluetoothLeBroadcastMetadata.class);
+        when(mRepository.getCachedMetadata(anyInt())).thenReturn(mockMetadata);
+        when(mPreference.getContext()).thenReturn(mContext);
+        when(mPreference.getSourceOriginForLogging())
+                .thenReturn(SourceOriginForLogging.QR_CODE_SCAN_SETTINGS);
+
+        mInstance.performAction(mPreference, mController, mHelper);
+
+        verify(mRepository).saveMetadata(eq(mContext), eq(mockMetadata));
+        verify(mFeatureFactory.metricsFeatureProvider)
+                .action(
+                        eq(mContext),
+                        eq(SettingsEnums.ACTION_AUDIO_STREAM_JOIN_SUCCEED),
+                        eq(SourceOriginForLogging.QR_CODE_SCAN_SETTINGS.ordinal()));
+        verify(mHelper, never()).startMediaService(any(), anyInt(), anyString());
     }
 
     @Test

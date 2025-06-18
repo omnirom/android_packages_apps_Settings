@@ -1,0 +1,9 @@
+package: "com.android.settings.flags"
+container: "system_ext"
+
+flag {
+  name: "enable_nested_toggle_switches"
+  namespace: "android_settings"
+  description: "Enable nested toggle switches in Adaptive connectivity settings UI"
+  bug: "393645580"
+}

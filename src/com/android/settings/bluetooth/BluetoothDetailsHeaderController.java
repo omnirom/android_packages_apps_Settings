@@ -62,7 +62,6 @@ public class BluetoothDetailsHeaderController extends BluetoothDetailsController
         final LayoutPreference headerPreference = screen.findPreference(KEY_DEVICE_HEADER);
         mHeaderController = EntityHeaderController.newInstance(mFragment.getActivity(), mFragment,
                 headerPreference.findViewById(R.id.entity_header));
-        screen.addPreference(headerPreference);
     }
 
     protected void setHeaderProperties() {

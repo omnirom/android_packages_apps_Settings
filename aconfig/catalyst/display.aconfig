@@ -1,5 +1,5 @@
 package: "com.android.settings.flags"
-container: "system"
+container: "system_ext"
 
 flag {
   name: "catalyst_display_settings_screen"
@@ -9,10 +9,24 @@ flag {
 }
 
 flag {
+  name: "catalyst_display_settings_screen_25q3"
+  namespace: "android_settings"
+  description: "Flag for Display in 25Q3"
+  bug: "352179685"
+}
+
+flag {
   name: "catalyst_screen_timeout"
   namespace: "android_settings"
   description: "Flag for Screen Timeout settings"
   bug: "323791114"
+}
+
+flag {
+  name: "catalyst_screen_timeout_25q3"
+  namespace: "android_settings"
+  description: "Flag for Screen Timeout settings in 25Q3"
+  bug: "352179685"
 }
 
 flag {
@@ -27,4 +41,39 @@ flag {
   namespace: "android_settings"
   description: "Flag for Adaptive brightness"
   bug: "323791114"
+}
+
+flag {
+  name: "catalyst_night_display"
+  namespace: "android_settings"
+  description: "Flag for Night Light in 25Q3"
+  bug: "352179685"
+}
+
+flag {
+  name: "catalyst_color_mode"
+  namespace: "android_settings"
+  description: "Flag for Colors in 25Q3"
+  bug: "352179685"
+}
+
+flag {
+  name: "catalyst_gesture_system_navigation_input_summary"
+  namespace: "android_settings"
+  description: "Flag for Navigation mode in 25Q3"
+  bug: "352179685"
+}
+
+flag {
+  name: "catalyst_screen_resolution"
+  namespace: "android_settings"
+  description: "Flag for Screen resolution in 25Q3"
+  bug: "352179685"
+}
+
+flag {
+  name: "catalyst_auto_rotate"
+  namespace: "android_settings"
+  description: "Flag for Auto-rotate screen in 25Q3"
+  bug: "352179685"
 }

@@ -52,7 +52,7 @@ class SubscriptionActivationRepository(
             Log.i(TAG, "Unable to toggle subscription due to unusable subscription ID.")
             return
         }
-        if (!active && isEmergencyCallbackMode(subId)) {
+        if (isEmergencyCallbackMode(subId)) {
             val intent = Intent(ACTION_SHOW_NOTICE_ECM_BLOCK_OTHERS).apply {
                 setPackage(Utils.PHONE_PACKAGE_NAME)
             }

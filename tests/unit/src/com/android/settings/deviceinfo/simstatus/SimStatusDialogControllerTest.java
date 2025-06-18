@@ -17,6 +17,7 @@
 package com.android.settings.deviceinfo.simstatus;
 
 import static com.android.settings.deviceinfo.simstatus.SimStatusDialogController.CELL_DATA_NETWORK_TYPE_VALUE_ID;
+import static com.android.settings.deviceinfo.simstatus.SimStatusDialogController.CELLULAR_NETWORK_STATE;
 import static com.android.settings.deviceinfo.simstatus.SimStatusDialogController.CELL_VOICE_NETWORK_TYPE_VALUE_ID;
 import static com.android.settings.deviceinfo.simstatus.SimStatusDialogController.ICCID_INFO_LABEL_ID;
 import static com.android.settings.deviceinfo.simstatus.SimStatusDialogController.ICCID_INFO_VALUE_ID;
@@ -30,18 +31,22 @@ import static com.android.settings.deviceinfo.simstatus.SimStatusDialogControlle
 import static com.android.settings.deviceinfo.simstatus.SimStatusDialogController.SERVICE_STATE_VALUE_ID;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.PersistableBundle;
 import android.telephony.CarrierConfigManager;
 import android.telephony.ServiceState;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
+import android.telephony.TelephonyCallback;
 import android.telephony.TelephonyManager;
 import android.telephony.UiccCardInfo;
 import android.telephony.euicc.EuiccManager;
@@ -63,6 +68,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -73,6 +79,10 @@ public class SimStatusDialogControllerTest {
     private SimStatusDialogFragment mDialog;
     @Mock
     private TelephonyManager mTelephonyManager;
+    @Mock
+    private TelephonyManager mTelephonyManagerForSub1;
+    @Mock
+    private TelephonyManager mTelephonyManagerForSub2;
     @Mock
     private SubscriptionInfo mSubscriptionInfo;
     @Mock
@@ -86,6 +96,7 @@ public class SimStatusDialogControllerTest {
 
     private SimStatusDialogController mController;
     private Context mContext;
+    private PackageManager mPackageManager;
     @Mock
     private LifecycleOwner mLifecycleOwner;
     private Lifecycle mLifecycle;
@@ -94,18 +105,28 @@ public class SimStatusDialogControllerTest {
 
     private static final int MAX_PHONE_COUNT_DUAL_SIM = 2;
 
+    private static final int TEST_SUB_ID_1 = 1;
+    private static final int TEST_SUB_ID_2 = 2;
+
     @Before
     @UiThreadTest
     public void setup() {
         MockitoAnnotations.initMocks(this);
         mContext = spy(ApplicationProvider.getApplicationContext());
         when(mDialog.getContext()).thenReturn(mContext);
+        mPackageManager = spy(mContext.getPackageManager());
+        when(mContext.getPackageManager()).thenReturn(mPackageManager);
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_TELEPHONY_RADIO_ACCESS))
+                .thenReturn(true);
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_TELEPHONY_CALLING))
+                .thenReturn(true);
         mLifecycle = new Lifecycle(mLifecycleOwner);
 
         mTelephonyManager = spy(mContext.getSystemService(TelephonyManager.class));
         mSubscriptionManager = spy(mContext.getSystemService(SubscriptionManager.class));
         doReturn(mSubscriptionInfo).when(mSubscriptionManager)
                 .getActiveSubscriptionInfoForSimSlotIndex(anyInt());
+        doReturn(TEST_SUB_ID_1).when(mSubscriptionInfo).getSubscriptionId();
 
         when(mContext.getSystemService(TelephonyManager.class)).thenReturn(mTelephonyManager);
         when(mContext.getSystemService(CarrierConfigManager.class)).thenReturn(
@@ -113,9 +134,12 @@ public class SimStatusDialogControllerTest {
         when(mContext.getSystemService(EuiccManager.class)).thenReturn(mEuiccManager);
         when(mContext.getSystemService(SubscriptionManager.class)).thenReturn(mSubscriptionManager);
 
-        doReturn(mTelephonyManager).when(mTelephonyManager).createForSubscriptionId(
-                anyInt());
+        doReturn(mTelephonyManagerForSub1).when(mTelephonyManager).createForSubscriptionId(
+                TEST_SUB_ID_1);
+        doReturn(mTelephonyManagerForSub2).when(mTelephonyManager).createForSubscriptionId(
+                TEST_SUB_ID_2);
         doReturn(2).when(mTelephonyManager).getCardIdForDefaultEuicc();
+        doReturn(TelephonyManager.NETWORK_TYPE_LTE).when(mTelephonyManager).getVoiceNetworkType();
         doReturn(TelephonyManager.NETWORK_TYPE_LTE).when(mTelephonyManager).getDataNetworkType();
 
         mUpdatePhoneNumberCount = new AtomicInteger();
@@ -339,5 +363,46 @@ public class SimStatusDialogControllerTest {
 
         verify(mDialog).setSettingVisibility(IMS_REGISTRATION_STATE_LABEL_ID, false);
         verify(mDialog).setSettingVisibility(IMS_REGISTRATION_STATE_VALUE_ID, false);
+    }
+
+    @Test
+    public void onSubscriptionsChanged_updateSubInfoToNewSub_testTelephonyCallbackUnregRereg() {
+        // sub id changed from 1 to 2
+        SubscriptionInfo subInfo2 = mock(SubscriptionInfo.class);
+        doReturn(TEST_SUB_ID_2).when(subInfo2).getSubscriptionId();
+        doReturn(subInfo2).when(mSubscriptionManager)
+                .getActiveSubscriptionInfoForSimSlotIndex(anyInt());
+        mController.mOnSubscriptionsChangedListener.onSubscriptionsChanged();
+        verify(mTelephonyManagerForSub2).registerTelephonyCallback(any(Executor.class),
+                any(TelephonyCallback.class));
+
+        // sub id changed from 2 to 1
+        SubscriptionInfo subInfo1 = mock(SubscriptionInfo.class);
+        doReturn(TEST_SUB_ID_1).when(subInfo1).getSubscriptionId();
+        doReturn(subInfo1).when(mSubscriptionManager)
+                .getActiveSubscriptionInfoForSimSlotIndex(anyInt());
+        mController.mOnSubscriptionsChangedListener.onSubscriptionsChanged();
+        verify(mTelephonyManagerForSub2).unregisterTelephonyCallback(
+                mController.mTelephonyCallback);
+        verify(mTelephonyManagerForSub1).registerTelephonyCallback(any(Executor.class),
+                any(TelephonyCallback.class));
+    }
+
+    @Test
+    public void onSubscriptionsChanged_updateSubInfoToNull_testTelephonyCallbackUnreg() {
+        doReturn(null).when(mSubscriptionManager).getActiveSubscriptionInfoForSimSlotIndex(
+                anyInt());
+        mController.mOnSubscriptionsChangedListener.onSubscriptionsChanged();
+        verify(mTelephonyManagerForSub1).unregisterTelephonyCallback(
+                mController.mTelephonyCallback);
+    }
+
+    @Test
+    public void onSubscriptionsChanged_updateSubInfoToNull_shouldUpdateDataStatusToUnknown() {
+        doReturn(null).when(mSubscriptionManager).getActiveSubscriptionInfoForSimSlotIndex(
+                anyInt());
+        mController.mOnSubscriptionsChangedListener.onSubscriptionsChanged();
+        final String unknownText = ResourcesUtils.getResourcesString(mContext, "radioInfo_unknown");
+        verify(mDialog).setText(CELLULAR_NETWORK_STATE, unknownText);
     }
 }

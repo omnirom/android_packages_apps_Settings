@@ -348,9 +348,9 @@ public class ChooseLockPattern extends SettingsActivity {
          */
         enum RightButtonMode {
             Continue(R.string.next_label, true),
-            ContinueDisabled(R.string.next_label, false),
+            ContinueDisabled(R.string.next_label, true),
             Confirm(R.string.lockpattern_confirm_button_text, true),
-            ConfirmDisabled(R.string.lockpattern_confirm_button_text, false),
+            ConfirmDisabled(R.string.lockpattern_confirm_button_text, true),
             Ok(android.R.string.ok, true);
 
             /**
@@ -563,6 +563,7 @@ public class ChooseLockPattern extends SettingsActivity {
             mLockPatternView = (LockPatternView) view.findViewById(R.id.lockPattern);
             mLockPatternView.setOnPatternListener(mChooseNewLockPatternListener);
             mLockPatternView.setFadePattern(false);
+            mLockPatternView.setClickable(false);
 
             mFooterText = (TextView) view.findViewById(R.id.footerText);
 
@@ -742,10 +743,11 @@ public class ChooseLockPattern extends SettingsActivity {
             // header text, footer text, visibility and
             // enabled state all known from the stage
             if (stage == Stage.ChoiceTooShort) {
-                layout.setDescriptionText(
-                        getResources().getString(
-                                stage.headerMessage,
-                                LockPatternUtils.MIN_LOCK_PATTERN_SIZE));
+                final String desc = getResources().getString(
+                        stage.headerMessage,
+                        LockPatternUtils.MIN_LOCK_PATTERN_SIZE);
+                layout.setDescriptionText(desc);
+                layout.setContentDescription(desc);
             } else {
                 layout.setDescriptionText(stage.headerMessage);
             }
@@ -815,8 +817,6 @@ public class ChooseLockPattern extends SettingsActivity {
                 if (stage == Stage.NeedToConfirm) {
                     // If the Stage is NeedToConfirm, move the a11y focus to the header.
                     mHeaderText.requestAccessibilityFocus();
-                } else {
-                    mHeaderText.announceForAccessibility(mHeaderText.getText());
                 }
             }
         }
@@ -886,11 +886,6 @@ public class ChooseLockPattern extends SettingsActivity {
                 if (intent != null) {
                     startActivity(intent);
                 }
-            }
-
-            if (mSudContent != null) {
-                mSudContent.announceForAccessibility(
-                        getString(R.string.accessibility_setup_password_complete));
             }
 
             getActivity().finish();

@@ -32,6 +32,7 @@ import androidx.preference.Preference;
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settingslib.notification.modes.ZenMode;
+import com.android.settingslib.notification.modes.ZenModeSchedules;
 import com.android.settingslib.notification.modes.ZenModesBackend;
 import com.android.settingslib.widget.LayoutPreference;
 
@@ -62,7 +63,7 @@ class ZenModeSetSchedulePreferenceController extends AbstractZenModePreferenceCo
 
     @Override
     public void updateState(Preference preference, @NonNull ZenMode zenMode) {
-        mSchedule = ZenModeConfig.tryParseScheduleConditionId(zenMode.getRule().getConditionId());
+        mSchedule = ZenModeSchedules.getTimeSchedule(zenMode);
         LayoutPreference layoutPref = (LayoutPreference) preference;
 
         TextView start = layoutPref.findViewById(R.id.start_time);

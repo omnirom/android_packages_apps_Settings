@@ -126,6 +126,20 @@ class AppNotificationRepository(
         }
     }
 
+    fun isAdjustmentSupportedForPackage(app: ApplicationInfo,  key: String): Boolean =
+        notificationManager.isAdjustmentSupportedForPackage(key, app.packageName)
+
+    fun setAdjustmentSupportedForPackage(app: ApplicationInfo, key: String, enabled: Boolean):
+            Boolean {
+        return try {
+            notificationManager.setAdjustmentSupportedForPackage(key, app.packageName, enabled)
+            true
+        } catch (e: Exception) {
+            Log.w(TAG, "Error calling INotificationManager", e)
+            false
+        }
+    }
+
     fun isUserUnlocked(user: Int): Boolean {
         return try {
             userManager.isUserUnlocked(user)

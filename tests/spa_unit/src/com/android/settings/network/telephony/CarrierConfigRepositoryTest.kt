@@ -25,7 +25,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
-import org.mockito.kotlin.anyVararg
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.eq
@@ -106,7 +105,7 @@ class CarrierConfigRepositoryTest {
     @Test
     fun transformConfig_managerThrowIllegalStateException_returnDefaultValue() {
         mockCarrierConfigManager.stub {
-            on { getConfigForSubId(any(), anyVararg()) } doThrow IllegalStateException()
+            on { getConfigForSubId(any(), any()) } doThrow IllegalStateException()
         }
 
         val carrierName =
@@ -132,7 +131,7 @@ class CarrierConfigRepositoryTest {
         repository.transformConfig(SUB_ID) { getString(key) }
         repository.transformConfig(SUB_ID) { getString(key) }
 
-        verify(mockCarrierConfigManager, times(1)).getConfigForSubId(any(), anyVararg())
+        verify(mockCarrierConfigManager, times(1)).getConfigForSubId(any(), any())
     }
 
     @Test

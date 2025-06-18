@@ -33,7 +33,7 @@ public class TopLevelSoundPreferenceController extends BasePreferenceController 
     @Override
     public void updateState(Preference preference) {
         super.updateState(preference);
-        preference.setSummary(Flags.modesApi() && Flags.modesUi()
+        preference.setSummary(Flags.modesUi()
                 ? R.string.sound_dashboard_summary
                 : R.string.sound_dashboard_summary_with_dnd);
     }

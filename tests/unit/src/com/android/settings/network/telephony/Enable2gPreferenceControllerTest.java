@@ -147,7 +147,7 @@ public final class Enable2gPreferenceControllerTest {
         when2gIsEnabledForReasonEnable2g();
 
         // Disable 2G
-        boolean changed = mController.setChecked(false);
+        boolean changed = mController.setChecked(true);
         assertThat(changed).isEqualTo(true);
 
         verify(mTelephonyManager, times(1)).setAllowedNetworkTypesForReason(
@@ -159,7 +159,7 @@ public final class Enable2gPreferenceControllerTest {
     public void disabledByAdmin_toggleUnchecked() {
         when2gIsEnabledForReasonEnable2g();
         when2gIsDisabledByAdmin(true);
-        assertThat(mController.isChecked()).isFalse();
+        assertThat(mController.isChecked()).isTrue();
     }
 
     @Test
@@ -167,15 +167,15 @@ public final class Enable2gPreferenceControllerTest {
         // Initially, 2g is enabled
         when2gIsEnabledForReasonEnable2g();
         when2gIsDisabledByAdmin(false);
-        assertThat(mController.isChecked()).isTrue();
+        assertThat(mController.isChecked()).isFalse();
 
         // When we disable the preference by an admin, the preference should be unchecked
         when2gIsDisabledByAdmin(true);
-        assertThat(mController.isChecked()).isFalse();
+        assertThat(mController.isChecked()).isTrue();
 
         // If the preference is re-enabled by an admin, former state should hold
         when2gIsDisabledByAdmin(false);
-        assertThat(mController.isChecked()).isTrue();
+        assertThat(mController.isChecked()).isFalse();
     }
 
     @Test

@@ -27,6 +27,7 @@ import static android.provider.Settings.Secure.DEVICE_STATE_ROTATION_LOCK_LOCKED
 
 import static com.android.settings.display.SmartAutoRotatePreferenceFragment.AUTO_ROTATE_MAIN_SWITCH_PREFERENCE_KEY;
 import static com.android.settings.display.SmartAutoRotatePreferenceFragment.AUTO_ROTATE_SWITCH_PREFERENCE_KEY;
+import static com.android.settings.testutils.DeviceStateAutoRotateSettingTestUtils.setDeviceStateRotationLockEnabled;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -55,10 +56,8 @@ import androidx.preference.Preference;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
 import com.android.settings.testutils.ResolveInfoBuilder;
-import com.android.settings.testutils.shadow.ShadowDeviceStateRotationLockSettingsManager;
 import com.android.settings.testutils.shadow.ShadowRotationPolicy;
 import com.android.settingslib.core.AbstractPreferenceController;
-import com.android.settingslib.devicestate.DeviceStateRotationLockSettingsManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -75,7 +74,6 @@ import java.util.Set;
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {
         com.android.settings.testutils.shadow.ShadowFragment.class,
-        ShadowDeviceStateRotationLockSettingsManager.class,
         ShadowRotationPolicy.class
 })
 public class SmartAutoRotatePreferenceFragmentTest {
@@ -174,7 +172,7 @@ public class SmartAutoRotatePreferenceFragmentTest {
 
     @Test
     public void createHeader_faceDetectionSupported_switchBarIsEnabled() {
-        ShadowDeviceStateRotationLockSettingsManager.setDeviceStateRotationLockEnabled(false);
+        setDeviceStateRotationLockEnabled(false, mResources);
         mFragment.createHeader(mActivity);
 
         verify(mRotateMainSwitchPreference, never()).setVisible(false);
@@ -184,7 +182,7 @@ public class SmartAutoRotatePreferenceFragmentTest {
     @Test
     public void createHeader_deviceStateRotationSupported_switchBarIsDisabled() {
         ShadowRotationPolicy.setRotationSupported(true);
-        ShadowDeviceStateRotationLockSettingsManager.setDeviceStateRotationLockEnabled(true);
+        setDeviceStateRotationLockEnabled(true, mResources);
 
         mFragment.createHeader(mActivity);
 
@@ -258,15 +256,14 @@ public class SmartAutoRotatePreferenceFragmentTest {
     private void enableDeviceStateSettableRotationStates(
             String[] settableStates, String[] settableStatesDescriptions) {
         when(mResources.getStringArray(
-                        com.android.internal.R.array.config_perDeviceStateRotationLockDefaults))
+                com.android.internal.R.array.config_perDeviceStateRotationLockDefaults))
                 .thenReturn(settableStates);
         when(mResources.getStringArray(R.array.config_settableAutoRotationDeviceStatesDescriptions))
                 .thenReturn(settableStatesDescriptions);
         when(mResources.getBoolean(R.bool.config_auto_rotate_face_detection_available))
                 .thenReturn(true);
-        DeviceStateRotationLockSettingsManager.resetInstance();
-        DeviceStateRotationLockSettingsManager.getInstance(mContext)
-                .resetStateForTesting(mResources);
+        DeviceStateAutoRotateSettingManagerProvider.resetInstance();
+        when(mContext.getResources()).thenReturn(mResources);
     }
 
     // Sets up posture mappings for PosturesHelper

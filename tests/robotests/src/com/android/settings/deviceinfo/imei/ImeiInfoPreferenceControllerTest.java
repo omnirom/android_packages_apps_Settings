@@ -20,7 +20,7 @@ import static android.telephony.TelephonyManager.PHONE_TYPE_CDMA;
 import static android.telephony.TelephonyManager.PHONE_TYPE_GSM;
 import static android.telephony.TelephonyManager.PHONE_TYPE_NONE;
 
-import static com.android.settings.core.BasePreferenceController.AVAILABLE;
+import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.anyInt;
@@ -43,6 +43,7 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
+import com.android.settings.core.BasePreferenceController;
 import com.android.settings.deviceinfo.simstatus.SlotSimStatus;
 
 import org.junit.Before;
@@ -90,10 +91,14 @@ public class ImeiInfoPreferenceControllerTest {
 
         mResources = spy(mContext.getResources());
         when(mContext.getResources()).thenReturn(mResources);
-        when(mResources.getBoolean(R.bool.config_show_sim_info)).thenReturn(true);
 
         mockService(Context.TELEPHONY_SERVICE, TelephonyManager.class, mTelephonyManager);
         mockService(Context.USER_SERVICE, UserManager.class, mUserManager);
+
+        // Availability defaults
+        when(mResources.getBoolean(R.bool.config_show_sim_info)).thenReturn(true);
+        when(mTelephonyManager.isDataCapable()).thenReturn(true);
+        when(mUserManager.isAdminUser()).thenReturn(true);
 
         when(mScreen.getContext()).thenReturn(mContext);
         final String categoryKey = "device_detail_category";
@@ -109,7 +114,6 @@ public class ImeiInfoPreferenceControllerTest {
                     }
                 });
         controller.init(mFragment, slotSimStatus);
-        doReturn(AVAILABLE).when(controller).getAvailabilityStatus();
         doReturn(preference).when(controller).createNewPreference(mContext);
 
         when(mScreen.findPreference(key)).thenReturn(preference);
@@ -226,6 +230,42 @@ public class ImeiInfoPreferenceControllerTest {
         mController.handlePreferenceTreeClick(mPreference);
 
         verify(mFragment).getChildFragmentManager();
+    }
+
+    @Test
+    public void getAvailabilityStatus_showSimInfo_telephonyDataCapable_userAdmindisplayed() {
+        setupPhoneCount(1, PHONE_TYPE_GSM, PHONE_TYPE_NONE);
+
+        // Use defaults
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(
+                BasePreferenceController.AVAILABLE);
+    }
+
+    @Test
+    public void getAvailabilityStatus_notShowSimInfo_telephonyDataCapable_userAdmin_notDisplayed() {
+        setupPhoneCount(1, PHONE_TYPE_GSM, PHONE_TYPE_NONE);
+
+        when(mResources.getBoolean(R.bool.config_show_sim_info)).thenReturn(false);
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(
+                BasePreferenceController.UNSUPPORTED_ON_DEVICE);
+    }
+
+    @Test
+    public void getAvailabilityStatus_showSimInfo_notTelephonyDataCapable_userAdmin_notDisplayed() {
+        setupPhoneCount(1, PHONE_TYPE_GSM, PHONE_TYPE_NONE);
+
+        when(mTelephonyManager.isDataCapable()).thenReturn(false);
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(
+                BasePreferenceController.UNSUPPORTED_ON_DEVICE);
+    }
+
+    @Test
+    public void getAvailabilityStatus_showSimInfo_telephonyDataCapable_notUserAdmin_notDisplayed() {
+        setupPhoneCount(1, PHONE_TYPE_GSM, PHONE_TYPE_NONE);
+
+        when(mUserManager.isAdminUser()).thenReturn(false);
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(
+                BasePreferenceController.DISABLED_FOR_USER);
     }
 
     private <T> void mockService(String serviceName, Class<T> serviceClass, T service) {

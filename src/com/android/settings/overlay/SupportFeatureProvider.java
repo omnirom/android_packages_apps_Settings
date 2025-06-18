@@ -17,6 +17,10 @@
 package com.android.settings.overlay;
 
 import android.app.Activity;
+import android.content.Context;
+
+import androidx.annotation.NonNull;
+import androidx.preference.Preference;
 
 /**
  * Feature provider for support tab.
@@ -29,4 +33,13 @@ public interface SupportFeatureProvider {
      * @param activity Calling activity.
      */
     void startSupport(Activity activity);
+
+    /**
+     * Applies overrides to the support preference, if needed.
+     *
+     * @param context Preference controller context.
+     * @param pref The support preference.
+     */
+    default void applyOverrides(@NonNull Context context, @NonNull Preference pref) {
+    }
 }

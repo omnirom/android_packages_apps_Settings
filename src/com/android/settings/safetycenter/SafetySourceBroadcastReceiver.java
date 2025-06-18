@@ -48,48 +48,56 @@ public class SafetySourceBroadcastReceiver extends BroadcastReceiver {
         }
 
         if (ACTION_REFRESH_SAFETY_SOURCES.equals(intent.getAction())) {
-            String[] sourceIdsExtra =
-                    intent.getStringArrayExtra(EXTRA_REFRESH_SAFETY_SOURCE_IDS);
-            final String refreshBroadcastId = intent.getStringExtra(
-                    SafetyCenterManager.EXTRA_REFRESH_SAFETY_SOURCES_BROADCAST_ID);
+            String[] sourceIdsExtra = intent.getStringArrayExtra(EXTRA_REFRESH_SAFETY_SOURCE_IDS);
+            final String refreshBroadcastId =
+                    intent.getStringExtra(
+                            SafetyCenterManager.EXTRA_REFRESH_SAFETY_SOURCES_BROADCAST_ID);
             if (sourceIdsExtra != null && sourceIdsExtra.length > 0 && refreshBroadcastId != null) {
-                final SafetyEvent safetyEvent = new SafetyEvent.Builder(
-                        SAFETY_EVENT_TYPE_REFRESH_REQUESTED)
-                        .setRefreshBroadcastId(refreshBroadcastId).build();
-                refreshSafetySources(
-                        context,
-                        ImmutableList.copyOf(sourceIdsExtra),
-                        safetyEvent);
+                final SafetyEvent safetyEvent =
+                        new SafetyEvent.Builder(SAFETY_EVENT_TYPE_REFRESH_REQUESTED)
+                                .setRefreshBroadcastId(refreshBroadcastId)
+                                .build();
+                refreshSafetySources(context, ImmutableList.copyOf(sourceIdsExtra), safetyEvent);
             }
             return;
         }
-
 
         if (ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             refreshAllSafetySources(context, EVENT_DEVICE_REBOOTED);
         }
     }
 
-    private static void refreshSafetySources(Context context, List<String> sourceIds,
-            SafetyEvent safetyEvent) {
+    private static void refreshSafetySources(
+            Context context, List<String> sourceIds, SafetyEvent safetyEvent) {
         if (sourceIds.contains(LockScreenSafetySource.SAFETY_SOURCE_ID)) {
-            LockScreenSafetySource.setSafetySourceData(context,
-                    new ScreenLockPreferenceDetailsUtils(context), safetyEvent);
+            LockScreenSafetySource.setSafetySourceData(
+                    context, new ScreenLockPreferenceDetailsUtils(context), safetyEvent);
         }
 
         if (sourceIds.contains(BiometricsSafetySource.SAFETY_SOURCE_ID)) {
             BiometricsSafetySource.setSafetySourceData(context, safetyEvent);
         }
-
         if (sourceIds.contains(PrivateSpaceSafetySource.SAFETY_SOURCE_ID)) {
             PrivateSpaceSafetySource.setSafetySourceData(context, safetyEvent);
+        }
+        if (sourceIds.contains(FaceSafetySource.SAFETY_SOURCE_ID)) {
+            FaceSafetySource.setSafetySourceData(context, safetyEvent);
+        }
+        if (sourceIds.contains(FingerprintSafetySource.SAFETY_SOURCE_ID)) {
+            FingerprintSafetySource.setSafetySourceData(context, safetyEvent);
+        }
+        if (sourceIds.contains(WearSafetySource.SAFETY_SOURCE_ID)) {
+            WearSafetySource.setSafetySourceData(context, safetyEvent);
         }
     }
 
     private static void refreshAllSafetySources(Context context, SafetyEvent safetyEvent) {
-        LockScreenSafetySource.setSafetySourceData(context,
-                new ScreenLockPreferenceDetailsUtils(context), safetyEvent);
+        LockScreenSafetySource.setSafetySourceData(
+                context, new ScreenLockPreferenceDetailsUtils(context), safetyEvent);
         BiometricsSafetySource.setSafetySourceData(context, safetyEvent);
         PrivateSpaceSafetySource.setSafetySourceData(context, safetyEvent);
+        FaceSafetySource.setSafetySourceData(context, safetyEvent);
+        FingerprintSafetySource.setSafetySourceData(context, safetyEvent);
+        WearSafetySource.setSafetySourceData(context, safetyEvent);
     }
 }

@@ -45,7 +45,7 @@ fun UserAspectRatioAppPreference(app: ApplicationInfo) {
         initialValue = stringResource(R.string.summary_placeholder),
     )
     Preference(object : PreferenceModel {
-        override val title = stringResource(R.string.aspect_ratio_experimental_title)
+        override val title = stringResource(R.string.aspect_ratio_title)
         override val summary = { summary }
         override val onClick = presenter::startActivity
     })

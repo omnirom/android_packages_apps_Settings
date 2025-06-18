@@ -213,8 +213,7 @@ public class ColorModePreferenceFragment extends RadioButtonPickerFragment {
         final Map<Integer, String> colorModesToSummaries =
                 ColorModeUtils.getColorModeMapping(mResources);
         final List<ColorModeCandidateInfo> candidates = new ArrayList<>();
-        for (int colorMode : mResources.getIntArray(
-                com.android.internal.R.array.config_availableColorModes)) {
+        for (int colorMode : ColorModeUtils.getAvailableColorModes(getContext())) {
             candidates.add(new ColorModeCandidateInfo(
                     colorModesToSummaries.get(colorMode),
                     getKeyForColorMode(colorMode),
@@ -390,8 +389,8 @@ public class ColorModePreferenceFragment extends RadioButtonPickerFragment {
 
                 @Override
                 protected boolean isPageSearchEnabled(Context context) {
-                    final int[] availableColorModes = context.getResources().getIntArray(
-                            com.android.internal.R.array.config_availableColorModes);
+                    final int[] availableColorModes =
+                            ColorModeUtils.getAvailableColorModes(context);
                     return availableColorModes != null && availableColorModes.length > 0
                             && !ColorDisplayManager.areAccessibilityTransformsEnabled(context);
                 }

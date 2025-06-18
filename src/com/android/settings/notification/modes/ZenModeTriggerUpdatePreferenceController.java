@@ -20,7 +20,6 @@ import static android.app.AutomaticZenRule.TYPE_BEDTIME;
 import static android.app.AutomaticZenRule.TYPE_DRIVING;
 import static android.app.AutomaticZenRule.TYPE_SCHEDULE_CALENDAR;
 import static android.app.AutomaticZenRule.TYPE_SCHEDULE_TIME;
-import static android.service.notification.ZenModeConfig.tryParseScheduleConditionId;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -43,6 +42,7 @@ import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settingslib.PrimarySwitchPreference;
 import com.android.settingslib.notification.modes.ZenMode;
+import com.android.settingslib.notification.modes.ZenModeSchedules;
 import com.android.settingslib.notification.modes.ZenModesBackend;
 
 import com.google.common.base.Strings;
@@ -105,8 +105,7 @@ class ZenModeTriggerUpdatePreferenceController extends AbstractZenModePreference
 
             // [Clock Icon] 9:00 - 17:00 / Sun-Mon
             preference.setIcon(com.android.internal.R.drawable.ic_zen_mode_type_schedule_time);
-            ZenModeConfig.ScheduleInfo schedule =
-                    tryParseScheduleConditionId(mode.getRule().getConditionId());
+            ZenModeConfig.ScheduleInfo schedule = ZenModeSchedules.getTimeSchedule(mode);
             if (schedule != null) {
                 preference.setTitle(SystemZenRules.getTimeSummary(mContext, schedule));
                 String shortDaysSummary = SystemZenRules.getDaysOfWeekShort(mContext, schedule);
@@ -138,7 +137,7 @@ class ZenModeTriggerUpdatePreferenceController extends AbstractZenModePreference
     @SuppressLint("SwitchIntDef")
     private void setUpForAppTrigger(Preference preference, ZenMode mode) {
         // App-owned mode may have triggerDescription, configurationActivity, or both/neither.
-        mServiceListing.loadApprovedComponents(mode.getRule().getPackageName());
+        mServiceListing.loadApprovedComponents(mode.getOwnerPackage());
         Intent configurationIntent =
                 mConfigurationActivityHelper.getConfigurationActivityIntentForMode(
                         mode, mServiceListing::findService);
@@ -152,11 +151,11 @@ class ZenModeTriggerUpdatePreferenceController extends AbstractZenModePreference
         String summary;
         if (!Strings.isNullOrEmpty(mode.getTriggerDescription())) {
             summary = mode.getTriggerDescription();
-        } else if (!Strings.isNullOrEmpty(mode.getRule().getPackageName())) {
+        } else if (!Strings.isNullOrEmpty(mode.getOwnerPackage())) {
             String appName = null;
             try {
                 ApplicationInfo appInfo = mPackageManager.getApplicationInfo(
-                        mode.getRule().getPackageName(), 0);
+                        mode.getOwnerPackage(), 0);
                 appName = appInfo.loadLabel(mPackageManager).toString();
             } catch (PackageManager.NameNotFoundException e) {
                 Log.e(TAG, "Couldn't resolve owner for mode: " + mode);
@@ -219,7 +218,7 @@ class ZenModeTriggerUpdatePreferenceController extends AbstractZenModePreference
     private void setModeEnabled(boolean enabled) {
         saveMode((zenMode) -> {
             if (enabled != zenMode.isEnabled()) {
-                zenMode.getRule().setEnabled(enabled);
+                zenMode.setEnabled(enabled);
             }
             return zenMode;
         });

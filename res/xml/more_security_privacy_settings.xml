@@ -224,7 +224,7 @@
         settings:keywords="@string/keywords_app_pinning"
         settings:controller="com.android.settings.security.ScreenPinningPreferenceController" />
 
-    <Preference
+    <com.android.settingslib.RestrictedPreference
         android:order="300"
         android:id="@+id/memtag_page"
         android:key="memtag_page"

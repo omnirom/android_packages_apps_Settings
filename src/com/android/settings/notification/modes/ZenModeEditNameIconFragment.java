@@ -54,8 +54,8 @@ public class ZenModeEditNameIconFragment extends ZenModeEditNameIconFragmentBase
             return;
         }
 
-        modeToUpdate.getRule().setName(mode.getRule().getName());
-        modeToUpdate.getRule().setIconResId(mode.getRule().getIconResId());
+        modeToUpdate.setName(mode.getName());
+        modeToUpdate.setIconResId(mode.getIconResId());
         requireBackend().updateMode(modeToUpdate);
         finish();
     }

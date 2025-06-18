@@ -27,20 +27,25 @@ import androidx.preference.PreferenceViewHolder
 import com.android.settings.R
 import com.android.settingslib.spa.framework.theme.SettingsTheme
 import com.android.settingslib.widget.GroupSectionDividerMixin
+import com.android.settingslib.widget.NormalPaddingMixin
 
-open class ComposeMainSwitchPreference @JvmOverloads constructor(
+open class ComposeGroupSectionPreference
+@JvmOverloads
+constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
     defStyleRes: Int = 0,
 ) : ComposePreference(context, attrs, defStyleAttr, defStyleRes), GroupSectionDividerMixin
 
-open class ComposePreference @JvmOverloads constructor(
+open class ComposePreference
+@JvmOverloads
+constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
     defStyleRes: Int = 0,
-) : Preference(context, attrs, defStyleAttr, defStyleRes) {
+) : Preference(context, attrs, defStyleAttr, defStyleRes), NormalPaddingMixin {
     private var content: @Composable () -> Unit = {}
 
     fun setContent(content: @Composable () -> Unit) {

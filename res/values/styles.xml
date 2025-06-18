@@ -69,6 +69,25 @@
         <item name="android:scrollbarStyle">outsideOverlay</item>
     </style>
 
+    <style name="Theme.Network" parent="@style/Theme.Material3.DynamicColors.DayNight">
+        <item name="textInputStyle">@style/Widget.Network.TextInputLayout</item>
+    </style>
+
+    <style name="Widget.Network.TextInputLayout"
+           parent="Widget.Material3.TextInputLayout.FilledBox"/>
+
+    <style name="Widget.Network.TextInputLayout.WifiConfig">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Material.Medium</item>
+        <item name="android:textAlignment">viewStart</item>
+    </style>
+
+    <style name="Widget.Network.TextInputLayout.WifiConfig.EditText">
+        <item name="android:textAppearance">@android:style/TextAppearance.Material.Body1</item>
+        <item name="android:maxLength">500</item>
+    </style>
+
     <style name="wifi_item">
         <item name="android:layout_marginTop">8dip</item>
         <item name="android:layout_marginStart">8dip</item>
@@ -188,6 +207,10 @@
         <item name="android:textColorHint">?android:attr/textColorSecondary</item>
     </style>
 
+    <style name="vpn_input_label" parent="vpn_label">
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
     <style name="vpn_warning">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -249,7 +272,7 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:fontFamily">@*android:string/config_headlineFontFamily</item>
         <item name="android:textSize">@dimen/search_bar_text_size</item>
-        <item name="android:textColor">?androidprv:attr/materialColorOnSurfaceVariant</item>
+        <item name="android:textColor">@androidprv:color/materialColorOnSurfaceVariant</item>
         <item name="android:singleLine">true</item>
     </style>
 
@@ -372,15 +395,15 @@
         <item name="android:padding">4dp</item>
     </style>
 
-    <style name="TrackpadButtonDone" parent="@android:style/Widget.Material.Button">
-        <item name="android:background">@drawable/trackpad_button_done_colored</item>
+    <style name="TouchpadButtonDone" parent="@android:style/Widget.Material.Button">
+        <item name="android:background">@drawable/touchpad_button_done_colored</item>
         <item name="android:stateListAnimator">@null</item>
         <item name="android:textSize">16sp</item>
         <item name="android:padding">4dp</item>
     </style>
 
-    <style name="TrackpadButtonCancel" parent="@android:style/Widget.Material.Button">
-        <item name="android:background">@drawable/trackpad_bordered</item>
+    <style name="TouchpadButtonCancel" parent="@android:style/Widget.Material.Button">
+        <item name="android:background">@drawable/touchpad_bordered</item>
         <item name="android:stateListAnimator">@null</item>
         <item name="android:textSize">16sp</item>
         <item name="android:padding">4dp</item>
@@ -448,7 +471,7 @@
         <item name="android:layout_marginBottom">@dimen/contextual_card_vertical_margin</item>
         <item name="android:layout_marginStart">@dimen/contextual_card_side_margin</item>
         <item name="android:layout_marginEnd">@dimen/contextual_card_side_margin</item>
-        <item name="cardBackgroundColor">?androidprv:attr/materialColorSurfaceContainer</item>
+        <item name="cardBackgroundColor">@androidprv:color/materialColorSurfaceContainer</item>
         <item name="cardCornerRadius">@dimen/contextual_card_corner_radius</item>
         <item name="cardElevation">0dp</item>
         <item name="rippleColor">?android:attr/colorControlHighlight</item>
@@ -710,6 +733,14 @@
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:padding">6dp</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AutoclickDialogRadioButton">
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_gravity">start|center_vertical</item>
+        <item name="android:background">@null</item>
     </style>
 
     <style name="Widget.PopupWindow.Settings"
@@ -1037,6 +1068,11 @@
         <item name="android:textColor">@color/settingslib_materialColorOnSecondary</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@*android:string/config_bodyFontFamily</item>
+    </style>
+
+    <style name="DeviceIconRoundedCornerStyle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
     </style>
 
 </resources>

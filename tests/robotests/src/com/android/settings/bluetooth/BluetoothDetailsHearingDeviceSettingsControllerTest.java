@@ -62,15 +62,15 @@ public class BluetoothDetailsHearingDeviceSettingsControllerTest extends
     }
 
     @Test
-    public void isAvailable_isHearingAidDevice_available() {
-        when(mCachedDevice.isHearingAidDevice()).thenReturn(true);
+    public void isAvailable_isHearingDevice_available() {
+        when(mCachedDevice.isHearingDevice()).thenReturn(true);
 
         assertThat(mController.isAvailable()).isTrue();
     }
 
     @Test
-    public void isAvailable_isNotHearingAidDevice_notAvailable() {
-        when(mCachedDevice.isHearingAidDevice()).thenReturn(false);
+    public void isAvailable_isNotHearingDevice_notAvailable() {
+        when(mCachedDevice.isHearingDevice()).thenReturn(false);
 
         assertThat(mController.isAvailable()).isFalse();
     }

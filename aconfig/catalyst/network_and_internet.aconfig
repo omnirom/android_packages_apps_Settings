@@ -1,5 +1,5 @@
 package: "com.android.settings.flags"
-container: "system"
+container: "system_ext"
 
 flag {
   name: "catalyst_network_provider_and_internet_screen"
@@ -27,6 +27,13 @@ flag {
   namespace: "android_settings"
   description: "Flag for Hotspot & tethering"
   bug: "323791114"
+}
+
+flag {
+  name: "catalyst_tether_settings_25q3"
+  namespace: "android_settings"
+  description: "Flag for widgets inside Hotspot & tethering for 25q3 release"
+  bug: "352179685"
 }
 
 flag {

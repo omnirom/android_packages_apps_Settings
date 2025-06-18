@@ -21,10 +21,13 @@ import android.app.settings.SettingsEnums;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.android.settings.R;
 import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
@@ -33,11 +36,10 @@ import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
 public class RebootConfirmationDialogFragment extends InstrumentedDialogFragment
         implements DialogInterface.OnClickListener, DialogInterface.OnDismissListener {
 
-    private static final String TAG = "FreeformPrefRebootDlg";
+    @VisibleForTesting
+    static final String TAG = "DevOptionRebootDlg";
 
-    private final int mMessageId;
-    private final int mCancelButtonId;
-    private final RebootConfirmationDialogHost mHost;
+    private RebootConfirmationDialogViewModel mViewModel;
 
     /** Show an instance of this dialog. */
     public static void show(Fragment fragment, int messageId, RebootConfirmationDialogHost host) {
@@ -50,20 +52,18 @@ public class RebootConfirmationDialogFragment extends InstrumentedDialogFragment
             int messageId,
             int cancelButtonId,
             RebootConfirmationDialogHost host) {
-        final FragmentManager manager = fragment.getActivity().getSupportFragmentManager();
+        final FragmentManager manager = fragment.requireActivity().getSupportFragmentManager();
         if (manager.findFragmentByTag(TAG) == null) {
             final RebootConfirmationDialogFragment dialog =
-                    new RebootConfirmationDialogFragment(messageId, cancelButtonId, host);
+                    new RebootConfirmationDialogFragment();
+            RebootConfirmationDialogViewModel mViewModel = new ViewModelProvider(
+                    fragment.requireActivity()).get(
+                    RebootConfirmationDialogViewModel.class);
+            mViewModel.setMessageId(messageId);
+            mViewModel.setCancelButtonId(cancelButtonId);
+            mViewModel.setHost(host);
             dialog.show(manager, TAG);
         }
-    }
-
-    @VisibleForTesting
-    RebootConfirmationDialogFragment(
-            int messageId, int cancelButtonId, RebootConfirmationDialogHost host) {
-        mMessageId = messageId;
-        mCancelButtonId = cancelButtonId;
-        mHost = host;
     }
 
     @Override
@@ -72,33 +72,40 @@ public class RebootConfirmationDialogFragment extends InstrumentedDialogFragment
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstances) {
-        return new AlertDialog.Builder(getActivity())
-                .setMessage(mMessageId)
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mViewModel = new ViewModelProvider(requireActivity()).get(
+                RebootConfirmationDialogViewModel.class);
+    }
+
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstances) {
+        int messageId = mViewModel.getMessageId();
+        int cancelButtonId = mViewModel.getCancelButtonId();
+        return new AlertDialog.Builder(requireActivity())
+                .setMessage(messageId)
                 .setPositiveButton(R.string.reboot_dialog_reboot_now, this)
-                .setNegativeButton(mCancelButtonId, this)
+                .setNegativeButton(cancelButtonId, this)
                 .create();
     }
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
+        RebootConfirmationDialogHost host = mViewModel.getHost();
+        if (host == null) return;
         if (which == DialogInterface.BUTTON_POSITIVE) {
-            mHost.onRebootConfirmed(getContext());
+            host.onRebootConfirmed(requireContext());
         } else {
-            mHost.onRebootCancelled();
+            host.onRebootCancelled();
         }
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
+    public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
-        mHost.onRebootDialogDismissed();
-    }
-
-    @Override
-    public void onPause() {
-        dismiss();
-
-        super.onPause();
+        RebootConfirmationDialogHost host = mViewModel.getHost();
+        if (host != null) {
+            host.onRebootDialogDismissed();
+        }
     }
 }

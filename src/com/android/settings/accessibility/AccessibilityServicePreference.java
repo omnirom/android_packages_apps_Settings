@@ -123,13 +123,12 @@ public class AccessibilityServicePreference extends RestrictedPreference {
         final String settingsClassName = mA11yServiceInfo.getSettingsActivityName();
         final String tileServiceClassName = mA11yServiceInfo.getTileServiceName();
         final ResolveInfo resolveInfo = mA11yServiceInfo.getResolveInfo();
-        final int metricsCategory = FeatureFactory.getFeatureFactory()
-                .getAccessibilityMetricsFeatureProvider()
-                .getDownloadedFeatureMetricsCategory(mComponentName);
+        final int pageIdCategory = FeatureFactory.getFeatureFactory()
+                .getAccessibilityPageIdFeatureProvider().getCategory(mComponentName);
         ThreadUtils.getUiThreadHandler().post(() -> {
             RestrictedPreferenceHelper.putBasicExtras(
                     this, prefKey, getTitle(), intro, description, imageRes,
-                    htmlDescription, mComponentName, metricsCategory);
+                    htmlDescription, mComponentName, pageIdCategory);
             RestrictedPreferenceHelper.putServiceExtras(this, resolveInfo, mServiceEnabled);
             RestrictedPreferenceHelper.putSettingsExtras(this, getPackageName(), settingsClassName);
             RestrictedPreferenceHelper.putTileServiceExtras(

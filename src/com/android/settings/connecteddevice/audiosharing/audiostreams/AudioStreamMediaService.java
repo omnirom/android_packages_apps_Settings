@@ -16,6 +16,11 @@
 
 package com.android.settings.connecteddevice.audiosharing.audiostreams;
 
+import static com.android.settingslib.bluetooth.LocalBluetoothLeBroadcast.EXTRA_PRIVATE_BROADCAST_RECEIVE_DATA;
+import static com.android.settingslib.bluetooth.LocalBluetoothLeBroadcastAssistant.LocalBluetoothLeBroadcastSourceState.DECRYPTION_FAILED;
+import static com.android.settingslib.bluetooth.LocalBluetoothLeBroadcastAssistant.LocalBluetoothLeBroadcastSourceState.PAUSED;
+import static com.android.settingslib.bluetooth.LocalBluetoothLeBroadcastAssistant.LocalBluetoothLeBroadcastSourceState.STREAMING;
+
 import static java.util.Collections.emptyList;
 
 import android.app.Notification;
@@ -33,8 +38,12 @@ import android.media.MediaMetadata;
 import android.media.session.MediaSession;
 import android.media.session.PlaybackState;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Process;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -49,25 +58,26 @@ import com.android.settingslib.bluetooth.BluetoothUtils;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.CachedBluetoothDeviceManager;
 import com.android.settingslib.bluetooth.LocalBluetoothLeBroadcastAssistant;
+import com.android.settingslib.bluetooth.LocalBluetoothLeBroadcastAssistant.LocalBluetoothLeBroadcastSourceState;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
+import com.android.settingslib.bluetooth.PrivateBroadcastReceiveData;
 import com.android.settingslib.bluetooth.VolumeControlProfile;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
+import com.android.settingslib.flags.Flags;
 import com.android.settingslib.utils.ThreadUtils;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Map;
 
 public class AudioStreamMediaService extends Service {
     static final String BROADCAST_ID = "audio_stream_media_service_broadcast_id";
     static final String BROADCAST_TITLE = "audio_stream_media_service_broadcast_title";
     static final String DEVICES = "audio_stream_media_service_devices";
     private static final String TAG = "AudioStreamMediaService";
-    private static final int NOTIFICATION_ID = 1;
-    private static final int BROADCAST_CONTENT_TEXT = R.string.audio_streams_listening_now;
+    private static final int NOTIFICATION_ID = R.string.audio_streams_title;
+    private static final int BROADCAST_LISTENING_NOW_TEXT = R.string.audio_streams_listening_now;
+    private static final int BROADCAST_STREAM_PAUSED_TEXT = R.string.audio_streams_present_now;
     @VisibleForTesting static final String LEAVE_BROADCAST_ACTION = "leave_broadcast_action";
     private static final String LEAVE_BROADCAST_TEXT = "Leave Broadcast";
     private static final String CHANNEL_ID = "bluetooth_notification_channel";
@@ -77,7 +87,7 @@ public class AudioStreamMediaService extends Service {
     private static final int ZERO_PLAYBACK_SPEED = 0;
     private final PlaybackState.Builder mPlayStatePlayingBuilder =
             new PlaybackState.Builder()
-                    .setActions(PlaybackState.ACTION_PAUSE | PlaybackState.ACTION_SEEK_TO)
+                    .setActions(PlaybackState.ACTION_PLAY_PAUSE | PlaybackState.ACTION_SEEK_TO)
                     .setState(
                             PlaybackState.STATE_PLAYING,
                             STATIC_PLAYBACK_POSITION,
@@ -88,7 +98,17 @@ public class AudioStreamMediaService extends Service {
                             com.android.settings.R.drawable.ic_clear);
     private final PlaybackState.Builder mPlayStatePausingBuilder =
             new PlaybackState.Builder()
-                    .setActions(PlaybackState.ACTION_PLAY | PlaybackState.ACTION_SEEK_TO)
+                    .setActions(PlaybackState.ACTION_PLAY_PAUSE | PlaybackState.ACTION_SEEK_TO)
+                    .setState(
+                            PlaybackState.STATE_PAUSED,
+                            STATIC_PLAYBACK_POSITION,
+                            ZERO_PLAYBACK_SPEED)
+                    .addCustomAction(
+                            LEAVE_BROADCAST_ACTION,
+                            LEAVE_BROADCAST_TEXT,
+                            com.android.settings.R.drawable.ic_clear);
+    private final PlaybackState.Builder mPlayStateHysteresisBuilder =
+            new PlaybackState.Builder()
                     .setState(
                             PlaybackState.STATE_PAUSED,
                             STATIC_PLAYBACK_POSITION,
@@ -100,15 +120,18 @@ public class AudioStreamMediaService extends Service {
 
     private final MetricsFeatureProvider mMetricsFeatureProvider =
             FeatureFactory.getFeatureFactory().getMetricsFeatureProvider();
-    private final ExecutorService mExecutor = Executors.newSingleThreadExecutor();
-    private final AtomicBoolean mIsMuted = new AtomicBoolean(false);
+    private final HandlerThread mHandlerThread = new HandlerThread(TAG,
+            Process.THREAD_PRIORITY_BACKGROUND);
+    private boolean mIsMuted = false;
     // Set 25 as default as the volume range from `VolumeControlProfile` is from 0 to 255.
     // If the initial volume from `onDeviceVolumeChanged` is larger than zero (not muted), we will
     // override this value. Otherwise, we raise the volume to 25 when the play button is clicked.
-    private final AtomicInteger mLatestPositiveVolume = new AtomicInteger(25);
-    private final Object mLocalSessionLock = new Object();
+    private int mLatestPositiveVolume = 25;
+    private boolean mHysteresisModeFixAvailable;
     private int mBroadcastId;
-    @Nullable private List<BluetoothDevice> mDevices;
+    @VisibleForTesting
+    @Nullable
+    Map<BluetoothDevice, LocalBluetoothLeBroadcastSourceState> mStateByDevice;
     @Nullable private LocalBluetoothManager mLocalBtManager;
     @Nullable private AudioStreamsHelper mAudioStreamsHelper;
     @Nullable private LocalBluetoothLeBroadcastAssistant mLeBroadcastAssistant;
@@ -146,7 +169,8 @@ public class AudioStreamMediaService extends Service {
             return;
         }
 
-        mExecutor.execute(
+        mHandlerThread.start();
+        getHandler().post(
                 () -> {
                     if (mLocalBtManager == null
                             || mLeBroadcastAssistant == null
@@ -168,45 +192,49 @@ public class AudioStreamMediaService extends Service {
                     mVolumeControl = mLocalBtManager.getProfileManager().getVolumeControlProfile();
                     if (mVolumeControl != null) {
                         mVolumeControlCallback = new VolumeControlCallback();
-                        mVolumeControl.registerCallback(mExecutor, mVolumeControlCallback);
+                        mVolumeControl.registerCallback(getHandler()::post, mVolumeControlCallback);
                     }
 
                     mBroadcastAssistantCallback = new AssistantCallback();
                     mLeBroadcastAssistant.registerServiceCallBack(
-                            mExecutor, mBroadcastAssistantCallback);
+                            getHandler()::post, mBroadcastAssistantCallback);
+
+                    mHysteresisModeFixAvailable =
+                            BluetoothUtils.isAudioSharingHysteresisModeFixAvailable(this);
                 });
+    }
+
+    @VisibleForTesting
+    Handler getHandler() {
+        return mHandlerThread.getThreadHandler();
     }
 
     @Override
     public void onDestroy() {
         Log.d(TAG, "onDestroy()");
-        super.onDestroy();
-        if (BluetoothUtils.isAudioSharingUIAvailable(this)) {
-            if (mDevices != null) {
-                mDevices.clear();
-                mDevices = null;
-            }
-            synchronized (mLocalSessionLock) {
-                if (mLocalSession != null) {
-                    mLocalSession.release();
-                    mLocalSession = null;
-                }
-            }
-            mExecutor.execute(
-                    () -> {
-                        if (mLocalBtManager != null) {
-                            mLocalBtManager.getEventManager().unregisterCallback(
-                                    mBluetoothCallback);
-                        }
-                        if (mLeBroadcastAssistant != null && mBroadcastAssistantCallback != null) {
-                            mLeBroadcastAssistant.unregisterServiceCallBack(
-                                    mBroadcastAssistantCallback);
-                        }
-                        if (mVolumeControl != null && mVolumeControlCallback != null) {
-                            mVolumeControl.unregisterCallback(mVolumeControlCallback);
-                        }
-                    });
-        }
+        getHandler().post(
+                () -> {
+                    if (mStateByDevice != null) {
+                        mStateByDevice.clear();
+                        mStateByDevice = null;
+                    }
+                    if (mLocalSession != null) {
+                        mLocalSession.release();
+                        mLocalSession = null;
+                    }
+                    if (mLocalBtManager != null) {
+                        mLocalBtManager.getEventManager().unregisterCallback(
+                                mBluetoothCallback);
+                    }
+                    if (mLeBroadcastAssistant != null && mBroadcastAssistantCallback != null) {
+                        mLeBroadcastAssistant.unregisterServiceCallBack(
+                                mBroadcastAssistantCallback);
+                    }
+                    if (mVolumeControl != null && mVolumeControlCallback != null) {
+                        mVolumeControl.unregisterCallback(mVolumeControlCallback);
+                    }
+                });
+        mHandlerThread.quitSafely();
     }
 
     @Override
@@ -217,50 +245,145 @@ public class AudioStreamMediaService extends Service {
             stopSelf();
             return START_NOT_STICKY;
         }
-        mBroadcastId = intent.getIntExtra(BROADCAST_ID, -1);
-        if (mBroadcastId == -1) {
-            Log.w(TAG, "Invalid broadcast ID. Service will not start.");
-            stopSelf();
+        // TODO(b/398700619): Remove hasExtra check when feasible.
+        if (Flags.audioStreamMediaServiceByReceiveState() && intent.hasExtra(
+                EXTRA_PRIVATE_BROADCAST_RECEIVE_DATA)) {
+            PrivateBroadcastReceiveData data = intent.getParcelableExtra(
+                    EXTRA_PRIVATE_BROADCAST_RECEIVE_DATA, PrivateBroadcastReceiveData.class);
+            if (data == null || !PrivateBroadcastReceiveData.Companion.isValid(data)) {
+                Log.w(TAG, "Data is null or invalid. Service will not start.");
+                stopSelf();
+                return START_NOT_STICKY;
+            }
+            getHandler().post(() -> handleIntentData(data));
             return START_NOT_STICKY;
         }
-        var extra = intent.getParcelableArrayListExtra(DEVICES, BluetoothDevice.class);
-        if (extra == null || extra.isEmpty()) {
-            Log.w(TAG, "No device. Service will not start.");
-            stopSelf();
-            return START_NOT_STICKY;
-        }
-        mDevices = Collections.synchronizedList(extra);
-        MediaSession.Token token =
-                getOrCreateLocalMediaSession(intent.getStringExtra(BROADCAST_TITLE));
-        startForeground(NOTIFICATION_ID, buildNotification(token));
+        getHandler().post(() -> {
+            mBroadcastId = intent.getIntExtra(BROADCAST_ID, -1);
+            if (mBroadcastId == -1) {
+                Log.w(TAG, "Invalid broadcast ID. Service will not start.");
+                stopSelf();
+                return;
+            }
+            var devices = intent.getParcelableArrayListExtra(DEVICES, BluetoothDevice.class);
+            if (devices == null || devices.isEmpty()) {
+                Log.w(TAG, "No device. Service will not start.");
+                stopSelf();
+            } else {
+                mStateByDevice = new HashMap<>();
+                devices.forEach(d -> mStateByDevice.put(d, STREAMING));
+                MediaSession.Token token =
+                        getOrCreateLocalMediaSession(intent.getStringExtra(BROADCAST_TITLE));
+                startForeground(NOTIFICATION_ID, buildNotification(token));
+            }
+        });
         return START_NOT_STICKY;
     }
 
+    private void handleIntentData(PrivateBroadcastReceiveData data) {
+        int broadcastId = data.getBroadcastId();
+        BluetoothDevice device = data.getSink();
+        int sourceId = data.getSourceId();
+        var state = data.getState();
+        String programInfo = data.getProgramInfo();
+
+        // Service not running yet.
+        if (mBroadcastId == 0) {
+            Log.d(TAG, "handleIntentData(): sending " + data + " to handleInitialSetup()");
+            handleInitialSetup(broadcastId, device, state, sourceId, programInfo);
+            return;
+        }
+
+        // Service running with a different broadcast id, most likely staled. We have a new
+        // broadcast Id to handle.
+        if (mBroadcastId != broadcastId) {
+            Log.d(TAG, "handleIntentData(): sending " + data + " to handleNewBroadcastId()");
+            handleNewBroadcastId(broadcastId, device, state, sourceId, programInfo);
+            return;
+        }
+
+        // Service running with the same broadcast Id, we have new device joining or a state update.
+        if (mStateByDevice != null && (!mStateByDevice.containsKey(device) || mStateByDevice.get(
+                device) != state)) {
+            Log.d(TAG, "handleIntentData(): sending " + data + " to handleNewDeviceOrState()");
+            handleNewDeviceOrState(device, state, sourceId, programInfo);
+        }
+
+        Log.d(TAG, "handleIntentData(): nothing to update.");
+    }
+
+    private void handleInitialSetup(int broadcastId, BluetoothDevice device,
+            LocalBluetoothLeBroadcastSourceState state, int sourceId, String programInfo) {
+        if (state == DECRYPTION_FAILED) {
+            Log.d(TAG, "handleInitialSetup() : decryption failed. Service will not start.");
+            stopSelf();
+            return;
+        }
+        mBroadcastId = broadcastId;
+        mStateByDevice = new HashMap<>();
+        mStateByDevice.put(device, state);
+        MediaSession.Token token = getOrCreateLocalMediaSession(
+                getBroadcastName(device, sourceId, programInfo));
+        startForeground(NOTIFICATION_ID, buildNotification(token));
+    }
+
+    private void handleNewBroadcastId(int broadcastId, BluetoothDevice device,
+            LocalBluetoothLeBroadcastSourceState state, int sourceId, String programInfo) {
+        if (state == DECRYPTION_FAILED) {
+            Log.d(TAG, "handleNewBroadcastId() : decryption failed. Ignore.");
+            return;
+        }
+        mBroadcastId = broadcastId;
+        mStateByDevice = new HashMap<>();
+        mStateByDevice.put(device, state);
+        updateMediaSessionAndNotify(device, sourceId, programInfo);
+    }
+
+    private void handleNewDeviceOrState(BluetoothDevice device,
+            LocalBluetoothLeBroadcastSourceState state, int sourceId, String programInfo) {
+        if (mStateByDevice != null) {
+            mStateByDevice.put(device, state);
+        }
+        if (getDeviceInValidState().isEmpty()) {
+            Log.d(TAG, "handleNewDeviceOrState() : no device is in valid state. Stop service.");
+            stopSelf();
+            return;
+        }
+        updateMediaSessionAndNotify(device, sourceId, programInfo);
+    }
+
     private MediaSession.Token getOrCreateLocalMediaSession(String title) {
-        synchronized (mLocalSessionLock) {
-            if (mLocalSession != null) {
-                return mLocalSession.getSessionToken();
-            }
-            mLocalSession = new MediaSession(this, TAG);
-            mLocalSession.setMetadata(
-                    new MediaMetadata.Builder()
-                            .putString(MediaMetadata.METADATA_KEY_TITLE, title)
-                            .putLong(MediaMetadata.METADATA_KEY_DURATION, STATIC_PLAYBACK_DURATION)
-                            .build());
-            mLocalSession.setActive(true);
-            mLocalSession.setPlaybackState(getPlaybackState());
-            mMediaSessionCallback = new MediaSessionCallback();
-            mLocalSession.setCallback(mMediaSessionCallback);
+        if (mLocalSession != null) {
             return mLocalSession.getSessionToken();
         }
+        mLocalSession = new MediaSession(this, TAG);
+        mLocalSession.setMetadata(
+                new MediaMetadata.Builder()
+                        .putString(MediaMetadata.METADATA_KEY_TITLE, title)
+                        .putLong(MediaMetadata.METADATA_KEY_DURATION, STATIC_PLAYBACK_DURATION)
+                        .build());
+        mLocalSession.setActive(true);
+        mLocalSession.setPlaybackState(getPlaybackState());
+        mMediaSessionCallback = new MediaSessionCallback();
+        mLocalSession.setCallback(mMediaSessionCallback, getHandler());
+        return mLocalSession.getSessionToken();
     }
 
     private PlaybackState getPlaybackState() {
-        return mIsMuted.get() ? mPlayStatePausingBuilder.build() : mPlayStatePlayingBuilder.build();
+        if (isAllDeviceHysteresis()) {
+            return mPlayStateHysteresisBuilder.build();
+        }
+        return mIsMuted ? mPlayStatePausingBuilder.build() : mPlayStatePlayingBuilder.build();
+    }
+
+    private boolean isAllDeviceHysteresis() {
+        return mHysteresisModeFixAvailable && mStateByDevice != null
+                && mStateByDevice.values().stream().allMatch(v -> v == PAUSED);
     }
 
     private String getDeviceName() {
-        if (mDevices == null || mDevices.isEmpty() || mLocalBtManager == null) {
+        List<BluetoothDevice> validDevices = getDeviceInValidState();
+        if (validDevices.isEmpty() || mLocalBtManager == null) {
             return DEFAULT_DEVICE_NAME;
         }
 
@@ -269,7 +392,7 @@ public class AudioStreamMediaService extends Service {
             return DEFAULT_DEVICE_NAME;
         }
 
-        CachedBluetoothDevice device = manager.findDevice(mDevices.get(0));
+        CachedBluetoothDevice device = manager.findDevice(validDevices.getFirst());
         return device != null ? device.getName() : DEFAULT_DEVICE_NAME;
     }
 
@@ -284,9 +407,52 @@ public class AudioStreamMediaService extends Service {
                 new Notification.Builder(this, CHANNEL_ID)
                         .setSmallIcon(com.android.settingslib.R.drawable.ic_bt_le_audio_sharing)
                         .setStyle(mediaStyle)
-                        .setContentText(getString(BROADCAST_CONTENT_TEXT))
+                        .setContentText(getString(
+                                isAllDeviceHysteresis() ? BROADCAST_STREAM_PAUSED_TEXT :
+                                        BROADCAST_LISTENING_NOW_TEXT))
                         .setSilent(true);
         return notificationBuilder.build();
+    }
+
+    private void updateMediaSessionAndNotify(BluetoothDevice device, int sourceId,
+            String programInfo) {
+        if (mNotificationManager == null || mLocalSession == null) {
+            Log.w(TAG, "mNotificationManager or mLocalSession is null, ignore update.");
+            return;
+        }
+        mLocalSession.setMetadata(new MediaMetadata.Builder().putString(
+                MediaMetadata.METADATA_KEY_TITLE,
+                getBroadcastName(device, sourceId, programInfo)).putLong(
+                MediaMetadata.METADATA_KEY_DURATION, STATIC_PLAYBACK_DURATION).build());
+        mLocalSession.setPlaybackState(getPlaybackState());
+        mNotificationManager.notify(NOTIFICATION_ID,
+                buildNotification(mLocalSession.getSessionToken()));
+    }
+
+    private String getBroadcastName(BluetoothDevice sink, int sourceId, String programInfo) {
+        if (mLeBroadcastAssistant == null || sink == null) {
+            return programInfo;
+        }
+        var metadata = mLeBroadcastAssistant.getSourceMetadata(sink, sourceId);
+        if (metadata == null || metadata.getBroadcastId() != mBroadcastId
+                || metadata.getBroadcastName() == null || metadata.getBroadcastName().isEmpty()) {
+            Log.d(TAG, "getBroadcastName(): source metadata not found, using programInfo: "
+                    + programInfo);
+            return programInfo;
+        }
+        return metadata.getBroadcastName();
+    }
+
+    private List<BluetoothDevice> getDeviceInValidState() {
+        if (mStateByDevice == null || mStateByDevice.isEmpty()) {
+            Log.w(TAG, "getDeviceInValidState() : mStateByDevice is null or empty!");
+            return emptyList();
+        }
+        if (Flags.audioStreamMediaServiceByReceiveState()) {
+            return mStateByDevice.entrySet().stream().filter(
+                    entry -> entry.getValue() != DECRYPTION_FAILED).map(Map.Entry::getKey).toList();
+        }
+        return mStateByDevice.keySet().stream().toList();
     }
 
     @Nullable
@@ -308,14 +474,44 @@ public class AudioStreamMediaService extends Service {
             handleRemoveSource();
         }
 
+        @Override
+        public void onReceiveStateChanged(
+                BluetoothDevice sink, int sourceId, BluetoothLeBroadcastReceiveState state) {
+            if (Flags.audioStreamMediaServiceByReceiveState()) {
+                return;
+            }
+            super.onReceiveStateChanged(sink, sourceId, state);
+            if (!mHysteresisModeFixAvailable || mStateByDevice == null
+                    || !mStateByDevice.containsKey(sink)) {
+                return;
+            }
+            var sourceState = LocalBluetoothLeBroadcastAssistant.getLocalSourceState(state);
+            boolean streaming = sourceState == STREAMING;
+            boolean paused = sourceState == PAUSED;
+            // Exit early if the state is neither streaming nor paused
+            if (!streaming && !paused) {
+                return;
+            }
+            boolean shouldUpdate = mStateByDevice.get(sink) != sourceState;
+            if (shouldUpdate) {
+                mStateByDevice.put(sink, sourceState);
+                if (mLocalSession != null) {
+                    mLocalSession.setPlaybackState(getPlaybackState());
+                    if (mNotificationManager != null) {
+                        mNotificationManager.notify(
+                                NOTIFICATION_ID,
+                                buildNotification(mLocalSession.getSessionToken())
+                        );
+                    }
+                    Log.d(TAG, "updating source state to : " + sourceState);
+                }
+            }
+        }
+
         private void handleRemoveSource() {
-            List<BluetoothLeBroadcastReceiveState> connected =
-                    mAudioStreamsHelper == null
-                            ? emptyList()
-                            : mAudioStreamsHelper.getAllConnectedSources();
-            if (connected.stream()
-                    .map(BluetoothLeBroadcastReceiveState::getBroadcastId)
-                    .noneMatch(id -> id == mBroadcastId)) {
+            if (mAudioStreamsHelper != null
+                    && !mAudioStreamsHelper.getConnectedBroadcastIdAndState(
+                            mHysteresisModeFixAvailable).containsKey(mBroadcastId)) {
                 stopSelf();
             }
         }
@@ -325,25 +521,21 @@ public class AudioStreamMediaService extends Service {
         @Override
         public void onDeviceVolumeChanged(
                 @NonNull BluetoothDevice device, @IntRange(from = -255, to = 255) int volume) {
-            if (mDevices == null || mDevices.isEmpty()) {
-                Log.w(TAG, "active device or device has source is null!");
+            if (!getDeviceInValidState().contains(device)) {
+                Log.w(TAG, "onDeviceVolumeChanged() : device not in valid state list");
                 return;
             }
             Log.d(
                     TAG,
                     "onDeviceVolumeChanged() bluetoothDevice : " + device + " volume: " + volume);
-            if (mDevices.contains(device)) {
-                if (volume == 0) {
-                    mIsMuted.set(true);
-                } else {
-                    mIsMuted.set(false);
-                    mLatestPositiveVolume.set(volume);
-                }
-                synchronized (mLocalSessionLock) {
-                    if (mLocalSession != null) {
-                        mLocalSession.setPlaybackState(getPlaybackState());
-                    }
-                }
+            if (volume == 0) {
+                mIsMuted = true;
+            } else {
+                mIsMuted = false;
+                mLatestPositiveVolume = volume;
+            }
+            if (mLocalSession != null) {
+                mLocalSession.setPlaybackState(getPlaybackState());
             }
         }
     }
@@ -351,10 +543,12 @@ public class AudioStreamMediaService extends Service {
     private class BtCallback implements BluetoothCallback {
         @Override
         public void onBluetoothStateChanged(int bluetoothState) {
-            if (BluetoothAdapter.STATE_OFF == bluetoothState) {
-                Log.d(TAG, "onBluetoothStateChanged() : stopSelf");
-                stopSelf();
-            }
+            getHandler().post(() -> {
+                if (BluetoothAdapter.STATE_OFF == bluetoothState) {
+                    Log.d(TAG, "onBluetoothStateChanged() : stopSelf");
+                    stopSelf();
+                }
+            });
         }
 
         @Override
@@ -362,62 +556,55 @@ public class AudioStreamMediaService extends Service {
                 @NonNull CachedBluetoothDevice cachedDevice,
                 @ConnectionState int state,
                 int bluetoothProfile) {
-            if (state == BluetoothAdapter.STATE_DISCONNECTED
-                    && bluetoothProfile == BluetoothProfile.LE_AUDIO_BROADCAST_ASSISTANT
-                    && mDevices != null) {
-                mDevices.remove(cachedDevice.getDevice());
-                cachedDevice
-                        .getMemberDevice()
-                        .forEach(
-                                m -> {
-                                    // Check nullability to pass NullAway check
-                                    if (mDevices != null) {
-                                        mDevices.remove(m.getDevice());
-                                    }
-                                });
-            }
-            if (mDevices == null || mDevices.isEmpty()) {
-                Log.d(TAG, "onProfileConnectionStateChanged() : stopSelf");
-                stopSelf();
-            }
+            getHandler().post(() -> {
+                if (state == BluetoothAdapter.STATE_DISCONNECTED
+                        && bluetoothProfile == BluetoothProfile.LE_AUDIO_BROADCAST_ASSISTANT
+                        && mStateByDevice != null) {
+                    mStateByDevice.remove(cachedDevice.getDevice());
+                }
+                if (getDeviceInValidState().isEmpty()) {
+                    Log.d(TAG, "onProfileConnectionStateChanged() : stopSelf");
+                    stopSelf();
+                }
+            });
         }
     }
 
     private class MediaSessionCallback extends MediaSession.Callback {
+        @Override
+        public boolean onMediaButtonEvent(@NonNull Intent mediaButtonIntent) {
+            KeyEvent keyEvent = mediaButtonIntent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+            if (keyEvent != null) {
+                Log.d(TAG, "onMediaButtonEvent(): triggered by MediaSessionCallback");
+                switch (keyEvent.getKeyCode()) {
+                    case KeyEvent.KEYCODE_MEDIA_PLAY:
+                        handleOnPlay();
+                        break;
+                    case KeyEvent.KEYCODE_MEDIA_PAUSE:
+                        handleOnPause();
+                        break;
+                    default: // fall out
+                }
+            }
+            return super.onMediaButtonEvent(mediaButtonIntent);
+        }
+
+        @Override
         public void onSeekTo(long pos) {
             Log.d(TAG, "onSeekTo: " + pos);
-            synchronized (mLocalSessionLock) {
-                if (mLocalSession != null) {
-                    mLocalSession.setPlaybackState(getPlaybackState());
-                }
+            if (mLocalSession != null) {
+                mLocalSession.setPlaybackState(getPlaybackState());
             }
         }
 
         @Override
         public void onPause() {
-            if (mDevices == null || mDevices.isEmpty()) {
-                Log.w(TAG, "active device or device has source is null!");
-                return;
-            }
-            Log.d(
-                    TAG,
-                    "onPause() setting volume for device : " + mDevices.get(0) + " volume: " + 0);
-            setDeviceVolume(mDevices.get(0), /* volume= */ 0);
+            handleOnPause();
         }
 
         @Override
         public void onPlay() {
-            if (mDevices == null || mDevices.isEmpty()) {
-                Log.w(TAG, "active device or device has source is null!");
-                return;
-            }
-            Log.d(
-                    TAG,
-                    "onPlay() setting volume for device : "
-                            + mDevices.get(0)
-                            + " volume: "
-                            + mLatestPositiveVolume.get());
-            setDeviceVolume(mDevices.get(0), mLatestPositiveVolume.get());
+            handleOnPlay();
         }
 
         @Override
@@ -430,18 +617,33 @@ public class AudioStreamMediaService extends Service {
                         SettingsEnums.ACTION_AUDIO_STREAM_NOTIFICATION_LEAVE_BUTTON_CLICK);
             }
         }
+    }
 
-        private void setDeviceVolume(BluetoothDevice device, int volume) {
-            int event = SettingsEnums.ACTION_AUDIO_STREAM_NOTIFICATION_MUTE_BUTTON_CLICK;
-            var unused =
-                    ThreadUtils.postOnBackgroundThread(
-                            () -> {
-                                if (mVolumeControl != null) {
-                                    mVolumeControl.setDeviceVolume(device, volume, true);
-                                    mMetricsFeatureProvider.action(
-                                            getApplicationContext(), event, volume == 0 ? 1 : 0);
-                                }
-                            });
-        }
+    private void handleOnPlay() {
+        getDeviceInValidState().forEach(device -> {
+            Log.d(TAG, "onPlay() setting volume for device : " + device + " volume: "
+                    + mLatestPositiveVolume);
+            setDeviceVolume(device, mLatestPositiveVolume);
+        });
+    }
+
+    private void handleOnPause() {
+        getDeviceInValidState().forEach(device -> {
+            Log.d(TAG, "onPause() setting volume for device : " + device + " volume: " + 0);
+            setDeviceVolume(device, /* volume= */ 0);
+        });
+    }
+
+    private void setDeviceVolume(BluetoothDevice device, int volume) {
+        int event = SettingsEnums.ACTION_AUDIO_STREAM_NOTIFICATION_MUTE_BUTTON_CLICK;
+        var unused =
+                ThreadUtils.postOnBackgroundThread(
+                        () -> {
+                            if (mVolumeControl != null) {
+                                mVolumeControl.setDeviceVolume(device, volume, false);
+                                mMetricsFeatureProvider.action(
+                                        getApplicationContext(), event, volume == 0 ? 1 : 0);
+                            }
+                        });
     }
 }

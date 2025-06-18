@@ -76,8 +76,11 @@ public class StorageWizardInit extends StorageWizardBase {
         }
         if(mPortable) {
             mFlipper.setDisplayedChild(0);
-            setHeaderText(R.string.storage_wizard_init_v2_external_title,
-                getDiskShortDescription());
+            setHeaderText(
+                    ((mDisk != null) && mDisk.isSd())
+                            ? R.string.storage_wizard_init_v2_external_title
+                            : R.string.storage_wizard_format_confirm_v2_action,
+                    getDiskShortDescription());
             setNextButtonText(R.string.storage_wizard_init_v2_external_action);
             setBackButtonText(R.string.wizard_back_adoptable);
             setNextButtonVisibility(View.VISIBLE);
@@ -104,8 +107,11 @@ public class StorageWizardInit extends StorageWizardBase {
             v.setEnabled(false);
         } else if (mPortable == false) {
             mFlipper.showNext();
-            setHeaderText(R.string.storage_wizard_init_v2_external_title,
-                getDiskShortDescription());
+            setHeaderText(
+                    ((mDisk != null) && mDisk.isSd())
+                            ? R.string.storage_wizard_init_v2_external_title
+                            : R.string.storage_wizard_format_confirm_v2_action,
+                    getDiskShortDescription());
             setNextButtonText(R.string.storage_wizard_init_v2_external_action);
             setBackButtonText(R.string.wizard_back_adoptable);
             setBackButtonVisibility(View.VISIBLE);
@@ -151,8 +157,10 @@ public class StorageWizardInit extends StorageWizardBase {
     private void setupHyperlink() {
         TextView external_storage_textview = findViewById(R.id.storage_wizard_init_external_text);
         TextView internal_storage_textview = findViewById(R.id.storage_wizard_init_internal_text);
-        String external_storage_text = getResources().getString(R.string.
-            storage_wizard_init_v2_external_summary);
+        String external_storage_text = getResources().getString(
+                ((mDisk != null) && mDisk.isSd())
+                        ? R.string.storage_wizard_init_v2_external_summary
+                        : R.string.storage_wizard_init_v2_external_summary_non_sd_card);
         String internal_storage_text = getResources().getString(R.string.
             storage_wizard_init_v2_internal_summary);
 

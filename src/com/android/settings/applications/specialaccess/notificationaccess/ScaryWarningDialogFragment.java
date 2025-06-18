@@ -98,7 +98,7 @@ public class ScaryWarningDialogFragment extends InstrumentedDialogFragment {
         ((TextView) content.findViewById(R.id.prompt)).setText(prompt);
 
         ((TextView) content.findViewById(R.id.settings_description)).setText(
-                Flags.modesApi() && Flags.modesUi()
+                Flags.modesUi()
                         ? R.string.nls_feature_modes_settings_summary
                         : R.string.nls_feature_settings_summary);
 

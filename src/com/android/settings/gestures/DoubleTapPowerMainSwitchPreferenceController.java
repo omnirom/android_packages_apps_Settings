@@ -27,28 +27,32 @@ import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
-import com.android.settings.widget.SettingsMainSwitchPreferenceController;
+import com.android.settings.core.TogglePreferenceController;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnStart;
 import com.android.settingslib.core.lifecycle.events.OnStop;
 
 /** The controller to handle double tap power button main switch enable or disable state. */
 public class DoubleTapPowerMainSwitchPreferenceController
-        extends SettingsMainSwitchPreferenceController
+        extends TogglePreferenceController
         implements LifecycleObserver, OnStart, OnStop {
 
     private final ContentObserver mSettingsObserver =
             new ContentObserver(new Handler(Looper.getMainLooper())) {
                 @Override
                 public void onChange(boolean selfChange, @Nullable Uri uri) {
-                    if (mSwitchPreference == null || uri == null) {
+                    if (mPreference == null || uri == null) {
                         return;
                     }
-                    updateState(mSwitchPreference);
+                    updateState(mPreference);
                 }
             };
+
+    private @Nullable Preference mPreference;
 
     public DoubleTapPowerMainSwitchPreferenceController(
             @NonNull Context context, @NonNull String preferenceKey) {
@@ -56,8 +60,15 @@ public class DoubleTapPowerMainSwitchPreferenceController
     }
 
     @Override
+    public void displayPreference(@NonNull PreferenceScreen screen) {
+        super.displayPreference(screen);
+        mPreference = screen.findPreference(getPreferenceKey());
+    }
+
+    @Override
     public int getAvailabilityStatus() {
-        return DoubleTapPowerSettingsUtils.isDoubleTapPowerButtonGestureAvailable(mContext)
+        return DoubleTapPowerSettingsUtils
+                .isMultiTargetDoubleTapPowerButtonGestureAvailable(mContext)
                 ? AVAILABLE
                 : UNSUPPORTED_ON_DEVICE;
     }

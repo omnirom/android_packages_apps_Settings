@@ -156,9 +156,16 @@ public class ActiveUnlockStatusUtils {
     }
 
     /**
+     * Returns the title of active unlock only.
+     */
+    public @NonNull String getTitleForActiveUnlockOnly() {
+        return mContext.getString(R.string.security_settings_activeunlock);
+    }
+
+    /**
      * Returns the title of the combined biometric settings entity when active unlock is enabled.
      */
-    public String getTitleForActiveUnlock() {
+    public @NonNull String getTitleForActiveUnlock() {
         final boolean faceAllowed = Utils.hasFaceHardware(mContext);
         final boolean fingerprintAllowed = Utils.hasFingerprintHardware(mContext);
         return mContext.getString(getTitleRes(faceAllowed, fingerprintAllowed));
@@ -262,6 +269,30 @@ public class ActiveUnlockStatusUtils {
         final boolean fingerprintAllowed = Utils.hasFingerprintHardware(mContext);
 
         return mContext.getString(getUseBiometricTitleRes(faceAllowed, fingerprintAllowed));
+    }
+
+    /**
+     * Returns the summary from content provider.
+     */
+    @Nullable
+    public static String getSummaryFromContentProvider(
+            @NonNull Context context, @NonNull String authority, @NonNull String logTag) {
+        return ActiveUnlockContentListener.getContentFromUri(
+            context, ActiveUnlockContentListener.getUri(authority), logTag,
+            ActiveUnlockSummaryListener.METHOD_NAME,
+            ActiveUnlockSummaryListener.SUMMARY_KEY);
+    }
+
+    /**
+     * Returns the device name from content provider.
+     */
+    @Nullable
+    public static String getDeviceNameFromContentProvider(
+            @NonNull Context context, @NonNull String authority, @NonNull String logTag) {
+        return ActiveUnlockContentListener.getContentFromUri(
+            context, ActiveUnlockContentListener.getUri(authority), logTag,
+            ActiveUnlockDeviceNameListener.METHOD_NAME,
+            ActiveUnlockDeviceNameListener.DEVICE_NAME_KEY);
     }
 
     @StringRes

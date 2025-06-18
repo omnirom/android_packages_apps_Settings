@@ -25,9 +25,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.OnLifecycleEvent;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
 
-import com.android.settings.widget.SettingsMainSwitchPreferenceController;
+import com.android.settings.core.TogglePreferenceController;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.dream.DreamBackend;
 
@@ -35,7 +39,7 @@ import com.android.settingslib.dream.DreamBackend;
  * Preference controller for switching dreams on/off.
  */
 public class DreamMainSwitchPreferenceController extends
-        SettingsMainSwitchPreferenceController implements LifecycleObserver {
+        TogglePreferenceController implements LifecycleObserver {
     static final String MAIN_SWITCH_PREF_KEY = "dream_main_settings_switch";
     private final DreamBackend mBackend;
 
@@ -43,13 +47,23 @@ public class DreamMainSwitchPreferenceController extends
             new Handler(Looper.getMainLooper())) {
         @Override
         public void onChange(boolean selfChange) {
-            updateState(mSwitchPreference);
+            if (mPreference != null) {
+                updateState(mPreference);
+            }
         }
     };
+
+    private @Nullable Preference mPreference;
 
     public DreamMainSwitchPreferenceController(Context context, String key) {
         super(context, key);
         mBackend = DreamBackend.getInstance(context);
+    }
+
+    @Override
+    public void displayPreference(@NonNull PreferenceScreen screen) {
+        super.displayPreference(screen);
+        mPreference = screen.findPreference(getPreferenceKey());
     }
 
     @Override

@@ -22,7 +22,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
@@ -139,13 +138,8 @@ public class ApprovalPreferenceController extends BasePreferenceController {
     public void disable(final ComponentName cn) {
         logSpecialPermissionChange(true, cn.getPackageName());
         mNm.setNotificationListenerAccessGranted(cn, false);
-        if (!mNm.isNotificationPolicyAccessGrantedForPackage(
-                cn.getPackageName())) {
-            if (android.app.Flags.modesApi()) {
-                mNm.removeAutomaticZenRules(cn.getPackageName(), /* fromUser= */ true);
-            } else {
-                mNm.removeAutomaticZenRules(cn.getPackageName());
-            }
+        if (!mNm.isNotificationPolicyAccessGrantedForPackage(cn.getPackageName())) {
+            mNm.removeAutomaticZenRules(cn.getPackageName(), /* fromUser= */ true);
         }
     }
 

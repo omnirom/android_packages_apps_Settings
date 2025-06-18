@@ -27,6 +27,7 @@ import com.android.settings.dashboard.DashboardFragment
 import com.android.settings.network.telephony.SimRepository
 import com.android.settings.overlay.FeatureFactory.Companion.featureFactory
 import com.android.settings.spa.network.startAddSimFlow
+import com.android.settings.spa.network.startSatelliteWarningDialogFlow
 import com.android.settingslib.RestrictedPreference
 import com.android.settingslib.spa.framework.util.collectLatestWithLifecycle
 import com.android.settingslib.spaprivileged.settingsprovider.settingsGlobalBooleanFlow
@@ -51,11 +52,13 @@ constructor(
         MobileNetworkSummaryRepository(context),
     private val airplaneModeOnFlow: Flow<Boolean> =
         context.settingsGlobalBooleanFlow(Settings.Global.AIRPLANE_MODE_ON),
+    private val satelliteIsStartedFlow: Flow<Boolean> = SatelliteRepository(context).getIsSessionStartedFlow()
 ) : BasePreferenceController(context, preferenceKey) {
     private val metricsFeatureProvider = featureFactory.metricsFeatureProvider
     private var preference: RestrictedPreference? = null
 
     private var isAirplaneModeOn = false
+    private var isSatelliteOn = false
 
     override fun getAvailabilityStatus() =
         if (SimRepository(mContext).showMobileNetworkPageEntrance()) AVAILABLE
@@ -74,6 +77,9 @@ constructor(
             isAirplaneModeOn = it
             updateEnabled()
         }
+        satelliteIsStartedFlow.collectLatestWithLifecycle(viewLifecycleOwner) {
+            isSatelliteOn = it
+        }
     }
 
     private fun update(state: MobileNetworkSummaryRepository.SubscriptionsState) {
@@ -87,7 +93,10 @@ constructor(
                 preference.onPreferenceClickListener =
                     Preference.OnPreferenceClickListener {
                         logPreferenceClick()
-                        startAddSimFlow(context)
+                        if (isSatelliteOn)
+                            startSatelliteWarningDialogFlow(context)
+                        else
+                            startAddSimFlow(context)
                         true
                     }
             }

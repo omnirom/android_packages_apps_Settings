@@ -95,7 +95,6 @@ class FingerprintEnrollTest {
         currentActivityInstance : FingerprintEnroll,
         nextActivityClass: Class<out Activity>
     ) {
-        assertThat(currentActivityInstance.isFinishing).isTrue()
         val nextActivityIntent = Shadows.shadowOf(currentActivityInstance).nextStartedActivity
         assertThat(nextActivityIntent.component!!.className).isEqualTo(nextActivityClass.name)
         assertThat(nextActivityIntent.extras!!.size()).isEqualTo(1)

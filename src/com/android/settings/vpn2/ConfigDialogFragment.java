@@ -124,6 +124,7 @@ public class ConfigDialogFragment extends InstrumentedDialogFragment implements
         VpnProfile profile = dialog.getProfile();
 
         if (button == DialogInterface.BUTTON_POSITIVE) {
+            if (!dialog.validate()) return;
             // Possibly throw up a dialog to explain lockdown VPN.
             final boolean shouldLockdown = dialog.isVpnAlwaysOn();
             final boolean shouldConnect = shouldLockdown || !dialog.isEditing();

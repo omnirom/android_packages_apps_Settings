@@ -24,8 +24,9 @@ import com.android.settingslib.metadata.PreferenceSummaryProvider
 import com.android.settingslib.metadata.ProvidePreferenceScreen
 import com.android.settingslib.metadata.preferenceHierarchy
 import com.android.settingslib.preference.PreferenceScreenCreator
+import com.android.settingslib.widget.SettingsThemeHelper.isExpressiveTheme
 
-@ProvidePreferenceScreen
+@ProvidePreferenceScreen(LocationScreen.KEY)
 class LocationScreen : PreferenceScreenCreator, PreferenceSummaryProvider, PreferenceIconProvider {
     override val key: String
         get() = KEY
@@ -47,6 +48,7 @@ class LocationScreen : PreferenceScreenCreator, PreferenceSummaryProvider, Prefe
 
     override fun getIcon(context: Context) =
         when {
+            isExpressiveTheme(context) -> R.drawable.ic_homepage_location
             Flags.homepageRevamp() -> R.drawable.ic_settings_location_filled
             else -> R.drawable.ic_settings_location
         }
@@ -57,7 +59,7 @@ class LocationScreen : PreferenceScreenCreator, PreferenceSummaryProvider, Prefe
 
     override fun fragmentClass() = LocationSettings::class.java
 
-    override fun getPreferenceHierarchy(context: Context) = preferenceHierarchy(this) {}
+    override fun getPreferenceHierarchy(context: Context) = preferenceHierarchy(context, this) {}
 
     companion object {
         const val KEY = "location_settings"

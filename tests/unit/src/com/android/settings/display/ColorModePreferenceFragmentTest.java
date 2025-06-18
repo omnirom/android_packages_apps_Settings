@@ -76,6 +76,7 @@ public class ColorModePreferenceFragmentTest {
                 });
         doReturn(res).when(mContext).getResources();
         mFragment.onAttach(mContext);
+        doReturn(mContext).when(mFragment).getContext();
 
         final List<? extends CandidateInfo> candidates = mFragment.getCandidates();
 
@@ -99,6 +100,7 @@ public class ColorModePreferenceFragmentTest {
                 });
         doReturn(res).when(mContext).getResources();
         mFragment.onAttach(mContext);
+        doReturn(mContext).when(mFragment).getContext();
 
         List<? extends CandidateInfo> candidates = mFragment.getCandidates();
 
@@ -116,6 +118,7 @@ public class ColorModePreferenceFragmentTest {
                 });
         doReturn(res).when(mContext).getResources();
         mFragment.onAttach(mContext);
+        doReturn(mContext).when(mFragment).getContext();
 
         List<? extends CandidateInfo> candidates = mFragment.getCandidates();
 
@@ -138,6 +141,7 @@ public class ColorModePreferenceFragmentTest {
                 });
         doReturn(res).when(mContext).getResources();
         mFragment.onAttach(mContext);
+        doReturn(mContext).when(mFragment).getContext();
 
         List<? extends CandidateInfo> candidates = mFragment.getCandidates();
 

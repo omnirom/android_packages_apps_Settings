@@ -19,10 +19,15 @@ package com.android.settings.display;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
+
 import com.android.internal.view.RotationPolicy;
 import com.android.settings.R;
+import com.android.settings.core.TogglePreferenceController;
 import com.android.settings.overlay.FeatureFactory;
-import com.android.settings.widget.SettingsMainSwitchPreferenceController;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnStart;
@@ -31,15 +36,22 @@ import com.android.settingslib.core.lifecycle.events.OnStop;
 /**
  * The main switch controller for auto-rotate.
  */
-public class AutoRotateSwitchBarController extends SettingsMainSwitchPreferenceController implements
+public class AutoRotateSwitchBarController extends TogglePreferenceController implements
         LifecycleObserver, OnStart, OnStop {
 
     private final MetricsFeatureProvider mMetricsFeatureProvider;
     private RotationPolicy.RotationPolicyListener mRotationPolicyListener;
+    private @Nullable Preference mPreference;
 
     public AutoRotateSwitchBarController(Context context, String key) {
         super(context, key);
         mMetricsFeatureProvider = FeatureFactory.getFeatureFactory().getMetricsFeatureProvider();
+    }
+
+    @Override
+    public void displayPreference(@NonNull PreferenceScreen screen) {
+        super.displayPreference(screen);
+        mPreference = screen.findPreference(getPreferenceKey());
     }
 
     @Override
@@ -55,8 +67,8 @@ public class AutoRotateSwitchBarController extends SettingsMainSwitchPreferenceC
             mRotationPolicyListener = new RotationPolicy.RotationPolicyListener() {
                 @Override
                 public void onChange() {
-                    if (mSwitchPreference != null) {
-                        updateState(mSwitchPreference);
+                    if (mPreference != null) {
+                        updateState(mPreference);
                     }
                 }
             };

@@ -24,7 +24,9 @@ import android.content.pm.UserInfo
 import android.provider.Settings
 import android.util.Log
 import com.android.settings.SettingsActivity
+import com.android.settings.SettingsActivity.EXTRA_IS_DEEPLINK_HOME_STARTED_FROM_SEARCH
 import com.android.settings.Utils
+import com.android.settings.flags.Flags
 import com.android.settings.homepage.DeepLinkHomepageActivityInternal
 import com.android.settings.homepage.SettingsHomepageActivity
 import com.android.settings.password.PasswordUtils
@@ -94,6 +96,28 @@ object EmbeddedDeepLinkUtils {
         }
     }
 
+    /**
+     * Returns the deep link trampoline intent for settings search results for large screen devices.
+     */
+    @JvmStatic
+    fun getTrampolineIntentForSearchResult(
+        context: Context,
+        intent: Intent,
+        highlightMenuKey: String?
+    ): Intent {
+        return getTrampolineIntent(intent, highlightMenuKey).apply {
+            if (Flags.settingsSearchResultDeepLinkInSameTask()) {
+                // Ensure the deep link intent does not include FLAG_ACTIVITY_NEW_TASK which
+                // causes the search result deep link to open in a separate window.
+                removeFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                putExtra(EXTRA_IS_DEEPLINK_HOME_STARTED_FROM_SEARCH, true)
+            } else {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+            }
+
+            setClass(context, DeepLinkHomepageActivityInternal::class.java)
+        }
+    }
 
     /**
      * Returns whether the user is a sub profile.

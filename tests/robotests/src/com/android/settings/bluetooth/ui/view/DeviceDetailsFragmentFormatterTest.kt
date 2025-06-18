@@ -16,7 +16,7 @@
 
 package com.android.settings.bluetooth.ui.view
 
-import android.app.settings.SettingsEnums;
+import android.app.settings.SettingsEnums
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import androidx.preference.PreferenceScreen
+import androidx.preference.SwitchPreferenceCompat
 import androidx.test.core.app.ApplicationProvider
 import com.android.settings.bluetooth.ui.model.DeviceSettingPreferenceModel
 import com.android.settings.bluetooth.ui.model.FragmentTypeModel
@@ -33,6 +34,7 @@ import com.android.settings.testutils.FakeFeatureFactory
 import com.android.settingslib.bluetooth.CachedBluetoothDevice
 import com.android.settingslib.bluetooth.devicesettings.DeviceSettingId
 import com.android.settingslib.bluetooth.devicesettings.data.repository.DeviceSettingRepository
+import com.android.settingslib.bluetooth.devicesettings.shared.model.DeviceSettingActionModel
 import com.android.settingslib.bluetooth.devicesettings.shared.model.DeviceSettingConfigItemModel
 import com.android.settingslib.bluetooth.devicesettings.shared.model.DeviceSettingConfigModel
 import com.android.settingslib.bluetooth.devicesettings.shared.model.DeviceSettingIcon
@@ -58,13 +60,14 @@ import org.mockito.Mock
 import org.mockito.Mockito.any
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
+import org.mockito.Spy
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
+import org.mockito.kotlin.doNothing
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.shadows.ShadowLooper
 import org.robolectric.shadows.ShadowLooper.shadowMainLooper
-
 
 @ExperimentalCoroutinesApi
 @RunWith(RobolectricTestRunner::class)
@@ -78,7 +81,7 @@ class DeviceDetailsFragmentFormatterTest {
     @Mock private lateinit var headerController: AbstractPreferenceController
     @Mock private lateinit var buttonController: AbstractPreferenceController
 
-    private lateinit var context: Context
+    @Spy private val context: Context = ApplicationProvider.getApplicationContext()
     private lateinit var fragment: TestFragment
     private lateinit var underTest: DeviceDetailsFragmentFormatter
     private lateinit var featureFactory: FakeFeatureFactory
@@ -87,11 +90,15 @@ class DeviceDetailsFragmentFormatterTest {
 
     @Before
     fun setUp() {
-        context = ApplicationProvider.getApplicationContext()
         featureFactory = FakeFeatureFactory.setupForTest()
+        doNothing().`when`(context).startActivity(any(Intent::class.java))
         `when`(
                 featureFactory.bluetoothFeatureProvider.getDeviceSettingRepository(
-                    eq(context), eq(bluetoothAdapter), any()))
+                    any(),
+                    eq(bluetoothAdapter),
+                    any(),
+                )
+            )
             .thenReturn(repository)
         fragmentActivity = Robolectric.setupActivity(FragmentActivity::class.java)
         assertThat(fragmentActivity.applicationContext).isNotNull()
@@ -115,7 +122,8 @@ class DeviceDetailsFragmentFormatterTest {
                 listOf(profileController, headerController, buttonController),
                 bluetoothAdapter,
                 cachedDevice,
-                testScope.testScheduler)
+                testScope.testScheduler,
+            )
     }
 
     @Test
@@ -124,11 +132,16 @@ class DeviceDetailsFragmentFormatterTest {
             `when`(repository.getDeviceSettingsConfig(cachedDevice))
                 .thenReturn(
                     DeviceSettingConfigModel(
-                        listOf(), listOf(), DeviceSettingConfigItemModel.AppProvidedItem(12345, false)))
-            val intent = Intent().apply {
-                setAction(Intent.ACTION_VIEW)
-                setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
+                        listOf(),
+                        listOf(),
+                        DeviceSettingConfigItemModel.AppProvidedItem(12345, false),
+                    )
+                )
+            val intent =
+                Intent().apply {
+                    setAction(Intent.ACTION_VIEW)
+                    setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
             `when`(repository.getDeviceSetting(cachedDevice, 12345))
                 .thenReturn(
                     flowOf(
@@ -136,12 +149,15 @@ class DeviceDetailsFragmentFormatterTest {
                             cachedDevice = cachedDevice,
                             id = 12345,
                             intent = intent,
-                        )))
+                        )
+                    )
+                )
 
             var helpPreference: DeviceSettingPreferenceModel.HelpPreference? = null
-            underTest.getMenuItem(FragmentTypeModel.DeviceDetailsMoreSettingsFragment).onEach {
-                helpPreference = it
-            }.launchIn(testScope.backgroundScope)
+            underTest
+                .getMenuItem(FragmentTypeModel.DeviceDetailsMoreSettingsFragment)
+                .onEach { helpPreference = it }
+                .launchIn(testScope.backgroundScope)
             delay(100)
             runCurrent()
             ShadowLooper.idleMainLooper()
@@ -171,13 +187,19 @@ class DeviceDetailsFragmentFormatterTest {
                         listOf(
                             DeviceSettingConfigItemModel.BuiltinItem.CommonBuiltinItem(
                                 DeviceSettingId.DEVICE_SETTING_ID_HEADER,
-                                highlighted = false, preferenceKey = "bluetooth_device_header"),
+                                highlighted = false,
+                                preferenceKey = "bluetooth_device_header",
+                            ),
                             DeviceSettingConfigItemModel.BuiltinItem.CommonBuiltinItem(
                                 DeviceSettingId.DEVICE_SETTING_ID_BLUETOOTH_PROFILES,
-                                highlighted = false, preferenceKey = "bluetooth_profiles"),
+                                highlighted = false,
+                                preferenceKey = "bluetooth_profiles",
+                            ),
                         ),
                         listOf(),
-                        null))
+                        null,
+                    )
+                )
 
             underTest.updateLayout(FragmentTypeModel.DeviceDetailsMainFragment)
             runCurrent()
@@ -189,13 +211,17 @@ class DeviceDetailsFragmentFormatterTest {
                     SettingsEnums.PAGE_UNKNOWN,
                     SettingsEnums.ACTION_BLUETOOTH_DEVICE_DETAILS_ITEM_SHOWN,
                     0,
-                    "bluetooth_device_header", 1)
+                    "bluetooth_device_header",
+                    1,
+                )
             verify(featureFactory.metricsFeatureProvider)
                 .action(
                     SettingsEnums.PAGE_UNKNOWN,
                     SettingsEnums.ACTION_BLUETOOTH_DEVICE_DETAILS_ITEM_SHOWN,
                     0,
-                    "bluetooth_profiles", 1)
+                    "bluetooth_profiles",
+                    1,
+                )
         }
     }
 
@@ -209,16 +235,22 @@ class DeviceDetailsFragmentFormatterTest {
                             DeviceSettingConfigItemModel.BuiltinItem.CommonBuiltinItem(
                                 DeviceSettingId.DEVICE_SETTING_ID_HEADER,
                                 highlighted = false,
-                                preferenceKey = "bluetooth_device_header"),
+                                preferenceKey = "bluetooth_device_header",
+                            ),
                             DeviceSettingConfigItemModel.AppProvidedItem(
-                                DeviceSettingId.DEVICE_SETTING_ID_ANC, highlighted = false),
+                                DeviceSettingId.DEVICE_SETTING_ID_ANC,
+                                highlighted = false,
+                            ),
                             DeviceSettingConfigItemModel.BuiltinItem.CommonBuiltinItem(
                                 DeviceSettingId.DEVICE_SETTING_ID_BLUETOOTH_PROFILES,
                                 highlighted = false,
-                                preferenceKey = "bluetooth_profiles"),
+                                preferenceKey = "bluetooth_profiles",
+                            ),
                         ),
                         listOf(),
-                        null))
+                        null,
+                    )
+                )
             `when`(repository.getDeviceSetting(cachedDevice, DeviceSettingId.DEVICE_SETTING_ID_ANC))
                 .thenReturn(
                     flowOf(
@@ -231,11 +263,17 @@ class DeviceDetailsFragmentFormatterTest {
                                     ToggleModel(
                                         "",
                                         DeviceSettingIcon.BitmapIcon(
-                                            Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)))),
+                                            Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+                                        ),
+                                    )
+                                ),
                             isActive = true,
                             state = DeviceSettingStateModel.MultiTogglePreferenceState(0),
                             isAllowedChangingState = true,
-                            updateState = {})))
+                            updateState = {},
+                        )
+                    )
+                )
 
             underTest.updateLayout(FragmentTypeModel.DeviceDetailsMainFragment)
             runCurrent()
@@ -244,13 +282,119 @@ class DeviceDetailsFragmentFormatterTest {
                 .containsExactly(
                     "bluetooth_device_header",
                     "DEVICE_SETTING_${DeviceSettingId.DEVICE_SETTING_ID_ANC}",
-                    "bluetooth_profiles")
+                    "bluetooth_profiles",
+                )
             verify(featureFactory.metricsFeatureProvider)
                 .action(
                     SettingsEnums.PAGE_UNKNOWN,
                     SettingsEnums.ACTION_BLUETOOTH_DEVICE_DETAILS_ITEM_SHOWN,
                     0,
-                    "DEVICE_SETTING_${DeviceSettingId.DEVICE_SETTING_ID_ANC}", 1
+                    "DEVICE_SETTING_${DeviceSettingId.DEVICE_SETTING_ID_ANC}",
+                    1,
+                )
+        }
+    }
+
+    @Test
+    fun updateLayout_plainPreferenceClicked() {
+        testScope.runTest {
+            val settingId = 12345
+            val intent = Intent("test_intent")
+            `when`(repository.getDeviceSettingsConfig(cachedDevice))
+                .thenReturn(
+                    DeviceSettingConfigModel(
+                        listOf(
+                            DeviceSettingConfigItemModel.AppProvidedItem(
+                                settingId,
+                                highlighted = false,
+                            )
+                        ),
+                        listOf(),
+                        null,
+                    )
+                )
+
+            `when`(repository.getDeviceSetting(cachedDevice, settingId))
+                .thenReturn(
+                    flowOf(
+                        DeviceSettingModel.ActionSwitchPreference(
+                            cachedDevice = cachedDevice,
+                            id = settingId,
+                            title = "title",
+                            summary = "summary",
+                            icon = null,
+                            action = DeviceSettingActionModel.IntentAction(intent),
+                        )
+                    )
+                )
+
+            underTest.updateLayout(FragmentTypeModel.DeviceDetailsMainFragment)
+            runCurrent()
+            val displayedPrefs = getDisplayedPreferences()
+            displayedPrefs[0].performClick()
+
+            assertThat(displayedPrefs).hasSize(1)
+            verify(context).startActivity(intent)
+            verify(featureFactory.metricsFeatureProvider)
+                .action(
+                    SettingsEnums.PAGE_UNKNOWN,
+                    SettingsEnums.ACTION_BLUETOOTH_DEVICE_DETAILS_ITEM_CLICKED,
+                    0,
+                    "DEVICE_SETTING_$settingId",
+                    2,
+                )
+        }
+    }
+
+    @Test
+    fun updateLayout_switchPreferenceClicked() {
+        val settingId = 12345
+        testScope.runTest {
+            `when`(repository.getDeviceSettingsConfig(cachedDevice))
+                .thenReturn(
+                    DeviceSettingConfigModel(
+                        listOf(
+                            DeviceSettingConfigItemModel.AppProvidedItem(
+                                settingId,
+                                highlighted = false,
+                            )
+                        ),
+                        listOf(),
+                        null,
+                    )
+                )
+
+            `when`(repository.getDeviceSetting(cachedDevice, settingId))
+                .thenReturn(
+                    flowOf(
+                        DeviceSettingModel.ActionSwitchPreference(
+                            cachedDevice = cachedDevice,
+                            id = settingId,
+                            title = "title",
+                            summary = "summary",
+                            icon = null,
+                            action = null,
+                            switchState = DeviceSettingStateModel.ActionSwitchPreferenceState(true),
+                            isAllowedChangingState = true,
+                            updateState = {},
+                        )
+                    )
+                )
+
+            underTest.updateLayout(FragmentTypeModel.DeviceDetailsMainFragment)
+            runCurrent()
+            val displayedPrefs = getDisplayedPreferences()
+            displayedPrefs[0].performClick()
+
+            assertThat(displayedPrefs).hasSize(1)
+            assertThat(displayedPrefs[0]).isInstanceOf(SwitchPreferenceCompat::class.java)
+            verify(featureFactory.metricsFeatureProvider)
+                .action(
+                    SettingsEnums.PAGE_UNKNOWN,
+                    SettingsEnums.ACTION_BLUETOOTH_DEVICE_DETAILS_ITEM_CLICKED,
+                    0,
+                    "DEVICE_SETTING_$settingId",
+                    0,
                 )
         }
     }
@@ -260,7 +404,7 @@ class DeviceDetailsFragmentFormatterTest {
         for (i in 0..<fragment.preferenceScreen.preferenceCount) {
             prefs.add(fragment.preferenceScreen.getPreference(i))
         }
-        return prefs
+        return prefs.filter { it.key != null }
     }
 
     class TestFragment(context: Context) : DashboardFragment() {

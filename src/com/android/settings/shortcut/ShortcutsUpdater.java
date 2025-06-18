@@ -86,7 +86,7 @@ public class ShortcutsUpdater {
     private static ComponentName maybeGetReplacingComponent(Context context, ComponentName cn) {
         // ZenModeSettingsActivity is replaced by ModesSettingsActivity and will be deleted
         // soon (so we shouldn't use ZenModeSettingsActivity.class).
-        if (Flags.modesApi() && Flags.modesUi()
+        if (Flags.modesUi()
                 && cn.getClassName().endsWith("Settings$ZenModeSettingsActivity")) {
             return new ComponentName(context, Settings.ModesSettingsActivity.class);
         }

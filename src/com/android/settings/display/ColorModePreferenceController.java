@@ -14,15 +14,39 @@
 package com.android.settings.display;
 
 import android.content.Context;
+import android.database.ContentObserver;
 import android.hardware.display.ColorDisplayManager;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.Settings;
 
-import androidx.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
 
 import com.android.settings.core.BasePreferenceController;
 
-public class ColorModePreferenceController extends BasePreferenceController {
+public class ColorModePreferenceController extends BasePreferenceController
+        implements LifecycleObserver {
 
-    public ColorModePreferenceController(Context context, String key) {
+    private Preference mPreference;
+
+    private final ContentObserver mContentObserver = new ContentObserver(
+            new Handler(Looper.getMainLooper())) {
+        @Override
+        public void onChange(boolean selfChange, @Nullable Uri uri) {
+            if (mPreference != null) {
+                updateState(mPreference);
+            }
+        }
+    };
+
+    public ColorModePreferenceController(@NonNull Context context, @NonNull String key) {
         super(context, key);
     }
 
@@ -34,13 +58,43 @@ public class ColorModePreferenceController extends BasePreferenceController {
                 AVAILABLE : DISABLED_FOR_USER;
     }
 
-    @Override
-    public CharSequence getSummary() {
-        return ColorModeUtils.getColorModeMapping(mContext.getResources()).get(getColorMode());
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    public void onResume() {
+        mContext.getContentResolver().registerContentObserver(
+                Settings.System.getUriFor(Settings.System.DISPLAY_COLOR_MODE),
+                /* notifyForDescendants= */ false,
+                mContentObserver);
     }
 
-    @VisibleForTesting
-    public int getColorMode() {
-        return mContext.getSystemService(ColorDisplayManager.class).getColorMode();
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    public void onPause() {
+        mContext.getContentResolver().unregisterContentObserver(mContentObserver);
+    }
+
+    @Override
+    public CharSequence getSummary() {
+        return getColorModeName();
+    }
+
+    public void displayPreference(PreferenceScreen screen) {
+        super.displayPreference(screen);
+        mPreference = screen.findPreference(getPreferenceKey());
+        if (mPreference != null) {
+            updateState(mPreference);
+        }
+    }
+
+    @Override
+    public void updateState(@Nullable Preference preference) {
+        if (preference == null) {
+            return;
+        }
+        super.updateState(preference);
+        preference.setSummary(getSummary());
+    }
+
+    @NonNull
+    private String getColorModeName() {
+        return ColorModeUtils.getActiveColorModeName(mContext);
     }
 }

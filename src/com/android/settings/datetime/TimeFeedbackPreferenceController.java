@@ -19,9 +19,12 @@ package com.android.settings.datetime;
 import static android.content.Intent.URI_INTENT_SCHEME;
 
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.preference.Preference;
 
@@ -29,6 +32,7 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.core.PreferenceControllerMixin;
+import com.android.settings.flags.Flags;
 
 import java.net.URISyntaxException;
 
@@ -40,19 +44,22 @@ public class TimeFeedbackPreferenceController
         extends BasePreferenceController
         implements PreferenceControllerMixin {
 
+    private static final String TAG = "TimeFeedbackController";
+
+    private final PackageManager mPackageManager;
     private final String mIntentUri;
-    private final int mAvailabilityStatus;
 
     public TimeFeedbackPreferenceController(Context context, String preferenceKey) {
-        this(context, preferenceKey, context.getResources().getString(
+        this(context, context.getPackageManager(), preferenceKey, context.getResources().getString(
                 R.string.config_time_feedback_intent_uri));
     }
 
     @VisibleForTesting
-    TimeFeedbackPreferenceController(Context context, String preferenceKey, String intentUri) {
+    TimeFeedbackPreferenceController(Context context, PackageManager packageManager,
+            String preferenceKey, String intentUri) {
         super(context, preferenceKey);
+        mPackageManager = packageManager;
         mIntentUri = intentUri;
-        mAvailabilityStatus = TextUtils.isEmpty(mIntentUri) ? UNSUPPORTED_ON_DEVICE : AVAILABLE;
     }
 
     /**
@@ -67,10 +74,12 @@ public class TimeFeedbackPreferenceController
 
     @Override
     public int getAvailabilityStatus() {
-        if (!TimeFeedbackLaunchUtils.isFeedbackFeatureSupported()) {
+        if (!Flags.datetimeFeedback() || TextUtils.isEmpty(mIntentUri)) {
             return UNSUPPORTED_ON_DEVICE;
+        } else if (!isTimeFeedbackTargetAvailable()) {
+            return CONDITIONALLY_UNAVAILABLE;
         }
-        return mAvailabilityStatus;
+        return AVAILABLE;
     }
 
     @Override
@@ -89,7 +98,25 @@ public class TimeFeedbackPreferenceController
             mContext.startActivity(intent);
             return true;
         } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Bad intent configuration: " + mIntentUri, e);
+            Log.e(TAG, "Bad intent configuration: " + mIntentUri, e);
+            return false;
         }
+    }
+
+    private boolean isTimeFeedbackTargetAvailable() {
+        Intent intent;
+        try {
+            intent = Intent.parseUri(mIntentUri, URI_INTENT_SCHEME);
+        } catch (URISyntaxException e) {
+            Log.e(TAG, "Bad intent configuration: " + mIntentUri, e);
+            return false;
+        }
+        ComponentName resolvedActivity = intent.resolveActivity(mPackageManager);
+
+        if (resolvedActivity == null) {
+            Log.w(TAG, "No valid target for the time feedback intent: " + intent);
+            return false;
+        }
+        return true;
     }
 }

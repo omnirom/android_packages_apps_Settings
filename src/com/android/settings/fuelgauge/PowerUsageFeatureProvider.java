@@ -64,6 +64,9 @@ public interface PowerUsageFeatureProvider {
     /** Returns an allowlist of app names combined into the system-apps item */
     List<String> getSystemAppsAllowlist();
 
+    /** Returns the data retention days in the database */
+    int getDataRetentionDays();
+
     /** Check whether location setting is enabled */
     boolean isLocationSettingEnabled(String[] packages);
 

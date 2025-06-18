@@ -28,7 +28,6 @@ import com.android.settings.connecteddevice.DevicePreferenceCallback;
 import com.android.settingslib.bluetooth.BluetoothUtils;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.CachedBluetoothDeviceManager;
-import com.android.settingslib.flags.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,16 +106,10 @@ public class SavedBluetoothDeviceUpdater extends BluetoothDeviceUpdater
                 + ", is connected : " + device.isConnected() + ", is profile connected : "
                 + cachedDevice.isConnected() + ", is exclusively managed : "
                 + isExclusivelyManaged);
-        if (Flags.enableHideExclusivelyManagedBluetoothDevice()) {
-            return device.getBondState() == BluetoothDevice.BOND_BONDED
-                    && (mShowConnectedDevice || (!device.isConnected()
-                    && isDeviceInCachedDevicesList(cachedDevice)))
-                    && !isExclusivelyManaged;
-        } else {
-            return device.getBondState() == BluetoothDevice.BOND_BONDED
-                    && (mShowConnectedDevice || (!device.isConnected()
-                    && isDeviceInCachedDevicesList(cachedDevice)));
-        }
+        return device.getBondState() == BluetoothDevice.BOND_BONDED
+                && (mShowConnectedDevice || (!device.isConnected()
+                && isDeviceInCachedDevicesList(cachedDevice)))
+                && !isExclusivelyManaged;
     }
 
     @Override

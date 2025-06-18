@@ -19,8 +19,15 @@ package com.android.settings.network;
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.telephony.TelephonyManager;
+
+import com.android.settings.R;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,27 +42,65 @@ import org.robolectric.util.ReflectionHelpers;
 public class NetworkResetPreferenceControllerTest {
 
     @Mock
+    private TelephonyManager mTelephonyManager;
+    @Mock
     private NetworkResetRestrictionChecker mRestrictionChecker;
     private NetworkResetPreferenceController mController;
+    private Context mContext;
+    private Resources mResources;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        mController = new NetworkResetPreferenceController(RuntimeEnvironment.application);
+        mContext = spy(RuntimeEnvironment.application);
+
+        mResources = spy(mContext.getResources());
+        when(mContext.getResources()).thenReturn(mResources);
+        when(mContext.getSystemService(Context.TELEPHONY_SERVICE)).thenReturn(mTelephonyManager);
+
+        mController = new NetworkResetPreferenceController(mContext);
         ReflectionHelpers.setField(mController, "mRestrictionChecker", mRestrictionChecker);
+
+        // Availability defaults
+        when(mTelephonyManager.isDataCapable()).thenReturn(true);
+        when(mResources.getBoolean(R.bool.config_show_sim_info)).thenReturn(true);
+        when(mRestrictionChecker.isRestrictionEnforcedByAdmin()).thenReturn(false);
     }
 
     @Test
-    public void testIsAvailable_shouldReturnTrueWhenNoUserRestriction() {
-        when(mRestrictionChecker.isRestrictionEnforcedByAdmin()).thenReturn(true);
+    public void testIsAvailable_showSimInfo_notWifiOnly() {
+        assertThat(mController.isAvailable()).isTrue();
+    }
 
+    @Test
+    public void testIsAvailable_hideSimInfo_notWifiOnly() {
+        when(mResources.getBoolean(R.bool.config_show_sim_info)).thenReturn(false);
+        assertThat(mController.isAvailable()).isFalse();
+    }
+
+    @Test
+    public void testIsAvailable_showSimInfo_wifiOnly() {
+        when(mTelephonyManager.isDataCapable()).thenReturn(false);
+        assertThat(mController.isAvailable()).isFalse();
+    }
+
+    @Test
+    public void testIsAvailable_userRestriction() {
+        when(mRestrictionChecker.isRestrictionEnforcedByAdmin()).thenReturn(true);
         when(mRestrictionChecker.hasUserRestriction()).thenReturn(true);
 
         assertThat(mController.isAvailable()).isFalse();
 
+        verify(mRestrictionChecker, never()).isRestrictionEnforcedByAdmin();
+    }
+
+    @Test
+    public void testIsAvailable_noUserRestriction() {
+        when(mRestrictionChecker.isRestrictionEnforcedByAdmin()).thenReturn(true);
         when(mRestrictionChecker.hasUserRestriction()).thenReturn(false);
 
         assertThat(mController.isAvailable()).isTrue();
+
         verify(mRestrictionChecker, never()).isRestrictionEnforcedByAdmin();
     }
 }

@@ -22,10 +22,9 @@ import android.provider.Settings;
 import androidx.annotation.NonNull;
 
 import com.android.server.notification.Flags;
-import com.android.settings.widget.SettingsMainSwitchPreferenceController;
+import com.android.settings.core.TogglePreferenceController;
 
-public class PoliteNotificationGlobalPreferenceController extends
-        SettingsMainSwitchPreferenceController {
+public class PoliteNotificationGlobalPreferenceController extends TogglePreferenceController {
 
     public static final int ON = 1;
     public static final int OFF = 0;

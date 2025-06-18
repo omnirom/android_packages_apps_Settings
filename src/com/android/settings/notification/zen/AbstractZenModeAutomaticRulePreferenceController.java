@@ -167,7 +167,7 @@ abstract public class AbstractZenModeAutomaticRulePreferenceController extends
             mMetricsFeatureProvider.action(mContext,
                     SettingsEnums.ACTION_ZEN_MODE_RULE_NAME_CHANGE_OK);
             AutomaticZenRule rule;
-            if (Flags.modesApi() && Flags.modesUi()) {
+            if (Flags.modesUi()) {
                 rule = new AutomaticZenRule.Builder(ruleName, mRuleInfo.defaultConditionId)
                         .setType(mRuleInfo.type)
                         .setOwner(mRuleInfo.serviceComponent)

@@ -103,6 +103,6 @@ public class TopLevelStoragePreferenceControllerTest {
         // the background thread.
         TimeUnit.SECONDS.sleep(5);
         assertThat(preference.getSummary()).isEqualTo(ResourcesUtils.getResourcesString(
-                mContext, "storage_summary", percentage, freeSpace));
+                mContext, "storage_toplevel_summary", percentage, freeSpace));
     }
 }

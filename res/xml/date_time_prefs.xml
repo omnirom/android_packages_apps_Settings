@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2008 The Android Open Source Project
+<!-- Copyright (C) 2024 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -75,18 +75,18 @@
 
     </PreferenceCategory>
 
-    <!-- An optional preference category for feedback. Only displayed up if enabled via flags and config. -->
+    <!-- An optional preference category for notifications. Only displayed up if enabled via flags and config. -->
     <PreferenceCategory
-            android:key="time_feedback_preference_category"
-            android:title="@string/time_feedback_category_title"
-            settings:keywords="@string/keywords_time_feedback_category"
-            settings:controller="com.android.settings.datetime.TimeFeedbackPreferenceCategoryController">
+        android:key="time_notifications_category"
+        android:title="@string/time_notifications_title"
+        settings:controller="com.android.settings.datetime.NotificationsPreferenceCategoryController">
 
-        <Preference
-                android:key="time_feedback"
-                android:title="@string/time_feedback_title"
-                settings:keywords="@string/keywords_time_feedback"
-                settings:controller="com.android.settings.datetime.TimeFeedbackPreferenceController" />
+        <SwitchPreferenceCompat
+            android:key="time_zone_change_notifications"
+            android:summary="@string/summary_placeholder"
+            android:title="@string/time_zone_change_notifications_toggle_title"
+            settings:keywords="@string/keywords_time_notification_category"
+            settings:controller="com.android.settings.datetime.TimeZoneNotificationsPreferenceController" />
 
     </PreferenceCategory>
 
@@ -94,15 +94,25 @@
         android:key="time_format_preference_category"
         android:title="@string/time_format_category_title"
         settings:keywords="@string/keywords_time_format">
-        <SwitchPreferenceCompat
-            android:key="auto_24hour"
-            android:title="@string/date_time_24hour_auto"
-            settings:controller="com.android.settings.datetime.AutoTimeFormatPreferenceController" />
 
         <SwitchPreferenceCompat
             android:key="24 hour"
             android:title="@string/date_time_24hour"
             settings:controller="com.android.settings.datetime.TimeFormatPreferenceController" />
+    </PreferenceCategory>
+
+    <!-- An optional preference category for feedback. Only displayed up if enabled via flags and config. Always put time feedback at the end. -->
+    <PreferenceCategory
+        android:key="time_feedback_preference_category"
+        android:title="@string/time_feedback_category_title"
+        settings:controller="com.android.settings.datetime.TimeFeedbackPreferenceCategoryController"
+        settings:keywords="@string/keywords_time_feedback_category">
+
+        <Preference
+            android:key="time_feedback"
+            android:title="@string/time_feedback_title"
+            settings:controller="com.android.settings.datetime.TimeFeedbackPreferenceController"
+            settings:keywords="@string/keywords_time_feedback" />
     </PreferenceCategory>
 
 </PreferenceScreen>

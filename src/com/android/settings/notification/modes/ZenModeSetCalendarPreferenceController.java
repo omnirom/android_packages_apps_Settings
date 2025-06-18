@@ -32,6 +32,7 @@ import androidx.preference.PreferenceCategory;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.settings.R;
 import com.android.settingslib.notification.modes.ZenMode;
+import com.android.settingslib.notification.modes.ZenModeSchedules;
 import com.android.settingslib.notification.modes.ZenModesBackend;
 
 import java.util.ArrayList;
@@ -85,7 +86,7 @@ class ZenModeSetCalendarPreferenceController extends AbstractZenModePreferenceCo
         mReply.setOnPreferenceChangeListener(mReplyChangeListener);
 
         // Parse the zen mode's condition to update our EventInfo object.
-        mEvent = ZenModeConfig.tryParseEventConditionId(zenMode.getRule().getConditionId());
+        mEvent = ZenModeSchedules.getCalendarSchedule(zenMode);
         if (mEvent != null) {
             reloadCalendar();
             updatePrefValues();

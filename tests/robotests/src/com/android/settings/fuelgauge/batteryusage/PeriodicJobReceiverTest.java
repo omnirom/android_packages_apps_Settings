@@ -32,6 +32,7 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.fuelgauge.batteryusage.db.BatteryStateDao;
 import com.android.settings.fuelgauge.batteryusage.db.BatteryStateDatabase;
+import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.testutils.BatteryTestUtils;
 
 import org.junit.After;
@@ -104,7 +105,9 @@ public final class PeriodicJobReceiverTest {
     @Test
     public void onReceive_containsExpiredData_clearsExpiredDataFromDatabase()
             throws InterruptedException {
-        insertExpiredData(/* shiftDay= */ DatabaseUtils.DATA_RETENTION_INTERVAL_DAY);
+        int dataRetentionDays = FeatureFactory.getFeatureFactory()
+                .getPowerUsageFeatureProvider().getDataRetentionDays();
+        insertExpiredData(/* shiftDay= */ dataRetentionDays);
 
         mReceiver.onReceive(mContext, JOB_UPDATE_INTENT);
 
@@ -115,7 +118,9 @@ public final class PeriodicJobReceiverTest {
     @Test
     public void onReceive_withoutExpiredData_notClearsExpiredDataFromDatabase()
             throws InterruptedException {
-        insertExpiredData(/* shiftDay= */ DatabaseUtils.DATA_RETENTION_INTERVAL_DAY - 1);
+        int dataRetentionDays = FeatureFactory.getFeatureFactory()
+                .getPowerUsageFeatureProvider().getDataRetentionDays();
+        insertExpiredData(dataRetentionDays - 1);
 
         mReceiver.onReceive(mContext, JOB_UPDATE_INTENT);
 

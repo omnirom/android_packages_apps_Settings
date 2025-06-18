@@ -22,6 +22,7 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.preference.Preference;
@@ -45,24 +46,23 @@ public class TextReadingPreviewPreference extends Preference {
 
     private int mLayoutMinHorizontalPadding = 0;
     private int mBackgroundMinHorizontalPadding = 0;
-
     private final ViewPager.OnPageChangeListener mPageChangeListener =
             new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageScrolled(int i, float v, int i1) {
-            // Do nothing
-        }
+                @Override
+                public void onPageScrolled(int i, float v, int i1) {
+                    // Do nothing
+                }
 
-        @Override
-        public void onPageSelected(int i) {
-            mCurrentItem = i;
-        }
+                @Override
+                public void onPageSelected(int i) {
+                    mCurrentItem = i;
+                }
 
-        @Override
-        public void onPageScrollStateChanged(int i) {
-            // Do nothing
-        }
-    };
+                @Override
+                public void onPageScrollStateChanged(int i) {
+                    // Do nothing
+                }
+            };
 
     TextReadingPreviewPreference(Context context) {
         super(context);
@@ -99,6 +99,28 @@ public class TextReadingPreviewPreference extends Preference {
                 (DotsPageIndicator) holder.findViewById(R.id.page_indicator);
         updateAdapterIfNeeded(viewPager, pageIndicator, mPreviewAdapter);
         updatePagerAndIndicator(viewPager, pageIndicator);
+        viewPager.setClipToOutline(true);
+
+        int layoutDirection =
+                getContext().getResources().getConfiguration().getLayoutDirection();
+        int previousId = (layoutDirection == View.LAYOUT_DIRECTION_RTL)
+                ? R.id.preview_right_button : R.id.preview_left_button;
+        int nextId = (layoutDirection == View.LAYOUT_DIRECTION_RTL)
+                ? R.id.preview_left_button : R.id.preview_right_button;
+        final ImageButton previousButton = previewLayout.findViewById(previousId);
+        final ImageButton nextButton = previewLayout.findViewById(nextId);
+
+        // These call ViewPager#setCurrentItem directly
+        // because that doesn't force a refresh through notifyChanged().
+        // We found this avoids a crash in SUW (See b/386906497).
+        previousButton.setOnClickListener((view) ->
+                viewPager.setCurrentItem(getCurrentItem() - 1));
+        previousButton.setContentDescription(getContext().getString(
+                R.string.preview_pager_previous_button));
+        nextButton.setOnClickListener((view) ->
+                viewPager.setCurrentItem(getCurrentItem() + 1));
+        nextButton.setContentDescription(getContext().getString(
+                R.string.preview_pager_next_button));
     }
 
     @Override

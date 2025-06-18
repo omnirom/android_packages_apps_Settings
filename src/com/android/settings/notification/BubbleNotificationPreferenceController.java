@@ -25,10 +25,12 @@ import android.net.Uri;
 import android.os.Handler;
 import android.provider.Settings;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
-import com.android.settings.widget.SettingsMainSwitchPreferenceController;
+import com.android.settings.core.TogglePreferenceController;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnPause;
 import com.android.settingslib.core.lifecycle.events.OnResume;
@@ -38,10 +40,11 @@ import com.android.settingslib.core.lifecycle.events.OnResume;
  * Allows user to turn bubbles on or off for the device.
  */
 public class BubbleNotificationPreferenceController extends
-        SettingsMainSwitchPreferenceController implements LifecycleObserver, OnResume, OnPause {
+        TogglePreferenceController implements LifecycleObserver, OnResume, OnPause {
 
     private static final String TAG = "BubbleNotifPrefContr";
 
+    private @Nullable Preference mPreference;
     private SettingObserver mSettingObserver;
 
     public BubbleNotificationPreferenceController(Context context, String preferenceKey) {
@@ -49,10 +52,11 @@ public class BubbleNotificationPreferenceController extends
     }
 
     @Override
-    public void displayPreference(PreferenceScreen screen) {
+    public void displayPreference(@NonNull PreferenceScreen screen) {
         super.displayPreference(screen);
-        if (mSwitchPreference != null) {
-            mSettingObserver = new SettingObserver(mSwitchPreference);
+        mPreference = screen.findPreference(getPreferenceKey());
+        if (mPreference != null) {
+            mSettingObserver = new SettingObserver(mPreference);
         }
     }
 

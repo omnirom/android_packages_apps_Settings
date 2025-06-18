@@ -24,14 +24,19 @@ import android.util.Log;
 import com.android.settings.R;
 import com.android.settings.Settings;
 
-/*
- * This class lauches a dialog when users try to use twilight scheduling without
+/**
+ * This class launches a dialog when users try to use twilight scheduling without
  * turning on location services
  */
 public class TwilightLocationDialog {
     public static String TAG = "TwilightLocationDialog";
 
-    public static void show(Context context) {
+    /**
+     * This method launches a dialog when users try to use twilight scheduling without
+     * turning on location services.
+     * @param context The context of the calling activity.
+     */
+    public static void showLocationOff(Context context) {
         final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setPositiveButton(R.string.twilight_mode_launch_location, ((dialog1, which) -> {
                     Log.d(TAG, "clicked forget");
@@ -41,6 +46,19 @@ public class TwilightLocationDialog {
                 }))
                 .setNegativeButton(R.string.cancel, null /* listener */)
                 .setMessage(R.string.twilight_mode_location_off_dialog_message)
+                .create();
+        dialog.show();
+    }
+
+    /**
+     * This method launches a dialog when users try to use twilight scheduling but the location
+     * could not be determined.
+     * @param context The context of the calling activity.
+     */
+    public static void showLocationPending(Context context) {
+        final AlertDialog dialog = new AlertDialog.Builder(context)
+                .setPositiveButton(R.string.dlg_ok, null /* listener */)
+                .setMessage(R.string.twilight_mode_pending_location)
                 .create();
         dialog.show();
     }

@@ -43,6 +43,7 @@ import com.android.settings.Utils;
 import com.android.settings.biometrics.BiometricUtils;
 import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 public class SetupSkipDialog extends InstrumentedDialogFragment
         implements DialogInterface.OnClickListener {
 
@@ -77,14 +78,23 @@ public class SetupSkipDialog extends InstrumentedDialogFragment
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return onCreateDialogBuilder().create();
+        if (BiometricUtils.isExpressiveStyle(getContext(), false)) {
+            final MaterialAlertDialogBuilder meterialBuilder =
+                    (MaterialAlertDialogBuilder) onCreateDialogBuilder();
+            return meterialBuilder.create();
+        } else {
+            final AlertDialog.Builder alertDialogBuilder =
+                    (AlertDialog.Builder) onCreateDialogBuilder();
+            return alertDialogBuilder.create();
+        }
     }
 
-    private AlertDialog.Builder getBiometricsBuilder(
+    @SuppressWarnings("TypeParameterUnusedInFormals")
+    private <T>  T getBiometricsBuilder(
             @LockPatternUtils.CredentialType int credentialType, boolean isSuw, boolean hasFace,
             boolean hasFingerprint) {
-        final boolean isFaceSupported = hasFace && (!isSuw || BiometricUtils.isFaceSupportedInSuw(
-                getContext()));
+        final boolean isFaceSupported = hasFace && (!isSuw
+                || BiometricUtils.isFaceSupportedInSuw(getContext()));
         final int msgResId;
         final int screenLockResId;
         switch (credentialType) {
@@ -102,16 +112,27 @@ public class SetupSkipDialog extends InstrumentedDialogFragment
                 msgResId = getPinSkipMessageRes(hasFace && isFaceSupported, hasFingerprint);
                 break;
         }
-        return new AlertDialog.Builder(getContext())
-                .setPositiveButton(R.string.skip_lock_screen_dialog_button_label, this)
-                .setNegativeButton(R.string.cancel_lock_screen_dialog_button_label, this)
-                .setTitle(getSkipSetupTitle(screenLockResId, hasFingerprint,
-                        hasFace && isFaceSupported))
-                .setMessage(msgResId);
+
+        if (BiometricUtils.isExpressiveStyle(getContext(), false)) {
+            return (T) new MaterialAlertDialogBuilder(getContext())
+                    .setPositiveButton(R.string.skip_lock_screen_dialog_button_label, this)
+                    .setNegativeButton(R.string.cancel_lock_screen_dialog_button_label, this)
+                    .setTitle(getSkipSetupTitle(screenLockResId, hasFingerprint,
+                            hasFace && isFaceSupported))
+                    .setMessage(msgResId);
+        }  else {
+            return (T) new AlertDialog.Builder(getContext())
+                    .setPositiveButton(R.string.skip_lock_screen_dialog_button_label, this)
+                    .setNegativeButton(R.string.cancel_lock_screen_dialog_button_label, this)
+                    .setTitle(getSkipSetupTitle(screenLockResId, hasFingerprint,
+                            hasFace && isFaceSupported))
+                    .setMessage(msgResId);
+        }
     }
 
     @NonNull
-    public AlertDialog.Builder onCreateDialogBuilder() {
+    @SuppressWarnings("TypeParameterUnusedInFormals")
+    public <T>  T onCreateDialogBuilder() {
         Bundle args = getArguments();
         final boolean isSuw = args.getBoolean(EXTRA_KEY_IS_SUW);
         final boolean forBiometrics = args.getBoolean(EXTRA_KEY_FOR_BIOMETRICS);
@@ -126,13 +147,23 @@ public class SetupSkipDialog extends InstrumentedDialogFragment
             return getBiometricsBuilder(credentialType, isSuw, hasFace, hasFingerprint);
         }
 
-        return new AlertDialog.Builder(getContext())
-                .setPositiveButton(R.string.skip_anyway_button_label, this)
-                .setNegativeButton(R.string.go_back_button_label, this)
-                .setTitle(R.string.lock_screen_intro_skip_title)
-                .setMessage(args.getBoolean(ARG_FRP_SUPPORTED) ?
-                        R.string.lock_screen_intro_skip_dialog_text_frp :
-                        R.string.lock_screen_intro_skip_dialog_text);
+        final int msg = args.getBoolean(ARG_FRP_SUPPORTED)
+                ? R.string.lock_screen_intro_skip_dialog_text_frp
+                : R.string.lock_screen_intro_skip_dialog_text;
+        if (BiometricUtils.isExpressiveStyle(getContext(), false)) {
+            return (T) new MaterialAlertDialogBuilder(getContext())
+                    .setPositiveButton(R.string.skip_anyway_button_label, this)
+                    .setNegativeButton(R.string.go_back_button_label, this)
+                    .setTitle(R.string.lock_screen_intro_skip_title)
+                    .setMessage(msg);
+
+        } else  {
+            return (T) new AlertDialog.Builder(getContext())
+                    .setPositiveButton(R.string.skip_anyway_button_label, this)
+                    .setNegativeButton(R.string.go_back_button_label, this)
+                    .setTitle(R.string.lock_screen_intro_skip_title)
+                    .setMessage(msg);
+        }
     }
 
     @StringRes

@@ -22,16 +22,18 @@ import android.telephony.SubscriptionManager
 import android.telephony.SubscriptionManager.OnSubscriptionsChangedListener
 import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceClickListener
-import com.android.settings.PreferenceRestrictionMixin
 import com.android.settings.R
 import com.android.settings.flags.Flags
 import com.android.settings.network.AirplaneModePreference.Companion.isAirplaneModeOn
+import com.android.settings.network.SatelliteRepository.Companion.isSatelliteOn
 import com.android.settings.network.SubscriptionUtil.getUniqueSubscriptionDisplayName
 import com.android.settings.network.telephony.SimRepository
 import com.android.settings.network.telephony.SubscriptionRepository
 import com.android.settings.network.telephony.euicc.EuiccRepository
+import com.android.settings.restriction.PreferenceRestrictionMixin
 import com.android.settings.spa.network.getAddSimIntent
 import com.android.settings.spa.network.startAddSimFlow
+import com.android.settings.spa.network.startSatelliteWarningDialogFlow
 import com.android.settingslib.RestrictedPreference
 import com.android.settingslib.datastore.HandlerExecutor
 import com.android.settingslib.datastore.KeyedObserver
@@ -43,13 +45,13 @@ import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.PreferenceSummaryProvider
 import com.android.settingslib.metadata.ProvidePreferenceScreen
 import com.android.settingslib.metadata.preferenceHierarchy
-import com.android.settingslib.preference.PreferenceScreenBinding
+import com.android.settingslib.preference.PreferenceBinding
 import com.android.settingslib.preference.PreferenceScreenCreator
 
-@ProvidePreferenceScreen
+@ProvidePreferenceScreen(MobileNetworkListScreen.KEY)
 class MobileNetworkListScreen :
     PreferenceScreenCreator,
-    PreferenceScreenBinding,
+    PreferenceBinding,
     PreferenceAvailabilityProvider,
     PreferenceSummaryProvider,
     PreferenceLifecycleProvider,
@@ -120,7 +122,11 @@ class MobileNetworkListScreen :
         val summary = preference.summary ?: return true // no-op
         val context = preference.context
         if (summary == context.getString(R.string.mobile_network_summary_add_a_network)) {
-            startAddSimFlow(context) // start intent
+            if (isSatelliteOn(context, 3000)) {
+                startSatelliteWarningDialogFlow(context) // start intent
+            } else {
+                startAddSimFlow(context) // start intent
+            }
             return true
         }
         return false // start fragment
@@ -160,7 +166,7 @@ class MobileNetworkListScreen :
     override fun fragmentClass() = MobileNetworkListFragment::class.java
 
     override fun getPreferenceHierarchy(context: Context) =
-        preferenceHierarchy(this) { +MobileDataPreference() }
+        preferenceHierarchy(context, this) { +MobileDataPreference() }
 
     companion object {
         const val KEY = "mobile_network_list"

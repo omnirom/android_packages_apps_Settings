@@ -128,13 +128,13 @@ public abstract class ZenModeEditNameIconFragmentBase extends DashboardFragment 
 
     @VisibleForTesting
     final void setModeName(String name) {
-        checkNotNull(mZenMode).getRule().setName(Strings.nullToEmpty(name));
+        checkNotNull(mZenMode).setName(Strings.nullToEmpty(name));
         forceUpdatePreferences(); // Updates confirmation button.
     }
 
     @VisibleForTesting
     final void setModeIcon(@DrawableRes int iconResId) {
-        checkNotNull(mZenMode).getRule().setIconResId(iconResId);
+        checkNotNull(mZenMode).setIconResId(iconResId);
         forceUpdatePreferences();  // Updates icon at the top.
     }
 

@@ -100,9 +100,12 @@ public class Settings extends SettingsActivity {
     public static class LocalePickerActivity extends SettingsActivity { /* empty */ }
     public static class LanguageSettingsActivity extends SettingsActivity { /* empty */ }
     /** Activity for the regional preferences settings. */
+    public static class RegionSettingsActivity extends SettingsActivity { /* empty */ }
     public static class RegionalPreferencesActivity extends SettingsActivity { /* empty */ }
     public static class TemperatureUnitSettingsActivity extends SettingsActivity { /* empty */ }
     public static class FirstDayOfWeekSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class MeasurementSystemSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class NumberingSystemSettingsActivity extends SettingsActivity { /* empty */ }
     public static class KeyboardSettingsActivity extends SettingsActivity { /* empty */ }
     /** Activity for the navigation mode settings. */
     public static class NavigationModeSettingsActivity extends SettingsActivity { /* empty */ }
@@ -131,6 +134,9 @@ public class Settings extends SettingsActivity {
     public static class AccessibilityDaltonizerSettingsActivity extends SettingsActivity { /* empty */ }
     /** Activity for lockscreen settings. */
     public static class LockScreenSettingsActivity extends SettingsActivity { /* empty */ }
+    /** Activity for notifications on lockscreen settings. */
+    public static class LockScreenNotificationsSettingsActivity
+            extends SettingsActivity { /* empty */ }
     /** Activity for bluetooth pairing settings. */
     public static class BlueToothPairingActivity extends SettingsActivity { /* empty */ }
     /** Activity for Reduce Bright Colors. */
@@ -352,6 +358,8 @@ public class Settings extends SettingsActivity {
     public static class AppBubbleNotificationSettingsActivity extends SettingsActivity { /* empty */ }
     public static class NotificationAssistantSettingsActivity extends SettingsActivity{ /* empty */ }
     public static class NotificationAppListActivity extends SettingsActivity { /* empty */ }
+    public static class NotificationExcludeSummarizationActivity extends SettingsActivity { /* empty */ }
+    public static class NotificationExcludeClassificationActivity extends SettingsActivity { /* empty */ }
     /** Activity to manage Cloned Apps page */
     public static class ClonedAppsListActivity extends SettingsActivity { /* empty */ }
     /** Activity to manage Aspect Ratio app list page */
@@ -512,6 +520,11 @@ public class Settings extends SettingsActivity {
      */
     public static class OneHandedSettingsActivity extends SettingsActivity { /* empty */ }
 
+    /**
+     * Activity for Double Tap Power Settings
+     */
+    public static class DoubleTapPowerSettingsActivity extends SettingsActivity { /* empty */ }
+
     public static class PreviouslyConnectedDeviceActivity extends SettingsActivity { /* empty */ }
 
     public static class ScreenTimeoutActivity extends SettingsActivity { /* empty */ }
@@ -522,4 +535,7 @@ public class Settings extends SettingsActivity {
     public static class HearingDevicesActivity extends SettingsActivity { /* empty */ }
     public static class HearingDevicesPairingActivity extends SettingsActivity { /* empty */ }
     public static class ContactsStorageSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class ContentProtectionSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class MagnificationActivity extends SettingsActivity { /* empty */ }
+    public static class FlashNotificationsActivity extends SettingsActivity { /* empty */ }
 }

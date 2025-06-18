@@ -16,8 +16,13 @@
 
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:settings="http://schemas.android.com/apk/res-auto"
     android:title="@string/language_selection_title"
     android:key="key_system_language_picker_page">
+
+    <com.android.settingslib.widget.TopIntroPreference
+        android:key="top_intro_region"
+        android:title="@string/top_intro_region_title"/>
 
     <PreferenceCategory
         android:key="system_language_suggested_category"

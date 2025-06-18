@@ -25,11 +25,11 @@ import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
 import com.android.settings.core.SliderPreferenceController;
-import com.android.settings.widget.SeekBarPreference;
+import com.android.settingslib.widget.SliderPreference;
 
 public class NightDisplayIntensityPreferenceController extends SliderPreferenceController {
 
-    private ColorDisplayManager mColorDisplayManager;
+    private final ColorDisplayManager mColorDisplayManager;
 
     public NightDisplayIntensityPreferenceController(Context context, String key) {
         super(context, key);
@@ -64,11 +64,11 @@ public class NightDisplayIntensityPreferenceController extends SliderPreferenceC
     @Override
     public void displayPreference(PreferenceScreen screen) {
         super.displayPreference(screen);
-        final SeekBarPreference preference = screen.findPreference(getPreferenceKey());
-        preference.setContinuousUpdates(true);
+        SliderPreference preference = screen.findPreference(getPreferenceKey());
+        preference.setUpdatesContinuously(true);
         preference.setMax(getMax());
         preference.setMin(getMin());
-        preference.setHapticFeedbackMode(SeekBarPreference.HAPTIC_FEEDBACK_MODE_ON_ENDS);
+        // TODO(b/394828723) add haptic feedback
     }
 
     @Override

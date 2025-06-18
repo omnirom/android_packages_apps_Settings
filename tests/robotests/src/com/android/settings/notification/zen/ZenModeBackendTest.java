@@ -213,11 +213,7 @@ public class ZenModeBackendTest {
         mBackend.saveConversationSenders(CONVERSATION_SENDERS_NONE);
 
         ArgumentCaptor<Policy> captor = ArgumentCaptor.forClass(Policy.class);
-        if (android.app.Flags.modesApi()) {
-            verify(mNotificationManager).setNotificationPolicy(captor.capture(), eq(true));
-        } else {
-            verify(mNotificationManager).setNotificationPolicy(captor.capture());
-        }
+        verify(mNotificationManager).setNotificationPolicy(captor.capture(), eq(true));
 
         Policy expected = new Policy(
                 PRIORITY_CATEGORY_CALLS | PRIORITY_CATEGORY_MESSAGES | PRIORITY_CATEGORY_ALARMS,
@@ -241,11 +237,7 @@ public class ZenModeBackendTest {
         mBackend.saveConversationSenders(CONVERSATION_SENDERS_ANYONE);
 
         ArgumentCaptor<Policy> captor = ArgumentCaptor.forClass(Policy.class);
-        if (android.app.Flags.modesApi()) {
-            verify(mNotificationManager).setNotificationPolicy(captor.capture(), eq(true));
-        } else {
-            verify(mNotificationManager).setNotificationPolicy(captor.capture());
-        }
+        verify(mNotificationManager).setNotificationPolicy(captor.capture(), eq(true));
 
         Policy expected = new Policy(PRIORITY_CATEGORY_CONVERSATIONS
                 | PRIORITY_CATEGORY_CALLS | PRIORITY_CATEGORY_MESSAGES | PRIORITY_CATEGORY_ALARMS,
@@ -270,11 +262,7 @@ public class ZenModeBackendTest {
         mBackend.saveSenders(PRIORITY_CATEGORY_CALLS, PRIORITY_SENDERS_ANY);
 
         ArgumentCaptor<Policy> captor = ArgumentCaptor.forClass(Policy.class);
-        if (android.app.Flags.modesApi()) {
-            verify(mNotificationManager).setNotificationPolicy(captor.capture(), eq(true));
-        } else {
-            verify(mNotificationManager).setNotificationPolicy(captor.capture());
-        }
+        verify(mNotificationManager).setNotificationPolicy(captor.capture(), eq(true));
 
         Policy expected = new Policy(PRIORITY_CATEGORY_CONVERSATIONS
                 | PRIORITY_CATEGORY_CALLS | PRIORITY_CATEGORY_MESSAGES | PRIORITY_CATEGORY_ALARMS,

@@ -85,6 +85,8 @@ public class BluetoothDetailsProfilesController extends BluetoothDetailsControll
             "persist.bluetooth.leaudio.toggle_visible";
     private static final String BYPASS_LE_AUDIO_ALLOWLIST_PROPERTY =
             "persist.bluetooth.leaudio.bypass_allow_list";
+    private static final String LE_AUDIO_TOGGLE_VISIBLE_FOR_ASHA_PROPERTY =
+            "bluetooth.leaudio.toggle_visible_for_asha";
 
     private Set<String> mInvisibleProfiles = Collections.emptySet();
     private final AtomicReference<Set<String>> mAdditionalInvisibleProfiles =
@@ -378,6 +380,12 @@ public class BluetoothDetailsProfilesController extends BluetoothDetailsControll
         // Remove hearing aids toggle anyway since showing the toggle will confuse users
         if (hearingAidSupported) {
             result.remove(mManager.getProfileManager().getHearingAidProfile());
+            if (leAudioSupported
+                    && !SystemProperties.getBoolean(BYPASS_LE_AUDIO_ALLOWLIST_PROPERTY, false)
+                    && !SystemProperties.getBoolean(
+                            LE_AUDIO_TOGGLE_VISIBLE_FOR_ASHA_PROPERTY, true)) {
+                result.remove(mManager.getProfileManager().getLeAudioProfile());
+            }
         }
         if (leAudioSupported && !classicAudioSupported && !hearingAidSupported) {
             mIsLeAudioOnlyDevice = true;
@@ -411,32 +419,7 @@ public class BluetoothDetailsProfilesController extends BluetoothDetailsControll
                 mContext,
                 SettingsEnums.ACTION_BLUETOOTH_PROFILE_LE_AUDIO_OFF,
                 isCurrentDeviceInOrByPassAllowList());
-
-        LocalBluetoothProfile asha = mProfileManager.getHearingAidProfile();
-        LocalBluetoothProfile broadcastAssistant =
-                mProfileManager.getLeAudioBroadcastAssistantProfile();
-
-        for (CachedBluetoothDevice leAudioDevice : mProfileDeviceMap.get(profile.toString())) {
-            Log.d(TAG,
-                    "device:" + leAudioDevice.getDevice().getAnonymizedAddress()
-                            + " disable LE profile");
-            profile.setEnabled(leAudioDevice.getDevice(), false);
-            if (asha != null) {
-                asha.setEnabled(leAudioDevice.getDevice(), true);
-            }
-            if (broadcastAssistant != null) {
-                Log.d(TAG,
-                        "device:" + leAudioDevice.getDevice().getAnonymizedAddress()
-                                + " disable LE broadcast assistant profile");
-                broadcastAssistant.setEnabled(leAudioDevice.getDevice(), false);
-            }
-        }
-
-        if (!SystemProperties.getBoolean(ENABLE_DUAL_MODE_AUDIO, false)) {
-            Log.i(TAG, "Enabling classic audio profiles because dual mode is disabled");
-            enableProfileAfterUserDisablesLeAudio(mProfileManager.getA2dpProfile());
-            enableProfileAfterUserDisablesLeAudio(mProfileManager.getHeadsetProfile());
-        }
+        Utils.setLeAudioEnabled(mManager, List.copyOf(mCachedDeviceGroup), false);
     }
 
     /**
@@ -454,75 +437,7 @@ public class BluetoothDetailsProfilesController extends BluetoothDetailsControll
                 mContext,
                 SettingsEnums.ACTION_BLUETOOTH_PROFILE_LE_AUDIO_ON,
                 isCurrentDeviceInOrByPassAllowList());
-
-        if (!SystemProperties.getBoolean(ENABLE_DUAL_MODE_AUDIO, false)) {
-            Log.i(TAG, "Disabling classic audio profiles because dual mode is disabled");
-            disableProfileBeforeUserEnablesLeAudio(mProfileManager.getA2dpProfile());
-            disableProfileBeforeUserEnablesLeAudio(mProfileManager.getHeadsetProfile());
-        }
-        LocalBluetoothProfile asha = mProfileManager.getHearingAidProfile();
-        LocalBluetoothProfile broadcastAssistant =
-                mProfileManager.getLeAudioBroadcastAssistantProfile();
-
-        for (CachedBluetoothDevice leAudioDevice : mProfileDeviceMap.get(profile.toString())) {
-            Log.d(TAG,
-                    "device:" + leAudioDevice.getDevice().getAnonymizedAddress()
-                            + " enable LE profile");
-            profile.setEnabled(leAudioDevice.getDevice(), true);
-            if (asha != null) {
-                asha.setEnabled(leAudioDevice.getDevice(), false);
-            }
-            if (broadcastAssistant != null) {
-                Log.d(TAG,
-                        "device:" + leAudioDevice.getDevice().getAnonymizedAddress()
-                                + " enable LE broadcast assistant profile");
-                broadcastAssistant.setEnabled(leAudioDevice.getDevice(), true);
-            }
-        }
-    }
-
-    private void disableProfileBeforeUserEnablesLeAudio(LocalBluetoothProfile profile) {
-        if (profile != null && mProfileDeviceMap.get(profile.toString()) != null) {
-            Log.d(TAG, "Disable " + profile.toString() + " before user enables LE");
-            for (CachedBluetoothDevice profileDevice : mProfileDeviceMap.get(profile.toString())) {
-                if (profile.isEnabled(profileDevice.getDevice())) {
-                    Log.d(TAG, "The " + profileDevice.getDevice().getAnonymizedAddress() + ":"
-                            + profile.toString() + " set disable");
-                    profile.setEnabled(profileDevice.getDevice(), false);
-                } else {
-                    Log.d(TAG, "The " + profileDevice.getDevice().getAnonymizedAddress() + ":"
-                            + profile.toString() + " profile is disabled. Do nothing.");
-                }
-            }
-        } else {
-            if (profile == null) {
-                Log.w(TAG, "profile is null");
-            } else {
-                Log.w(TAG, profile.toString() + " is not in " + mProfileDeviceMap);
-            }
-        }
-    }
-
-    private void enableProfileAfterUserDisablesLeAudio(LocalBluetoothProfile profile) {
-        if (profile != null && mProfileDeviceMap.get(profile.toString()) != null) {
-            Log.d(TAG, "enable " + profile.toString() + "after user disables LE");
-            for (CachedBluetoothDevice profileDevice : mProfileDeviceMap.get(profile.toString())) {
-                if (!profile.isEnabled(profileDevice.getDevice())) {
-                    Log.d(TAG, "The " + profileDevice.getDevice().getAnonymizedAddress() + ":"
-                            + profile.toString() + " set enable");
-                    profile.setEnabled(profileDevice.getDevice(), true);
-                } else {
-                    Log.d(TAG, "The " + profileDevice.getDevice().getAnonymizedAddress() + ":"
-                            + profile.toString() + " profile is enabled. Do nothing.");
-                }
-            }
-        } else {
-            if (profile == null) {
-                Log.w(TAG, "profile is null");
-            } else {
-                Log.w(TAG, profile.toString() + " is not in " + mProfileDeviceMap);
-            }
-        }
+        Utils.setLeAudioEnabled(mManager, List.copyOf(mCachedDeviceGroup), true);
     }
 
     /**

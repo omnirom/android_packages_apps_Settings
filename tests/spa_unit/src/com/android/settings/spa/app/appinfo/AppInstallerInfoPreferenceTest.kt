@@ -122,6 +122,25 @@ class AppInstallerInfoPreferenceTest {
     }
 
     @Test
+    fun whenIsPlayStoreApp_notDisplayed() {
+        val playStorePackageName = "com.android.vending"
+        whenever(
+            AppStoreUtil.getInstallerPackageNameAndInstallSourceInfo(
+                any(),
+                eq(playStorePackageName)
+            )
+        )
+            .thenReturn(Pair(INSTALLER_PACKAGE_NAME, INSTALL_SOURCE_INFO))
+        val playStoreApp = ApplicationInfo().apply {
+            packageName = playStorePackageName
+            uid = UID
+        }
+        setContent(playStoreApp)
+
+        composeTestRule.onRoot().assertIsNotDisplayed()
+    }
+
+    @Test
     fun whenStoreLinkIsNull_disabled() {
         whenever(AppStoreUtil.getAppStoreLink(context, INSTALLER_PACKAGE_NAME, PACKAGE_NAME))
             .thenReturn(null)

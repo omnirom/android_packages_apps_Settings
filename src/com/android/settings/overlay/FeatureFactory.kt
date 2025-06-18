@@ -16,13 +16,16 @@
 package com.android.settings.overlay
 
 import android.content.Context
-import com.android.settings.accessibility.AccessibilityMetricsFeatureProvider
+import com.android.settings.accessibility.AccessibilityFeedbackFeatureProvider
+import com.android.settings.accessibility.AccessibilityPageIdFeatureProvider
 import com.android.settings.accessibility.AccessibilitySearchFeatureProvider
 import com.android.settings.accounts.AccountFeatureProvider
 import com.android.settings.applications.ApplicationFeatureProvider
+import com.android.settings.biometrics.BiometricsFeatureProvider
 import com.android.settings.biometrics.face.FaceFeatureProvider
 import com.android.settings.biometrics.fingerprint.FingerprintFeatureProvider
 import com.android.settings.bluetooth.BluetoothFeatureProvider
+import com.android.settings.connecteddevice.audiosharing.AudioSharingFeatureProvider
 import com.android.settings.connecteddevice.fastpair.FastPairFeatureProvider
 import com.android.settings.connecteddevice.stylus.StylusFeatureProvider
 import com.android.settings.dashboard.DashboardFeatureProvider
@@ -108,6 +111,11 @@ abstract class FeatureFactory {
     abstract val bluetoothFeatureProvider: BluetoothFeatureProvider
 
     /**
+     * Retrieves implementation for Biometrics feature.
+     */
+    abstract val biometricsFeatureProvider: BiometricsFeatureProvider
+
+    /**
      * Retrieves implementation for Face feature.
      */
     abstract val faceFeatureProvider: FaceFeatureProvider
@@ -128,14 +136,19 @@ abstract class FeatureFactory {
     abstract val securitySettingsFeatureProvider: SecuritySettingsFeatureProvider
 
     /**
+     * Retrieves implementation for Accessibility feedback category feature.
+     */
+    abstract val accessibilityFeedbackFeatureProvider: AccessibilityFeedbackFeatureProvider
+
+    /**
      * Retrieves implementation for Accessibility search index feature.
      */
     abstract val accessibilitySearchFeatureProvider: AccessibilitySearchFeatureProvider
 
     /**
-     * Retrieves implementation for Accessibility metrics category feature.
+     * Retrieves implementation for Accessibility page id category feature.
      */
-    abstract val accessibilityMetricsFeatureProvider: AccessibilityMetricsFeatureProvider
+    abstract val accessibilityPageIdFeatureProvider: AccessibilityPageIdFeatureProvider
 
     /**
      * Retrieves implementation for advanced vpn feature.
@@ -166,6 +179,11 @@ abstract class FeatureFactory {
      * Gets implementation for Fast Pair device updater provider.
      */
     abstract val fastPairFeatureProvider: FastPairFeatureProvider
+
+    /**
+     * Gets implementation for audio sharing related feature.
+     */
+    abstract val audioSharingFeatureProvider: AudioSharingFeatureProvider
 
     /**
      * Gets implementation for Private Space account login feature.

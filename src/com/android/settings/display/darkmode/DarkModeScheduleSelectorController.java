@@ -112,8 +112,12 @@ public class DarkModeScheduleSelectorController extends BasePreferenceController
         } else if (newMode == mPreference.findIndexOfValue(
                 mContext.getString(R.string.dark_ui_auto_mode_auto))) {
             if (!mLocationManager.isLocationEnabled()) {
-                TwilightLocationDialog.show(mContext);
-                return true;
+                TwilightLocationDialog.showLocationOff(mContext);
+                return false;
+            }
+
+            if (mLocationManager.getLastLocation() == null) {
+                TwilightLocationDialog.showLocationPending(mContext);
             }
             mUiModeManager.setNightMode(UiModeManager.MODE_NIGHT_AUTO);
         } else if (newMode == mPreference.findIndexOfValue(

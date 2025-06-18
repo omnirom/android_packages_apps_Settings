@@ -228,10 +228,10 @@ public class AccessibilityDetailsSettingsFragment extends InstrumentedFragment {
                     new ComponentName(packageName, tileServiceClassName).flattenToString());
         }
 
-        final int metricsCategory = FeatureFactory.getFeatureFactory()
-                .getAccessibilityMetricsFeatureProvider()
-                .getDownloadedFeatureMetricsCategory(componentName);
-        extras.putInt(AccessibilitySettings.EXTRA_METRICS_CATEGORY, metricsCategory);
+        final int pageIdCategory = FeatureFactory.getFeatureFactory()
+                .getAccessibilityPageIdFeatureProvider().getCategory(componentName);
+        extras.putInt(AccessibilitySettings.EXTRA_METRICS_CATEGORY, pageIdCategory);
+        extras.putInt(AccessibilitySettings.EXTRA_FEEDBACK_CATEGORY, pageIdCategory);
         extras.putParcelable(AccessibilitySettings.EXTRA_COMPONENT_NAME, componentName);
         extras.putInt(AccessibilitySettings.EXTRA_ANIMATED_IMAGE_RES, info.getAnimatedImageRes());
 

@@ -24,6 +24,7 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 
@@ -34,14 +35,15 @@ import androidx.appcompat.app.AlertDialog;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Utility class for creating the edit dialog.
  */
 public class AccessibilityDialogUtils {
-    private static final String TAG = "AccessibilityDialogUtils";
+    private static final String TAG = AccessibilityDialogUtils.class.getSimpleName();
 
-    /** Denotes the dialog emuns for show dialog. */
+    /** Denotes the dialog enums for show dialog. */
     @Retention(RetentionPolicy.SOURCE)
     public @interface DialogEnums {
         /**
@@ -89,6 +91,24 @@ public class AccessibilityDialogUtils {
          * OPEN: Settings > Accessibility > Display size and text > Click 'Reset settings' button.
          */
         int DIALOG_RESET_SETTINGS = 1009;
+
+        /**
+         * OPEN: Settings > Accessibility > Magnification > Magnification type.
+         */
+        int DIALOG_MAGNIFICATION_MODE = 1010;
+
+        /**
+         * Enable: Settings > Accessibility > Magnification > Magnification shortcut > Advanced >
+         * Triple tap.
+         * OPEN: Settings > Accessibility > Magnification > Magnification type > Magnify part of
+         * screen / Switch between full and partial screen > Save.
+         */
+        int DIALOG_MAGNIFICATION_TRIPLE_TAP_WARNING = 1011;
+
+        /**
+         * OPEN: Settings > Accessibility > Magnification > Cursor following.
+         */
+        int DIALOG_MAGNIFICATION_CURSOR_FOLLOWING_MODE = 1012;
     }
 
     /**
@@ -118,17 +138,26 @@ public class AccessibilityDialogUtils {
      *                         is clicked
      * @return the {@link Dialog} with the given view
      */
-    public static Dialog createCustomDialog(Context context, CharSequence dialogTitle,
-            View customView, CharSequence positiveButtonText,
-            DialogInterface.OnClickListener positiveListener, CharSequence negativeButtonText,
-            DialogInterface.OnClickListener negativeListener) {
-        final AlertDialog alertDialog = new AlertDialog.Builder(context)
-                .setView(customView)
+    @NonNull
+    public static Dialog createCustomDialog(@NonNull Context context,
+            @NonNull CharSequence dialogTitle, @Nullable View customView,
+            @NonNull CharSequence positiveButtonText,
+            @Nullable DialogInterface.OnClickListener positiveListener,
+            @NonNull CharSequence negativeButtonText,
+            @Nullable DialogInterface.OnClickListener negativeListener) {
+        DialogInterface.OnClickListener doNothingListener =
+                (DialogInterface dialogInterface, int which) -> {};
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context)
                 .setTitle(dialogTitle)
                 .setCancelable(true)
-                .setPositiveButton(positiveButtonText, positiveListener)
-                .setNegativeButton(negativeButtonText, negativeListener)
-                .create();
+                .setPositiveButton(positiveButtonText,
+                        Optional.ofNullable(positiveListener).orElse(doNothingListener))
+                .setNegativeButton(negativeButtonText,
+                        Optional.ofNullable(negativeListener).orElse(doNothingListener));
+        if (customView != null) {
+            dialogBuilder.setView(customView);
+        }
+        final AlertDialog alertDialog = dialogBuilder.create();
         if (customView instanceof ScrollView || customView instanceof AbsListView) {
             setScrollIndicators(customView);
         }
@@ -151,8 +180,7 @@ public class AccessibilityDialogUtils {
         list.setId(android.R.id.list);
         list.setDivider(/* divider= */ null);
         list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        final ItemInfoArrayAdapter
-                adapter = new ItemInfoArrayAdapter(context, itemInfoList);
+        final ListAdapter adapter = new ItemInfoArrayAdapter<>(context, itemInfoList);
         list.setAdapter(adapter);
         list.setOnItemClickListener(itemListener);
         return list;

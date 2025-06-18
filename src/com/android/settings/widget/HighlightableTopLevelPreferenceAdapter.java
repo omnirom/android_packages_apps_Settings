@@ -38,6 +38,7 @@ import com.android.settings.Utils;
 import com.android.settings.core.RoundCornerPreferenceAdapter;
 import com.android.settings.flags.Flags;
 import com.android.settings.homepage.SettingsHomepageActivity;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 /**
  *  Adapter for highlighting top level preferences
@@ -243,6 +244,14 @@ public class HighlightableTopLevelPreferenceAdapter extends RoundCornerPreferenc
         if (Flags.homepageRevamp()) {
             @DrawableRes int bgRes = getRoundCornerDrawableRes(position, true /*isSelected*/);
             v.setBackgroundResource(bgRes);
+            Context context = v.getContext();
+            if (SettingsThemeHelper.isExpressiveTheme(context)) {
+                TextView title = v.findViewById(android.R.id.title);
+                if (title != null) {
+                    title.setTextAppearance(context, com.android.settingslib.widget.theme.R.style
+                            .TextAppearance_SettingsLib_TitleMedium_Emphasized);
+                }
+            }
         } else {
             v.setBackgroundResource(RES_HIGHLIGHTED_BACKGROUND);
             ((TextView) v.findViewById(android.R.id.title)).setTextColor(mTitleColorHighlight);
@@ -259,6 +268,14 @@ public class HighlightableTopLevelPreferenceAdapter extends RoundCornerPreferenc
         if (Flags.homepageRevamp()) {
             @DrawableRes int bgRes = getRoundCornerDrawableRes(position, false /*isSelected*/);
             v.setBackgroundResource(bgRes);
+            Context context = v.getContext();
+            if (SettingsThemeHelper.isExpressiveTheme(context)) {
+                TextView title = v.findViewById(android.R.id.title);
+                if (title != null) {
+                    title.setTextAppearance(context, com.android.settingslib.widget.theme.R.style
+                            .TextAppearance_SettingsLib_TitleMedium);
+                }
+            }
         } else {
             v.setBackgroundResource(RES_NORMAL_BACKGROUND);
             ((TextView) v.findViewById(android.R.id.title)).setTextColor(mTitleColorNormal);

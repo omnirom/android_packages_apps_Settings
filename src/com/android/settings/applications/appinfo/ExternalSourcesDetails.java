@@ -95,8 +95,7 @@ public class ExternalSourcesDetails extends AppInfoWithHeader
                     userHandle)) {
                 if (RestrictedLockUtilsInternal.isPolicyEnforcedByAdvancedProtection(context,
                         DISALLOW_INSTALL_UNKNOWN_SOURCES_GLOBALLY, userHandle.getIdentifier())) {
-                    return context.getString(com.android.settingslib.widget.restricted
-                            .R.string.disabled_by_advanced_protection);
+                    return context.getString(com.android.settingslib.R.string.disabled);
                 } else {
                     return context.getString(
                             com.android.settingslib.widget.restricted.R.string.disabled_by_admin);

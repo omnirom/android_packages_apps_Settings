@@ -16,6 +16,7 @@
 
 package com.android.settings.network
 
+import android.app.settings.SettingsEnums.ACTION_AIRPLANE_TOGGLE
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.pm.PackageManager
@@ -26,18 +27,22 @@ import android.telephony.TelephonyManager
 import androidx.preference.SwitchPreferenceCompat
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.android.settings.testutils.MetricsRule
 import com.android.settingslib.datastore.SettingsGlobalStore
 import com.android.settingslib.preference.createAndBindWidget
 import com.google.common.truth.Truth.assertThat
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.Mockito.verify
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.stub
 
 @RunWith(AndroidJUnit4::class)
 class AirplaneModePreferenceTest {
+    @Rule(order = 0) @JvmField val metricsRule = MetricsRule()
 
     private val mockResources = mock<Resources>()
     private val mockPackageManager = mock<PackageManager>()
@@ -110,6 +115,7 @@ class AirplaneModePreferenceTest {
         val preference = getSwitchPreference().apply { performClick() }
 
         assertThat(preference.isChecked).isFalse()
+        verify(metricsRule.metricsFeatureProvider).action(context, ACTION_AIRPLANE_TOGGLE, false)
     }
 
     @Test
@@ -119,6 +125,7 @@ class AirplaneModePreferenceTest {
         val preference = getSwitchPreference().apply { performClick() }
 
         assertThat(preference.isChecked).isTrue()
+        verify(metricsRule.metricsFeatureProvider).action(context, ACTION_AIRPLANE_TOGGLE, true)
     }
 
     private fun getSwitchPreference(): SwitchPreferenceCompat =

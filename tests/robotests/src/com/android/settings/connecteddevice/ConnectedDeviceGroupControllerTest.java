@@ -35,7 +35,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.hardware.input.InputManager;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.FeatureFlagUtils;
 import android.view.InputDevice;
@@ -54,7 +53,6 @@ import com.android.settings.connecteddevice.stylus.StylusDeviceUpdater;
 import com.android.settings.connecteddevice.usb.ConnectedUsbDeviceUpdater;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.flags.FakeFeatureFlagsImpl;
-import com.android.settings.flags.Flags;
 import com.android.settings.testutils.shadow.ShadowBluetoothAdapter;
 import com.android.settings.testutils.shadow.ShadowBluetoothUtils;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
@@ -213,6 +211,7 @@ public class ConnectedDeviceGroupControllerTest {
         mConnectedDeviceGroupController.onStart();
 
         verify(mExternalDisplayUpdater).registerCallback();
+        verify(mExternalDisplayUpdater).refreshPreference();
         verify(mConnectedBluetoothDeviceUpdater).registerCallback();
         verify(mConnectedUsbDeviceUpdater).registerCallback();
         verify(mConnectedDockUpdater).registerCallback();
@@ -344,7 +343,6 @@ public class ConnectedDeviceGroupControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ENABLE_BONDED_BLUETOOTH_DEVICE_SEARCHABLE)
     public void updateDynamicRawDataToIndex_deviceNotBonded_deviceIsNotSearchable() {
         when(mDevice.getBondState()).thenReturn(BluetoothDevice.BOND_NONE);
         List<SearchIndexableRaw> searchData = new ArrayList<>();
@@ -355,7 +353,6 @@ public class ConnectedDeviceGroupControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ENABLE_BONDED_BLUETOOTH_DEVICE_SEARCHABLE)
     public void updateDynamicRawDataToIndex_deviceBonded_deviceIsSearchable() {
         when(mDevice.getBondState()).thenReturn(BluetoothDevice.BOND_BONDED);
         List<SearchIndexableRaw> searchData = new ArrayList<>();

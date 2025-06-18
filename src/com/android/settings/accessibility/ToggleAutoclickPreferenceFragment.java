@@ -16,21 +16,53 @@
 
 package com.android.settings.accessibility;
 
-import android.app.settings.SettingsEnums;
+import static com.android.internal.accessibility.AccessibilityShortcutController.AUTOCLICK_COMPONENT_NAME;
 
+import android.app.settings.SettingsEnums;
+import android.content.ComponentName;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.accessibility.Flags;
 import com.android.settings.R;
-import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.SearchIndexable;
+
+import java.util.List;
 
 /**
  * Fragment for preference screen for settings related to Automatically click after mouse stops
  * feature.
  */
 @SearchIndexable(forTarget = SearchIndexable.ALL & ~SearchIndexable.ARC)
-public class ToggleAutoclickPreferenceFragment extends DashboardFragment {
+public class ToggleAutoclickPreferenceFragment
+        extends AccessibilityShortcutPreferenceFragment {
 
     private static final String TAG = "AutoclickPrefFragment";
+
+    @VisibleForTesting
+    static final String KEY_AUTOCLICK_SHORTCUT_PREFERENCE = "autoclick_shortcut_preference";
+
+    /**
+     * Autoclick settings do not need to set any restriction key for pin protected.
+     */
+    public ToggleAutoclickPreferenceFragment() {
+        super(/* restrictionKey= */ null);
+    }
+
+    @Override
+    protected CharSequence getLabelName() {
+        return getContext().getString(R.string.accessibility_autoclick_shortcut_title);
+    }
+
+    @Override
+    protected boolean showGeneralCategory() {
+        return false;
+    }
 
     @Override
     public int getMetricsCategory() {
@@ -52,6 +84,41 @@ public class ToggleAutoclickPreferenceFragment extends DashboardFragment {
         return R.xml.accessibility_autoclick_settings;
     }
 
+    @Override
+    protected ComponentName getComponentName() {
+        return AUTOCLICK_COMPONENT_NAME;
+    }
+
+    @Override
+    protected CharSequence getShortcutTitle() {
+        return getString(R.string.accessibility_autoclick_shortcut_title);
+    }
+
+    @Override
+    protected String getShortcutPreferenceKey() {
+        return KEY_AUTOCLICK_SHORTCUT_PREFERENCE;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        if (!Flags.enableAutoclickIndicator()) {
+            getPreferenceScreen().removePreference(mShortcutPreference);
+        }
+        return view;
+    }
+
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
-            new BaseSearchIndexProvider(R.xml.accessibility_autoclick_settings);
+            new BaseSearchIndexProvider(R.xml.accessibility_autoclick_settings) {
+                @Override
+                public List<String> getNonIndexableKeys(Context context) {
+                    List<String> niks = super.getNonIndexableKeys(context);
+
+                    if (!Flags.enableAutoclickIndicator()) {
+                        niks.add(KEY_AUTOCLICK_SHORTCUT_PREFERENCE);
+                    }
+                    return niks;
+                }
+            };
 }

@@ -17,14 +17,18 @@ package com.android.settings.network
 
 import android.content.Context
 import com.android.settings.R
+import com.android.settings.Settings.NetworkDashboardActivity
 import com.android.settings.datausage.DataSaverScreen
 import com.android.settings.flags.Flags
+import com.android.settings.utils.makeLaunchIntent
 import com.android.settingslib.metadata.PreferenceIconProvider
+import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.ProvidePreferenceScreen
 import com.android.settingslib.metadata.preferenceHierarchy
 import com.android.settingslib.preference.PreferenceScreenCreator
+import com.android.settingslib.widget.SettingsThemeHelper.isExpressiveTheme
 
-@ProvidePreferenceScreen
+@ProvidePreferenceScreen(NetworkDashboardScreen.KEY)
 class NetworkDashboardScreen : PreferenceScreenCreator, PreferenceIconProvider {
     override val key: String
         get() = KEY
@@ -34,6 +38,7 @@ class NetworkDashboardScreen : PreferenceScreenCreator, PreferenceIconProvider {
 
     override fun getIcon(context: Context) =
         when {
+            isExpressiveTheme(context) -> R.drawable.ic_homepage_network
             Flags.homepageRevamp() -> R.drawable.ic_settings_wireless_filled
             else -> R.drawable.ic_settings_wireless
         }
@@ -44,8 +49,11 @@ class NetworkDashboardScreen : PreferenceScreenCreator, PreferenceIconProvider {
 
     override fun fragmentClass() = NetworkDashboardFragment::class.java
 
+    override fun getLaunchIntent(context: Context, metadata: PreferenceMetadata?) =
+        makeLaunchIntent(context, NetworkDashboardActivity::class.java, metadata?.key)
+
     override fun getPreferenceHierarchy(context: Context) =
-        preferenceHierarchy(this) {
+        preferenceHierarchy(context, this) {
             +MobileNetworkListScreen.KEY order -15
             +AirplaneModePreference() order -5
             +DataSaverScreen.KEY order 10

@@ -21,6 +21,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
 
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.overlay.FeatureFactory;
@@ -55,5 +56,14 @@ public class SupportPreferenceController extends BasePreferenceController {
         mSupportFeatureProvider.startSupport(mActivity);
         return true;
 
+    }
+
+    @Override
+    public void displayPreference(PreferenceScreen screen) {
+        super.displayPreference(screen);
+        Preference pref = screen.findPreference(mPreferenceKey);
+        if (pref != null && mSupportFeatureProvider != null) {
+            mSupportFeatureProvider.applyOverrides(mContext, pref);
+        }
     }
 }

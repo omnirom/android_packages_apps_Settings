@@ -28,6 +28,10 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.settings.R
 import com.android.settings.network.SatelliteWarningDialogActivity
+import com.android.settings.network.SatelliteWarningDialogActivity.Companion.CUSTOM_CONTENT_BUTTON_NAME
+import com.android.settings.network.SatelliteWarningDialogActivity.Companion.CUSTOM_CONTENT_DESCRIPTION
+import com.android.settings.network.SatelliteWarningDialogActivity.Companion.CUSTOM_CONTENT_TITLE
+import com.android.settings.network.SatelliteWarningDialogActivity.Companion.EXTRA_TYPE_OF_SATELLITE_CUSTOMIZED_CONTENT
 import com.android.settings.network.SatelliteWarningDialogActivity.Companion.EXTRA_TYPE_OF_SATELLITE_WARNING_DIALOG
 import com.android.settings.network.SatelliteWarningDialogActivity.Companion.TYPE_IS_AIRPLANE_MODE
 import com.android.settings.network.SatelliteWarningDialogActivity.Companion.TYPE_IS_BLUETOOTH
@@ -75,6 +79,33 @@ class SatelliteWarningDialogActivityTest {
     }
 
     @Test
+    fun launchActivity_checkCustomizedContent_hasContentIntent() {
+        val scenario = launchCustomizedDialogActivity()
+
+        scenario.onActivity { activity ->
+            assert(activity.intent.hasExtra(EXTRA_TYPE_OF_SATELLITE_CUSTOMIZED_CONTENT))
+        }
+        scenario.close()
+    }
+
+    @Test
+    fun testCustomizedDialogIsExisted() {
+        val scenario = launchCustomizedDialogActivity()
+
+        composeTestRule.onNodeWithText(
+            getSatelliteTestContent().get(CUSTOM_CONTENT_BUTTON_NAME).toString()
+        ).assertIsDisplayed()
+        composeTestRule.onNodeWithText(
+            getSatelliteTestContent().get(CUSTOM_CONTENT_TITLE).toString()
+        ).assertIsDisplayed()
+        composeTestRule.onNodeWithText(
+            getSatelliteTestContent().get(CUSTOM_CONTENT_DESCRIPTION).toString()
+        ).assertIsDisplayed()
+
+        scenario.close()
+    }
+
+    @Test
     fun launchActivity_unknownType_destroyActivity() {
         val scenario = launchDialogActivity(TYPE_IS_UNKNOWN)
 
@@ -117,10 +148,31 @@ class SatelliteWarningDialogActivityTest {
         scenario.close()
     }
 
-    private fun launchDialogActivity(type: Int): ActivityScenario<SatelliteWarningDialogActivity> = launch(
-        Intent(
+    private fun launchDialogActivity(type: Int): ActivityScenario<SatelliteWarningDialogActivity> =
+        launch(Intent(
             context,
             SatelliteWarningDialogActivity::class.java
         ).putExtra(EXTRA_TYPE_OF_SATELLITE_WARNING_DIALOG, type)
     )
+
+    private fun launchCustomizedDialogActivity(): ActivityScenario<SatelliteWarningDialogActivity> =
+        launch(Intent(
+            context,
+            SatelliteWarningDialogActivity::class.java
+        ).putExtra(EXTRA_TYPE_OF_SATELLITE_CUSTOMIZED_CONTENT, getSatelliteTestContent())
+    )
+
+    private fun getSatelliteTestContent(): HashMap<Int, String> {
+        val content = HashMap<Int, String>()
+        content.put(CUSTOM_CONTENT_TITLE, TEST_TITLE)
+        content.put(CUSTOM_CONTENT_DESCRIPTION, TEST_DESCRIPTION)
+        content.put(CUSTOM_CONTENT_BUTTON_NAME, TEST_BUTTON_NAME)
+        return content
+    }
+
+    companion object {
+        const val TEST_TITLE = "TEST_TITLE"
+        const val TEST_DESCRIPTION = "TEST_DESCRIPTION"
+        const val TEST_BUTTON_NAME = "TEST_BUTTON_NAME"
+    }
 }

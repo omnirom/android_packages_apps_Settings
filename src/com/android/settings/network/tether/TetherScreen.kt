@@ -18,12 +18,12 @@ package com.android.settings.network.tether
 import android.content.Context
 import android.net.TetheringManager
 import android.os.UserManager
-import com.android.settings.PreferenceRestrictionMixin
 import com.android.settings.R
 import com.android.settings.Settings.TetherSettingsActivity
 import com.android.settings.datausage.DataSaverMainSwitchPreference
 import com.android.settings.flags.Flags
 import com.android.settings.network.TetherPreferenceController
+import com.android.settings.restriction.PreferenceRestrictionMixin
 import com.android.settings.utils.makeLaunchIntent
 import com.android.settings.wifi.tether.WifiHotspotSwitchPreference
 import com.android.settingslib.TetherUtil
@@ -35,7 +35,7 @@ import com.android.settingslib.metadata.ProvidePreferenceScreen
 import com.android.settingslib.metadata.preferenceHierarchy
 import com.android.settingslib.preference.PreferenceScreenCreator
 
-@ProvidePreferenceScreen
+@ProvidePreferenceScreen(TetherScreen.KEY)
 class TetherScreen :
     PreferenceScreenCreator,
     PreferenceTitleProvider,
@@ -76,7 +76,7 @@ class TetherScreen :
         makeLaunchIntent(context, TetherSettingsActivity::class.java, metadata?.key)
 
     override fun getPreferenceHierarchy(context: Context) =
-        preferenceHierarchy(this) {
+        preferenceHierarchy(context, this) {
             val dataSaverStore = DataSaverMainSwitchPreference.createDataStore(context)
             +WifiHotspotSwitchPreference(context, dataSaverStore)
         }

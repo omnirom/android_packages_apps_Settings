@@ -25,15 +25,14 @@ import androidx.preference.PreferenceScreen;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.overlay.FeatureFactory;
-import com.android.settings.widget.TipCardPreference;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
+import com.android.settingslib.widget.BannerMessagePreference;
 
 /** Controls the update for battery tips card */
 public class BatteryTipsController extends BasePreferenceController {
 
     private static final String TAG = "BatteryTipsController";
-    private static final String ROOT_PREFERENCE_KEY = "battery_tips_category";
-    private static final String CARD_PREFERENCE_KEY = "battery_tips_card";
+    private static final String PREFERENCE_KEY = "battery_tips_card";
 
     @VisibleForTesting static final String ANOMALY_KEY = "anomaly_key";
 
@@ -53,12 +52,12 @@ public class BatteryTipsController extends BasePreferenceController {
 
     @VisibleForTesting OnAnomalyConfirmListener mOnAnomalyConfirmListener;
     @VisibleForTesting OnAnomalyRejectListener mOnAnomalyRejectListener;
-    @VisibleForTesting TipCardPreference mCardPreference;
+    @VisibleForTesting BannerMessagePreference mCardPreference;
     @VisibleForTesting AnomalyEventWrapper mAnomalyEventWrapper = null;
     @VisibleForTesting Boolean mIsAcceptable = false;
 
     public BatteryTipsController(Context context) {
-        super(context, ROOT_PREFERENCE_KEY);
+        super(context, PREFERENCE_KEY);
         final FeatureFactory featureFactory = FeatureFactory.getFeatureFactory();
         mMetricsFeatureProvider = featureFactory.getMetricsFeatureProvider();
     }
@@ -71,7 +70,10 @@ public class BatteryTipsController extends BasePreferenceController {
     @Override
     public void displayPreference(PreferenceScreen screen) {
         super.displayPreference(screen);
-        mCardPreference = screen.findPreference(CARD_PREFERENCE_KEY);
+        mCardPreference = screen.findPreference(PREFERENCE_KEY);
+
+        // Set preference as invisible since there is no default tips.
+        mCardPreference.setVisible(false);
     }
 
     void setOnAnomalyConfirmListener(OnAnomalyConfirmListener listener) {
@@ -117,20 +119,13 @@ public class BatteryTipsController extends BasePreferenceController {
             return;
         }
 
-        mCardPreference.setPrimaryButtonAction(
-                () -> {
-                    onBatteryTipsCardDismiss(anomalyKeyNumber);
-                    return null;
-                });
-        mCardPreference.setSecondaryButtonAction(
-                () -> {
-                    onBatteryTipsCardAccept(anomalyKeyNumber);
-                    return null;
-                });
+        mCardPreference.setNegativeButtonOnClickListener(
+                view -> onBatteryTipsCardDismiss(anomalyKeyNumber));
+        mCardPreference.setPositiveButtonOnClickListener(
+                view -> onBatteryTipsCardAccept(anomalyKeyNumber));
 
-        mCardPreference.setPrimaryButtonVisibility(true);
-        mCardPreference.setSecondaryButtonVisibility(true);
-        mCardPreference.buildContent();
+        mCardPreference.setPositiveButtonVisible(true);
+        mCardPreference.setNegativeButtonVisible(true);
         mCardPreference.setVisible(true);
         mMetricsFeatureProvider.action(
                 /* attribution= */ SettingsEnums.FUELGAUGE_BATTERY_HISTORY_DETAIL,

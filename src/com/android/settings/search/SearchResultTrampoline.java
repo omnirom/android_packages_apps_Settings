@@ -19,6 +19,7 @@ package com.android.settings.search;
 import static com.android.settings.SettingsActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS;
 import static com.android.settings.SettingsActivity.EXTRA_SHOW_FRAGMENT_TAB;
 import static com.android.settings.activityembedding.EmbeddedDeepLinkUtils.getTrampolineIntent;
+import static com.android.settings.activityembedding.EmbeddedDeepLinkUtils.getTrampolineIntentForSearchResult;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -35,7 +36,6 @@ import com.android.settings.SubSettings;
 import com.android.settings.activityembedding.ActivityEmbeddingRulesController;
 import com.android.settings.activityembedding.ActivityEmbeddingUtils;
 import com.android.settings.core.FeatureFlags;
-import com.android.settings.homepage.DeepLinkHomepageActivityInternal;
 import com.android.settings.homepage.SettingsHomepageActivity;
 import com.android.settings.overlay.FeatureFactory;
 
@@ -107,10 +107,7 @@ public class SearchResultTrampoline extends Activity {
             startActivity(intent);
         } else if (isSettingsIntelligence(callerPackage)) {
             if (FeatureFlagUtils.isEnabled(this, FeatureFlags.SETTINGS_SEARCH_ALWAYS_EXPAND)) {
-                startActivity(getTrampolineIntent(intent, highlightMenuKey)
-                        .setClass(this, DeepLinkHomepageActivityInternal.class)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS));
+                startActivity(getTrampolineIntentForSearchResult(this, intent, highlightMenuKey));
             } else {
                 // Register SplitPairRule for SubSettings, set clearTop false to prevent unexpected
                 // back navigation behavior.

@@ -30,10 +30,11 @@ import android.provider.Settings;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.testutils.shadow.ShadowInteractionJankMonitor;
-import com.android.settings.widget.SeekBarPreference;
 import com.android.settingslib.core.lifecycle.Lifecycle;
+import com.android.settingslib.widget.SliderPreference;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +60,7 @@ public class RingVibrationIntensityPreferenceControllerTest {
     private Context mContext;
     private Vibrator mVibrator;
     private RingVibrationIntensityPreferenceController mController;
-    private SeekBarPreference mPreference;
+    private SliderPreference mPreference;
 
     @Before
     public void setUp() {
@@ -72,7 +73,7 @@ public class RingVibrationIntensityPreferenceControllerTest {
         mController = new RingVibrationIntensityPreferenceController(mContext, PREFERENCE_KEY,
                 Vibrator.VIBRATION_INTENSITY_HIGH);
         mLifecycle.addObserver(mController);
-        mPreference = new SeekBarPreference(mContext);
+        mPreference = new SliderPreference(mContext);
         mPreference.setSummary("Test summary");
         when(mScreen.findPreference(mController.getPreferenceKey())).thenReturn(mPreference);
         mController.displayPreference(mScreen);
@@ -92,7 +93,7 @@ public class RingVibrationIntensityPreferenceControllerTest {
         Settings.System.putString(mContext.getContentResolver(),
                 Settings.System.RING_VIBRATION_INTENSITY, /* value= */ null);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(
+        assertThat(mPreference.getValue()).isEqualTo(
                 mVibrator.getDefaultVibrationIntensity(VibrationAttributes.USAGE_RINGTONE));
     }
 
@@ -102,22 +103,21 @@ public class RingVibrationIntensityPreferenceControllerTest {
 
         when(mAudioManager.getRingerModeInternal()).thenReturn(AudioManager.RINGER_MODE_NORMAL);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
         assertThat(mPreference.getSummary()).isNull();
         assertThat(mPreference.isEnabled()).isTrue();
 
         when(mAudioManager.getRingerModeInternal()).thenReturn(AudioManager.RINGER_MODE_SILENT);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
-        // TODO(b/136805769): summary is broken in SeekBarPreference, enable this once fixed
-//        assertThat(mPreference.getSummary()).isNotNull();
-//        assertThat(mPreference.getSummary().toString()).isEqualTo(mContext.getString(
-//                R.string.accessibility_vibration_setting_disabled_for_silent_mode_summary));
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
+        assertThat(mPreference.getSummary()).isNotNull();
+        assertThat(mPreference.getSummary().toString()).isEqualTo(mContext.getString(
+                R.string.accessibility_vibration_setting_disabled_for_silent_mode_summary));
         assertThat(mPreference.isEnabled()).isFalse();
 
         when(mAudioManager.getRingerModeInternal()).thenReturn(AudioManager.RINGER_MODE_VIBRATE);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
         assertThat(mPreference.getSummary()).isNull();
         assertThat(mPreference.isEnabled()).isTrue();
     }
@@ -129,44 +129,44 @@ public class RingVibrationIntensityPreferenceControllerTest {
 
         updateSetting(Settings.System.RING_VIBRATION_INTENSITY, Vibrator.VIBRATION_INTENSITY_HIGH);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_HIGH);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_HIGH);
 
         updateSetting(Settings.System.RING_VIBRATION_INTENSITY,
                 Vibrator.VIBRATION_INTENSITY_MEDIUM);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_MEDIUM);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_MEDIUM);
 
         updateSetting(Settings.System.RING_VIBRATION_INTENSITY, Vibrator.VIBRATION_INTENSITY_LOW);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
 
         updateSetting(Settings.System.RING_VIBRATION_INTENSITY, Vibrator.VIBRATION_INTENSITY_OFF);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
     }
 
     @Test
     public void updateState_shouldDisplayIntensityInSliderPosition() {
         updateSetting(Settings.System.RING_VIBRATION_INTENSITY, Vibrator.VIBRATION_INTENSITY_HIGH);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_HIGH);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_HIGH);
 
         updateSetting(Settings.System.RING_VIBRATION_INTENSITY,
                 Vibrator.VIBRATION_INTENSITY_MEDIUM);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_MEDIUM);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_MEDIUM);
 
         updateSetting(Settings.System.RING_VIBRATION_INTENSITY, Vibrator.VIBRATION_INTENSITY_LOW);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_LOW);
 
         updateSetting(Settings.System.RING_VIBRATION_INTENSITY, Vibrator.VIBRATION_INTENSITY_OFF);
         mController.updateState(mPreference);
-        assertThat(mPreference.getProgress()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
+        assertThat(mPreference.getValue()).isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);
     }
 
     @Test
-    public void setProgress_updatesIntensityAndDependentSettings() throws Exception {
+    public void setSliderPosition_updatesIntensityAndDependentSettings() throws Exception {
         mController.setSliderPosition(Vibrator.VIBRATION_INTENSITY_OFF);
         assertThat(readSetting(Settings.System.RING_VIBRATION_INTENSITY))
                 .isEqualTo(Vibrator.VIBRATION_INTENSITY_OFF);

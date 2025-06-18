@@ -51,16 +51,17 @@ import androidx.preference.PreferenceScreen;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.internal.telephony.Phone;
-import com.android.internal.telephony.flags.Flags;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
 import com.android.settings.Utils;
 import com.android.settings.core.SubSettingLauncher;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.network.ims.WifiCallingQueryImsState;
+import com.android.settings.network.telephony.AbstractSubscriptionPreferenceController;
 import com.android.settings.network.telephony.wificalling.IWifiCallingRepository;
 import com.android.settings.network.telephony.wificalling.WifiCallingRepository;
 import com.android.settings.widget.SettingsMainSwitchPreference;
+import com.android.settingslib.core.AbstractPreferenceController;
 
 import kotlin.Unit;
 
@@ -293,6 +294,11 @@ public class WifiCallingSettingsForSub extends DashboardFragment
 
         updateDescriptionForOptions(
                 List.of(mButtonWfcMode, mButtonWfcRoamingMode, mUpdateAddress));
+
+        List<AbstractPreferenceController> subscriptionPreferenceControllers =
+                useGroup(AbstractSubscriptionPreferenceController.class);
+        subscriptionPreferenceControllers.forEach(
+                controller -> ((AbstractSubscriptionPreferenceController) controller).init(mSubId));
     }
 
     @Override
@@ -712,10 +718,6 @@ public class WifiCallingSettingsForSub extends DashboardFragment
      * {@code false} otherwise.
      */
     private boolean overrideWfcRoamingModeWhileUsingNtn() {
-        if (!Flags.carrierEnabledSatelliteFlag()) {
-            return false;
-        }
-
         TelephonyManager tm = getTelephonyManagerForSub(mSubId);
         ServiceState serviceState = tm.getServiceState();
         if (serviceState == null) {

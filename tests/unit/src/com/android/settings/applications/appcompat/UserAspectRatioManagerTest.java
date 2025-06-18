@@ -31,7 +31,7 @@ import static android.view.WindowManager.PROPERTY_COMPAT_ALLOW_USER_ASPECT_RATIO
 
 import static com.android.settings.applications.appcompat.UserAspectRatioManager.KEY_ENABLE_USER_ASPECT_RATIO_FULLSCREEN;
 import static com.android.settings.applications.appcompat.UserAspectRatioManager.KEY_ENABLE_USER_ASPECT_RATIO_SETTINGS;
-import static com.android.window.flags.Flags.FLAG_USER_MIN_ASPECT_RATIO_APP_DEFAULT;
+import static com.android.window.flags.Flags.FLAG_UNIVERSAL_RESIZABLE_BY_DEFAULT;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -40,12 +40,14 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
+import android.app.ActivityTaskManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.IPackageManager;
@@ -54,6 +56,7 @@ import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.RemoteException;
+import android.platform.test.annotations.DisableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.DeviceConfig;
 
@@ -87,6 +90,7 @@ public class UserAspectRatioManagerTest {
     private String mOriginalFullscreenFlag;
     private IPackageManager mIPm;
     private PackageManager mPm;
+    private ActivityTaskManager mActivityTaskManager;
     private List<LauncherActivityInfo> mLauncherActivities;
 
     @Before
@@ -97,14 +101,15 @@ public class UserAspectRatioManagerTest {
         mLauncherActivities = mock(List.class);
         mIPm = mock(IPackageManager.class);
         mPm = mock(PackageManager.class);
+        mActivityTaskManager = mock(ActivityTaskManager.class);
+        when(mActivityTaskManager.canBeUniversalResizeable(any())).thenReturn(false);
         when(mContext.getPackageManager()).thenReturn(mPm);
 
         when(mContext.getResources()).thenReturn(mResources);
         when(mContext.getSystemService(LauncherApps.class)).thenReturn(launcherApps);
         enableAllDefaultAspectRatioOptions();
-        mSetFlagsRule.disableFlags(FLAG_USER_MIN_ASPECT_RATIO_APP_DEFAULT);
 
-        mUtils = new FakeUserAspectRatioManager(mContext, mIPm);
+        mUtils = new FakeUserAspectRatioManager(mContext, mIPm, mActivityTaskManager);
 
         doReturn(mLauncherActivities).when(launcherApps).getActivityList(anyString(), any());
 
@@ -293,7 +298,7 @@ public class UserAspectRatioManagerTest {
         when(mResources.getIntArray(anyInt())).thenReturn(new int[] {USER_MIN_ASPECT_RATIO_UNSET});
         when(mResources.getStringArray(anyInt())).thenReturn(new String[] {newOptionName});
 
-        mUtils = new FakeUserAspectRatioManager(mContext, mIPm);
+        mUtils = new FakeUserAspectRatioManager(mContext, mIPm, mActivityTaskManager);
 
         assertThat(getUserMinAspectRatioEntry(USER_MIN_ASPECT_RATIO_UNSET, mPackageName))
                 .isEqualTo(newOptionName);
@@ -305,7 +310,8 @@ public class UserAspectRatioManagerTest {
         when(mResources.getIntArray(anyInt())).thenReturn(new int[] {USER_MIN_ASPECT_RATIO_4_3});
         when(mResources.getStringArray(anyInt())).thenReturn(new String[] {"4:3"});
 
-        assertThrows(RuntimeException.class, () -> new FakeUserAspectRatioManager(mContext, mIPm));
+        assertThrows(RuntimeException.class, () -> new FakeUserAspectRatioManager(mContext, mIPm,
+                mActivityTaskManager));
     }
 
     @Test
@@ -315,20 +321,8 @@ public class UserAspectRatioManagerTest {
                 USER_MIN_ASPECT_RATIO_4_3});
         when(mResources.getStringArray(anyInt())).thenReturn(new String[] {"4:3"});
 
-        assertThrows(RuntimeException.class, () -> new FakeUserAspectRatioManager(mContext, mIPm));
-    }
-
-    @Test
-    public void testGetUserMinAspectRatioMapping_appDefaultFlagEnabled() {
-        // Flag is disabled by default, app default not loaded
-        assertFalse(mUtils.hasAspectRatioOption(USER_MIN_ASPECT_RATIO_APP_DEFAULT, mPackageName));
-
-        mSetFlagsRule.enableFlags(FLAG_USER_MIN_ASPECT_RATIO_APP_DEFAULT);
-        mUtils = new FakeUserAspectRatioManager(mContext, mIPm);
-
-        assertTrue(mUtils.hasAspectRatioOption(USER_MIN_ASPECT_RATIO_APP_DEFAULT, mPackageName));
-        assertThat(getUserMinAspectRatioEntry(USER_MIN_ASPECT_RATIO_APP_DEFAULT, mPackageName))
-                .isEqualTo(getUserMinAspectRatioEntry(USER_MIN_ASPECT_RATIO_UNSET, mPackageName));
+        assertThrows(RuntimeException.class, () -> new FakeUserAspectRatioManager(mContext, mIPm,
+                mActivityTaskManager));
     }
 
     private void assertUnsetIsFullscreen() {
@@ -360,7 +354,8 @@ public class UserAspectRatioManagerTest {
     }
 
     @Test
-    public void testGetUserMinAspectRatioEntry_enabledFullscreenOverrideUniRes_returnsFullscreen() {
+    public void testGetUserMinAspectRatioEntry_enabledFullscreenOverrideUniRes_returnsFullscreen()
+            throws RemoteException {
         setIsOverrideToFullscreenEnabledBecauseUniversalResizeable(true);
         assertUnsetIsFullscreen();
     }
@@ -372,7 +367,8 @@ public class UserAspectRatioManagerTest {
     }
 
     @Test
-    public void testGetUserMinAspectRatioEntry_noFullscreenUnivRes_returnsUnchanged() {
+    public void testGetUserMinAspectRatioEntry_noFullscreenUnivRes_returnsUnchanged()
+            throws RemoteException {
         setIsOverrideToFullscreenEnabledBecauseUniversalResizeable(false);
         assertUnsetIsAppDefault();
     }
@@ -389,7 +385,7 @@ public class UserAspectRatioManagerTest {
 
     @Test
     public void testIsOverrideToFullscreenEnabledUnivRes_returnsTrue()
-            throws PackageManager.NameNotFoundException {
+            throws PackageManager.NameNotFoundException, RemoteException {
         setIsOverrideToFullscreenEnabledBecauseUniversalResizeable(true);
         assertTrue(mUtils.isOverrideToFullscreenEnabled(mPackageName, mContext.getUserId()));
 
@@ -406,14 +402,8 @@ public class UserAspectRatioManagerTest {
     }
 
     @Test
-    public void testIsOverrideToFullscreenEnabled_flagDisabled_returnsFalse() {
-        mUtils.setFullscreenCompatChange(true);
-        assertFalse(mUtils.isOverrideToFullscreenEnabled(mPackageName, mContext.getUserId()));
-    }
-
-    @Test
+    @DisableFlags({FLAG_UNIVERSAL_RESIZABLE_BY_DEFAULT})
     public void testIsOverrideToFullscreenEnabledUnivRes_flagDisabled_returnsFalse() {
-        mUtils.setFullscreenCompatChange(true);
         assertFalse(mUtils.isOverrideToFullscreenEnabled(mPackageName, mContext.getUserId()));
     }
 
@@ -426,21 +416,16 @@ public class UserAspectRatioManagerTest {
     }
 
     private void setIsOverrideToFullscreenEnabledBecauseCompatChange(boolean enabled) {
-        if (enabled) {
-            mSetFlagsRule.enableFlags(FLAG_USER_MIN_ASPECT_RATIO_APP_DEFAULT);
-            mUtils = new FakeUserAspectRatioManager(mContext, mIPm);
-        }
         mUtils.setFullscreenCompatChange(enabled);
         when(mUtils.hasAspectRatioOption(USER_MIN_ASPECT_RATIO_FULLSCREEN, mPackageName))
                 .thenReturn(enabled);
     }
 
-    private void setIsOverrideToFullscreenEnabledBecauseUniversalResizeable(boolean enabled) {
-        if (enabled) {
-            mSetFlagsRule.enableFlags(FLAG_USER_MIN_ASPECT_RATIO_APP_DEFAULT);
-            mUtils = new FakeUserAspectRatioManager(mContext, mIPm);
-        }
-        mUtils.setUniversalResizeable(enabled);
+    private void setIsOverrideToFullscreenEnabledBecauseUniversalResizeable(boolean enabled)
+            throws RemoteException {
+        when(mIPm.getApplicationInfo(anyString(), anyLong(), anyInt())).thenReturn(
+                new ApplicationInfo());
+        when(mActivityTaskManager.canBeUniversalResizeable(any())).thenReturn(enabled);
         when(mUtils.hasAspectRatioOption(USER_MIN_ASPECT_RATIO_FULLSCREEN, mPackageName))
                 .thenReturn(enabled);
     }
@@ -503,10 +488,10 @@ public class UserAspectRatioManagerTest {
 
     private static class FakeUserAspectRatioManager extends UserAspectRatioManager {
         private boolean mFullscreenCompatChange = false;
-        private boolean mIsUniversalResizeable = false;
 
-        private FakeUserAspectRatioManager(@NonNull Context context, IPackageManager pm) {
-            super(context, pm);
+        private FakeUserAspectRatioManager(@NonNull Context context, IPackageManager pm,
+                                           ActivityTaskManager mMockActivityTaskManager) {
+            super(context, pm, mMockActivityTaskManager);
         }
 
         @Override
@@ -514,17 +499,8 @@ public class UserAspectRatioManagerTest {
             return mFullscreenCompatChange;
         }
 
-        @Override
-        boolean isUniversalResizeable(String pkgName, int userId) {
-            return mIsUniversalResizeable;
-        }
-
         void setFullscreenCompatChange(boolean enabled) {
             mFullscreenCompatChange = enabled;
-        }
-
-        void setUniversalResizeable(boolean enabled) {
-            mIsUniversalResizeable = enabled;
         }
     }
 }

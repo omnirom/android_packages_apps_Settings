@@ -51,22 +51,69 @@
     <!-- Color for the background of the shortcut icons.-->
     <color name="shortcut_background">#fff5f5f5</color>
 
-    <!-- Dashboard/homepage icon background colors -->
-    <color name="homepage_network_background">#2196F3</color>
-    <color name="homepage_connected_device_background">#72B70F</color>
-    <color name="homepage_app_and_notification_background">#FF7E0F</color>
-    <color name="homepage_battery_background">#258982</color>
-    <color name="homepage_display_background">#FFA727</color>
-    <color name="homepage_sound_background">#01B1AF</color>
-    <color name="homepage_storage_background">#C14CE6</color>
-    <color name="homepage_security_background">#0F9D58</color>
-    <color name="homepage_accounts_background">#F15B8D</color>
-    <color name="homepage_accessibility_background">#5011C1</color>
-    <color name="homepage_system_background">#9E9E9E</color>
-    <color name="homepage_support_background">#26459C</color>
+    <!-- Dashboard/homepage icon colors -->
+    <color name="homepage_network_foreground">@color/homepage_blue_variant_fg</color>
+    <color name="homepage_network_background">@color/homepage_blue_variant_bg</color>
+    <color name="homepage_connected_device_foreground">@color/homepage_blue_variant_fg</color>
+    <color name="homepage_connected_device_background">@color/homepage_blue_variant_bg</color>
+    <color name="homepage_apps_foreground">@color/homepage_blue_fg</color>
+    <color name="homepage_apps_background">@color/homepage_blue_bg</color>
+    <color name="homepage_notification_foreground">@color/homepage_pink_fg</color>
+    <color name="homepage_notification_background">@color/homepage_pink_bg</color>
+    <color name="homepage_sound_foreground">@color/homepage_pink_fg</color>
+    <color name="homepage_sound_background">@color/homepage_pink_bg</color>
+    <color name="homepage_modes_foreground">@color/homepage_pink_fg</color>
+    <color name="homepage_modes_background">@color/homepage_pink_bg</color>
+    <color name="homepage_hub_mode_foreground">@color/homepage_orange_fg</color>
+    <color name="homepage_hub_mode_background">@color/homepage_orange_bg</color>
+    <color name="homepage_display_foreground">@color/homepage_orange_fg</color>
+    <color name="homepage_display_background">@color/homepage_orange_bg</color>
+    <color name="homepage_wallpaper_foreground">@color/homepage_orange_fg</color>
+    <color name="homepage_wallpaper_background">@color/homepage_orange_bg</color>
+    <color name="homepage_storage_foreground">@color/homepage_yellow_fg</color>
+    <color name="homepage_storage_background">@color/homepage_yellow_bg</color>
+    <color name="homepage_battery_foreground">@color/homepage_green_fg</color>
+    <color name="homepage_battery_background">@color/homepage_green_bg</color>
+    <color name="homepage_system_foreground">@color/homepage_grey_fg</color>
+    <color name="homepage_system_background">@color/homepage_grey_bg</color>
+    <color name="homepage_about_foreground">@color/homepage_grey_fg</color>
+    <color name="homepage_about_background">@color/homepage_grey_bg</color>
+    <color name="homepage_security_foreground">@color/homepage_cyan_fg</color>
+    <color name="homepage_security_background">@color/homepage_cyan_bg</color>
+    <color name="homepage_location_foreground">@color/homepage_cyan_fg</color>
+    <color name="homepage_location_background">@color/homepage_cyan_bg</color>
+    <color name="homepage_accounts_foreground">@color/homepage_cyan_fg</color>
+    <color name="homepage_accounts_background">@color/homepage_cyan_bg</color>
+    <color name="homepage_supervision_foreground">@color/homepage_cyan_fg</color>
+    <color name="homepage_supervision_background">@color/homepage_cyan_bg</color>
+    <color name="homepage_safety_foreground">@color/homepage_red_fg</color>
+    <color name="homepage_safety_background">@color/homepage_red_bg</color>
+    <color name="homepage_accessibility_foreground">@color/homepage_purple_fg</color>
+    <color name="homepage_accessibility_background">@color/homepage_purple_bg</color>
+    <color name="homepage_support_foreground">@color/homepage_purple_fg</color>
+    <color name="homepage_support_background">@color/homepage_purple_bg</color>
     <color name="homepage_generic_icon_background">#1A73E8</color>
-    <color name="homepage_location_background">#2EC7DC</color>
-    <color name="homepage_about_background">#6F86DA</color>
+
+    <color name="homepage_blue_variant_fg">@color/m3_ref_palette_blue_variant30</color>
+    <color name="homepage_blue_variant_bg">@color/m3_ref_palette_blue_variant90</color>
+    <color name="homepage_blue_fg">@color/m3_ref_palette_blue30</color>
+    <color name="homepage_blue_bg">@color/m3_ref_palette_blue90</color>
+    <color name="homepage_pink_fg">@color/m3_ref_palette_pink30</color>
+    <color name="homepage_pink_bg">@color/m3_ref_palette_pink90</color>
+    <color name="homepage_orange_fg">@color/m3_ref_palette_orange30</color>
+    <color name="homepage_orange_bg">@color/m3_ref_palette_orange90</color>
+    <color name="homepage_yellow_fg">@color/m3_ref_palette_yellow30</color>
+    <color name="homepage_yellow_bg">@color/m3_ref_palette_yellow90</color>
+    <color name="homepage_green_fg">@color/m3_ref_palette_green30</color>
+    <color name="homepage_green_bg">@color/m3_ref_palette_green90</color>
+    <color name="homepage_grey_fg">@color/m3_ref_palette_grey30</color>
+    <color name="homepage_grey_bg">@color/m3_ref_palette_grey90</color>
+    <color name="homepage_cyan_fg">@color/m3_ref_palette_cyan30</color>
+    <color name="homepage_cyan_bg">@color/m3_ref_palette_cyan90</color>
+    <color name="homepage_red_fg">@color/m3_ref_palette_red30</color>
+    <color name="homepage_red_bg">@color/m3_ref_palette_red90</color>
+    <color name="homepage_purple_fg">@color/m3_ref_palette_purple30</color>
+    <color name="homepage_purple_bg">@color/m3_ref_palette_purple90</color>
 
     <color name="contextual_card_dismissal_background">@*android:color/background_device_default_light</color>
     <color name="contextual_card_background">@*android:color/background_device_default_light</color>
@@ -94,9 +141,6 @@
 
     <!-- launcher icon color -->
     <color name="icon_launcher_setting_color">@*android:color/accent_device_default_light</color>
-
-    <!-- Search bar background color -->
-    <color name="search_bar_background">?androidprv:attr/materialColorSurfaceBright</color>
 
     <color name="face_enroll_icon_color">#42a5f5</color> <!-- Blue 400 -->
 
@@ -168,20 +212,19 @@
     <color name="battery_info_error_color_black">@*android:color/primary_text_default_material_light</color>
 
     <!-- Background for multiple user settings page avatars -->
-    <color name="user_avatar_color_bg">?androidprv:attr/materialColorSurfaceContainer</color>
+    <color name="user_avatar_color_bg">@androidprv:color/materialColorSurfaceContainer</color>
 
     <!-- Icon tint color for battery usage system icon -->
     <color name="battery_usage_system_icon_color">?android:attr/textColorPrimary</color>
 
-    <!-- Power anomaly color for icons, button -->
-    <color name="power_anomaly_app_warning_hint_color">#D56E0C</color>
-
     <!-- UDFPS colors -->
-    <color name="udfps_enroll_icon">#699FF3</color>
-    <color name="udfps_moving_target_fill">#C2D7F7</color>
+    <!-- colorPrimaryGoogle light #1A73E8 (Blue600)-->
+    <color name="udfps_enroll_icon">#1A73E8</color>
+    <color name="udfps_moving_target_fill">#B9D6F7</color>
     <!-- 50% of udfps_moving_target_fill-->
-    <color name="udfps_moving_target_fill_error">#80C2D7F7</color>
-    <color name="udfps_enroll_progress">#699FF3</color>
+    <color name="udfps_moving_target_fill_error">#80B9D6F7</color>
+    <!-- colorPrimaryGoogle light #1A73E8 (Blue600)-->
+    <color name="udfps_enroll_progress">#1A73E8</color>
     <color name="udfps_enroll_progress_help">#70699FF3</color>
     <color name="udfps_enroll_progress_help_with_talkback">#FFEE675C</color>
 
@@ -221,9 +264,10 @@
     <!-- Switch bar disabled state color-->
     <color name="switch_bar_state_disabled_color">#1F1F1F1F</color>
 
-    <!-- Pointer fill color setting outline color-->
-    <color name="pointer_fill_outline_color">#000000</color>
+    <!-- Pointer fill color setting, fill selector's background color on hover. -->
+    <color name="pointer_fill_hovered_color">#1C201A1E</color>
 
     <!-- Connected displays -->
     <color name="display_topology_background_color">@color/settingslib_color_grey100</color>
+    <color name="system_secondary">@android:color/system_secondary_light</color>
 </resources>

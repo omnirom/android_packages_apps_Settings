@@ -32,7 +32,7 @@ public class ShortcutsUpdateReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(@NonNull Context context, @NonNull Intent intent) {
-        if (!Flags.modesApi() || !Flags.modesUi()) {
+        if (!Flags.modesUi()) {
             return;
         }
 

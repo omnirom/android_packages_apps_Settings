@@ -125,7 +125,7 @@ public class ZenModesListFragment extends ZenModesFragmentBase {
         // If we find a new mode owned by the same package, presumably that's it. Open its page.
         Optional<ZenMode> createdZenMode = mBackend.getModes().stream()
                 .filter(m -> !previousIds.contains(m.getId()))
-                .filter(m -> m.getRule().getPackageName().equals(activityInvoked.getPackageName()))
+                .filter(m -> activityInvoked.getPackageName().equals(m.getOwnerPackage()))
                 .findFirst();
         createdZenMode.ifPresent(
                 mode ->

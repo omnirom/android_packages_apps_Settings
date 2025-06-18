@@ -18,6 +18,7 @@ package com.android.settings.connecteddevice.audiosharing;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +34,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.settings.R;
 
+import java.util.List;
+
 import javax.annotation.CheckReturnValue;
 
 public class AudioSharingDialogFactory {
@@ -47,6 +50,53 @@ public class AudioSharingDialogFactory {
     @NonNull
     public static AudioSharingDialogFactory.DialogBuilder newBuilder(@NonNull Context context) {
         return new AudioSharingDialogFactory.DialogBuilder(context);
+    }
+
+    /**
+     * Updates the title of the dialog custom title.
+     *
+     * @param dialog    The dialog to update
+     * @param titleText The text to be used for the title..
+     */
+    public static void updateTitle(@NonNull AlertDialog dialog,
+            @NonNull CharSequence titleText) {
+        TextView title = dialog.findViewById(R.id.title_text);
+        if (title != null) {
+            title.setText(titleText);
+            title.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * Updates the custom message of the dialog custom body.
+     *
+     * @param dialog  The dialog to update
+     * @param message The text to be used for the custom message body.
+     */
+    public static void updateCustomMessage(@NonNull AlertDialog dialog,
+            @NonNull CharSequence message) {
+        TextView subTitle = dialog.findViewById(R.id.description_text);
+        if (subTitle != null) {
+            subTitle.setText(message);
+            subTitle.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * Updates the custom device actions of the dialog custom body.
+     *
+     * @param dialog      The dialog to update
+     * @param deviceItems device items to build dialog actions.
+     */
+    public static void updateCustomDeviceActions(
+            @NonNull AlertDialog dialog, @NonNull List<AudioSharingDeviceItem> deviceItems) {
+        RecyclerView recyclerView = dialog.findViewById(R.id.device_btn_list);
+        if (recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
+            RecyclerView.Adapter adapter = recyclerView.getAdapter();
+            if (adapter instanceof AudioSharingDeviceAdapter) {
+                ((AudioSharingDeviceAdapter) adapter).updateItems(deviceItems);
+            }
+        }
     }
 
     /** Builder class with configurable options for the dialog to be shown for audio sharing. */
@@ -147,13 +197,27 @@ public class AudioSharingDialogFactory {
         /**
          * Sets the custom image of the dialog custom body.
          *
-         * @param iconRes The text to be used for the title.
+         * @param iconRes The iconRes to be used for the image.
          * @return This builder.
          */
         @NonNull
         public AudioSharingDialogFactory.DialogBuilder setCustomImage(@DrawableRes int iconRes) {
             ImageView image = mCustomBody.findViewById(R.id.description_image);
             image.setImageResource(iconRes);
+            image.setVisibility(View.VISIBLE);
+            return this;
+        }
+
+        /**
+         * Sets the custom image of the dialog custom body.
+         *
+         * @param drawable The drawable to be used for the image.
+         * @return This builder.
+         */
+        @NonNull
+        public AudioSharingDialogFactory.DialogBuilder setCustomImage(Drawable drawable) {
+            ImageView image = mCustomBody.findViewById(R.id.description_image);
+            image.setImageDrawable(drawable);
             image.setVisibility(View.VISIBLE);
             return this;
         }
@@ -183,6 +247,21 @@ public class AudioSharingDialogFactory {
                 @NonNull CharSequence message) {
             TextView subTitle = mCustomBody.findViewById(R.id.description_text);
             subTitle.setText(message);
+            subTitle.setVisibility(View.VISIBLE);
+            return this;
+        }
+
+        /**
+         * Sets the custom message below image.
+         *
+         * @param messageRes Resource ID of the string to be used for the message body.
+         * @return This builder.
+         */
+        @NonNull
+        public AudioSharingDialogFactory.DialogBuilder setCustomMessage2(
+                @StringRes int messageRes) {
+            TextView subTitle = mCustomBody.findViewById(R.id.description_text_2);
+            subTitle.setText(messageRes);
             subTitle.setVisibility(View.VISIBLE);
             return this;
         }

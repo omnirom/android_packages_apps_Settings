@@ -108,6 +108,7 @@ public class ShortcutOptionPreference extends CheckBoxPreference {
         if (summaryView != null) {
             mSummaryTextLineHeight = summaryView.getLineHeight();
             summaryView.setMovementMethod(LinkMovementMethod.getInstance());
+            summaryView.setFocusable(false);
         }
 
         syncSummaryView(holder);

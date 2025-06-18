@@ -16,8 +16,8 @@
 
 package com.android.settings.inputmethod;
 
-import static android.hardware.input.KeyboardLayoutSelectionResult.LAYOUT_SELECTION_CRITERIA_USER;
 import static android.hardware.input.KeyboardLayoutSelectionResult.LAYOUT_SELECTION_CRITERIA_DEVICE;
+import static android.hardware.input.KeyboardLayoutSelectionResult.LAYOUT_SELECTION_CRITERIA_USER;
 import static android.hardware.input.KeyboardLayoutSelectionResult.LAYOUT_SELECTION_CRITERIA_VIRTUAL_KEYBOARD;
 
 import android.annotation.NonNull;
@@ -55,6 +55,25 @@ public class InputPeripheralsSettingsUtils {
     static final String EXTRA_INPUT_METHOD_INFO = "input_method_info";
     static final String EXTRA_INPUT_METHOD_SUBTYPE = "input_method_subtype";
 
+    /**
+     * Returns whether any hard keyboard is connected.
+     */
+    static boolean isHardKeyboard() {
+        for (int deviceId : InputDevice.getDeviceIds()) {
+            final InputDevice device = InputDevice.getDevice(deviceId);
+            if (device == null) {
+                continue;
+            }
+            if (device.isFullKeyboard() && !device.isVirtual()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns whether any touchpad is connected.
+     */
     static boolean isTouchpad() {
         for (int deviceId : InputDevice.getDeviceIds()) {
             final InputDevice device = InputDevice.getDevice(deviceId);
@@ -69,6 +88,9 @@ public class InputPeripheralsSettingsUtils {
         return false;
     }
 
+    /**
+     * Returns whether any mouse is connected.
+     */
     static boolean isMouse() {
         for (int deviceId : InputDevice.getDeviceIds()) {
             final InputDevice device = InputDevice.getDevice(deviceId);

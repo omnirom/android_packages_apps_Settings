@@ -99,9 +99,9 @@ public final class PowerUsageTimeControllerTest {
                 /* anomalyHintText= */ null);
 
         verifyOnePreferenceInvisible(mBackgroundTimePreference);
-        verify(mScreenTimePreference).setTimeTitle("Screen time");
-        verify(mScreenTimePreference).setTimeSummary("1 min");
-        verify(mScreenTimePreference, never()).setAnomalyHint(anyString());
+        verify(mScreenTimePreference).setTitle("Screen time");
+        verify(mScreenTimePreference).setSummary("1 min");
+        verify(mScreenTimePreference, never()).setHint(anyString());
     }
 
     @Test
@@ -117,9 +117,9 @@ public final class PowerUsageTimeControllerTest {
                 /* anomalyHintText= */ null);
 
         verifyOnePreferenceInvisible(mScreenTimePreference);
-        verify(mBackgroundTimePreference).setTimeTitle("Background time");
-        verify(mBackgroundTimePreference).setTimeSummary("2 min");
-        verify(mBackgroundTimePreference, never()).setAnomalyHint(anyString());
+        verify(mBackgroundTimePreference).setTitle("Background time");
+        verify(mBackgroundTimePreference).setSummary("2 min");
+        verify(mBackgroundTimePreference, never()).setHint(anyString());
     }
 
     @Test
@@ -135,12 +135,12 @@ public final class PowerUsageTimeControllerTest {
                 /* anomalyHintText= */ null);
 
         verifyAllPreferencesVisible(true);
-        verify(mScreenTimePreference).setTimeTitle("Screen time");
-        verify(mScreenTimePreference).setTimeSummary("1 min");
-        verify(mScreenTimePreference, never()).setAnomalyHint(anyString());
-        verify(mBackgroundTimePreference).setTimeTitle("Background time");
-        verify(mBackgroundTimePreference).setTimeSummary("2 min");
-        verify(mBackgroundTimePreference, never()).setAnomalyHint(anyString());
+        verify(mScreenTimePreference).setTitle("Screen time");
+        verify(mScreenTimePreference).setSummary("1 min");
+        verify(mScreenTimePreference, never()).setHint(anyString());
+        verify(mBackgroundTimePreference).setTitle("Background time");
+        verify(mBackgroundTimePreference).setSummary("2 min");
+        verify(mBackgroundTimePreference, never()).setHint(anyString());
         verify(mPowerUsageTimeCategory).setTitle("App usage for 12 am-2 am");
     }
 
@@ -173,8 +173,8 @@ public final class PowerUsageTimeControllerTest {
                 /* anomalyHintText= */ null);
 
         verifyAllPreferencesVisible(true);
-        verify(mScreenTimePreference).setTimeSummary("1 min");
-        verify(mBackgroundTimePreference).setTimeSummary("Less than a minute");
+        verify(mScreenTimePreference).setSummary("1 min");
+        verify(mBackgroundTimePreference).setSummary("Less than a minute");
     }
 
     @Test
@@ -190,8 +190,8 @@ public final class PowerUsageTimeControllerTest {
                 /* anomalyHintText= */ null);
 
         verifyAllPreferencesVisible(true);
-        verify(mScreenTimePreference).setTimeSummary("Less than a minute");
-        verify(mBackgroundTimePreference).setTimeSummary("2 min");
+        verify(mScreenTimePreference).setSummary("Less than a minute");
+        verify(mBackgroundTimePreference).setSummary("2 min");
     }
 
     @Test
@@ -207,8 +207,8 @@ public final class PowerUsageTimeControllerTest {
                 /* anomalyHintText= */ null);
 
         verifyAllPreferencesVisible(true);
-        verify(mScreenTimePreference).setTimeSummary("Less than a minute");
-        verify(mBackgroundTimePreference).setTimeSummary("Less than a minute");
+        verify(mScreenTimePreference).setSummary("Less than a minute");
+        verify(mBackgroundTimePreference).setSummary("Less than a minute");
     }
 
     @Test
@@ -224,8 +224,8 @@ public final class PowerUsageTimeControllerTest {
                 TEST_ANOMALY_HINT_TEXT);
 
         verifyAllPreferencesVisible(true);
-        verify(mScreenTimePreference).setAnomalyHint(TEST_ANOMALY_HINT_TEXT);
-        verify(mBackgroundTimePreference, never()).setAnomalyHint(anyString());
+        verify(mScreenTimePreference).setHint(TEST_ANOMALY_HINT_TEXT);
+        verify(mBackgroundTimePreference, never()).setHint(anyString());
     }
 
     @Test
@@ -241,8 +241,8 @@ public final class PowerUsageTimeControllerTest {
                 TEST_ANOMALY_HINT_TEXT);
 
         verifyAllPreferencesVisible(true);
-        verify(mScreenTimePreference, never()).setAnomalyHint(anyString());
-        verify(mBackgroundTimePreference).setAnomalyHint(TEST_ANOMALY_HINT_TEXT);
+        verify(mScreenTimePreference, never()).setHint(anyString());
+        verify(mBackgroundTimePreference).setHint(TEST_ANOMALY_HINT_TEXT);
     }
 
     @Test
@@ -258,9 +258,9 @@ public final class PowerUsageTimeControllerTest {
                 TEST_ANOMALY_HINT_TEXT);
 
         verifyAllPreferencesVisible(true);
-        verify(mScreenTimePreference).setTimeSummary("Less than a minute");
-        verify(mScreenTimePreference).setAnomalyHint(TEST_ANOMALY_HINT_TEXT);
-        verify(mBackgroundTimePreference, never()).setAnomalyHint(anyString());
+        verify(mScreenTimePreference).setSummary("Less than a minute");
+        verify(mScreenTimePreference).setHint(TEST_ANOMALY_HINT_TEXT);
+        verify(mBackgroundTimePreference, never()).setHint(anyString());
     }
 
     private void verifySetPrefToVisible(Preference pref, boolean isVisible) {

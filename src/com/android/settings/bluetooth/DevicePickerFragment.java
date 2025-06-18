@@ -32,9 +32,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
 import com.android.settings.R;
+import com.android.settings.flags.Flags;
 import com.android.settings.password.PasswordUtils;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.core.AbstractPreferenceController;
@@ -48,6 +50,8 @@ import java.util.List;
 public final class DevicePickerFragment extends DeviceListPreferenceFragment {
     private static final String KEY_BT_DEVICE_LIST = "bt_device_list";
     private static final String TAG = "DevicePickerFragment";
+    private static final String EXTRA_ORIGINAL_SEND_INTENT =
+            "android.bluetooth.extra.DEVICE_PICKER_ORIGINAL_SEND_INTENT";
 
     @VisibleForTesting
     BluetoothProgressCategory mAvailableDevicesCategory;
@@ -102,6 +106,23 @@ public final class DevicePickerFragment extends DeviceListPreferenceFragment {
         }
         mContext = getContext();
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (Flags.enableNearbyShareEntrypoint()) {
+            initNearbySharingController();
+        }
+    }
+
+    private void initNearbySharingController() {
+        Intent sendIntent =
+                getIntent().getParcelableExtra(EXTRA_ORIGINAL_SEND_INTENT, Intent.class);
+        if (sendIntent == null) {
+            return;
+        }
+        use(NearbySharePreferenceController.class).init(sendIntent);
     }
 
     @Override

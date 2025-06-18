@@ -17,6 +17,7 @@
 package com.android.settings.fuelgauge.batteryusage;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -28,7 +29,8 @@ import androidx.annotation.Nullable;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
 import com.android.settings.core.SubSettingLauncher;
-import com.android.settings.widget.TipCardPreference;
+import com.android.settingslib.widget.BannerMessagePreference;
+import com.android.settingslib.widget.BannerMessagePreference.AttentionLevel;
 
 import java.util.function.Function;
 
@@ -37,6 +39,7 @@ class AnomalyEventWrapper {
 
     private final Context mContext;
     private final PowerAnomalyEvent mPowerAnomalyEvent;
+    private final AttentionLevel mAttentionLevel;
 
     private final int mCardStyleId;
     private final int mResourceIndex;
@@ -51,6 +54,7 @@ class AnomalyEventWrapper {
         // Set basic battery tips card info
         mCardStyleId = mPowerAnomalyEvent.getType().getNumber();
         mResourceIndex = mPowerAnomalyEvent.getKey().getNumber();
+        mAttentionLevel = mCardStyleId == 0 ? AttentionLevel.NORMAL : AttentionLevel.MEDIUM;
     }
 
     private <T> T getInfo(
@@ -104,12 +108,14 @@ class AnomalyEventWrapper {
         return mPowerAnomalyEvent.hasEventId() ? mPowerAnomalyEvent.getEventId() : null;
     }
 
-    int getIconResId() {
-        return getResourceId(R.array.battery_tips_card_icons, mCardStyleId, "drawable");
-    }
-
-    int getColorResId() {
-        return getResourceId(R.array.battery_tips_card_colors, mCardStyleId, "color");
+    Drawable getIconDrawable() {
+        final int iconResId =
+                getResourceId(R.array.battery_tips_card_icons, mCardStyleId, "drawable");
+        Drawable drawable = mContext.getDrawable(iconResId);
+        if (drawable != null && mAttentionLevel != AttentionLevel.NORMAL) {
+            drawable.setTint(mContext.getColor(mAttentionLevel.getButtonBackgroundColorResId()));
+        }
+        return drawable;
     }
 
     String getTitleString() {
@@ -236,16 +242,16 @@ class AnomalyEventWrapper {
         return mHighlightSlotPair;
     }
 
-    boolean updateTipsCardPreference(TipCardPreference preference) {
+    boolean updateTipsCardPreference(BannerMessagePreference preference) {
         final String titleString = getTitleString();
         if (TextUtils.isEmpty(titleString)) {
             return false;
         }
         preference.setTitle(titleString);
-        preference.setIconResId(getIconResId());
-        preference.setTintColorResId(getColorResId());
-        preference.setPrimaryButtonText(getDismissBtnString());
-        preference.setSecondaryButtonText(getMainBtnString());
+        preference.setIcon(getIconDrawable());
+        preference.setAttentionLevel(mAttentionLevel);
+        preference.setNegativeButtonText(getDismissBtnString());
+        preference.setPositiveButtonText(getMainBtnString());
         return true;
     }
 

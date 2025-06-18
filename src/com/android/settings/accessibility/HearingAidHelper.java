@@ -95,6 +95,22 @@ public class HearingAidHelper {
     }
 
     /**
+     * Checks if {@link BluetoothProfile#HEARING_AID} supported.
+     */
+    public boolean isAshaProfileSupported() {
+        final List<Integer> supportedList = mBluetoothAdapter.getSupportedProfiles();
+        return supportedList.contains(BluetoothProfile.HEARING_AID);
+    }
+
+    /**
+     * Checks if {@link BluetoothProfile#HAP_CLIENT} supported.
+     */
+    public boolean isHapClientProfileSupported() {
+        final List<Integer> supportedList = mBluetoothAdapter.getSupportedProfiles();
+        return supportedList.contains(BluetoothProfile.HAP_CLIENT);
+    }
+
+    /**
      * Checks if {@link BluetoothProfile#HEARING_AID} or {@link BluetoothProfile#HAP_CLIENT}
      * profiles all ready.
      */

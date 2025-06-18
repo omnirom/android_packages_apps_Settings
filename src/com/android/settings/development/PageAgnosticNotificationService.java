@@ -23,6 +23,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.UserHandle;
 import android.provider.Settings;
 
 import androidx.annotation.NonNull;
@@ -36,7 +37,11 @@ public class PageAgnosticNotificationService extends Service {
             "com.android.settings.development.PageAgnosticNotificationService";
     public static final String INTENT_ACTION_DISMISSED =
             "com.android.settings.development.NOTIFICATION_DISMISSED";
-    private static final int NOTIFICATION_ID = 1;
+
+    // Updating the notification ID to avoid the notification being dismissed
+    // accidentally by other notifications. ID used is the bug id where this was
+    // reported.
+    private static final int NOTIFICATION_ID = 388678898;
 
     static final int DISABLE_UPDATES_SETTING = 1;
 
@@ -144,7 +149,8 @@ public class PageAgnosticNotificationService extends Service {
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
         Notification notification = buildNotification();
         if (mNotificationManager != null) {
-            mNotificationManager.notify(NOTIFICATION_ID, notification);
+            mNotificationManager.notifyAsUser(null, NOTIFICATION_ID, notification,
+                    UserHandle.ALL);
         }
         return Service.START_REDELIVER_INTENT;
     }
