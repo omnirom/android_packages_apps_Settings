@@ -17,7 +17,7 @@
 package com.android.settings
 
 import android.Manifest.permission.WRITE_SYSTEM_PREFERENCES
-import android.app.AppOpsManager.OP_WRITE_SYSTEM_PREFERENCES
+import android.app.AppOpsManager.OPSTR_WRITE_SYSTEM_PREFERENCES
 import com.android.settings.metrics.SettingsRemoteOpMetricsLogger
 import com.android.settingslib.ipc.ApiPermissionChecker
 import com.android.settingslib.ipc.AppOpApiPermissionChecker
@@ -28,7 +28,7 @@ class SettingsService :
     PreferenceService(
         graphPermissionChecker = ApiPermissionChecker.alwaysAllow(),
         setterPermissionChecker =
-            AppOpApiPermissionChecker(OP_WRITE_SYSTEM_PREFERENCES, WRITE_SYSTEM_PREFERENCES),
+            AppOpApiPermissionChecker(OPSTR_WRITE_SYSTEM_PREFERENCES, WRITE_SYSTEM_PREFERENCES),
         getterPermissionChecker = ApiPermissionChecker.alwaysAllow(),
         metricsLogger = SettingsRemoteOpMetricsLogger(),
     )

@@ -27,7 +27,7 @@ import com.android.settingslib.metadata.PreferenceAvailabilityProvider
 import com.android.settingslib.widget.MainSwitchBar
 
 /** Preference abstraction of the [MainSwitchBar] in settings activity. */
-class MainSwitchBarPreference(context: Context, private val metadata: MainSwitchBarMetadata) :
+open class MainSwitchBarPreference(context: Context, private val metadata: MainSwitchBarMetadata) :
     TwoStatePreference(context), OnCheckedChangeListener, MainSwitchBar.PreChangeListener {
 
     // main switch bar might be null when configuration is just changed

@@ -31,6 +31,7 @@ import com.android.settingslib.widget.TopIntroPreference;
  *
  * This should be removed after the flag android.view.accessibility.force_invert_color is launched.
  */
+// LINT.IfChange
 public class DarkModeTopIntroPreferenceController extends BasePreferenceController {
     @Nullable private TopIntroPreference mPreference;
 
@@ -57,3 +58,4 @@ public class DarkModeTopIntroPreferenceController extends BasePreferenceControll
         }
     }
 }
+// LINT.ThenChange(DarkModeTopIntroPreference.kt)

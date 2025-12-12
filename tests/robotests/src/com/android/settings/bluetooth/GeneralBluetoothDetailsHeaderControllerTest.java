@@ -22,13 +22,10 @@ import static org.mockito.Mockito.when;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothProfile;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.widget.TextView;
 
 import com.android.settings.R;
-import com.android.settings.flags.Flags;
 import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settings.testutils.shadow.ShadowDeviceConfig;
 import com.android.settings.testutils.shadow.ShadowEntityHeaderController;
@@ -89,7 +86,6 @@ public class GeneralBluetoothDetailsHeaderControllerTest
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ENABLE_BLUETOOTH_DEVICE_DETAILS_POLISH)
     public void header() {
         when(mCachedDevice.getName()).thenReturn("device name");
         when(mCachedDevice.getConnectionSummary()).thenReturn("Active");
@@ -103,7 +99,6 @@ public class GeneralBluetoothDetailsHeaderControllerTest
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ENABLE_BLUETOOTH_DEVICE_DETAILS_POLISH)
     public void connectionStatusChangesWhileScreenOpen() {
         TextView summary = mPreference.findViewById(R.id.bt_header_connection_summary);
         when(mCachedDevice.getConnectionSummary())
@@ -131,7 +126,6 @@ public class GeneralBluetoothDetailsHeaderControllerTest
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ENABLE_BLUETOOTH_DEVICE_DETAILS_POLISH)
     public void isAvailable_untetheredHeadset_returnFalse() {
         when(mBluetoothDevice.getMetadata(BluetoothDevice.METADATA_IS_UNTETHERED_HEADSET))
                 .thenReturn("true".getBytes());
@@ -140,7 +134,6 @@ public class GeneralBluetoothDetailsHeaderControllerTest
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ENABLE_BLUETOOTH_DEVICE_DETAILS_POLISH)
     public void isAvailable_notUntetheredHeadset_returnTrue() {
         when(mBluetoothDevice.getMetadata(BluetoothDevice.METADATA_IS_UNTETHERED_HEADSET))
                 .thenReturn("false".getBytes());
@@ -149,26 +142,10 @@ public class GeneralBluetoothDetailsHeaderControllerTest
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ENABLE_BLUETOOTH_DEVICE_DETAILS_POLISH)
     public void isAvailable_leAudioDevice_returnFalse() {
         when(mCachedDevice.getUiAccessibleProfiles())
                 .thenReturn(List.of(mLeAudioProfile));
 
-        assertThat(mController.isAvailable()).isFalse();
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_ENABLE_BLUETOOTH_DEVICE_DETAILS_POLISH)
-    public void isAvailable_flagEnabled_returnTrue() {
-        when(mBluetoothDevice.getMetadata(BluetoothDevice.METADATA_IS_UNTETHERED_HEADSET))
-                .thenReturn("false".getBytes());
-
-        assertThat(mController.isAvailable()).isTrue();
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_ENABLE_BLUETOOTH_DEVICE_DETAILS_POLISH)
-    public void iaAvailable_flagDisabled_returnFalse() {
         assertThat(mController.isAvailable()).isFalse();
     }
 }

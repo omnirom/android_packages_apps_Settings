@@ -47,6 +47,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 /** Test for {@link MediaVibrationIntensityPreferenceController}. */
+// LINT.IfChange
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {ShadowInteractionJankMonitor.class, SettingsShadowResources.class})
 public class MediaVibrationIntensityPreferenceControllerTest {
@@ -198,3 +199,4 @@ public class MediaVibrationIntensityPreferenceControllerTest {
         return Settings.System.getInt(mContext.getContentResolver(), settingKey);
     }
 }
+// LINT.ThenChange(MediaVibrationIntensitySliderPreferenceTest.kt)

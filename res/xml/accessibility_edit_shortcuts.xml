@@ -18,10 +18,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:settings="http://schemas.android.com/apk/res-auto">
 
-    <Preference
+    <com.android.settingslib.widget.TopIntroPreference
         android:key="@string/accessibility_shortcut_description_pref"
-        android:persistent="false"
-        android:selectable="false"
         settings:allowDividerAbove="false"
         settings:allowDividerBelow="false"/>
     <!-- LINT.IfChange(shortcut_type_ui_order) -->

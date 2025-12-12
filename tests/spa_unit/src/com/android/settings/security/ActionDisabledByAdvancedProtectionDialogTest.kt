@@ -30,7 +30,6 @@ import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import android.security.Flags
 import android.security.advancedprotection.AdvancedProtectionManager
 import android.security.advancedprotection.AdvancedProtectionManager.FEATURE_ID_DISALLOW_CELLULAR_2G
-import android.security.advancedprotection.AdvancedProtectionManager.FEATURE_ID_DISALLOW_WEP
 import android.security.advancedprotection.AdvancedProtectionManager.SUPPORT_DIALOG_TYPE_BLOCKED_INTERACTION
 import android.security.advancedprotection.AdvancedProtectionManager.SUPPORT_DIALOG_TYPE_DISABLED_SETTING
 import androidx.compose.ui.test.assertIsDisplayed
@@ -89,24 +88,6 @@ class ActionDisabledByAdvancedProtectionDialogTest {
     }
 
     @Test
-    fun wepBlockedInteraction_showsCorrectTitleAndMessage() {
-        val intent = AdvancedProtectionManager.createSupportIntent(
-            FEATURE_ID_DISALLOW_WEP,
-            SUPPORT_DIALOG_TYPE_BLOCKED_INTERACTION
-        )
-
-        launchDialogActivity(intent) {
-            composeTestRule
-                .onNodeWithText(context.getString(R.string.disabled_by_advanced_protection_title))
-                .assertIsDisplayed()
-            composeTestRule
-                .onNodeWithText(context.getString(
-                    R.string.disabled_by_advanced_protection_wep_action_message))
-                .assertIsDisplayed()
-        }
-    }
-
-    @Test
     fun disabled2gSettingDialog_showsCorrectTitleAndMessage() {
         val intent = AdvancedProtectionManager.createSupportIntent(
             FEATURE_ID_DISALLOW_CELLULAR_2G,
@@ -138,24 +119,6 @@ class ActionDisabledByAdvancedProtectionDialogTest {
             composeTestRule
                 .onNodeWithText(context.getString(
                     R.string.disabled_by_advanced_protection_setting_is_on_message))
-                .assertIsDisplayed()
-        }
-    }
-
-    @Test
-    fun disabledWepSettingDialog_showsCorrectTitleAndMessage() {
-        val intent = AdvancedProtectionManager.createSupportIntent(
-            FEATURE_ID_DISALLOW_WEP,
-            SUPPORT_DIALOG_TYPE_DISABLED_SETTING
-        )
-
-        launchDialogActivity(intent) {
-            composeTestRule
-                .onNodeWithText(context.getString(R.string.disabled_by_advanced_protection_title))
-                .assertIsDisplayed()
-            composeTestRule
-                .onNodeWithText(context.getString(
-                    R.string.disabled_by_advanced_protection_setting_is_off_message))
                 .assertIsDisplayed()
         }
     }

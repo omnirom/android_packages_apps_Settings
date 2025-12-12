@@ -27,12 +27,10 @@
     <com.android.settingslib.widget.IllustrationPreference
         android:key="flash_notifications_illustration"
         settings:searchable="false"
-        settings:lottie_rawRes="@drawable/flash_notifications_illustration"
-        settings:controller="com.android.settings.accessibility.FlashNotificationIllustrationPreferenceController" />
+        settings:lottie_rawRes="@drawable/flash_notifications_illustration" />
 
-    <PreferenceCategory
-        android:key="flash_notifications_category"
-        android:layout="@layout/settingslib_preference_category_no_title">
+    <com.android.settingslib.widget.UntitledPreferenceCategory
+        android:key="flash_notifications_category">
         <SwitchPreferenceCompat
             android:key="camera_flash_notification_preference"
             android:persistent="false"
@@ -43,7 +41,7 @@
             android:persistent="false"
             android:title="@string/screen_flash_notification_title"
             settings:controller="com.android.settings.accessibility.ScreenFlashNotificationPreferenceController" />
-    </PreferenceCategory>
+    </com.android.settingslib.widget.UntitledPreferenceCategory>
 
     <com.android.settingslib.widget.ButtonPreference
         android:key="flash_notifications_preview"

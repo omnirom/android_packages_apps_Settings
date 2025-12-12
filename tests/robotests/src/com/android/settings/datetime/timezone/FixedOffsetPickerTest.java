@@ -55,7 +55,7 @@ public class FixedOffsetPickerTest {
         TestFixedOffsetPicker picker = new TestFixedOffsetPicker();
         List<TimeZoneInfo> infos = picker.getAllTimeZoneInfos(new TimeZoneData(mFinder));
         List<String> tzIds = infos.stream().map(info -> info.getId()).collect(Collectors.toList());
-        assertThat(tzIds).contains("Etc/UTC");
+        assertThat(tzIds).contains("Etc/GMT+0");
         assertThat(tzIds).contains("Etc/GMT-14"); // Etc/GMT-14 means GMT+14:00
         assertThat(tzIds).contains("Etc/GMT+12"); // Etc/GMT+14 means GMT-12:00
     }
@@ -66,7 +66,7 @@ public class FixedOffsetPickerTest {
         BaseTimeZoneAdapter adapter = picker.createAdapter(new TimeZoneData(mFinder));
         assertThat(adapter.getItemCount()).isEqualTo(12 + 1 + 14); // 27 GMT offsets from -12 to +14
         AdapterItem utc = adapter.getDataItem(0);
-        assertThat(utc.getTitle().toString()).isEqualTo("Coordinated Universal Time");
+        assertThat(utc.getTitle().toString()).isEqualTo("Greenwich Mean Time");
         assertThat(utc.getSummary().toString()).isEqualTo("GMT+00:00");
         AdapterItem gmtMinus12 = adapter.getDataItem(1);
         assertThat(gmtMinus12.getTitle().toString()).isEqualTo("GMT-12:00");

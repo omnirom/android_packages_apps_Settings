@@ -363,7 +363,7 @@ class LocaleDragAndDropAdapter
         });
     }
 
-    public void notifyListChanged(LocaleStore.LocaleInfo localeInfo) {
+    public void notifyListChanged() {
         if (listChanged()) {
             mFeedItemList = new ArrayList<>(mCacheItemList);
             notifyDataSetChanged();

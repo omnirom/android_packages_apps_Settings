@@ -19,9 +19,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:settings="http://schemas.android.com/apk/res-auto"
     android:title="@string/module_license_title">
-    <PreferenceCategory
+    <com.android.settingslib.widget.UntitledPreferenceCategory
         android:key="module_licenses_category"
-        android:layout="@layout/preference_category_no_label"
         android:title="@string/summary_placeholder"
         settings:controller="com.android.settings.deviceinfo.legal.ModuleLicensesPreferenceController" />
 </PreferenceScreen>

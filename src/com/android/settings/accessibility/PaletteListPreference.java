@@ -41,6 +41,7 @@ import androidx.preference.PreferenceViewHolder;
 
 import com.android.settings.R;
 import com.android.settingslib.Utils;
+import com.android.settingslib.widget.GroupSectionDividerMixin;
 
 import com.google.common.primitives.Floats;
 import com.google.common.primitives.Ints;
@@ -56,7 +57,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 /** Preference that easier preview by matching name to color. */
-public final class PaletteListPreference extends Preference {
+public final class PaletteListPreference extends Preference implements GroupSectionDividerMixin {
 
     private final List<Integer> mGradientColors = new ArrayList<>();
     private final List<Float> mGradientOffsets = new ArrayList<>();

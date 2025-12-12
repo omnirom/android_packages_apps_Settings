@@ -17,7 +17,6 @@
 package com.android.settings.accessibility.shortcuts;
 
 import static com.android.internal.accessibility.common.ShortcutConstants.UserShortcutType.GESTURE;
-import static com.android.internal.accessibility.common.ShortcutConstants.UserShortcutType.SOFTWARE;
 import static com.android.settings.testutils.AccessibilityTestUtils.setupMockAccessibilityManager;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -27,10 +26,6 @@ import static org.mockito.Mockito.when;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.flag.junit.SetFlagsRule;
-import android.provider.Flags;
 import android.view.accessibility.AccessibilityManager;
 
 import androidx.preference.PreferenceManager;
@@ -43,7 +38,6 @@ import com.android.settings.testutils.shadow.SettingsShadowResources;
 import com.android.settingslib.utils.StringUtil;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -57,8 +51,6 @@ import java.util.Set;
 @Config(shadows = SettingsShadowResources.class)
 @RunWith(RobolectricTestRunner.class)
 public class GestureShortcutOptionControllerTest {
-    @Rule
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     private static final String PREF_KEY = "prefKey";
     private static final String TARGET =
             new ComponentName("FakePackage", "FakeClass").flattenToString();
@@ -92,24 +84,7 @@ public class GestureShortcutOptionControllerTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
     public void getSummary_touchExplorationDisabled_notInSuw_verifySummary() {
-        enableTouchExploration(false);
-        mController.setInSetupWizard(false);
-        String expected = StringUtil.getIcuPluralsString(
-                mContext,
-                /* count= */ 2,
-                R.string.accessibility_shortcut_edit_dialog_summary_gesture)
-                + "\n\n"
-                + mContext.getString(
-                R.string.accessibility_shortcut_edit_dialog_summary_software_floating);
-
-        assertThat(mController.getSummary().toString()).isEqualTo(expected);
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
-    public void getSummary_touchExplorationDisabled_notInSuw_gestureFlag_verifySummary() {
         enableTouchExploration(false);
         mController.setInSetupWizard(false);
         String expected = StringUtil.getIcuPluralsString(
@@ -133,24 +108,7 @@ public class GestureShortcutOptionControllerTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
     public void getSummary_touchExplorationEnabled_notInSuw_verifySummary() {
-        enableTouchExploration(true);
-        mController.setInSetupWizard(false);
-        String expected = StringUtil.getIcuPluralsString(
-                mContext,
-                /* count= */ 3,
-                R.string.accessibility_shortcut_edit_dialog_summary_gesture)
-                + "\n\n"
-                + mContext.getString(
-                R.string.accessibility_shortcut_edit_dialog_summary_software_floating);
-
-        assertThat(mController.getSummary().toString()).isEqualTo(expected);
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
-    public void getSummary_touchExplorationEnabled_notInSuw_gestureFlag_verifySummary() {
         enableTouchExploration(true);
         mController.setInSetupWizard(false);
         String expected = StringUtil.getIcuPluralsString(
@@ -174,8 +132,7 @@ public class GestureShortcutOptionControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
-    public void getSummary_standaloneGestureFlagOn_verifyNoCustomizeA11yButtonTest() {
+    public void getSummary_verifyNoCustomizeA11yButtonTest() {
         enableTouchExploration(true);
         String expected = StringUtil.getIcuPluralsString(
                 mContext,
@@ -188,16 +145,6 @@ public class GestureShortcutOptionControllerTest {
     @Test
     public void isShortcutAvailable_inSuw_returnFalse() {
         mController.setInSetupWizard(true);
-
-        assertThat(mController.isShortcutAvailable()).isFalse();
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
-    public void isShortcutAvailable_notInSuwUseGestureNavSystemUseFab_returnFalse() {
-        mController.setInSetupWizard(false);
-        AccessibilityTestUtils.setSoftwareShortcutMode(
-                mContext, /* gestureNavEnabled= */ true, /* floatingButtonEnabled= */ true);
 
         assertThat(mController.isShortcutAvailable()).isFalse();
     }
@@ -229,7 +176,6 @@ public class GestureShortcutOptionControllerTest {
         assertThat(mController.isShortcutAvailable()).isFalse();
     }
 
-    @EnableFlags(Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
     @Test
     public void isShortcutAvailable_floatingMenuEnabled_gestureNavEnabled_returnsTrue() {
         mController.setInSetupWizard(false);
@@ -239,16 +185,9 @@ public class GestureShortcutOptionControllerTest {
         assertThat(mController.isShortcutAvailable()).isTrue();
     }
 
-    @EnableFlags(Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
     @Test
     public void getShortcutType_gesture() {
         assertThat(mController.getShortcutType()).isEqualTo(GESTURE);
-    }
-
-    @DisableFlags(Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
-    @Test
-    public void getShortcutType_software() {
-        assertThat(mController.getShortcutType()).isEqualTo(SOFTWARE);
     }
 
     private void enableTouchExploration(boolean enable) {

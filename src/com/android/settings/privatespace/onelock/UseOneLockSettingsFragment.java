@@ -39,10 +39,7 @@ public class UseOneLockSettingsFragment extends DashboardFragment {
 
     @Override
     public void onCreate(Bundle icicle) {
-        if (android.os.Flags.allowPrivateProfile()
-                && android.multiuser.Flags.enablePrivateSpaceFeatures()) {
-            super.onCreate(icicle);
-        }
+        super.onCreate(icicle);
     }
 
     @Override

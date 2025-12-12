@@ -42,6 +42,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
+// LINT.IfChange
 @RunWith(RobolectricTestRunner.class)
 public class NotificationVibrationTogglePreferenceControllerTest {
 
@@ -160,3 +161,4 @@ public class NotificationVibrationTogglePreferenceControllerTest {
         return Settings.System.getInt(mContext.getContentResolver(), settingKey);
     }
 }
+// LINT.ThenChange(NotificationVibrationIntensitySwitchPreferenceTest.java)

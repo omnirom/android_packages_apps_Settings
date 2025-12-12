@@ -82,22 +82,22 @@ public class BluetoothDetailsRelatedToolsControllerTest extends BluetoothDetails
     }
 
     @Test
-    public void isAvailable_isHearingAidDevice_available() {
-        when(mCachedDevice.isHearingAidDevice()).thenReturn(true);
+    public void isAvailable_isHearingDevice_available() {
+        when(mCachedDevice.isHearingDevice()).thenReturn(true);
 
         assertThat(mController.isAvailable()).isTrue();
     }
 
     @Test
-    public void isAvailable_isNotHearingAidDevice_notAvailable() {
-        when(mCachedDevice.isHearingAidDevice()).thenReturn(false);
+    public void isAvailable_isNotHearingDevice_notAvailable() {
+        when(mCachedDevice.isHearingDevice()).thenReturn(false);
 
         assertThat(mController.isAvailable()).isFalse();
     }
 
     @Test
     public void displayPreference_oneRelatedToolsMatchA11yService_showOnePreference() {
-        when(mCachedDevice.isHearingAidDevice()).thenReturn(true);
+        when(mCachedDevice.isHearingDevice()).thenReturn(true);
         mShadowAccessibilityManager.setInstalledAccessibilityServiceList(
                 List.of(getMockAccessibilityServiceInfo(PACKAGE_NAME, CLASS_NAME)));
         when(mFeatureProvider.getRelatedTools()).thenReturn(
@@ -110,7 +110,7 @@ public class BluetoothDetailsRelatedToolsControllerTest extends BluetoothDetails
 
     @Test
     public void displayPreference_oneRelatedToolsNotMatchA11yService_showNoPreference() {
-        when(mCachedDevice.isHearingAidDevice()).thenReturn(true);
+        when(mCachedDevice.isHearingDevice()).thenReturn(true);
         mShadowAccessibilityManager.setInstalledAccessibilityServiceList(
                 List.of(getMockAccessibilityServiceInfo(PACKAGE_NAME, CLASS_NAME)));
         when(mFeatureProvider.getRelatedTools()).thenReturn(
@@ -123,7 +123,7 @@ public class BluetoothDetailsRelatedToolsControllerTest extends BluetoothDetails
 
     @Test
     public void displayPreference_noRelatedTools_showNoPreference() {
-        when(mCachedDevice.isHearingAidDevice()).thenReturn(true);
+        when(mCachedDevice.isHearingDevice()).thenReturn(true);
         mShadowAccessibilityManager.setInstalledAccessibilityServiceList(
                 List.of(getMockAccessibilityServiceInfo(PACKAGE_NAME, CLASS_NAME)));
         when(mFeatureProvider.getRelatedTools()).thenReturn(null);

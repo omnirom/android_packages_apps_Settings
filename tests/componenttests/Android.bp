@@ -17,6 +17,7 @@ android_test {
     privileged: true,
     srcs: [
         "src/**/*.java",
+        "src/**/*.kt",
     ],
 
     static_libs: [

@@ -18,6 +18,9 @@ package com.android.settings.widget;
 
 import static com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
 
+import android.annotation.NonNull;
+import android.annotation.Nullable;
+import android.app.admin.EnforcingAdmin;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -44,6 +47,9 @@ public class SettingsMainSwitchBar extends MainSwitchBar {
     }
 
     private EnforcedAdmin mEnforcedAdmin;
+    @Nullable
+    private EnforcingAdmin mEnforcingAdmin;
+    private String mRestriction;
     private boolean mDisabledByAdmin;
 
     private final MetricsFeatureProvider mMetricsFeatureProvider;
@@ -89,10 +95,37 @@ public class SettingsMainSwitchBar extends MainSwitchBar {
         }
     }
 
+    /**
+     * Sets the restriction that this preference is tracking.
+     */
+    public void setRestriction(@NonNull String restriction) {
+        mRestriction = restriction;
+    }
+
+    /**
+     * If admin is not null, disables the text and switch but keeps the view clickable (unless the
+     * switch is disabled for other reasons). Otherwise, calls setEnabled.
+     * Make sure that the restriction that this preference is tracking is set through
+     * {@link #setRestriction} to show the admin restriction correctly on UI.
+     */
+    public void setDisabledByAdmin(@Nullable EnforcingAdmin admin) {
+        mEnforcingAdmin = admin;
+        if (admin != null) {
+            super.setEnabled(true);
+            mDisabledByAdmin = true;
+            mTextView.setEnabled(false);
+            mSwitch.setEnabled(false);
+        } else {
+            mDisabledByAdmin = false;
+            mSwitch.setVisibility(View.VISIBLE);
+            setEnabled(isEnabled());
+        }
+    }
+
     @Override
     public void setEnabled(boolean enabled) {
         if (enabled && mDisabledByAdmin) {
-            setDisabledByAdmin(null);
+            setDisabledByAdmin((EnforcingAdmin) null);
             return;
         }
         super.setEnabled(enabled);
@@ -105,7 +138,13 @@ public class SettingsMainSwitchBar extends MainSwitchBar {
     @Override
     public boolean performClick() {
         if (mDisabledByAdmin) {
-            performRestrictedClick();
+            // Either one of mEnforcedAdmin or mEnforcingAdmin is not null for the switch to be
+            // disabled by admin.
+            if (mEnforcedAdmin != null) {
+                performRestrictedClick(mEnforcedAdmin);
+            } else if (mEnforcingAdmin != null) {
+                performRestrictedClick(mEnforcingAdmin, mRestriction);
+            }
             return true;
         }
 
@@ -146,8 +185,13 @@ public class SettingsMainSwitchBar extends MainSwitchBar {
         mMetricsFeatureProvider.changed(mMetricsCategory, "switch_bar", isChecked ? 1 : 0);
     }
 
-    private void performRestrictedClick() {
-        RestrictedLockUtils.sendShowAdminSupportDetailsIntent(getContext(), mEnforcedAdmin);
+    private void performRestrictedClick(EnforcedAdmin admin) {
+        RestrictedLockUtils.sendShowAdminSupportDetailsIntent(getContext(), admin);
+        mMetricsFeatureProvider.clicked(mMetricsCategory, "switch_bar|restricted");
+    }
+
+    private void performRestrictedClick(EnforcingAdmin admin, String restriction) {
+        RestrictedLockUtils.sendShowAdminSupportDetailsIntent(getContext(), admin, restriction);
         mMetricsFeatureProvider.clicked(mMetricsCategory, "switch_bar|restricted");
     }
 }

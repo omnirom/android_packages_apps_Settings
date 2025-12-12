@@ -34,7 +34,7 @@
             android:layout_gravity="center"
             android:importantForAccessibility="no"
             android:src="@drawable/ic_warning_24dp"
-            android:tint="@color/settingslib_materialColorOutline" />
+            android:tint="@color/settingslib_materialColorPrimary" />
 
         <TextView
             android:id="@+id/bluetooth_key_missing_title"

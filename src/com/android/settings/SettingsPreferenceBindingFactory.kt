@@ -20,11 +20,8 @@ import androidx.preference.Preference
 import com.android.settings.restriction.PreferenceRestrictionMixin
 import com.android.settings.restriction.getRestrictionEnforcedAdmin
 import com.android.settings.restriction.hasBaseUserRestriction
-import com.android.settings.widget.FooterPreferenceBinding
-import com.android.settings.widget.FooterPreferenceMetadata
 import com.android.settingslib.RestrictedPreferenceHelperProvider
 import com.android.settingslib.metadata.PreferenceHierarchyNode
-import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.preference.DefaultPreferenceBindingFactory
 import com.android.settingslib.preference.PreferenceBinding
 
@@ -52,11 +49,4 @@ class SettingsPreferenceBindingFactory : DefaultPreferenceBindingFactory() {
             }
         }
     }
-
-    override fun getPreferenceBinding(metadata: PreferenceMetadata) =
-        metadata as? PreferenceBinding
-            ?: when (metadata) {
-                is FooterPreferenceMetadata -> FooterPreferenceBinding.INSTANCE
-                else -> super.getPreferenceBinding(metadata)
-            }
 }

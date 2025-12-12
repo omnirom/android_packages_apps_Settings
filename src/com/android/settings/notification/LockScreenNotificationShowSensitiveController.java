@@ -168,11 +168,6 @@ public class LockScreenNotificationShowSensitiveController
             return CONDITIONALLY_UNAVAILABLE;
         }
 
-        // hide setting if no screen lock
-        if (!isLockScreenSecure()) {
-            return CONDITIONALLY_UNAVAILABLE;
-        }
-
         // For the work profile toggle
         if (KEY_SHOW_SENSITIVE_WORK_PROFILE.equals(getPreferenceKey())) {
             // hide work profile setting if no work profile
@@ -184,6 +179,11 @@ public class LockScreenNotificationShowSensitiveController
             if (mKeyguardManager.isDeviceLocked(mWorkProfileUserId)) {
                 return CONDITIONALLY_UNAVAILABLE;
             }
+        }
+
+        // hide setting if no screen lock
+        if (!isLockScreenSecure()) {
+            return DISABLED_DEPENDENT_SETTING;
         }
 
         return AVAILABLE;

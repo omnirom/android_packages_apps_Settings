@@ -34,7 +34,9 @@ import android.app.admin.ManagedSubscriptionsPolicy;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.FeatureFlagUtils;
+import android.view.View;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -46,8 +48,12 @@ import com.android.settings.testutils.shadow.ShadowLockPatternUtils;
 import com.android.settings.testutils.shadow.ShadowUserManager;
 import com.android.settings.testutils.shadow.ShadowUtils;
 
+import com.google.android.setupcompat.partnerconfig.PartnerConfigHelper;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -66,6 +72,9 @@ import org.robolectric.shadows.ShadowApplicationPackageManager;
         ShadowApplicationPackageManager.class
 })
 public class ConfirmCredentialTest {
+
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     private Context mContext;
     private ShadowApplicationPackageManager mShadowApplicationPackageManager;
@@ -90,6 +99,11 @@ public class ConfirmCredentialTest {
 
         FeatureFlagUtils.setEnabled(mContext,
                 FeatureFlagUtils.SETTINGS_REMOTE_DEVICE_CREDENTIAL_VALIDATION, true);
+    }
+
+    @After
+    public void tearDown() {
+        PartnerConfigHelper.applyGlifExpressiveBundle = null;
     }
 
     @Test
@@ -173,6 +187,43 @@ public class ConfirmCredentialTest {
                         KeyguardManager.PASSWORD, NO_MORE_REMAINING_ATTEMPTS));
 
         assertThat(activity.isFinishing()).isTrue();
+    }
+
+    @Test
+    public void normalCredentialConfirmation_noCancelButton() {
+        ConfirmDeviceCredentialBaseActivity activity =
+                buildConfirmDeviceCredentialBaseActivity(ConfirmLockPassword.class, new Intent());
+        ConfirmDeviceCredentialBaseFragment fragment =
+                getConfirmDeviceCredentialBaseFragment(activity);
+
+        assertThat(fragment.mFooterBarMixin.getButtonContainer()).isNull();
+        assertThat(fragment.mCancelButton.getVisibility()).isEqualTo(View.GONE);
+    }
+
+    @Test
+    public void remoteValidation_usesCancelButton() throws Exception {
+        ConfirmDeviceCredentialBaseActivity activity = buildConfirmDeviceCredentialBaseActivity(
+                ConfirmLockPassword.class, createRemoteLockscreenValidationIntent(
+                        KeyguardManager.PASSWORD, VALID_REMAINING_ATTEMPTS));
+        ConfirmDeviceCredentialBaseFragment fragment =
+                getConfirmDeviceCredentialBaseFragment(activity);
+
+        assertThat(fragment.mFooterBarMixin.getButtonContainer()).isNull();
+        assertThat(fragment.mCancelButton.getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
+    public void remoteValidation_expressiveTheme_usesFooterBarButton() throws Exception {
+        TestUtils.setGlifExpressiveInPartnerConfigHelper();
+
+        ConfirmDeviceCredentialBaseActivity activity = buildConfirmDeviceCredentialBaseActivity(
+                ConfirmLockPassword.class, createRemoteLockscreenValidationIntent(
+                        KeyguardManager.PASSWORD, VALID_REMAINING_ATTEMPTS));
+
+        ConfirmDeviceCredentialBaseFragment fragment =
+                getConfirmDeviceCredentialBaseFragment(activity);
+        assertThat(fragment.mFooterBarMixin.getSecondaryButton()).isNotNull();
+        assertThat(fragment.mCancelButton.getVisibility()).isEqualTo(View.GONE);
     }
 
     @Test

@@ -20,7 +20,9 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Answers.RETURNS_DEEP_STUBS;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
+import android.app.Application;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,6 +32,7 @@ import android.os.UserManager;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.testutils.shadow.ShadowContentResolver;
 import com.android.settings.users.AutoSyncDataPreferenceController.ConfirmAutoSyncChangeFragment;
@@ -66,7 +69,8 @@ public class AutoSyncDataPreferenceControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        ShadowApplication shadowContext = ShadowApplication.getInstance();
+        ShadowApplication shadowContext =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         shadowContext.setSystemService(Context.USER_SERVICE, mUserManager);
         mContext = RuntimeEnvironment.application;
         mController = new AutoSyncDataPreferenceController(mContext, mFragment);

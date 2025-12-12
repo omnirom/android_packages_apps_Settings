@@ -49,6 +49,10 @@ import android.os.UserHandle;
 import android.service.remotelockscreenvalidation.IRemoteLockscreenValidationCallback;
 import android.service.remotelockscreenvalidation.RemoteLockscreenValidationClient;
 import android.util.FeatureFlagUtils;
+import android.view.InputDevice;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -60,6 +64,9 @@ import com.android.settings.testutils.shadow.ShadowDevicePolicyManager;
 import com.android.settings.testutils.shadow.ShadowLockPatternUtils;
 import com.android.settings.testutils.shadow.ShadowUserManager;
 import com.android.settings.testutils.shadow.ShadowUtils;
+
+import com.google.android.setupcompat.PartnerCustomizationLayout;
+import com.google.android.setupcompat.template.FooterBarMixin;
 
 import org.junit.After;
 import org.junit.Before;
@@ -96,8 +103,8 @@ public class ConfirmLockPatternTest {
     @Captor
     ArgumentCaptor<IRemoteLockscreenValidationCallback> mCallbackCaptor;
 
-    private Context mContext;
-    private LockPatternUtils mLockPatternUtils;
+    protected Context mContext;
+    protected LockPatternUtils mLockPatternUtils;
 
     @Before
     public void setUp() {
@@ -124,6 +131,8 @@ public class ConfirmLockPatternTest {
 
         FeatureFlagUtils.setEnabled(mContext,
                 FeatureFlagUtils.SETTINGS_REMOTE_DEVICE_CREDENTIAL_VALIDATION, true);
+
+        ConfirmLockPatternFragment.setPatternInputClickSupportedForTesting(true);
     }
 
     @After
@@ -315,9 +324,69 @@ public class ConfirmLockPatternTest {
         assertThat(isEnabled).isEqualTo(COMPONENT_ENABLED_STATE_ENABLED);
     }
 
+    @Test
+    public void nextButton_shouldBeVisibleAndProceed() throws Exception {
+        ConfirmDeviceCredentialBaseActivity activity =
+                buildConfirmDeviceCredentialBaseActivity(
+                        ConfirmLockPattern.class,
+                        createRemoteLockscreenValidationIntent(
+                                KeyguardManager.PATTERN, VALID_REMAINING_ATTEMPTS));
+        ConfirmDeviceCredentialBaseFragment fragment =
+                getConfirmDeviceCredentialBaseFragment(activity);
+        ReflectionHelpers.setField(fragment,
+                "mCredentialCheckResultTracker", mCredentialCheckResultTracker);
+        fragment.mRemoteLockscreenValidationClient = mRemoteLockscreenValidationClient;
+
+        LockPatternView lockPatternView = activity.findViewById(R.id.lockPattern);
+        mouseClick(lockPatternView, 0, 0);
+        triggerOnPatternDetected(lockPatternView);
+
+        final PartnerCustomizationLayout layout = activity.findViewById(R.id.setup_wizard_layout);
+        final Button nextButton =
+                layout.getMixin(FooterBarMixin.class).getPrimaryButtonView();
+        assertThat(nextButton).isNotNull();
+        assertThat(nextButton.getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(nextButton.getText().toString()).isEqualTo(
+                mContext.getString(R.string.next_label));
+
+        nextButton.performClick();
+
+        verify(mRemoteLockscreenValidationClient)
+                .validateLockscreenGuess(any(), mCallbackCaptor.capture());
+        mCallbackCaptor.getValue().onSuccess(GUESS_VALID_RESULT);
+    }
+
+    @Test
+    public void clearButton_shouldBeVisibleAndClearPattern() throws Exception {
+        ConfirmLockPattern activity = Robolectric.buildActivity(
+                ConfirmLockPattern.class, new Intent()).setup().get();
+        LockPatternView lockPatternView = activity.findViewById(R.id.lockPattern);
+        final PartnerCustomizationLayout layout = activity.findViewById(R.id.setup_wizard_layout);
+        final Button clearButton =
+                layout.getMixin(FooterBarMixin.class).getSecondaryButtonView();
+        assertThat(clearButton).isNotNull();
+        assertThat(clearButton.getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(clearButton.getText().toString()).isEqualTo(
+                mContext.getString(R.string.lockpattern_retry_button_text));
+
+        List<LockPatternView.Cell> pattern = List.of(LockPatternView.Cell.of(0, 0));
+        lockPatternView.setPattern(LockPatternView.DisplayMode.Correct, pattern);
+        clearButton.performClick();
+        assertThat(lockPatternView.isEmpty()).isTrue();
+    }
+
     private void triggerOnPatternDetected(LockPatternView lockPatternView) {
         List<LockPatternView.Cell> pattern = List.of(LockPatternView.Cell.of(0, 0));
         lockPatternView.setPattern(LockPatternView.DisplayMode.Correct, pattern);
         ReflectionHelpers.callInstanceMethod(lockPatternView, "notifyPatternDetected");
+    }
+
+    private void mouseClick(View view, float x, float y) {
+        MotionEvent event = MotionEvent.obtain(0, 0, MotionEvent.ACTION_DOWN, x, y, 1);
+        event.setSource(InputDevice.SOURCE_MOUSE);
+        view.onTouchEvent(event);
+        event = MotionEvent.obtain(0, 0, MotionEvent.ACTION_UP, x, y, 1);
+        event.setSource(InputDevice.SOURCE_MOUSE);
+        view.onTouchEvent(event);
     }
 }

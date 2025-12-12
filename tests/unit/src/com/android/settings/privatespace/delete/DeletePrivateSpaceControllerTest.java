@@ -17,19 +17,16 @@
 package com.android.settings.privatespace.delete;
 
 import static com.android.settings.core.BasePreferenceController.AVAILABLE;
-import static com.android.settings.core.BasePreferenceController.UNSUPPORTED_ON_DEVICE;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
-import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.preference.Preference;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -38,7 +35,6 @@ import org.mockito.MockitoAnnotations;
 @RunWith(AndroidJUnit4.class)
 public class DeletePrivateSpaceControllerTest {
     @Mock private Context mContext;
-    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     private Preference mPreference;
     private DeletePrivateSpaceController mDeletePrivateSpaceController;
 
@@ -55,22 +51,9 @@ public class DeletePrivateSpaceControllerTest {
         mDeletePrivateSpaceController = new DeletePrivateSpaceController(mContext, preferenceKey);
     }
 
-    /** Tests that the controller is available when private space flag is enabled. */
+    /** Tests that the controller is available */
     @Test
-    public void getAvailabilityStatus_whenPrivateFlagEnabled_returnsAvailable() {
-        mSetFlagsRule.enableFlags(android.os.Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-
+    public void getAvailabilityStatus_returnsAvailable() {
         assertThat(mDeletePrivateSpaceController.getAvailabilityStatus()).isEqualTo(AVAILABLE);
-    }
-
-    /** Tests that the controller is not available when private space flag is disabled. */
-    @Test
-    public void getAvailabilityStatus_whenPrivateFlagDisabled_returnsUnsupportedOnDevice() {
-        mSetFlagsRule.disableFlags(android.os.Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-
-        assertThat(mDeletePrivateSpaceController.getAvailabilityStatus())
-                .isEqualTo(UNSUPPORTED_ON_DEVICE);
     }
 }

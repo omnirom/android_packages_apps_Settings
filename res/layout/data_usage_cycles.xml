@@ -24,7 +24,8 @@
         android:id="@+id/cycles_spinner"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:dropDownVerticalOffset="@dimen/min_tap_target_size"/>
 
 </RelativeLayout>
 

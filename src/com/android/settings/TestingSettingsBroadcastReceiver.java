@@ -20,7 +20,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Process;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.telephony.TelephonyManager;
@@ -38,12 +37,11 @@ public class TestingSettingsBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent != null && intent.getAction() != null
-                && intent.getAction().equals(TelephonyManager.ACTION_SECRET_CODE)
-                && !isDisabled(context)) {
+            && intent.getAction().equals(TelephonyManager.ACTION_SECRET_CODE)
+            && !isDisabled(context)) {
             UserManager userManager = context.getSystemService(UserManager.class);
-            UserHandle currentUser = Process.myUserHandle();
             if (userManager != null) {
-                if (userManager.getUserInfo(currentUser.hashCode()).isMain()) {
+                if (userManager.getUserInfo(context.getUserId()).isMain()) {
                     Intent i = new Intent(Intent.ACTION_MAIN);
                     i.setClass(context, TestingSettingsActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -51,6 +49,8 @@ public class TestingSettingsBroadcastReceiver extends BroadcastReceiver {
                 } else {
                     Log.d(TAG, "Not main user, not starting TestingSettingsActivity.");
                 }
+            } else {
+                Log.w(TAG, "UserManager is null, not starting TestingSettingsActivity");
             }
         }
     }

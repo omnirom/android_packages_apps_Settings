@@ -570,6 +570,15 @@ public class WifiHotspotRepository {
     }
 
     /**
+     * Return whether Wi-Fi Hotspot is restarting or not.
+     *
+     * @return {@code true} if Wi-Fi Hotspot is restarting
+     */
+    public boolean isRestarting() {
+        return mIsRestarting;
+    }
+
+    /**
      * Gets Restarting LiveData
      */
     public LiveData<Boolean> getRestarting() {
@@ -588,8 +597,10 @@ public class WifiHotspotRepository {
         }
     }
 
-    @VisibleForTesting
-    void restartTetheringIfNeeded() {
+    /**
+     * Restarts the Tethering Service if it's enabled.
+     */
+    public void restartTetheringIfNeeded() {
         if (mWifiApState != WIFI_AP_STATE_ENABLED) {
             return;
         }
@@ -610,7 +621,7 @@ public class WifiHotspotRepository {
     }
 
     private void stopTethering() {
-        log("startTethering()");
+        log("stopTethering()");
         mTetheringManager.stopTethering(TETHERING_WIFI);
     }
 

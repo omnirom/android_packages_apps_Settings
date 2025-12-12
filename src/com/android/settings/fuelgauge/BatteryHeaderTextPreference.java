@@ -28,9 +28,11 @@ import androidx.preference.PreferenceViewHolder;
 
 import com.android.settings.R;
 import com.android.settingslib.widget.GroupSectionDividerMixin;
+import com.android.settingslib.widget.OnScreenWidgetMixin;
 
 /** A preference for battery header text. */
-public class BatteryHeaderTextPreference extends Preference implements GroupSectionDividerMixin {
+public class BatteryHeaderTextPreference extends Preference implements GroupSectionDividerMixin,
+        OnScreenWidgetMixin {
     private static final String TAG = "BatteryHeaderTextPreference";
 
     @Nullable private CharSequence mText;

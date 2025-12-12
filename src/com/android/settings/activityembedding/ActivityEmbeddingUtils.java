@@ -16,6 +16,8 @@
 
 package com.android.settings.activityembedding;
 
+import static android.window.DesktopExperienceFlags.ENABLE_ACTIVITY_EMBEDDING_SUPPORT_FOR_CONNECTED_DISPLAYS;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.SystemProperties;
@@ -28,7 +30,6 @@ import androidx.window.embedding.ActivityEmbeddingController;
 import androidx.window.embedding.SplitController;
 
 import com.android.settings.R;
-import com.android.window.flags.Flags;
 
 import com.google.android.setupcompat.util.WizardManagerHelper;
 
@@ -50,7 +51,7 @@ public class ActivityEmbeddingUtils {
      */
     private static final boolean SHOULD_ENABLE_LARGE_SCREEN_OPTIMIZATION =
             SystemProperties.getBoolean("persist.settings.large_screen_opt.enabled", false)
-                    || (Flags.activityEmbeddingSupportForConnectedDisplays()
+                    || (ENABLE_ACTIVITY_EMBEDDING_SUPPORT_FOR_CONNECTED_DISPLAYS.isTrue()
                     && SystemProperties.getBoolean(
                             "persist.settings.large_screen_opt_for_dp.enabled", false));
 

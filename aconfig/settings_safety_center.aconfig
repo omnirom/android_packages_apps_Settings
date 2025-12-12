@@ -1,0 +1,9 @@
+package: "com.android.settings.flags"
+container: "system_ext"
+
+flag {
+  name: "enable_safety_center_new_ui"
+  namespace: "safety_center"
+  description: "Enables the new Safety Center UI in Settings"
+  bug: "425902698"
+}

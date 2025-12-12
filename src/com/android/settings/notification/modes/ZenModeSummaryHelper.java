@@ -66,12 +66,15 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
-class ZenModeSummaryHelper {
+/**
+ *  Provides various summary of the preference in each mode screen.
+ */
+public class ZenModeSummaryHelper {
 
     private final Context mContext;
     private final ZenHelperBackend mBackend;
 
-    ZenModeSummaryHelper(Context context, ZenHelperBackend backend) {
+    public ZenModeSummaryHelper(@NonNull Context context, @NonNull ZenHelperBackend backend) {
         mContext = context;
         mBackend = backend;
     }
@@ -205,7 +208,12 @@ class ZenModeSummaryHelper {
         return true;
     }
 
-    String getDisplayEffectsSummary(ZenMode zenMode) {
+    /**
+     * @param zenMode one of the {@code Global#ZEN_MODE_x} values
+     * @return the summary of the display settings by given mode
+     */
+    @Nullable
+    public String getDisplayEffectsSummary(@NonNull ZenMode zenMode) {
         boolean isFirst = true;
         List<String> enabledEffects = new ArrayList<>();
         if (!zenMode.getPolicy().shouldShowAllVisualEffects()

@@ -19,16 +19,56 @@ package com.android.settings.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import com.android.settings.SettingsActivity
+import android.os.Bundle
+import com.android.settings.SettingsActivity.EXTRA_FRAGMENT_ARG_KEY
+import com.android.settingslib.metadata.EXTRA_BINDING_SCREEN_ARGS
 
 /**
- * Returns the [Intent] to start given settings activity and locate the preference.
+ * Returns the [Intent] to start given settings activity and highlight a specific preference.
  *
  * @param context context
  * @param activityClass activity to start
  * @param key preference key to locate
  */
 fun makeLaunchIntent(context: Context, activityClass: Class<out Activity>, key: String?) =
+    createIntent(context, activityClass).apply { highlightPreference(key) }
+
+/**
+ * Returns the [Intent] to start given settings activity that is parameterized screen and then
+ * highlight a specific preference.
+ *
+ * @param context context
+ * @param activityClass activity to start
+ * @param arguments arguments of the parameterized screen
+ * @param key preference key to locate
+ */
+fun makeLaunchIntent(
+    context: Context,
+    activityClass: Class<out Activity>,
+    arguments: Bundle,
+    key: String?,
+) = createIntent(context, activityClass).apply { highlightPreference(arguments, key) }
+
+private fun createIntent(context: Context, activityClass: Class<out Activity>) =
     Intent(context, activityClass).apply {
-        if (key != null) putExtra(SettingsActivity.EXTRA_FRAGMENT_ARG_KEY, key)
+        // MUST provide an action even no action is specified in AndroidManifest.xml, otherwise
+        // SettingsIntelligence starts intent with com.android.settings.SEARCH_RESULT_TRAMPOLINE
+        // action instead of given activity.
+        action = Intent.ACTION_MAIN
     }
+
+/**
+ * Sets the intent extra to highlight given preference on a parameterized screen.
+ *
+ * @param arguments arguments of the parameterized screen
+ * @param key preference to highlight
+ */
+fun Intent.highlightPreference(arguments: Bundle, key: String?) {
+    putExtra(EXTRA_BINDING_SCREEN_ARGS, arguments)
+    if (key != null) putExtra(EXTRA_FRAGMENT_ARG_KEY, key)
+}
+
+/** Sets the intent extra to highlight given preference. */
+fun Intent.highlightPreference(key: String?) {
+    if (key != null) putExtra(EXTRA_FRAGMENT_ARG_KEY, key)
+}

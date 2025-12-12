@@ -315,6 +315,10 @@
     <item msgid="7397961711906421599">"ปานกลาง"</item>
     <item msgid="4079132024502041928">"ยาว"</item>
   </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"DHCP"</item>
+    <item msgid="4425163520864432692">"คงที่"</item>
+  </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"ค่าเริ่มต้น"</item>
     <item msgid="4234707448428002595">"Sans Serif"</item>
@@ -359,10 +363,6 @@
     <item msgid="6485511780196327736">"ลอยเหนือแอปอื่นๆ"</item>
     <item msgid="3605616699204153590">"แถบนำทาง"</item>
   </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"ปุ่ม"</item>
-    <item msgid="6922258575853746220">"ท่าทางสัมผัส"</item>
-  </string-array>
   <string-array name="accessibility_button_size_selector_titles">
     <item msgid="7482952318152486459">"เล็ก"</item>
     <item msgid="1666628329913333563">"ใหญ่"</item>
@@ -392,12 +392,12 @@
     <item msgid="7582717864806562725">"?"</item>
   </string-array>
   <string-array name="color_picker">
-    <item msgid="7216413848731287689">"สีน้ำเงินเขียว"</item>
+    <item msgid="7216413848731287689">"น้ำเงินเขียว"</item>
     <item msgid="5661027589207588703">"น้ำเงิน"</item>
-    <item msgid="1219738214736244749">"สีเขียว"</item>
+    <item msgid="1219738214736244749">"เขียว"</item>
     <item msgid="6331809026622602308">"ม่วง"</item>
     <item msgid="6390546163902724700">"ชมพู"</item>
-    <item msgid="6500473130620545980">"สีส้ม"</item>
+    <item msgid="6500473130620545980">"ส้ม"</item>
   </string-array>
   <string-array name="automatic_storage_management_days">
     <item msgid="8896644025110620477">"เกิน 30 วัน"</item>
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"นาฬิกา"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"ไม่มี"</item>
+    <item msgid="321837941231023175">"หน้าแรก"</item>
+    <item msgid="953234843613969792">"แอปล่าสุด"</item>
+    <item msgid="1713942773283586136">"การแจ้งเตือน"</item>
+    <item msgid="5687603742365489342">"การตั้งค่าด่วน"</item>
+    <item msgid="5454862951059393431">"หน้าจอล็อก"</item>
   </string-array>
 </resources>

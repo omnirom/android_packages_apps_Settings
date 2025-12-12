@@ -15,7 +15,12 @@
  */
 package com.android.settings.fuelgauge.batterytip.tips;
 
+import static com.android.settingslib.widget.BannerMessagePreference.AttentionLevel.NORMAL;
+
 import static com.google.common.truth.Truth.assertThat;
+
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import android.content.Context;
 import android.os.Parcel;
@@ -29,6 +34,7 @@ import com.android.settings.R;
 import com.android.settings.widget.TipCardPreference;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 import com.android.settingslib.testutils.DrawableTestHelper;
+import com.android.settingslib.widget.BannerMessagePreference;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -86,15 +92,24 @@ public class BatteryTipTest {
     }
 
     @Test
-    public void updatePreference_resetLayoutState() {
+    public void castToBannerMassagePreferenceSafely_tipCardPref_castToNull() {
         var cardPreference = new TipCardPreference(mContext);
-        cardPreference.setPrimaryButtonVisibility(true);
-        cardPreference.setSecondaryButtonVisibility(true);
+        assertThat(mBatteryTip.castToBannerMassagePreferenceSafely(cardPreference)).isNull();
+    }
+
+    @Test
+    public void castToBannerMassagePreferenceSafely_bannerMessagePref_castSuccess() {
+        var cardPreference = new BannerMessagePreference(mContext);
+        assertThat(mBatteryTip.castToBannerMassagePreferenceSafely(cardPreference)).isNotNull();
+    }
+
+    @Test
+    public void updatePreference_bannerMessagePref_setAttentionLevel() {
+        var cardPreference = spy(new BannerMessagePreference(mContext));
 
         mBatteryTip.updatePreference(cardPreference);
 
-        assertThat(cardPreference.getPrimaryButtonVisibility()).isFalse();
-        assertThat(cardPreference.getSecondaryButtonVisibility()).isFalse();
+        verify(cardPreference).setAttentionLevel(NORMAL);
     }
 
     @Test

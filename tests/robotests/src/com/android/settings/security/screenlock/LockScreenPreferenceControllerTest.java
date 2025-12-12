@@ -28,13 +28,16 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.UserManager;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.internal.widget.LockPatternUtils;
 import com.android.settings.testutils.FakeFeatureFactory;
@@ -47,7 +50,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.shadows.ShadowApplication;
 
 @RunWith(RobolectricTestRunner.class)
 public class LockScreenPreferenceControllerTest {
@@ -72,7 +74,8 @@ public class LockScreenPreferenceControllerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mContext = RuntimeEnvironment.application;
-        ShadowApplication.getInstance().setSystemService(Context.USER_SERVICE, mUm);
+        shadowOf((Application) ApplicationProvider.getApplicationContext())
+                .setSystemService(Context.USER_SERVICE, mUm);
 
         mFeatureFactory = FakeFeatureFactory.setupForTest();
         when(mFeatureFactory.securityFeatureProvider.getLockPatternUtils(mContext))

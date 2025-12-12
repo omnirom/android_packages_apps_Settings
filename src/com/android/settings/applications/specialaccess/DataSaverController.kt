@@ -41,10 +41,11 @@ class DataSaverController(context: Context, key: String) : BasePreferenceControl
     private lateinit var preference: Preference
 
     @AvailabilityStatus
-    override fun getAvailabilityStatus(): Int = when {
-        mContext.resources.getBoolean(R.bool.config_show_data_saver) -> AVAILABLE
-        else -> UNSUPPORTED_ON_DEVICE
-    }
+    override fun getAvailabilityStatus(): Int =
+        when {
+            mContext.resources.getBoolean(R.bool.config_show_data_saver) -> AVAILABLE
+            else -> UNSUPPORTED_ON_DEVICE
+        }
 
     override fun displayPreference(screen: PreferenceScreen) {
         super.displayPreference(screen)
@@ -63,12 +64,12 @@ class DataSaverController(context: Context, key: String) : BasePreferenceControl
         @VisibleForTesting
         suspend fun getUnrestrictedSummary(
             context: Context,
-            appListRepository: AppListRepository =
-                AppListRepositoryImpl(context.applicationContext),
-        ) = context.formatString(
-            R.string.data_saver_unrestricted_summary,
-            "count" to getAllowCount(context.applicationContext, appListRepository),
-        )
+            appListRepository: AppListRepository = AppListRepositoryImpl(context.applicationContext),
+        ) =
+            context.formatString(
+                R.string.data_saver_unrestricted_summary,
+                "count" to getAllowCount(context.applicationContext, appListRepository),
+            )
 
         private suspend fun getAllowCount(context: Context, appListRepository: AppListRepository) =
             withContext(Dispatchers.IO) {
@@ -79,8 +80,9 @@ class DataSaverController(context: Context, key: String) : BasePreferenceControl
                             isSystemApp = false,
                         )
                     }
-                    val uidsAllowed = NetworkPolicyManager.from(context)
-                        .getUidsWithPolicy(NetworkPolicyManager.POLICY_ALLOW_METERED_BACKGROUND)
+                    val uidsAllowed =
+                        NetworkPolicyManager.from(context)
+                            .getUidsWithPolicy(NetworkPolicyManager.POLICY_ALLOW_METERED_BACKGROUND)
                     appsDeferred.await().count { app -> app.uid in uidsAllowed }
                 }
             }

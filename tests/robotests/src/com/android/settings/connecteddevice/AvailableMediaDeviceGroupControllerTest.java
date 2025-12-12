@@ -42,6 +42,8 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Looper;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.Pair;
 
@@ -218,13 +220,15 @@ public class AvailableMediaDeviceGroupControllerTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void testRegister_audioSharingFlagOff() {
-        mSetFlagsRule.disableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         setUpBroadcast();
+        mAudioManager.setMode(AudioManager.MODE_RINGTONE);
         // register the callback in onStart()
         mAvailableMediaDeviceGroupController.onStart(mLifecycleOwner);
         shadowOf(Looper.getMainLooper()).idle();
 
+        verify(mAvailableMediaBluetoothDeviceUpdater).setIsOngoingCall(true);
         verify(mAvailableMediaBluetoothDeviceUpdater).registerCallback();
         verify(mEventManager).registerCallback(any(BluetoothCallback.class));
         verify(mAvailableMediaBluetoothDeviceUpdater).refreshPreference();
@@ -238,13 +242,15 @@ public class AvailableMediaDeviceGroupControllerTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void testRegister_audioSharingFlagOn() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         setUpBroadcast();
+        mAudioManager.setMode(AudioManager.MODE_NORMAL);
         // register the callback in onStart()
         mAvailableMediaDeviceGroupController.onStart(mLifecycleOwner);
         shadowOf(Looper.getMainLooper()).idle();
 
+        verify(mAvailableMediaBluetoothDeviceUpdater).setIsOngoingCall(false);
         verify(mAvailableMediaBluetoothDeviceUpdater).registerCallback();
         verify(mEventManager).registerCallback(any(BluetoothCallback.class));
         verify(mAvailableMediaBluetoothDeviceUpdater).refreshPreference();
@@ -258,8 +264,8 @@ public class AvailableMediaDeviceGroupControllerTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void testUnregister_audioSharingFlagOff() {
-        mSetFlagsRule.disableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         setUpBroadcast();
         // unregister the callback in onStop()
         mAvailableMediaDeviceGroupController.onStop(mLifecycleOwner);
@@ -273,8 +279,8 @@ public class AvailableMediaDeviceGroupControllerTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void testUnregister_audioSharingFlagOn() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         setUpBroadcast();
         // unregister the callback in onStop()
         mAvailableMediaDeviceGroupController.onStop(mLifecycleOwner);
@@ -303,34 +309,38 @@ public class AvailableMediaDeviceGroupControllerTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void setTitle_inCallState_showCallStateTitle() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         setUpBroadcast();
         mAudioManager.setMode(AudioManager.MODE_IN_CALL);
         when(mBroadcast.isEnabled(null)).thenReturn(true);
         mAvailableMediaDeviceGroupController.onAudioModeChanged();
         shadowOf(Looper.getMainLooper()).idle();
 
+        verify(mAvailableMediaBluetoothDeviceUpdater).setIsOngoingCall(true);
+        verify(mAvailableMediaBluetoothDeviceUpdater).forceUpdate();
         assertThat(mPreferenceGroup.getTitle().toString())
                 .isEqualTo(mContext.getString(R.string.connected_device_call_device_title));
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void setTitle_notInCallState_notInAudioSharing_showMediaStateTitle() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         setUpBroadcast();
         mAudioManager.setMode(AudioManager.MODE_NORMAL);
         when(mBroadcast.isEnabled(null)).thenReturn(false);
         mAvailableMediaDeviceGroupController.onAudioModeChanged();
         shadowOf(Looper.getMainLooper()).idle();
 
+        verify(mAvailableMediaBluetoothDeviceUpdater).setIsOngoingCall(false);
+        verify(mAvailableMediaBluetoothDeviceUpdater).forceUpdate();
         assertThat(mPreferenceGroup.getTitle().toString())
                 .isEqualTo(mContext.getString(R.string.connected_device_media_device_title));
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void setTitle_notInCallState_audioSharingFlagOff_showMediaStateTitle() {
-        mSetFlagsRule.disableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         setUpBroadcast();
         mAudioManager.setMode(AudioManager.MODE_NORMAL);
         when(mBroadcast.isEnabled(null)).thenReturn(true);
@@ -342,8 +352,8 @@ public class AvailableMediaDeviceGroupControllerTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void setTitle_notInCallState_inAudioSharing_showAudioSharingMediaStateTitle() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         setUpBroadcast();
         mAudioManager.setMode(AudioManager.MODE_NORMAL);
         when(mBroadcast.isEnabled(null)).thenReturn(true);
@@ -387,8 +397,8 @@ public class AvailableMediaDeviceGroupControllerTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onDeviceClick_audioSharingOff_setActive() {
-        mSetFlagsRule.disableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         when(mCachedBluetoothDevice.getDevice()).thenReturn(mDevice);
         Pair<Drawable, String> pair = new Pair<>(mDrawable, TEST_DEVICE_NAME);
         when(mCachedBluetoothDevice.getDrawableWithDescription()).thenReturn(pair);
@@ -403,8 +413,8 @@ public class AvailableMediaDeviceGroupControllerTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onDeviceClick_audioSharingOn_dialogHandler() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         setUpBroadcast();
         when(mCachedBluetoothDevice.getDevice()).thenReturn(mDevice);
         Pair<Drawable, String> pair = new Pair<>(mDrawable, TEST_DEVICE_NAME);

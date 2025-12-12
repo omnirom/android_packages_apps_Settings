@@ -17,12 +17,16 @@
 package com.android.settings.dream;
 
 import static android.service.dreams.Flags.allowDreamWhenPostured;
+import static android.service.dreams.Flags.dreamsV2;
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
+import androidx.preference.PreferenceScreen;
+
 import com.android.settings.R;
+import com.android.settings.flags.Flags;
 import com.android.settings.widget.RadioButtonPickerFragment;
 import com.android.settingslib.dream.DreamBackend;
 import com.android.settingslib.widget.CandidateInfo;
@@ -33,16 +37,37 @@ import java.util.List;
 public class WhenToDreamPicker extends RadioButtonPickerFragment {
 
     private static final String TAG = "WhenToDreamPicker";
+
+    private Context mContext;
     private DreamBackend mBackend;
     private boolean mDreamsSupportedOnBattery;
+    private boolean mShowRestrictToWirelessCharging;
+    private RadioButtonPickerExtraSwitchController mRestrictToWirelessChargingController;
+
+    private final RadioButtonPickerExtraSwitchController.PreferenceAccessor
+            mWirelessChargingPreferenceAccessor =
+            new RadioButtonPickerExtraSwitchController.PreferenceAccessor() {
+                @Override
+                public void setValue(boolean value) {
+                    mBackend.setRestrictToWirelessCharging(value);
+                }
+
+                @Override
+                public boolean getValue() {
+                    return mBackend.getRestrictToWirelessCharging();
+                }
+            };
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
+        mContext = context;
         mBackend = DreamBackend.getInstance(context);
         mDreamsSupportedOnBattery = getResources().getBoolean(
                 com.android.internal.R.bool.config_dreamsEnabledOnBattery);
+        mShowRestrictToWirelessCharging =
+                getResources().getBoolean(R.bool.config_show_restrict_to_wireless_charging);
     }
 
     @Override
@@ -66,9 +91,11 @@ public class WhenToDreamPicker extends RadioButtonPickerFragment {
             throw new IllegalArgumentException("Entries and values must be of the same length.");
         }
 
+        final boolean supportDreamWhilePostured = allowDreamWhenPostured()
+                && getResources().getBoolean(R.bool.config_posturing_supported);
         for (int i = 0; i < entries.length; i++) {
             final String key = values[i];
-            if (DreamSettings.WHILE_POSTURED_ONLY.equals(key) && !allowDreamWhenPostured()) {
+            if (DreamSettings.WHILE_POSTURED_ONLY.equals(key) && !supportDreamWhilePostured) {
                 continue;
             }
             candidates.add(new WhenToDreamCandidateInfo(entries[i], key));
@@ -77,7 +104,27 @@ public class WhenToDreamPicker extends RadioButtonPickerFragment {
         return candidates;
     }
 
+    @Override
+    protected void addStaticPreferences(PreferenceScreen screen) {
+        if (!dreamsV2()) {
+            return;
+        }
+
+        if (mShowRestrictToWirelessCharging && mRestrictToWirelessChargingController == null) {
+            mRestrictToWirelessChargingController =
+                    new RadioButtonPickerExtraSwitchController(
+                            mContext,
+                            R.string.screensaver_restrict_to_wireless_charging_title,
+                            mWirelessChargingPreferenceAccessor);
+            mRestrictToWirelessChargingController.addToScreen(screen);
+        }
+    }
+
     private String[] entries() {
+        if (Flags.resolveMissingWhenToDream()) {
+            return DreamUtils.getWhenToDreamEntries(getResources());
+        }
+
         if (mDreamsSupportedOnBattery) {
             return getResources().getStringArray(R.array.when_to_start_screensaver_entries);
         }
@@ -85,6 +132,10 @@ public class WhenToDreamPicker extends RadioButtonPickerFragment {
     }
 
     private String[] keys() {
+        if (Flags.resolveMissingWhenToDream()) {
+            return DreamUtils.getWhenToDreamKeys(getResources());
+        }
+
         if (mDreamsSupportedOnBattery) {
             return getResources().getStringArray(R.array.when_to_start_screensaver_values);
         }
@@ -106,7 +157,9 @@ public class WhenToDreamPicker extends RadioButtonPickerFragment {
     protected void onSelectionPerformed(boolean success) {
         super.onSelectionPerformed(success);
 
-        getActivity().finish();
+        if (!dreamsV2()) {
+            getActivity().finish();
+        }
     }
 
     private final class WhenToDreamCandidateInfo extends CandidateInfo {

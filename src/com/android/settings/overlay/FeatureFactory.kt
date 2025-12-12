@@ -28,6 +28,7 @@ import com.android.settings.bluetooth.BluetoothFeatureProvider
 import com.android.settings.connecteddevice.audiosharing.AudioSharingFeatureProvider
 import com.android.settings.connecteddevice.fastpair.FastPairFeatureProvider
 import com.android.settings.connecteddevice.stylus.StylusFeatureProvider
+import com.android.settings.connecteddevice.threadnetwork.ThreadNetworkFeatureProvider
 import com.android.settings.dashboard.DashboardFeatureProvider
 import com.android.settings.dashboard.suggestions.SuggestionFeatureProvider
 import com.android.settings.deviceinfo.hardwareinfo.HardwareInfoFeatureProvider
@@ -37,6 +38,7 @@ import com.android.settings.fuelgauge.BatterySettingsFeatureProvider
 import com.android.settings.fuelgauge.BatteryStatusFeatureProvider
 import com.android.settings.fuelgauge.PowerUsageFeatureProvider
 import com.android.settings.homepage.contextualcards.ContextualCardFeatureProvider
+import com.android.settings.i18n.RegionalCustomizationFeatureProvider
 import com.android.settings.inputmethod.KeyboardSettingsFeatureProvider
 import com.android.settings.localepicker.LocaleFeatureProvider
 import com.android.settings.notification.syncacrossdevices.SyncAcrossDevicesFeatureProvider
@@ -58,18 +60,14 @@ import com.android.settingslib.core.instrumentation.MetricsFeatureProvider
  * Abstract class for creating feature controllers.
  *
  * Allows OEM implementations to define their own factories with their own controllers containing
- * whatever code is needed to implement the features.
- * To provide a factory implementation, implementors should call [setFactory] in their Application.
+ * whatever code is needed to implement the features. To provide a factory implementation,
+ * implementors should call [setFactory] in their Application.
  */
 abstract class FeatureFactory {
-    /**
-     * Gets implementation for the Suggestion Feature provider.
-     */
+    /** Gets implementation for the Suggestion Feature provider. */
     abstract val suggestionFeatureProvider: SuggestionFeatureProvider
 
-    /**
-     * Retrieves implementation for Hardware Info feature.
-     */
+    /** Retrieves implementation for Hardware Info feature. */
     open val hardwareInfoFeatureProvider: HardwareInfoFeatureProvider? = null
 
     /** Implementation for [SupportFeatureProvider]. */
@@ -79,14 +77,10 @@ abstract class FeatureFactory {
 
     abstract val powerUsageFeatureProvider: PowerUsageFeatureProvider
 
-    /**
-     * Retrieves implementation for Battery Status feature.
-     */
+    /** Retrieves implementation for Battery Status feature. */
     abstract val batteryStatusFeatureProvider: BatteryStatusFeatureProvider
 
-    /**
-     * Gets implementation for Battery Settings provider.
-     */
+    /** Gets implementation for Battery Settings provider. */
     abstract val batterySettingsFeatureProvider: BatterySettingsFeatureProvider
 
     abstract val dashboardFeatureProvider: DashboardFeatureProvider
@@ -97,107 +91,78 @@ abstract class FeatureFactory {
     abstract val enterprisePrivacyFeatureProvider: EnterprisePrivacyFeatureProvider
 
     abstract val searchFeatureProvider: SearchFeatureProvider
+
     abstract fun getSurveyFeatureProvider(context: Context): SurveyFeatureProvider?
+
     abstract val securityFeatureProvider: SecurityFeatureProvider
     abstract val userFeatureProvider: UserFeatureProvider
     abstract val slicesFeatureProvider: SlicesFeatureProvider
     abstract val accountFeatureProvider: AccountFeatureProvider
     abstract val panelFeatureProvider: PanelFeatureProvider
+
     abstract fun getContextualCardFeatureProvider(context: Context): ContextualCardFeatureProvider
 
-    /**
-     * Retrieves implementation for Bluetooth feature.
-     */
+    /** Retrieves implementation for Bluetooth feature. */
     abstract val bluetoothFeatureProvider: BluetoothFeatureProvider
 
-    /**
-     * Retrieves implementation for Biometrics feature.
-     */
+    /** Retrieves implementation for Biometrics feature. */
     abstract val biometricsFeatureProvider: BiometricsFeatureProvider
 
-    /**
-     * Retrieves implementation for Face feature.
-     */
+    /** Retrieves implementation for Face feature. */
     abstract val faceFeatureProvider: FaceFeatureProvider
 
-    /**
-     * Retrieves implementation for Fingerprint feature.
-     */
+    /** Retrieves implementation for Fingerprint feature. */
     abstract val fingerprintFeatureProvider: FingerprintFeatureProvider
 
-    /**
-     * Gets implementation for the WifiTrackerLib.
-     */
+    /** Gets implementation for the WifiTrackerLib. */
     abstract val wifiTrackerLibProvider: WifiTrackerLibProvider
 
-    /**
-     * Retrieves implementation for SecuritySettings feature.
-     */
+    /** Retrieves implementation for SecuritySettings feature. */
     abstract val securitySettingsFeatureProvider: SecuritySettingsFeatureProvider
 
-    /**
-     * Retrieves implementation for Accessibility feedback category feature.
-     */
+    /** Retrieves implementation for Accessibility feedback category feature. */
     abstract val accessibilityFeedbackFeatureProvider: AccessibilityFeedbackFeatureProvider
 
-    /**
-     * Retrieves implementation for Accessibility search index feature.
-     */
+    /** Retrieves implementation for Accessibility search index feature. */
     abstract val accessibilitySearchFeatureProvider: AccessibilitySearchFeatureProvider
 
-    /**
-     * Retrieves implementation for Accessibility page id category feature.
-     */
+    /** Retrieves implementation for Accessibility page id category feature. */
     abstract val accessibilityPageIdFeatureProvider: AccessibilityPageIdFeatureProvider
 
-    /**
-     * Retrieves implementation for advanced vpn feature.
-     */
+    /** Retrieves implementation for advanced vpn feature. */
     abstract val advancedVpnFeatureProvider: AdvancedVpnFeatureProvider
 
-    /**
-     * Retrieves implementation for Wi-Fi feature.
-     */
+    /** Retrieves implementation for Wi-Fi feature. */
     abstract val wifiFeatureProvider: WifiFeatureProvider
 
-    /**
-     * Retrieves implementation for keyboard settings feature.
-     */
+    /** Retrieves implementation for keyboard settings feature. */
     abstract val keyboardSettingsFeatureProvider: KeyboardSettingsFeatureProvider
 
-    /**
-     * Retrieves implementation for stylus feature.
-     */
+    /** Retrieves implementation for stylus feature. */
     abstract val stylusFeatureProvider: StylusFeatureProvider
 
-    /**
-     * Retrieves implementation for Onboarding related feature.
-     */
+    /** Retrieves implementation for Thread network feature. */
+    abstract val threadNetworkFeatureProvider: ThreadNetworkFeatureProvider
+
+    /** Retrieves implementation for Onboarding related feature. */
     open val onboardingFeatureProvider: OnboardingFeatureProvider? = null
 
-    /**
-     * Gets implementation for Fast Pair device updater provider.
-     */
+    /** Retrieves implementation for Regional Customization related feature. */
+    open val regionalCustomizationFeatureProvider: RegionalCustomizationFeatureProvider? = null
+
+    /** Gets implementation for Fast Pair device updater provider. */
     abstract val fastPairFeatureProvider: FastPairFeatureProvider
 
-    /**
-     * Gets implementation for audio sharing related feature.
-     */
+    /** Gets implementation for audio sharing related feature. */
     abstract val audioSharingFeatureProvider: AudioSharingFeatureProvider
 
-    /**
-     * Gets implementation for Private Space account login feature.
-     */
+    /** Gets implementation for Private Space account login feature. */
     abstract val privateSpaceLoginFeatureProvider: PrivateSpaceLoginFeatureProvider
 
-    /**
-     * Gets implementation for Display feature.
-     */
+    /** Gets implementation for Display feature. */
     abstract val displayFeatureProvider: DisplayFeatureProvider
 
-    /**
-     * Gets implementation for sync across devices related feature.
-     */
+    /** Gets implementation for sync across devices related feature. */
     abstract val syncAcrossDevicesFeatureProvider: SyncAcrossDevicesFeatureProvider
 
     companion object {
@@ -213,8 +178,8 @@ abstract class FeatureFactory {
         /** Returns an application [Context] used to create this [FeatureFactory]. */
         @JvmStatic
         val appContext: Context
-            get() = _appContext
-                ?: throw UnsupportedOperationException("No feature factory configured")
+            get() =
+                _appContext ?: throw UnsupportedOperationException("No feature factory configured")
 
         @JvmStatic
         fun setFactory(appContext: Context, factory: FeatureFactory) {

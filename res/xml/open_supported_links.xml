@@ -26,7 +26,6 @@
     <com.android.settingslib.widget.FooterPreference
         android:key="supported_links_footer"
         android:title="@string/open_supported_links_footer"
-        android:selectable="false"
         settings:searchable="false"/>
 
 </PreferenceScreen>

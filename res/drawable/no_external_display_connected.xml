@@ -1,0 +1,32 @@
+<!--
+Copyright 2025 The Android Open Source Project
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:androidprv="http://schemas.android.com/apk/prv/res/android"
+    android:width="72dp"
+    android:height="73dp"
+    android:viewportWidth="72"
+    android:viewportHeight="73">
+    <path
+        android:pathData="M0,36.5C0,16.618 16.118,0.5 36,0.5C55.882,0.5 72,16.618 72,36.5C72,56.382 55.882,72.5 36,72.5C16.118,72.5 0,56.382 0,36.5Z"
+        android:fillColor="@androidprv:color/materialColorSecondaryContainer"/>
+    <group>
+        <clip-path
+            android:pathData="M16,16.5h40v40h-40z"/>
+        <path
+            android:pathData="M18.9,18.5L21.85,21.5H19V45.5H41.75L13.4,17.2L15.55,15.1L54.6,54.5L53,56.65L44.6,48.5L47,50.8V54.5H25V50.85L27.35,48.5H19C18.2,48.5 17.5,48.2 16.9,47.6C16.3,47 16,46.3 16,45.5V21.5C16,20.7 16.283,20 16.85,19.4C17.45,18.8 18.133,18.5 18.9,18.5ZM53,18.5C53.767,18.5 54.45,18.817 55.05,19.45C55.683,20.05 56,20.733 56,21.5V45.5C56,46.267 55.683,46.95 55.05,47.55C54.417,48.117 53.733,48.433 53,48.5V21.5H26.25L23.25,18.5H53Z"
+            android:fillColor="@androidprv:color/materialColorOnSecondaryContainer"/>
+    </group>
+</vector>

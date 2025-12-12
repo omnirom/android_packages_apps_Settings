@@ -17,4 +17,6 @@
 
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/screensaver_settings_when_to_dream" />
+    xmlns:settings="http://schemas.android.com/apk/res-auto"
+    android:title="@string/screensaver_settings_when_to_dream"
+    settings:staticPreferenceLocation="append" />

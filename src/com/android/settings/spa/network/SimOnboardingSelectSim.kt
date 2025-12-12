@@ -29,7 +29,8 @@ import com.android.settings.network.SimOnboardingService
 import com.android.settingslib.spa.widget.preference.CheckboxPreference
 import com.android.settingslib.spa.widget.preference.CheckboxPreferenceModel
 import com.android.settingslib.spa.widget.scaffold.BottomAppBarButton
-import com.android.settingslib.spa.widget.scaffold.SuwScaffold
+import com.android.settingslib.spa.widget.scaffold.GlifScaffold
+import com.android.settingslib.spa.widget.ui.Category
 
 /**
  * the sim onboarding select sim compose
@@ -42,9 +43,10 @@ fun SimOnboardingSelectSimImpl(
 ) {
     var actionButtonController = rememberSaveable { mutableStateOf(false) }
 
-    SuwScaffold(
+    GlifScaffold(
         imageVector = Icons.Outlined.SignalCellularAlt,
         title = stringResource(id = R.string.sim_onboarding_select_sim_title),
+        description = stringResource(id = R.string.sim_onboarding_select_sim_msg),
         actionButton = BottomAppBarButton(
             text = stringResource(id = R.string.sim_onboarding_next),
             enabled = actionButtonController.value,
@@ -55,7 +57,7 @@ fun SimOnboardingSelectSimImpl(
             onClick = cancelAction
         ),
     ) {
-        SelectSimBody(onboardingService, actionButtonController)
+        Category { SelectSimBody(onboardingService, actionButtonController) }
     }
 }
 
@@ -64,8 +66,6 @@ private fun SelectSimBody(
     onboardingService: SimOnboardingService,
     isFinished: MutableState<Boolean>
 ) {
-    SimOnboardingMessage(stringResource(id = R.string.sim_onboarding_select_sim_msg))
-
     isFinished.value = onboardingService.isSimSelectionFinished
     for (subInfo in onboardingService.getSelectableSubscriptionInfoList()) {
         var title = onboardingService.getSubscriptionInfoDisplayName(subInfo)

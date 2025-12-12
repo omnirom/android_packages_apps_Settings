@@ -20,9 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import android.app.Flags;
 import android.content.Context;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.preference.Preference;
@@ -60,7 +58,6 @@ public final class ZenModeNotifVisLinkPreferenceControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
     public void testHasSummary() {
         Preference pref = mock(Preference.class);
         mController.updateZenMode(pref, TestModeBuilder.EXAMPLE);

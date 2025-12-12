@@ -150,15 +150,6 @@
             android:title="@string/notification_polite_title"
             settings:controller="com.android.settings.notification.PoliteNotificationsPreferenceController" />
 
-        <com.android.settingslib.RestrictedPreference
-            android:key="zen_mode_notifications"
-            android:order="19"
-            android:title="@string/zen_mode_settings_title"
-            settings:useAdminDisabledSummary="true"
-            android:fragment="com.android.settings.notification.zen.ZenModeSettings"
-            settings:controller="com.android.settings.notification.zen.ZenModePreferenceController"
-        />
-
         <SwitchPreferenceCompat
             android:key="lock_screen_notif_minimalism"
             android:order="20"
@@ -195,35 +186,42 @@
                 android:targetClass="com.android.cellbroadcastreceiver.CellBroadcastSettings"/>
         </com.android.settingslib.RestrictedPreference>
 
+        <Preference
+            android:key="shade_panels_settings"
+            android:title="@string/shade_panels_title"
+            android:order="24"
+            android:fragment="com.android.settings.system.ShadePanelsFragment"
+            settings:controller="com.android.settings.system.ShadePanelsPreferenceController"/>
+
         <SwitchPreferenceCompat
              android:key="silent_icons"
-             android:order="24"
+             android:order="25"
              android:title="@string/silent_notifications_status_bar"
              settings:controller="com.android.settings.notification.SilentStatusBarPreferenceController"/>
 
         <SwitchPreferenceCompat
             android:key="show_snooze_options"
-            android:order="25"
+            android:order="26"
             android:title="@string/snooze_options_title"
             settings:controller="com.android.settings.notification.SnoozeNotificationPreferenceController" />
 
         <!-- Notification badging -->
         <SwitchPreferenceCompat
             android:key="notification_badging"
-            android:order="26"
+            android:order="27"
             android:title="@string/notification_badging_title"
             settings:controller="com.android.settings.notification.BadgingNotificationPreferenceController"/>
 
         <!-- Pulse notification light, on devices that support it -->
         <SwitchPreferenceCompat
             android:key="notification_pulse"
-            android:order="27"
+            android:order="28"
             android:title="@string/notification_pulse_title"
             settings:controller="com.android.settings.notification.PulseNotificationPreferenceController"/>
 
         <SwitchPreferenceCompat
             android:key="notification_assistant"
-            android:order="28"
+            android:order="29"
             android:title="@string/notification_assistant_title"
             android:summary="@string/notification_assistant_summary"
             settings:controller="com.android.settings.notification.NotificationAssistantPreferenceController"/>

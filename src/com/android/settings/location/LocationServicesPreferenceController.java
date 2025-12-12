@@ -24,6 +24,7 @@ import com.android.settings.core.BasePreferenceController;
 /**
  * Preference controller for Location Services.
  */
+// LINT.IfChange
 public class LocationServicesPreferenceController extends BasePreferenceController {
 
     public LocationServicesPreferenceController(Context context, String key) {
@@ -37,3 +38,4 @@ public class LocationServicesPreferenceController extends BasePreferenceControll
                 : UNSUPPORTED_ON_DEVICE;
     }
 }
+// LINT.ThenChange(LocationServicesScreen.kt)

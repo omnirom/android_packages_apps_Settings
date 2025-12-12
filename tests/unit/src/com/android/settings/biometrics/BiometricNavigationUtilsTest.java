@@ -26,6 +26,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.app.admin.DevicePolicyManager;
+import android.app.admin.DpcAuthority;
+import android.app.admin.EnforcingAdmin;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -151,8 +153,8 @@ public class BiometricNavigationUtilsTest {
     public void getBiometricSettingsIntent_quietMode_returnsQuiteModeDialogIntent() {
         when(mUserManager.isQuietModeEnabled(any())).thenReturn(true);
 
-        final Intent intent = mBiometricNavigationUtils.getBiometricSettingsIntent(
-                mContext, SETTINGS_CLASS_NAME, null /* enforcedAdmin */, Bundle.EMPTY);
+        final Intent intent = mBiometricNavigationUtils.getBiometricSettingsIntent(mContext,
+                SETTINGS_CLASS_NAME, (EnforcedAdmin) null, Bundle.EMPTY);
 
         assertQuietModeDialogIntent(intent);
     }
@@ -161,8 +163,8 @@ public class BiometricNavigationUtilsTest {
     public void getBiometricSettingsIntent_noQuietMode_emptyExtras_returnsSettingsIntent() {
         when(mUserManager.isQuietModeEnabled(any())).thenReturn(false);
 
-        final Intent intent = mBiometricNavigationUtils.getBiometricSettingsIntent(
-                mContext, SETTINGS_CLASS_NAME, null /* enforcedAdmin */, Bundle.EMPTY);
+        final Intent intent = mBiometricNavigationUtils.getBiometricSettingsIntent(mContext,
+                SETTINGS_CLASS_NAME, (EnforcedAdmin) null, Bundle.EMPTY);
 
         assertSettingsPageIntent(intent, false /* shouldContainExtras */);
     }
@@ -172,7 +174,7 @@ public class BiometricNavigationUtilsTest {
         when(mUserManager.isQuietModeEnabled(any())).thenReturn(false);
 
         final Intent intent = mBiometricNavigationUtils.getBiometricSettingsIntent(
-                mContext, SETTINGS_CLASS_NAME, null /* enforcedAdmin */, createNotEmptyExtras());
+                mContext, SETTINGS_CLASS_NAME, (EnforcedAdmin) null, createNotEmptyExtras());
 
         assertSettingsPageIntent(intent, true /* shouldContainExtras */);
     }
@@ -213,6 +215,45 @@ public class BiometricNavigationUtilsTest {
         assertBlockedByAdminDialogIntent(intent);
     }
 
+    @Test
+    public void getBiometricSettingsIntent_whenDisabledByEnforcingAdmin_quietMode_returnsBlockedIntent() {
+        when(mUserManager.isQuietModeEnabled(any())).thenReturn(true);
+        final EnforcingAdmin enforcingAdmin = new EnforcingAdmin(
+                COMPONENT_NAME.getPackageName(), DpcAuthority.DPC_AUTHORITY,
+                UserHandle.of(ADMIN_USER_ID), COMPONENT_NAME);
+
+        final Intent intent = mBiometricNavigationUtils.getBiometricSettingsIntent(mContext,
+                SETTINGS_CLASS_NAME, enforcingAdmin, Bundle.EMPTY);
+
+        assertBlockedByEnforcingAdminDialogIntent(intent, enforcingAdmin);
+    }
+
+    @Test
+    public void getBiometricSettingsIntent_whenDisabledByEnforcingAdmin_emptyExtras_returnsBlockedIntent() {
+        when(mUserManager.isQuietModeEnabled(any())).thenReturn(false);
+        final EnforcingAdmin enforcingAdmin = new EnforcingAdmin(
+                COMPONENT_NAME.getPackageName(), DpcAuthority.DPC_AUTHORITY,
+                UserHandle.of(ADMIN_USER_ID), COMPONENT_NAME);
+
+        final Intent intent = mBiometricNavigationUtils.getBiometricSettingsIntent(mContext,
+                SETTINGS_CLASS_NAME, enforcingAdmin, Bundle.EMPTY);
+
+        assertBlockedByEnforcingAdminDialogIntent(intent, enforcingAdmin);
+    }
+
+    @Test
+    public void getBiometricSettingsIntent_whenDisabledByEnforcingAdmin_withExtras_returnsBlockedIntent() {
+        when(mUserManager.isQuietModeEnabled(any())).thenReturn(false);
+        final EnforcingAdmin enforcingAdmin = new EnforcingAdmin(
+                COMPONENT_NAME.getPackageName(), DpcAuthority.DPC_AUTHORITY,
+                UserHandle.of(ADMIN_USER_ID), COMPONENT_NAME);
+
+        final Intent intent = mBiometricNavigationUtils.getBiometricSettingsIntent(mContext,
+                SETTINGS_CLASS_NAME, enforcingAdmin, createNotEmptyExtras());
+
+        assertBlockedByEnforcingAdminDialogIntent(intent, enforcingAdmin);
+    }
+
     private Bundle createNotEmptyExtras() {
         final Bundle bundle = new Bundle();
         bundle.putInt(EXTRA_KEY, 0);
@@ -239,6 +280,15 @@ public class BiometricNavigationUtilsTest {
         assertThat(
                 (ComponentName) intent.getParcelableExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN))
                 .isEqualTo(COMPONENT_NAME);
+    }
+
+    private void assertBlockedByEnforcingAdminDialogIntent(Intent intent,
+            EnforcingAdmin enforcingAdmin) {
+        assertThat(intent.getAction()).isEqualTo(Settings.ACTION_SHOW_ADMIN_SUPPORT_DETAILS);
+        assertThat(
+                (EnforcingAdmin) intent.getParcelableExtra(
+                        DevicePolicyManager.EXTRA_ENFORCING_ADMIN))
+                .isEqualTo(enforcingAdmin);
     }
 
     private void assertSettingsPageLaunchRequested(boolean shouldContainExtras) {

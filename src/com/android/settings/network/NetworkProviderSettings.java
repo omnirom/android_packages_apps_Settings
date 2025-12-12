@@ -65,6 +65,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.settings.AirplaneModeEnabler;
 import com.android.settings.R;
+import com.android.settings.Utils;
 import com.android.settings.core.SubSettingLauncher;
 import com.android.settings.dashboard.RestrictedDashboardFragment;
 import com.android.settings.datausage.DataUsagePreference;
@@ -76,11 +77,13 @@ import com.android.settings.network.ethernet.EthernetSwitchPreferenceController;
 import com.android.settings.network.ethernet.EthernetTracker;
 import com.android.settings.network.ethernet.EthernetTrackerImpl;
 import com.android.settings.search.BaseSearchIndexProvider;
+import com.android.settings.widget.GearPreference;
 import com.android.settings.wifi.AddNetworkFragment;
 import com.android.settings.wifi.AddWifiNetworkPreference;
 import com.android.settings.wifi.ConfigureWifiEntryFragment;
 import com.android.settings.wifi.ConnectedWifiEntryPreference;
 import com.android.settings.wifi.LongPressWifiEntryPreference;
+import com.android.settings.wifi.WifiCategory;
 import com.android.settings.wifi.WifiConfigUiBase2;
 import com.android.settings.wifi.WifiDialog2;
 import com.android.settings.wifi.WifiPickerTrackerHelper;
@@ -232,10 +235,7 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
 
     private WifiDialog2 mDialog;
 
-    @VisibleForTesting
-    PreferenceCategory mConnectedWifiEntryPreferenceCategory;
-    @VisibleForTesting
-    PreferenceCategory mFirstWifiEntryPreferenceCategory;
+    private WifiCategory mWifiCategory;
     @VisibleForTesting
     PreferenceCategory mWifiEntryPreferenceCategory;
     @VisibleForTesting
@@ -388,8 +388,7 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
     private void addPreferences() {
         mAirplaneModeMsgPreference = findPreference(PREF_KEY_AIRPLANE_MODE_MSG);
         updateAirplaneModeMsgPreference(mAirplaneModeEnabler.isAirplaneModeOn() /* visible */);
-        mConnectedWifiEntryPreferenceCategory = findPreference(PREF_KEY_CONNECTED_ACCESS_POINTS);
-        mFirstWifiEntryPreferenceCategory = findPreference(PREF_KEY_FIRST_ACCESS_POINTS);
+        mWifiCategory = new WifiCategory(this);
         mWifiEntryPreferenceCategory = findPreference(PREF_KEY_ACCESS_POINTS);
         mConfigureWifiSettingsPreference = findPreference(PREF_KEY_CONFIGURE_NETWORK_SETTINGS);
         mSavedNetworksPreference = findPreference(PREF_KEY_SAVED_NETWORKS);
@@ -397,10 +396,12 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
         // Hide mAddWifiNetworkPreference by default. updateWifiEntryPreferences() will add it back
         // later when appropriate.
         mWifiEntryPreferenceCategory.removePreference(mAddWifiNetworkPreference);
-        mDataUsagePreference = findPreference(PREF_KEY_DATA_USAGE);
-        mDataUsagePreference.setVisible(DataUsageUtils.hasWifiRadio(getContext()));
-        mDataUsagePreference.setTemplate(new NetworkTemplate.Builder(NetworkTemplate.MATCH_WIFI)
-                        .build(), SubscriptionManager.INVALID_SUBSCRIPTION_ID);
+        if (!isCatalystEnabled()) {
+            mDataUsagePreference = findPreference(PREF_KEY_DATA_USAGE);
+            mDataUsagePreference.setVisible(DataUsageUtils.hasWifiRadio(getContext()));
+            mDataUsagePreference.setTemplate(new NetworkTemplate.Builder(NetworkTemplate.MATCH_WIFI)
+                    .build(), SubscriptionManager.INVALID_SUBSCRIPTION_ID);
+        }
         mResetInternetPreference = findPreference(PREF_KEY_RESET_INTERNET);
         mEthernetSwitchPreference = findPreference(PREF_KEY_ETHERNET_TOGGLE);
         mEthernetPreferenceCategory = findPreference(PREF_KEY_ETHERNET_INTERFACES);
@@ -408,12 +409,11 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
             mResetInternetPreference.setVisible(false);
         }
         addNetworkMobileProviderController();
-        addConnectedEthernetNetworkController();
         addWifiSwitchPreferenceController();
         if (com.android.settings.connectivity.Flags.ethernetSettings()) {
             addEthernetSwitchPreferenceController();
         } else {
-            mEthernetSwitchPreference.setVisible(false);
+            addConnectedEthernetNetworkController();
         }
         mWifiStatusMessagePreference = findPreference(PREF_KEY_WIFI_STATUS_MESSAGE);
 
@@ -431,7 +431,8 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
      */
     @VisibleForTesting
     boolean showAnySubscriptionInfo(Context context) {
-        return (context != null) && SubscriptionUtil.isSimHardwareVisible(context);
+        return (context != null) && (Utils.isMobileDataCapable(context)
+                || Utils.isVoiceCapable(context));
     }
 
     private void addNetworkMobileProviderController() {
@@ -479,8 +480,6 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
         mInternetResetHelper = new InternetResetHelper(getContext(), getLifecycle(),
                 mNetworkMobileProviderController,
                 findPreference(WifiSwitchPreferenceController.KEY),
-                mConnectedWifiEntryPreferenceCategory,
-                mFirstWifiEntryPreferenceCategory,
                 mWifiEntryPreferenceCategory,
                 mResetInternetPreference);
         mInternetResetHelper.checkRecovering();
@@ -499,7 +498,7 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
         if (com.android.settings.connectivity.Flags.ethernetSettings()) {
             mEthernetManager = getContext().getSystemService(EthernetManager.class);
             mEthernetTracker = EthernetTrackerImpl.getInstance(
-                getContext());
+                    getContext());
         }
 
         mSaveListener = new WifiManager.ActionListener() {
@@ -917,19 +916,19 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
                 break;
 
             case WifiManager.WIFI_STATE_ENABLING:
-                removeConnectedWifiEntryPreference();
+                mWifiCategory.removeWifiEntryPreferences();
                 removeWifiEntryPreference();
                 setProgressBarVisible(true);
                 break;
 
             case WifiManager.WIFI_STATE_DISABLING:
-                removeConnectedWifiEntryPreference();
+                mWifiCategory.removeWifiEntryPreferences();
                 removeWifiEntryPreference();
                 break;
 
             case WifiManager.WIFI_STATE_DISABLED:
                 setWifiScanMessage(/* isWifiEnabled */ false);
-                removeConnectedWifiEntryPreference();
+                mWifiCategory.removeWifiEntryPreferences();
                 removeWifiEntryPreference();
                 setAdditionalSettingsSummaries();
                 setProgressBarVisible(false);
@@ -967,9 +966,9 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
 
     private void launchWifiScanningFragment() {
         new SubSettingLauncher(getContext())
-            .setDestination(WifiScanningFragment.class.getName())
-            .setSourceMetricsCategory(SettingsEnums.SETTINGS_NETWORK_CATEGORY)
-            .launch();
+                .setDestination(WifiScanningFragment.class.getName())
+                .setSourceMetricsCategory(SettingsEnums.SETTINGS_NETWORK_CATEGORY)
+                .launch();
     }
 
     @Override
@@ -1031,13 +1030,12 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
         mWifiEntryPreferenceCategory.setVisible(true);
 
         final WifiEntry connectedEntry = mWifiPickerTracker.getConnectedWifiEntry();
-        PreferenceCategory connectedWifiPreferenceCategory = getConnectedWifiPreferenceCategory();
-        connectedWifiPreferenceCategory.setVisible(connectedEntry != null);
+        PreferenceCategory connectedWifiPreferenceCategory = mWifiCategory.getPreferenceCategory();
         if (connectedEntry != null) {
             final LongPressWifiEntryPreference connectedPref =
                     connectedWifiPreferenceCategory.findPreference(connectedEntry.getKey());
             if (connectedPref == null || connectedPref.getWifiEntry() != connectedEntry) {
-                connectedWifiPreferenceCategory.removeAll();
+                mWifiCategory.removeWifiEntryPreferences();
                 final ConnectedWifiEntryPreference pref =
                         createConnectedWifiEntryPreference(connectedEntry);
                 pref.setKey(connectedEntry.getKey());
@@ -1061,7 +1059,7 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
                 }
             }
         } else {
-            connectedWifiPreferenceCategory.removeAll();
+            mWifiCategory.removeWifiEntryPreferences();
         }
 
         int index = 0;
@@ -1111,22 +1109,28 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
         setAdditionalSettingsSummaries();
     }
 
+    @SuppressWarnings("NullAway")
     void updateEthernetInterfaces(Collection<EthernetInterface> interfaces) {
         int index = 0;
         mEthernetPreferenceCategory.removeAll();
+        mEthernetPreferenceCategory.addPreference(mEthernetSwitchPreference);
         if (interfaces.size() > 0) {
             for (EthernetInterface ethernetInterface : interfaces) {
-                Preference pref = new Preference(getPrefContext());
+                GearPreference pref = new GearPreference(getPrefContext(), null /* AttributeSet */);
                 pref.setOrder(index++);
+                pref.setIcon(getContext().getDrawable(R.drawable.ic_settings_ethernet));
                 pref.setKey(ethernetInterface.getId());
                 pref.setTitle(getContext().getString(R.string.ethernet_interface_title, index));
                 pref.setSummary(
                         (ethernetInterface.getInterfaceState() == EthernetManager.STATE_LINK_UP)
-                            ? getContext().getString(R.string.network_connected) :
-                              getContext().getString(R.string.network_disconnected));
+                                ? getContext().getString(R.string.network_connected) :
+                                getContext().getString(R.string.network_disconnected));
                 pref.setOnPreferenceClickListener(preference -> {
                     launchEthernetInterfaceDetailsFragment(preference);
                     return true;
+                });
+                pref.setOnGearClickListener(preference -> {
+                    launchEthernetInterfaceDetailsFragment(preference);
                 });
                 mEthernetPreferenceCategory.addPreference(pref);
             }
@@ -1134,19 +1138,6 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
         } else {
             mEthernetPreferenceCategory.setVisible(false);
         }
-    }
-
-    @VisibleForTesting
-    PreferenceCategory getConnectedWifiPreferenceCategory() {
-        if (mInternetUpdater.getInternetType() == InternetUpdater.INTERNET_WIFI) {
-            mFirstWifiEntryPreferenceCategory.setVisible(false);
-            mFirstWifiEntryPreferenceCategory.removeAll();
-            return mConnectedWifiEntryPreferenceCategory;
-        }
-
-        mConnectedWifiEntryPreferenceCategory.setVisible(false);
-        mConnectedWifiEntryPreferenceCategory.removeAll();
-        return mFirstWifiEntryPreferenceCategory;
     }
 
     @VisibleForTesting
@@ -1205,15 +1196,6 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
                 .launch();
     }
 
-    /** Removes all preferences and hide the {@link #mConnectedWifiEntryPreferenceCategory} and
-     *  {@link #mFirstWifiEntryPreferenceCategory}. */
-    private void removeConnectedWifiEntryPreference() {
-        mConnectedWifiEntryPreferenceCategory.removeAll();
-        mConnectedWifiEntryPreferenceCategory.setVisible(false);
-        mFirstWifiEntryPreferenceCategory.setVisible(false);
-        mFirstWifiEntryPreferenceCategory.removeAll();
-    }
-
     private void removeWifiEntryPreference() {
         mWifiEntryPreferenceCategory.removeAll();
         mWifiEntryPreferenceCategory.setVisible(false);
@@ -1226,16 +1208,20 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
                         ? R.string.wifi_configure_settings_preference_summary_wakeup_on
                         : R.string.wifi_configure_settings_preference_summary_wakeup_off));
 
-        final int numSavedNetworks = mWifiPickerTracker == null ? 0 :
-                mWifiPickerTracker.getNumSavedNetworks();
-        final int numSavedSubscriptions = mWifiPickerTracker == null ? 0 :
-                mWifiPickerTracker.getNumSavedSubscriptions();
-        if (numSavedNetworks + numSavedSubscriptions > 0) {
-            mSavedNetworksPreference.setVisible(true);
-            mSavedNetworksPreference.setSummary(
-                    getSavedNetworkSettingsSummaryText(numSavedNetworks, numSavedSubscriptions));
-        } else {
-            mSavedNetworksPreference.setVisible(false);
+        if (!(isCatalystEnabled()
+                && com.android.settings.flags.Flags.deeplinkNetworkAndInternet25q4())) {
+            final int numSavedNetworks = mWifiPickerTracker == null ? 0 :
+                    mWifiPickerTracker.getNumSavedNetworks();
+            final int numSavedSubscriptions = mWifiPickerTracker == null ? 0 :
+                    mWifiPickerTracker.getNumSavedSubscriptions();
+            if (numSavedNetworks + numSavedSubscriptions > 0) {
+                mSavedNetworksPreference.setVisible(true);
+                mSavedNetworksPreference.setSummary(
+                        getSavedNetworkSettingsSummaryText(numSavedNetworks,
+                                numSavedSubscriptions));
+            } else {
+                mSavedNetworksPreference.setVisible(false);
+            }
         }
     }
 
@@ -1396,7 +1382,7 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
             Toast.makeText(getContext(), R.string.wifi_failed_connect_message, Toast.LENGTH_SHORT)
                     .show();
         }
-    };
+    }
 
     public static final SearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new SearchIndexProvider(R.xml.network_provider_settings);

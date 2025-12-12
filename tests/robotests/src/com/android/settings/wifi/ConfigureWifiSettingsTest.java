@@ -1,5 +1,8 @@
 package com.android.settings.wifi;
 
+import static android.platform.test.flag.junit.SetFlagsRule.DefaultInitValueType.DEVICE_DEFAULT;
+
+import static com.android.settings.flags.Flags.FLAG_CATALYST_CONFIGURE_NETWORK_SETTINGS;
 import static com.android.settings.wifi.ConfigureWifiSettings.KEY_INSTALL_CREDENTIALS;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -16,6 +19,7 @@ import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.UserManager;
+import android.platform.test.flag.junit.SetFlagsRule;
 import android.view.View;
 import android.widget.TextView;
 
@@ -51,6 +55,8 @@ import java.util.List;
 public class ConfigureWifiSettingsTest {
 
     @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule(DEVICE_DEFAULT);
+    @Rule
     public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Spy
     Context mContext = ApplicationProvider.getApplicationContext();
@@ -73,6 +79,7 @@ public class ConfigureWifiSettingsTest {
 
     @Before
     public void setUp() {
+        mSetFlagsRule.disableFlags(FLAG_CATALYST_CONFIGURE_NETWORK_SETTINGS);
         when(mContext.getSystemService(UserManager.class)).thenReturn(mUserManager);
         when(mUserManager.isGuestUser()).thenReturn(false);
         when(mActivity.getSystemService(WifiManager.class)).thenReturn(mWifiManager);

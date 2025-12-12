@@ -98,6 +98,13 @@ public class FingerprintStatusPreferenceController extends BiometricStatusPrefer
     }
 
     private void updateStateInternal() {
+        if (android.app.admin.flags.Flags.policyTransparencyRefactorEnabled()
+                && android.app.admin.flags.Flags.setKeyguardDisabledFeaturesCoexistence()) {
+            if (mPreference != null) {
+                mPreference.setDisabledByAdmin(mFingerprintStatusUtils.getEnforcingAdmin());
+            }
+            return;
+        }
         updateStateInternal(mFingerprintStatusUtils.getDisablingAdmin());
     }
 

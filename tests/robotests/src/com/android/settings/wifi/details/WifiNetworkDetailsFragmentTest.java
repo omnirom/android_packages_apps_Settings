@@ -49,6 +49,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
@@ -56,8 +57,10 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
+import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settings.wifi.WifiUtils;
 import com.android.settings.wifi.details2.WifiDetailPreferenceController2;
+import com.android.settings.wifi.factory.WifiFeatureProvider;
 import com.android.settingslib.core.AbstractPreferenceController;
 import com.android.wifitrackerlib.NetworkDetailsTracker;
 import com.android.wifitrackerlib.WifiEntry;
@@ -108,9 +111,13 @@ public class WifiNetworkDetailsFragmentTest {
     NetworkDetailsTracker mNetworkDetailsTracker;
     @Mock
     WifiNetworkDetailsViewModel.HotspotNetworkData mHotspotNetworkData;
+    @Mock
+    WifiNetworkDetailsViewModel mWifiNetworkDetailsViewModel;
 
     FakeFragment mFragment;
     PreferenceScreen mScreen;
+    private FakeFeatureFactory mFeatureFactory;
+    private WifiFeatureProvider mWifiFeatureProvider;
 
     @Before
     public void setUp() {
@@ -135,6 +142,13 @@ public class WifiNetworkDetailsFragmentTest {
         doReturn(mHotspotConnectionCategory).when(mScreen)
                 .findPreference(KEY_HOTSPOT_CONNECTION_CATEGORY);
         mFragment.mNetworkDetailsTracker = mNetworkDetailsTracker;
+
+        mFeatureFactory = FakeFeatureFactory.setupForTest();
+        mWifiFeatureProvider = mFeatureFactory.mWifiFeatureProvider;
+        doReturn(mWifiNetworkDetailsViewModel).when(mWifiFeatureProvider)
+                .getWifiNetworkDetailsViewModel(any());
+        doReturn(new MutableLiveData<>())
+                .when(mWifiNetworkDetailsViewModel).getHotspotNetworkData();
     }
 
     @Test

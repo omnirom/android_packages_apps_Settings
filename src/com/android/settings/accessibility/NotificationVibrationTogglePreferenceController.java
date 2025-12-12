@@ -21,6 +21,7 @@ import android.content.Context;
 import com.android.settings.accessibility.NotificationVibrationIntensityPreferenceController.NotificationVibrationPreferenceConfig;
 
 /** Preference controller for notification vibration with only a toggle for on/off states. */
+// LINT.IfChange
 public class NotificationVibrationTogglePreferenceController
         extends VibrationTogglePreferenceController {
 
@@ -33,3 +34,4 @@ public class NotificationVibrationTogglePreferenceController
         return AVAILABLE;
     }
 }
+// LINT.ThenChange(NotificationVibrationIntensitySwitchPreference.kt)

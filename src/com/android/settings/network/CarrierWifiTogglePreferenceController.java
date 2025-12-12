@@ -24,6 +24,7 @@ import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
 import com.android.settings.core.TogglePreferenceController;
+import com.android.settings.network.telephony.AirplaneModeChangedCallback;
 import com.android.settings.wifi.WifiPickerTrackerHelper;
 import com.android.wifitrackerlib.WifiPickerTracker;
 
@@ -31,7 +32,7 @@ import com.android.wifitrackerlib.WifiPickerTracker;
  * Preference controller for "Carrier Wi-Fi network"
  */
 public class CarrierWifiTogglePreferenceController extends TogglePreferenceController implements
-        WifiPickerTracker.WifiPickerTrackerCallback {
+        WifiPickerTracker.WifiPickerTrackerCallback, AirplaneModeChangedCallback {
 
     private static final String TAG = "CarrierWifiTogglePreferenceController";
     protected static final String CARRIER_WIFI_TOGGLE_PREF_KEY = "carrier_wifi_toggle";
@@ -42,6 +43,8 @@ public class CarrierWifiTogglePreferenceController extends TogglePreferenceContr
     protected WifiPickerTrackerHelper mWifiPickerTrackerHelper;
     protected boolean mIsCarrierProvisionWifiEnabled;
     protected Preference mCarrierNetworkPreference;
+    protected Preference mCarrierNetworkTogglePreference;
+    protected boolean mIsAirplaneModeOn = false;
 
     public CarrierWifiTogglePreferenceController(Context context,
             String preferenceKey) {
@@ -79,7 +82,18 @@ public class CarrierWifiTogglePreferenceController extends TogglePreferenceContr
     @Override
     public void displayPreference(PreferenceScreen screen) {
         super.displayPreference(screen);
+        mCarrierNetworkTogglePreference = screen.findPreference(CARRIER_WIFI_TOGGLE_PREF_KEY);
         mCarrierNetworkPreference = screen.findPreference(CARRIER_WIFI_NETWORK_PREF_KEY);
+
+        updateCarrierNetworkPreference();
+    }
+
+    @Override
+    public void updateState(Preference preference) {
+        super.updateState(preference);
+        if (preference != null) {
+            preference.setEnabled(!mIsAirplaneModeOn);
+        }
         updateCarrierNetworkPreference();
     }
 
@@ -108,6 +122,12 @@ public class CarrierWifiTogglePreferenceController extends TogglePreferenceContr
         // Do nothing
     }
 
+    @Override
+    public void notifyAirplaneModeChanged(boolean isAirplaneModeOn) {
+        this.mIsAirplaneModeOn = isAirplaneModeOn;
+        updateCarrierNetworkPreference();
+    }
+
     protected void updateCarrierNetworkPreference() {
         if (mCarrierNetworkPreference == null) {
             return;
@@ -118,6 +138,7 @@ public class CarrierWifiTogglePreferenceController extends TogglePreferenceContr
         }
         mCarrierNetworkPreference.setVisible(true);
         mCarrierNetworkPreference.setSummary(getCarrierNetworkSsid());
+        mCarrierNetworkPreference.setEnabled(!mIsAirplaneModeOn);
     }
 
     protected boolean isCarrierNetworkActive() {

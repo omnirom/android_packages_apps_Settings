@@ -28,7 +28,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.core.SliderPreferenceController;
-import com.android.settings.widget.LabeledSeekBarPreference;
+import com.android.settingslib.widget.SliderPreference;
 
 /** Handles changes to the long press power button sensitivity slider. */
 public class LongPressPowerSensitivityPreferenceController extends SliderPreferenceController
@@ -40,7 +40,7 @@ public class LongPressPowerSensitivityPreferenceController extends SliderPrefere
     private final PowerMenuSettingsUtils mUtils;
 
     @Nullable
-    private LabeledSeekBarPreference mPreference;
+    private SliderPreference mPreference;
 
     public LongPressPowerSensitivityPreferenceController(Context context, String preferenceKey) {
         super(context, preferenceKey);
@@ -66,22 +66,24 @@ public class LongPressPowerSensitivityPreferenceController extends SliderPrefere
         super.displayPreference(screen);
         mPreference = screen.findPreference(getPreferenceKey());
         if (mPreference != null) {
-            mPreference.setContinuousUpdates(false);
+            mPreference.setUpdatesContinuously(false);
             mPreference.setHapticFeedbackMode(
-                    LabeledSeekBarPreference.HAPTIC_FEEDBACK_MODE_ON_TICKS);
+                    SliderPreference.HAPTIC_FEEDBACK_MODE_ON_TICKS);
             mPreference.setMin(getMin());
             mPreference.setMax(getMax());
+            mPreference.setTickVisible(true);
+            mPreference.setSliderIncrement(1);
         }
     }
 
     @Override
     public void updateState(Preference preference) {
         super.updateState(preference);
-        final LabeledSeekBarPreference pref = (LabeledSeekBarPreference) preference;
+        final SliderPreference pref = (SliderPreference) preference;
         pref.setVisible(
                 PowerMenuSettingsUtils.isLongPressPowerForAssistantEnabled(mContext)
                         && getAvailabilityStatus() == AVAILABLE);
-        pref.setProgress(getSliderPosition());
+        pref.setValue(getSliderPosition());
     }
 
     @Override

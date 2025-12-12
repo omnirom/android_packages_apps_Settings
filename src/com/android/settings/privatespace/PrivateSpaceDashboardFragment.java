@@ -33,22 +33,19 @@ public class PrivateSpaceDashboardFragment extends DashboardFragment {
 
     @Override
     public void onCreate(Bundle icicle) {
-        if (android.os.Flags.allowPrivateProfile()
-                && android.multiuser.Flags.enablePrivateSpaceFeatures()) {
-            super.onCreate(icicle);
-            if (icicle == null
-                    && getIntent().getBooleanExtra(EXTRA_SHOW_PRIVATE_SPACE_UNLOCKED, false)) {
-                Log.i(TAG, "Private space unlocked showing toast");
-                Drawable drawable =
-                        getContext().getDrawable(R.drawable.ic_private_space_unlock_icon);
-                Toast.makeCustomToastWithIcon(
-                                getContext(),
-                                null /* looper */,
-                                getContext().getString(R.string.private_space_unlocked),
-                                Toast.LENGTH_SHORT,
-                                drawable)
-                        .show();
-            }
+        super.onCreate(icicle);
+        if (icicle == null
+                && getIntent().getBooleanExtra(EXTRA_SHOW_PRIVATE_SPACE_UNLOCKED, false)) {
+            Log.i(TAG, "Private space unlocked showing toast");
+            Drawable drawable =
+                    getContext().getDrawable(R.drawable.ic_private_space_unlock_icon);
+            Toast.makeCustomToastWithIcon(
+                            getContext(),
+                            null /* looper */,
+                            getContext().getString(R.string.private_space_unlocked),
+                            Toast.LENGTH_SHORT,
+                            drawable)
+                    .show();
         }
     }
 

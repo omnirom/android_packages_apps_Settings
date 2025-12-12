@@ -30,10 +30,8 @@ import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
-import android.provider.Flags;
 import android.provider.Settings;
 import android.view.accessibility.AccessibilityManager;
 
@@ -96,20 +94,7 @@ public class AccessibilityButtonPreferenceControllerTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
     public void displayPreference_navigationGestureEnabled_setCorrectTitle() {
-        Settings.Secure.putIntForUser(mContext.getContentResolver(),
-                NAVIGATION_MODE, NAV_BAR_MODE_GESTURAL, mContext.getUserId());
-
-        mController.displayPreference(mScreen);
-
-        assertThat(mPreference.getTitle()).isEqualTo(
-                mContext.getText(R.string.accessibility_button_gesture_title));
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
-    public void displayPreference_navigationGestureEnabled_flag_setCorrectTitle() {
         Settings.Secure.putIntForUser(mContext.getContentResolver(),
                 NAVIGATION_MODE, NAV_BAR_MODE_GESTURAL, mContext.getUserId());
 
@@ -131,25 +116,7 @@ public class AccessibilityButtonPreferenceControllerTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
     public void updateDynamicRawDataToIndex_navigationGestureEnabled_setCorrectIndex() {
-        Settings.Secure.putIntForUser(mContext.getContentResolver(),
-                NAVIGATION_MODE, NAV_BAR_MODE_GESTURAL, mContext.getUserId());
-        List<SearchIndexableRaw> rawDataList = new ArrayList<>();
-
-        mController.updateDynamicRawDataToIndex(rawDataList);
-
-        assertThat(rawDataList).hasSize(1);
-        SearchIndexableRaw raw = rawDataList.get(0);
-        assertThat(raw.title).isEqualTo(
-                mResources.getString(R.string.accessibility_button_gesture_title));
-        assertThat(raw.screenTitle).isEqualTo(
-                mResources.getString(R.string.accessibility_shortcuts_settings_title));
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
-    public void updateDynamicRawDataToIndex_navigationGestureEnabled_flag_setCorrectIndex() {
         Settings.Secure.putIntForUser(mContext.getContentResolver(),
                 NAVIGATION_MODE, NAV_BAR_MODE_GESTURAL, mContext.getUserId());
         List<SearchIndexableRaw> rawDataList = new ArrayList<>();
@@ -181,7 +148,6 @@ public class AccessibilityButtonPreferenceControllerTest {
     }
 
     @Test
-    @EnableFlags(com.android.settings.accessibility.Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
     public void getAvailabilityStatus_settingEmpty_disabled() {
         mShadowAccessibilityManager.setAccessibilityShortcutTargets(SOFTWARE, List.of());
 
@@ -189,7 +155,6 @@ public class AccessibilityButtonPreferenceControllerTest {
     }
 
     @Test
-    @EnableFlags(com.android.settings.accessibility.Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
     public void getAvailabilityStatus_settingNotEmpty_available() {
         mShadowAccessibilityManager.setAccessibilityShortcutTargets(SOFTWARE, List.of("Foo"));
 

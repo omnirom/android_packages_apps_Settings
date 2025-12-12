@@ -14,9 +14,10 @@
      limitations under the License.
 -->
 
-<inset xmlns:android="http://schemas.android.com/apk/res/android">
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:androidprv="http://schemas.android.com/apk/prv/res/android">
     <shape android:shape="rectangle">
         <corners android:radius="?android:attr/dialogCornerRadius" />
-        <solid android:color="@color/display_topology_background_color" />
+        <solid android:color="@androidprv:color/materialColorSurfaceDim" />
     </shape>
 </inset>

@@ -29,8 +29,7 @@
             android:title="@string/app_launch_open_in_browser"/>
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:layout="@layout/preference_category_no_label"
+    <com.android.settingslib.widget.UntitledPreferenceCategory
         android:key="open_by_default_main_category"
         settings:searchable="false">
 
@@ -43,8 +42,7 @@
                 android:order="-100"
                 settings:searchable="false"/>
 
-            <PreferenceCategory
-                android:layout="@layout/preference_category_no_label"
+            <com.android.settingslib.widget.UntitledPreferenceCategory
                 android:key="open_by_default_selected_links_category"
                 android:order="100"/>
 
@@ -67,8 +65,7 @@
 
         <com.android.settingslib.widget.FooterPreference
             android:key="open_by_default_footer"
-            android:selectable="false"
             settings:searchable="false"/>
 
-    </PreferenceCategory>
+    </com.android.settingslib.widget.UntitledPreferenceCategory>
 </PreferenceScreen>

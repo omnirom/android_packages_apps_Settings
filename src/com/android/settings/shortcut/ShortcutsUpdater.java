@@ -21,7 +21,6 @@ import static com.android.settings.shortcut.Shortcuts.SHORTCUT_PROBE;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import android.app.Flags;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -84,10 +83,9 @@ public class ShortcutsUpdater {
 
     @NonNull
     private static ComponentName maybeGetReplacingComponent(Context context, ComponentName cn) {
-        // ZenModeSettingsActivity is replaced by ModesSettingsActivity and will be deleted
-        // soon (so we shouldn't use ZenModeSettingsActivity.class).
-        if (Flags.modesUi()
-                && cn.getClassName().endsWith("Settings$ZenModeSettingsActivity")) {
+        // ZenModeSettingsActivity was replaced by ModesSettingsActivity, so existing shortcuts to
+        // the former should be updated to point to the latter.
+        if (cn.getClassName().endsWith("Settings$ZenModeSettingsActivity")) {
             return new ComponentName(context, Settings.ModesSettingsActivity.class);
         }
 

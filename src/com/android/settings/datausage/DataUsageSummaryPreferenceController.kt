@@ -41,18 +41,25 @@ import kotlinx.coroutines.withContext
  * subscriptions framework API if available. The controller reads subscription information from the
  * framework and falls back to legacy usage data if none are available.
  */
-open class DataUsageSummaryPreferenceController @JvmOverloads constructor(
+// LINT.IfChange
+open class DataUsageSummaryPreferenceController
+@JvmOverloads
+constructor(
     context: Context,
     subId: Int,
     private val proxySubscriptionManager: ProxySubscriptionManager =
         ProxySubscriptionManager.getInstance(context),
     private val networkPolicyRepository: NetworkPolicyRepository = NetworkPolicyRepository(context),
-    private val networkCycleDataRepositoryFactory: (
-        template: NetworkTemplate,
-    ) -> INetworkCycleDataRepository = { NetworkCycleDataRepository(context, it) },
-    private val dataPlanRepositoryFactory: (
-        networkCycleDataRepository: INetworkCycleDataRepository,
-    ) -> DataPlanRepository = { DataPlanRepositoryImpl(it) }
+    private val networkCycleDataRepositoryFactory:
+        (template: NetworkTemplate) -> INetworkCycleDataRepository =
+        {
+            NetworkCycleDataRepository(context, it)
+        },
+    private val dataPlanRepositoryFactory:
+        (networkCycleDataRepository: INetworkCycleDataRepository) -> DataPlanRepository =
+        {
+            DataPlanRepositoryImpl(it)
+        },
 ) : TelephonyBasePreferenceController(context, KEY) {
 
     init {
@@ -84,11 +91,12 @@ open class DataUsageSummaryPreferenceController @JvmOverloads constructor(
     }
 
     override fun onViewCreated(viewLifecycleOwner: LifecycleOwner) {
-        networkPolicyRepository.networkPolicyFlow(networkTemplate)
-            .collectLatestWithLifecycle(viewLifecycleOwner) { policy ->
-                preference.isVisible = subInfo != null && policy != null
-                if (policy != null) update(policy)
-            }
+        networkPolicyRepository.networkPolicyFlow(networkTemplate).collectLatestWithLifecycle(
+            viewLifecycleOwner
+        ) { policy ->
+            preference.isVisible = subInfo != null && policy != null
+            if (policy != null) update(policy)
+        }
     }
 
     private suspend fun update(policy: NetworkPolicy) {
@@ -97,12 +105,14 @@ open class DataUsageSummaryPreferenceController @JvmOverloads constructor(
         if (dataBarSize > NetworkPolicy.WARNING_DISABLED) {
             setDataBarSize(dataBarSize)
         }
-        val dataPlanInfo = withContext(Dispatchers.Default) {
-            dataPlanRepositoryFactory(networkCycleDataRepository).getDataPlanInfo(
-                policy = policy,
-                plans = proxySubscriptionManager.get().getSubscriptionPlans(mSubId),
-            )
-        }
+        val dataPlanInfo =
+            withContext(Dispatchers.Default) {
+                dataPlanRepositoryFactory(networkCycleDataRepository)
+                    .getDataPlanInfo(
+                        policy = policy,
+                        plans = proxySubscriptionManager.get().getSubscriptionPlans(mSubId),
+                    )
+            }
         Log.d(TAG, "dataPlanInfo: $dataPlanInfo")
         preference.setUsageNumbers(dataPlanInfo.dataPlanUse, dataPlanInfo.dataPlanSize)
         if (dataPlanInfo.dataBarSize > 0) {
@@ -123,39 +133,41 @@ open class DataUsageSummaryPreferenceController @JvmOverloads constructor(
 
     private fun setDataBarSize(dataBarSize: Long) {
         preference.setLabels(
-            dataUsageFormatter.formatDataUsage(/* byteValue = */ 0),
-            dataUsageFormatter.formatDataUsage(dataBarSize)
+            dataUsageFormatter.formatDataUsage(/* byteValue= */ 0),
+            dataUsageFormatter.formatDataUsage(dataBarSize),
         )
     }
 
-    private fun NetworkPolicy.getLimitInfo(): CharSequence? = when {
-        warningBytes > 0 && limitBytes > 0 -> {
-            TextUtils.expandTemplate(
-                mContext.getText(R.string.cell_data_warning_and_limit),
-                dataUsageFormatter.formatDataUsage(warningBytes),
-                dataUsageFormatter.formatDataUsage(limitBytes),
-            )
-        }
+    private fun NetworkPolicy.getLimitInfo(): CharSequence? =
+        when {
+            warningBytes > 0 && limitBytes > 0 -> {
+                TextUtils.expandTemplate(
+                    mContext.getText(R.string.cell_data_warning_and_limit),
+                    dataUsageFormatter.formatDataUsage(warningBytes),
+                    dataUsageFormatter.formatDataUsage(limitBytes),
+                )
+            }
 
-        warningBytes > 0 -> {
-            TextUtils.expandTemplate(
-                mContext.getText(R.string.cell_data_warning),
-                dataUsageFormatter.formatDataUsage(warningBytes),
-            )
-        }
+            warningBytes > 0 -> {
+                TextUtils.expandTemplate(
+                    mContext.getText(R.string.cell_data_warning),
+                    dataUsageFormatter.formatDataUsage(warningBytes),
+                )
+            }
 
-        limitBytes > 0 -> {
-            TextUtils.expandTemplate(
-                mContext.getText(R.string.cell_data_limit),
-                dataUsageFormatter.formatDataUsage(limitBytes),
-            )
-        }
+            limitBytes > 0 -> {
+                TextUtils.expandTemplate(
+                    mContext.getText(R.string.cell_data_limit),
+                    dataUsageFormatter.formatDataUsage(limitBytes),
+                )
+            }
 
-        else -> null
-    }
+            else -> null
+        }
 
     companion object {
         private const val TAG = "DataUsageSummaryPC"
         private const val KEY = "status_header"
     }
 }
+// LINT.ThenChange(MobileNetworkDataUsagePreference.kt)

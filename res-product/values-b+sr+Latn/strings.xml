@@ -164,10 +164,10 @@
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_4" product="tablet" msgid="8772005555323461143">"Vi i dete možete da izbrišete slike i model otiska prsta ili da isključite otključavanje otiskom prsta u bilo kom trenutku u podešavanjima. Slike i modeli otisaka prstiju se čuvaju na tabletu dok ih ne izbrišete."</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_4" product="device" msgid="7254955922685507093">"Vi i dete možete da izbrišete slike i model otiska prsta ili da isključite otključavanje otiskom prsta u bilo kom trenutku u podešavanjima. Slike i modeli otisaka prstiju se čuvaju na uređaju dok ih ne izbrišete."</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_4" product="desktop" msgid="7254955922685507093">"Vi i dete možete da izbrišete slike i model otiska prsta ili da isključite otključavanje otiskom prsta u bilo kom trenutku u podešavanjima. Slike i modeli otisaka prstiju se čuvaju na uređaju dok ih ne izbrišete."</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="default" msgid="6272159089589340181">"Telefon može da se otključa kada to ne nameravate. Na primer, ako ga neko približi vašem prstu."</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="tablet" msgid="2420109998272019149">"Tablet može da se otključa kada to ne nameravate. Na primer, ako ga neko približi vašem prstu."</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="device" msgid="5915844445830045866">"Uređaj može da se otključa kada to ne nameravate. Na primer, ako ga neko približi vašem prstu."</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="desktop" msgid="5915844445830045866">"Uređaj može da se otključa kada to ne nameravate. Na primer, ako ga neko približi vašem prstu."</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="default" msgid="6838578698434849838">"Telefon može da se otključa kada to ne nameravate. Na primer, ako ga neko približi vašem prstu"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="tablet" msgid="7796353046744228477">"Tablet može da se otključa kada to ne nameravate. Na primer, ako ga neko približi vašem prstu"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="device" msgid="5075445491909690772">"Uređaj može da se otključa kada to ne nameravate. Na primer, ako ga neko približi vašem prstu"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="desktop" msgid="5075445491909690772">"Uređaj može da se otključa kada to ne nameravate. Na primer, ako ga neko približi vašem prstu"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_5" product="default" msgid="6556725426776167791">"Telefon deteta može da se otključa kada dete to ne namerava. Na primer, ako neko približi telefon detetovom prstu."</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_5" product="tablet" msgid="5156581794964551571">"Detetov tablet može da se otključa kada dete to ne namerava. Na primer, ako neko približi tablet detetovom prstu."</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_5" product="device" msgid="8309101436391515400">"Detetov uređaj može da se otključa kada dete to ne namerava. Na primer, ako neko približi uređaj detetovom prstu."</string>
@@ -310,11 +310,11 @@
     <string name="wifi_add_app_networks_summary" product="default" msgid="7014504084783236696">"<xliff:g id="APPNAME">%1$s</xliff:g> želi da sačuva ove mreže na telefonu"</string>
     <string name="wifi_add_app_networks_summary" product="tablet" msgid="6433255556506891439">"<xliff:g id="APPNAME">%1$s</xliff:g> želi da sačuva ove mreže na tabletu"</string>
     <string name="wifi_add_app_networks_summary" product="desktop" msgid="4238956725252527159">"<xliff:g id="APPNAME">%1$s</xliff:g> želi da sačuva ove mreže na uređaju"</string>
-    <string name="auto_rotate_screen_summary" product="default" msgid="5562937346878935483">"Automatski prilagodite položaj ekrana kada prebacujete telefon između uspravnog i vodoravnog režima"</string>
+    <string name="auto_rotate_screen_summary" product="default" msgid="5562937346878935483">"Automatski prilagodite položaj ekrana kada okrećete uređaj između uspravnog i vodoravnog režima"</string>
     <string name="auto_rotate_screen_summary" product="tablet" msgid="3163709742477804994">"Automatski prilagodite položaj ekrana kada prebacujete tablet između uspravnog i vodoravnog režima"</string>
-    <string name="auto_rotate_screen_summary" product="desktop" msgid="3805199344834364732">"Automatski prilagodite položaj ekrana kada prebacujete uređaj između uspravnog i vodoravnog režima"</string>
+    <string name="auto_rotate_screen_summary" product="desktop" msgid="3805199344834364732">"Automatski prilagodite položaj ekrana kada okrećete uređaj između uspravnog i vodoravnog režima"</string>
     <string name="sim_lock_on" product="tablet" msgid="227481196121403470">"Zahtevaj PIN radi upotrebe tableta"</string>
-    <string name="sim_lock_on" product="default" msgid="6896034657274595838">"Zahtevaj PIN radi upotrebe telefona"</string>
+    <string name="sim_lock_on" product="default" msgid="6896034657274595838">"Zahtevaj PIN za upotrebu telefona"</string>
     <string name="sim_lock_on" product="desktop" msgid="5734697047766184447">"Potreban je PIN za korišćenje uređaja"</string>
     <string name="sim_lock_off" product="tablet" msgid="4619320846576958981">"Zahtevaj PIN radi upotrebe tableta"</string>
     <string name="sim_lock_off" product="default" msgid="2064502270875375541">"Zahtevaj PIN radi upotrebe telefona"</string>
@@ -386,9 +386,6 @@
     <string name="accessibility_daltonizer_about_intro_text" product="default" msgid="5234458848997942613">"Prilagodite način na koji se boje prikazuju na telefonu"</string>
     <string name="accessibility_daltonizer_about_intro_text" product="tablet" msgid="5300401841391736534">"Prilagodite način na koji se boje prikazuju na tabletu"</string>
     <string name="accessibility_daltonizer_about_intro_text" product="desktop" msgid="8908526728447739478">"Prilagodite način na koji se boje prikazuju na uređaju"</string>
-    <string name="reduce_bright_colors_preference_summary" product="default" msgid="2025941326724094318">"Zatamnite ekran više od minimalne osvetljenosti telefona"</string>
-    <string name="reduce_bright_colors_preference_summary" product="tablet" msgid="3106979202311807559">"Zatamnite ekran više od minimalne osvetljenosti tableta"</string>
-    <string name="reduce_bright_colors_preference_summary" product="desktop" msgid="7810358416215416035">"Zatamnite ekran više od minimalne osvetljenosti uređaja"</string>
     <string name="reduce_bright_colors_preference_subtitle" product="default" msgid="9162440023310121356">"Dodatno zatamnjenje može da bude korisno: &lt;ol&gt; &lt;li&gt; Kada je podrazumevana minimalna osvetljenost telefona i dalje jaka&lt;/li&gt; &lt;li&gt; Kada koristite telefon u mraku, na primer,  noću ili u tamnoj sobi pre spavanja&lt;/li&gt; &lt;/ol&gt;"</string>
     <string name="reduce_bright_colors_preference_subtitle" product="tablet" msgid="5747242697890472822">"Dodatno zatamnjenje može da bude korisno: &lt;ol&gt; &lt;li&gt; Kada je podrazumevana minimalna osvetljenost tableta i dalje jaka&lt;/li&gt; &lt;li&gt; Kada koristite tablet u mraku, na primer, noću ili u tamno sobi pre odlaska na spavanje&lt;/li&gt; &lt;/ol&gt;"</string>
     <string name="reduce_bright_colors_preference_subtitle" product="desktop" msgid="3114657547062643684">"Dodatno zatamnjenje može da bude korisno: &lt;ol&gt; &lt;li&gt; kada je podrazumevana minimalna osvetljenost uređaja i dalje jaka&lt;/li&gt; &lt;li&gt; kada koristite uređaj u mraku, na primer, noću ili u tamnoj sobi pre odlaska na spavanje&lt;/li&gt; &lt;/ol&gt;"</string>
@@ -435,10 +432,10 @@
     <string name="user_confirm_remove_self_message" product="tablet" msgid="6880861846664267876">"Izgubićete prostor i podatke na ovom tabletu. Ne možete da opozovete ovu radnju."</string>
     <string name="user_confirm_remove_self_message" product="default" msgid="3209762447055039706">"Izgubićete prostor i podatke na ovom telefonu. Ne možete da opozovete ovu radnju."</string>
     <string name="user_confirm_remove_self_message" product="desktop" msgid="3652163924130510374">"Izgubićete prostor i podatke na ovom uređaju. Ne možete da opozovete ovu radnju."</string>
-    <string name="support_summary" product="default" msgid="2044721479256103419">"Članci pomoći, podrška telefonom i ćaskanjem"</string>
-    <string name="support_summary" product="tablet" msgid="2588832599234347108">"Članci pomoći, tablet i ćaskanje"</string>
-    <string name="support_summary" product="device" msgid="6821511162132497205">"Članci pomoći, uređaj i ćaskanje"</string>
-    <string name="support_summary" product="desktop" msgid="6821511162132497205">"Članci pomoći, uređaj i ćaskanje"</string>
+    <string name="support_summary" product="default" msgid="2044721479256103419">"Članci pomoći, podrška telefonom i četom"</string>
+    <string name="support_summary" product="tablet" msgid="2588832599234347108">"Članci pomoći, tablet i čet"</string>
+    <string name="support_summary" product="device" msgid="6821511162132497205">"Članci pomoći, uređaj i čet"</string>
+    <string name="support_summary" product="desktop" msgid="6821511162132497205">"Članci pomoći, uređaj i čet"</string>
     <string name="ambient_display_title" product="default" msgid="8027137727044125809">"Dvaput dodirnite telefon da biste ga proverili"</string>
     <string name="ambient_display_title" product="tablet" msgid="2347746118188465334">"Dvaput dodirnite tablet da biste ga proverili"</string>
     <string name="ambient_display_title" product="device" msgid="6306105102175823199">"Dvaput dodirnite uređaj da biste ga proverili"</string>
@@ -484,6 +481,24 @@
     <string name="lockscreen_trivial_controls_summary" product="default" msgid="42562533085885152">"Bez otključavanja telefona"</string>
     <string name="lockscreen_trivial_controls_summary" product="tablet" msgid="9052068482124729345">"Bez otključavanja tableta"</string>
     <string name="lockscreen_trivial_controls_summary" product="desktop" msgid="8183513643394359332">"Bez otključavanja uređaja"</string>
+    <string name="device_supervision_switch_title" product="default" msgid="5711051584668311080">"Kontrole za ovaj telefon"</string>
+    <string name="device_supervision_switch_title" product="tablet" msgid="5400384750840247844">"Kontrole za ovaj tablet"</string>
+    <string name="device_supervision_switch_title" product="desktop" msgid="2140192989162020111">"Kontrole za ovaj uređaj"</string>
+    <string name="supervision_pin_length_message" product="default" msgid="7142997986515800901">"{count,plural, =1{Unesite PIN sa najmanje # cifrom. Koristićete ga za upravljanje kontrolama na ovom telefonu.}one{Unesite PIN sa najmanje # cifrom. Koristićete ga za upravljanje kontrolama na ovom telefonu.}few{Unesite PIN sa najmanje # cifre. Koristićete ga za upravljanje kontrolama na ovom telefonu.}other{Unesite PIN sa najmanje # cifara. Koristićete ga za upravljanje kontrolama na ovom telefonu.}}"</string>
+    <string name="supervision_pin_length_message" product="tablet" msgid="1772471880165492225">"{count,plural, =1{Unesite PIN sa najmanje # cifrom. Koristićete ga za upravljanje kontrolama na ovom tabletu.}one{Unesite PIN sa najmanje # cifrom. Koristićete ga za upravljanje kontrolama na ovom tabletu.}few{Unesite PIN sa najmanje # cifre. Koristićete ga za upravljanje kontrolama na ovom tabletu.}other{Unesite PIN sa najmanje # cifara. Koristićete ga za upravljanje kontrolama na ovom tabletu.}}"</string>
+    <string name="supervision_pin_length_message" product="desktop" msgid="7689193597679628648">"{count,plural, =1{Unesite PIN sa najmanje # cifrom. Koristićete ga za upravljanje kontrolama na ovom uređaju.}one{Unesite PIN sa najmanje # cifrom. Koristićete ga za upravljanje kontrolama na ovom uređaju.}few{Unesite PIN sa najmanje # cifre. Koristićete ga za upravljanje kontrolama na ovom uređaju.}other{Unesite PIN sa najmanje # cifara. Koristićete ga za upravljanje kontrolama na ovom uređaju.}}"</string>
+    <string name="supervision_delete_pin_supervision_enabled_message" product="default" msgid="3538726164054428290">"PIN za roditeljski nadzor deli više korisnika. Da biste izbrisali PIN, kontrole koje ga koriste moraju da budu isključene za sve korisnike na ovom telefonu."</string>
+    <string name="supervision_delete_pin_supervision_enabled_message" product="tablet" msgid="5923679321161365699">"PIN za roditeljski nadzor deli više korisnika. Da biste izbrisali PIN, kontrole koje ga koriste moraju da budu isključene za sve korisnike na ovom tabletu."</string>
+    <string name="supervision_delete_pin_supervision_enabled_message" product="desktop" msgid="4418588055965155673">"PIN za roditeljski nadzor deli više korisnika. Da biste izbrisali PIN, kontrole koje ga koriste moraju da budu isključene za sve korisnike na ovom uređaju."</string>
+    <string name="supervision_delete_pin_confirm_message" product="default" msgid="4142432379507014709">"PIN za roditeljski nadzor će biti trajno izbrisan. Sve kontrole koje ste pomoću ovog PIN-a podesili za korisnike na ovom telefonu biće isključene."</string>
+    <string name="supervision_delete_pin_confirm_message" product="tablet" msgid="3676061526109959657">"PIN za roditeljski nadzor će biti trajno izbrisan. Sve kontrole koje ste pomoću ovog PIN-a podesili za korisnike na ovom tabletu biće isključene."</string>
+    <string name="supervision_delete_pin_confirm_message" product="desktop" msgid="9122403113168273844">"PIN za roditeljski nadzor će biti trajno izbrisan. Sve kontrole koje ste pomoću ovog PIN-a podesili za korisnike na ovom uređaju biće isključene."</string>
+    <string name="device_supervision_pin_management_footer" product="default" msgid="6890338658180593450">"PIN za roditeljski nadzor je isti za sve korisnike na ovom telefonu"</string>
+    <string name="device_supervision_pin_management_footer" product="tablet" msgid="4013172842200145374">"PIN za roditeljski nadzor je isti za sve korisnike na ovom tabletu"</string>
+    <string name="device_supervision_pin_management_footer" product="desktop" msgid="6539340160423866980">"PIN za roditeljski nadzor je isti za sve korisnike na ovom uređaju"</string>
+    <string name="supervision_multi_profile_error_message" product="default" msgid="4185376425933293903">"Na ovom telefonu postoji više profila, pa roditeljski nadzor ne može da se uključi."</string>
+    <string name="supervision_multi_profile_error_message" product="tablet" msgid="5021937906206996760">"Na ovom tabletu postoji više profila, pa roditeljski nadzor ne može da se uključi."</string>
+    <string name="supervision_multi_profile_error_message" product="desktop" msgid="7222938263475617299">"Na ovom uređaju postoji više profila, pa roditeljski nadzor ne može da se uključi."</string>
     <string name="auto_rotate_summary_a11y" product="default" msgid="2813368383309985185">"Kada okrećete telefon u uspravni ili vodoravni režim"</string>
     <string name="auto_rotate_summary_a11y" product="tablet" msgid="4708833814245913981">"Kada okrećete tablet u uspravni ili vodoravni režim"</string>
     <string name="auto_rotate_summary_a11y" product="desktop" msgid="1342493478927297535">"Kada okrećete uređaj u uspravni ili vodoravni režim"</string>
@@ -518,4 +533,6 @@
     <string name="audio_sharing_confirm_dialog_content_with_link" product="tablet" msgid="282597208139437138">"Da biste počeli da delite zvuk, prvo povežite LE Audio slušalice sa tabletom. "<annotation id="link">"Saznajte više o kompatibilnim uređajima"</annotation></string>
     <string name="audio_sharing_confirm_dialog_content_with_link" product="device" msgid="668964968208427465">"Da biste počeli da delite zvuk, prvo povežite LE Audio slušalice sa uređajem. "<annotation id="link">"Saznajte više o kompatibilnim uređajima"</annotation></string>
     <string name="audio_sharing_confirm_dialog_content_with_link" product="desktop" msgid="668964968208427465">"Da biste počeli da delite zvuk, prvo povežite LE Audio slušalice sa uređajem. "<annotation id="link">"Saznajte više o kompatibilnim uređajima"</annotation></string>
+    <string name="network_dashboard_summary_mobile" product="default" msgid="1856501121269595911">"Mobilna mreža, WiFi, hotspot"</string>
+    <string name="network_dashboard_summary_mobile" product="desktop" msgid="8770767156162473221">"WiFi, mobilna mreža, hotspot"</string>
 </resources>

@@ -39,8 +39,6 @@ import com.android.settings.Utils;
 import com.android.settings.biometrics.BiometricEnrollBase;
 import com.android.settings.biometrics.BiometricEnrollSidecar;
 import com.android.settings.biometrics.BiometricUtils;
-import com.android.settings.flags.Flags;
-import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.password.ChooseLockSettingsHelper;
 import com.android.settingslib.widget.LottieColorUtils;
 import com.android.systemui.unfold.compat.ScreenSizeFoldProvider;
@@ -77,8 +75,6 @@ public class FingerprintEnrollFindSensor extends BiometricEnrollBase implements
     private ScreenSizeFoldProvider mScreenSizeFoldProvider;
     private boolean mIsFolded;
     private boolean mIsReverseDefaultRotation;
-    @Nullable
-    protected UdfpsEnrollCalibrator mCalibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,22 +158,7 @@ public class FingerprintEnrollFindSensor extends BiometricEnrollBase implements
 
         mAnimation = null;
         if (mCanAssumeUdfps) {
-            if (Flags.udfpsEnrollCalibration()) {
-                mCalibrator = FeatureFactory.getFeatureFactory().getFingerprintFeatureProvider()
-                        .getUdfpsEnrollCalibrator(getApplicationContext(), savedInstanceState,
-                                getIntent());
-                if (mCalibrator != null) {
-                    mCalibrator.onWaitingPage(
-                            getLifecycle(),
-                            getSupportFragmentManager(),
-                            this::enableUdfpsLottieAndNextButton
-                    );
-                } else {
-                    enableUdfpsLottieAndNextButton();
-                }
-            } else {
-                enableUdfpsLottieAndNextButton();
-            }
+            enableUdfpsLottieAndNextButton();
         } else if (!mCanAssumeSfps) {
             View animationView = findViewById(R.id.fingerprint_sensor_location_animation);
             if (animationView instanceof FingerprintFindSensorAnimation) {
@@ -282,11 +263,6 @@ public class FingerprintEnrollFindSensor extends BiometricEnrollBase implements
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(SAVED_STATE_IS_NEXT_CLICKED, mNextClicked);
-        if (Flags.udfpsEnrollCalibration()) {
-            if (mCalibrator != null) {
-                mCalibrator.onSaveInstanceState(outState);
-            }
-        }
     }
 
     @Override
@@ -294,11 +270,6 @@ public class FingerprintEnrollFindSensor extends BiometricEnrollBase implements
         final Intent ret = super.getFingerprintEnrollingIntent();
         ret.putExtra(BiometricUtils.EXTRA_ENROLL_REASON,
                 getIntent().getIntExtra(BiometricUtils.EXTRA_ENROLL_REASON, -1));
-        if (Flags.udfpsEnrollCalibration()) {
-            if (mCalibrator != null) {
-                ret.putExtras(mCalibrator.getExtrasForNextIntent());
-            }
-        }
         return ret;
     }
 

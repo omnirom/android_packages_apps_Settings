@@ -22,29 +22,41 @@ import android.app.NotificationChannel
 import android.app.NotificationManager.IMPORTANCE_DEFAULT
 import android.app.NotificationManager.IMPORTANCE_NONE
 import android.app.NotificationManager.IMPORTANCE_UNSPECIFIED
+import android.app.admin.DevicePolicyManager
 import android.app.usage.IUsageStatsManager
 import android.app.usage.UsageEvents
+import android.content.ComponentName
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.os.Build
+import android.os.UserHandle
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
+
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+
+import com.android.settings.flags.Flags
 import com.android.settings.R
 import com.android.settingslib.spaprivileged.model.app.IPackageManagers
 import com.android.settingslib.spaprivileged.model.app.userId
 import com.google.common.truth.Truth.assertThat
+
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.spy
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -53,7 +65,12 @@ class AppNotificationRepositoryTest {
     @get:Rule
     val mockito: MockitoRule = MockitoJUnit.rule()
 
-    private val context: Context = ApplicationProvider.getApplicationContext()
+    @get:Rule val setFlagsRule = SetFlagsRule()
+
+    private val context: Context = spy(ApplicationProvider.getApplicationContext()) {}
+    private val testAdminComponent: ComponentName = ComponentName("testAdmin", "DO")
+    private val user: UserHandle = context.getUser()
+    private val pkg: String = context.getPackageName()
 
     @Mock
     private lateinit var packageManagers: IPackageManagers
@@ -64,15 +81,24 @@ class AppNotificationRepositoryTest {
     @Mock
     private lateinit var notificationManager: INotificationManager
 
+    @Mock
+    private lateinit var devicePolicyManager: DevicePolicyManager
+
     private lateinit var repository: AppNotificationRepository
 
     @Before
     fun setUp() {
+        whenever(context.getSystemService(eq(Context.DEVICE_POLICY_SERVICE))).thenReturn(devicePolicyManager)
+        whenever(context.createPackageContextAsUser(eq(pkg), any(), eq(user))).thenReturn(context)
+        whenever(devicePolicyManager.getDeviceOwnerUser()).thenReturn(user)
+        whenever(devicePolicyManager.getDeviceOwnerComponentOnAnyUser()).thenReturn(null)
+
         repository = AppNotificationRepository(
             context,
             packageManagers,
             usageStatsManager,
             notificationManager,
+            dpm = devicePolicyManager,
         )
     }
 
@@ -211,6 +237,42 @@ class AppNotificationRepositoryTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_NOTIFICATION_USE_DPC_POLICY)
+    fun isChangeable_devicePolicyPrompt() {
+        whenever(notificationManager.isImportanceLocked(APP.packageName, APP.uid)).thenReturn(false)
+        whenever(devicePolicyManager.getDeviceOwnerComponentOnAnyUser()).thenReturn(testAdminComponent)
+        whenever(devicePolicyManager.getPermissionPolicy(testAdminComponent)).thenReturn(DevicePolicyManager.PERMISSION_POLICY_PROMPT)
+
+        val isChangeable = repository.isChangeable(APP)
+
+        assertThat(isChangeable).isTrue()
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_NOTIFICATION_USE_DPC_POLICY)
+    fun isChangeable_devicePolicyAutoGrant() {
+        whenever(notificationManager.isImportanceLocked(APP.packageName, APP.uid)).thenReturn(false)
+        whenever(devicePolicyManager.getDeviceOwnerComponentOnAnyUser()).thenReturn(testAdminComponent)
+        whenever(devicePolicyManager.getPermissionPolicy(testAdminComponent)).thenReturn(DevicePolicyManager.PERMISSION_POLICY_AUTO_GRANT)
+
+        val isChangeable = repository.isChangeable(APP)
+
+        assertThat(isChangeable).isFalse()
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_NOTIFICATION_USE_DPC_POLICY)
+    fun isChangeable_devicePolicyAutoDeny() {
+        whenever(notificationManager.isImportanceLocked(APP.packageName, APP.uid)).thenReturn(false)
+        whenever(devicePolicyManager.getDeviceOwnerComponentOnAnyUser()).thenReturn(testAdminComponent)
+        whenever(devicePolicyManager.getPermissionPolicy(testAdminComponent)).thenReturn(DevicePolicyManager.PERMISSION_POLICY_AUTO_DENY)
+
+        val isChangeable = repository.isChangeable(APP)
+
+        assertThat(isChangeable).isFalse()
+    }
+
+    @Test
     fun setEnabled_toTrueWhenOnlyHasDefaultChannel() {
         val channel = mockOnlyHasDefaultChannel()
 
@@ -310,6 +372,25 @@ class AppNotificationRepositoryTest {
         val summary = repository.calculateFrequencySummary(3)
 
         assertThat(summary).isEqualTo("About 3 notifications per week")
+    }
+
+    @Test
+    fun hasSentMessageNotification_yesValid() {
+        whenever(notificationManager.hasSentValidMsg(APP.packageName, APP.uid)).thenReturn(true)
+
+        assertThat(repository.hasSentMessageNotification(APP)).isTrue()
+    }
+
+    @Test
+    fun hasSentMessageNotification_yesInvalid() {
+        whenever(notificationManager.isInInvalidMsgState(APP.packageName, APP.uid)).thenReturn(true)
+
+        assertThat(repository.hasSentMessageNotification(APP)).isTrue()
+    }
+
+    @Test
+    fun hasSentMessageNotification_no() {
+        assertThat(repository.hasSentMessageNotification(APP)).isFalse()
     }
 
     private companion object {

@@ -18,6 +18,7 @@ package com.android.settings.spa.network
 
 import android.content.Context
 import android.telephony.SubscriptionInfo
+import android.telephony.SubscriptionManager
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -26,32 +27,54 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.settings.R
 import com.android.settings.network.SimOnboardingService
+import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.spy
 import org.mockito.kotlin.stub
 import org.mockito.kotlin.verify
 
-
 @RunWith(AndroidJUnit4::class)
 class SimOnboardingPrimarySimTest {
-    @get:Rule
-    val composeTestRule = createComposeRule()
+    @get:Rule val composeTestRule = createComposeRule()
 
-    private val context: Context = ApplicationProvider.getApplicationContext()
-    private var mockSimOnboardingService = mock<SimOnboardingService> {
-        on { targetSubId }.doReturn(-1)
-        on { targetSubInfo }.doReturn(null)
-        on { availableSubInfoList }.doReturn(listOf())
-        on { activeSubInfoList }.doReturn(listOf())
-        on { uiccCardInfoList }.doReturn(listOf())
+    private var mockSimOnboardingService =
+        spy(SimOnboardingService()) {
+            on { targetSubId }.doReturn(SUB_INFO_3.subscriptionId)
+            on { targetSubInfo }.doReturn(SUB_INFO_3)
+            on { uiccCardInfoList }.doReturn(listOf())
 
-        on { targetPrimarySimCalls }.doReturn(PRIMARY_SIM_ASK_EVERY_TIME)
-        on { targetPrimarySimTexts }.doReturn(PRIMARY_SIM_ASK_EVERY_TIME)
-        on { targetPrimarySimMobileData }.doReturn(PRIMARY_SIM_ASK_EVERY_TIME)
-    }
+            on { activeSubInfoList }.doReturn(listOf(SUB_INFO_1, SUB_INFO_2))
+            on { availableSubInfoList }.doReturn(listOf(SUB_INFO_1, SUB_INFO_2, SUB_INFO_3))
+            on { userSelectedSubInfoList }.doReturn(mutableListOf(SUB_INFO_1, SUB_INFO_2))
+            on { getSelectableSubscriptionInfoList() }
+                .doReturn(listOf(SUB_INFO_1, SUB_INFO_2, SUB_INFO_3))
+            on { getSelectedSubscriptionInfoListWithRenaming() }.doReturn(listOf())
+            on { targetPrimarySimAutoDataSwitch }.doReturn(MutableStateFlow(false))
+        }
+
+    private val mockSubscriptionManager =
+        mock<SubscriptionManager> {
+            on { addOnSubscriptionsChangedListener(any(), any()) } doAnswer
+                {
+                    val listener =
+                        it.arguments[1] as SubscriptionManager.OnSubscriptionsChangedListener
+                    listener.onSubscriptionsChanged()
+                }
+            on { getPhoneNumber(SUB_ID_1) } doReturn NUMBER_1
+            on { getPhoneNumber(SUB_ID_2) } doReturn NUMBER_2
+        }
+    private val context: Context =
+        spy(ApplicationProvider.getApplicationContext()) {
+            on { getSystemService(SubscriptionManager::class.java) } doReturn
+                mockSubscriptionManager
+        }
 
     private val nextAction: () -> Unit = mock()
     private val cancelAction: () -> Unit = mock()
@@ -62,7 +85,8 @@ class SimOnboardingPrimarySimTest {
             SimOnboardingPrimarySimImpl(nextAction, cancelAction, mockSimOnboardingService)
         }
 
-        composeTestRule.onNodeWithText(context.getString(R.string.sim_onboarding_primary_sim_title))
+        composeTestRule
+            .onNodeWithText(context.getString(R.string.sim_onboarding_primary_sim_title))
             .assertIsDisplayed()
     }
 
@@ -72,7 +96,8 @@ class SimOnboardingPrimarySimTest {
             SimOnboardingPrimarySimImpl(nextAction, cancelAction, mockSimOnboardingService)
         }
 
-        composeTestRule.onNodeWithText(context.getString(R.string.sim_onboarding_primary_sim_msg))
+        composeTestRule
+            .onNodeWithText(context.getString(R.string.sim_onboarding_primary_sim_msg))
             .assertIsDisplayed()
     }
 
@@ -82,10 +107,145 @@ class SimOnboardingPrimarySimTest {
             SimOnboardingPrimarySimImpl(nextAction, cancelAction, mockSimOnboardingService)
         }
 
-        composeTestRule.onNodeWithText(context.getString(R.string.cancel))
-            .performClick()
+        composeTestRule.onNodeWithText(context.getString(R.string.cancel)).performClick()
 
         verify(cancelAction)
+    }
+
+    @Test
+    fun simOnboardingPrimarySimImpl_showVoiceItem() {
+        mockSimOnboardingService.stub {
+            on { getSelectedSubscriptionInfoListWithRenaming() }
+                .doReturn(listOf(SUB_INFO_1, SUB_INFO_3))
+        }
+
+        composeTestRule.setContent {
+            SimOnboardingPrimarySimImpl(nextAction, cancelAction, mockSimOnboardingService)
+        }
+
+        composeTestRule
+            .onNodeWithText(context.getString(R.string.primary_sim_calls_title))
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun simOnboardingPrimarySimImpl_showDefaultVoice() {
+        mockSimOnboardingService.stub {
+            on { getSelectedSubscriptionInfoListWithRenaming() }
+                .doReturn(listOf(SUB_INFO_1, SUB_INFO_3))
+        }
+        mockSimOnboardingService.targetPrimarySimCalls = SUB_INFO_2.subscriptionId
+        composeTestRule.setContent {
+            SimOnboardingPrimarySimImpl(nextAction, cancelAction, mockSimOnboardingService)
+        }
+
+        assertThat(mockSimOnboardingService.targetPrimarySimCalls)
+            .isEqualTo(SUB_INFO_1.subscriptionId)
+    }
+
+    @Test
+    fun simOnboardingPrimarySimImpl_showSelectedVoice() {
+        mockSimOnboardingService.stub {
+            on { getSelectedSubscriptionInfoListWithRenaming() }
+                .doReturn(listOf(SUB_INFO_1, SUB_INFO_3))
+        }
+        mockSimOnboardingService.targetPrimarySimCalls = SUB_INFO_3.subscriptionId
+        composeTestRule.setContent {
+            SimOnboardingPrimarySimImpl(nextAction, cancelAction, mockSimOnboardingService)
+        }
+
+        assertThat(mockSimOnboardingService.targetPrimarySimCalls)
+            .isEqualTo(SUB_INFO_3.subscriptionId)
+    }
+
+    @Test
+    fun simOnboardingPrimarySimImpl_showSmsItem() {
+        mockSimOnboardingService.stub {
+            on { getSelectedSubscriptionInfoListWithRenaming() }
+                .doReturn(listOf(SUB_INFO_1, SUB_INFO_3))
+        }
+        composeTestRule.setContent {
+            SimOnboardingPrimarySimImpl(nextAction, cancelAction, mockSimOnboardingService)
+        }
+
+        composeTestRule
+            .onNodeWithText(context.getString(R.string.primary_sim_texts_title))
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun simOnboardingPrimarySimImpl_showDefaultSms() {
+        mockSimOnboardingService.stub {
+            on { getSelectedSubscriptionInfoListWithRenaming() }
+                .doReturn(listOf(SUB_INFO_1, SUB_INFO_3))
+        }
+        mockSimOnboardingService.targetPrimarySimTexts = SUB_INFO_2.subscriptionId
+        composeTestRule.setContent {
+            SimOnboardingPrimarySimImpl(nextAction, cancelAction, mockSimOnboardingService)
+        }
+
+        assertThat(mockSimOnboardingService.targetPrimarySimTexts)
+            .isEqualTo(SUB_INFO_1.subscriptionId)
+    }
+
+    @Test
+    fun simOnboardingPrimarySimImpl_showSelectedSms() {
+        mockSimOnboardingService.stub {
+            on { getSelectedSubscriptionInfoListWithRenaming() }
+                .doReturn(listOf(SUB_INFO_1, SUB_INFO_3))
+        }
+        mockSimOnboardingService.targetPrimarySimTexts = SUB_INFO_3.subscriptionId
+        composeTestRule.setContent {
+            SimOnboardingPrimarySimImpl(nextAction, cancelAction, mockSimOnboardingService)
+        }
+
+        assertThat(mockSimOnboardingService.targetPrimarySimTexts)
+            .isEqualTo(SUB_INFO_3.subscriptionId)
+    }
+
+    @Test
+    fun simOnboardingPrimarySimImpl_showDataItem() {
+        mockSimOnboardingService.stub {
+            on { getSelectedSubscriptionInfoListWithRenaming() }
+                .doReturn(listOf(SUB_INFO_1, SUB_INFO_3))
+        }
+        composeTestRule.setContent {
+            SimOnboardingPrimarySimImpl(nextAction, cancelAction, mockSimOnboardingService)
+        }
+
+        composeTestRule
+            .onNodeWithText(context.getString(R.string.mobile_data_settings_title))
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun simOnboardingPrimarySimImpl_showDefaultData() {
+        mockSimOnboardingService.stub {
+            on { getSelectedSubscriptionInfoListWithRenaming() }
+                .doReturn(listOf(SUB_INFO_1, SUB_INFO_3))
+        }
+        mockSimOnboardingService.targetPrimarySimMobileData = SUB_INFO_2.subscriptionId
+        composeTestRule.setContent {
+            SimOnboardingPrimarySimImpl(nextAction, cancelAction, mockSimOnboardingService)
+        }
+
+        assertThat(mockSimOnboardingService.targetPrimarySimMobileData)
+            .isEqualTo(SUB_INFO_1.subscriptionId)
+    }
+
+    @Test
+    fun simOnboardingPrimarySimImpl_showSelectedData() {
+        mockSimOnboardingService.stub {
+            on { getSelectedSubscriptionInfoListWithRenaming() }
+                .doReturn(listOf(SUB_INFO_1, SUB_INFO_3))
+        }
+        mockSimOnboardingService.targetPrimarySimMobileData = SUB_INFO_3.subscriptionId
+        composeTestRule.setContent {
+            SimOnboardingPrimarySimImpl(nextAction, cancelAction, mockSimOnboardingService)
+        }
+
+        assertThat(mockSimOnboardingService.targetPrimarySimMobileData)
+            .isEqualTo(SUB_INFO_3.subscriptionId)
     }
 
     private companion object {
@@ -100,22 +260,31 @@ class SimOnboardingPrimarySimTest {
         const val NUMBER_3 = "000000003"
         const val PRIMARY_SIM_ASK_EVERY_TIME = -1
 
-        val SUB_INFO_1: SubscriptionInfo = SubscriptionInfo.Builder().apply {
-            setId(SUB_ID_1)
-            setDisplayName(DISPLAY_NAME_1)
-            setNumber(NUMBER_1)
-        }.build()
+        val SUB_INFO_1: SubscriptionInfo =
+            SubscriptionInfo.Builder()
+                .apply {
+                    setId(SUB_ID_1)
+                    setDisplayName(DISPLAY_NAME_1)
+                    setNumber(NUMBER_1)
+                }
+                .build()
 
-        val SUB_INFO_2: SubscriptionInfo = SubscriptionInfo.Builder().apply {
-            setId(SUB_ID_2)
-            setDisplayName(DISPLAY_NAME_2)
-            setNumber(NUMBER_2)
-        }.build()
+        val SUB_INFO_2: SubscriptionInfo =
+            SubscriptionInfo.Builder()
+                .apply {
+                    setId(SUB_ID_2)
+                    setDisplayName(DISPLAY_NAME_2)
+                    setNumber(NUMBER_2)
+                }
+                .build()
 
-        val SUB_INFO_3: SubscriptionInfo = SubscriptionInfo.Builder().apply {
-            setId(SUB_ID_3)
-            setDisplayName(DISPLAY_NAME_3)
-            setNumber(NUMBER_3)
-        }.build()
+        val SUB_INFO_3: SubscriptionInfo =
+            SubscriptionInfo.Builder()
+                .apply {
+                    setId(SUB_ID_3)
+                    setDisplayName(DISPLAY_NAME_3)
+                    setNumber(NUMBER_3)
+                }
+                .build()
     }
 }

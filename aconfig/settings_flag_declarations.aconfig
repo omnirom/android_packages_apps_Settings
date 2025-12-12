@@ -2,13 +2,6 @@ package: "com.android.settings.flags"
 container: "system_ext"
 
 flag {
-    name: "show_factory_reset_cancel_button"
-    namespace: "android_settings"
-    description: "This flag controls whether to show a Cancel button when factory reset"
-    bug: "300634367"
-}
-
-flag {
     name: "mainline_module_explicit_intent"
     namespace: "android_settings"
     description: "Enabling will provide an explicit package name for Intent to update mainline modules"
@@ -20,20 +13,6 @@ flag {
     namespace: "android_settings"
     description: "Feature flag to enable the archiving feature."
     bug: "323164382"
-}
-
-flag {
-    name: "homepage_revamp"
-    namespace: "android_settings"
-    description: "Feature flag to enable new settings homepage UX."
-    bug: "321612737"
-}
-
-flag {
-    name: "dynamic_injection_category"
-    namespace: "android_settings"
-    description: "Feature flag to enable injection into PreferenceCategory."
-    bug: "333547416"
 }
 
 flag {
@@ -72,20 +51,48 @@ flag {
 }
 
 flag {
-  name: "utils_return_user_handle_for_current_user_id"
-  namespace: "profile_experiences"
-  description: "Don't ignore the current user id when checking for existing profiles."
-  bug: "378471943"
+  name: "extended_screenshots_exclude_nested_scrollables"
+  namespace: "systemui"
+  description: "Sets a flag on the main scrollable container to exclude any nested scrollable views as potential targets for extended screenshots."
+  bug: "399810823"
   metadata {
     purpose: PURPOSE_BUGFIX
   }
 }
 
 flag {
-  name: "extended_screenshots_exclude_nested_scrollables"
-  namespace: "systemui"
-  description: "Sets a flag on the main scrollable container to exclude any nested scrollable views as potential targets for extended screenshots."
-  bug: "399810823"
+  name: "touchpad_settings_design_update"
+  namespace: "android_settings"
+  description: "All touchpad settings pages should either migrate to non-custom implementations or be updated"
+  bug: "400647661"
+}
+
+flag {
+  name: "three_finger_tap_app_launch"
+  namespace: "android_settings"
+  description: "Use three finger tap to open a custom app"
+  bug: "399645334"
+}
+
+flag {
+  name: "action_corner_customization"
+  namespace: "android_settings"
+  description: "Use action corners to trigger a chosen action"
+  bug: "412558312"
+}
+
+flag {
+  name: "homepage_tile_alert"
+  namespace: "android_settings"
+  description: "Enables alert indicator on homepage tiles"
+  bug: "403326850"
+}
+
+flag {
+  name: "disable_update_height_profile_select_location_services"
+  namespace: "android_settings"
+  description: "Disable updateHeight in the Location Services page to allow scrolling in certain screen sizes / orientations"
+  bug: "418876165"
   metadata {
     purpose: PURPOSE_BUGFIX
   }

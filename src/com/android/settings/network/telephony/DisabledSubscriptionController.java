@@ -33,6 +33,7 @@ import com.android.settings.network.SubscriptionsChangeListener;
  * Preference controller group which can hide UI option from visible when SIM is no longer in
  * active.
  */
+// LINT.IfChange
 public class DisabledSubscriptionController extends TelephonyBasePreferenceController implements
         SubscriptionsChangeListener.SubscriptionsChangeListenerClient, LifecycleObserver {
     private PreferenceCategory mCategory;
@@ -96,3 +97,4 @@ public class DisabledSubscriptionController extends TelephonyBasePreferenceContr
         update();
     }
 }
+// LINT.ThenChange(EnabledStateUntitledCategory.kt)

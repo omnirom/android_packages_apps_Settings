@@ -16,7 +16,10 @@
 
 package com.android.settings.users;
 
+import android.app.admin.DevicePolicyIdentifiers;
 import android.app.admin.DevicePolicyManager;
+import android.app.admin.PolicyEnforcementInfo;
+import android.app.admin.flags.Flags;
 import android.content.Context;
 import android.content.pm.UserInfo;
 import android.os.UserHandle;
@@ -42,7 +45,13 @@ public class UserCapabilities {
     boolean mDisallowAddUser;
     boolean mDisallowAddUserSetByAdmin;
     boolean mDisallowSwitchUser;
+    // TODO(b/414733570): Remove when cleaning up Flags.policyTransparencyRefactorEnabled() and
+    //  all callers are updated to use mDisallowAddUserEnforcementInfo.
     RestrictedLockUtils.EnforcedAdmin mEnforcedAdmin;
+    // PolicyEnforcementInfo contains the information about user restriction both set by admins
+    // or system entities.
+    PolicyEnforcementInfo mDisallowAddUserRestrictionEnforcementInfo;
+    PolicyEnforcementInfo mDisallowSwitchUserRestrictionEnforcementInfo;
 
     private UserCapabilities() {
     }
@@ -81,12 +90,8 @@ public class UserCapabilities {
         final UserInfo myUserInfo = userManager.getUserInfo(UserHandle.myUserId());
         mIsAdmin = myUserInfo.isAdmin();
 
-        mEnforcedAdmin = RestrictedLockUtilsInternal.checkIfRestrictionEnforced(context,
-                UserManager.DISALLOW_ADD_USER, UserHandle.myUserId());
-        final boolean hasBaseUserRestriction = RestrictedLockUtilsInternal.hasBaseUserRestriction(
-                context, UserManager.DISALLOW_ADD_USER, UserHandle.myUserId());
-        mDisallowAddUserSetByAdmin = mEnforcedAdmin != null && !hasBaseUserRestriction;
-        mDisallowAddUser = (mEnforcedAdmin != null || hasBaseUserRestriction);
+        updateAddUserRestriction(context);
+
         mUserSwitcherEnabled = userManager.isUserSwitcherEnabled();
         mCanAddUser = true;
         if (!mIsAdmin
@@ -100,10 +105,13 @@ public class UserCapabilities {
 
         final boolean canAddUsersWhenLocked = mIsAdmin || Settings.Global.getInt(
                 context.getContentResolver(), Settings.Global.ADD_USERS_WHEN_LOCKED, 0) == 1;
-        mCanAddGuest = !mIsGuest && !mDisallowAddUser && canAddUsersWhenLocked
-                && userManager.isUserTypeEnabled(UserManager.USER_TYPE_FULL_GUEST);
-
-        mDisallowSwitchUser = userManager.hasUserRestriction(UserManager.DISALLOW_USER_SWITCH);
+        mCanAddGuest =
+                !mIsGuest
+                        && !mDisallowAddUser
+                        && canAddUsersWhenLocked
+                        && userManager.isUserTypeEnabled(UserManager.USER_TYPE_FULL_GUEST)
+                        && !isGuestEphemeralAndUnswitchable(context);
+        updateSwitchUserRestriction(context);
     }
 
     public boolean isAdmin() {
@@ -122,6 +130,20 @@ public class UserCapabilities {
         return mEnforcedAdmin;
     }
 
+    private boolean isGuestEphemeralAndUnswitchable(Context context) {
+        // If guest users are ephemeral and switching users is not allowed in Settings, creating a
+        // guest user is meaningless since this user is going to be deleted on logout anyways, and
+        // this user cannot be accessed by switching to it.
+        boolean isGuestUserEphemeral =
+                context.getResources()
+                        .getBoolean(com.android.internal.R.bool.config_guestUserEphemeral);
+        boolean disallowUserSwitchInSettings =
+                context.getResources()
+                        .getBoolean(
+                                com.android.internal.R.bool
+                                        .config_userSwitchingMustGoThroughLoginScreen);
+        return isGuestUserEphemeral && disallowUserSwitchInSettings;
+    }
 
     @Override
     public String toString() {
@@ -139,5 +161,47 @@ public class UserCapabilities {
                 ", mUserSwitchingUiEnabled=" + mUserSwitchingUiEnabled +
                 ", mUserSwitcherEnabled=" + mUserSwitcherEnabled +
                 '}';
+    }
+
+    private void updateAddUserRestriction(Context context) {
+        if (Flags.policyTransparencyRefactorEnabled()) {
+            DevicePolicyManager dpm = context.getSystemService(DevicePolicyManager.class);
+            if (dpm == null) {
+                return;
+            }
+            String identifier = DevicePolicyIdentifiers.getIdentifierForUserRestriction(
+                    UserManager.DISALLOW_ADD_USER);
+            PolicyEnforcementInfo policyEnforcementInfo = dpm.getEnforcingAdminsForPolicy(
+                    identifier, UserHandle.myUserId());
+            // policyEnforcementInfo contains both the base restrictions (system enforced) and
+            // admin restrictions.
+            mDisallowAddUser = !policyEnforcementInfo.getAllAdmins().isEmpty();
+            mDisallowAddUserSetByAdmin = !policyEnforcementInfo.isOnlyEnforcedBySystem();
+            mDisallowAddUserRestrictionEnforcementInfo = policyEnforcementInfo;
+        } else {
+            mEnforcedAdmin = RestrictedLockUtilsInternal.checkIfRestrictionEnforced(context,
+                    UserManager.DISALLOW_ADD_USER, UserHandle.myUserId());
+            final boolean hasBaseUserRestriction = RestrictedLockUtilsInternal.hasBaseUserRestriction(
+                    context, UserManager.DISALLOW_ADD_USER, UserHandle.myUserId());
+            mDisallowAddUserSetByAdmin = mEnforcedAdmin != null && !hasBaseUserRestriction;
+            mDisallowAddUser = (mEnforcedAdmin != null || hasBaseUserRestriction);
+        }
+    }
+
+    private void updateSwitchUserRestriction(Context context) {
+        if (Flags.policyTransparencyRefactorEnabled()) {
+            DevicePolicyManager dpm = context.getSystemService(DevicePolicyManager.class);
+            if (dpm == null) {
+                return;
+            }
+            PolicyEnforcementInfo policyEnforcementInfo = dpm.getEnforcingAdminsForPolicy(
+                    DevicePolicyIdentifiers.getIdentifierForUserRestriction(
+                            UserManager.DISALLOW_USER_SWITCH), UserHandle.myUserId());
+            mDisallowSwitchUser = !policyEnforcementInfo.getAllAdmins().isEmpty();
+            mDisallowSwitchUserRestrictionEnforcementInfo = policyEnforcementInfo;
+        } else {
+            UserManager userManager = context.getSystemService(UserManager.class);
+            mDisallowSwitchUser = userManager.hasUserRestriction(UserManager.DISALLOW_USER_SWITCH);
+        }
     }
 }

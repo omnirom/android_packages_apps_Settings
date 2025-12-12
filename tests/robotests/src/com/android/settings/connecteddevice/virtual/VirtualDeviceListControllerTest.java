@@ -16,7 +16,6 @@
 package com.android.settings.connecteddevice.virtual;
 
 import static com.android.settings.core.BasePreferenceController.AVAILABLE;
-import static com.android.settings.core.BasePreferenceController.CONDITIONALLY_UNAVAILABLE;
 import static com.android.settings.core.BasePreferenceController.UNSUPPORTED_ON_DEVICE;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -30,9 +29,6 @@ import android.companion.AssociationInfo;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
@@ -45,7 +41,6 @@ import com.android.settings.dashboard.DashboardFragment;
 import com.android.settingslib.search.SearchIndexableRaw;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -66,9 +61,6 @@ public class VirtualDeviceListControllerTest {
     private static final int DEVICE_ID = 42;
     private static final String PERSISTENT_DEVICE_ID = "PersistentDeviceId";
     private static final String DEVICE_PREFERENCE_KEY = PERSISTENT_DEVICE_ID + "_" + DEVICE_NAME;
-
-    @Rule
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Mock
     PreferenceManager mPreferenceManager;
@@ -110,15 +102,7 @@ public class VirtualDeviceListControllerTest {
 
         assertThat(mController.getAvailabilityStatus()).isEqualTo(UNSUPPORTED_ON_DEVICE);
     }
-
     @Test
-    @DisableFlags(android.companion.virtualdevice.flags.Flags.FLAG_VDM_SETTINGS)
-    public void getAvailabilityStatus_flagDisabled() {
-        assertThat(mController.getAvailabilityStatus()).isEqualTo(CONDITIONALLY_UNAVAILABLE);
-    }
-
-    @Test
-    @EnableFlags(android.companion.virtualdevice.flags.Flags.FLAG_VDM_SETTINGS)
     public void getAvailabilityStatus_available() {
         assertThat(mController.getAvailabilityStatus()).isEqualTo(AVAILABLE);
     }

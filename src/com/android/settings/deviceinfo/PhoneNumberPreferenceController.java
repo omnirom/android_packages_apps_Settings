@@ -29,9 +29,9 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
+import com.android.settings.Utils;
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.network.SubscriptionUtil;
-import com.android.settingslib.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class PhoneNumberPreferenceController extends BasePreferenceController {
 
     @Override
     public int getAvailabilityStatus() {
-        if (!SubscriptionUtil.isSimHardwareVisible(mContext) || Utils.isWifiOnly(mContext)) {
+        if (!Utils.isMobileDataCapable(mContext) && !Utils.isVoiceCapable(mContext)) {
             return UNSUPPORTED_ON_DEVICE;
         }
         if (!mContext.getSystemService(UserManager.class).isAdminUser()) {
@@ -99,7 +99,6 @@ public class PhoneNumberPreferenceController extends BasePreferenceController {
         for (int simSlotNumber = 1; simSlotNumber < mTelephonyManager.getPhoneCount();
                 simSlotNumber++) {
             final Preference multiSimPreference = createNewPreference(screen.getContext());
-            multiSimPreference.setSelectable(false);
             multiSimPreference.setCopyingEnabled(true);
             multiSimPreference.setOrder(phonePreferenceOrder + simSlotNumber);
             multiSimPreference.setKey(KEY_PHONE_NUMBER + simSlotNumber);

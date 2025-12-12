@@ -69,28 +69,28 @@ public class VolumeSeekBarPreference extends SeekBarPreference {
     public VolumeSeekBarPreference(Context context, AttributeSet attrs, int defStyleAttr,
             int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        setLayoutResource(R.layout.preference_volume_slider);
+        setLayoutResource(R.layout.preference_volume_seekbar);
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         mSeekBarVolumizerFactory = new SeekBarVolumizerFactory(context);
     }
 
     public VolumeSeekBarPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setLayoutResource(R.layout.preference_volume_slider);
+        setLayoutResource(R.layout.preference_volume_seekbar);
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         mSeekBarVolumizerFactory = new SeekBarVolumizerFactory(context);
     }
 
     public VolumeSeekBarPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setLayoutResource(R.layout.preference_volume_slider);
+        setLayoutResource(R.layout.preference_volume_seekbar);
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         mSeekBarVolumizerFactory = new SeekBarVolumizerFactory(context);
     }
 
     public VolumeSeekBarPreference(Context context) {
         super(context);
-        setLayoutResource(R.layout.preference_volume_slider);
+        setLayoutResource(R.layout.preference_volume_seekbar);
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         mSeekBarVolumizerFactory = new SeekBarVolumizerFactory(context);
     }

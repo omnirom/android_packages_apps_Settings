@@ -16,8 +16,11 @@
 
 package com.android.settings.testutils.shadow;
 
+import android.content.Context;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.test.core.app.ApplicationProvider;
 
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Implementation;
@@ -39,7 +42,9 @@ public class ShadowInputMethodManagerWithMethodList extends ShadowInputMethodMan
 
     @Implementation
     public static InputMethodManager getInstance() {
-        return ShadowInputMethodManager.peekInstance();
+        Context context = ApplicationProvider.getApplicationContext();
+        InputMethodManager imm = context.getSystemService(InputMethodManager.class);
+        return imm;
     }
 
     @Implementation

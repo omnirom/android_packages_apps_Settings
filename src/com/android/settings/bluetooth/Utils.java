@@ -349,7 +349,6 @@ public final class Utils {
     @Nullable
     static AlertDialog showBlockPairingDialog(@NonNull Context context,
             @Nullable AlertDialog dialog, @Nullable LocalBluetoothManager localBtManager) {
-        if (!com.android.settingslib.flags.Flags.enableTemporaryBondDevicesUi()) return null;
         if (dialog != null && dialog.isShowing()) return dialog;
         if (dialog == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context)

@@ -28,23 +28,31 @@ import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.wifi.WifiConfiguration;
 import android.net.wifi.sharedconnectivity.app.NetworkProviderInfo;
+import android.os.UserManager;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.preference.PreferenceViewHolder;
 
+import com.android.settings.connectivity.Flags;
 import com.android.settingslib.R;
 import com.android.settingslib.wifi.WifiUtils;
 import com.android.wifitrackerlib.HotspotNetworkEntry;
 import com.android.wifitrackerlib.WifiEntry;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
@@ -59,9 +67,13 @@ public class WifiEntryPreferenceTest {
     @Mock
     private WifiEntry mMockWifiEntry;
     @Mock
+    private WifiConfiguration mMockWifiConfig;
+    @Mock
     private HotspotNetworkEntry mHotspotNetworkEntry;
     @Mock
     private WifiUtils.InternetIconInjector mMockIconInjector;
+    @Mock
+    private UserManager mMockUserManager;
 
     @Mock
     private Drawable mMockDrawable0;
@@ -85,6 +97,11 @@ public class WifiEntryPreferenceTest {
     @Mock
     private Drawable mMockShowXDrawable4;
 
+    @Rule
+    public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
     private static final String MOCK_TITLE = "title";
     private static final String MOCK_SUMMARY = "summary";
     private static final String FAKE_URI_STRING = "fakeuri";
@@ -93,9 +110,11 @@ public class WifiEntryPreferenceTest {
 
     @Before
     public void setUp() {
-        mContext = RuntimeEnvironment.application;
+        mContext = spy(RuntimeEnvironment.application);
 
         MockitoAnnotations.initMocks(this);
+
+        when(mContext.getSystemService(UserManager.class)).thenReturn(mMockUserManager);
 
         when(mMockWifiEntry.getTitle()).thenReturn(MOCK_TITLE);
         when(mMockWifiEntry.getSummary(false /* concise */)).thenReturn(MOCK_SUMMARY);
@@ -272,6 +291,78 @@ public class WifiEntryPreferenceTest {
         final View view = inflater.inflate(mPref.getLayoutResource(), new LinearLayout(mContext),
                 false);
         final PreferenceViewHolder holder = PreferenceViewHolder.createInstanceForTests(view);
+
+        mPref.onBindViewHolder(holder);
+
+        assertThat(view.findViewById(R.id.icon_button).getVisibility()).isEqualTo(View.GONE);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_WIFI_MULTIUSER)
+    public void sharedNetwork_shouldSetSharedIcon() {
+        final LayoutInflater inflater = LayoutInflater.from(mContext);
+        final View view = inflater.inflate(mPref.getLayoutResource(), new LinearLayout(mContext),
+                false);
+        final PreferenceViewHolder holder = PreferenceViewHolder.createInstanceForTests(view);
+        mMockWifiConfig.shared = true;
+        when(mMockWifiEntry.getWifiConfiguration()).thenReturn(mMockWifiConfig);
+        when(mMockWifiEntry.getHelpUriString()).thenReturn(null);
+        when(mMockWifiEntry.getConnectedState()).thenReturn(WifiEntry.CONNECTED_STATE_DISCONNECTED);
+        when(mMockUserManager.getUserCount()).thenReturn(3);
+
+        mPref.onBindViewHolder(holder);
+
+        assertThat(view.findViewById(R.id.icon_button).getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_WIFI_MULTIUSER)
+    public void sharedNetwork_singleUser_shouldNotSetSharedIcon() {
+        final LayoutInflater inflater = LayoutInflater.from(mContext);
+        final View view = inflater.inflate(mPref.getLayoutResource(), new LinearLayout(mContext),
+                false);
+        final PreferenceViewHolder holder = PreferenceViewHolder.createInstanceForTests(view);
+        mMockWifiConfig.shared = true;
+        when(mMockWifiEntry.getWifiConfiguration()).thenReturn(mMockWifiConfig);
+        when(mMockWifiEntry.getHelpUriString()).thenReturn(null);
+        when(mMockWifiEntry.getConnectedState()).thenReturn(WifiEntry.CONNECTED_STATE_DISCONNECTED);
+        when(mMockUserManager.getUserCount()).thenReturn(1);
+
+        mPref.onBindViewHolder(holder);
+
+        assertThat(view.findViewById(R.id.icon_button).getVisibility()).isEqualTo(View.GONE);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_WIFI_MULTIUSER)
+    public void sharedNetwork_connectedState_shouldNotSetSharedIcon() {
+        final LayoutInflater inflater = LayoutInflater.from(mContext);
+        final View view = inflater.inflate(mPref.getLayoutResource(), new LinearLayout(mContext),
+                false);
+        final PreferenceViewHolder holder = PreferenceViewHolder.createInstanceForTests(view);
+        mMockWifiConfig.shared = true;
+        when(mMockWifiEntry.getWifiConfiguration()).thenReturn(mMockWifiConfig);
+        when(mMockWifiEntry.getHelpUriString()).thenReturn(null);
+        when(mMockWifiEntry.getConnectedState()).thenReturn(WifiEntry.CONNECTED_STATE_CONNECTED);
+        when(mMockUserManager.getUserCount()).thenReturn(3);
+
+        mPref.onBindViewHolder(holder);
+
+        assertThat(view.findViewById(R.id.icon_button).getVisibility()).isEqualTo(View.GONE);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_WIFI_MULTIUSER)
+    public void sharedNetwork_notShared_shouldNotSetSharedIcon() {
+        final LayoutInflater inflater = LayoutInflater.from(mContext);
+        final View view = inflater.inflate(mPref.getLayoutResource(), new LinearLayout(mContext),
+                false);
+        final PreferenceViewHolder holder = PreferenceViewHolder.createInstanceForTests(view);
+        mMockWifiConfig.shared = false;
+        when(mMockWifiEntry.getWifiConfiguration()).thenReturn(mMockWifiConfig);
+        when(mMockWifiEntry.getHelpUriString()).thenReturn(null);
+        when(mMockWifiEntry.getConnectedState()).thenReturn(WifiEntry.CONNECTED_STATE_DISCONNECTED);
+        when(mMockUserManager.getUserCount()).thenReturn(3);
 
         mPref.onBindViewHolder(holder);
 

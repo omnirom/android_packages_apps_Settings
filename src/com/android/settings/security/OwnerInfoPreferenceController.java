@@ -15,6 +15,7 @@
  */
 package com.android.settings.security;
 
+import android.app.admin.EnforcingAdmin;
 import android.content.Context;
 import android.os.UserHandle;
 import android.text.TextUtils;
@@ -97,7 +98,7 @@ public class OwnerInfoPreferenceController extends AbstractPreferenceController
             EnforcedAdmin admin = getDeviceOwner();
             mOwnerInfoPref.setDisabledByAdmin(admin);
         } else {
-            mOwnerInfoPref.setDisabledByAdmin(null);
+            mOwnerInfoPref.setDisabledByAdmin((EnforcingAdmin) null);
             mOwnerInfoPref.setEnabled(!mLockPatternUtils.isLockScreenDisabled(MY_USER_ID));
         }
     }

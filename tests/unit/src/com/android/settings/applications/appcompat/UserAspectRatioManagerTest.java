@@ -31,6 +31,7 @@ import static android.view.WindowManager.PROPERTY_COMPAT_ALLOW_USER_ASPECT_RATIO
 
 import static com.android.settings.applications.appcompat.UserAspectRatioManager.KEY_ENABLE_USER_ASPECT_RATIO_FULLSCREEN;
 import static com.android.settings.applications.appcompat.UserAspectRatioManager.KEY_ENABLE_USER_ASPECT_RATIO_SETTINGS;
+import static com.android.window.flags.Flags.FLAG_BACKUP_AND_RESTORE_FOR_USER_ASPECT_RATIO_SETTINGS;
 import static com.android.window.flags.Flags.FLAG_UNIVERSAL_RESIZABLE_BY_DEFAULT;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -45,9 +46,11 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.app.ActivityTaskManager;
+import android.app.backup.BackupManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.IPackageManager;
@@ -57,6 +60,9 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.RemoteException;
 import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.DeviceConfig;
 
@@ -81,6 +87,8 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class UserAspectRatioManagerTest {
     @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
+    @Rule
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule(DEVICE_DEFAULT);
     private final String mPackageName = "com.test.mypackage";
     private Context mContext;
@@ -92,6 +100,7 @@ public class UserAspectRatioManagerTest {
     private PackageManager mPm;
     private ActivityTaskManager mActivityTaskManager;
     private List<LauncherActivityInfo> mLauncherActivities;
+    private BackupManager mMockBackupManager;
 
     @Before
     public void setUp() throws RemoteException, PackageManager.NameNotFoundException {
@@ -102,6 +111,7 @@ public class UserAspectRatioManagerTest {
         mIPm = mock(IPackageManager.class);
         mPm = mock(PackageManager.class);
         mActivityTaskManager = mock(ActivityTaskManager.class);
+        mMockBackupManager = mock(BackupManager.class);
         when(mActivityTaskManager.canBeUniversalResizeable(any())).thenReturn(false);
         when(mContext.getPackageManager()).thenReturn(mPm);
 
@@ -109,7 +119,8 @@ public class UserAspectRatioManagerTest {
         when(mContext.getSystemService(LauncherApps.class)).thenReturn(launcherApps);
         enableAllDefaultAspectRatioOptions();
 
-        mUtils = new FakeUserAspectRatioManager(mContext, mIPm, mActivityTaskManager);
+        mUtils = new FakeUserAspectRatioManager(mContext, mIPm, mActivityTaskManager,
+                mMockBackupManager);
 
         doReturn(mLauncherActivities).when(launcherApps).getActivityList(anyString(), any());
 
@@ -298,7 +309,8 @@ public class UserAspectRatioManagerTest {
         when(mResources.getIntArray(anyInt())).thenReturn(new int[] {USER_MIN_ASPECT_RATIO_UNSET});
         when(mResources.getStringArray(anyInt())).thenReturn(new String[] {newOptionName});
 
-        mUtils = new FakeUserAspectRatioManager(mContext, mIPm, mActivityTaskManager);
+        mUtils = new FakeUserAspectRatioManager(mContext, mIPm, mActivityTaskManager,
+                mMockBackupManager);
 
         assertThat(getUserMinAspectRatioEntry(USER_MIN_ASPECT_RATIO_UNSET, mPackageName))
                 .isEqualTo(newOptionName);
@@ -311,7 +323,7 @@ public class UserAspectRatioManagerTest {
         when(mResources.getStringArray(anyInt())).thenReturn(new String[] {"4:3"});
 
         assertThrows(RuntimeException.class, () -> new FakeUserAspectRatioManager(mContext, mIPm,
-                mActivityTaskManager));
+                mActivityTaskManager, mMockBackupManager));
     }
 
     @Test
@@ -322,7 +334,7 @@ public class UserAspectRatioManagerTest {
         when(mResources.getStringArray(anyInt())).thenReturn(new String[] {"4:3"});
 
         assertThrows(RuntimeException.class, () -> new FakeUserAspectRatioManager(mContext, mIPm,
-                mActivityTaskManager));
+                mActivityTaskManager, mMockBackupManager));
     }
 
     private void assertUnsetIsFullscreen() {
@@ -415,6 +427,14 @@ public class UserAspectRatioManagerTest {
         assertFalse(mUtils.isOverrideToFullscreenEnabled(mPackageName, mContext.getUserId()));
     }
 
+    @Test
+    @RequiresFlagsEnabled(FLAG_BACKUP_AND_RESTORE_FOR_USER_ASPECT_RATIO_SETTINGS)
+    public void testSetUserMinAspectRatio_notifiesBackupManager() throws Exception {
+        mUtils.setUserMinAspectRatio(mPackageName, 0, USER_MIN_ASPECT_RATIO_FULLSCREEN);
+
+        verify(mMockBackupManager).dataChanged();
+    }
+
     private void setIsOverrideToFullscreenEnabledBecauseCompatChange(boolean enabled) {
         mUtils.setFullscreenCompatChange(enabled);
         when(mUtils.hasAspectRatioOption(USER_MIN_ASPECT_RATIO_FULLSCREEN, mPackageName))
@@ -490,8 +510,8 @@ public class UserAspectRatioManagerTest {
         private boolean mFullscreenCompatChange = false;
 
         private FakeUserAspectRatioManager(@NonNull Context context, IPackageManager pm,
-                                           ActivityTaskManager mMockActivityTaskManager) {
-            super(context, pm, mMockActivityTaskManager);
+                ActivityTaskManager mMockActivityTaskManager, BackupManager mockBackupManager) {
+            super(context, pm, mMockActivityTaskManager, mockBackupManager);
         }
 
         @Override

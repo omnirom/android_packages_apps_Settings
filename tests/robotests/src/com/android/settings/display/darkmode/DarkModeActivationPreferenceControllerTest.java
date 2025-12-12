@@ -27,13 +27,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import android.app.Flags;
 import android.app.UiModeManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.PowerManager;
-import android.platform.test.annotations.DisableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.preference.PreferenceScreen;
@@ -179,34 +177,6 @@ public class DarkModeActivationPreferenceControllerTest {
 
         assertThat(mPreference.isChecked()).isFalse();
         assertThat(mController.getSummary().toString()).isEqualTo("summary_off_custom");
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_MODES_UI)
-    public void nightMode_toggleButton_onCustomBedtime() {
-        when(mService.getNightMode()).thenReturn(UiModeManager.MODE_NIGHT_CUSTOM);
-        when(mService.getNightModeCustomType())
-                .thenReturn(UiModeManager.MODE_NIGHT_CUSTOM_TYPE_BEDTIME);
-        when(mRes.getConfiguration()).thenReturn(mConfigNightYes);
-
-        mController.updateState(mPreference);
-
-        assertThat(mPreference.isChecked()).isTrue();
-        assertThat(mController.getSummary().toString()).isEqualTo("summary_on_custom_bedtime");
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_MODES_UI)
-    public void nightMode_toggleButton_offCustomBedtime() {
-        when(mService.getNightMode()).thenReturn(UiModeManager.MODE_NIGHT_CUSTOM);
-        when(mService.getNightModeCustomType())
-                .thenReturn(UiModeManager.MODE_NIGHT_CUSTOM_TYPE_BEDTIME);
-        when(mRes.getConfiguration()).thenReturn(mConfigNightNo);
-
-        mController.updateState(mPreference);
-
-        assertThat(mPreference.isChecked()).isFalse();
-        assertThat(mController.getSummary().toString()).isEqualTo("summary_off_custom_bedtime");
     }
 
     @Test

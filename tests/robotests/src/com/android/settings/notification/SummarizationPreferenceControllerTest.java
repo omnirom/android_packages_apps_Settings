@@ -16,12 +16,10 @@
 
 package com.android.settings.notification;
 
-import static android.service.notification.Adjustment.KEY_IMPORTANCE;
 import static android.service.notification.Adjustment.KEY_SUMMARIZATION;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import android.app.Flags;
@@ -77,14 +75,5 @@ public class SummarizationPreferenceControllerTest {
         mSetFlagsRule.disableFlags(Flags.FLAG_NM_SUMMARIZATION);
         mSetFlagsRule.disableFlags(Flags.FLAG_NM_SUMMARIZATION_UI);
         assertThat(mController.isAvailable()).isFalse();
-    }
-
-    @Test
-    public void getSummary() throws Exception {
-        when(mInm.getAllowedAssistantAdjustments(any())).thenReturn(List.of(KEY_SUMMARIZATION));
-        assertThat(mController.getSummary()).isEqualTo("On");
-
-        when(mInm.getAllowedAssistantAdjustments(any())).thenReturn(List.of(KEY_IMPORTANCE));
-        assertThat(mController.getSummary()).isEqualTo("Off");
     }
 }

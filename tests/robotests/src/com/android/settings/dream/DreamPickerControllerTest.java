@@ -41,6 +41,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 @RunWith(RobolectricTestRunner.class)
@@ -89,5 +90,19 @@ public class DreamPickerControllerTest {
 
         RecyclerView view = mPreference.findViewById(R.id.dream_list);
         assertThat(view.getAdapter().getItemCount()).isEqualTo(1);
+    }
+
+    @Test
+    public void refreshDreamsListUpdatesAdapter() {
+        when(mBackend.getDreamInfos()).thenReturn(Collections.singletonList(new DreamInfo()));
+        final DreamPickerController controller = buildController();
+        controller.updateState(mPreference);
+
+        RecyclerView view = mPreference.findViewById(R.id.dream_list);
+        assertThat(view.getAdapter().getItemCount()).isEqualTo(1);
+
+        when(mBackend.getDreamInfos()).thenReturn(Arrays.asList(new DreamInfo(), new DreamInfo()));
+        controller.refreshDreamsList();
+        assertThat(view.getAdapter().getItemCount()).isEqualTo(2);
     }
 }

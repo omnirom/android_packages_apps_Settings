@@ -38,6 +38,7 @@ import com.android.settings.R;
 /**
  * Update notification volume icon in Settings in response to user adjusting volume.
  */
+// LINT.IfChange
 public class NotificationVolumePreferenceController extends
         RingerModeAffectedVolumePreferenceController implements DefaultLifecycleObserver {
 
@@ -229,3 +230,4 @@ public class NotificationVolumePreferenceController extends
         }
     }
 }
+// LINT.ThenChange(NotificationVolumePreference.kt)

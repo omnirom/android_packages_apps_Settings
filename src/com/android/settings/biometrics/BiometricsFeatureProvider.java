@@ -21,6 +21,8 @@ import android.safetycenter.SafetySourceIssue;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.settings.biometrics.metrics.BiometricsLogger;
+
 public interface BiometricsFeatureProvider {
 
     /** Returns a SafetySourceIssue for biometrics. */
@@ -29,4 +31,8 @@ public interface BiometricsFeatureProvider {
 
     /** Notifies that the action of an issue is launched */
     void notifySafetyIssueActionLaunched();
+
+    /** Return logger for biometrics */
+    @Nullable
+    BiometricsLogger getBiometricsLogger();
 }

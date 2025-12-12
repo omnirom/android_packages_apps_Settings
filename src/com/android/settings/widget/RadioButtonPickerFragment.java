@@ -29,8 +29,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
@@ -38,6 +43,7 @@ import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.Utils;
 import com.android.settings.core.PreferenceXmlParserUtils;
 import com.android.settings.core.PreferenceXmlParserUtils.MetadataFlag;
+import com.android.settingslib.RestrictedSelectorWithWidgetPreference;
 import com.android.settingslib.widget.CandidateInfo;
 import com.android.settingslib.widget.IllustrationPreference;
 import com.android.settingslib.widget.SelectorWithWidgetPreference;
@@ -47,6 +53,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * A fragment to handle general radio button picker
@@ -56,7 +63,9 @@ public abstract class RadioButtonPickerFragment extends SettingsPreferenceFragme
 
     @VisibleForTesting
     static final String EXTRA_FOR_WORK = "for_work";
+
     private static final String TAG = "RadioButtonPckrFrgmt";
+    private static final String KEY_CATEGORY_PREFERENCE = "radio_button_picker_category";
     @VisibleForTesting
     boolean mAppendStaticPreferences = false;
 
@@ -67,6 +76,7 @@ public abstract class RadioButtonPickerFragment extends SettingsPreferenceFragme
     private int mIllustrationId;
     private int mIllustrationPreviewId;
     private IllustrationType mIllustrationType;
+    private int mCategoryTitleId;
 
     @Override
     public void onAttach(Context context) {
@@ -98,7 +108,7 @@ public abstract class RadioButtonPickerFragment extends SettingsPreferenceFragme
                 getPreferenceScreenResId(),
                 MetadataFlag.FLAG_INCLUDE_PREF_SCREEN |
                 MetadataFlag.FLAG_NEED_PREF_APPEND);
-            mAppendStaticPreferences = metadata.get(0)
+            mAppendStaticPreferences = metadata.getFirst()
                     .getBoolean(PreferenceXmlParserUtils.METADATA_APPEND);
         } catch (IOException e) {
             Log.e(TAG, "Error trying to open xml file", e);
@@ -108,6 +118,7 @@ public abstract class RadioButtonPickerFragment extends SettingsPreferenceFragme
         updateCandidates();
     }
 
+    @NonNull
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -168,7 +179,7 @@ public abstract class RadioButtonPickerFragment extends SettingsPreferenceFragme
      * A chance for subclasses to create a custom preference instance.
      */
     protected SelectorWithWidgetPreference createPreference() {
-        return new SelectorWithWidgetPreference(getPrefContext());
+        return new RestrictedSelectorWithWidgetPreference(getPrefContext());
     }
 
     public void updateCandidates() {
@@ -189,7 +200,16 @@ public abstract class RadioButtonPickerFragment extends SettingsPreferenceFragme
         if (!mAppendStaticPreferences) {
             addStaticPreferences(screen);
         }
-
+        PreferenceGroup radioButtonsGroup = screen;
+        if (mCategoryTitleId != 0) {
+            Context context = getPrefContext();
+            PreferenceCategory category = new PreferenceCategory(getPrefContext());
+            category.setKey(KEY_CATEGORY_PREFERENCE);
+            category.setEnabled(true);
+            category.setTitle(context.getText(mCategoryTitleId));
+            screen.addPreference(category);
+            radioButtonsGroup = category;
+        }
         final int customLayoutResId = getRadioButtonPreferenceCustomLayoutResId();
         if (shouldShowItemNone()) {
             final SelectorWithWidgetPreference nonePref =
@@ -201,7 +221,7 @@ public abstract class RadioButtonPickerFragment extends SettingsPreferenceFragme
             nonePref.setTitle(R.string.app_list_preference_none);
             nonePref.setChecked(TextUtils.isEmpty(defaultKey));
             nonePref.setOnClickListener(this);
-            screen.addPreference(nonePref);
+            radioButtonsGroup.addPreference(nonePref);
         }
         if (candidateList != null) {
             for (CandidateInfo info : candidateList) {
@@ -211,7 +231,7 @@ public abstract class RadioButtonPickerFragment extends SettingsPreferenceFragme
                 }
                 bindPreference(pref, info.getKey(), info, defaultKey);
                 bindPreferenceExtra(pref, info.getKey(), info, defaultKey, systemDefaultKey);
-                screen.addPreference(pref);
+                radioButtonsGroup.addPreference(pref);
             }
         }
         mayCheckOnlyRadioButton();
@@ -220,8 +240,12 @@ public abstract class RadioButtonPickerFragment extends SettingsPreferenceFragme
         }
     }
 
-    public SelectorWithWidgetPreference bindPreference(SelectorWithWidgetPreference pref,
-            String key, CandidateInfo info, String defaultKey) {
+    /** Updates [pref] with the candidate information provided. */
+    public void bindPreference(
+            @NonNull SelectorWithWidgetPreference pref,
+            @NonNull String key,
+            @NonNull CandidateInfo info,
+            @NonNull String defaultKey) {
         pref.setTitle(info.loadLabel());
         pref.setIcon(Utils.getSafeIcon(info.loadIcon()));
         pref.setKey(key);
@@ -230,36 +254,73 @@ public abstract class RadioButtonPickerFragment extends SettingsPreferenceFragme
         }
         pref.setEnabled(info.enabled);
         pref.setOnClickListener(this);
-        return pref;
     }
 
+    /** Requests that all radio button preferences update their checked state. */
     public void updateCheckedState(String selectedKey) {
-        final PreferenceScreen screen = getPreferenceScreen();
-        if (screen != null) {
-            final int count = screen.getPreferenceCount();
-            for (int i = 0; i < count; i++) {
-                final Preference pref = screen.getPreference(i);
-                if (pref instanceof SelectorWithWidgetPreference) {
-                    final SelectorWithWidgetPreference radioPref =
-                            (SelectorWithWidgetPreference) pref;
-                    final boolean newCheckedState = TextUtils.equals(pref.getKey(), selectedKey);
-                    if (radioPref.isChecked() != newCheckedState) {
-                        radioPref.setChecked(TextUtils.equals(pref.getKey(), selectedKey));
-                    }
-                }
+        forEachRadioButtonPreference(radioPref -> {
+            final boolean newCheckedState = TextUtils.equals(radioPref.getKey(), selectedKey);
+            if (radioPref.isChecked() != newCheckedState) {
+                radioPref.setChecked(newCheckedState);
             }
-        }
+        });
     }
 
     public void mayCheckOnlyRadioButton() {
-        final PreferenceScreen screen = getPreferenceScreen();
         // If there is only 1 thing on screen, select it.
-        if (screen != null && screen.getPreferenceCount() == 1) {
-            final Preference onlyPref = screen.getPreference(0);
-            if (onlyPref instanceof SelectorWithWidgetPreference) {
-                ((SelectorWithWidgetPreference) onlyPref).setChecked(true);
+        PreferenceGroup preferenceGroup = getRadioPreferenceGroup();
+        if (preferenceGroup != null && preferenceGroup.getPreferenceCount() == 1) {
+            if (preferenceGroup.getPreference(0) instanceof SelectorWithWidgetPreference onlyPref) {
+                onlyPref.setChecked(true);
             }
         }
+    }
+
+    /**
+     * Iterates through all [SelectorWithWidgetPreference] preferences in the preference hierarchy
+     * and executes the given action on each.
+     * <p>
+     * Note that this method does not operate recursively. It assumes that the radio button
+     * preferences are either inside of the [PreferenceCategory] if one is defined, or at the top of
+     * the hierarchy (the [PreferenceScreen]) otherwise.
+     *
+     * @param action The function to execute on each SelectorWithWidgetPreference.
+     */
+    private void forEachRadioButtonPreference(Consumer<SelectorWithWidgetPreference> action) {
+        if (action == null) {
+            return;
+        }
+        final PreferenceGroup group = getRadioPreferenceGroup();
+        if (group == null) {
+            return;
+        }
+        final int count = group.getPreferenceCount();
+        for (int i = 0; i < count; i++) {
+            if (group.getPreference(i) instanceof SelectorWithWidgetPreference radioPref) {
+                action.accept(radioPref);
+            }
+        }
+    }
+
+    /**
+     * Returns the `PreferenceGroup` in which the radio buttons in this `Fragment` are contained, or
+     * `null` if the top-level `PreferenceScreen` isn't defined yet.
+     */
+    @Nullable
+    private PreferenceGroup getRadioPreferenceGroup() {
+        final PreferenceScreen screen = getPreferenceScreen();
+        if (screen == null) {
+            return null;
+        }
+        if (mCategoryTitleId != 0) {
+            Preference categoryPref = screen.findPreference(KEY_CATEGORY_PREFERENCE);
+            if (categoryPref instanceof PreferenceGroup categoryPrefGroup) {
+                // All radio preferences are inside the category.
+                return categoryPrefGroup;
+            }
+        }
+        // All radio preferences are at the top-level.
+        return screen;
     }
 
     /**
@@ -300,6 +361,16 @@ public abstract class RadioButtonPickerFragment extends SettingsPreferenceFragme
                 throw new IllegalArgumentException(
                         "Invalid illustration type: " + mIllustrationType);
         }
+    }
+
+    /**
+     * Allows you to wrap the radio button preference in a category. Set the title id to 0
+     * to remove the category.
+     *
+     * @param title The string resource ID for the title of the category.
+     */
+    protected void setCategory(@StringRes int title) {
+        mCategoryTitleId = title;
     }
 
     protected abstract List<? extends CandidateInfo> getCandidates();

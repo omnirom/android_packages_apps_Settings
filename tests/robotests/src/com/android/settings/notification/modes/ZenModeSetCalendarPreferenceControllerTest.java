@@ -28,9 +28,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.when;
 
-import android.app.Flags;
 import android.content.Context;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.service.notification.SystemZenRules;
 import android.service.notification.ZenModeConfig;
@@ -86,7 +84,6 @@ public class ZenModeSetCalendarPreferenceControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
     public void updateEventMode_updatesConditionAndTriggerDescription() {
         ZenMode mode = new TestModeBuilder()
                 .setPackage(SystemZenRules.PACKAGE_ANDROID)

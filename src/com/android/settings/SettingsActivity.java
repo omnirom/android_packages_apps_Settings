@@ -247,10 +247,7 @@ public class SettingsActivity extends SettingsBaseActivity
 
     private int lookupMetricsCategory() {
         int category = SettingsEnums.PAGE_UNKNOWN;
-        Bundle args = null;
-        if (getIntent() != null) {
-            args = getIntent().getBundleExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS);
-        }
+        Bundle args = getInitialFragmentArguments(getIntent());
 
         Fragment fragment = Utils.getTargetFragment(this, getMetricsTag(), args);
 
@@ -263,10 +260,7 @@ public class SettingsActivity extends SettingsBaseActivity
     }
 
     private String getMetricsTag() {
-        String tag = null;
-        if (getIntent() != null && getIntent().hasExtra(EXTRA_SHOW_FRAGMENT)) {
-            tag = getInitialFragmentName(getIntent());
-        }
+        String tag = getInitialFragmentName(getIntent());
 
         if (TextUtils.isEmpty(tag)) {
             Log.w(LOG_TAG, "MetricsTag is invalid " + tag);
@@ -502,10 +496,27 @@ public class SettingsActivity extends SettingsBaseActivity
         return intent.getStringExtra(EXTRA_SHOW_FRAGMENT);
     }
 
+    /** Returns the arguments to initial fragment that the activity will launch. */
+    @VisibleForTesting
+    public @Nullable Bundle getInitialFragmentArguments(Intent intent) {
+        return intent.getBundleExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS);
+    }
+
     @Override
     protected void onApplyThemeResource(Theme theme, int resid, boolean first) {
         theme.applyStyle(R.style.SetupWizardPartnerResource, true);
         super.onApplyThemeResource(theme, resid, first);
+    }
+
+    /** Returns the current theme and checks if needing to apply expressive theme. */
+    @Override
+    public Theme getTheme() {
+        Theme theme = super.getTheme();
+        if (!WizardManagerHelper.isAnySetupWizard(getIntent())
+                && SettingsThemeHelper.isExpressiveTheme(this)) {
+            theme.applyStyle(R.style.Theme_SubSettings_Expressive, true);
+        }
+        return theme;
     }
 
     @Override
@@ -531,7 +542,7 @@ public class SettingsActivity extends SettingsBaseActivity
 
             setTitleFromIntent(intent);
 
-            Bundle initialArguments = intent.getBundleExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS);
+            Bundle initialArguments = getInitialFragmentArguments(intent);
             switchToFragment(initialFragmentName, initialArguments, true,
                     mInitialTitleResId, mInitialTitle);
         } else {
@@ -668,7 +679,7 @@ public class SettingsActivity extends SettingsBaseActivity
         if (startingFragment != null) {
             Intent modIntent = new Intent(superIntent);
             modIntent.putExtra(EXTRA_SHOW_FRAGMENT, startingFragment);
-            Bundle args = superIntent.getBundleExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS);
+            Bundle args = getInitialFragmentArguments(superIntent);
             if (args != null) {
                 args = new Bundle(args);
             } else {

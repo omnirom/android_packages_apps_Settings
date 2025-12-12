@@ -37,6 +37,12 @@
         settings:lottie_rawRes="@drawable/content_protection_preference_illustration"
         settings:searchable="false" />
 
+    <com.android.settingslib.widget.IllustrationPreference
+        android:key="content_protection_preference_subpage_illustration_expressive"
+        android:selectable="false"
+        settings:lottie_rawRes="@drawable/content_protection_preference_illustration_expressive"
+        settings:searchable="false" />
+
     <com.android.settingslib.RestrictedSwitchPreference
         android:key="content_protection_preference_user_consent_work_profile_switch"
         android:title="@string/content_protection_preference_user_consent_work_profile_switch_title"

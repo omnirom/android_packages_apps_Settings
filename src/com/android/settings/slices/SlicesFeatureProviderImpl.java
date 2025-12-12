@@ -27,6 +27,7 @@ import com.android.settingslib.utils.ThreadUtils;
 /**
  * Manages Slices in Settings.
  */
+@Deprecated(forRemoval = true)
 public class SlicesFeatureProviderImpl implements SlicesFeatureProvider {
 
     private long mUiSessionToken;

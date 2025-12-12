@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.settings.R
+import com.android.settings.Settings
 import com.android.settings.applications.AppInfoBase
 import com.android.settings.applications.AppLocaleUtil
 import com.android.settings.applications.appinfo.AppLocaleDetails
@@ -37,6 +38,7 @@ import com.android.settingslib.spa.widget.preference.Preference
 import com.android.settingslib.spa.widget.preference.PreferenceModel
 import com.android.settingslib.spaprivileged.model.app.userHandle
 import com.android.settingslib.spaprivileged.model.app.userId
+import com.android.settingslib.widget.SettingsThemeHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
@@ -81,7 +83,12 @@ private class AppLocalePresenter(
     }
 
     fun startActivity() {
-        val intent = Intent(context, AppLocalePickerActivity::class.java).apply {
+        val className = if (SettingsThemeHelper.isExpressiveTheme(context)) {
+            Settings.AppLanguageSettingsActivity::class.java
+        } else {
+            AppLocalePickerActivity::class.java
+        }
+        val intent = Intent(context, className).apply {
             data = Uri.parse("package:" + app.packageName)
             putExtra(AppInfoBase.ARG_PACKAGE_UID, app.uid)
         }

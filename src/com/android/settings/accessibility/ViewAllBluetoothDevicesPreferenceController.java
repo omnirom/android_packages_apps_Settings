@@ -17,16 +17,17 @@
 package com.android.settings.accessibility;
 
 import android.content.Context;
-import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
-import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
 
 import com.android.settings.connecteddevice.ConnectedDeviceDashboardFragment;
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.core.SubSettingLauncher;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.overlay.FeatureFactory;
+import com.android.settingslib.widget.ButtonPreference;
 
 /** Preference controller for all bluetooth device preference. */
 public class ViewAllBluetoothDevicesPreferenceController extends BasePreferenceController {
@@ -34,6 +35,19 @@ public class ViewAllBluetoothDevicesPreferenceController extends BasePreferenceC
 
     public ViewAllBluetoothDevicesPreferenceController(Context context, String preferenceKey) {
         super(context, preferenceKey);
+    }
+
+    @Override
+    public void displayPreference(@NonNull PreferenceScreen screen) {
+        super.displayPreference(screen);
+        ButtonPreference preference = screen.findPreference(getPreferenceKey());
+        if (preference != null) {
+            preference.setOnClickListener(view -> {
+                FeatureFactory.getFeatureFactory().getMetricsFeatureProvider().clicked(
+                        getMetricsCategory(), getPreferenceKey());
+                launchConnectedDevicePage();
+            });
+        }
     }
 
     /**
@@ -48,18 +62,6 @@ public class ViewAllBluetoothDevicesPreferenceController extends BasePreferenceC
     @Override
     public int getAvailabilityStatus() {
         return AVAILABLE;
-    }
-
-    @Override
-    public boolean handlePreferenceTreeClick(Preference preference) {
-        if (TextUtils.equals(preference.getKey(), getPreferenceKey())) {
-            FeatureFactory.getFeatureFactory().getMetricsFeatureProvider().clicked(
-                    getMetricsCategory(), getPreferenceKey());
-            launchConnectedDevicePage();
-            return true;
-        }
-
-        return false;
     }
 
     @VisibleForTesting

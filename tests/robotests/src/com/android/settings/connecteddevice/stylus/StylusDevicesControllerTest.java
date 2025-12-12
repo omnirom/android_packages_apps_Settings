@@ -40,6 +40,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.UserInfo;
 import android.content.pm.UserProperties;
@@ -167,6 +168,8 @@ public class StylusDevicesControllerTest {
                 any(PackageManager.ApplicationInfoFlags.class))).thenReturn(
                         DEFAULT_NOTES_APP);
         when(mPm.getApplicationLabel(eq(DEFAULT_NOTES_APP))).thenReturn(NOTES_APP_LABEL);
+        when(mPm.getPackageInfo(eq(mContext.getPackageName()), anyInt()))
+                .thenReturn(new PackageInfo());
 
         when(mPm.getUserBadgeForDensityNoBackground(any(), anyInt())).thenReturn(mIcon);
         when(mUserManager.getUsers()).thenReturn(Arrays.asList(new UserInfo(0, "default", 0)));

@@ -32,11 +32,11 @@ import androidx.preference.PreferenceScreen;
 
 import com.android.settings.core.SliderPreferenceController;
 import com.android.settings.overlay.FeatureFactory;
-import com.android.settings.widget.SeekBarPreference;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnStart;
 import com.android.settingslib.core.lifecycle.events.OnStop;
+import com.android.settingslib.widget.SliderPreference;
 
 
 public class MouseScrollingSpeedPreferenceController extends SliderPreferenceController implements
@@ -48,7 +48,7 @@ public class MouseScrollingSpeedPreferenceController extends SliderPreferenceCon
     private final ContentObserver mContentObserver;
 
     @Nullable
-    private SeekBarPreference mPreference;
+    private SliderPreference mPreference;
 
     public MouseScrollingSpeedPreferenceController(@NonNull Context context, @NonNull String key) {
         super(context, key);
@@ -69,7 +69,7 @@ public class MouseScrollingSpeedPreferenceController extends SliderPreferenceCon
         mPreference = screen.findPreference(getPreferenceKey());
         mPreference.setMax(getMax());
         mPreference.setMin(getMin());
-        mPreference.setProgress(getSliderPosition());
+        mPreference.setTickVisible(true);
         updateState(mPreference);
     }
 

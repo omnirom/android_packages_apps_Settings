@@ -27,7 +27,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import android.app.Flags;
 import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -38,7 +37,6 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import com.android.settings.notification.modes.ZenModesListAddModePreferenceController.ModeType;
@@ -62,7 +60,6 @@ import java.util.List;
 import java.util.function.Function;
 
 @RunWith(RobolectricTestRunner.class)
-@EnableFlags(Flags.FLAG_MODES_UI)
 public class ZenModesListAddModePreferenceControllerTest {
 
     @Rule

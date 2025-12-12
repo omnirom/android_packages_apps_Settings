@@ -30,100 +30,92 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.spy
 import org.mockito.kotlin.stub
 
 // LINT.IfChange
 @RunWith(AndroidJUnit4::class)
 class SeparateRingVolumePreferenceTest {
-    private var audioHelper = mock<AudioHelper>()
-    private var audioManager = mock<AudioManager>()
-    private var vibrator: Vibrator? = null
-    private var ringVolumePreference = SeparateRingVolumePreference()
+    private val audioHelper = mock<AudioHelper>()
+    private val audioManager = mock<AudioManager>()
+    private val vibrator = mock<Vibrator>()
     private val context =
         object : ContextWrapper(ApplicationProvider.getApplicationContext()) {
             override fun getSystemService(name: String): Any? =
                 when (name) {
                     getSystemServiceName(Vibrator::class.java) -> vibrator
-                    getSystemServiceName(AudioManager::class.java) -> audioManager
+                    AUDIO_SERVICE -> audioManager
                     else -> super.getSystemService(name)
                 }
         }
 
     @Test
     fun isAvailable_singleVolume_shouldReturnFalse() {
-        audioHelper = mock { on { isSingleVolume } doReturn true }
-        ringVolumePreference =
-            spy(ringVolumePreference).stub {
-                onGeneric { createAudioHelper(context) } doReturn audioHelper
-            }
+        audioHelper.stub { on { isSingleVolume } doReturn true }
+        var ringVolumePreference = SeparateRingVolumePreference(audioHelper)
 
         assertThat(ringVolumePreference.isAvailable(context)).isFalse()
     }
 
     @Test
     fun isAvailable_noSingleVolume_shouldReturnTrue() {
-        audioHelper = mock { on { isSingleVolume } doReturn false }
-        ringVolumePreference =
-            spy(ringVolumePreference).stub {
-                onGeneric { createAudioHelper(context) } doReturn audioHelper
-            }
+        audioHelper.stub { on { isSingleVolume } doReturn false }
+        var ringVolumePreference = SeparateRingVolumePreference(audioHelper)
 
         assertThat(ringVolumePreference.isAvailable(context)).isTrue()
     }
 
     @Test
     fun getEffectiveRingerMode_noVibratorAndVibrateMode_shouldReturnSilentMode() {
-        vibrator = mock { on { hasVibrator() } doReturn false }
-        audioManager = mock { on { getRingerModeInternal() } doReturn RINGER_MODE_VIBRATE }
+        vibrator.stub { on { hasVibrator() } doReturn false }
+        audioManager.stub { on { ringerModeInternal } doReturn RINGER_MODE_VIBRATE }
 
         assertThat(context.getEffectiveRingerMode()).isEqualTo(RINGER_MODE_SILENT)
     }
 
     @Test
     fun getEffectiveRingerMode_hasVibratorAndVibrateMode_shouldReturnVibrateMode() {
-        vibrator = mock { on { hasVibrator() } doReturn true }
-        audioManager = mock { on { getRingerModeInternal() } doReturn RINGER_MODE_VIBRATE }
+        vibrator.stub { on { hasVibrator() } doReturn true }
+        audioManager.stub { on { ringerModeInternal } doReturn RINGER_MODE_VIBRATE }
 
         assertThat(context.getEffectiveRingerMode()).isEqualTo(RINGER_MODE_VIBRATE)
     }
 
     @Test
     fun getEffectiveRingerMode_hasVibratorAndNormalMode_shouldReturnNormalMode() {
-        vibrator = mock { on { hasVibrator() } doReturn true }
-        audioManager = mock { on { getRingerModeInternal() } doReturn RINGER_MODE_NORMAL }
+        vibrator.stub { on { hasVibrator() } doReturn true }
+        audioManager.stub { on { ringerModeInternal } doReturn RINGER_MODE_NORMAL }
 
         assertThat(context.getEffectiveRingerMode()).isEqualTo(RINGER_MODE_NORMAL)
     }
 
     @Test
     fun getIconRes_normalMode_shouldReturnRingVolumeIcon() {
-        vibrator = mock { on { hasVibrator() } doReturn true }
-        audioManager = mock { on { getRingerModeInternal() } doReturn RINGER_MODE_NORMAL }
+        vibrator.stub { on { hasVibrator() } doReturn true }
+        audioManager.stub { on { ringerModeInternal } doReturn RINGER_MODE_NORMAL }
 
         assertThat(context.getIconRes()).isEqualTo(R.drawable.ic_ring_volume)
     }
 
     @Test
     fun getMuteIcon_vibrateMode_shouldReturnVibrateIcon() {
-        vibrator = mock { on { hasVibrator() } doReturn true }
-        audioManager = mock { on { getRingerModeInternal() } doReturn RINGER_MODE_VIBRATE }
+        vibrator.stub { on { hasVibrator() } doReturn true }
+        audioManager.stub { on { ringerModeInternal } doReturn RINGER_MODE_VIBRATE }
 
         assertThat(context.getIconRes()).isEqualTo(R.drawable.ic_volume_ringer_vibrate)
     }
 
     @Test
     fun getMuteIcon_silentMode_shouldReturnSilentIcon() {
-        vibrator = mock { on { hasVibrator() } doReturn false }
-        audioManager = mock { on { getRingerModeInternal() } doReturn RINGER_MODE_VIBRATE }
+        vibrator.stub { on { hasVibrator() } doReturn false }
+        audioManager.stub { on { ringerModeInternal } doReturn RINGER_MODE_VIBRATE }
 
         assertThat(context.getIconRes()).isEqualTo(R.drawable.ic_ring_volume_off)
     }
 
     @Test
     fun getContentDescription_normalMode_shouldReturnTitleDescription() {
-        vibrator = mock { on { hasVibrator() } doReturn true }
-        audioManager = mock { on { getRingerModeInternal() } doReturn RINGER_MODE_NORMAL }
+        vibrator.stub { on { hasVibrator() } doReturn true }
+        audioManager.stub { on { ringerModeInternal } doReturn RINGER_MODE_NORMAL }
 
         assertThat(context.getContentDescription())
             .isEqualTo(context.getString(R.string.separate_ring_volume_option_title))
@@ -131,8 +123,8 @@ class SeparateRingVolumePreferenceTest {
 
     @Test
     fun getContentDescription_vibrateMode_shouldReturnVibrateModeDescription() {
-        vibrator = mock { on { hasVibrator() } doReturn true }
-        audioManager = mock { on { getRingerModeInternal() } doReturn RINGER_MODE_VIBRATE }
+        vibrator.stub { on { hasVibrator() } doReturn true }
+        audioManager.stub { on { ringerModeInternal } doReturn RINGER_MODE_VIBRATE }
 
         assertThat(context.getContentDescription())
             .isEqualTo(context.getString(R.string.ringer_content_description_vibrate_mode))
@@ -140,8 +132,8 @@ class SeparateRingVolumePreferenceTest {
 
     @Test
     fun getContentDescription_silentMode_shouldReturnSilentModeDescription() {
-        vibrator = mock { on { hasVibrator() } doReturn false }
-        audioManager = mock { on { getRingerModeInternal() } doReturn RINGER_MODE_VIBRATE }
+        vibrator.stub { on { hasVibrator() } doReturn false }
+        audioManager.stub { on { ringerModeInternal } doReturn RINGER_MODE_VIBRATE }
 
         assertThat(context.getContentDescription())
             .isEqualTo(context.getString(R.string.ringer_content_description_silent_mode))

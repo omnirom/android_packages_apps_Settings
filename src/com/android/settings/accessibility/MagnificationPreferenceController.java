@@ -16,8 +16,14 @@
 
 package com.android.settings.accessibility;
 
+import static com.android.internal.accessibility.AccessibilityShortcutController.MAGNIFICATION_COMPONENT_NAME;
+import static com.android.internal.accessibility.common.ShortcutConstants.UserShortcutType.DEFAULT;
+
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
+import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 
 public class MagnificationPreferenceController extends BasePreferenceController {
@@ -33,6 +39,21 @@ public class MagnificationPreferenceController extends BasePreferenceController 
 
     @Override
     public CharSequence getSummary() {
-        return ToggleScreenMagnificationPreferenceFragment.getServiceSummary(mContext);
+        return getServiceSummary(mContext);
+    }
+
+    @NonNull
+    private CharSequence getServiceSummary(@NonNull Context context) {
+        // Get the user shortcut type from settings provider.
+        final int userShortcutType = AccessibilityUtil.getUserShortcutTypesFromSettings(
+                context, MAGNIFICATION_COMPONENT_NAME);
+        final CharSequence featureState =
+                (userShortcutType != DEFAULT)
+                        ? context.getText(R.string.accessibility_summary_shortcut_enabled)
+                        : context.getText(R.string.generic_accessibility_feature_shortcut_off);
+        final CharSequence featureSummary = context.getText(R.string.magnification_feature_summary);
+        return context.getString(
+                com.android.settingslib.R.string.preference_summary_default_combination,
+                featureState, featureSummary);
     }
 }

@@ -74,7 +74,10 @@ public class ConversationPriorityPreference extends Preference {
 
     private void init(Context context) {
         mContext = context;
-        setLayoutResource(R.layout.notif_priority_conversation_preference);
+        int layoutId = android.app.Flags.notificationsRedesignTemplates()
+                ? R.layout.notification_2025_priority_conversation_preference
+                : R.layout.notif_priority_conversation_preference;
+        setLayoutResource(layoutId);
     }
 
     public void setImportance(int importance) {

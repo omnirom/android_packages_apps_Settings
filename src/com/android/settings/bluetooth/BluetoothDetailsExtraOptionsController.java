@@ -51,6 +51,11 @@ public class BluetoothDetailsExtraOptionsController extends BluetoothDetailsCont
     }
 
     @Override
+    public boolean isAvailable() {
+        return false;
+    }
+
+    @Override
     public String getPreferenceKey() {
         return KEY_BLUETOOTH_EXTRA_OPTIONS;
     }

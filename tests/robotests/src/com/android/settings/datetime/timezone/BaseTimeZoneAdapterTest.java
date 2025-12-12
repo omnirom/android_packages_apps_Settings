@@ -126,13 +126,13 @@ public class BaseTimeZoneAdapterTest {
         }
 
         @Override
-        public String getIconText() {
+        public String getCurrentTime() {
             return null;
         }
 
         @Override
-        public String getCurrentTime() {
-            return null;
+        public boolean getIsSelected() {
+            return false;
         }
 
         @Override

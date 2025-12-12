@@ -74,15 +74,11 @@ public class InternetResetHelper implements LifecycleObserver {
     public InternetResetHelper(Context context, Lifecycle lifecycle,
             NetworkMobileProviderController mobileNetworkController,
             Preference wifiTogglePreferences,
-            PreferenceCategory connectedWifiEntryPreferenceCategory,
-            PreferenceCategory firstWifiEntryPreferenceCategory,
             PreferenceCategory wifiEntryPreferenceCategory,
             Preference resettingPreference) {
         mContext = context;
         mMobileNetworkController = mobileNetworkController;
         mWifiTogglePreferences = wifiTogglePreferences;
-        mWifiNetworkPreferences.add(connectedWifiEntryPreferenceCategory);
-        mWifiNetworkPreferences.add(firstWifiEntryPreferenceCategory);
         mWifiNetworkPreferences.add(wifiEntryPreferenceCategory);
         mResettingPreference = resettingPreference;
 

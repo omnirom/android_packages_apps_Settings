@@ -20,7 +20,6 @@ import android.app.settings.SettingsEnums;
 import android.content.Context;
 
 import com.android.settings.R;
-import com.android.settings.keyboard.Flags;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.SearchIndexable;
 
@@ -47,8 +46,7 @@ public class MouseSettingFragment extends InputDeviceDashboardFragment {
             new BaseSearchIndexProvider(R.xml.mouse_settings) {
                 @Override
                 protected boolean isPageSearchEnabled(Context context) {
-                    return Flags.keyboardAndTouchpadA11yNewPageEnabled()
-                            && InputPeripheralsSettingsUtils.isMouse();
+                    return InputPeripheralsSettingsUtils.isMouse();
                 }
             };
 

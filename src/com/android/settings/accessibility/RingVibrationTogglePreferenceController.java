@@ -19,6 +19,7 @@ package com.android.settings.accessibility;
 import android.content.Context;
 
 /** Preference controller for ringtone vibration with only a toggle for on/off states. */
+// LINT.IfChange
 public class RingVibrationTogglePreferenceController extends VibrationTogglePreferenceController {
 
     public RingVibrationTogglePreferenceController(Context context, String preferenceKey) {
@@ -30,3 +31,4 @@ public class RingVibrationTogglePreferenceController extends VibrationTogglePref
         return AVAILABLE;
     }
 }
+// LINT.ThenChange(RingVibrationIntensitySwitchPreference.kt)

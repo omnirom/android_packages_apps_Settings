@@ -24,26 +24,19 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.android.settings.R;
 import com.android.settings.Utils;
-import com.android.settings.overlay.FeatureFactory;
-import com.android.settingslib.RestrictedPreference;
 import com.android.settingslib.utils.ThreadUtils;
-
-import com.google.common.util.concurrent.ListenableFuture;
-
-import java.util.concurrent.ExecutionException;
+import com.android.settingslib.widget.TwoTargetPreference;
 
 /**
  * Preference item for showing an accessibility activity in a preference list
  */
-public class AccessibilityActivityPreference extends RestrictedPreference {
-    private static final String LOG_TAG = AccessibilityActivityPreference.class.getSimpleName();
+public class AccessibilityActivityPreference extends TwoTargetPreference {
     // Index of the first preference in a preference category.
     private static final int FIRST_PREFERENCE_IN_CATEGORY_INDEX = -1;
     private static final String TARGET_FRAGMENT =
@@ -52,11 +45,10 @@ public class AccessibilityActivityPreference extends RestrictedPreference {
     private final PackageManager mPm;
     private final ComponentName mComponentName;
     private final CharSequence mLabel;
-    private final ListenableFuture mExtraArgumentsFuture;
 
-    public AccessibilityActivityPreference(Context context, String packageName, int uid,
-            AccessibilityShortcutInfo a11yShortcutInfo) {
-        super(context, packageName, uid);
+    public AccessibilityActivityPreference(
+            Context context, AccessibilityShortcutInfo a11yShortcutInfo) {
+        super(context);
         mPm = context.getPackageManager();
         mA11yShortcutInfo = a11yShortcutInfo;
         mComponentName = a11yShortcutInfo.getComponentName();
@@ -79,20 +71,6 @@ public class AccessibilityActivityPreference extends RestrictedPreference {
 
         final Bundle extras = getExtras();
         extras.putParcelable(AccessibilitySettings.EXTRA_COMPONENT_NAME, mComponentName);
-
-        mExtraArgumentsFuture = ThreadUtils.postOnBackgroundThread(this::setupDataForOpenFragment);
-    }
-
-    @Override
-    public void performClick() {
-        try {
-            mExtraArgumentsFuture.get();
-        } catch (InterruptedException | ExecutionException e) {
-            Log.e(LOG_TAG,
-                    "Unable to finish grabbing necessary arguments to open the fragment: "
-                            + "componentName: " + mComponentName);
-        }
-        super.performClick();
     }
 
     /**
@@ -117,26 +95,5 @@ public class AccessibilityActivityPreference extends RestrictedPreference {
             serviceIcon = activityInfo.loadIcon(mPm);
         }
         return Utils.getAdaptiveIcon(getContext(), serviceIcon, Color.WHITE);
-    }
-
-    private void setupDataForOpenFragment() {
-        final String prefKey = getKey();
-        final int imageRes = mA11yShortcutInfo.getAnimatedImageRes();
-        final CharSequence intro = mA11yShortcutInfo.loadIntro(mPm);
-        final CharSequence description = mA11yShortcutInfo.loadDescription(mPm);
-        final String htmlDescription = mA11yShortcutInfo.loadHtmlDescription(mPm);
-        final String settingsClassName = mA11yShortcutInfo.getSettingsActivityName();
-        final String tileServiceClassName = mA11yShortcutInfo.getTileServiceName();
-        final int pageIdCategory = FeatureFactory.getFeatureFactory()
-                .getAccessibilityPageIdFeatureProvider().getCategory(mComponentName);
-
-        ThreadUtils.getUiThreadHandler().post(() -> {
-            RestrictedPreferenceHelper.putBasicExtras(
-                    this, prefKey, getTitle(), intro, description, imageRes,
-                    htmlDescription, mComponentName, pageIdCategory);
-            RestrictedPreferenceHelper.putSettingsExtras(this, getPackageName(), settingsClassName);
-            RestrictedPreferenceHelper.putTileServiceExtras(
-                    this, getPackageName(), tileServiceClassName);
-        });
     }
 }

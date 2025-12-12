@@ -38,11 +38,14 @@
             android:id="@+id/button_compact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/lock_screen_notifs_show_compact"
+            android:importantForAccessibility="yes"
             android:orientation="vertical">
 
             <FrameLayout
                 android:layout_width="@dimen/contrast_button_total_size"
                 android:layout_height="@dimen/contrast_button_total_size"
+                android:importantForAccessibility="noHideDescendants"
                 android:background="@drawable/accessibility_contrast_button_background">
 
                 <ImageView
@@ -50,7 +53,8 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_contrast_standard"/>
+                    android:src="@drawable/notification_on_ls_compact_view"/>
+
             </FrameLayout>
 
             <TextView
@@ -59,8 +63,10 @@
                 android:layout_marginTop="@dimen/contrast_button_text_spacing"
                 android:gravity="center_horizontal|top"
                 android:singleLine="false"
+                android:importantForAccessibility="no"
                 android:textSize="@dimen/contrast_button_text_size"
                 android:text="@string/lock_screen_notifs_show_compact"
+                android:hyphenationFrequency="full"
                 android:textColor="@androidprv:color/materialColorOnSurface"/>
         </LinearLayout>
 
@@ -72,11 +78,14 @@
             android:id="@+id/button_full"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/lock_screen_notifs_show_full_list"
+            android:importantForAccessibility="yes"
             android:orientation="vertical">
 
             <FrameLayout
                 android:layout_width="@dimen/contrast_button_total_size"
                 android:layout_height="@dimen/contrast_button_total_size"
+                android:importantForAccessibility="noHideDescendants"
                 android:background="@drawable/accessibility_contrast_button_background">
 
                 <ImageView
@@ -84,7 +93,8 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_contrast_high"/>
+                    android:src="@drawable/notification_on_ls_full_list_view"/>
+
             </FrameLayout>
 
             <TextView
@@ -93,8 +103,10 @@
                 android:layout_marginTop="@dimen/contrast_button_text_spacing"
                 android:gravity="center_horizontal|top"
                 android:singleLine="false"
+                android:importantForAccessibility="no"
                 android:textSize="@dimen/contrast_button_text_size"
                 android:text="@string/lock_screen_notifs_show_full_list"
+                android:hyphenationFrequency="full"
                 android:textColor="@androidprv:color/materialColorOnSurface"/>
         </LinearLayout>
 

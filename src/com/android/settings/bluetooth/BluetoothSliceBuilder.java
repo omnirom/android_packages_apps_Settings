@@ -21,6 +21,7 @@ import android.annotation.ColorInt;
 import android.app.PendingIntent;
 import android.app.settings.SettingsEnums;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -77,7 +78,7 @@ public class BluetoothSliceBuilder {
      * Bluetooth.
      */
     public static Slice getSlice(Context context) {
-        final boolean isBluetoothEnabled = isBluetoothEnabled();
+        final boolean isBluetoothEnabled = isBluetoothEnabled(context);
         final CharSequence title = context.getText(R.string.bluetooth_settings);
         final IconCompat icon = IconCompat.createWithResource(context,
                 com.android.internal.R.drawable.ic_settings_bluetooth);
@@ -133,7 +134,7 @@ public class BluetoothSliceBuilder {
      */
     public static void handleUriChange(Context context, Intent intent) {
         final boolean newBluetoothState = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, false);
-        final BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        final var adapter = context.getSystemService(BluetoothManager.class).getAdapter();
 
         if (newBluetoothState) {
             adapter.enable();
@@ -145,8 +146,8 @@ public class BluetoothSliceBuilder {
         // handle it.
     }
 
-    private static boolean isBluetoothEnabled() {
-        final BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+    private static boolean isBluetoothEnabled(Context context) {
+        final var adapter = context.getSystemService(BluetoothManager.class).getAdapter();
         return adapter.getState() == BluetoothAdapter.STATE_ON
                 || adapter.getState() == BluetoothAdapter.STATE_TURNING_ON;
     }

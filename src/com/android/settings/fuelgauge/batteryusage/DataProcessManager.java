@@ -228,9 +228,9 @@ public class DataProcessManager {
     }
 
     private void loadCurrentBatteryHistoryMap() {
-        new LifecycleAwareAsyncTask<Map<String, BatteryHistEntry>>(mLifecycle) {
+        new LifecycleAwareAsyncTask<Void>(mLifecycle) {
             @Override
-            protected Map<String, BatteryHistEntry> doInBackground(Void... voids) {
+            protected Void doInBackground(Void... voids) {
                 final long startTime = System.currentTimeMillis();
                 // Loads the current battery usage data from the battery stats service.
                 final Map<String, BatteryHistEntry> currentBatteryHistoryMap =
@@ -241,13 +241,7 @@ public class DataProcessManager {
                                 "execute loadCurrentBatteryHistoryMap size=%d in %d/ms",
                                 currentBatteryHistoryMap.size(),
                                 (System.currentTimeMillis() - startTime)));
-                return currentBatteryHistoryMap;
-            }
 
-            @Override
-            protected void onPostExecute(
-                    final Map<String, BatteryHistEntry> currentBatteryHistoryMap) {
-                super.onPostExecute(currentBatteryHistoryMap);
                 if (mBatteryHistoryMap != null) {
                     // Replaces the placeholder in mBatteryHistoryMap.
                     for (Map.Entry<Long, Map<String, BatteryHistEntry>> mapEntry :
@@ -261,17 +255,19 @@ public class DataProcessManager {
                 }
                 mIsCurrentBatteryHistoryLoaded = true;
                 tryToGenerateFinalDataAndApplyCallback();
+                return null;
             }
         }.start();
     }
 
     private void loadCurrentAppUsageList() {
-        new LifecycleAwareAsyncTask<List<AppUsageEvent>>(mLifecycle) {
+        new LifecycleAwareAsyncTask<Void>(mLifecycle) {
             @Override
             @Nullable
-            protected List<AppUsageEvent> doInBackground(Void... voids) {
+            protected Void doInBackground(Void... voids) {
                 if (!shouldLoadAppUsageData()) {
                     Log.d(TAG, "not loadCurrentAppUsageList");
+                    mIsCurrentAppUsageLoaded = true;
                     return null;
                 }
                 final long startTime = System.currentTimeMillis();
@@ -285,27 +281,22 @@ public class DataProcessManager {
                         // If fail to load usage events for any user, return null directly and
                         // screen-on time will not be shown in the UI.
                         if (userId == mUserIdsSeries.getCurrentUserId()) {
+                            mIsCurrentAppUsageLoaded = true;
                             return null;
                         }
                     } else {
                         usageEventsMap.put(Long.valueOf(userId), usageEventsForCurrentUser);
                     }
                 }
-                final List<AppUsageEvent> appUsageEventList =
+                final List<AppUsageEvent> currentAppUsageList =
                         DataProcessor.generateAppUsageEventListFromUsageEvents(
                                 mContext, usageEventsMap);
                 Log.d(
                         TAG,
                         String.format(
                                 "execute loadCurrentAppUsageList size=%d in %d/ms",
-                                appUsageEventList.size(),
+                                currentAppUsageList.size(),
                                 (System.currentTimeMillis() - startTime)));
-                return appUsageEventList;
-            }
-
-            @Override
-            protected void onPostExecute(final List<AppUsageEvent> currentAppUsageList) {
-                super.onPostExecute(currentAppUsageList);
                 if (currentAppUsageList == null || currentAppUsageList.isEmpty()) {
                     Log.d(TAG, "currentAppUsageList is null or empty");
                 } else {
@@ -313,21 +304,23 @@ public class DataProcessManager {
                 }
                 mIsCurrentAppUsageLoaded = true;
                 tryToProcessAppUsageData();
+                return null;
             }
         }.start();
     }
 
     private void loadDatabaseAppUsageList() {
-        new LifecycleAwareAsyncTask<List<AppUsageEvent>>(mLifecycle) {
+        new LifecycleAwareAsyncTask<Void>(mLifecycle) {
             @Override
-            protected List<AppUsageEvent> doInBackground(Void... voids) {
+            protected Void doInBackground(Void... voids) {
                 if (!shouldLoadAppUsageData()) {
                     Log.d(TAG, "not loadDatabaseAppUsageList");
+                    mIsDatabaseAppUsageLoaded = true;
                     return null;
                 }
                 final long startTime = System.currentTimeMillis();
                 // Loads the app usage data from the database.
-                final List<AppUsageEvent> appUsageEventList =
+                final List<AppUsageEvent> databaseAppUsageList =
                         DatabaseUtils.getAppUsageEventForUsers(
                                 mContext,
                                 Calendar.getInstance(),
@@ -337,14 +330,8 @@ public class DataProcessManager {
                         TAG,
                         String.format(
                                 "execute loadDatabaseAppUsageList size=%d in %d/ms",
-                                appUsageEventList.size(),
+                                databaseAppUsageList.size(),
                                 (System.currentTimeMillis() - startTime)));
-                return appUsageEventList;
-            }
-
-            @Override
-            protected void onPostExecute(final List<AppUsageEvent> databaseAppUsageList) {
-                super.onPostExecute(databaseAppUsageList);
                 if (databaseAppUsageList == null || databaseAppUsageList.isEmpty()) {
                     Log.d(TAG, "databaseAppUsageList is null or empty");
                 } else {
@@ -352,14 +339,15 @@ public class DataProcessManager {
                 }
                 mIsDatabaseAppUsageLoaded = true;
                 tryToProcessAppUsageData();
+                return null;
             }
         }.start();
     }
 
     private void loadPowerConnectionBatteryEventList() {
-        new LifecycleAwareAsyncTask<List<BatteryEvent>>(mLifecycle) {
+        new LifecycleAwareAsyncTask<Void>(mLifecycle) {
             @Override
-            protected List<BatteryEvent> doInBackground(Void... voids) {
+            protected Void doInBackground(Void... voids) {
                 final long startTime = System.currentTimeMillis();
                 // Loads the battery event data from the database.
                 final List<BatteryEvent> batteryEventList =
@@ -373,12 +361,6 @@ public class DataProcessManager {
                         String.format(
                                 "execute loadPowerConnectionBatteryEventList size=%d in %d/ms",
                                 batteryEventList.size(), (System.currentTimeMillis() - startTime)));
-                return batteryEventList;
-            }
-
-            @Override
-            protected void onPostExecute(final List<BatteryEvent> batteryEventList) {
-                super.onPostExecute(batteryEventList);
                 if (batteryEventList == null || batteryEventList.isEmpty()) {
                     Log.d(TAG, "batteryEventList is null or empty");
                 } else {
@@ -387,14 +369,15 @@ public class DataProcessManager {
                 }
                 mIsBatteryEventLoaded = true;
                 tryToProcessAppUsageData();
+                return null;
             }
         }.start();
     }
 
     private void loadBatteryUsageSlotList() {
-        new LifecycleAwareAsyncTask<List<BatteryUsageSlot>>(mLifecycle) {
+        new LifecycleAwareAsyncTask<Void>(mLifecycle) {
             @Override
-            protected List<BatteryUsageSlot> doInBackground(Void... voids) {
+            protected Void doInBackground(Void... voids) {
                 final long startTime = System.currentTimeMillis();
                 // Loads the battery usage slot data from the database.
                 final List<BatteryUsageSlot> batteryUsageSlotList =
@@ -406,12 +389,6 @@ public class DataProcessManager {
                                 "execute loadBatteryUsageSlotList size=%d in %d/ms",
                                 batteryUsageSlotList.size(),
                                 (System.currentTimeMillis() - startTime)));
-                return batteryUsageSlotList;
-            }
-
-            @Override
-            protected void onPostExecute(final List<BatteryUsageSlot> batteryUsageSlotList) {
-                super.onPostExecute(batteryUsageSlotList);
                 if (batteryUsageSlotList == null || batteryUsageSlotList.isEmpty()) {
                     Log.d(TAG, "batteryUsageSlotList is null or empty");
                 } else {
@@ -420,14 +397,15 @@ public class DataProcessManager {
                 }
                 mIsBatteryUsageSlotLoaded = true;
                 tryToGenerateFinalDataAndApplyCallback();
+                return null;
             }
         }.start();
     }
 
     private void loadAndApplyBatteryMapFromServiceOnly() {
-        new LifecycleAwareAsyncTask<Map<Long, BatteryDiffData>>(mLifecycle) {
+        new LifecycleAwareAsyncTask<Void>(mLifecycle) {
             @Override
-            protected Map<Long, BatteryDiffData> doInBackground(Void... voids) {
+            protected Void doInBackground(Void... voids) {
                 final long startTime = System.currentTimeMillis();
                 final Map<Long, BatteryDiffData> batteryDiffDataMap =
                         DataProcessor.getBatteryDiffDataMapFromStatsService(
@@ -442,15 +420,10 @@ public class DataProcessManager {
                                 "execute loadAndApplyBatteryMapFromServiceOnly size=%d in %d/ms",
                                 batteryDiffDataMap.size(),
                                 (System.currentTimeMillis() - startTime)));
-                return batteryDiffDataMap;
-            }
-
-            @Override
-            protected void onPostExecute(final Map<Long, BatteryDiffData> batteryDiffDataMap) {
-                super.onPostExecute(batteryDiffDataMap);
                 if (mCallbackFunction != null) {
                     mCallbackFunction.onBatteryDiffDataMapLoaded(batteryDiffDataMap);
                 }
+                return null;
             }
         }.start();
     }
@@ -492,9 +465,9 @@ public class DataProcessManager {
     }
 
     private synchronized void generateFinalDataAndApplyCallback() {
-        new LifecycleAwareAsyncTask<Map<Long, BatteryDiffData>>(mLifecycle) {
+        new LifecycleAwareAsyncTask<Void>(mLifecycle) {
             @Override
-            protected Map<Long, BatteryDiffData> doInBackground(Void... voids) {
+            protected Void doInBackground(Void... voids) {
                 final long startTime = System.currentTimeMillis();
                 final Map<Long, BatteryDiffData> batteryDiffDataMap = new ArrayMap<>();
                 for (BatteryUsageSlot batteryUsageSlot : mBatteryUsageSlotList) {
@@ -523,21 +496,15 @@ public class DataProcessManager {
                                 .getPowerUsageFeatureProvider();
                 featureProvider.processBatteryReattributeData(
                         mContext, batteryDiffDataMap, mBatteryEventList, mIsFromPeriodJob);
-
                 Log.d(
                         TAG,
                         String.format(
                                 "execute generateFinalDataAndApplyCallback size=%d in %d/ms",
                                 batteryDiffDataMap.size(), System.currentTimeMillis() - startTime));
-                return batteryDiffDataMap;
-            }
-
-            @Override
-            protected void onPostExecute(final Map<Long, BatteryDiffData> batteryDiffDataMap) {
-                super.onPostExecute(batteryDiffDataMap);
                 if (mCallbackFunction != null) {
                     mCallbackFunction.onBatteryDiffDataMapLoaded(batteryDiffDataMap);
                 }
+                return null;
             }
         }.start();
     }

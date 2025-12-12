@@ -16,9 +16,12 @@
 
 package com.android.settings.biometrics.face;
 
+import static com.android.settingslib.widget.preference.illustration.R.string.settingslib_action_label_pause;
+import static com.android.settingslib.widget.preference.illustration.R.string.settingslib_action_label_resume;
 import static com.android.settings.biometrics.BiometricUtils.isPostureAllowEnrollment;
 import static com.android.settings.biometrics.BiometricUtils.isPostureGuidanceShowing;
 
+import android.animation.Animator;
 import android.app.settings.SettingsEnums;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -31,10 +34,15 @@ import android.os.UserHandle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,16 +52,25 @@ import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.biometrics.BiometricEnrollBase;
 import com.android.settings.biometrics.BiometricUtils;
+import com.android.settings.biometrics.BiometricsOnboardingProto;
+import com.android.settings.biometrics.metrics.BiometricsLogger;
 import com.android.settings.password.ChooseLockSettingsHelper;
 import com.android.settings.password.SetupSkipDialog;
 import com.android.systemui.unfold.compat.ScreenSizeFoldProvider;
 import com.android.systemui.unfold.updates.FoldProvider;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.setupcompat.template.FooterBarMixin;
 import com.google.android.setupcompat.template.FooterButton;
 import com.google.android.setupcompat.util.WizardManagerHelper;
+import com.google.android.setupdesign.GlifLayout;
+import com.google.android.setupdesign.util.LottieAnimationHelper;
+import com.google.android.setupdesign.util.ThemeHelper;
 import com.google.android.setupdesign.view.IllustrationVideoView;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Provides animated education for users to know how to enroll a face with appropriate posture.
@@ -71,6 +88,8 @@ public class FaceEnrollEducation extends BiometricEnrollBase {
     private boolean mAccessibilityEnabled;
     protected Intent mExtraInfoIntent;
 
+    private boolean mIsUsingExpressiveStyle;
+
     private final CompoundButton.OnCheckedChangeListener mSwitchDiversityListener =
             new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -86,6 +105,7 @@ public class FaceEnrollEducation extends BiometricEnrollBase {
                     } else {
                         showDefaultIllustration();
                         mIllustrationAccessibility.setVisibility(View.INVISIBLE);
+                        adjustIllustrationLottiePosition();
                     }
                 }
             };
@@ -107,9 +127,26 @@ public class FaceEnrollEducation extends BiometricEnrollBase {
                 }
             };
 
+    private final Animator.AnimatorListener mA11yUpdater = new Animator.AnimatorListener() {
+        @Override
+        public void onAnimationStart(@NonNull Animator animation) {}
+
+        @Override
+        public void onAnimationEnd(@NonNull Animator animation) {
+            forceConfigureA11yDelegate(false);
+        }
+
+        @Override
+        public void onAnimationCancel(@NonNull Animator animation) {}
+
+        @Override
+        public void onAnimationRepeat(@NonNull Animator animation) {}
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.face_enroll_education);
 
         setTitle(R.string.security_settings_face_enroll_education_title);
@@ -120,14 +157,28 @@ public class FaceEnrollEducation extends BiometricEnrollBase {
         mIllustrationDefault = findViewById(R.id.illustration_default);
         mIllustrationLottie = findViewById(R.id.illustration_lottie);
         mIllustrationAccessibility = findViewById(R.id.illustration_accessibility);
+        mIsUsingExpressiveStyle = ThemeHelper.shouldApplyGlifExpressiveStyle(
+                getApplicationContext());
+        if (mIsUsingExpressiveStyle && mIllustrationAccessibility instanceof ImageView) {
+            ((ImageView) mIllustrationAccessibility).setImageResource(
+                    R.drawable.face_enroll_icon_large_expressive);
+        }
 
         mIsUsingLottie = getResources().getBoolean(R.bool.config_face_education_use_lottie);
         if (mIsUsingLottie) {
             mIllustrationDefault.stop();
             mIllustrationDefault.setVisibility(View.INVISIBLE);
-            mIllustrationLottie.setAnimation(R.raw.face_education_lottie);
+            mIllustrationLottie.setAnimation(mIsUsingExpressiveStyle
+                    ? R.raw.face_education_lottie_expressive : R.raw.face_education_lottie);
+            if (mIsUsingExpressiveStyle) {
+                setupllIllustrationAnim(mIllustrationLottie);
+            }
             mIllustrationLottie.setVisibility(View.VISIBLE);
+
+            mIllustrationLottie.addAnimatorListener(mA11yUpdater);
+            configureA11yDelegate(true);
             mIllustrationLottie.playAnimation();
+
             mIllustrationLottie.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -181,18 +232,58 @@ public class FaceEnrollEducation extends BiometricEnrollBase {
         }
         mFooterBarMixin.setPrimaryButton(footerButton);
 
-        final Button accessibilityButton = findViewById(R.id.accessibility_button);
+        final Button accessibilityButton = getAccessibilityButton();
         accessibilityButton.setOnClickListener(this::onAccessibilityButtonClicked);
 
         mSwitchDiversity = findViewById(R.id.toggle_diversity);
         mSwitchDiversity.setListener(mSwitchDiversityListener);
         mSwitchDiversity.setOnClickListener(v -> {
+            updateOnboardingScreenInfoActions(
+                    mSwitchDiversity.isChecked()
+                            ? BiometricsOnboardingProto.OnboardingAction.ACTION_FACE_A11Y_ON_VALUE
+                            : BiometricsOnboardingProto.OnboardingAction.ACTION_FACE_A11Y_OFF_VALUE
+            );
             mSwitchDiversity.getSwitch().toggle();
         });
+        if (mIsUsingExpressiveStyle) {
+            final MaterialSwitch switchButton = (MaterialSwitch) mSwitchDiversity.getSwitch();
+            switchButton.setThumbIconDrawable(switchButton.getContext().getDrawable(
+                    com.android.settingslib.widget.theme.R.drawable
+                            .settingslib_expressive_switch_thumb_icon));
+        }
 
         if (mAccessibilityEnabled) {
             accessibilityButton.callOnClick();
         }
+    }
+
+    private void configureA11yDelegate(boolean isAnimating) {
+        mIllustrationLottie.setAccessibilityDelegate(new View.AccessibilityDelegate() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(@NonNull View host,
+                    @NonNull AccessibilityNodeInfo info) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+
+                // Not speak "Image" for [LottieAnimationView] in a11y mode
+                info.setClassName(null);
+
+                AccessibilityNodeInfo.AccessibilityAction clickAction =
+                        new AccessibilityNodeInfo.AccessibilityAction(
+                                AccessibilityNodeInfo.ACTION_CLICK,
+                                getString(isAnimating
+                                        ? settingslib_action_label_pause
+                                        : settingslib_action_label_resume)
+                        );
+                info.addAction(clickAction);
+            }
+        });
+    }
+
+    private void forceConfigureA11yDelegate(boolean isAnimating) {
+        // Update delegate to read correct text based on latest animating state
+        configureA11yDelegate(isAnimating);
+        // Trigger the accessibility service to re-create AccessibilityNode
+        mIllustrationLottie.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED);
     }
 
     @Override
@@ -240,6 +331,16 @@ public class FaceEnrollEducation extends BiometricEnrollBase {
     }
 
     @Override
+    protected void onDestroy() {
+        if (mIllustrationLottie != null && mIsUsingLottie) {
+            mIllustrationLottie.removeAnimatorListener(mA11yUpdater);
+            mIllustrationLottie.setAccessibilityDelegate(null);
+            mIllustrationLottie.setOnClickListener(null);
+        }
+        super.onDestroy();
+    }
+
+    @Override
     protected boolean shouldFinishWhenBackgrounded() {
         return super.shouldFinishWhenBackgrounded() && !mNextLaunched
                 && !isPostureGuidanceShowing(mDevicePostureState, mLaunchedPostureGuidance);
@@ -277,6 +378,16 @@ public class FaceEnrollEducation extends BiometricEnrollBase {
         intent.putExtra(BiometricUtils.EXTRA_ENROLL_REASON,
                 getIntent().getIntExtra(BiometricUtils.EXTRA_ENROLL_REASON, -1));
 
+        updateOnboardingScreenInfoActions(
+                BiometricsOnboardingProto.OnboardingAction.ACTION_NEXT_VALUE);
+        if (mOnboardingEvent != null && mBiometricsLogger != null) {
+            addScreenInfoToEvent();
+            intent.putExtra(
+                    BiometricsLogger.EXTRA_BIOMETRICS_ONBOARDING_EVENT_BYTES,
+                    mBiometricsLogger.eventToMessageByteArray(mOnboardingEvent)
+            );
+        }
+
         if (!mSwitchDiversity.isChecked() && mAccessibilityEnabled) {
             FaceEnrollAccessibilityDialog dialog = FaceEnrollAccessibilityDialog.newInstance();
             dialog.setPositiveButtonListener((dialog1, which) -> {
@@ -291,17 +402,64 @@ public class FaceEnrollEducation extends BiometricEnrollBase {
 
     }
 
+    private Button getAccessibilityButton() {
+        final Button a11yButton = findViewById(R.id.accessibility_button);
+        final Button a11yButtonExpressive = findViewById(R.id.accessibility_button_expressive);
+        a11yButton.setVisibility(mIsUsingExpressiveStyle ? View.GONE : View.VISIBLE);
+        a11yButtonExpressive.setVisibility(mIsUsingExpressiveStyle ? View.VISIBLE : View.GONE);
+
+        return mIsUsingExpressiveStyle ? a11yButtonExpressive : a11yButton;
+    }
+    private void setupllIllustrationAnim(LottieAnimationView illustrationLottie) {
+        String[] colorArray = getResources().getStringArray(R.array.face_education_illustration);
+        List<String> colorMappings = Arrays.asList(colorArray);
+        LottieAnimationHelper.get().applyColor(getApplicationContext(), illustrationLottie,
+                colorMappings);
+    }
+
+    @VisibleForTesting
+    public boolean adjustIllustrationLottiePosition() {
+        boolean alreadyAdjustedPos = false;
+        final GlifLayout glifLayout = findViewById(R.id.setup_wizard_layout);
+        final TextView descView =  glifLayout.getDescriptionTextView();
+        final int descBottomPos = getOnScreenPositionTop(descView) + descView.getHeight();
+        final int illustrationLottieTop = getOnScreenPositionTop(mIllustrationLottie);
+        if (illustrationLottieTop < descBottomPos) {
+            final int posDiff = descBottomPos - illustrationLottieTop;
+            FrameLayout.LayoutParams layoutParams =
+                    (FrameLayout.LayoutParams) mIllustrationLottie.getLayoutParams();
+            layoutParams.topMargin += posDiff;
+            mIllustrationLottie.setLayoutParams(layoutParams);
+            mIllustrationLottie.requestLayout();
+            alreadyAdjustedPos = true;
+        }
+        return alreadyAdjustedPos;
+    }
+
+    @VisibleForTesting
+    public int getOnScreenPositionTop(@Nullable View view) {
+        if (view == null) {
+            return 0;
+        }
+        int [] location = new int[2];
+        view.getLocationOnScreen(location);
+        return location[1];
+    }
+
     protected void onAccessibilityButtonClicked(View view) {
         mSwitchDiversity.setChecked(true);
         view.setVisibility(View.GONE);
         mSwitchDiversity.setVisibility(View.VISIBLE);
         mSwitchDiversity.addOnLayoutChangeListener(mSwitchDiversityOnLayoutChangeListener);
+        adjustIllustrationLottiePosition();
     }
 
     protected void onSkipButtonClick(View view) {
         if (!BiometricUtils.tryStartingNextBiometricEnroll(this, ENROLL_NEXT_BIOMETRIC_REQUEST,
                 "edu_skip")) {
-            setResult(RESULT_SKIP);
+            updateOnboardingScreenInfoActions(
+                    BiometricsOnboardingProto.OnboardingAction.ACTION_SKIP_VALUE);
+            setResult(RESULT_SKIP, newResultIntent());
             finish();
         }
     }
@@ -344,6 +502,11 @@ public class FaceEnrollEducation extends BiometricEnrollBase {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    protected int getOnboardingScreen() {
+        return BiometricsOnboardingProto.OnboardingScreen.SCREEN_EDUCATION_VALUE;
+    }
+
     @VisibleForTesting
     @Nullable
     protected Intent getPostureGuidanceIntent() {
@@ -369,6 +532,7 @@ public class FaceEnrollEducation extends BiometricEnrollBase {
 
     private void hideDefaultIllustration() {
         if (mIsUsingLottie) {
+            forceConfigureA11yDelegate(false);
             mIllustrationLottie.cancelAnimation();
             mIllustrationLottie.setVisibility(View.INVISIBLE);
         } else {
@@ -379,13 +543,23 @@ public class FaceEnrollEducation extends BiometricEnrollBase {
 
     private void showDefaultIllustration() {
         if (mIsUsingLottie) {
-            mIllustrationLottie.setAnimation(R.raw.face_education_lottie);
+            mIllustrationLottie.setAnimation(mIsUsingExpressiveStyle
+                    ? R.raw.face_education_lottie_expressive : R.raw.face_education_lottie);
+            if (mIsUsingExpressiveStyle) {
+                setupllIllustrationAnim(mIllustrationLottie);
+            }
             mIllustrationLottie.setVisibility(View.VISIBLE);
+            forceConfigureA11yDelegate(true);
             mIllustrationLottie.playAnimation();
             mIllustrationLottie.setProgress(0f);
         } else {
             mIllustrationDefault.setVisibility(View.VISIBLE);
             mIllustrationDefault.start();
         }
+    }
+
+    @VisibleForTesting
+    boolean isUsingExpressiveStyle() {
+        return mIsUsingExpressiveStyle;
     }
 }

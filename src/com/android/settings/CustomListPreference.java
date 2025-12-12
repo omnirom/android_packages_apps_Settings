@@ -25,6 +25,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.AttributeSet;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog.Builder;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -35,12 +37,12 @@ import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
 
 public class CustomListPreference extends ListPreference {
 
-    public CustomListPreference(Context context, AttributeSet attrs) {
+    public CustomListPreference(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public CustomListPreference(Context context, AttributeSet attrs, int defStyleAttr,
-            int defStyleRes) {
+    public CustomListPreference(@NonNull Context context, @Nullable AttributeSet attrs,
+            int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

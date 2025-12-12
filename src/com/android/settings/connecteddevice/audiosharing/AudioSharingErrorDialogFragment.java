@@ -17,6 +17,7 @@
 package com.android.settings.connecteddevice.audiosharing;
 
 import android.app.Dialog;
+import android.app.settings.SettingsEnums;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -36,8 +37,7 @@ public class AudioSharingErrorDialogFragment extends InstrumentedDialogFragment 
 
     @Override
     public int getMetricsCategory() {
-        // TODO: add metrics
-        return 0;
+        return SettingsEnums.DIALOG_AUDIO_SHARING_START_WITH_ERROR;
     }
 
     /**

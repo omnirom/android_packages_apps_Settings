@@ -16,6 +16,7 @@
 
 package com.android.settings.network.tether
 
+import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothPan
 import android.bluetooth.BluetoothProfile
@@ -29,11 +30,11 @@ import android.os.Handler
 import android.os.Looper
 import com.android.settings.R
 import com.android.settings.datausage.DataSaverBackend
+import com.android.settingslib.datastore.AbstractKeyedDataObservable
 import com.android.settingslib.datastore.KeyValueStore
-import com.android.settingslib.datastore.KeyedDataObservable
+import com.android.settingslib.datastore.Permissions
 import com.android.settingslib.metadata.PreferenceAvailabilityProvider
-import com.android.settingslib.metadata.PreferenceLifecycleContext
-import com.android.settingslib.metadata.PreferenceLifecycleProvider
+import com.android.settingslib.metadata.PreferenceChangeReason
 import com.android.settingslib.metadata.ReadWritePermit
 import com.android.settingslib.metadata.SensitivityLevel
 import com.android.settingslib.metadata.SwitchPreference
@@ -41,12 +42,9 @@ import java.util.concurrent.atomic.AtomicReference
 
 // LINT.IfChange
 @Suppress("DEPRECATION")
-class BluetoothTetherSwitchPreference :
-    SwitchPreference(KEY, R.string.bluetooth_tether_checkbox_text),
-    PreferenceAvailabilityProvider,
-    PreferenceLifecycleProvider {
-
-    private var tetherChangeReceiver: BroadcastReceiver? = null
+class BluetoothTetherSwitchPreference(
+    private val bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
+) : SwitchPreference(KEY, R.string.bluetooth_tether_checkbox_text), PreferenceAvailabilityProvider {
 
     override val summary: Int
         get() = R.string.bluetooth_tethering_subtext
@@ -54,18 +52,19 @@ class BluetoothTetherSwitchPreference :
     override val keywords: Int
         get() = R.string.keywords_hotspot_tethering
 
-    override fun storage(context: Context): KeyValueStore = BluetoothTetherStore(context)
+    override fun storage(context: Context): KeyValueStore =
+        BluetoothTetherStore(context, bluetoothAdapter)
 
     override fun isAvailable(context: Context): Boolean {
-        BluetoothAdapter.getDefaultAdapter() ?: return false
+        bluetoothAdapter ?: return false
         val tetheringManager = context.getSystemService(TetheringManager::class.java)
         val bluetoothRegexs = tetheringManager?.tetherableBluetoothRegexs
         return bluetoothRegexs?.isNotEmpty() == true
     }
 
     override fun isEnabled(context: Context): Boolean {
-        val adapter = BluetoothAdapter.getDefaultAdapter() ?: return false
-        val btState = adapter.state
+        bluetoothAdapter ?: return false
+        val btState = bluetoothAdapter.state
         /* TODO: when bluetooth is off, btstate will be `state_turning_on` -> `state_off` ->
         `state_turning_on` -> `state_on`, causing preference enable status incorrect. */
         when (btState) {
@@ -77,74 +76,43 @@ class BluetoothTetherSwitchPreference :
         return !dataSaverBackend.isDataSaverEnabled
     }
 
+    override fun getReadPermissions(context: Context) =
+        Permissions.allOf(Manifest.permission.BLUETOOTH_CONNECT)
+
     override fun getReadPermit(context: Context, callingPid: Int, callingUid: Int) =
         ReadWritePermit.ALLOW
 
-    override fun getWritePermit(
-        context: Context,
-        value: Boolean?,
-        callingPid: Int,
-        callingUid: Int,
-    ) = ReadWritePermit.ALLOW
+    override fun getWritePermissions(context: Context) =
+        Permissions.allOf(
+            Manifest.permission.BLUETOOTH_CONNECT,
+            Manifest.permission.TETHER_PRIVILEGED,
+        )
+
+    override fun getWritePermit(context: Context, callingPid: Int, callingUid: Int) =
+        ReadWritePermit.ALLOW
 
     override val sensitivityLevel: Int
         get() = SensitivityLevel.LOW_SENSITIVITY
 
-    override fun onCreate(context: PreferenceLifecycleContext) {
-        val receiver =
-            object : BroadcastReceiver() {
-                override fun onReceive(content: Context, intent: Intent) {
-                    when (intent.action) {
-                        TetheringManager.ACTION_TETHER_STATE_CHANGED,
-                        Intent.ACTION_MEDIA_SHARED,
-                        Intent.ACTION_MEDIA_UNSHARED,
-                        BluetoothAdapter.ACTION_STATE_CHANGED,
-                        BluetoothPan.ACTION_TETHERING_STATE_CHANGED ->
-                            context.notifyPreferenceChange(KEY)
-                    }
-                }
-            }
-        tetherChangeReceiver = receiver
-        var filter = IntentFilter(TetheringManager.ACTION_TETHER_STATE_CHANGED)
-        val intent = context.registerReceiver(receiver, filter)
-
-        filter = IntentFilter()
-        filter.addAction(Intent.ACTION_MEDIA_SHARED)
-        filter.addAction(Intent.ACTION_MEDIA_UNSHARED)
-        filter.addDataScheme("file")
-        context.registerReceiver(receiver, filter)
-
-        filter = IntentFilter()
-        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED)
-        filter.addAction(BluetoothPan.ACTION_TETHERING_STATE_CHANGED)
-        context.registerReceiver(receiver, filter)
-    }
-
-    override fun onDestroy(context: PreferenceLifecycleContext) {
-        tetherChangeReceiver?.let {
-            context.unregisterReceiver(it)
-            tetherChangeReceiver = null
-        }
-    }
-
     @Suppress("UNCHECKED_CAST")
-    private class BluetoothTetherStore(private val context: Context) :
-        KeyedDataObservable<String>(), KeyValueStore {
+    private class BluetoothTetherStore(
+        private val context: Context,
+        private val adapter: BluetoothAdapter?,
+    ) : AbstractKeyedDataObservable<String>(), KeyValueStore {
 
-        val bluetoothPan = AtomicReference<BluetoothPan>()
+        private val bluetoothPan = AtomicReference<BluetoothPan>()
+        private var tetherChangeReceiver: TetherChangeReceiver? = null
 
         override fun contains(key: String) = key == KEY
 
-        override fun <T : Any> getValue(key: String, valueType: Class<T>): T? {
-            // TODO: support async operation in background thread
-            val adapter = BluetoothAdapter.getDefaultAdapter() ?: return false as T
+        override fun onFirstObserverAdded() {
             if (bluetoothPan.get() == null) {
                 val profileServiceListener: BluetoothProfile.ServiceListener =
                     object : BluetoothProfile.ServiceListener {
                         override fun onServiceConnected(profile: Int, proxy: BluetoothProfile) {
                             if (bluetoothPan.get() == null) {
                                 bluetoothPan.set(proxy as BluetoothPan)
-                                notifyChange(KEY, 0)
+                                notifyChange(KEY, PreferenceChangeReason.VALUE)
                             }
                         }
 
@@ -152,26 +120,30 @@ class BluetoothTetherSwitchPreference :
                             /* Do nothing */
                         }
                     }
-                // TODO: adapter.closeProfileProxy(bluetoothPan.get())
-                adapter.getProfileProxy(
+                adapter?.getProfileProxy(
                     context.applicationContext,
                     profileServiceListener,
                     BluetoothProfile.PAN,
                 )
             }
-
-            val btState = adapter.state
-            val pan = bluetoothPan.get()
-            return ((btState == BluetoothAdapter.STATE_ON ||
-                btState == BluetoothAdapter.STATE_TURNING_OFF) && pan != null && pan.isTetheringOn)
-                as T?
+            registerTetherChangeReceiver()
         }
 
+        override fun onLastObserverRemoved() {
+            unregisterTetherChangeReceiver()
+            bluetoothPan.getAndSet(null)?.let {
+                adapter?.closeProfileProxy(BluetoothProfile.PAN, it)
+            }
+        }
+
+        override fun <T : Any> getValue(key: String, valueType: Class<T>): T? =
+            (bluetoothPan.get()?.isTetheringOn == true) as T
+
         override fun <T : Any> setValue(key: String, valueType: Class<T>, value: T?) {
-            if (value == null) return
+            if (value !is Boolean || adapter == null) return
             val connectivityManager =
                 context.getSystemService(ConnectivityManager::class.java) ?: return
-            if (value as Boolean) {
+            if (value) {
                 val handler by lazy { Handler(Looper.getMainLooper()) }
                 val startTetheringCallback = OnStartTetheringCallback()
                 fun startTethering() {
@@ -183,11 +155,11 @@ class BluetoothTetherSwitchPreference :
                     )
                 }
 
-                val adapter = BluetoothAdapter.getDefaultAdapter()
                 if (adapter.state == BluetoothAdapter.STATE_OFF) {
+                    // Turn on Bluetooth first.
                     adapter.enable()
                     val filter = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
-                    val tetherChangeReceiver =
+                    val bluetoothStateReceiver =
                         object : BroadcastReceiver() {
                             override fun onReceive(context: Context, intent: Intent) {
                                 if (
@@ -201,8 +173,8 @@ class BluetoothTetherSwitchPreference :
                                 }
                             }
                         }
-                    val intent = context.registerReceiver(tetherChangeReceiver, filter)
-                    if (intent != null) tetherChangeReceiver.onReceive(context, intent)
+                    val intent = context.registerReceiver(bluetoothStateReceiver, filter)
+                    if (intent != null) bluetoothStateReceiver.onReceive(context, intent)
                 } else {
                     startTethering()
                 }
@@ -211,14 +183,57 @@ class BluetoothTetherSwitchPreference :
             }
         }
 
+        private fun registerTetherChangeReceiver() {
+            tetherChangeReceiver = TetherChangeReceiver()
+            var filter = IntentFilter(TetheringManager.ACTION_TETHER_STATE_CHANGED)
+            val intent = context.registerReceiver(tetherChangeReceiver, filter)
+
+            filter =
+                IntentFilter().apply {
+                    addAction(Intent.ACTION_MEDIA_SHARED)
+                    addAction(Intent.ACTION_MEDIA_UNSHARED)
+                    addDataScheme("file")
+                }
+            context.registerReceiver(tetherChangeReceiver, filter)
+
+            filter =
+                IntentFilter().apply {
+                    addAction(BluetoothAdapter.ACTION_STATE_CHANGED)
+                    addAction(BluetoothPan.ACTION_TETHERING_STATE_CHANGED)
+                }
+            context.registerReceiver(tetherChangeReceiver, filter)
+
+            if (intent != null) tetherChangeReceiver!!.onReceive(context, intent)
+        }
+
+        private fun unregisterTetherChangeReceiver() {
+            tetherChangeReceiver?.let {
+                context.unregisterReceiver(it)
+                tetherChangeReceiver = null
+            }
+        }
+
         private inner class OnStartTetheringCallback :
             ConnectivityManager.OnStartTetheringCallback() {
             override fun onTetheringStarted() {
-                notifyChange(KEY, 0)
+                notifyChange(KEY, PreferenceChangeReason.VALUE)
             }
 
             override fun onTetheringFailed() {
-                notifyChange(KEY, 0)
+                notifyChange(KEY, PreferenceChangeReason.VALUE)
+            }
+        }
+
+        private inner class TetherChangeReceiver : BroadcastReceiver() {
+            override fun onReceive(content: Context, intent: Intent) {
+                when (intent.action) {
+                    TetheringManager.ACTION_TETHER_STATE_CHANGED,
+                    Intent.ACTION_MEDIA_SHARED,
+                    Intent.ACTION_MEDIA_UNSHARED,
+                    BluetoothAdapter.ACTION_STATE_CHANGED,
+                    BluetoothPan.ACTION_TETHERING_STATE_CHANGED ->
+                        notifyChange(KEY, PreferenceChangeReason.STATE)
+                }
             }
         }
     }

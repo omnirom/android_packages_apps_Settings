@@ -19,13 +19,11 @@
 
     <com.android.settingslib.widget.TopIntroPreference
         android:key="accessibility_button_intro"
-        android:persistent="false"
         android:title="@string/accessibility_button_intro_text"
         settings:searchable="false" />
 
     <com.android.settingslib.widget.IllustrationPreference
         android:key="accessibility_button_preview"
-        android:persistent="false"
         android:selectable="false"
         settings:controller="com.android.settings.accessibility.AccessibilityButtonPreviewPreferenceController"
         settings:searchable="false" />
@@ -38,15 +36,6 @@
         android:summary="%s"
         android:title="@string/accessibility_button_location_title"
         settings:controller="com.android.settings.accessibility.AccessibilityButtonLocationPreferenceController" />
-
-    <ListPreference
-        android:entries="@array/accessibility_button_gesture_selector_titles"
-        android:entryValues="@array/accessibility_button_gesture_selector_values"
-        android:key="accessibility_button_or_gesture"
-        android:persistent="false"
-        android:summary="%s"
-        android:title="@string/accessibility_button_or_gesture_title"
-        settings:controller="com.android.settings.accessibility.AccessibilityButtonGesturePreferenceController" />
 
     <ListPreference
         android:entries="@array/accessibility_button_size_selector_titles"
@@ -64,7 +53,7 @@
         android:title="@string/accessibility_button_fade_title"
         settings:controller="com.android.settings.accessibility.FloatingMenuFadePreferenceController" />
 
-    <com.android.settings.widget.SeekBarPreference
+    <com.android.settingslib.widget.SliderPreference
         android:key="accessibility_button_opacity"
         android:persistent="false"
         android:title="@string/accessibility_button_opacity_title"

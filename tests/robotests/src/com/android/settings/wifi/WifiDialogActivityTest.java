@@ -42,7 +42,10 @@ import android.content.pm.PackageManager;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.UserManager;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
+import com.android.settings.connectivity.Flags;
 import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settingslib.wifi.AccessPoint;
 import com.android.wifitrackerlib.NetworkDetailsTracker;
@@ -51,6 +54,7 @@ import com.android.wifitrackerlib.WifiEntry;
 import com.google.android.setupcompat.util.WizardManagerHelper;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -69,6 +73,8 @@ public class WifiDialogActivityTest {
     UserManager mUserManager;
     @Mock
     PackageManager mPackageManager;
+    @Mock
+    WifiManager mWifiManager;
     @Mock
     WifiDialog mWifiDialog;
     @Mock
@@ -89,6 +95,8 @@ public class WifiDialogActivityTest {
     KeyguardManager mKeyguardManager;
 
     WifiDialogActivity mActivity;
+
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Before
     public void setUp() {
@@ -175,6 +183,7 @@ public class WifiDialogActivityTest {
     public void onSubmit_whenConnectForCallerIsFalse_shouldNotConnectToNetwork() {
         final Intent intent = new Intent();
         intent.putExtra(WifiDialogActivity.KEY_CONNECT_FOR_CALLER, false);
+        intent.putExtra(WifiDialogActivity.KEY_ACCESS_POINT_STATE, "FAKE_KEY");
         mActivity = spy(Robolectric.buildActivity(WifiDialogActivity.class, intent).setup().get());
 
         mActivity.onSubmit(mWifiDialog);
@@ -193,6 +202,19 @@ public class WifiDialogActivityTest {
         mActivity.onSubmit(mWifiDialog2);
 
         verify(mWifiEntry, never()).connect(any());
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_WIFI_MULTIUSER)
+    public void onSubmit2_whenAddNewNetwork_shouldSave() {
+        when(mWifiConfiguration2.getConfig()).thenReturn(mWifiConfiguration);
+        final Intent intent = new Intent("com.android.settings.WIFI_DIALOG");
+        intent.putExtra(WifiDialogActivity.KEY_CONNECT_FOR_CALLER, true);
+        mActivity = spy(Robolectric.buildActivity(WifiDialogActivity.class, intent).setup().get());
+        mActivity.mWifiManager = mWifiManager;
+
+        mActivity.onSubmit(mWifiDialog2);
+        verify(mWifiManager).save(any(), any());
     }
 
     @Test

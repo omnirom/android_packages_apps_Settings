@@ -29,10 +29,12 @@ import static com.android.internal.accessibility.common.ShortcutConstants.UserSh
 import static com.android.internal.accessibility.common.ShortcutConstants.UserShortcutType.TWOFINGER_DOUBLETAP;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -43,7 +45,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -53,7 +54,6 @@ import android.widget.TextView;
 
 import androidx.annotation.AnimRes;
 import androidx.annotation.DrawableRes;
-import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
@@ -61,6 +61,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.util.Preconditions;
 import androidx.core.widget.TextViewCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -68,13 +69,12 @@ import com.android.internal.accessibility.common.ShortcutConstants.UserShortcutT
 import com.android.internal.accessibility.util.ShortcutUtils;
 import com.android.settings.R;
 import com.android.settings.core.SubSettingLauncher;
+import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
 import com.android.settingslib.utils.StringUtil;
 import com.android.settingslib.widget.LottieColorUtils;
 
 import com.airbnb.lottie.LottieAnimationView;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -86,61 +86,13 @@ import java.util.Map;
 public final class AccessibilityShortcutsTutorial {
     private static final String TAG = "AccessibilityGestureNavigationTutorial";
 
-    /** IntDef enum for dialog type. */
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({
-            DialogType.LAUNCH_SERVICE_BY_ACCESSIBILITY_BUTTON,
-            DialogType.LAUNCH_SERVICE_BY_ACCESSIBILITY_GESTURE,
-            DialogType.GESTURE_NAVIGATION_SETTINGS,
-    })
-
-    private @interface DialogType {
-        int LAUNCH_SERVICE_BY_ACCESSIBILITY_BUTTON = 0;
-        int LAUNCH_SERVICE_BY_ACCESSIBILITY_GESTURE = 1;
-        int GESTURE_NAVIGATION_SETTINGS = 2;
-    }
-
     private AccessibilityShortcutsTutorial() {}
 
     private static final DialogInterface.OnClickListener ON_CLICK_LISTENER =
             (DialogInterface dialog, int which) -> dialog.dismiss();
 
-    /**
-     * Displays a dialog that guides users to use accessibility features with accessibility
-     * gestures under system gesture navigation mode.
-     */
-    public static AlertDialog showGestureNavigationTutorialDialog(Context context,
-            DialogInterface.OnDismissListener onDismissListener) {
-        final AlertDialog alertDialog = new AlertDialog.Builder(context)
-                .setView(createTutorialDialogContentView(context,
-                        DialogType.GESTURE_NAVIGATION_SETTINGS))
-                .setPositiveButton(R.string.accessibility_tutorial_dialog_button, ON_CLICK_LISTENER)
-                .setOnDismissListener(onDismissListener)
-                .create();
-
-        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.show();
-
-        return alertDialog;
-    }
-
-    static AlertDialog showAccessibilityGestureTutorialDialog(Context context) {
-        return createDialog(context, DialogType.LAUNCH_SERVICE_BY_ACCESSIBILITY_GESTURE);
-    }
-
-    static AlertDialog createAccessibilityTutorialDialog(
+    private static AlertDialog createAccessibilityTutorialDialog(
             @NonNull Context context, int shortcutTypes, @NonNull CharSequence featureName) {
-        return createAccessibilityTutorialDialog(
-                context, shortcutTypes, ON_CLICK_LISTENER, featureName);
-    }
-
-    static AlertDialog createAccessibilityTutorialDialog(
-            @NonNull Context context,
-            int shortcutTypes,
-            @Nullable DialogInterface.OnClickListener actionButtonListener,
-            @NonNull CharSequence featureName) {
-
         final int category = SettingsEnums.SWITCH_SHORTCUT_DIALOG_ACCESSIBILITY_BUTTON_SETTINGS;
         final DialogInterface.OnClickListener linkButtonListener =
                 (dialog, which) -> new SubSettingLauncher(context)
@@ -150,7 +102,7 @@ public final class AccessibilityShortcutsTutorial {
 
         final AlertDialog alertDialog = new AlertDialog.Builder(context)
                 .setPositiveButton(R.string.accessibility_tutorial_dialog_button,
-                        actionButtonListener)
+                        ON_CLICK_LISTENER)
                 .setNegativeButton(R.string.accessibility_tutorial_dialog_link_button,
                         linkButtonListener)
                 .create();
@@ -189,21 +141,11 @@ public final class AccessibilityShortcutsTutorial {
         }
     }
 
-    static AlertDialog createAccessibilityTutorialDialogForSetupWizard(Context context,
-            int shortcutTypes, CharSequence featureName) {
-        return createAccessibilityTutorialDialogForSetupWizard(context, shortcutTypes,
-                ON_CLICK_LISTENER, featureName);
-    }
-
-    static AlertDialog createAccessibilityTutorialDialogForSetupWizard(
-            @NonNull Context context,
-            int shortcutTypes,
-            @Nullable DialogInterface.OnClickListener actionButtonListener,
-            @NonNull CharSequence featureName) {
-
+    private static AlertDialog createAccessibilityTutorialDialogForSetupWizard(
+            @NonNull Context context, int shortcutTypes, @NonNull CharSequence featureName) {
         final AlertDialog alertDialog = new AlertDialog.Builder(context)
                 .setPositiveButton(R.string.accessibility_tutorial_dialog_button,
-                        actionButtonListener)
+                        ON_CLICK_LISTENER)
                 .create();
 
         final List<TutorialPage> tutorialPages = createShortcutTutorialPages(
@@ -212,68 +154,6 @@ public final class AccessibilityShortcutsTutorial {
                 /* errorMessage= */ "Unexpected tutorial pages size");
 
         alertDialog.setView(createShortcutNavigationContentView(context, tutorialPages, null));
-
-        return alertDialog;
-    }
-
-    /**
-     * Gets a content View for a dialog to confirm that they want to enable a service.
-     *
-     * @param context    A valid context
-     * @param dialogType The type of tutorial dialog
-     * @return A content view suitable for viewing
-     */
-    private static View createTutorialDialogContentView(Context context, int dialogType) {
-        final LayoutInflater inflater = (LayoutInflater) context.getSystemService(
-                Context.LAYOUT_INFLATER_SERVICE);
-
-        View content = null;
-
-        switch (dialogType) {
-            case DialogType.LAUNCH_SERVICE_BY_ACCESSIBILITY_BUTTON:
-                content = inflater.inflate(
-                        R.layout.tutorial_dialog_launch_service_by_accessibility_button, null);
-                break;
-            case DialogType.LAUNCH_SERVICE_BY_ACCESSIBILITY_GESTURE:
-                content = inflater.inflate(
-                        R.layout.tutorial_dialog_launch_service_by_gesture_navigation, null);
-                setupGestureNavigationTextWithImage(context, content);
-                break;
-            case DialogType.GESTURE_NAVIGATION_SETTINGS:
-                content = inflater.inflate(
-                        R.layout.tutorial_dialog_launch_by_gesture_navigation_settings, null);
-                setupGestureNavigationTextWithImage(context, content);
-                break;
-        }
-
-        return content;
-    }
-
-    private static void setupGestureNavigationTextWithImage(Context context, View view) {
-        final boolean isTouchExploreEnabled = AccessibilityUtil.isTouchExploreEnabled(context);
-
-        final ImageView imageView = view.findViewById(R.id.image);
-        final int gestureSettingsImageResId =
-                isTouchExploreEnabled
-                        ? R.drawable.accessibility_shortcut_type_gesture_preview_touch_explore_on
-                        : R.drawable.accessibility_shortcut_type_gesture_preview;
-        imageView.setImageResource(gestureSettingsImageResId);
-
-        final TextView textView = view.findViewById(R.id.gesture_tutorial_message);
-        textView.setText(isTouchExploreEnabled
-                ? R.string.accessibility_tutorial_dialog_message_gesture_settings_talkback
-                : R.string.accessibility_tutorial_dialog_message_gesture_settings);
-    }
-
-    private static AlertDialog createDialog(Context context, int dialogType) {
-        final AlertDialog alertDialog = new AlertDialog.Builder(context)
-                .setView(createTutorialDialogContentView(context, dialogType))
-                .setPositiveButton(R.string.accessibility_tutorial_dialog_button, ON_CLICK_LISTENER)
-                .create();
-
-        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.show();
 
         return alertDialog;
     }
@@ -337,6 +217,7 @@ public final class AccessibilityShortcutsTutorial {
         // Follow the Motion Stoppable requirement by using a finite animation.
         lottieView.setRepeatCount(0);
         LottieColorUtils.applyDynamicColors(context, lottieView);
+        LottieColorUtils.applyMaterialColor(context, lottieView);
         lottieView.playAnimation();
 
         return illustrationFrame;
@@ -711,6 +592,66 @@ public final class AccessibilityShortcutsTutorial {
 
             /** The callback method after tutorial page is selected. */
             void onPageSelected(int index);
+        }
+    }
+
+    /**
+     * DialogFragment that hosts the shortcuts tutorial dialog.
+     */
+    public static class DialogFragment extends InstrumentedDialogFragment {
+        private static final String ARG_IN_SETUP_WIZARD = "inSetupWizard";
+        private static final String ARG_FEATURE_NAME = "featureName";
+        private static final String ARG_SHORTCUT_TYPES = "shortcutTypes";
+        private boolean mIsInSetupWizard;
+        private CharSequence mFeatureName;
+        private int mShortcutTypes;
+
+        /**
+         * Show the tutorials on how to use the selected shortcuts.
+         */
+        public static void showDialog(@NonNull FragmentManager fragmentManager,
+                @UserShortcutType int shortcutTypes, @NonNull CharSequence featureName,
+                boolean isInSetupWizard) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(ARG_SHORTCUT_TYPES, shortcutTypes);
+            bundle.putCharSequence(ARG_FEATURE_NAME, featureName);
+            bundle.putBoolean(ARG_IN_SETUP_WIZARD, isInSetupWizard);
+            DialogFragment dialogFragment = new DialogFragment();
+            dialogFragment.setArguments(bundle);
+            dialogFragment.show(fragmentManager, DialogFragment.class.getSimpleName());
+        }
+
+        @Override
+        public void onAttach(@NonNull Context context) {
+            super.onAttach(context);
+            mIsInSetupWizard = getArguments().getBoolean(ARG_IN_SETUP_WIZARD);
+            mFeatureName = getArguments().getCharSequence(ARG_FEATURE_NAME);
+            mShortcutTypes = getArguments().getInt(ARG_SHORTCUT_TYPES);
+        }
+
+        @Override
+        public @NonNull Dialog onCreateDialog(
+                @Nullable Bundle savedInstanceState) {
+
+            Dialog dialog;
+
+            if (mIsInSetupWizard) {
+                dialog = AccessibilityShortcutsTutorial
+                        .createAccessibilityTutorialDialogForSetupWizard(
+                                requireContext(), mShortcutTypes, mFeatureName);
+            } else {
+                dialog = AccessibilityShortcutsTutorial
+                        .createAccessibilityTutorialDialog(
+                                requireContext(), mShortcutTypes, mFeatureName);
+            }
+
+            dialog.setCanceledOnTouchOutside(false);
+            return dialog;
+        }
+
+        @Override
+        public int getMetricsCategory() {
+            return SettingsEnums.DIALOG_ACCESSIBILITY_TUTORIAL;
         }
     }
 }

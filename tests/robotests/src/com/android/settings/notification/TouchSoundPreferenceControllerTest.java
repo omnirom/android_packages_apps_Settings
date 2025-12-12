@@ -40,6 +40,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+// LINT.IfChange
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {
         com.android.settings.testutils.shadow.ShadowFragment.class,
@@ -121,3 +122,4 @@ public class TouchSoundPreferenceControllerTest {
         assertThat(System.getInt(mContentResolver, System.SOUND_EFFECTS_ENABLED, 1)).isEqualTo(0);
     }
 }
+// LINT.ThenChange(TouchSoundPreferenceTest.kt)

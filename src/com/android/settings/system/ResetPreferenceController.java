@@ -16,21 +16,15 @@
 package com.android.settings.system;
 
 import android.content.Context;
-import android.os.UserManager;
 
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
-import com.android.settings.network.NetworkResetPreferenceController;
 
+// LINT.IfChange
 public class ResetPreferenceController extends BasePreferenceController {
-
-    private final UserManager mUm;
-    private final NetworkResetPreferenceController mNetworkReset;
 
     public ResetPreferenceController(Context context, String preferenceKey) {
         super(context, preferenceKey);
-        mUm = (UserManager) context.getSystemService(Context.USER_SERVICE);
-        mNetworkReset = new NetworkResetPreferenceController(context);
     }
 
     @Override
@@ -39,3 +33,4 @@ public class ResetPreferenceController extends BasePreferenceController {
                 ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
     }
 }
+// LINT.ThenChange(ResetDashboardScreen.kt)

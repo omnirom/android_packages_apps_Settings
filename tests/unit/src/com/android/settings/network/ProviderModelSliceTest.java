@@ -67,6 +67,7 @@ import com.android.wifitrackerlib.WifiEntry;
 import com.android.wifitrackerlib.WifiPickerTracker;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -75,6 +76,8 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated(forRemoval = true)
+@Ignore
 @RunWith(AndroidJUnit4.class)
 public class ProviderModelSliceTest {
     private static final Uri PROVIDER_MODEL_SLICE_URI =

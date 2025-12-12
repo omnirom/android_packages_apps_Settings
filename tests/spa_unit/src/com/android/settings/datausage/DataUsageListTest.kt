@@ -22,6 +22,8 @@ import android.net.NetworkTemplate
 import android.os.UserManager
 import android.provider.Settings
 import android.telephony.SubscriptionManager
+import android.telephony.TelephonyManager
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragment
 import androidx.fragment.app.testing.withFragment
@@ -32,6 +34,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.settings.R
 import com.android.settings.datausage.DataUsageList.Companion.KEY_WARNING
 import com.android.settingslib.spaprivileged.framework.common.userManager
+import com.android.settingslib.widget.LayoutPreference
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -42,8 +45,10 @@ import org.mockito.kotlin.spy
 import org.mockito.kotlin.stub
 
 private val mockUserManager = mock<UserManager>()
+private val mockTelephonyManager = mock<TelephonyManager>()
 
 private val spyContext: Context = spy(ApplicationProvider.getApplicationContext()) {
+    on { getSystemService(TelephonyManager::class.java) } doReturn mockTelephonyManager
     on { userManager } doReturn mockUserManager
 }
 
@@ -59,9 +64,21 @@ class DataUsageListTest {
         spyContext.stub {
             on { resources } doReturn spyResources
         }
+        mockTelephonyManager.stub {
+            on { isDataCapable } doReturn true
+        }
         mockUserManager.stub {
             on { isGuestUser } doReturn false
         }
+
+	// By default, available
+        spyResources.stub {
+            on { getBoolean(R.bool.config_show_sim_info) } doReturn true
+        }
+        mockTelephonyManager.stub {
+            on { isDataCapable } doReturn true
+        }
+
         fakeIntent = Intent()
     }
 
@@ -134,9 +151,6 @@ class DataUsageListTest {
     @Test
     fun warning_wifiAndHasSim_displayNonCarrierWarning() {
         val template = NetworkTemplate.Builder(NetworkTemplate.MATCH_WIFI).build()
-        spyResources.stub {
-            on { getBoolean(R.bool.config_show_sim_info) } doReturn true
-        }
         fakeIntent = Intent().apply {
             putExtra(Settings.EXTRA_NETWORK_TEMPLATE, template)
         }
@@ -144,13 +158,15 @@ class DataUsageListTest {
         val scenario = launchFragment<TestDataUsageList>(initialState = Lifecycle.State.CREATED)
 
         scenario.withFragment {
-            assertThat(findPreference<Preference>(KEY_WARNING)!!.summary)
+            val preference = findPreference<LayoutPreference>(KEY_WARNING)!!
+            val textView = preference.findViewById<TextView>(R.id.text)!!
+            assertThat(textView.text)
                 .isEqualTo(context.getString(R.string.non_carrier_data_usage_warning))
         }
     }
 
     @Test
-    fun warning_wifiAndNoSim_noWarning() {
+    fun warning_wifiAndNoShowSimInfo_noWarning() {
         val template = NetworkTemplate.Builder(NetworkTemplate.MATCH_WIFI).build()
         spyResources.stub {
             on { getBoolean(R.bool.config_show_sim_info) } doReturn false
@@ -162,7 +178,28 @@ class DataUsageListTest {
         val scenario = launchFragment<TestDataUsageList>(initialState = Lifecycle.State.CREATED)
 
         scenario.withFragment {
-            assertThat(findPreference<Preference>(KEY_WARNING)!!.summary).isNull()
+            val preference = findPreference<LayoutPreference>(KEY_WARNING)!!
+            val textView = preference.findViewById<TextView>(R.id.text)!!
+            assertThat(textView.text.length).isEqualTo(0)
+        }
+    }
+
+    @Test
+    fun warning_wifiAndNoDataCapable_noWarning() {
+        val template = NetworkTemplate.Builder(NetworkTemplate.MATCH_WIFI).build()
+        mockTelephonyManager.stub {
+            on { isDataCapable } doReturn false
+        }
+        fakeIntent = Intent().apply {
+            putExtra(Settings.EXTRA_NETWORK_TEMPLATE, template)
+        }
+
+        val scenario = launchFragment<TestDataUsageList>(initialState = Lifecycle.State.CREATED)
+
+        scenario.withFragment {
+            val preference = findPreference<LayoutPreference>(KEY_WARNING)!!
+            val textView = preference.findViewById<TextView>(R.id.text)!!
+            assertThat(textView.text.length).isEqualTo(0)
         }
     }
 
@@ -176,8 +213,9 @@ class DataUsageListTest {
         val scenario = launchFragment<TestDataUsageList>(initialState = Lifecycle.State.CREATED)
 
         scenario.withFragment {
-            assertThat(findPreference<Preference>(KEY_WARNING)!!.summary)
-                .isEqualTo(context.getString(R.string.operator_warning))
+            val preference = findPreference<LayoutPreference>(KEY_WARNING)!!
+            val textView = preference.findViewById<TextView>(R.id.text)!!
+            assertThat(textView.text).isEqualTo(context.getString(R.string.operator_warning))
         }
     }
 }

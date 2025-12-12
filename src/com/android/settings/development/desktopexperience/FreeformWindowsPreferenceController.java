@@ -32,7 +32,7 @@ import com.android.settings.development.DevelopmentSettingsDashboardFragment;
 import com.android.settings.development.RebootConfirmationDialogFragment;
 import com.android.settings.development.RebootConfirmationDialogHost;
 import com.android.settingslib.development.DeveloperOptionsPreferenceController;
-import com.android.wm.shell.shared.desktopmode.DesktopModeStatus;
+import com.android.wm.shell.shared.desktopmode.DesktopState;
 
 public class FreeformWindowsPreferenceController extends DeveloperOptionsPreferenceController
         implements Preference.OnPreferenceChangeListener, PreferenceControllerMixin,
@@ -48,10 +48,20 @@ public class FreeformWindowsPreferenceController extends DeveloperOptionsPrefere
     @Nullable
     private final DevelopmentSettingsDashboardFragment mFragment;
 
-    public FreeformWindowsPreferenceController(
-            Context context, @Nullable DevelopmentSettingsDashboardFragment fragment) {
+    private final DesktopState mDesktopState;
+
+    @VisibleForTesting
+    FreeformWindowsPreferenceController(
+            Context context, @Nullable DevelopmentSettingsDashboardFragment fragment,
+            DesktopState desktopState) {
         super(context);
         mFragment = fragment;
+        mDesktopState = desktopState;
+    }
+
+    public FreeformWindowsPreferenceController(
+            Context context, @Nullable DevelopmentSettingsDashboardFragment fragment) {
+        this(context, fragment, DesktopState.fromContext(context));
     }
 
     @Override
@@ -59,8 +69,8 @@ public class FreeformWindowsPreferenceController extends DeveloperOptionsPrefere
         // When devices have the system feature FEATURE_FREEFORM_WINDOW_MANAGEMENT, freeform
         // mode is enabled automatically, and this toggle is not needed.
         return !mContext.getPackageManager().hasSystemFeature(FEATURE_FREEFORM_WINDOW_MANAGEMENT)
-                && !DesktopModeStatus.canShowDesktopExperienceDevOption(mContext)
-                && !DesktopModeStatus.canShowDesktopModeDevOption(mContext);
+                && !mDesktopState.canShowDesktopExperienceDevOption()
+                && !mDesktopState.canShowDesktopModeDevOption();
     }
 
     @Override

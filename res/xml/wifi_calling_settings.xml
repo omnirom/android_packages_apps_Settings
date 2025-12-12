@@ -49,8 +49,8 @@
             android:title="@string/emergency_address_title"
             android:summary="@string/emergency_address_summary" />
 
-    <com.android.settings.wifi.calling.LinkifyDescriptionPreference
-            android:key="no_options_description"
-            isPreferenceVisible="false" />
+    <com.android.settingslib.widget.TopIntroPreference
+        android:key="no_options_description"
+        settings:searchable="false"/>
 
 </PreferenceScreen>

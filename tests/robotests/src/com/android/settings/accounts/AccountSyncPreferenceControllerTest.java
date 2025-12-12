@@ -20,17 +20,20 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Answers.RETURNS_DEEP_STUBS;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AuthenticatorDescription;
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SyncAdapterType;
 import android.os.UserHandle;
 
 import androidx.preference.Preference;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
@@ -46,7 +49,6 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowApplication;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {ShadowAccountManager.class, ShadowContentResolver.class})
@@ -63,7 +65,8 @@ public class AccountSyncPreferenceControllerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mActivity = Robolectric.setupActivity(Activity.class);
-        ShadowApplication.getInstance().setSystemService(Context.ACCOUNT_SERVICE, mAccountManager);
+        shadowOf((Application) ApplicationProvider.getApplicationContext())
+                .setSystemService(Context.ACCOUNT_SERVICE, mAccountManager);
 
         when(mAccountManager.getAuthenticatorTypesAsUser(anyInt())).thenReturn(
                 new AuthenticatorDescription[0]);
@@ -85,7 +88,9 @@ public class AccountSyncPreferenceControllerTest {
     public void handlePreferenceTreeClick_shouldStartFragment() {
         mController.handlePreferenceTreeClick(mPreference);
 
-        final Intent nextActivity = ShadowApplication.getInstance().getNextStartedActivity();
+        final Intent nextActivity =
+                shadowOf((Application) ApplicationProvider.getApplicationContext())
+                        .getNextStartedActivity();
 
         assertThat(nextActivity.getStringExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT))
                 .isEqualTo(AccountSyncSettings.class.getName());

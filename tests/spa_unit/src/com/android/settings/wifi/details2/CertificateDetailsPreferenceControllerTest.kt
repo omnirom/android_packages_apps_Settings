@@ -18,6 +18,8 @@ package com.android.settings.wifi.details2
 
 import android.content.Context
 import android.platform.test.annotations.RequiresFlagsEnabled
+import android.platform.test.flag.junit.CheckFlagsRule
+import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
@@ -40,6 +42,9 @@ import org.mockito.kotlin.whenever
 
 @RunWith(AndroidJUnit4::class)
 class CertificateDetailsPreferenceControllerTest {
+    @get:Rule
+    val checkFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
+
     @get:Rule
     val composeTestRule = createComposeRule()
 

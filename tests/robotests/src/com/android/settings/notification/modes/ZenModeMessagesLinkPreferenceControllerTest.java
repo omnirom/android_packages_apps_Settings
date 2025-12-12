@@ -20,9 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import android.app.Flags;
 import android.content.Context;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.preference.Preference;
@@ -39,7 +37,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 @RunWith(RobolectricTestRunner.class)
-@EnableFlags(Flags.FLAG_MODES_UI)
 public final class ZenModeMessagesLinkPreferenceControllerTest {
 
     private ZenModeMessagesLinkPreferenceController mController;

@@ -84,25 +84,7 @@ public class ResetOptionsDeletePrivateSpaceControllerTest {
     }
 
     @Test
-    public void getAvailabilityStatus_flagsDisabled_returnsUnsupported() {
-        mSetFlagsRule.disableFlags(android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-        mSetFlagsRule.disableFlags(android.multiuser.Flags.FLAG_DELETE_PRIVATE_SPACE_FROM_RESET);
-
-        assertThat(mController.getAvailabilityStatus()).isEqualTo(UNSUPPORTED_ON_DEVICE);
-    }
-
-    @Test
-    public void getAvailabilityStatus_deleteFromResetFlagDisabled_returnsUnsupported() {
-        mSetFlagsRule.enableFlags(android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-        mSetFlagsRule.disableFlags(android.multiuser.Flags.FLAG_DELETE_PRIVATE_SPACE_FROM_RESET);
-
-        assertThat(mController.getAvailabilityStatus()).isEqualTo(UNSUPPORTED_ON_DEVICE);
-    }
-
-    @Test
-    public void getAvailabilityStatus_flagsEnabledCanAddProfile_returnsAvailable() {
-        mSetFlagsRule.enableFlags(android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-        mSetFlagsRule.enableFlags(android.multiuser.Flags.FLAG_DELETE_PRIVATE_SPACE_FROM_RESET);
+    public void getAvailabilityStatus_canAddProfile_returnsAvailable() {
         ResetOptionsDeletePrivateSpaceController spyController = spy(mController);
         doReturn(true).when(spyController).isPrivateSpaceEntryPointEnabled();
 
@@ -110,9 +92,7 @@ public class ResetOptionsDeletePrivateSpaceControllerTest {
     }
 
     @Test
-    public void getAvailabilityStatus_flagsEnabledCannotAddProfile_returnsUnsupported() {
-        mSetFlagsRule.enableFlags(android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-        mSetFlagsRule.enableFlags(android.multiuser.Flags.FLAG_DELETE_PRIVATE_SPACE_FROM_RESET);
+    public void getAvailabilityStatus_cannotAddProfile_returnsUnsupported() {
         ResetOptionsDeletePrivateSpaceController spyController = spy(mController);
         doReturn(false).when(spyController).isPrivateSpaceEntryPointEnabled();
 
@@ -121,8 +101,6 @@ public class ResetOptionsDeletePrivateSpaceControllerTest {
 
     @Test
     public void handleActivityResult_success_showsAlertDialog() {
-        mSetFlagsRule.enableFlags(android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-        mSetFlagsRule.enableFlags(android.multiuser.Flags.FLAG_DELETE_PRIVATE_SPACE_FROM_RESET);
         ResetOptionsDeletePrivateSpaceController controller = spy(mController);
         doReturn(mFragmentManager).when(controller).getFragmentManager();
         doReturn(mFragmentTransaction).when(mFragmentManager).beginTransaction();
@@ -139,9 +117,6 @@ public class ResetOptionsDeletePrivateSpaceControllerTest {
 
     @Test
     public void handleActivityResult_notSuccess_noDialogShown() {
-        mSetFlagsRule.enableFlags(android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-        mSetFlagsRule.enableFlags(android.multiuser.Flags.FLAG_DELETE_PRIVATE_SPACE_FROM_RESET);
-
         mController.setFragment(mResetDashboardFragment);
         boolean result =
                 mController.handleActivityResult(
@@ -158,9 +133,6 @@ public class ResetOptionsDeletePrivateSpaceControllerTest {
 
     @Test
     public void setAlertDialog_showsDialog_onPositiveButtonClickDialogRemoved() {
-        mSetFlagsRule.enableFlags(android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-        mSetFlagsRule.enableFlags(android.multiuser.Flags.FLAG_DELETE_PRIVATE_SPACE_FROM_RESET);
-
         mDialogFragment.show(mActivity.getSupportFragmentManager(), "className");
         ShadowLooper.idleMainLooper();
 
@@ -177,9 +149,6 @@ public class ResetOptionsDeletePrivateSpaceControllerTest {
 
     @Test
     public void setAlertDialog_showsDialog_onNegativeButtonClickDialogRemoved() {
-        mSetFlagsRule.enableFlags(android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-        mSetFlagsRule.enableFlags(android.multiuser.Flags.FLAG_DELETE_PRIVATE_SPACE_FROM_RESET);
-
         mDialogFragment.show(mActivity.getSupportFragmentManager(), "fragmentName");
         ShadowLooper.idleMainLooper();
 

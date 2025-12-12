@@ -41,7 +41,10 @@ import android.util.Pair;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.settings.biometrics.face.FaceEnrollParentalConsent;
+import com.android.settings.biometrics.face.FaceFeatureProvider;
 import com.android.settings.biometrics.fingerprint.FingerprintEnrollParentalConsent;
+import com.android.settings.biometrics.fingerprint.FingerprintFeatureProvider;
+import com.android.settings.testutils.FakeFeatureFactory;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -79,6 +82,15 @@ public class ParentalConsentHelperTest {
         when(mRootActivityIntent.getStringExtra(any())).thenAnswer(invocation -> null);
         when(mRootActivityIntent.getBooleanExtra(any(), anyBoolean()))
                 .thenAnswer(invocation -> invocation.getArguments()[1]);
+        FakeFeatureFactory featureFactory = FakeFeatureFactory.setupForTest();
+        final FingerprintFeatureProvider fingerprintFeatureProvider =
+                featureFactory.getFingerprintFeatureProvider();
+        when(fingerprintFeatureProvider.getParentalConsentPage())
+                .thenAnswer(invocation -> FingerprintEnrollParentalConsent.class);
+        final FaceFeatureProvider faceFeatureProvider =
+                featureFactory.getFaceFeatureProvider();
+        when(faceFeatureProvider.getParentalConsentPage())
+                .thenAnswer(invocation -> FaceEnrollParentalConsent.class);
     }
 
     @Test

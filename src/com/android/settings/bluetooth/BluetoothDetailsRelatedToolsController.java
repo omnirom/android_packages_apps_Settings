@@ -31,9 +31,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
 import com.android.net.module.util.CollectionUtils;
-import com.android.settings.accessibility.RestrictedPreferenceHelper;
+import com.android.settings.accessibility.InstalledA11yFeaturesPreferenceHelper;
 import com.android.settings.overlay.FeatureFactory;
-import com.android.settingslib.RestrictedPreference;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 
@@ -60,12 +59,12 @@ public class BluetoothDetailsRelatedToolsController extends BluetoothDetailsCont
 
     @Override
     public boolean isAvailable() {
-        return mCachedDevice.isHearingAidDevice();
+        return mCachedDevice.isHearingDevice();
     }
 
     @Override
     protected void init(PreferenceScreen screen) {
-        if (!mCachedDevice.isHearingAidDevice()) {
+        if (!isAvailable()) {
             return;
         }
 
@@ -97,7 +96,8 @@ public class BluetoothDetailsRelatedToolsController extends BluetoothDetailsCont
     private void addAccessibilityInstalledRelatedPreference(
             @NonNull List<ComponentName> componentNameList) {
         final AccessibilityManager a11yManager = AccessibilityManager.getInstance(mContext);
-        final RestrictedPreferenceHelper preferenceHelper = new RestrictedPreferenceHelper(
+        final InstalledA11yFeaturesPreferenceHelper
+                preferenceHelper = new InstalledA11yFeaturesPreferenceHelper(
                 mContext);
 
         final List<AccessibilityServiceInfo> a11yServiceInfoList =
@@ -110,13 +110,13 @@ public class BluetoothDetailsRelatedToolsController extends BluetoothDetailsCont
                         .filter(info -> componentNameList.contains(info.getComponentName()))
                         .collect(Collectors.toList());
 
-        final List<RestrictedPreference> preferences = Stream.of(
+        final List<Preference> preferences = Stream.of(
                 preferenceHelper.createAccessibilityServicePreferenceList(a11yServiceInfoList),
                 preferenceHelper.createAccessibilityActivityPreferenceList(a11yShortcutInfoList))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
 
-        for (RestrictedPreference preference : preferences) {
+        for (Preference preference : preferences) {
             preference.setOrder(ORDINAL);
             mPreferenceCategory.addPreference(preference);
         }

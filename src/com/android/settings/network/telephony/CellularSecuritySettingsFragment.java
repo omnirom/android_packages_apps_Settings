@@ -16,6 +16,10 @@
 package com.android.settings.network.telephony;
 
 import android.app.settings.SettingsEnums;
+import android.content.Context;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
@@ -28,6 +32,19 @@ public class CellularSecuritySettingsFragment extends DashboardFragment {
     private static final String TAG = "CellularSecuritySettingsFragment";
 
     public static final String KEY_CELLULAR_SECURITY_PREFERENCE = "cellular_security";
+    private AdaptiveNetworkPreferenceController mAdaptiveNetworkPreferenceController;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mAdaptiveNetworkPreferenceController = new AdaptiveNetworkPreferenceController(context);
+    }
+
+    @Override
+    public void onCreatePreferences(@NonNull Bundle savedInstanceState, @NonNull String rootKey) {
+        super.onCreatePreferences(savedInstanceState, rootKey);
+        mAdaptiveNetworkPreferenceController.addToScreen(getPreferenceScreen());
+    }
 
     @Override
     public int getMetricsCategory() {

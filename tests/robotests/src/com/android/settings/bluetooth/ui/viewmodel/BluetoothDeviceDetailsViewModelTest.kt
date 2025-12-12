@@ -76,14 +76,13 @@ class BluetoothDeviceDetailsViewModelTest {
 
         `when`(
             featureFactory.bluetoothFeatureProvider.getDeviceSettingRepository(
-                eq(application), eq(bluetoothAdapter), any()
+                eq(application), any()
             ))
             .thenReturn(repository)
 
         underTest =
             BluetoothDeviceDetailsViewModel(
                 application,
-                bluetoothAdapter,
                 cachedDevice,
                 testScope.testScheduler)
     }

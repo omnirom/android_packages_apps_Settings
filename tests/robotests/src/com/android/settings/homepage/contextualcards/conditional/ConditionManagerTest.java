@@ -25,8 +25,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import org.junit.Before;
@@ -71,22 +69,6 @@ public class ConditionManagerTest {
     @Test
     public void getDisplayableCards_nothingDisplayable() {
         assertThat(mManager.getDisplayableCards()).isEmpty();
-    }
-
-    @Test
-    @DisableFlags(android.app.Flags.FLAG_MODES_UI)
-    public void cardControllers_beforeModesUi_includesDnd() {
-        ConditionManager manager = new ConditionManager(mContext, mConditionListener);
-        assertThat(manager.mCardControllers.stream()
-                .filter(c -> c instanceof DndConditionCardController).toList()).hasSize(1);
-    }
-
-    @Test
-    @EnableFlags(android.app.Flags.FLAG_MODES_UI)
-    public void cardControllers_doesNotIncludeDnd() {
-        ConditionManager manager = new ConditionManager(mContext, mConditionListener);
-        assertThat(manager.mCardControllers.stream()
-                .filter(c -> c instanceof DndConditionCardController).toList()).isEmpty();
     }
 
     @Test

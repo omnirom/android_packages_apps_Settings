@@ -16,6 +16,8 @@
 
 package com.android.settings.gestures;
 
+import static android.content.pm.PackageManager.FEATURE_NFC;
+
 import static com.android.settings.gestures.DoubleTapPowerSettingsUtils.DOUBLE_TAP_POWER_DISABLED_MODE;
 import static com.android.settings.gestures.DoubleTapPowerSettingsUtils.DOUBLE_TAP_POWER_MULTI_TARGET_MODE;
 
@@ -26,7 +28,9 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.service.quickaccesswallet.QuickAccessWalletClient;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -45,15 +49,25 @@ public class DoubleTapPowerForWalletPreferenceControllerTest {
     private static final String KEY = "gesture_double_power_tap_launch_wallet";
     private Context mContext;
     private Resources mResources;
+    private final QuickAccessWalletClient mQuickAccessWalletClient = mock(
+            QuickAccessWalletClient.class);
+
     private DoubleTapPowerForWalletPreferenceController mController;
     private SelectorWithWidgetPreference mPreference;
+
+    private final PackageManager mPackageManager = mock(PackageManager.class);
 
     @Before
     public void setUp() {
         mContext = spy(ApplicationProvider.getApplicationContext());
         mResources = mock(Resources.class);
         when(mContext.getResources()).thenReturn(mResources);
-        mController = new DoubleTapPowerForWalletPreferenceController(mContext, KEY);
+        when(mContext.getPackageManager()).thenReturn(mPackageManager);
+        when(mPackageManager.hasSystemFeature(FEATURE_NFC)).thenReturn(true);
+        when(mQuickAccessWalletClient.isWalletServiceAvailable()).thenReturn(true);
+
+        mController = new DoubleTapPowerForWalletPreferenceController(mContext, KEY,
+                mQuickAccessWalletClient);
         mPreference = new SelectorWithWidgetPreference(mContext);
     }
 
@@ -76,6 +90,34 @@ public class DoubleTapPowerForWalletPreferenceControllerTest {
     }
 
     @Test
+    public void updateState_quickAccessWalletNotAvailable_preferenceDisabled() {
+        DoubleTapPowerSettingsUtils.setDoubleTapPowerButtonGestureEnabled(mContext, true);
+        when(mQuickAccessWalletClient.isWalletServiceAvailable()).thenReturn(false);
+
+        mController.updateState(mPreference);
+
+        assertThat(mPreference.isEnabled()).isFalse();
+    }
+
+    @Test
+    public void updateState_doubleTapPowerGestureDisabled_preferenceDisabled() {
+        DoubleTapPowerSettingsUtils.setDoubleTapPowerButtonGestureEnabled(mContext, false);
+
+        mController.updateState(mPreference);
+
+        assertThat(mPreference.isEnabled()).isFalse();
+    }
+
+    @Test
+    public void updateState_quickAccessWalletAndDoubleTapPowerGestureEnabled_preferenceEnabled() {
+        DoubleTapPowerSettingsUtils.setDoubleTapPowerButtonGestureEnabled(mContext, true);
+
+        mController.updateState(mPreference);
+
+        assertThat(mPreference.isEnabled()).isTrue();
+    }
+
+    @Test
     public void getAvailabilityStatus_setDoubleTapPowerGestureNotAvailable_preferenceUnsupported() {
         when(mResources.getInteger(R.integer.config_doubleTapPowerGestureMode)).thenReturn(
                 DOUBLE_TAP_POWER_DISABLED_MODE);
@@ -92,6 +134,28 @@ public class DoubleTapPowerForWalletPreferenceControllerTest {
 
         assertThat(mController.getAvailabilityStatus())
                 .isEqualTo(BasePreferenceController.DISABLED_DEPENDENT_SETTING);
+    }
+
+    @Test
+    public void getAvailabilityStatus_quickAccessWalletNotAvailable_preferenceDisabled() {
+        when(mResources.getInteger(R.integer.config_doubleTapPowerGestureMode)).thenReturn(
+                DOUBLE_TAP_POWER_MULTI_TARGET_MODE);
+        DoubleTapPowerSettingsUtils.setDoubleTapPowerButtonGestureEnabled(mContext, true);
+        when(mQuickAccessWalletClient.isWalletServiceAvailable()).thenReturn(false);
+
+        assertThat(mController.getAvailabilityStatus())
+                .isEqualTo(BasePreferenceController.DISABLED_DEPENDENT_SETTING);
+    }
+
+    @Test
+    public void getAvailabilityStatus_notSupportNFC_preferenceDisabled() {
+        when(mPackageManager.hasSystemFeature(FEATURE_NFC)).thenReturn(false);
+        when(mResources.getInteger(R.integer.config_doubleTapPowerGestureMode)).thenReturn(
+                DOUBLE_TAP_POWER_MULTI_TARGET_MODE);
+        DoubleTapPowerSettingsUtils.setDoubleTapPowerButtonGestureEnabled(mContext, true);
+
+        assertThat(mController.getAvailabilityStatus())
+                .isEqualTo(BasePreferenceController.UNSUPPORTED_ON_DEVICE);
     }
 
     @Test

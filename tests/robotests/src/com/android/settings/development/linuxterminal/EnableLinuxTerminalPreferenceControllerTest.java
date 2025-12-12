@@ -167,7 +167,7 @@ public class EnableLinuxTerminalPreferenceControllerTest {
         assumeFalse(mIsPrimaryUser);
         assumeTrue(mInstalled);
 
-        verify(mPreference).setDisabledByAdmin(eq(null));
+        verify(mPreference).setDisabledByAdmin(eq((EnforcedAdmin) null));
     }
 
     @Test

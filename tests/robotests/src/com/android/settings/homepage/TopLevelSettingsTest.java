@@ -16,30 +16,17 @@
 
 package com.android.settings.homepage;
 
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.nullable;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.platform.test.annotations.DisableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
-import androidx.preference.Preference;
-import androidx.preference.PreferenceManager;
-import androidx.preference.PreferenceScreen;
-
-import com.android.settings.R;
-import com.android.settings.flags.Flags;
 import com.android.settings.testutils.FakeFeatureFactory;
 
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -61,24 +48,5 @@ public class TopLevelSettingsTest {
                 .getTilesForCategory(nullable(String.class)))
                 .thenReturn(null);
         mSettings.onAttach(mContext);
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_HOMEPAGE_REVAMP)
-    public void onCreatePreferences_shouldTintPreferenceIcon() {
-        final Preference preference = new Preference(mContext);
-        preference.setTitle(R.string.network_dashboard_title);
-        final Drawable icon = spy(mContext.getDrawable(R.drawable.ic_settings_wireless));
-        preference.setIcon(icon);
-        final PreferenceScreen screen = spy(new PreferenceScreen(mContext, null /* attrs */));
-        doReturn(1).when(screen).getPreferenceCount();
-        doReturn(preference).when(screen).getPreference(anyInt());
-        doReturn(screen).when(mSettings).getPreferenceScreen();
-        doReturn(new PreferenceManager(mContext)).when(mSettings).getPreferenceManager();
-        doReturn(0).when(mSettings).getPreferenceScreenResId();
-
-        mSettings.onCreatePreferences(new Bundle(), "rootKey");
-
-        verify(icon).setTint(anyInt());
     }
 }

@@ -15,52 +15,55 @@
  */
 package com.android.settings.bluetooth;
 
+import static com.android.settingslib.Utils.isAudioModeOngoingCall;
+
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
-import android.media.AudioManager;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 
 import com.android.settings.connecteddevice.DevicePreferenceCallback;
 import com.android.settingslib.bluetooth.BluetoothUtils;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
+import com.android.settingslib.utils.ThreadUtils;
 
-/**
- * Controller to maintain connected bluetooth devices
- */
+import java.util.concurrent.atomic.AtomicBoolean;
+
+/** Controller to maintain connected bluetooth devices */
 public class ConnectedBluetoothDeviceUpdater extends BluetoothDeviceUpdater {
 
     private static final String TAG = "ConnBluetoothDeviceUpdater";
-    private static final boolean DBG = Log.isLoggable(BluetoothDeviceUpdater.TAG, Log.DEBUG);
 
     private static final String PREF_KEY_PREFIX = "connected_bt_";
+    private AtomicBoolean mIsOngoingCall = new AtomicBoolean(false);
 
-    private final AudioManager mAudioManager;
-    private int mAudioMode;
-
-    public ConnectedBluetoothDeviceUpdater(Context context,
-            DevicePreferenceCallback devicePreferenceCallback, int metricsCategory) {
+    public ConnectedBluetoothDeviceUpdater(
+            @NonNull Context context,
+            @NonNull DevicePreferenceCallback devicePreferenceCallback,
+            int metricsCategory) {
         super(context, devicePreferenceCallback, metricsCategory);
-        mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        mAudioMode = mAudioManager.getMode();
+        var unused =
+                ThreadUtils.postOnBackgroundThread(
+                        () -> mIsOngoingCall.set(isAudioModeOngoingCall(mContext)));
     }
 
-    @Override
-    public void onAudioModeChanged() {
-        // TODO: move to background thread
-        mAudioMode = mAudioManager.getMode();
-        forceUpdate();
+    /**
+     * Set if the device is in ongoing call mode.
+     *
+     * <p>This should be set whe the activity is onStart and when audio mode is changed.
+     */
+    public void setIsOngoingCall(boolean isOngoingCall) {
+        mIsOngoingCall.set(isOngoingCall);
     }
 
     @Override
     public boolean isFilterMatched(CachedBluetoothDevice cachedDevice) {
         final int currentAudioProfile;
 
-        if (mAudioMode == AudioManager.MODE_RINGTONE
-                || mAudioMode == AudioManager.MODE_IN_CALL
-                || mAudioMode == AudioManager.MODE_IN_COMMUNICATION) {
+        if (mIsOngoingCall.get()) {
             // in phone call
             currentAudioProfile = BluetoothProfile.HEADSET;
         } else {
@@ -70,18 +73,19 @@ public class ConnectedBluetoothDeviceUpdater extends BluetoothDeviceUpdater {
 
         boolean isFilterMatched = false;
         if (isDeviceConnected(cachedDevice) && isDeviceInCachedDevicesList(cachedDevice)) {
-            if (DBG) {
-                Log.d(TAG, "isFilterMatched() current audio profile : " + currentAudioProfile);
-            }
+            Log.d(TAG, "isFilterMatched() current audio profile : " + currentAudioProfile);
+            String deviceName = cachedDevice.getName();
+
             // If device is Hearing Aid or LE Audio, it is compatible with HFP and A2DP.
             // It would not show in Connected Devices group.
             if (cachedDevice.isConnectedAshaHearingAidDevice()
                     || cachedDevice.isConnectedLeAudioDevice()
                     || cachedDevice.hasConnectedLeAudioMemberDevice()) {
-                if (DBG) {
-                    Log.d(TAG, "isFilterMatched() device : " + cachedDevice.getName()
-                            + ", isFilterMatched : false, ha or lea device");
-                }
+                Log.d(
+                        TAG,
+                        "isFilterMatched() device : "
+                                + deviceName
+                                + ", isFilterMatched : false, HA or LEA profile connected");
                 return false;
             }
             // According to the current audio profile type,
@@ -99,16 +103,16 @@ public class ConnectedBluetoothDeviceUpdater extends BluetoothDeviceUpdater {
                     isFilterMatched = !cachedDevice.isConnectedHfpDevice();
                     break;
             }
-            if (DBG) {
-                Log.d(TAG, "isFilterMatched() device : " +
-                        cachedDevice.getName() + ", isFilterMatched : " + isFilterMatched);
-            }
+            Log.d(
+                    TAG,
+                    "isFilterMatched() device : "
+                            + deviceName
+                            + ", isFilterMatched : "
+                            + isFilterMatched);
         }
-        if (BluetoothUtils.isExclusivelyManagedBluetoothDevice(mContext,
-                cachedDevice.getDevice())) {
-            if (DBG) {
-                Log.d(TAG, "isFilterMatched() hide BluetoothDevice with exclusive manager");
-            }
+        if (BluetoothUtils.isExclusivelyManagedBluetoothDevice(
+                mContext, cachedDevice.getDevice())) {
+            Log.d(TAG, "isFilterMatched() hide BluetoothDevice with exclusive manager");
             return false;
         }
         return isFilterMatched;

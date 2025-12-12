@@ -18,8 +18,6 @@ package com.android.settings.connecteddevice.audiosharing;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.robolectric.shadows.ShadowLooper.shadowMainLooper;
 
@@ -27,7 +25,8 @@ import android.app.settings.SettingsEnums;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothLeBroadcastMetadata;
 import android.bluetooth.BluetoothStatusCodes;
-import android.content.Context;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.Pair;
 import android.view.View;
@@ -47,6 +46,8 @@ import com.android.settings.testutils.shadow.ShadowAlertDialogCompat;
 import com.android.settings.testutils.shadow.ShadowBluetoothAdapter;
 import com.android.settingslib.bluetooth.BluetoothLeBroadcastMetadataExt;
 import com.android.settingslib.flags.Flags;
+
+import com.google.common.collect.ImmutableList;
 
 import org.junit.After;
 import org.junit.Before;
@@ -85,11 +86,10 @@ public class AudioSharingDialogFragmentTest {
     private static final AudioSharingDeviceItem TEST_DEVICE_ITEM3 =
             new AudioSharingDeviceItem(TEST_DEVICE_NAME3, /* groupId= */ 3, /* isActive= */ false);
     private static final AudioSharingDialogFragment.DialogEventListener EMPTY_EVENT_LISTENER =
-            new AudioSharingDialogFragment.DialogEventListener() {
-            };
+            new AudioSharingDialogFragment.DialogEventListener() {};
     private static final Pair<Integer, Object> TEST_EVENT_DATA = Pair.create(1, 1);
-    private static final Pair<Integer, Object>[] TEST_EVENT_DATA_LIST =
-            new Pair[] {TEST_EVENT_DATA};
+    private static final ImmutableList<Pair<Integer, Object>> TEST_EVENT_DATA_LIST =
+            ImmutableList.of(TEST_EVENT_DATA);
     private static final String METADATA_STR =
             "BLUETOOTH:UUID:184F;BN:VGVzdA==;AT:1;AD:00A1A1A1A1A1;BI:1E240;BC:VGVzdENvZGU=;"
                     + "MD:BgNwVGVzdA==;AS:1;PI:A0;NS:1;BS:3;NB:2;SM:BQNUZXN0BARlbmc=;;";
@@ -130,12 +130,12 @@ public class AudioSharingDialogFragmentTest {
     public void getMetricsCategory_correctValue() {
         AudioSharingDialogFragment fragment = new AudioSharingDialogFragment();
         assertThat(fragment.getMetricsCategory())
-                .isEqualTo(SettingsEnums.DIALOG_AUDIO_SHARING_ADD_DEVICE);
+                .isEqualTo(SettingsEnums.DIALOG_AUDIO_SHARING_MAIN);
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onCreateDialog_flagOff_dialogNotExist() {
-        mSetFlagsRule.disableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         AudioSharingDialogFragment.show(
                 mParent, new ArrayList<>(), null, EMPTY_EVENT_LISTENER, TEST_EVENT_DATA_LIST);
         shadowMainLooper().idle();
@@ -144,10 +144,13 @@ public class AudioSharingDialogFragmentTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onCreateDialog_unattachedFragment_dialogNotExist() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         AudioSharingDialogFragment.show(
-                new Fragment(), new ArrayList<>(), null, EMPTY_EVENT_LISTENER,
+                new Fragment(),
+                new ArrayList<>(),
+                null,
+                EMPTY_EVENT_LISTENER,
                 TEST_EVENT_DATA_LIST);
         shadowMainLooper().idle();
         AlertDialog dialog = ShadowAlertDialogCompat.getLatestAlertDialog();
@@ -155,8 +158,8 @@ public class AudioSharingDialogFragmentTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onCreateDialog_flagOn_qrCodeBitmapNull_noExtraConnectedDevice() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         AudioSharingDialogFragment.show(
                 mParent, new ArrayList<>(), null, EMPTY_EVENT_LISTENER, TEST_EVENT_DATA_LIST);
         shadowMainLooper().idle();
@@ -185,8 +188,8 @@ public class AudioSharingDialogFragmentTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onCreateDialog_noExtraConnectedDevice_pairNewDevice() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         AtomicBoolean isPairBtnClicked = new AtomicBoolean(false);
         AudioSharingDialogFragment.show(
                 mParent,
@@ -209,16 +212,18 @@ public class AudioSharingDialogFragmentTest {
 
         verify(mFeatureFactory.metricsFeatureProvider)
                 .action(
-                        any(Context.class),
-                        eq(SettingsEnums.ACTION_AUDIO_SHARING_DIALOG_POSITIVE_BTN_CLICKED),
-                        eq(TEST_EVENT_DATA));
+                        SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
+                        SettingsEnums.ACTION_AUDIO_SHARING_DIALOG_POSITIVE_BTN_CLICKED,
+                        SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
+                        TEST_EVENT_DATA_LIST.toString(),
+                        /* changedPreferenceIntValue */ 0);
         assertThat(isPairBtnClicked.get()).isTrue();
         assertThat(dialog.isShowing()).isFalse();
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onCreateDialog_noExtraConnectedDevice_showQRCodeButton() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         AtomicBoolean isQrCodeBtnClicked = new AtomicBoolean(false);
         AudioSharingDialogFragment.show(
                 mParent,
@@ -243,16 +248,18 @@ public class AudioSharingDialogFragmentTest {
 
         verify(mFeatureFactory.metricsFeatureProvider)
                 .action(
-                        any(Context.class),
-                        eq(SettingsEnums.ACTION_AUDIO_SHARING_DIALOG_NEGATIVE_BTN_CLICKED),
-                        eq(TEST_EVENT_DATA));
+                        SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
+                        SettingsEnums.ACTION_AUDIO_SHARING_DIALOG_NEGATIVE_BTN_CLICKED,
+                        SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
+                        TEST_EVENT_DATA_LIST.toString(),
+                        /* changedPreferenceIntValue */ 0);
         assertThat(isQrCodeBtnClicked.get()).isTrue();
         assertThat(dialog.isShowing()).isFalse();
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onCreateDialog_noExtraConnectedDevice_hasMetadata_showCancelButton() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         AtomicBoolean isCancelBtnClicked = new AtomicBoolean(false);
         AudioSharingDialogFragment.show(
                 mParent,
@@ -273,15 +280,17 @@ public class AudioSharingDialogFragmentTest {
         TextView text = dialog.findViewById(R.id.description_text);
         assertThat(text).isNotNull();
         assertThat(METADATA).isNotNull();
-        assertThat(text.getText().toString()).isEqualTo(
-                mParent.getString(R.string.audio_sharing_dialog_qr_code_content,
-                        METADATA.getBroadcastName(), new String(
-                                METADATA.getBroadcastCode(),
-                                StandardCharsets.UTF_8)));
+        assertThat(text.getText().toString())
+                .isEqualTo(
+                        mParent.getString(
+                                R.string.audio_sharing_dialog_qr_code_content,
+                                METADATA.getBroadcastName(),
+                                new String(METADATA.getBroadcastCode(), StandardCharsets.UTF_8)));
         TextView textBottom = dialog.findViewById(R.id.description_text_2);
         assertThat(textBottom).isNotNull();
-        assertThat(textBottom.getText().toString()).isEqualTo(
-                mParent.getString(R.string.audio_sharing_dialog_pair_new_device_content));
+        assertThat(textBottom.getText().toString())
+                .isEqualTo(
+                        mParent.getString(R.string.audio_sharing_dialog_pair_new_device_content));
         Button cancelBtn = dialog.findViewById(R.id.negative_btn);
         assertThat(cancelBtn).isNotNull();
         cancelBtn.performClick();
@@ -289,16 +298,18 @@ public class AudioSharingDialogFragmentTest {
 
         verify(mFeatureFactory.metricsFeatureProvider)
                 .action(
-                        any(Context.class),
-                        eq(SettingsEnums.ACTION_AUDIO_SHARING_DIALOG_NEGATIVE_BTN_CLICKED),
-                        eq(TEST_EVENT_DATA));
+                        SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
+                        SettingsEnums.ACTION_AUDIO_SHARING_DIALOG_NEGATIVE_BTN_CLICKED,
+                        SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
+                        TEST_EVENT_DATA_LIST.toString(),
+                        /* changedPreferenceIntValue */ 0);
         assertThat(isCancelBtnClicked.get()).isTrue();
         assertThat(dialog.isShowing()).isFalse();
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onCreateDialog_noExtraConnectedDevice_hasMetadataNoPassword_showCancelButton() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         AtomicBoolean isCancelBtnClicked = new AtomicBoolean(false);
         AudioSharingDialogFragment.show(
                 mParent,
@@ -319,13 +330,16 @@ public class AudioSharingDialogFragmentTest {
         TextView text = dialog.findViewById(R.id.description_text);
         assertThat(text).isNotNull();
         assertThat(METADATA_NO_PASSWORD).isNotNull();
-        assertThat(text.getText().toString()).isEqualTo(
-                mParent.getString(R.string.audio_sharing_dialog_qr_code_content_no_password,
-                        METADATA_NO_PASSWORD.getBroadcastName()));
+        assertThat(text.getText().toString())
+                .isEqualTo(
+                        mParent.getString(
+                                R.string.audio_sharing_dialog_qr_code_content_no_password,
+                                METADATA_NO_PASSWORD.getBroadcastName()));
         TextView textBottom = dialog.findViewById(R.id.description_text_2);
         assertThat(textBottom).isNotNull();
-        assertThat(textBottom.getText().toString()).isEqualTo(
-                mParent.getString(R.string.audio_sharing_dialog_pair_new_device_content));
+        assertThat(textBottom.getText().toString())
+                .isEqualTo(
+                        mParent.getString(R.string.audio_sharing_dialog_pair_new_device_content));
         Button cancelBtn = dialog.findViewById(R.id.negative_btn);
         assertThat(cancelBtn).isNotNull();
         cancelBtn.performClick();
@@ -333,20 +347,22 @@ public class AudioSharingDialogFragmentTest {
 
         verify(mFeatureFactory.metricsFeatureProvider)
                 .action(
-                        any(Context.class),
-                        eq(SettingsEnums.ACTION_AUDIO_SHARING_DIALOG_NEGATIVE_BTN_CLICKED),
-                        eq(TEST_EVENT_DATA));
+                        SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
+                        SettingsEnums.ACTION_AUDIO_SHARING_DIALOG_NEGATIVE_BTN_CLICKED,
+                        SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
+                        TEST_EVENT_DATA_LIST.toString(),
+                        /* changedPreferenceIntValue */ 0);
         assertThat(isCancelBtnClicked.get()).isTrue();
         assertThat(dialog.isShowing()).isFalse();
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onCreateDialog_flagOn_singleExtraConnectedDevice() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         ArrayList<AudioSharingDeviceItem> list = new ArrayList<>();
         list.add(TEST_DEVICE_ITEM1);
-        AudioSharingDialogFragment.show(mParent, list, null, EMPTY_EVENT_LISTENER,
-                TEST_EVENT_DATA_LIST);
+        AudioSharingDialogFragment.show(
+                mParent, list, null, EMPTY_EVENT_LISTENER, TEST_EVENT_DATA_LIST);
         shadowMainLooper().idle();
 
         AlertDialog dialog = ShadowAlertDialogCompat.getLatestAlertDialog();
@@ -379,12 +395,12 @@ public class AudioSharingDialogFragmentTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onCreateDialog_singleExtraConnectedDevice_dialogDismiss() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         ArrayList<AudioSharingDeviceItem> list = new ArrayList<>();
         list.add(TEST_DEVICE_ITEM1);
-        AudioSharingDialogFragment.show(mParent, list, null, EMPTY_EVENT_LISTENER,
-                TEST_EVENT_DATA_LIST);
+        AudioSharingDialogFragment.show(
+                mParent, list, null, EMPTY_EVENT_LISTENER, TEST_EVENT_DATA_LIST);
         shadowMainLooper().idle();
 
         AlertDialog dialog = ShadowAlertDialogCompat.getLatestAlertDialog();
@@ -397,14 +413,16 @@ public class AudioSharingDialogFragmentTest {
         assertThat(dialog.isShowing()).isFalse();
         verify(mFeatureFactory.metricsFeatureProvider)
                 .action(
-                        any(Context.class),
-                        eq(SettingsEnums.ACTION_AUDIO_SHARING_DIALOG_NEGATIVE_BTN_CLICKED),
-                        eq(TEST_EVENT_DATA));
+                        SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
+                        SettingsEnums.ACTION_AUDIO_SHARING_DIALOG_NEGATIVE_BTN_CLICKED,
+                        SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
+                        TEST_EVENT_DATA_LIST.toString(),
+                        /* changedPreferenceIntValue */ 0);
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onCreateDialog_singleExtraConnectedDevice_shareClicked() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         ArrayList<AudioSharingDeviceItem> list = new ArrayList<>();
         list.add(TEST_DEVICE_ITEM1);
         AtomicBoolean isShareBtnClicked = new AtomicBoolean(false);
@@ -432,20 +450,22 @@ public class AudioSharingDialogFragmentTest {
         assertThat(isShareBtnClicked.get()).isTrue();
         verify(mFeatureFactory.metricsFeatureProvider)
                 .action(
-                        any(Context.class),
-                        eq(SettingsEnums.ACTION_AUDIO_SHARING_DIALOG_POSITIVE_BTN_CLICKED),
-                        eq(TEST_EVENT_DATA));
+                        SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
+                        SettingsEnums.ACTION_AUDIO_SHARING_DIALOG_POSITIVE_BTN_CLICKED,
+                        SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
+                        TEST_EVENT_DATA_LIST.toString(),
+                        /* changedPreferenceIntValue */ 0);
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onCreateDialog_flagOn_multipleExtraConnectedDevice() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         ArrayList<AudioSharingDeviceItem> list = new ArrayList<>();
         list.add(TEST_DEVICE_ITEM1);
         list.add(TEST_DEVICE_ITEM2);
         list.add(TEST_DEVICE_ITEM3);
-        AudioSharingDialogFragment.show(mParent, list, null, EMPTY_EVENT_LISTENER,
-                TEST_EVENT_DATA_LIST);
+        AudioSharingDialogFragment.show(
+                mParent, list, null, EMPTY_EVENT_LISTENER, TEST_EVENT_DATA_LIST);
         shadowMainLooper().idle();
 
         AlertDialog dialog = ShadowAlertDialogCompat.getLatestAlertDialog();
@@ -474,8 +494,8 @@ public class AudioSharingDialogFragmentTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onCreateDialog_multipleExtraConnectedDevice_dialogDismiss() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         ArrayList<AudioSharingDeviceItem> list = new ArrayList<>();
         list.add(TEST_DEVICE_ITEM1);
         list.add(TEST_DEVICE_ITEM2);
@@ -505,8 +525,10 @@ public class AudioSharingDialogFragmentTest {
         assertThat(isCancelBtnClicked.get()).isTrue();
         verify(mFeatureFactory.metricsFeatureProvider)
                 .action(
-                        any(Context.class),
-                        eq(SettingsEnums.ACTION_AUDIO_SHARING_DIALOG_NEGATIVE_BTN_CLICKED),
-                        eq(TEST_EVENT_DATA));
+                        SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
+                        SettingsEnums.ACTION_AUDIO_SHARING_DIALOG_NEGATIVE_BTN_CLICKED,
+                        SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
+                        TEST_EVENT_DATA_LIST.toString(),
+                        /* changedPreferenceIntValue */ 0);
     }
 }

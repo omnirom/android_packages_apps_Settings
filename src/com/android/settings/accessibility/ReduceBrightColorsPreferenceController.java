@@ -38,6 +38,7 @@ import com.android.settingslib.core.lifecycle.events.OnStart;
 import com.android.settingslib.core.lifecycle.events.OnStop;
 
 /** PreferenceController that shows the Reduce Bright Colors summary */
+// LINT.IfChange
 public class ReduceBrightColorsPreferenceController
         extends TogglePreferenceController
         implements LifecycleObserver, OnStart, OnStop {
@@ -122,3 +123,4 @@ public class ReduceBrightColorsPreferenceController
         mContext.getContentResolver().unregisterContentObserver(mSettingsContentObserver);
     }
 }
+// LINT.ThenChange(extradim/ui/ExtraDimScreen.kt)

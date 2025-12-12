@@ -15,7 +15,6 @@
  */
 package com.android.settings.notification.modes;
 
-import android.app.Flags;
 import android.content.Context;
 import android.content.res.Resources;
 
@@ -56,7 +55,7 @@ class ZenModesListPreferenceController extends BasePreferenceController
     @Override
     @AvailabilityStatus
     public int getAvailabilityStatus() {
-        return Flags.modesUi() ? AVAILABLE_UNSEARCHABLE : UNSUPPORTED_ON_DEVICE;
+        return AVAILABLE_UNSEARCHABLE;
     }
 
     @Override
@@ -105,11 +104,6 @@ class ZenModesListPreferenceController extends BasePreferenceController
     // search for a mode name.
     @Override
     public void updateDynamicRawDataToIndex(List<SearchIndexableRaw> rawData) {
-        // Don't add anything if flag is off. In theory this preference controller itself shouldn't
-        // be available in that case, but we check anyway to be sure.
-        if (!Flags.modesUi()) {
-            return;
-        }
         if (mBackend == null) {
             return;
         }

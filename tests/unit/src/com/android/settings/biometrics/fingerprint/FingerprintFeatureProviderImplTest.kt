@@ -19,7 +19,6 @@ package com.android.settings.biometrics.fingerprint
 import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.settings.biometrics.fingerprint.feature.SfpsEnrollmentFeatureImpl
-import com.android.settings.biometrics.fingerprint.feature.SfpsRestToUnlockFeatureImpl
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -30,8 +29,7 @@ import org.mockito.MockitoAnnotations
 @RunWith(AndroidJUnit4::class)
 class FingerprintFeatureProviderImplTest {
 
-    @Mock
-    private lateinit var mContext: Context
+    @Mock private lateinit var mContext: Context
 
     private lateinit var mFingerprintFeatureProviderImpl: FingerprintFeatureProviderImpl
 
@@ -48,8 +46,14 @@ class FingerprintFeatureProviderImplTest {
     }
 
     @Test
-    fun getSfpsRestToUnlockFeature_returnDefaultImpl() {
-        assertThat(mFingerprintFeatureProviderImpl.getSfpsRestToUnlockFeature(mContext))
-            .isInstanceOf(SfpsRestToUnlockFeatureImpl::class.java)
+    fun test_getParentalConsentPage() {
+        assertThat(mFingerprintFeatureProviderImpl.parentalConsentPage)
+            .isEqualTo(FingerprintEnrollParentalConsent::class.java)
+    }
+
+    @Test
+    fun test_getParentalConsentStringRes() {
+        assertThat(mFingerprintFeatureProviderImpl.parentalConsentStringRes)
+            .isEqualTo(FingerprintEnrollParentalConsent.CONSENT_STRING_RESOURCES)
     }
 }

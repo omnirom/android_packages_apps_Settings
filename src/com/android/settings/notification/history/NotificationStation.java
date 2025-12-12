@@ -18,10 +18,12 @@ package com.android.settings.notification.history;
 
 import static android.provider.Settings.EXTRA_APP_PACKAGE;
 import static android.provider.Settings.EXTRA_CHANNEL_ID;
+import static android.provider.Settings.Secure.LOCK_SCREEN_ALLOW_PRIVATE_NOTIFICATIONS;
 
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.INotificationManager;
+import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.PendingIntent;
@@ -32,6 +34,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.UserInfo;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -40,6 +43,7 @@ import android.os.Parcel;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.UserHandle;
+import android.os.UserManager;
 import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.NotificationListenerService.Ranking;
@@ -60,6 +64,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.internal.widget.LockPatternUtils;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.Utils;
@@ -117,6 +122,7 @@ public class NotificationStation extends SettingsPreferenceFragment {
     private INotificationManager mNoMan;
     private RankingMap mRanking;
     private LinkedList<HistoricalNotificationInfo> mNotificationInfos;
+    private ArrayList<Integer> mContentRestrictedUsers = new ArrayList<>();
 
     private final NotificationListenerService mListener = new NotificationListenerService() {
         @Override
@@ -208,6 +214,21 @@ public class NotificationStation extends SettingsPreferenceFragment {
     public void onResume() {
         logd("onResume()");
         super.onResume();
+
+        mContentRestrictedUsers.clear();
+        List<UserInfo> users =
+                getSystemService(UserManager.class).getProfiles(mContext.getUserId());
+        for (UserInfo user : users) {
+            if (Settings.Secure.getIntForUser(getContentResolver(),
+                    LOCK_SCREEN_ALLOW_PRIVATE_NOTIFICATIONS, 0, user.id) == 0) {
+                LockPatternUtils lpu = new LockPatternUtils(mContext);
+                KeyguardManager km = getSystemService(KeyguardManager.class);
+                if (lpu.isSecure(user.id) && km.isDeviceLocked(user.id)) {
+                    mContentRestrictedUsers.add(user.id);
+                }
+            }
+        }
+
         try {
             mListener.registerAsSystemService(mContext, new ComponentName(mContext.getPackageName(),
                     this.getClass().getCanonicalName()), ActivityManager.getCurrentUser());
@@ -229,7 +250,8 @@ public class NotificationStation extends SettingsPreferenceFragment {
         getPreferenceScreen().removeAll();
         for (int i = 0; i < N; i++) {
             getPreferenceScreen().addPreference(new HistoricalNotificationPreference(
-                    getPrefContext(), mNotificationInfos.get(i), i));
+                    getPrefContext(), mNotificationInfos.get(i), i,
+                    mContentRestrictedUsers.contains(mNotificationInfos.get(i).user)));
         }
     }
 
@@ -243,7 +265,8 @@ public class NotificationStation extends SettingsPreferenceFragment {
             if (TextUtils.equals(info.key, sbn.getKey())) {
                 info.active = false;
                 ((HistoricalNotificationPreference) getPreferenceScreen().findPreference(
-                        sbn.getKey())).updatePreference(info);
+                        sbn.getKey())).updatePreference(
+                                info, mContentRestrictedUsers.contains(info.user));
                break;
             }
         }
@@ -264,7 +287,8 @@ public class NotificationStation extends SettingsPreferenceFragment {
                 info.updateFrom(newInfo);
 
                 ((HistoricalNotificationPreference) getPreferenceScreen().findPreference(
-                        sbn.getKey())).updatePreference(info);
+                        sbn.getKey())).updatePreference(
+                                info, mContentRestrictedUsers.contains(info.user));
                 needsAdd = false;
                 break;
             }
@@ -273,7 +297,8 @@ public class NotificationStation extends SettingsPreferenceFragment {
             mNotificationInfos.addFirst(newInfo);
             getPreferenceScreen().addPreference(new HistoricalNotificationPreference(
                     getPrefContext(), mNotificationInfos.peekFirst(),
-                    -1 * mNotificationInfos.size()));
+                    -1 * mNotificationInfos.size(),
+                    mContentRestrictedUsers.contains(newInfo.user)));
         }
     }
 
@@ -290,7 +315,7 @@ public class NotificationStation extends SettingsPreferenceFragment {
 
             updateFromRanking(info);
             ((HistoricalNotificationPreference) getPreferenceScreen().findPreference(
-                    info.key)).updatePreference(info);
+                    info.key)).updatePreference(info, mContentRestrictedUsers.contains(info.user));
         }
     }
 
@@ -405,6 +430,7 @@ public class NotificationStation extends SettingsPreferenceFragment {
     private HistoricalNotificationInfo createFromSbn(StatusBarNotification sbn, boolean active) {
         final Notification n = sbn.getNotification();
         final HistoricalNotificationInfo info = new HistoricalNotificationInfo();
+
         info.pkg = sbn.getPackageName();
         info.user = sbn.getUserId() == UserHandle.USER_ALL
                 ? UserHandle.USER_SYSTEM : sbn.getUserId();
@@ -416,6 +442,7 @@ public class NotificationStation extends SettingsPreferenceFragment {
         info.pkgname = loadPackageName(info.pkg);
         info.title = getTitleString(n);
         info.text = getTextString(sbn.getPackageContext(mContext), n);
+
         info.timestamp = sbn.getPostTime();
         info.priority = n.priority;
         info.key = sbn.getKey();
@@ -642,6 +669,7 @@ public class NotificationStation extends SettingsPreferenceFragment {
                     .append(delim)
                     .append(String.valueOf(p.getOpenAshmemSize()))
                     .append("\n");
+            p.recycle();
         }
         return sb;
     }
@@ -673,15 +701,17 @@ public class NotificationStation extends SettingsPreferenceFragment {
         private static long sLastExpandedTimestamp; // quick hack to keep things from collapsing
         public ViewGroup mItemView; // hack to update prefs fast;
         private Context mContext;
+        private boolean mRestrictContent;
 
         public HistoricalNotificationPreference(Context context, HistoricalNotificationInfo info,
-                int order) {
+                int order, boolean restrictContent) {
             super(context);
             setLayoutResource(R.layout.notification_log_row);
             setOrder(order);
             setKey(info.key);
             mInfo = info;
             mContext = context;
+            mRestrictContent = restrictContent;
         }
 
         @Override
@@ -690,7 +720,7 @@ public class NotificationStation extends SettingsPreferenceFragment {
 
             mItemView = (ViewGroup) row.itemView;
 
-            updatePreference(mInfo);
+            updatePreference(mInfo, mRestrictContent);
 
             row.findViewById(R.id.timestamp).setOnLongClickListener(v -> {
                 final View extras = row.findViewById(R.id.extra);
@@ -701,7 +731,7 @@ public class NotificationStation extends SettingsPreferenceFragment {
             });
         }
 
-        public void updatePreference(HistoricalNotificationInfo info) {
+        public void updatePreference(HistoricalNotificationInfo info, boolean restrictContent) {
             if (mItemView == null) {
                 return;
             }
@@ -710,17 +740,17 @@ public class NotificationStation extends SettingsPreferenceFragment {
             }
             ((TextView) mItemView.findViewById(R.id.pkgname)).setText(mInfo.pkgname);
             ((DateTimeView) mItemView.findViewById(R.id.timestamp)).setTime(info.timestamp);
-            if (!TextUtils.isEmpty(info.title)) {
+            if (restrictContent || TextUtils.isEmpty(info.title)) {
+                mItemView.findViewById(R.id.title).setVisibility(View.GONE);
+            } else {
                 ((TextView) mItemView.findViewById(R.id.title)).setText(info.title);
                 mItemView.findViewById(R.id.title).setVisibility(View.VISIBLE);
-            } else {
-                mItemView.findViewById(R.id.title).setVisibility(View.GONE);
             }
-            if (!TextUtils.isEmpty(info.text)) {
+            if (restrictContent || TextUtils.isEmpty(info.text)) {
+                mItemView.findViewById(R.id.text).setVisibility(View.GONE);
+            } else {
                 ((TextView) mItemView.findViewById(R.id.text)).setText(info.text);
                 mItemView.findViewById(R.id.text).setVisibility(View.VISIBLE);
-            } else {
-                mItemView.findViewById(R.id.text).setVisibility(View.GONE);
             }
             if (info.icon != null) {
                 ((ImageView) mItemView.findViewById(R.id.icon)).setImageDrawable(info.icon);
@@ -734,10 +764,15 @@ public class NotificationStation extends SettingsPreferenceFragment {
 
             ((DateTimeView) mItemView.findViewById(R.id.timestamp)).setTime(mInfo.timestamp);
 
-            ((TextView) mItemView.findViewById(R.id.notification_extra))
-                    .setText(mInfo.notificationExtra);
-            ((TextView) mItemView.findViewById(R.id.ranking_extra))
-                    .setText(mInfo.rankingExtra);
+            if (restrictContent) {
+                mItemView.findViewById(R.id.notification_extra).setVisibility(View.GONE);
+                mItemView.findViewById(R.id.ranking_extra).setVisibility(View.GONE);
+            } else {
+                ((TextView) mItemView.findViewById(R.id.notification_extra))
+                        .setText(mInfo.notificationExtra);
+                ((TextView) mItemView.findViewById(R.id.ranking_extra))
+                        .setText(mInfo.rankingExtra);
+            }
 
             mItemView.findViewById(R.id.extra).setVisibility(
                     mInfo.timestamp == sLastExpandedTimestamp ? View.VISIBLE : View.GONE);

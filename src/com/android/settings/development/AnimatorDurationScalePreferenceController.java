@@ -31,7 +31,7 @@ import com.android.settingslib.development.DeveloperOptionsPreferenceController;
 public class AnimatorDurationScalePreferenceController extends DeveloperOptionsPreferenceController
         implements Preference.OnPreferenceChangeListener, PreferenceControllerMixin {
 
-    private static final String ANIMATOR_DURATION_SCALE_KEY = "animator_duration_scale";
+    private static final String ANIMATOR_DURATION_SCALE_KEY = "animator_duration_scale_pref_key";
 
     @VisibleForTesting
     static final int ANIMATOR_DURATION_SCALE_SELECTOR = 2;

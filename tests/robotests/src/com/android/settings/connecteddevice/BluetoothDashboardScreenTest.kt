@@ -19,26 +19,19 @@ import android.content.Intent
 import android.provider.Settings.Global
 import androidx.preference.PreferenceFragmentCompat
 import androidx.test.core.app.ActivityScenario
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.settings.Settings.BluetoothDashboardActivity
 import com.android.settings.flags.Flags
-import com.android.settingslib.preference.CatalystScreenTestCase
+import com.android.settings.testutils2.SettingsCatalystTestCase
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
-class BluetoothDashboardScreenTest : CatalystScreenTestCase() {
+class BluetoothDashboardScreenTest : SettingsCatalystTestCase() {
     override val preferenceScreenCreator = BluetoothDashboardScreen()
 
     override val flagName: String
         get() = Flags.FLAG_CATALYST_BLUETOOTH_SWITCHBAR_SCREEN
 
     @Test
-    fun key() {
-        assertThat(preferenceScreenCreator.key).isEqualTo(BluetoothDashboardScreen.KEY)
-    }
-
     override fun migration() {}
 
     override fun launchFragment(

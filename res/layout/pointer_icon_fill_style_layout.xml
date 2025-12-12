@@ -38,7 +38,7 @@
 
     <LinearLayout
         android:id="@+id/button_holder"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/pointer_fill_container_max_width"
         android:layout_height="@dimen/pointer_fill_container_height"
         android:layout_marginBottom="@dimen/pointer_fill_style_circle_padding"
         android:layout_marginTop="@dimen/pointer_fill_style_circle_padding"

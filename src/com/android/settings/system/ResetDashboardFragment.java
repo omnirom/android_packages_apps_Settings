@@ -20,6 +20,7 @@ import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.settings.R;
@@ -27,7 +28,6 @@ import com.android.settings.applications.manageapplications.ResetAppPrefPreferen
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.network.EraseEuiccDataController;
 import com.android.settings.network.NetworkResetPreferenceController;
-import com.android.settings.network.SubscriptionUtil;
 import com.android.settings.privatespace.delete.ResetOptionsDeletePrivateSpaceController;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.core.AbstractPreferenceController;
@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Settings fragment containing reset options. */
+// LINT.IfChange
 @SearchIndexable(forTarget = SearchIndexable.ALL & ~SearchIndexable.ARC)
 public class ResetDashboardFragment extends DashboardFragment {
 
@@ -67,16 +68,11 @@ public class ResetDashboardFragment extends DashboardFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (SubscriptionUtil.isSimHardwareVisible(context)) {
-            use(EraseEuiccDataController.class).setFragment(this);
-        }
-        if (android.multiuser.Flags.enablePrivateSpaceFeatures()
-                && android.multiuser.Flags.deletePrivateSpaceFromReset()) {
-            ResetOptionsDeletePrivateSpaceController resetOptionsDeletePrivateSpaceController =
-                    use(ResetOptionsDeletePrivateSpaceController.class);
-            if (resetOptionsDeletePrivateSpaceController != null) {
-                resetOptionsDeletePrivateSpaceController.setFragment(this);
-            }
+        use(EraseEuiccDataController.class).setFragment(this);
+        ResetOptionsDeletePrivateSpaceController resetOptionsDeletePrivateSpaceController =
+                use(ResetOptionsDeletePrivateSpaceController.class);
+        if (resetOptionsDeletePrivateSpaceController != null) {
+            resetOptionsDeletePrivateSpaceController.setFragment(this);
         }
         FactoryResetPreferenceController factoryResetPreferenceController =
                 use(FactoryResetPreferenceController.class);
@@ -93,9 +89,7 @@ public class ResetDashboardFragment extends DashboardFragment {
     private static List<AbstractPreferenceController> buildPreferenceControllers(Context context,
             Lifecycle lifecycle) {
         final List<AbstractPreferenceController> controllers = new ArrayList<>();
-        if (SubscriptionUtil.isSimHardwareVisible(context)) {
-            controllers.add(new NetworkResetPreferenceController(context));
-        }
+        controllers.add(new NetworkResetPreferenceController(context));
         controllers.add(new ResetAppPrefPreferenceController(context, lifecycle));
         return controllers;
     }
@@ -118,4 +112,11 @@ public class ResetDashboardFragment extends DashboardFragment {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return ResetDashboardScreen.KEY;
+    }
 }
+// LINT.ThenChange(ResetDashboardScreen.kt)
+

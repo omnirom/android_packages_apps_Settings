@@ -16,7 +16,9 @@
 
 package com.android.settings.network.telephony.satellite;
 
-import static android.telephony.CarrierConfigManager.KEY_EMERGENCY_MESSAGING_SUPPORTED_BOOL;
+import static android.telephony.CarrierConfigManager.CARRIER_ROAMING_NTN_CONNECT_AUTOMATIC;
+import static android.telephony.CarrierConfigManager.CARRIER_ROAMING_NTN_CONNECT_MANUAL;
+import static android.telephony.CarrierConfigManager.KEY_CARRIER_ROAMING_NTN_CONNECT_TYPE_INT;
 import static android.telephony.CarrierConfigManager.KEY_SATELLITE_ENTITLEMENT_SUPPORTED_BOOL;
 import static android.telephony.CarrierConfigManager.KEY_SATELLITE_INFORMATION_REDIRECT_URL_STRING;
 
@@ -25,6 +27,7 @@ import static com.android.settings.network.telephony.satellite.SatelliteSettingF
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
@@ -40,9 +43,9 @@ import com.android.settings.testutils.ResourcesUtils;
 import com.android.settingslib.widget.FooterPreference;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -56,6 +59,8 @@ public class SatelliteSettingFooterControllerTest {
 
     @Mock
     private TelephonyManager mTelephonyManager;
+    @Mock
+    FooterPreference mFooterPreference;
 
     private Context mContext;
     private SatelliteSettingFooterController mController;
@@ -77,88 +82,110 @@ public class SatelliteSettingFooterControllerTest {
     @Test
     public void displayPreferenceScreen_updateContent_hasBasicContent() {
         PreferenceScreen screen = new PreferenceManager(mContext).createPreferenceScreen(mContext);
-        FooterPreference preference = new FooterPreference(mContext);
-        preference.setKey(KEY_FOOTER_PREFERENCE);
-        screen.addPreference(preference);
+        when(mFooterPreference.getKey()).thenReturn(KEY_FOOTER_PREFERENCE);
+        screen.addPreference(mFooterPreference);
         mController.init(TEST_SUB_ID, mPersistableBundle);
 
         mController.displayPreference(screen);
-        String summary = preference.getSummary().toString();
 
-        assertThat(summary.contains(ResourcesUtils.getResourcesString(mContext,
-                "satellite_footer_content_section_0"))).isTrue();
-        assertThat(summary.contains(ResourcesUtils.getResourcesString(mContext,
-                "satellite_footer_content_section_1"))).isTrue();
-        assertThat(summary.contains(ResourcesUtils.getResourcesString(mContext,
-                "satellite_footer_content_section_2"))).isTrue();
-        assertThat(summary.contains(ResourcesUtils.getResourcesString(mContext,
-                "satellite_footer_content_section_3"))).isTrue();
-        assertThat(summary.contains(ResourcesUtils.getResourcesString(mContext,
-                "satellite_footer_content_section_4"))).isTrue();
-        assertThat(summary.contains(ResourcesUtils.getResourcesString(mContext,
-                "satellite_footer_content_section_5"))).isTrue();
+        ArgumentCaptor<CharSequence> summary = ArgumentCaptor.forClass(CharSequence.class);
+        verify(mFooterPreference).setSummary(summary.capture());
+        assertThat(
+                summary.getValue().toString().contains(ResourcesUtils.getResourcesString(mContext,
+                        "satellite_footer_content_section_0"))).isTrue();
+        assertThat(
+                summary.getValue().toString().contains(ResourcesUtils.getResourcesString(mContext,
+                        "satellite_footer_content_section_1"))).isTrue();
+        assertThat(
+                summary.getValue().toString().contains(ResourcesUtils.getResourcesString(mContext,
+                        "satellite_footer_content_section_2"))).isTrue();
+        assertThat(
+                summary.getValue().toString().contains(ResourcesUtils.getResourcesString(mContext,
+                        "satellite_footer_content_section_3"))).isTrue();
+        assertThat(
+                summary.getValue().toString().contains(ResourcesUtils.getResourcesString(mContext,
+                        "satellite_footer_content_section_4"))).isTrue();
     }
 
-    @Test
-    public void displayPreferenceScreen_noEmergencyMsgSupport_hasEmergencyContent() {
-        mPersistableBundle.putBoolean(KEY_EMERGENCY_MESSAGING_SUPPORTED_BOOL, false);
-        PreferenceScreen screen = new PreferenceManager(mContext).createPreferenceScreen(mContext);
-        FooterPreference preference = new FooterPreference(mContext);
-        preference.setKey(KEY_FOOTER_PREFERENCE);
-        screen.addPreference(preference);
-        mController.init(TEST_SUB_ID, mPersistableBundle);
-
-        mController.displayPreference(screen);
-        String summary = preference.getSummary().toString();
-
-        assertThat(summary.contains(ResourcesUtils.getResourcesString(mContext,
-                "satellite_footer_content_section_6"))).isTrue();
-    }
 
     @Test
-    @Ignore("b/405279842")
-    public void displayPreferenceScreen_emergencyMsgSupport_noEmergencyContent() {
-        mPersistableBundle.putBoolean(KEY_EMERGENCY_MESSAGING_SUPPORTED_BOOL, true);
-        PreferenceScreen screen = new PreferenceManager(mContext).createPreferenceScreen(mContext);
-        FooterPreference preference = new FooterPreference(mContext);
-        preference.setKey(KEY_FOOTER_PREFERENCE);
-        screen.addPreference(preference);
-        mController.init(TEST_SUB_ID, mPersistableBundle);
-
-        mController.displayPreference(screen);
-        String summary = preference.getSummary().toString();
-
-        assertThat(summary.contains(ResourcesUtils.getResourcesString(mContext,
-                "satellite_footer_content_section_6"))).isFalse();
-    }
-
-    @Test
-    public void displayPreferenceScreen_entitlementSupport_hasEntitlementContent() {
-        mPersistableBundle.putBoolean(KEY_SATELLITE_ENTITLEMENT_SUPPORTED_BOOL, true);
-        PreferenceScreen screen = new PreferenceManager(mContext).createPreferenceScreen(mContext);
-        FooterPreference preference = new FooterPreference(mContext);
-        preference.setKey(KEY_FOOTER_PREFERENCE);
-        screen.addPreference(preference);
-        mController.init(TEST_SUB_ID, mPersistableBundle);
-
-        mController.displayPreference(screen);
-        String summary = preference.getSummary().toString();
-
-        assertThat(summary.contains(TEST_OPERATOR_NAME)).isTrue();
-    }
-
-    @Test
-    public void displayPreferenceScreen_entitlementNotSupport_noEntitlementContent() {
+    public void displayPreferenceScreen_manualTypeAndNoEntitlement() {
+        mPersistableBundle.putInt(KEY_CARRIER_ROAMING_NTN_CONNECT_TYPE_INT,
+                CARRIER_ROAMING_NTN_CONNECT_MANUAL);
         mPersistableBundle.putBoolean(KEY_SATELLITE_ENTITLEMENT_SUPPORTED_BOOL, false);
+
         PreferenceScreen screen = new PreferenceManager(mContext).createPreferenceScreen(mContext);
-        FooterPreference preference = new FooterPreference(mContext);
-        preference.setKey(KEY_FOOTER_PREFERENCE);
-        screen.addPreference(preference);
+        when(mFooterPreference.getKey()).thenReturn(KEY_FOOTER_PREFERENCE);
+        screen.addPreference(mFooterPreference);
         mController.init(TEST_SUB_ID, mPersistableBundle);
 
         mController.displayPreference(screen);
-        String summary = preference.getSummary().toString();
 
-        assertThat(summary.contains(TEST_OPERATOR_NAME)).isFalse();
+        ArgumentCaptor<CharSequence> summary = ArgumentCaptor.forClass(CharSequence.class);
+        verify(mFooterPreference).setSummary(summary.capture());
+
+        assertThat(
+                summary.getValue().toString().contains(ResourcesUtils.getResourcesString(mContext,
+                        "satellite_footer_content_section_7", TEST_OPERATOR_NAME))).isTrue();
+        assertThat(
+                summary.getValue().toString().contains(ResourcesUtils.getResourcesString(mContext,
+                        "satellite_footer_content_section_5"))).isFalse();
+        assertThat(
+                summary.getValue().toString().contains(ResourcesUtils.getResourcesString(mContext,
+                        "satellite_footer_content_section_6"))).isFalse();
+    }
+
+    @Test
+    public void displayPreferenceScreen_autoTypeAndNoEntitlement() {
+        mPersistableBundle.putInt(KEY_CARRIER_ROAMING_NTN_CONNECT_TYPE_INT,
+                CARRIER_ROAMING_NTN_CONNECT_AUTOMATIC);
+        mPersistableBundle.putBoolean(KEY_SATELLITE_ENTITLEMENT_SUPPORTED_BOOL, false);
+
+        PreferenceScreen screen = new PreferenceManager(mContext).createPreferenceScreen(mContext);
+        when(mFooterPreference.getKey()).thenReturn(KEY_FOOTER_PREFERENCE);
+        screen.addPreference(mFooterPreference);
+        mController.init(TEST_SUB_ID, mPersistableBundle);
+
+        mController.displayPreference(screen);
+
+        ArgumentCaptor<CharSequence> summary = ArgumentCaptor.forClass(CharSequence.class);
+        verify(mFooterPreference).setSummary(summary.capture());
+
+        assertThat(
+                summary.getValue().toString().contains(ResourcesUtils.getResourcesString(mContext,
+                        "satellite_footer_content_section_7", TEST_OPERATOR_NAME))).isFalse();
+        assertThat(
+                summary.getValue().toString().contains(ResourcesUtils.getResourcesString(mContext,
+                        "satellite_footer_content_section_5"))).isTrue();
+        assertThat(
+                summary.getValue().toString().contains(ResourcesUtils.getResourcesString(mContext,
+                        "satellite_footer_content_section_6"))).isTrue();
+    }
+
+    @Test
+    public void displayPreferenceScreen_autoTypeAndHasEntitlement() {
+        mPersistableBundle.putInt(KEY_CARRIER_ROAMING_NTN_CONNECT_TYPE_INT,
+                CARRIER_ROAMING_NTN_CONNECT_AUTOMATIC);
+        mPersistableBundle.putBoolean(KEY_SATELLITE_ENTITLEMENT_SUPPORTED_BOOL, true);
+
+        PreferenceScreen screen = new PreferenceManager(mContext).createPreferenceScreen(mContext);
+        when(mFooterPreference.getKey()).thenReturn(KEY_FOOTER_PREFERENCE);
+        screen.addPreference(mFooterPreference);
+        mController.init(TEST_SUB_ID, mPersistableBundle);
+
+        mController.displayPreference(screen);
+
+        ArgumentCaptor<CharSequence> summary = ArgumentCaptor.forClass(CharSequence.class);
+        verify(mFooterPreference).setSummary(summary.capture());
+
+        assertThat(
+                summary.getValue().toString().contains(ResourcesUtils.getResourcesString(mContext,
+                        "satellite_footer_content_section_5"))).isTrue();
+        assertThat(
+                summary.getValue().toString().contains(ResourcesUtils.getResourcesString(mContext,
+                        "satellite_footer_content_section_6"))).isFalse();
+        assertThat(
+                summary.getValue().toString().contains(ResourcesUtils.getResourcesString(mContext,
+                        "satellite_footer_content_section_7", TEST_OPERATOR_NAME))).isTrue();
     }
 }

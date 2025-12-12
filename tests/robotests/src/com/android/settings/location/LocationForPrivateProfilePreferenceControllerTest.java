@@ -122,7 +122,7 @@ public class LocationForPrivateProfilePreferenceControllerTest {
 
         mController.onLocationModeChanged(Settings.Secure.LOCATION_MODE_BATTERY_SAVING, false);
 
-        verify(mPreference).setDisabledByAdmin(any());
+        verify(mPreference).setDisabledByAdmin((EnforcedAdmin) any());
     }
 
     @Test

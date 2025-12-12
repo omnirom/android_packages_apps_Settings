@@ -21,6 +21,7 @@ import android.os.VibrationAttributes;
 import android.provider.Settings;
 
 /** Preference controller for alarm vibration intensity */
+// LINT.IfChange
 public class AlarmVibrationIntensityPreferenceController
         extends VibrationIntensityPreferenceController {
 
@@ -48,3 +49,4 @@ public class AlarmVibrationIntensityPreferenceController
         return AVAILABLE;
     }
 }
+// LINT.ThenChange(AlarmVibrationIntensitySliderPreference.kt)

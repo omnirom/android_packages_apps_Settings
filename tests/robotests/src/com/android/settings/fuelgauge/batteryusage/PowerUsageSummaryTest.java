@@ -21,6 +21,7 @@ import static com.android.settings.fuelgauge.batteryusage.PowerUsageSummary.KEY_
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
@@ -44,6 +45,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
+import com.android.settings.flags.Flags;
 import com.android.settings.fuelgauge.BatteryBroadcastReceiver;
 import com.android.settings.fuelgauge.BatteryInfo;
 import com.android.settings.fuelgauge.BatteryUtils;
@@ -133,10 +135,15 @@ public class PowerUsageSummaryTest {
     }
 
     @Test
-    public void initPreference_hasCorrectSummary() {
+    public void initPreference_updateVisibility() {
         mFragment.initPreference();
 
-        verify(mBatteryUsagePreference).setSummary("View usage since last full charge");
+        if (!mFragment.isCatalystEnabled() || !Flags.deeplinkBattery25q4()) {
+            verify(mBatteryUsagePreference).setVisible(
+                    mFeatureFactory.powerUsageFeatureProvider.isBatteryUsageEnabled());
+        } else {
+            verify(mBatteryUsagePreference, never()).setVisible(anyBoolean());
+        }
     }
 
     @Test
@@ -148,7 +155,6 @@ public class PowerUsageSummaryTest {
 
     @Test
     public void restartBatteryTipLoader() {
-        // TODO: add policy logic here when BatteryTipPolicy is implemented
         doReturn(mBatteryTipLoader)
                 .when(mLoaderManager)
                 .getLoader(PowerUsageBase.LoaderIndex.BATTERY_TIP_LOADER);

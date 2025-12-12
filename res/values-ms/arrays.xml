@@ -68,7 +68,7 @@
   <string-array name="eap_ocsp_type">
     <item msgid="8568170800958331461">"Jangan sahkan"</item>
     <item msgid="5703177653586269306">"Minta status sijil"</item>
-    <item msgid="326388247868439528">"Perlukan status sijil"</item>
+    <item msgid="326388247868439528">"Wajibkan status sijil"</item>
   </string-array>
   <string-array name="wifi_p2p_status">
     <item msgid="8357401480964012245">"Bersambung"</item>
@@ -315,6 +315,10 @@
     <item msgid="7397961711906421599">"Sederhana"</item>
     <item msgid="4079132024502041928">"Panjang"</item>
   </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"DHCP"</item>
+    <item msgid="4425163520864432692">"Statik"</item>
+  </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"Lalai"</item>
     <item msgid="4234707448428002595">"Sans-serif"</item>
@@ -349,19 +353,15 @@
   </string-array>
   <string-array name="captioning_preset_selector_titles">
     <item msgid="3880932435325583041">"Ditetapkan oleh apl"</item>
-    <item msgid="8719204526359229387">"Putih pada hitam"</item>
+    <item msgid="8719204526359229387">"Putih berlatar hitam"</item>
     <item msgid="5410164687403735103">"Hitam berlatar putih"</item>
-    <item msgid="1119043472912497241">"Kuning pada hitam"</item>
-    <item msgid="2836895041823327816">"Kuning pada biru"</item>
-    <item msgid="747238414788976867">"Peribadi"</item>
+    <item msgid="1119043472912497241">"Kuning berlatar hitam"</item>
+    <item msgid="2836895041823327816">"Kuning berlatar biru"</item>
+    <item msgid="747238414788976867">"Tersuai"</item>
   </string-array>
   <string-array name="accessibility_button_location_selector_titles">
     <item msgid="6485511780196327736">"Terapung di atas apl lain"</item>
     <item msgid="3605616699204153590">"Bar navigasi"</item>
-  </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"Butang"</item>
-    <item msgid="6922258575853746220">"Gerak isyarat"</item>
   </string-array>
   <string-array name="accessibility_button_size_selector_titles">
     <item msgid="7482952318152486459">"Kecil"</item>
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"Jam"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"Tiada"</item>
+    <item msgid="321837941231023175">"Laman Utama"</item>
+    <item msgid="953234843613969792">"Apl terbaharu"</item>
+    <item msgid="1713942773283586136">"Pemberitahuan"</item>
+    <item msgid="5687603742365489342">"Tetapan pantas"</item>
+    <item msgid="5454862951059393431">"Skrin kunci"</item>
   </string-array>
 </resources>

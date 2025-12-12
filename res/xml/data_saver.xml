@@ -30,7 +30,6 @@
     <com.android.settingslib.widget.FooterPreference
         android:key="data_saver_footer"
         android:title="@*android:string/data_saver_description"
-        android:selectable="false"
         settings:searchable="false"/>
 
 </PreferenceScreen>

@@ -108,6 +108,30 @@ const val KEY_CALL_VOLUME = "call_volume"
 /** Contract key for the "Ring volume" setting. */
 const val KEY_RING_VOLUME = "separate_ring_volume"
 
+/** Contract key for the "Notification volume" setting. */
+const val KEY_NOTIFICATION_VOLUME = "notification_volume"
+
+/** Contract key for the "Alarm volume" setting. */
+const val KEY_ALARM_VOLUME = "alarm_volume"
+
+/**
+ * Contract key for the "Dial pad tones" setting, identical to
+ * [android.provider.Settings.System.DTMF_TONE_WHEN_DIALING].
+ */
+const val KEY_DIAL_PAD_TONE = "dtmf_tone"
+
+/** Contract key for the "Screen locking sound" setting. */
+const val KEY_SCREEN_LOCKING_SOUND = "screen_locking_sound"
+
+/** Contract key for the "Charging sounds and vibration" setting. */
+const val KEY_CHARGING_SOUNDS = "charging_sounds"
+
+/** Contract key for the "Docking sounds" setting. */
+const val KEY_DOCKING_SOUNDS = "docking_sounds"
+
+/** Contract key for the "Tap & click sounds" setting. */
+const val KEY_TOUCH_SOUNDS = "touch_sounds"
+
 /** Contract key for the "Remove animation" setting. */
 const val KEY_REMOVE_ANIMATION = "remove_animation"
 

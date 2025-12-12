@@ -16,6 +16,7 @@
 
 package com.android.settings.gestures;
 
+import android.app.settings.SettingsEnums;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
@@ -25,6 +26,8 @@ import android.provider.Settings;
 import androidx.annotation.NonNull;
 
 import com.android.internal.R;
+import com.android.settings.overlay.FeatureFactory;
+import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 
 /** Common code for double tap power settings shared between controllers. */
 final class DoubleTapPowerSettingsUtils {
@@ -91,6 +94,8 @@ final class DoubleTapPowerSettingsUtils {
      */
     public static boolean setDoubleTapPowerButtonGestureEnabled(
             @NonNull Context context, boolean enable) {
+        getMetricsFeatureProvider().action(
+                context, SettingsEnums.ACTION_DOUBLE_TAP_POWER_ENABLED, enable);
         return Settings.Secure.putInt(
                 context.getContentResolver(),
                 DOUBLE_TAP_POWER_BUTTON_GESTURE_ENABLED,
@@ -121,6 +126,9 @@ final class DoubleTapPowerSettingsUtils {
      * @return {@code true} if the setting is updated.
      */
     public static boolean setDoubleTapPowerButtonForCameraLaunch(@NonNull Context context) {
+        getMetricsFeatureProvider().action(
+                context, SettingsEnums.ACTION_DOUBLE_TAP_POWER_BUTTON_BEHAVIOR,
+                DOUBLE_TAP_POWER_BUTTON_CAMERA_LAUNCH_VALUE);
         return Settings.Secure.putInt(
                 context.getContentResolver(),
                 DOUBLE_TAP_POWER_BUTTON_GESTURE_TARGET_ACTION,
@@ -134,6 +142,9 @@ final class DoubleTapPowerSettingsUtils {
      * @return {@code true} if the setting is updated.
      */
     public static boolean setDoubleTapPowerButtonForWalletLaunch(@NonNull Context context) {
+        getMetricsFeatureProvider().action(
+                context, SettingsEnums.ACTION_DOUBLE_TAP_POWER_BUTTON_BEHAVIOR,
+                DOUBLE_TAP_POWER_BUTTON_WALLET_LAUNCH_VALUE);
         return Settings.Secure.putInt(
                 context.getContentResolver(),
                 DOUBLE_TAP_POWER_BUTTON_GESTURE_TARGET_ACTION,
@@ -159,5 +170,9 @@ final class DoubleTapPowerSettingsUtils {
             @NonNull Context context, @NonNull ContentObserver observer) {
         final ContentResolver resolver = context.getContentResolver();
         resolver.unregisterContentObserver(observer);
+    }
+
+    private static MetricsFeatureProvider getMetricsFeatureProvider() {
+        return FeatureFactory.getFeatureFactory().getMetricsFeatureProvider();
     }
 }

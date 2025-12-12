@@ -91,6 +91,7 @@ public class HearingDeviceFooterPreferenceController extends
                 summary,
                 Html.FROM_HTML_MODE_COMPACT, /* imageGetter= */ null, /* tagHandler= */ null);
         footerPreference.setTitle(title);
+        footerPreference.setVisible(true);
 
         // Need to update contentDescription string to announce "than" rather than ">"
         final String contentDescription = getIntroductionTitle() + "\n\n" + summaryTts;

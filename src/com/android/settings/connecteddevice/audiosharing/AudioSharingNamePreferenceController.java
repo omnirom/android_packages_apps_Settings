@@ -287,6 +287,10 @@ public class AudioSharingNamePreferenceController extends BasePreferenceControll
 
     @Override
     public boolean isTextValid(String value) {
-        return mAudioSharingNameTextValidator.isTextValid(value);
+        boolean isValid = mAudioSharingNameTextValidator.isTextValid(value);
+        if (mPreference != null) {
+            mPreference.showEditTextFormatAlert(!isValid);
+        }
+        return isValid;
     }
 }

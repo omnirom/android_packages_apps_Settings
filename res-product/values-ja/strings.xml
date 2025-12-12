@@ -164,10 +164,10 @@
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_4" product="tablet" msgid="8772005555323461143">"あなたとお子様はいつでも [設定] で指紋の画像や指紋モデルを削除したり指紋認証を OFF にしたりできます。指紋の画像と指紋モデルは、削除するまでタブレットに保存されたままになります。"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_4" product="device" msgid="7254955922685507093">"あなたとお子様はいつでも [設定] で指紋の画像や指紋モデルを削除したり指紋認証を OFF にしたりできます。指紋の画像と指紋モデルは、削除するまでデバイスに保存されたままになります。"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_4" product="desktop" msgid="7254955922685507093">"あなたとお子様はいつでも [設定] で指紋の画像や指紋モデルを削除したり指紋認証を OFF にしたりできます。指紋の画像と指紋モデルは、削除するまでデバイスに保存されたままになります。"</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="default" msgid="6272159089589340181">"誰かがスマートフォンをあなたの指に近づけた場合など、意図せずスマートフォンのロックが解除されることがあります。"</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="tablet" msgid="2420109998272019149">"あなたの指にタブレットを近づけられた場合など、意図せずタブレットのロックが解除されることがあります。"</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="device" msgid="5915844445830045866">"あなたの指にデバイスを近づけられた場合など、意図せずデバイスのロックが解除されることがあります。"</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="desktop" msgid="5915844445830045866">"あなたの指にデバイスを近づけられた場合など、意図せずデバイスのロックが解除されることがあります。"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="default" msgid="6838578698434849838">"誰かがスマートフォンをあなたの指に近づけた場合など、意図せずスマートフォンのロックが解除されることがあります"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="tablet" msgid="7796353046744228477">"誰かがタブレットをあなたの指に近づけた場合など、意図せずタブレットのロックが解除されることがあります"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="device" msgid="5075445491909690772">"誰かがデバイスをあなたの指に近づけた場合など、意図せずデバイスのロックが解除されることがあります"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="desktop" msgid="5075445491909690772">"誰かがデバイスをあなたの指に近づけた場合など、意図せずデバイスのロックが解除されることがあります"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_5" product="default" msgid="6556725426776167791">"お子様の指にスマートフォンを近づけられた場合など、意図せずお子様のスマートフォンのロックが解除されることがあります。"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_5" product="tablet" msgid="5156581794964551571">"お子様の指にタブレットを近づけられた場合など、意図せずお子様のタブレットのロックが解除されることがあります。"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_5" product="device" msgid="8309101436391515400">"お子様の指にデバイスを近づけられた場合など、意図せずお子様のデバイスのロックが解除されることがあります。"</string>
@@ -371,7 +371,7 @@
     <string name="about_settings" product="desktop" msgid="7595574154492383452">"デバイス情報"</string>
     <string name="about_settings" product="emulator" msgid="1099246296173401003">"エミュレートされたデバイスについて"</string>
     <string name="install_all_warning" product="tablet" msgid="1732116924846572063">"不明なアプリをインストールするとタブレットや個人データの侵害に対する安全性が低下します。この提供元からアプリをインストールすることで、アプリの使用により生じる可能性があるタブレットへの侵害やデータの損失について、ユーザーご自身が責任を負うことに同意することになります。"</string>
-    <string name="install_all_warning" product="default" msgid="4597256179485325694">"不明なアプリをインストールするとスマートフォンや個人データの侵害に対する安全性が低下します。この提供元からアプリをインストールすることで、アプリの使用により生じる可能性があるスマートフォンへの侵害やデータの損失について、ユーザーご自身が責任を負うことに同意することになります。"</string>
+    <string name="install_all_warning" product="default" msgid="4597256179485325694">"不明なアプリをインストールすると、スマートフォンや個人データの保護が低下します。この提供元からアプリをインストールすることで、それに伴って生じかねないスマートフォンへの侵害やデータ損失について、各自が責任を負うことに同意します。"</string>
     <string name="install_all_warning" product="device" msgid="6293002353591632851">"不明なアプリをインストールするとスマートフォンや個人データが攻撃を受ける可能性が高くなります。この提供元からアプリをインストールすることにより、アプリの使用により生じる可能性があるスマートフォンへの損害やデータの損失について、ユーザーご自身が責任を負うことに同意することになります。"</string>
     <string name="install_all_warning" product="desktop" msgid="6293002353591632851">"不明なアプリをインストールするとスマートフォンや個人データが攻撃を受ける可能性が高くなります。この提供元からアプリをインストールすることにより、アプリの使用により生じる可能性があるスマートフォンへの損害やデータの損失について、ユーザーご自身が責任を負うことに同意することになります。"</string>
     <string name="runningservicedetails_stop_dlg_text" product="tablet" msgid="6321057186549848774">"このサービスを停止すると、電源を一旦OFFにして再度ONにするまで、タブレットの一部の機能が正常に動作しなくなる場合があります。"</string>
@@ -380,15 +380,12 @@
     <string name="testing_phone_info" product="tablet" msgid="8267746802132630741">"タブレット情報"</string>
     <string name="testing_phone_info" product="default" msgid="7507506297352160191">"携帯電話情報"</string>
     <string name="testing_phone_info" product="desktop" msgid="3607717850300762272">"デバイス情報"</string>
-    <string name="accessibility_text_reading_confirm_dialog_message" product="default" msgid="1773409172676594981">"ディスプレイのサイズとテキストの設定をスマートフォンの元の設定にリセットします"</string>
+    <string name="accessibility_text_reading_confirm_dialog_message" product="default" msgid="1773409172676594981">"ディスプレイのサイズとテキストをスマートフォンの初期設定にリセットします"</string>
     <string name="accessibility_text_reading_confirm_dialog_message" product="tablet" msgid="2547948891207211388">"ディスプレイのサイズとテキストの設定をタブレットの元の設定にリセットします"</string>
     <string name="accessibility_text_reading_confirm_dialog_message" product="desktop" msgid="4248088107680338580">"ディスプレイのサイズとテキストの設定をデバイスの元の設定にリセットします"</string>
     <string name="accessibility_daltonizer_about_intro_text" product="default" msgid="5234458848997942613">"スマートフォンでの色表示を補正できます"</string>
     <string name="accessibility_daltonizer_about_intro_text" product="tablet" msgid="5300401841391736534">"スマートフォンでの色表示を補正できます"</string>
     <string name="accessibility_daltonizer_about_intro_text" product="desktop" msgid="8908526728447739478">"デバイスで色をどのように表示するかを調整できます"</string>
-    <string name="reduce_bright_colors_preference_summary" product="default" msgid="2025941326724094318">"スマートフォンで設定できる最低限の明るさよりも画面を暗くします"</string>
-    <string name="reduce_bright_colors_preference_summary" product="tablet" msgid="3106979202311807559">"タブレットで設定できる最低限の明るさよりも画面を暗くします"</string>
-    <string name="reduce_bright_colors_preference_summary" product="desktop" msgid="7810358416215416035">"デバイスで設定できる最低限の明るさよりも画面を暗くします"</string>
     <string name="reduce_bright_colors_preference_subtitle" product="default" msgid="9162440023310121356">"「さらに輝度を下げる」機能は次のような場合に便利です。&lt;ol&gt; &lt;li&gt; デフォルトの最低限の明るさでも、スマートフォンの画面が明るすぎる&lt;/li&gt; &lt;li&gt; 夜の時間帯や就寝前の照明を消した部屋など、暗い場所でスマートフォンを使用している&lt;/li&gt; &lt;/ol&gt;"</string>
     <string name="reduce_bright_colors_preference_subtitle" product="tablet" msgid="5747242697890472822">"「さらに輝度を下げる」機能は次のような場合に便利です。&lt;ol&gt; &lt;li&gt; デフォルトの最低限の明るさでも、タブレットの画面が明るすぎる&lt;/li&gt; &lt;li&gt; 夜の時間帯や就寝前の照明を消した部屋など、暗い場所でタブレットを使用している&lt;/li&gt; &lt;/ol&gt;"</string>
     <string name="reduce_bright_colors_preference_subtitle" product="desktop" msgid="3114657547062643684">"「さらに輝度を下げる」機能は次のような場合に便利です。&lt;ol&gt; &lt;li&gt; デフォルトの最低限の明るさでも、デバイスの画面が明るすぎる&lt;/li&gt; &lt;li&gt; 夜の時間帯や就寝前の照明を消した部屋など、暗い場所でデバイスを使用している&lt;/li&gt; &lt;/ol&gt;"</string>
@@ -419,9 +416,9 @@
     <string name="really_remove_account_message" product="default" msgid="6681864753604250818">"このアカウントを削除すると、メール、連絡先などのすべてのデータもこのスマートフォンから削除されます。"</string>
     <string name="really_remove_account_message" product="device" msgid="1482438683708606820">"このアカウントを削除すると、メール、連絡先などのすべてのデータもデバイスから削除されます。"</string>
     <string name="really_remove_account_message" product="desktop" msgid="1482438683708606820">"このアカウントを削除すると、メール、連絡先などのすべてのデータもデバイスから削除されます。"</string>
-    <string name="data_usage_auto_sync_on_dialog" product="tablet" msgid="7137933271689383781">"ウェブでアカウントに変更を加えると自動的にタブレットに反映されます。\n\nGoogle アカウントなど、アカウントによっては、タブレットで変更を加えた場合も自動的にウェブに反映されます。"</string>
-    <string name="data_usage_auto_sync_on_dialog" product="default" msgid="7207326473052484970">"ウェブでアカウントに変更を加えると自動的にスマートフォンに反映されます。\n\nGoogle アカウントなど、アカウントによっては、スマートフォンで変更を加えた場合も自動的にウェブに反映されます。"</string>
-    <string name="data_usage_auto_sync_on_dialog" product="desktop" msgid="7386532649309389029">"ウェブでアカウントに変更を加えると自動的にデバイスに反映されます。\n\nGoogle アカウントなど、アカウントによっては、デバイスで変更を加えた場合も自動的にウェブに反映されます。"</string>
+    <string name="data_usage_auto_sync_on_dialog" product="tablet" msgid="7137933271689383781">"ウェブでアカウントに変更を加えると自動的にタブレットに反映されます。\n\nアカウントによっては、デバイスで加えた変更が自動的にウェブに反映されます。Google アカウントはその一例です。"</string>
+    <string name="data_usage_auto_sync_on_dialog" product="default" msgid="7207326473052484970">"ウェブでアカウントに変更を加えると自動的にスマートフォンに反映されます。\n\nアカウントによっては、スマートフォンで加えた変更が自動的にウェブに反映されます。Google アカウントはその一例です。"</string>
+    <string name="data_usage_auto_sync_on_dialog" product="desktop" msgid="7386532649309389029">"ウェブでアカウントに変更を加えると自動的にデバイスに反映されます。\n\nアカウントによっては、デバイスで加えた変更が自動的にウェブに反映されます。Google アカウントはその一例です。"</string>
     <string name="data_usage_limit_dialog_mobile" product="tablet" msgid="5609616352941038118">"タブレットで設定した上限に達するとモバイルデータが OFF になります。\n\nデータ使用量はタブレットで測定された値ですが、携帯通信会社による測定結果とは異なることがあるため、余裕をもって上限を設定することをおすすめします。"</string>
     <string name="data_usage_limit_dialog_mobile" product="default" msgid="4552449053646826676">"スマートフォンで設定した上限に達するとモバイルデータが OFF になります。\n\nデータ使用量はスマートフォンで測定された値ですが、携帯通信会社による測定結果とは異なることがあるため、余裕をもって上限を設定することをおすすめします。"</string>
     <string name="data_usage_limit_dialog_mobile" product="desktop" msgid="407387299340649944">"デバイスで設定した上限に達するとモバイルデータが OFF になります。\n\nデータ使用量はデバイスで測定された値ですが、携帯通信会社での使用量の計算はこれと異なることがあるため、余裕をもって上限を設定することをおすすめします。"</string>
@@ -481,9 +478,27 @@
     <string name="battery_tip_incompatible_charging_message" product="device" msgid="4208335872169818919">"デバイスのバッテリーが充電されていないか、充電に非常に時間がかかっています。充電時間を短くするには、推奨されるケーブルとアダプターを使用してください。"</string>
     <string name="battery_tip_incompatible_charging_message" product="tablet" msgid="5697523201841444736">"タブレットのバッテリーが充電されていないか、充電に非常に時間がかかっています。充電時間を短くするには、推奨されるケーブルとアダプターを使用してください。"</string>
     <string name="battery_tip_incompatible_charging_message" product="desktop" msgid="4208335872169818919">"デバイスのバッテリーが充電されていないか、充電に非常に時間がかかっています。充電時間を短くするには、推奨されるケーブルとアダプターを使用してください。"</string>
-    <string name="lockscreen_trivial_controls_summary" product="default" msgid="42562533085885152">"スマートフォンのロックを解除せずに操作"</string>
+    <string name="lockscreen_trivial_controls_summary" product="default" msgid="42562533085885152">"ロックを解除せずに使用できるようにします"</string>
     <string name="lockscreen_trivial_controls_summary" product="tablet" msgid="9052068482124729345">"タブレットのロックを解除せずに操作"</string>
     <string name="lockscreen_trivial_controls_summary" product="desktop" msgid="8183513643394359332">"デバイスのロックを解除せずに操作"</string>
+    <string name="device_supervision_switch_title" product="default" msgid="5711051584668311080">"このスマートフォンの管理"</string>
+    <string name="device_supervision_switch_title" product="tablet" msgid="5400384750840247844">"このタブレットの管理"</string>
+    <string name="device_supervision_switch_title" product="desktop" msgid="2140192989162020111">"このデバイスの管理"</string>
+    <string name="supervision_pin_length_message" product="default" msgid="7142997986515800901">"{count,plural, =1{# 桁以上の PIN を入力してください。このスマートフォンの管理機能を設定するために必要です。}other{# 桁以上の PIN を入力してください。このスマートフォンの管理機能を設定するために必要です。}}"</string>
+    <string name="supervision_pin_length_message" product="tablet" msgid="1772471880165492225">"{count,plural, =1{# 桁以上の PIN を入力してください。このタブレットの管理機能を設定するために必要です。}other{# 桁以上の PIN を入力してください。このタブレットの管理機能を設定するために必要です。}}"</string>
+    <string name="supervision_pin_length_message" product="desktop" msgid="7689193597679628648">"{count,plural, =1{# 桁以上の PIN を入力してください。このデバイスの管理機能を設定するために必要です。}other{# 桁以上の PIN を入力してください。このデバイスの管理機能を設定するために必要です。}}"</string>
+    <string name="supervision_delete_pin_supervision_enabled_message" product="default" msgid="3538726164054428290">"保護者による使用制限の PIN はユーザー間で共有されています。PIN を削除するには、この PIN を使用してこのスマートフォンのすべてのユーザーに設定した使用制限を OFF にする必要があります。"</string>
+    <string name="supervision_delete_pin_supervision_enabled_message" product="tablet" msgid="5923679321161365699">"保護者による使用制限の PIN はユーザー間で共有されています。PIN を削除するには、この PIN を使用してこのタブレットのすべてのユーザーに設定した使用制限を OFF にする必要があります。"</string>
+    <string name="supervision_delete_pin_supervision_enabled_message" product="desktop" msgid="4418588055965155673">"保護者による使用制限の PIN はユーザー間で共有されています。PIN を削除するには、この PIN を使用してこのデバイスのすべてのユーザーに設定した使用制限を OFF にする必要があります。"</string>
+    <string name="supervision_delete_pin_confirm_message" product="default" msgid="4142432379507014709">"保護者による使用制限の PIN は完全に削除されます。この PIN を使用してこのスマートフォンのユーザーに設定した使用制限はすべて OFF になります。"</string>
+    <string name="supervision_delete_pin_confirm_message" product="tablet" msgid="3676061526109959657">"保護者による使用制限の PIN は完全に削除されます。この PIN を使用してこのタブレットのユーザーに設定した使用制限はすべて OFF になります。"</string>
+    <string name="supervision_delete_pin_confirm_message" product="desktop" msgid="9122403113168273844">"保護者による使用制限の PIN は完全に削除されます。この PIN を使用してこのデバイスのユーザーに設定した使用制限はすべて OFF になります。"</string>
+    <string name="device_supervision_pin_management_footer" product="default" msgid="6890338658180593450">"保護者による使用制限の PIN は、このスマートフォンのすべてのユーザーに共通です"</string>
+    <string name="device_supervision_pin_management_footer" product="tablet" msgid="4013172842200145374">"保護者による使用制限の PIN は、このタブレットのすべてのユーザーに共通です"</string>
+    <string name="device_supervision_pin_management_footer" product="desktop" msgid="6539340160423866980">"保護者による使用制限の PIN は、このデバイスのすべてのユーザーに共通です"</string>
+    <string name="supervision_multi_profile_error_message" product="default" msgid="4185376425933293903">"このスマートフォンには複数のプロファイルがあるため、保護者による使用制限を有効にできません。"</string>
+    <string name="supervision_multi_profile_error_message" product="tablet" msgid="5021937906206996760">"このタブレットには複数のプロファイルがあるため、保護者による使用制限を有効にできません。"</string>
+    <string name="supervision_multi_profile_error_message" product="desktop" msgid="7222938263475617299">"このデバイスには複数のプロファイルがあるため、保護者による使用制限を有効にできません。"</string>
     <string name="auto_rotate_summary_a11y" product="default" msgid="2813368383309985185">"スマートフォンを動かして縦向きと横向きを切り替えたとき"</string>
     <string name="auto_rotate_summary_a11y" product="tablet" msgid="4708833814245913981">"タブレットを動かして縦向きと横向きを切り替えたとき"</string>
     <string name="auto_rotate_summary_a11y" product="desktop" msgid="1342493478927297535">"デバイスを動かして縦向きと横向きを切り替えたとき"</string>
@@ -518,4 +533,6 @@
     <string name="audio_sharing_confirm_dialog_content_with_link" product="tablet" msgid="282597208139437138">"音声の共有を開始するには、まず LE Audio 対応のヘッドフォンをタブレットに接続してください。"<annotation id="link">"対応デバイスについての詳細"</annotation></string>
     <string name="audio_sharing_confirm_dialog_content_with_link" product="device" msgid="668964968208427465">"音声の共有を開始するには、まず LE Audio 対応のヘッドフォンをデバイスに接続してください。"<annotation id="link">"対応デバイスについての詳細"</annotation></string>
     <string name="audio_sharing_confirm_dialog_content_with_link" product="desktop" msgid="668964968208427465">"音声の共有を開始するには、まず LE Audio 対応のヘッドフォンをデバイスに接続してください。"<annotation id="link">"対応デバイスについての詳細"</annotation></string>
+    <string name="network_dashboard_summary_mobile" product="default" msgid="1856501121269595911">"モバイル、Wi-Fi、アクセス ポイント"</string>
+    <string name="network_dashboard_summary_mobile" product="desktop" msgid="8770767156162473221">"Wi-Fi、モバイル、アクセス ポイント"</string>
 </resources>

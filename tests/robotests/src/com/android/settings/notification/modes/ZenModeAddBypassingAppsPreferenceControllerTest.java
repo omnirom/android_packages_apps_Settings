@@ -30,8 +30,6 @@ import android.app.NotificationChannel;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.ParceledListSlice;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.annotations.UsesFlags;
 import android.platform.test.flag.junit.FlagsParameterization;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -59,8 +57,6 @@ import java.util.Map;
 import java.util.Set;
 
 @RunWith(ParameterizedRobolectricTestRunner.class)
-@UsesFlags(android.app.Flags.class)
-@EnableFlags(Flags.FLAG_MODES_UI)
 public class ZenModeAddBypassingAppsPreferenceControllerTest {
     @Rule
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();

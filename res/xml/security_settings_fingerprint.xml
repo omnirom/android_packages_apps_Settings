@@ -32,13 +32,13 @@
         <com.android.settingslib.RestrictedSwitchPreference
             android:key="biometric_settings_fingerprint_keyguard"
             android:title="@string/biometric_settings_use_biometric_unlock_phone"
-            settings:keywords="@string/keywords_biometric_unlock"
+            settings:keywords="@string/keywords_fingerprint_unlock"
             settings:controller="com.android.settings.biometrics.fingerprint.FingerprintSettingsKeyguardUnlockPreferenceController"/>
 
         <SwitchPreferenceCompat
             android:key="biometric_settings_fingerprint_app"
             android:title="@string/biometric_settings_use_biometric_for_apps"
-            settings:keywords="@string/keywords_biometric_unlock"
+            settings:keywords="@string/keywords_fingerprint_unlock"
             settings:controller="com.android.settings.biometrics.fingerprint.FingerprintSettingsAppsPreferenceController"/>
     </PreferenceCategory>
 

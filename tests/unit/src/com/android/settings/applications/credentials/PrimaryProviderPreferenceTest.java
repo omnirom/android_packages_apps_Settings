@@ -68,7 +68,7 @@ public class PrimaryProviderPreferenceTest {
 
     @Test
     public void ensureButtonsClicksCallDelegate_newDesign() {
-        if (!PrimaryProviderPreference.shouldUseNewSettingsUi()) {
+        if (PrimaryProviderPreference.shouldUseNewSettingsUi()) {
             return;
         }
 
@@ -94,7 +94,7 @@ public class PrimaryProviderPreferenceTest {
 
     @Test
     public void ensureButtonsClicksCallDelegate_newDesign_openButtonVisibility() {
-        if (!PrimaryProviderPreference.shouldUseNewSettingsUi()) {
+        if (PrimaryProviderPreference.shouldUseNewSettingsUi()) {
             return;
         }
 
@@ -115,7 +115,7 @@ public class PrimaryProviderPreferenceTest {
 
     @Test
     public void ensureButtonsClicksCallDelegate_newDesign_buttonsCompactMode() {
-        if (!PrimaryProviderPreference.shouldUseNewSettingsUi()) {
+        if (PrimaryProviderPreference.shouldUseNewSettingsUi()) {
             return;
         }
 

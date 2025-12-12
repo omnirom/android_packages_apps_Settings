@@ -44,7 +44,9 @@ import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
 import com.android.settings.widget.EmptyTextSettings;
 import com.android.settingslib.RestrictedSwitchPreference;
 import com.android.settingslib.applications.ServiceListing;
+import com.android.settingslib.widget.SettingsThemeHelper;
 import com.android.settingslib.widget.TwoTargetPreference;
+import com.android.settingslib.widget.ZeroStatePreference;
 
 import java.util.List;
 
@@ -86,7 +88,10 @@ public abstract class ManagedServiceSettings extends EmptyTextSettings {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setEmptyText(mConfig.emptyText);
+
+        if (!SettingsThemeHelper.isExpressiveTheme(getContext())) {
+            setEmptyText(mConfig.emptyText);
+        }
     }
 
     @Override
@@ -103,10 +108,23 @@ public abstract class ManagedServiceSettings extends EmptyTextSettings {
     }
 
     private void updateList(List<ServiceInfo> services) {
+        final PreferenceScreen screen = getPreferenceScreen();
+        if (services == null || services.isEmpty()) {
+            if (SettingsThemeHelper.isExpressiveTheme(screen.getContext())) {
+                if (screen.getPreferenceCount() == 0) {
+                    ZeroStatePreference preference = new ZeroStatePreference(
+                            screen.getContext());
+                    preference.setIcon(mConfig.zeroResourceIcon);
+                    preference.setTitle(mConfig.emptyText);
+                    preference.setScreenCentering(true);
+                    screen.addPreference(preference);
+                }
+            }
+            return;
+        }
+
         UserManager um = (UserManager) mContext.getSystemService(Context.USER_SERVICE);
         final int managedProfileId = Utils.getManagedProfileId(um, UserHandle.myUserId());
-
-        final PreferenceScreen screen = getPreferenceScreen();
         screen.removeAll();
         services.sort(new PackageItemInfo.DisplayNameComparator(mPm));
         for (ServiceInfo service : services) {
@@ -245,11 +263,12 @@ public abstract class ManagedServiceSettings extends EmptyTextSettings {
         public final int warningDialogTitle;
         public final int warningDialogSummary;
         public final int emptyText;
+        public final int zeroResourceIcon;
         public final String configIntentAction;
 
         private Config(String tag, String setting, String intentAction, String configIntentAction,
                 String permission, String noun, int warningDialogTitle, int warningDialogSummary,
-                int emptyText) {
+                int emptyText, int zeroResourceIcon) {
             this.tag = tag;
             this.setting = setting;
             this.intentAction = intentAction;
@@ -258,6 +277,7 @@ public abstract class ManagedServiceSettings extends EmptyTextSettings {
             this.warningDialogTitle = warningDialogTitle;
             this.warningDialogSummary = warningDialogSummary;
             this.emptyText = emptyText;
+            this.zeroResourceIcon = zeroResourceIcon;
             this.configIntentAction = configIntentAction;
         }
 
@@ -270,6 +290,7 @@ public abstract class ManagedServiceSettings extends EmptyTextSettings {
             private int mWarningDialogTitle;
             private int mWarningDialogSummary;
             private int mEmptyText;
+            private int mZeroResourceIcon;
             private String mConfigIntentAction;
 
             public Builder setTag(String tag) {
@@ -317,9 +338,21 @@ public abstract class ManagedServiceSettings extends EmptyTextSettings {
                 return this;
             }
 
+            /**
+             * Setter for icon of {@link ZeroStatePreference}
+             *
+             * @param zeroResourceIcon icon id
+             * @return the {@link Builder} object
+             */
+            public Builder setZeroResourceIcon(int zeroResourceIcon) {
+                mZeroResourceIcon = zeroResourceIcon;
+                return this;
+            }
+
             public Config build() {
                 return new Config(mTag, mSetting, mIntentAction, mConfigIntentAction, mPermission,
-                        mNoun, mWarningDialogTitle, mWarningDialogSummary, mEmptyText);
+                        mNoun, mWarningDialogTitle, mWarningDialogSummary, mEmptyText,
+                        mZeroResourceIcon);
             }
         }
     }

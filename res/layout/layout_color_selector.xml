@@ -37,6 +37,7 @@
                 android:layout_width="@dimen/screen_flash_color_button_frame_size"
                 android:layout_height="@dimen/screen_flash_color_button_frame_size"
                 android:button="@drawable/screen_flash_color_01_selector"
+                android:background="@drawable/screen_flash_color_background"
                 android:contentDescription="@string/screen_flash_color_blue" />
 
             <Space
@@ -49,6 +50,7 @@
                 android:layout_width="@dimen/screen_flash_color_button_frame_size"
                 android:layout_height="@dimen/screen_flash_color_button_frame_size"
                 android:button="@drawable/screen_flash_color_02_selector"
+                android:background="@drawable/screen_flash_color_background"
                 android:contentDescription="@string/screen_flash_color_azure" />
 
             <Space
@@ -61,6 +63,7 @@
                 android:layout_width="@dimen/screen_flash_color_button_frame_size"
                 android:layout_height="@dimen/screen_flash_color_button_frame_size"
                 android:button="@drawable/screen_flash_color_03_selector"
+                android:background="@drawable/screen_flash_color_background"
                 android:contentDescription="@string/screen_flash_color_cyan" />
 
             <Space
@@ -73,6 +76,7 @@
                 android:layout_width="@dimen/screen_flash_color_button_frame_size"
                 android:layout_height="@dimen/screen_flash_color_button_frame_size"
                 android:button="@drawable/screen_flash_color_04_selector"
+                android:background="@drawable/screen_flash_color_background"
                 android:contentDescription="@string/screen_flash_color_spring_green" />
         </LinearLayout>
 
@@ -87,6 +91,7 @@
                 android:layout_width="@dimen/screen_flash_color_button_frame_size"
                 android:layout_height="@dimen/screen_flash_color_button_frame_size"
                 android:button="@drawable/screen_flash_color_05_selector"
+                android:background="@drawable/screen_flash_color_background"
                 android:contentDescription="@string/screen_flash_color_green" />
 
             <Space
@@ -99,6 +104,7 @@
                 android:layout_width="@dimen/screen_flash_color_button_frame_size"
                 android:layout_height="@dimen/screen_flash_color_button_frame_size"
                 android:button="@drawable/screen_flash_color_06_selector"
+                android:background="@drawable/screen_flash_color_background"
                 android:contentDescription="@string/screen_flash_color_chartreuse_green" />
 
 
@@ -111,6 +117,7 @@
                 android:layout_width="@dimen/screen_flash_color_button_frame_size"
                 android:layout_height="@dimen/screen_flash_color_button_frame_size"
                 android:button="@drawable/screen_flash_color_07_selector"
+                android:background="@drawable/screen_flash_color_background"
                 android:contentDescription="@string/screen_flash_color_yellow" />
 
             <Space
@@ -123,6 +130,7 @@
                 android:layout_width="@dimen/screen_flash_color_button_frame_size"
                 android:layout_height="@dimen/screen_flash_color_button_frame_size"
                 android:button="@drawable/screen_flash_color_08_selector"
+                android:background="@drawable/screen_flash_color_background"
                 android:contentDescription="@string/screen_flash_color_orange" />
         </LinearLayout>
 
@@ -137,6 +145,7 @@
                 android:layout_width="@dimen/screen_flash_color_button_frame_size"
                 android:layout_height="@dimen/screen_flash_color_button_frame_size"
                 android:button="@drawable/screen_flash_color_09_selector"
+                android:background="@drawable/screen_flash_color_background"
                 android:contentDescription="@string/screen_flash_color_red" />
 
             <Space
@@ -149,6 +158,7 @@
                 android:layout_width="@dimen/screen_flash_color_button_frame_size"
                 android:layout_height="@dimen/screen_flash_color_button_frame_size"
                 android:button="@drawable/screen_flash_color_10_selector"
+                android:background="@drawable/screen_flash_color_background"
                 android:contentDescription="@string/screen_flash_color_rose" />
 
             <Space
@@ -161,6 +171,7 @@
                 android:layout_width="@dimen/screen_flash_color_button_frame_size"
                 android:layout_height="@dimen/screen_flash_color_button_frame_size"
                 android:button="@drawable/screen_flash_color_11_selector"
+                android:background="@drawable/screen_flash_color_background"
                 android:contentDescription="@string/screen_flash_color_magenta" />
 
             <Space
@@ -173,6 +184,7 @@
                 android:layout_width="@dimen/screen_flash_color_button_frame_size"
                 android:layout_height="@dimen/screen_flash_color_button_frame_size"
                 android:button="@drawable/screen_flash_color_12_selector"
+                android:background="@drawable/screen_flash_color_background"
                 android:contentDescription="@string/screen_flash_color_violet" />
 
         </LinearLayout>

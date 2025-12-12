@@ -9,6 +9,13 @@ flag {
 }
 
 flag {
+  name: "catalyst_device_model"
+  namespace: "android_settings"
+  description: "Flag for Model"
+  bug: "405344827"
+}
+
+flag {
   name: "catalyst_firmware_version"
   namespace: "android_settings"
   description: "Flag for Android version"
@@ -20,4 +27,18 @@ flag {
   namespace: "android_settings"
   description: "Flag for About phone"
   bug: "323791114"
+}
+
+flag {
+  name: "deeplink_about_phone_25q4"
+  namespace: "android_settings"
+  description: "Flag using for all common deeplink migration in 25Q4"
+  bug: "405344827"
+}
+
+flag {
+  name: "catalyst_about_phone_device_name"
+  namespace: "android_settings"
+  description: "Flag for device name"
+  bug: "405344827"
 }

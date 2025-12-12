@@ -30,13 +30,6 @@ flag {
 }
 
 flag {
-  name: "catalyst_dark_ui_mode"
-  namespace: "android_settings"
-  description: "Flag for Dark theme"
-  bug: "323791114"
-}
-
-flag {
   name: "catalyst_screen_brightness_mode"
   namespace: "android_settings"
   description: "Flag for Adaptive brightness"
@@ -76,4 +69,11 @@ flag {
   namespace: "android_settings"
   description: "Flag for Auto-rotate screen in 25Q3"
   bug: "352179685"
+}
+
+flag {
+  name: "deeplink_display_and_touch_25q4"
+  namespace: "android_settings"
+  description: "Flag using for all common deeplink migration in 25Q4"
+  bug: "405344827"
 }

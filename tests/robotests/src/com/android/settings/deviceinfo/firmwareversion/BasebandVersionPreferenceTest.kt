@@ -17,44 +17,87 @@
 package com.android.settings.deviceinfo.firmwareversion
 
 import android.content.Context
-import android.content.ContextWrapper
+import android.content.res.Resources
 import android.sysprop.TelephonyProperties
 import android.telephony.TelephonyManager
 import androidx.test.core.app.ApplicationProvider
+import com.android.settings.R
 import com.google.common.truth.Truth.assertThat
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.stub
 import org.robolectric.RobolectricTestRunner
 
 // LINT.IfChange
 @RunWith(RobolectricTestRunner::class)
 class BasebandVersionPreferenceTest {
-    private lateinit var telephonyManager: TelephonyManager
+    private val mockTelephonyManager = mock<TelephonyManager>()
+    private val mockResources = mock<Resources>()
 
     private val context: Context =
-        object : ContextWrapper(ApplicationProvider.getApplicationContext()) {
-            override fun getSystemService(name: String): Any? =
-                when {
-                    name == getSystemServiceName(TelephonyManager::class.java) -> telephonyManager
-                    else -> super.getSystemService(name)
-                }
+        spy(ApplicationProvider.getApplicationContext()) {
+            on { getSystemService(TelephonyManager::class.java) } doReturn mockTelephonyManager
+            on { getSystemService(Context.TELEPHONY_SERVICE) } doReturn mockTelephonyManager
+            on { resources } doReturn mockResources
         }
 
     private val basebandVersionPreference = BasebandVersionPreference()
 
+    @Before
+    fun setup() {
+        // By default, available
+        mockTelephonyManager.stub {
+            on { isDataCapable } doReturn true
+            on { isDeviceVoiceCapable } doReturn true
+        }
+        mockResources.stub {
+            on { getBoolean(R.bool.config_show_sim_info) } doReturn true
+        }
+    }
+
     @Test
-    fun isAvailable_wifiOnly_unavailable() {
-        telephonyManager = mock { on { isDataCapable } doReturn false }
+    fun isAvailable_default_available() {
+        TelephonyProperties.baseband_version(listOf("test"))
+        assertThat(basebandVersionPreference.isAvailable(context)).isTrue()
+    }
+
+    @Test
+    fun isAvailable_noShowSimInfo_unavailable() {
+        mockResources.stub {
+            on { getBoolean(R.bool.config_show_sim_info) } doReturn false
+        }
         assertThat(basebandVersionPreference.isAvailable(context)).isFalse()
     }
 
     @Test
-    fun isAvailable_hasMobile_available() {
-        TelephonyProperties.baseband_version(listOf("test"))
-        telephonyManager = mock { on { isDataCapable } doReturn true }
+    fun isAvailable_voiceCapable_notDataCapable_available() {
+        mockTelephonyManager.stub {
+            on { isDataCapable } doReturn false
+            on { isDeviceVoiceCapable } doReturn true
+        }
         assertThat(basebandVersionPreference.isAvailable(context)).isTrue()
+    }
+
+    @Test
+    fun isAvailable_notVoiceCapable_dataCapable_available() {
+        mockTelephonyManager.stub {
+            on { isDataCapable } doReturn true
+            on { isDeviceVoiceCapable } doReturn false
+        }
+        assertThat(basebandVersionPreference.isAvailable(context)).isTrue()
+    }
+
+    @Test
+    fun isAvailable_notVoiceCapable_notDataCapable_unavailable() {
+        mockTelephonyManager.stub {
+            on { isDataCapable } doReturn false
+            on { isDeviceVoiceCapable } doReturn false
+        }
+        assertThat(basebandVersionPreference.isAvailable(context)).isFalse()
     }
 }
 // LINT.ThenChange(BasebandVersionPreferenceControllerTest.java)

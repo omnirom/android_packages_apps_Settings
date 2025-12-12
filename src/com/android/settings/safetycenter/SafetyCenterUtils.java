@@ -28,20 +28,27 @@ import static android.app.admin.DevicePolicyResources.Strings.Settings.WORK_PROF
 import static android.app.admin.DevicePolicyResources.Strings.Settings.WORK_PROFILE_SET_UNLOCK_LAUNCH_PICKER_TITLE;
 import static android.app.admin.DevicePolicyResources.Strings.Settings.WORK_PROFILE_UNIFY_LOCKS_SUMMARY;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 
 import com.android.settings.R;
 import com.android.settings.biometrics.combination.CombinedBiometricProfileStatusPreferenceController;
 import com.android.settings.biometrics.face.FaceProfileStatusPreferenceController;
 import com.android.settings.biometrics.fingerprint.FingerprintProfileStatusPreferenceController;
+import com.android.settings.core.SubSettingLauncher;
 import com.android.settings.dashboard.DashboardFragment;
+import com.android.settings.flags.Flags;
 import com.android.settings.notification.LockScreenNotificationPreferenceController;
 import com.android.settings.privacy.PrivacyDashboardFragment;
+import com.android.settings.safetycenter.ui.SafetyCenterFragment;
 import com.android.settings.security.ChangeProfileScreenLockPreferenceController;
 import com.android.settings.security.LockUnificationPreferenceController;
 import com.android.settings.security.trustagent.TrustAgentListPreferenceController;
 import com.android.settings.widget.PreferenceCategoryController;
 import com.android.settingslib.core.AbstractPreferenceController;
+import com.android.settingslib.core.instrumentation.Instrumentable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +56,7 @@ import java.util.List;
 /** A class with helper method used in logic involving safety center. */
 public final class SafetyCenterUtils {
 
+    private static final String TAG = "SafetyCenterUtils";
     private static final String WORK_PROFILE_SECURITY_CATEGORY = "work_profile_category";
     private static final String KEY_LOCK_SCREEN_NOTIFICATIONS = "privacy_lock_screen_notifications";
     private static final String KEY_WORK_PROFILE_CATEGORY =
@@ -152,6 +160,31 @@ public final class SafetyCenterUtils {
                 R.string.lock_settings_profile_title);
         dashboardFragment.replaceEnterpriseStringTitle(
                 "enterprise_privacy", MANAGED_DEVICE_INFO, R.string.enterprise_privacy_settings);
+    }
+
+    /**
+     * Redirects to the appropriate Safety Center UI based on the feature flag.
+     * This method centralizes the logic for launching the new or old Safety Center.
+     */
+    public static boolean redirectToSafetyCenter(Context context) {
+        try {
+            if (Flags.enableSafetyCenterNewUi()) {
+                Log.d(TAG, "Launching SafetyCenter in Settings");
+                new SubSettingLauncher(context)
+                    .setDestination(SafetyCenterFragment.class.getName())
+                    .setSourceMetricsCategory(Instrumentable.METRICS_CATEGORY_UNKNOWN)
+                    .launch();
+            } else {
+                Log.d(TAG, "Launching SafetyCenter in PermissionController");
+                context.startActivity(new Intent(Intent.ACTION_SAFETY_CENTER)
+                        .setPackage(
+                                context.getPackageManager().getPermissionControllerPackageName()));
+            }
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "Unable to open safety center", e);
+            return false;
+        }
+        return true;
     }
 
     private SafetyCenterUtils() {}

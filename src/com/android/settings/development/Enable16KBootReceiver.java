@@ -29,6 +29,7 @@ public class Enable16KBootReceiver extends BroadcastReceiver {
     public void onReceive(@NonNull Context context, @NonNull Intent intent) {
         String action = intent.getAction();
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)
+                || Intent.ACTION_LOCALE_CHANGED.equals(action)
                 || PageAgnosticNotificationService.INTENT_ACTION_DISMISSED.equals(action)) {
             // Do nothing if device is not in page-agnostic mode
             if (!Enable16kUtils.isPageAgnosticModeOn(context)) {

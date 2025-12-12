@@ -24,6 +24,8 @@ import android.hardware.display.ColorDisplayManager;
 import android.hardware.display.NightDisplayListener;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 
 import com.android.settings.R;
@@ -33,6 +35,7 @@ import com.android.settingslib.search.SearchIndexable;
 
 import java.time.LocalTime;
 
+// LINT.IfChange
 /**
  * Settings screen for Night display.
  */
@@ -169,6 +172,11 @@ public class NightDisplaySettings extends DashboardFragment
     }
 
     @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return NightDisplayScreen.KEY;
+    }
+
+    @Override
     protected String getLogTag() {
         return TAG;
     }
@@ -182,3 +190,4 @@ public class NightDisplaySettings extends DashboardFragment
                 }
             };
 }
+// LINT.ThenChange(NightDisplayScreen.kt)

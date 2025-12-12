@@ -19,15 +19,12 @@ package com.android.settings.inputmethod;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.view.InputDevice;
 
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.core.BasePreferenceController;
-import com.android.settings.keyboard.Flags;
 import com.android.settings.testutils.shadow.ShadowInputDevice;
 
 import org.junit.Before;
@@ -64,20 +61,8 @@ public class TouchpadSettingsControllerTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_KEYBOARD_AND_TOUCHPAD_A11Y_NEW_PAGE_ENABLED)
-    public void getAvailabilityStatus_flagIsDisable_returnsUnavailable() {
-        int deviceId = 1;
-        ShadowInputDevice.sDeviceIds = new int[]{deviceId};
-        ShadowInputDevice.addDevice(deviceId, ShadowInputDevice.makeInputDevicebyId(deviceId));
-        assertThat(mController.getAvailabilityStatus())
-                .isEqualTo(BasePreferenceController.CONDITIONALLY_UNAVAILABLE);
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_KEYBOARD_AND_TOUCHPAD_A11Y_NEW_PAGE_ENABLED)
     public void getAvailabilityStatus_isTouchpad_returnsAvailable() {
         int deviceId = 1;
-        ShadowInputDevice.sDeviceIds = new int[]{deviceId};
         InputDevice device = ShadowInputDevice.makeInputDevicebyIdWithSources(deviceId,
                 InputDevice.SOURCE_TOUCHPAD);
         ShadowInputDevice.addDevice(deviceId, device);

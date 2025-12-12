@@ -73,24 +73,8 @@
         android:textDirection="locale"/>
 
     <LinearLayout
+        android:id="@+id/bluetooth_entities_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layoutDirection="ltr"
-        android:orientation="horizontal">
-
-        <include
-            android:id="@+id/layout_left"
-            layout="@layout/advanced_bt_entity_sub"/>
-
-        <include
-            android:id="@+id/layout_middle"
-            layout="@layout/advanced_bt_entity_sub"/>
-
-        <include
-            android:id="@+id/layout_right"
-            layout="@layout/advanced_bt_entity_sub"/>
-
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

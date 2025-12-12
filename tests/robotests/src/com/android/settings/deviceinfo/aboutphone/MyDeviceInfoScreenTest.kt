@@ -16,43 +16,50 @@
 
 package com.android.settings.deviceinfo.aboutphone
 
-import android.content.Context
+import android.content.pm.UserInfo
 import android.os.Build
-import android.provider.Settings.Global
+import android.provider.Settings.Global.DEVICE_NAME
+import androidx.preference.Preference
+import com.android.settings.deviceinfo.simstatus.SimEidInfoPreference
 import com.android.settings.flags.Flags
-import com.android.settingslib.preference.CatalystScreenTestCase
+import com.android.settings.testutils.shadow.ShadowUserManager
+import com.android.settings.testutils2.SettingsCatalystTestCase
+import com.android.settingslib.datastore.SettingsGlobalStore
 import com.google.common.truth.Truth.assertThat
-import org.junit.Before
 import org.junit.Test
-import org.robolectric.RuntimeEnvironment
+import org.mockito.kotlin.mock
+import org.robolectric.annotation.Config
 
-class MyDeviceInfoScreenTest : CatalystScreenTestCase() {
-    private lateinit var context: Context
-
+@Config(shadows = [ShadowUserManager::class])
+class MyDeviceInfoScreenTest : SettingsCatalystTestCase() {
     override val preferenceScreenCreator = MyDeviceInfoScreen()
+
     override val flagName: String
         get() = Flags.FLAG_CATALYST_MY_DEVICE_INFO_PREF_SCREEN
 
-    override fun migration() {}
-
-    @Before
-    fun setup() {
-        context = RuntimeEnvironment.getApplication()
-    }
+    override fun getPreferenceClass(preference: Preference) =
+        when (preference) {
+            is SimEidInfoPreference -> Preference::class.java // Preference is used after migration
+            else -> super.getPreferenceClass(preference)
+        }
 
     @Test
-    fun key() {
-        assertThat(preferenceScreenCreator.key).isEqualTo(MyDeviceInfoScreen.KEY)
+    override fun migration() {
+        ShadowUserManager.getShadow().addAliveUser(mock<UserInfo>())
+        super.migration()
     }
 
     @Test
     fun getSummary_deviceNameNotSet_shouldReturnDeviceModel() {
-        assertThat(preferenceScreenCreator.getSummary(context)?.toString()).isEqualTo(Build.MODEL)
+        SettingsGlobalStore.get(appContext).setString(DEVICE_NAME, null)
+
+        assertThat(preferenceScreenCreator.getSummary(appContext)).isEqualTo(Build.MODEL)
     }
 
     @Test
     fun getSummary_deviceNameSet_shouldReturnDeviceName() {
-        Global.putString(context.contentResolver, Global.DEVICE_NAME, "Test")
-        assertThat(preferenceScreenCreator.getSummary(context)?.toString()).isEqualTo("Test")
+        SettingsGlobalStore.get(appContext).setString(DEVICE_NAME, "Test")
+
+        assertThat(preferenceScreenCreator.getSummary(appContext)).isEqualTo("Test")
     }
 }

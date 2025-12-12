@@ -44,6 +44,13 @@ public class TelephonyTogglePreferenceControllerTest {
         assertThat(mFakeTelephonyToggle.isSliceable()).isFalse();
     }
 
+    @Test
+    public void notifyAirplaneModeChanged_isAirplaneModeChanged_getTrue() {
+        mFakeTelephonyToggle.notifyAirplaneModeChanged(true);
+
+        assertThat(mFakeTelephonyToggle.mIsAirplaneModeOn).isTrue();
+    }
+
     private static class FakeTelephonyToggle extends TelephonyTogglePreferenceController {
 
         private FakeTelephonyToggle(Context context, String preferenceKey) {

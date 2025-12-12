@@ -23,7 +23,6 @@ import com.android.settings.R
 import com.android.settings.contract.KEY_SHOW_MEDIA_ON_LOCK_SCREEN
 import com.android.settings.metrics.PreferenceActionMetricsProvider
 import com.android.settingslib.datastore.KeyValueStore
-import com.android.settingslib.datastore.KeyValueStoreDelegate
 import com.android.settingslib.datastore.SettingsSecureStore
 import com.android.settingslib.metadata.ReadWritePermit
 import com.android.settingslib.metadata.SensitivityLevel
@@ -56,21 +55,13 @@ class MediaControlsLockscreenSwitchPreference :
     override fun getWritePermit(context: Context, callingPid: Int, callingUid: Int) =
         ReadWritePermit.ALLOW
 
-    override fun storage(context: Context): KeyValueStore =
-        MediaControlsLockscreenStore(SettingsSecureStore.get(context))
-
-    @Suppress("UNCHECKED_CAST")
-    private class MediaControlsLockscreenStore(private val settingsStore: KeyValueStore) :
-        KeyValueStoreDelegate {
-
-        override val keyValueStoreDelegate
-            get() = settingsStore
-
-        override fun <T : Any> getDefaultValue(key: String, valueType: Class<T>) = true as T
-    }
+    override fun storage(context: Context) = context.dataStore
 
     companion object {
         const val KEY = MEDIA_CONTROLS_LOCK_SCREEN
+
+        private val Context.dataStore: KeyValueStore
+            get() = SettingsSecureStore.get(this).apply { setDefaultValue(KEY, true) }
     }
 }
 // LINT.ThenChange(MediaControlsLockScreenPreferenceController.java)

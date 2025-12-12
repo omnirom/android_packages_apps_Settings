@@ -31,6 +31,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.PreferenceScreen;
 
@@ -44,21 +45,26 @@ import com.android.wifitrackerlib.SavedNetworkTracker;
 import java.time.Clock;
 import java.time.ZoneOffset;
 
+// LINT.IfChange
+
 /**
  * UI to manage saved networks/access points.
  */
 public class SavedAccessPointsWifiSettings2 extends DashboardFragment
         implements SavedNetworkTracker.SavedNetworkTrackerCallback {
 
-    @VisibleForTesting static final String TAG = "SavedAccessPoints2";
+    @VisibleForTesting
+    static final String TAG = "SavedAccessPoints2";
 
     // Max age of tracked WifiEntries
     private static final long MAX_SCAN_AGE_MILLIS = 15_000;
     // Interval between initiating SavedNetworkTracker scans
     private static final long SCAN_INTERVAL_MILLIS = 10_000;
 
-    @VisibleForTesting SavedNetworkTracker mSavedNetworkTracker;
-    @VisibleForTesting HandlerThread mWorkerThread;
+    @VisibleForTesting
+    SavedNetworkTracker mSavedNetworkTracker;
+    @VisibleForTesting
+    HandlerThread mWorkerThread;
 
     @Override
     public int getMetricsCategory() {
@@ -78,6 +84,7 @@ public class SavedAccessPointsWifiSettings2 extends DashboardFragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         use(SavedAccessPointsPreferenceController2.class).setHost(this);
         use(SubscribedAccessPointsPreferenceController2.class).setHost(this);
     }
@@ -169,4 +176,10 @@ public class SavedAccessPointsWifiSettings2 extends DashboardFragment
         use(SubscribedAccessPointsPreferenceController2.class)
                 .displayPreference(screen, mSavedNetworkTracker.getSubscriptionWifiEntries());
     }
+
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return SavedAccessPointsWifiScreen.KEY;
+    }
 }
+// LINT.ThenChange(SavedAccessPointsWifiScreen.kt)

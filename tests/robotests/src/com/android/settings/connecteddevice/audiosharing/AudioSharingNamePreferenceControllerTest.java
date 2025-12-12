@@ -49,6 +49,7 @@ import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settings.testutils.shadow.ShadowBluetoothAdapter;
 import com.android.settings.testutils.shadow.ShadowBluetoothUtils;
 import com.android.settingslib.bluetooth.BluetoothEventManager;
+import com.android.settingslib.bluetooth.LeAudioProfile;
 import com.android.settingslib.bluetooth.LocalBluetoothLeBroadcast;
 import com.android.settingslib.bluetooth.LocalBluetoothLeBroadcastAssistant;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
@@ -86,6 +87,7 @@ public class AudioSharingNamePreferenceControllerTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Spy Context mContext = ApplicationProvider.getApplicationContext();
+    @Mock private LeAudioProfile mLeAudio;
     @Mock private LocalBluetoothLeBroadcast mBroadcast;
     @Mock private LocalBluetoothLeBroadcastAssistant mAssistant;
     @Mock private VolumeControlProfile mVolumeControl;
@@ -112,13 +114,14 @@ public class AudioSharingNamePreferenceControllerTest {
         mLocalBtManager = Utils.getLocalBtManager(mContext);
         when(mLocalBtManager.getEventManager()).thenReturn(mEventManager);
         when(mLocalBtManager.getProfileManager()).thenReturn(mProfileManager);
+        when(mProfileManager.getLeAudioProfile()).thenReturn(mLeAudio);
         when(mProfileManager.getLeAudioBroadcastProfile()).thenReturn(mBroadcast);
         when(mProfileManager.getLeAudioBroadcastAssistantProfile()).thenReturn(mAssistant);
         when(mProfileManager.getVolumeControlProfile()).thenReturn(mVolumeControl);
+        when(mLeAudio.isProfileReady()).thenReturn(true);
         when(mBroadcast.isProfileReady()).thenReturn(true);
         when(mAssistant.isProfileReady()).thenReturn(true);
         when(mVolumeControl.isProfileReady()).thenReturn(true);
-        when(mBroadcast.isProfileReady()).thenReturn(true);
         mFeatureFactory = FakeFeatureFactory.setupForTest();
         mLifecycleOwner = () -> mLifecycle;
         mLifecycle = new Lifecycle(mLifecycleOwner);
@@ -305,15 +308,21 @@ public class AudioSharingNamePreferenceControllerTest {
 
     @Test
     public void idTextValid_emptyString() {
+        mController.displayPreference(mScreen);
+        ShadowLooper.idleMainLooper();
         boolean valid = mController.isTextValid("");
 
         assertThat(valid).isFalse();
+        verify(mPreference).showEditTextFormatAlert(true);
     }
 
     @Test
     public void idTextValid_validName() {
+        mController.displayPreference(mScreen);
+        ShadowLooper.idleMainLooper();
         boolean valid = mController.isTextValid("valid name");
 
         assertThat(valid).isTrue();
+        verify(mPreference).showEditTextFormatAlert(false);
     }
 }

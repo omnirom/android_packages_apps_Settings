@@ -22,6 +22,7 @@ import static android.provider.Settings.EXTRA_CONVERSATION_ID;
 
 import android.app.INotificationManager;
 import android.app.NotificationHistory.HistoricalNotification;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -53,16 +54,23 @@ public class NotificationHistoryAdapter extends
     private List<HistoricalNotification> mValues;
     private OnItemDeletedListener mListener;
     private UiEventLogger mUiEventLogger;
-    public NotificationHistoryAdapter(INotificationManager nm,
+    private ArrayList<Integer> mContentRestrictedUsers = new ArrayList<>();
+    Context mContext;
+
+    public NotificationHistoryAdapter(Context context,
+            INotificationManager nm,
             NotificationHistoryRecyclerView listView,
             OnItemDeletedListener listener,
-            UiEventLogger uiEventLogger) {
+            UiEventLogger uiEventLogger,
+            ArrayList<Integer> contentRestrictedUsers) {
+        mContext = context;
         mValues = new ArrayList<>();
         setHasStableIds(true);
         listView.setOnItemSwipeDeleteListener(this);
         mNm = nm;
         mListener = listener;
         mUiEventLogger = uiEventLogger;
+        mContentRestrictedUsers = contentRestrictedUsers;
     }
 
     @Override
@@ -81,8 +89,13 @@ public class NotificationHistoryAdapter extends
     public void onBindViewHolder(final @NonNull NotificationHistoryViewHolder holder,
             int position) {
         final HistoricalNotification hn = mValues.get(position);
-        holder.setTitle(hn.getTitle());
-        holder.setSummary(hn.getText());
+        if (mContentRestrictedUsers.contains(hn.getUserId())) {
+            holder.setSummary(mContext.getString(
+                    com.android.internal.R.string.notification_hidden_text));
+        } else {
+            holder.setTitle(hn.getTitle());
+            holder.setSummary(hn.getText());
+        }
         holder.setPostedTime(hn.getPostedTimeMs());
         final View.OnClickListener onClick = v -> {
             mUiEventLogger.logWithPosition(NotificationHistoryActivity.NotificationHistoryEvent

@@ -48,7 +48,6 @@ import com.android.settingslib.bluetooth.BluetoothUtils;
 import com.android.settingslib.bluetooth.LocalBluetoothLeBroadcast;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
-import com.android.settingslib.flags.Flags;
 
 import com.google.common.collect.ImmutableList;
 
@@ -70,7 +69,7 @@ public class AudioSharingReceiver extends BroadcastReceiver {
     private static final int AUDIO_SHARING_NOTIFICATION_ID =
             com.android.settingslib.R.drawable.ic_bt_le_audio_sharing;
     private static final int ADD_SOURCE_NOTIFICATION_ID = R.string.share_audio_notification_title;
-    private static final int NOTIF_AUTO_DISMISS_MILLIS = 300000; //5mins
+    private static final int NOTIF_AUTO_DISMISS_MILLIS = 300000; // 5mins
 
     @Override
     public void onReceive(@NonNull Context context, @NonNull Intent intent) {
@@ -100,11 +99,11 @@ public class AudioSharingReceiver extends BroadcastReceiver {
                     //       isLeAudioBroadcastAssistantSupported() always return FEATURE_SUPPORTED
                     //       or FEATURE_NOT_SUPPORTED when BT and BLE off
                     cancelSharingNotification(context, AUDIO_SHARING_NOTIFICATION_ID);
-                    metricsFeatureProvider.action(
-                            context, SettingsEnums.ACTION_CANCEL_AUDIO_SHARING_NOTIFICATION,
-                            LocalBluetoothLeBroadcast.ACTION_LE_AUDIO_SHARING_STATE_CHANGE);
                     cancelSharingNotification(context, ADD_SOURCE_NOTIFICATION_ID);
-                    // TODO: add metric
+                    metricsFeatureProvider.action(
+                            context,
+                            SettingsEnums.ACTION_CANCEL_AUDIO_SHARING_NOTIFICATION,
+                            LocalBluetoothLeBroadcast.ACTION_LE_AUDIO_SHARING_STATE_CHANGE);
                 } else {
                     Log.w(
                             TAG,
@@ -128,18 +127,18 @@ public class AudioSharingReceiver extends BroadcastReceiver {
                 //       or FEATURE_NOT_SUPPORTED when BT and BLE off
                 cancelSharingNotification(context, AUDIO_SHARING_NOTIFICATION_ID);
                 metricsFeatureProvider.action(
-                        context, SettingsEnums.ACTION_CANCEL_AUDIO_SHARING_NOTIFICATION,
+                        context,
+                        SettingsEnums.ACTION_CANCEL_AUDIO_SHARING_NOTIFICATION,
                         ACTION_LE_AUDIO_SHARING_STOP);
                 cancelSharingNotification(context, ADD_SOURCE_NOTIFICATION_ID);
                 break;
             case LocalBluetoothLeBroadcast.ACTION_LE_AUDIO_SHARING_DEVICE_CONNECTED:
-                if (!Flags.promoteAudioSharingForSecondAutoConnectedLeaDevice()
-                        || !BluetoothUtils.isAudioSharingUIAvailable(context)) {
+                if (!BluetoothUtils.isAudioSharingUIAvailable(context)) {
                     Log.d(TAG, "Skip ACTION_LE_AUDIO_SHARING_DEVICE_CONNECTED, flag/feature off");
                     return;
                 }
-                BluetoothDevice device = intent.getParcelableExtra(EXTRA_BLUETOOTH_DEVICE,
-                        BluetoothDevice.class);
+                BluetoothDevice device =
+                        intent.getParcelableExtra(EXTRA_BLUETOOTH_DEVICE, BluetoothDevice.class);
                 if (device == null) {
                     Log.d(TAG, "Skip ACTION_LE_AUDIO_SHARING_DEVICE_CONNECTED, null device");
                     return;
@@ -156,27 +155,43 @@ public class AudioSharingReceiver extends BroadcastReceiver {
                     LocalBluetoothManager manager = Utils.getLocalBtManager(context);
                     if (!validToAddSource(device, action, manager).isEmpty()) {
                         showAddSourceNotification(context, device);
+                        metricsFeatureProvider.action(
+                                context, SettingsEnums.ACTION_SHOW_ADD_SOURCE_NOTIFICATION);
                     }
                 }
                 break;
             case ACTION_LE_AUDIO_SHARING_ADD_SOURCE:
-                if (!Flags.promoteAudioSharingForSecondAutoConnectedLeaDevice()
-                        || !BluetoothUtils.isAudioSharingUIAvailable(context)) {
+                if (!BluetoothUtils.isAudioSharingUIAvailable(context)) {
                     Log.d(TAG, "Skip ACTION_LE_AUDIO_SHARING_ADD_SOURCE, flag/feature off");
                     cancelSharingNotification(context, ADD_SOURCE_NOTIFICATION_ID);
                     return;
                 }
-                BluetoothDevice sink = intent.getParcelableExtra(EXTRA_BLUETOOTH_DEVICE,
-                        BluetoothDevice.class);
+                BluetoothDevice sink =
+                        intent.getParcelableExtra(EXTRA_BLUETOOTH_DEVICE, BluetoothDevice.class);
                 LocalBluetoothManager manager = Utils.getLocalBtManager(context);
                 ImmutableList<BluetoothDevice> sinksToAdd = validToAddSource(sink, action, manager);
                 AudioSharingUtils.addSourceToTargetSinks(sinksToAdd, manager);
                 cancelSharingNotification(context, ADD_SOURCE_NOTIFICATION_ID);
+                if (!sinksToAdd.isEmpty()) {
+                    metricsFeatureProvider.action(
+                            SettingsEnums.ACTION_SHOW_ADD_SOURCE_NOTIFICATION,
+                            SettingsEnums.ACTION_AUDIO_SHARING_ADD_SOURCE,
+                            SettingsEnums.ACTION_SHOW_ADD_SOURCE_NOTIFICATION,
+                            AudioSharingUtils.buildAddSourceEventData(
+                                            SettingsEnums.ACTION_SHOW_ADD_SOURCE_NOTIFICATION,
+                                            /* userTriggered= */ false)
+                                    .toString(),
+                            /* changedPreferenceIntValue= */ 0);
+                }
                 break;
             case ACTION_LE_AUDIO_SHARING_CANCEL_NOTIF:
                 int notifId = intent.getIntExtra(EXTRA_NOTIF_ID, -1);
                 if (notifId != -1) {
                     cancelSharingNotification(context, notifId);
+                    if (notifId == ADD_SOURCE_NOTIFICATION_ID) {
+                        metricsFeatureProvider.action(
+                                context, SettingsEnums.ACTION_CANCEL_ADD_SOURCE_NOTIFICATION);
+                    }
                 }
                 break;
             default:
@@ -184,8 +199,10 @@ public class AudioSharingReceiver extends BroadcastReceiver {
         }
     }
 
-    private ImmutableList<BluetoothDevice> validToAddSource(@Nullable BluetoothDevice sink,
-            @NonNull String action, @Nullable LocalBluetoothManager btManager) {
+    private ImmutableList<BluetoothDevice> validToAddSource(
+            @Nullable BluetoothDevice sink,
+            @NonNull String action,
+            @Nullable LocalBluetoothManager btManager) {
         if (sink == null) {
             Log.d(TAG, "Skip " + action + ", null device");
             return ImmutableList.of();
@@ -197,17 +214,23 @@ public class AudioSharingReceiver extends BroadcastReceiver {
         }
         Map<Integer, List<BluetoothDevice>> groupedDevices =
                 AudioSharingUtils.fetchConnectedDevicesByGroupId(btManager);
-        int groupId = groupedDevices.entrySet().stream().filter(
-                entry -> entry.getValue().contains(sink)).findFirst().map(
-                Map.Entry::getKey).orElse(BluetoothCsipSetCoordinator.GROUP_ID_INVALID);
+        int groupId =
+                groupedDevices.entrySet().stream()
+                        .filter(entry -> entry.getValue().contains(sink))
+                        .findFirst()
+                        .map(Map.Entry::getKey)
+                        .orElse(BluetoothCsipSetCoordinator.GROUP_ID_INVALID);
         if (groupId == BluetoothCsipSetCoordinator.GROUP_ID_INVALID) {
             Log.d(TAG, "Skip " + action + ", no valid group id");
             return ImmutableList.of();
         }
-        List<BluetoothDevice> sinksToAdd = groupedDevices.getOrDefault(groupId,
-                ImmutableList.of()).stream().filter(
-                    d -> !BluetoothUtils.hasConnectedBroadcastSourceForBtDevice(d,
-                        btManager)).toList();
+        List<BluetoothDevice> sinksToAdd =
+                groupedDevices.getOrDefault(groupId, ImmutableList.of()).stream()
+                        .filter(
+                                d ->
+                                        !BluetoothUtils.hasConnectedBroadcastSourceForBtDevice(
+                                                d, btManager))
+                        .toList();
         if (sinksToAdd.isEmpty()) {
             Log.d(TAG, "Skip " + action + ", already has source");
             return ImmutableList.of();
@@ -247,15 +270,15 @@ public class AudioSharingReceiver extends BroadcastReceiver {
                         PendingIntent.FLAG_IMMUTABLE);
         NotificationCompat.Action stopAction =
                 new NotificationCompat.Action.Builder(
-                        0,
-                        context.getString(R.string.audio_sharing_stop_button_label),
-                        stopPendingIntent)
+                                0,
+                                context.getString(R.string.audio_sharing_stop_button_label),
+                                stopPendingIntent)
                         .build();
         NotificationCompat.Action settingsAction =
                 new NotificationCompat.Action.Builder(
-                        0,
-                        context.getString(R.string.audio_sharing_settings_button_label),
-                        settingsPendingIntent)
+                                0,
+                                context.getString(R.string.audio_sharing_settings_button_label),
+                                settingsPendingIntent)
                         .build();
         final Bundle extras = new Bundle();
         extras.putString(
@@ -282,13 +305,14 @@ public class AudioSharingReceiver extends BroadcastReceiver {
         nm.notify(AUDIO_SHARING_NOTIFICATION_ID, builder.build());
     }
 
-    private void showAddSourceNotification(@NonNull Context context,
-            @NonNull BluetoothDevice device) {
+    private void showAddSourceNotification(
+            @NonNull Context context, @NonNull BluetoothDevice device) {
         NotificationManager nm = context.getSystemService(NotificationManager.class);
         if (nm == null) return;
         createNotificationChannelIfNeeded(nm, context);
         Intent addSourceIntent =
-                new Intent(ACTION_LE_AUDIO_SHARING_ADD_SOURCE).setPackage(context.getPackageName())
+                new Intent(ACTION_LE_AUDIO_SHARING_ADD_SOURCE)
+                        .setPackage(context.getPackageName())
                         .putExtra(EXTRA_BLUETOOTH_DEVICE, device);
         // Use PendingIntent.FLAG_UPDATE_CURRENT here because intent extra (device) could be updated
         PendingIntent addSourcePendingIntent =
@@ -296,28 +320,25 @@ public class AudioSharingReceiver extends BroadcastReceiver {
                         context,
                         R.string.audio_sharing_share_button_label,
                         addSourceIntent,
-                        PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_UPDATE_CURRENT
+                        PendingIntent.FLAG_ONE_SHOT
+                                | PendingIntent.FLAG_UPDATE_CURRENT
                                 | PendingIntent.FLAG_IMMUTABLE);
         NotificationCompat.Action addSourceAction =
                 new NotificationCompat.Action.Builder(
-                        0,
-                        context.getString(R.string.audio_sharing_share_button_label),
-                        addSourcePendingIntent)
+                                0,
+                                context.getString(R.string.audio_sharing_share_button_label),
+                                addSourcePendingIntent)
                         .build();
-        Intent cancelIntent = new Intent(ACTION_LE_AUDIO_SHARING_CANCEL_NOTIF).setPackage(
-                        context.getPackageName())
-                .putExtra(EXTRA_NOTIF_ID, ADD_SOURCE_NOTIFICATION_ID);
+        Intent cancelIntent =
+                new Intent(ACTION_LE_AUDIO_SHARING_CANCEL_NOTIF)
+                        .setPackage(context.getPackageName())
+                        .putExtra(EXTRA_NOTIF_ID, ADD_SOURCE_NOTIFICATION_ID);
         PendingIntent cancelPendingIntent =
                 PendingIntent.getBroadcast(
-                        context,
-                        R.string.cancel,
-                        cancelIntent,
-                        PendingIntent.FLAG_IMMUTABLE);
+                        context, R.string.cancel, cancelIntent, PendingIntent.FLAG_IMMUTABLE);
         NotificationCompat.Action cancelAction =
                 new NotificationCompat.Action.Builder(
-                        0,
-                        context.getString(R.string.cancel),
-                        cancelPendingIntent)
+                                0, context.getString(R.string.cancel), cancelPendingIntent)
                         .build();
         final Bundle extras = new Bundle();
         extras.putString(
@@ -331,8 +352,9 @@ public class AudioSharingReceiver extends BroadcastReceiver {
                 new NotificationCompat.Builder(context, CHANNEL_ID)
                         .setSmallIcon(com.android.settingslib.R.drawable.ic_bt_le_audio_sharing)
                         .setLocalOnly(true)
-                        .setContentTitle(context.getString(R.string.share_audio_notification_title,
-                                deviceName))
+                        .setContentTitle(
+                                context.getString(
+                                        R.string.share_audio_notification_title, deviceName))
                         .setContentText(
                                 context.getString(R.string.audio_sharing_notification_content))
                         .setOngoing(true)
@@ -355,8 +377,8 @@ public class AudioSharingReceiver extends BroadcastReceiver {
         }
     }
 
-    private void createNotificationChannelIfNeeded(@NonNull NotificationManager nm,
-            @NonNull Context context) {
+    private void createNotificationChannelIfNeeded(
+            @NonNull NotificationManager nm, @NonNull Context context) {
         if (nm.getNotificationChannel(CHANNEL_ID) == null) {
             Log.d(TAG, "Create bluetooth notification channel");
             NotificationChannel notificationChannel =
@@ -372,13 +394,15 @@ public class AudioSharingReceiver extends BroadcastReceiver {
         try {
             ActivityManager activityManager = context.getSystemService(ActivityManager.class);
             String packageName = context.getPackageName();
-            if (context.getPackageManager().checkPermission(Manifest.permission.PACKAGE_USAGE_STATS,
-                    packageName) != PackageManager.PERMISSION_GRANTED) {
+            if (context.getPackageManager()
+                            .checkPermission(Manifest.permission.PACKAGE_USAGE_STATS, packageName)
+                    != PackageManager.PERMISSION_GRANTED) {
                 Log.d(TAG, "check isAppInForeground, returns false due to no permission");
                 return false;
             }
-            if (packageName != null && activityManager.getPackageImportance(packageName)
-                    == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+            if (packageName != null
+                    && activityManager.getPackageImportance(packageName)
+                            == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
                 Log.d(TAG, "check isAppInForeground, returns true");
                 return true;
             }

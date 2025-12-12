@@ -17,11 +17,10 @@ package com.android.settings.biometrics.fingerprint.feature
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.util.AttributeSet
-import android.view.View
-import androidx.preference.PreferenceViewHolder
+import androidx.fragment.app.DialogFragment
 import com.android.settingslib.PrimarySwitchPreference
-import com.android.settingslib.core.instrumentation.SettingsJankMonitor.detectToggleJank
 
 /**
  * Supports launching a new activity through Intent for PrimarySwitchPreference
@@ -45,4 +44,17 @@ abstract class PrimarySwitchIntentPreference : PrimarySwitchPreference {
 
     open fun forceUpdate() {}
     abstract fun getLaunchedIntent(token: ByteArray): Intent
+
+    open fun getConfirmationDialogBeforeStateChange(newValue: Any?): ConfirmationDialogDetails? {
+        return null
+    }
+
+    open val confirmDialogFragmentResultKey: String? = null
+
+    open fun processConfirmationDialogResult(resultBundle: Bundle) {}
+
+    data class ConfirmationDialogDetails(
+        val fragment: DialogFragment,
+        val tag: String,
+    )
 }

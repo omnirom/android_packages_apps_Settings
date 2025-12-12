@@ -17,7 +17,7 @@
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:androidprv="http://schemas.android.com/apk/prv/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/input_keys_dialog_scroll_view"
     android:gravity="center_horizontal"
     android:layout_width="match_parent"
@@ -122,39 +122,28 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginTop="8dp"
                         android:visibility="gone"/>
-                    <LinearLayout
-                        android:id="@+id/input_setting_keys_custom_seekbar_layout"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingEnd="36dp">
-                        <ImageView
-                            android:layout_marginTop="8dp"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:tint="@androidprv:color/materialColorPrimary"
-                            android:importantForAccessibility="no"
-                            android:src="@drawable/ic_remove_24dp" />
-                        <SeekBar
-                            android:id="@+id/input_setting_keys_value_custom_slider"
-                            style="@android:style/Widget.Material.SeekBar"
-                            android:min="1"
-                            android:max="50"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginTop="8dp" />
-                        <ImageView
-                            android:layout_marginTop="8dp"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:tint="@androidprv:color/materialColorPrimary"
-                            android:importantForAccessibility="no"
-                            android:src="@drawable/ic_add_24dp" />
-                    </LinearLayout>
                 </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/input_setting_keys_custom_seekbar_layout"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_vertical"
+                android:paddingEnd="36dp">
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/input_setting_keys_value_custom_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:valueFrom="0.1"
+                    android:valueTo="5"
+                    android:stepSize="0.1"
+                    android:layout_gravity="center_vertical"
+                    android:theme="@style/Theme.Material3.DynamicColors.DayNight"
+                    app:tickVisible="false"
+                    app:labelBehavior="gone"
+                    />
             </LinearLayout>
         </RadioGroup>
 

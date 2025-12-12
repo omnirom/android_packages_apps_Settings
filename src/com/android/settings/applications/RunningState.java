@@ -178,9 +178,9 @@ public class RunningState {
                         return lhsBg ? 1 : -1;
                     }
                     final boolean lhsA = (lhsInfo.flags
-                            & ActivityManager.RunningAppProcessInfo.FLAG_HAS_ACTIVITIES) != 0;
+                            & android.app.RunningAppProcessInfo.FLAG_HAS_ACTIVITIES) != 0;
                     final boolean rhsA = (rhsInfo.flags
-                            & ActivityManager.RunningAppProcessInfo.FLAG_HAS_ACTIVITIES) != 0;
+                            & android.app.RunningAppProcessInfo.FLAG_HAS_ACTIVITIES) != 0;
                     if (DEBUG_COMPARE) Log.i(TAG, "      Act " + lhsA + " with " + rhsA);
                     if (lhsA != rhsA) {
                         return lhsA ? -1 : 1;
@@ -848,10 +848,10 @@ public class RunningState {
     }
 
     private boolean isInterestingProcess(ActivityManager.RunningAppProcessInfo pi) {
-        if ((pi.flags & ActivityManager.RunningAppProcessInfo.FLAG_CANT_SAVE_STATE) != 0) {
+        if ((pi.flags & android.app.RunningAppProcessInfo.FLAG_CANT_SAVE_STATE) != 0) {
             return true;
         }
-        if ((pi.flags & ActivityManager.RunningAppProcessInfo.FLAG_PERSISTENT) == 0
+        if ((pi.flags & android.app.RunningAppProcessInfo.FLAG_PERSISTENT) == 0
                 && pi.importance >= ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
                 && pi.importance < ActivityManager.RunningAppProcessInfo.IMPORTANCE_CANT_SAVE_STATE
                 && pi.importanceReasonCode

@@ -22,12 +22,9 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.robolectric.Shadows.shadowOf;
 
-import android.app.Flags;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.net.Uri;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.Settings;
 
@@ -63,7 +60,6 @@ public class ZenSettingsObserverTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
     public void register_withFlagEnabled_registersAndCallsBack() {
         AtomicInteger someValue = new AtomicInteger();
         mObserver.setOnChangeListener(someValue::incrementAndGet);
@@ -76,15 +72,6 @@ public class ZenSettingsObserverTest {
         ShadowLooper.idleMainLooper();
         assertThat(someValue.get()).isEqualTo(1);
 
-        mObserver.unregister();
-        assertThat(getSettingsContentObservers()).isEmpty();
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_MODES_UI)
-    public void register_withFlagDisabled_doesNotRegister() {
-        mObserver.register();
-        assertThat(getSettingsContentObservers()).isEmpty();
         mObserver.unregister();
         assertThat(getSettingsContentObservers()).isEmpty();
     }

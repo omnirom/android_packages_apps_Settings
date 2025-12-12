@@ -17,76 +17,49 @@
 package com.android.settings.accessibility;
 
 import static com.android.internal.accessibility.AccessibilityShortcutController.COLOR_INVERSION_COMPONENT_NAME;
-import static com.android.internal.accessibility.AccessibilityShortcutController.COLOR_INVERSION_TILE_COMPONENT_NAME;
-import static com.android.settings.accessibility.AccessibilityStatsLogUtils.logAccessibilityServiceEnabled;
-import static com.android.settings.accessibility.AccessibilityUtil.State.OFF;
-import static com.android.settings.accessibility.AccessibilityUtil.State.ON;
 
 import android.app.settings.SettingsEnums;
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.settings.R;
+import com.android.settings.accessibility.colorinversion.ui.ColorInversionScreen;
 import com.android.settings.search.BaseSearchIndexProvider;
-import com.android.settings.widget.SettingsMainSwitchPreference;
 import com.android.settingslib.search.SearchIndexable;
-import com.android.settingslib.search.SearchIndexableRaw;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Settings page for color inversion.
  */
 @SearchIndexable(forTarget = SearchIndexable.ALL & ~SearchIndexable.ARC)
-public class ToggleColorInversionPreferenceFragment extends ToggleFeaturePreferenceFragment {
-
+public class ToggleColorInversionPreferenceFragment extends BaseSupportFragment {
     private static final String TAG = "ToggleColorInversionPreferenceFragment";
-    private static final String ENABLED = Settings.Secure.ACCESSIBILITY_DISPLAY_INVERSION_ENABLED;
-
-    @VisibleForTesting
-    static final String KEY_SHORTCUT_PREFERENCE = "color_inversion_shortcut_key";
-    @VisibleForTesting
-    static final String KEY_SWITCH_PREFERENCE = "color_inversion_switch_preference_key";
 
     @Override
-    protected void registerKeysToObserverCallback(
-            AccessibilitySettingsContentObserver contentObserver) {
-        super.registerKeysToObserverCallback(contentObserver);
-
-        final List<String> enableServiceFeatureKeys = new ArrayList<>(/* initialCapacity= */ 1);
-        enableServiceFeatureKeys.add(ENABLED);
-        contentObserver.registerKeysToObserverCallback(enableServiceFeatureKeys,
-                key -> updateSwitchBarToggleSwitch());
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (!Flags.catalystColorInversion()) {
+            ToggleShortcutPreferenceController shortcutPreferenceController = use(
+                    ToggleShortcutPreferenceController.class);
+            if (shortcutPreferenceController != null) {
+                shortcutPreferenceController.initialize(
+                        getFeatureComponentName(),
+                        getChildFragmentManager(),
+                        getFeatureName(),
+                        getMetricsCategory()
+                );
+            }
+            use(FeedbackButtonPreferenceController.class).initialize(
+                    new FeedbackManager(context, getMetricsCategory()));
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        mComponentName = COLOR_INVERSION_COMPONENT_NAME;
-        mFeatureName = getText(R.string.accessibility_display_inversion_preference_title);
-        mHtmlDescription = getText(R.string.accessibility_display_inversion_preference_subtitle);
-        mTopIntroTitle = getText(R.string.accessibility_display_inversion_preference_intro_text);
-        mImageUri = new Uri.Builder().scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
-                .authority(getPrefContext().getPackageName())
-                .appendPath(String.valueOf(R.raw.a11y_color_inversion_banner))
-                .build();
-        final View view = super.onCreateView(inflater, container, savedInstanceState);
-        updateFooterPreference();
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final View rootView = getActivity().getWindow().peekDecorView();
         if (rootView != null) {
@@ -101,16 +74,6 @@ public class ToggleColorInversionPreferenceFragment extends ToggleFeaturePrefere
     }
 
     @Override
-    protected void onPreferenceToggled(String preferenceKey, boolean enabled) {
-        final boolean isEnabled = Settings.Secure.getInt(getContentResolver(), ENABLED, OFF) == ON;
-        if (enabled == isEnabled) {
-            return;
-        }
-        logAccessibilityServiceEnabled(mComponentName, enabled);
-        Settings.Secure.putInt(getContentResolver(), ENABLED, enabled ? ON : OFF);
-    }
-
-    @Override
     protected int getPreferenceScreenResId() {
         return R.xml.accessibility_color_inversion_settings;
     }
@@ -121,94 +84,29 @@ public class ToggleColorInversionPreferenceFragment extends ToggleFeaturePrefere
     }
 
     @Override
-    protected void onRemoveSwitchPreferenceToggleSwitch() {
-        super.onRemoveSwitchPreferenceToggleSwitch();
-        mToggleServiceSwitchPreference.setOnPreferenceClickListener(null);
-    }
-
-    @Override
-    protected void updateToggleServiceTitle(SettingsMainSwitchPreference switchPreference) {
-        switchPreference.setTitle(R.string.accessibility_display_inversion_switch_title);
-    }
-
-    @Override
-    protected String getUseServicePreferenceKey() {
-        return KEY_SWITCH_PREFERENCE;
-    }
-
-    @Override
-    protected CharSequence getShortcutTitle() {
-        return getText(R.string.accessibility_display_inversion_shortcut_title);
-    }
-
-    private void updateFooterPreference() {
-        final String title = getPrefContext().getString(
-                R.string.accessibility_color_inversion_about_title);
-        final String learnMoreText = getPrefContext().getString(
-                R.string.accessibility_color_inversion_footer_learn_more_content_description);
-        mFooterPreferenceController.setIntroductionTitle(title);
-        mFooterPreferenceController.setupHelpLink(getHelpResource(), learnMoreText);
-        mFooterPreferenceController.displayPreference(getPreferenceScreen());
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateSwitchBarToggleSwitch();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
     public int getHelpResource() {
         return R.string.help_url_color_inversion;
     }
 
-    @Override
-    int getUserShortcutTypes() {
-        return AccessibilityUtil.getUserShortcutTypesFromSettings(getPrefContext(),
-                mComponentName);
-    }
-
-    @Override
-    ComponentName getTileComponentName() {
-        return COLOR_INVERSION_TILE_COMPONENT_NAME;
-    }
-
-    @Override
-    protected void updateSwitchBarToggleSwitch() {
-        final boolean checked = Settings.Secure.getInt(getContentResolver(), ENABLED, OFF) == ON;
-        if (mToggleServiceSwitchPreference.isChecked() == checked) {
-            return;
-        }
-        mToggleServiceSwitchPreference.setChecked(checked);
-    }
-
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
-            new BaseSearchIndexProvider(R.xml.accessibility_color_inversion_settings) {
-                @Override
-                public List<SearchIndexableRaw> getRawDataToIndex(Context context,
-                        boolean enabled) {
-                    final List<SearchIndexableRaw> rawData =
-                            super.getRawDataToIndex(context, enabled);
+            new BaseSearchIndexProvider(
+                    Flags.catalystColorInversion()
+                            && com.android.settings.flags.Flags.catalystSettingsSearch() ? 0 :
+                            R.xml.accessibility_color_inversion_settings);
 
-                    SearchIndexableRaw raw = new SearchIndexableRaw(context);
-                    raw.key = KEY_SHORTCUT_PREFERENCE;
-                    raw.title = context.getString(
-                            R.string.accessibility_display_inversion_shortcut_title);
-                    rawData.add(raw);
+    @NonNull
+    private CharSequence getFeatureName() {
+        return getString(
+                R.string.accessibility_display_inversion_preference_title);
+    }
 
-                    if (Flags.fixA11ySettingsSearch()) {
-                        SearchIndexableRaw mainPreferenceRaw = new SearchIndexableRaw(context);
-                        mainPreferenceRaw.key = KEY_SWITCH_PREFERENCE;
-                        mainPreferenceRaw.title = context.getString(
-                                R.string.accessibility_display_inversion_switch_title);
-                        rawData.add(mainPreferenceRaw);
-                    }
-                    return rawData;
-                }
-            };
+    @NonNull
+    private ComponentName getFeatureComponentName() {
+        return COLOR_INVERSION_COMPONENT_NAME;
+    }
+
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return ColorInversionScreen.KEY;
+    }
 }

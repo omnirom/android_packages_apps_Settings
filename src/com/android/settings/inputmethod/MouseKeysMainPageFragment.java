@@ -16,14 +16,23 @@
 
 package com.android.settings.inputmethod;
 
+import static com.android.internal.accessibility.AccessibilityShortcutController.MOUSE_KEYS_COMPONENT_NAME;
 import static com.android.settings.inputmethod.PhysicalKeyboardFragment.getHardKeyboards;
 
 import android.app.settings.SettingsEnums;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.database.ContentObserver;
 import android.hardware.input.InputManager;
+import android.hardware.input.InputSettings;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.Settings;
 import android.view.InputDevice;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,9 +42,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.internal.util.Preconditions;
 import com.android.settings.R;
+import com.android.settings.accessibility.BaseSupportFragment;
+import com.android.settings.accessibility.ToggleShortcutPreferenceController;
 import com.android.settings.activityembedding.ActivityEmbeddingUtils;
-import com.android.settings.dashboard.DashboardFragment;
-import com.android.settings.keyboard.Flags;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.SearchIndexable;
 import com.android.settingslib.utils.ThreadUtils;
@@ -44,7 +53,7 @@ import com.android.settingslib.widget.LayoutPreference;
 import java.util.List;
 
 @SearchIndexable
-public class MouseKeysMainPageFragment extends DashboardFragment
+public class MouseKeysMainPageFragment extends BaseSupportFragment
         implements InputManager.InputDeviceListener {
 
     private static final String TAG = "MouseKeysMainPageFragment";
@@ -55,9 +64,38 @@ public class MouseKeysMainPageFragment extends DashboardFragment
     @Nullable
     private InputDevice mCurrentInputDevice;
 
+    static final Uri ACCESSIBILITY_MOUSE_KEYS_USE_PRIMARY_KEYS_URI =
+            Settings.Secure.getUriFor(Settings.Secure.ACCESSIBILITY_MOUSE_KEYS_USE_PRIMARY_KEYS);
+
+    final ContentObserver mSettingsObserver =
+            new ContentObserver(new Handler(Looper.getMainLooper())) {
+                @Override
+                public void onChange(boolean selfChange, @Nullable Uri uri) {
+                    if (mMouseKeyImagesPreference == null || uri == null) {
+                        return;
+                    }
+                    onUsePrimaryKeysUpdated();
+                }
+            };
+
     @Override
-    public void onCreate(@NonNull Bundle bundle) {
-        super.onCreate(bundle);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        ToggleShortcutPreferenceController shortcutController =
+                use(KeyboardAccessibilityMouseKeysShortcutController.class);
+        if (shortcutController != null) {
+            shortcutController.initialize(
+                    getFeatureComponentName(),
+                    getChildFragmentManager(),
+                    getFeatureName(),
+                    getMetricsCategory()
+            );
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mCurrentInputDevice = getInputDevice();
         final PreferenceScreen screen = getPreferenceScreen();
         mMouseKeyImagesPreference = screen.findPreference(KEY_MOUSE_KEY_LIST);
@@ -72,6 +110,25 @@ public class MouseKeysMainPageFragment extends DashboardFragment
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (com.android.server.accessibility.Flags.enableMouseKeyEnhancement()) {
+            getContentResolver().registerContentObserver(
+                    ACCESSIBILITY_MOUSE_KEYS_USE_PRIMARY_KEYS_URI,
+                    /* notifyForDescendants= */ false,
+                    mSettingsObserver);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (com.android.server.accessibility.Flags.enableMouseKeyEnhancement()) {
+            getContentResolver().unregisterContentObserver(mSettingsObserver);
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         finishEarlyIfNeeded();
@@ -82,6 +139,16 @@ public class MouseKeysMainPageFragment extends DashboardFragment
     public void onPause() {
         super.onPause();
         mInputManager.unregisterInputDeviceListener(this);
+    }
+
+    @NonNull
+    private CharSequence getFeatureName() {
+        return getContext().getString(R.string.mouse_keys);
+    }
+
+    @NonNull
+    private ComponentName getFeatureComponentName() {
+        return MOUSE_KEYS_COMPONENT_NAME;
     }
 
     @Override
@@ -125,6 +192,21 @@ public class MouseKeysMainPageFragment extends DashboardFragment
         });
     }
 
+    private void onUsePrimaryKeysUpdated() {
+        updatePrimaryKeysImagesVisibility();
+        use(MouseKeysPrimaryKeysController.class).setChecked(
+                InputSettings.isPrimaryKeysForMouseKeysEnabled(getContext()));
+    }
+
+    private void updatePrimaryKeysImagesVisibility() {
+        boolean usePrimaryKeys = InputSettings.isPrimaryKeysForMouseKeysEnabled(getContext());
+        mMouseKeyImagesPreference.findViewById(R.id.mouse_keys_image_recycler_list)
+                .setVisibility(usePrimaryKeys ? View.VISIBLE : View.GONE);
+        mMouseKeyImagesPreference
+                .findViewById(R.id.title_mouse_keys_image_recycler_list)
+                .setVisibility(usePrimaryKeys ? View.VISIBLE : View.GONE);
+    }
+
     private void configureImagesPreference() {
         final RecyclerView recyclerView = mMouseKeyImagesPreference.findViewById(
                 R.id.mouse_keys_image_recycler_list);
@@ -134,6 +216,29 @@ public class MouseKeysMainPageFragment extends DashboardFragment
         int column = isPortrait && !isTwoPaneState ? 1 : 2;
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), column));
         recyclerView.setAdapter(new MouseKeysImageListAdapter(getActivity(), mCurrentInputDevice));
+
+        if (com.android.server.accessibility.Flags.enableMouseKeyEnhancement()) {
+            // Update paddings to match the latest UI.
+            recyclerView.setPadding(0, 0, 0, 0);
+            final RecyclerView numKeyboardRecyclerView = mMouseKeyImagesPreference
+                    .findViewById(R.id.mouse_keys_numpad_image_recycler_list);
+            numKeyboardRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), column));
+            numKeyboardRecyclerView.setAdapter(
+                    new MouseKeysNumKeyboardImageListAdapter(getActivity(), mCurrentInputDevice));
+            final View infoIcon = mMouseKeyImagesPreference.findViewById(
+                    R.id.mouse_keys_info_icon);
+            infoIcon.setVisibility(View.VISIBLE);
+
+            mMouseKeyImagesPreference.findViewById(R.id.title_mouse_keys_image_recycler_list)
+                    .setVisibility(View.VISIBLE);
+            mMouseKeyImagesPreference
+                    .findViewById(R.id.title_mouse_keys_numpad_image_recycler_list)
+                    .setVisibility(View.VISIBLE);
+            mMouseKeyImagesPreference
+                    .findViewById(R.id.summary_mouse_keys_numpad_image_recycler_list)
+                    .setVisibility(View.VISIBLE);
+            updatePrimaryKeysImagesVisibility();
+        }
     }
 
     /**
@@ -163,8 +268,7 @@ public class MouseKeysMainPageFragment extends DashboardFragment
             new BaseSearchIndexProvider(R.xml.mouse_keys_main_page) {
                 @Override
                 protected boolean isPageSearchEnabled(Context context) {
-                    return Flags.keyboardAndTouchpadA11yNewPageEnabled()
-                            && !getHardKeyboards(context).isEmpty();
+                    return !getHardKeyboards(context).isEmpty();
                 }
             };
 }

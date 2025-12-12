@@ -19,6 +19,7 @@ package com.android.settings.biometrics.fingerprint;
 import static android.app.admin.DevicePolicyResources.Strings.Settings.FINGERPRINT_UNLOCK_DISABLED;
 
 import android.app.admin.DevicePolicyManager;
+import android.app.admin.PolicyEnforcementInfo;
 import android.app.settings.SettingsEnums;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -27,6 +28,7 @@ import android.hardware.fingerprint.FingerprintManager;
 import android.hardware.fingerprint.FingerprintSensorPropertiesInternal;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -45,8 +47,6 @@ import com.android.settings.biometrics.BiometricEnrollIntroduction;
 import com.android.settings.biometrics.BiometricUtils;
 import com.android.settings.biometrics.GatekeeperPasswordProvider;
 import com.android.settings.biometrics.MultiBiometricEnrollHelper;
-import com.android.settings.flags.Flags;
-import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.password.ChooseLockSettingsHelper;
 import com.android.settingslib.HelpUtils;
 import com.android.settingslib.RestrictedLockUtilsInternal;
@@ -68,8 +68,6 @@ public class FingerprintEnrollIntroduction extends BiometricEnrollIntroduction {
 
     private DevicePolicyManager mDevicePolicyManager;
     private boolean mCanAssumeUdfps;
-    @Nullable
-    protected UdfpsEnrollCalibrator mCalibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +86,6 @@ public class FingerprintEnrollIntroduction extends BiometricEnrollIntroduction {
 
         mDevicePolicyManager = getSystemService(DevicePolicyManager.class);
 
-        if (Flags.udfpsEnrollCalibration()) {
-            mCalibrator = FeatureFactory.getFeatureFactory().getFingerprintFeatureProvider()
-                    .getUdfpsEnrollCalibrator(getApplicationContext(), savedInstanceState, null);
-        }
-
         final ImageView iconFingerprint = findViewById(R.id.icon_fingerprint);
         final ImageView iconDeviceLocked = findViewById(R.id.icon_device_locked);
         final ImageView iconTrashCan = findViewById(R.id.icon_trash_can);
@@ -105,6 +98,10 @@ public class FingerprintEnrollIntroduction extends BiometricEnrollIntroduction {
         iconInfo.getDrawable().setColorFilter(getIconColorFilter());
         iconShield.getDrawable().setColorFilter(getIconColorFilter());
         iconLink.getDrawable().setColorFilter(getIconColorFilter());
+        if (!WizardManagerHelper.isDeviceProvisioned(getApplicationContext()) ||
+            TextUtils.isEmpty(getString(getFooterLearnMore()))) {
+            iconLink.setVisibility(View.GONE);
+        }
 
         final TextView footerMessage2 = findViewById(R.id.footer_message_2);
         final TextView footerMessage3 = findViewById(R.id.footer_message_3);
@@ -160,16 +157,6 @@ public class FingerprintEnrollIntroduction extends BiometricEnrollIntroduction {
                 provider.removeGatekeeperPasswordHandle(intent, true);
                 getNextButton().setEnabled(true);
             }));
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (Flags.udfpsEnrollCalibration()) {
-            if (mCalibrator != null) {
-                mCalibrator.onSaveInstanceState(outState);
-            }
         }
     }
 
@@ -281,6 +268,13 @@ public class FingerprintEnrollIntroduction extends BiometricEnrollIntroduction {
 
     @Override
     protected boolean isDisabledByAdmin() {
+        if (android.app.admin.flags.Flags.policyTransparencyRefactorEnabled()
+                && android.app.admin.flags.Flags.setKeyguardDisabledFeaturesCoexistence()) {
+            final PolicyEnforcementInfo info =
+                    RestrictedLockUtilsInternal.getEnforcingAdminsForKeyguardFeatures(this,
+                            DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT, mUserId);
+            return info != null && info.getMostImportantEnforcingAdmin() != null;
+        }
         return RestrictedLockUtilsInternal.checkIfKeyguardFeaturesDisabled(
                 this, DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT, mUserId) != null;
     }
@@ -392,11 +386,6 @@ public class FingerprintEnrollIntroduction extends BiometricEnrollIntroduction {
         if (BiometricUtils.containsGatekeeperPasswordHandle(getIntent())) {
             intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_GK_PW_HANDLE,
                     BiometricUtils.getGatekeeperPasswordHandle(getIntent()));
-        }
-        if (Flags.udfpsEnrollCalibration()) {
-            if (mCalibrator != null) {
-                intent.putExtras(mCalibrator.getExtrasForNextIntent());
-            }
         }
         intent.putExtra(BiometricUtils.EXTRA_ENROLL_REASON,
                 getIntent().getIntExtra(BiometricUtils.EXTRA_ENROLL_REASON, -1));

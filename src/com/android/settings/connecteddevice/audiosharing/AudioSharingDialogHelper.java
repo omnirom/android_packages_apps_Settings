@@ -16,9 +16,7 @@
 
 package com.android.settings.connecteddevice.audiosharing;
 
-import android.graphics.Typeface;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,6 +27,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.android.settings.R;
+
 public class AudioSharingDialogHelper {
     private static final String TAG = "AudioSharingDialogHelper";
 
@@ -36,11 +36,9 @@ public class AudioSharingDialogHelper {
     public static void updateMessageStyle(@NonNull AlertDialog dialog) {
         TextView messageView = dialog.findViewById(android.R.id.message);
         if (messageView != null) {
-            Typeface typeface = Typeface.create(Typeface.DEFAULT_FAMILY, Typeface.NORMAL);
-            messageView.setTypeface(typeface);
+            messageView.setTextAppearance(R.style.DeviceAudioSharingText);
             messageView.setTextDirection(View.TEXT_DIRECTION_LOCALE);
             messageView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            messageView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
         } else {
             Log.w(TAG, "Fail to update dialog: message view is null");
         }

@@ -200,4 +200,35 @@ public class CarrierWifiTogglePreferenceControllerTest {
 
         assertThat(mNetworkPreference.isVisible()).isEqualTo(false);
     }
+
+    @Test
+    public void displayPreference_isAirplaneModeOn_setEnableFalse() {
+        doReturn(true).when(mWifiPickerTrackerHelper).isCarrierNetworkActive();
+        doReturn(SSID).when(mWifiPickerTrackerHelper).getCarrierNetworkSsid();
+
+        mController.notifyAirplaneModeChanged(true);
+        mController.displayPreference(mScreen);
+        mController.updateState(mTogglePreference);
+
+        assertThat(mController.mCarrierNetworkPreference).isEqualTo(mNetworkPreference);
+        assertThat(mNetworkPreference.isVisible()).isTrue();
+        assertThat(mNetworkPreference.isEnabled()).isFalse();
+        assertThat(mTogglePreference.isEnabled()).isFalse();
+    }
+
+    @Test
+    public void displayPreference_isAirplaneModeOff_setEnableTrue() {
+        doReturn(true).when(mWifiPickerTrackerHelper).isCarrierNetworkActive();
+        doReturn(SSID).when(mWifiPickerTrackerHelper).getCarrierNetworkSsid();
+
+        mController.notifyAirplaneModeChanged(false);
+        mController.displayPreference(mScreen);
+        mController.updateState(mTogglePreference);
+
+        assertThat(mController.mCarrierNetworkPreference).isEqualTo(mNetworkPreference);
+        assertThat(mNetworkPreference.isVisible()).isTrue();
+        assertThat(mNetworkPreference.isEnabled()).isTrue();
+        assertThat(mTogglePreference.isEnabled()).isTrue();
+
+    }
 }

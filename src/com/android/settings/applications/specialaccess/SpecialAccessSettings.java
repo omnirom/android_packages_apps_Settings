@@ -20,13 +20,18 @@ import static android.app.admin.DevicePolicyResources.Strings.Settings.CONNECTED
 import static android.app.admin.DevicePolicyResources.Strings.Settings.MANAGE_DEVICE_ADMIN_APPS;
 
 import android.app.settings.SettingsEnums;
+import android.content.Context;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.SearchIndexable;
 
+// LINT.IfChange
 @SearchIndexable
 public class SpecialAccessSettings extends DashboardFragment {
 
@@ -56,6 +61,12 @@ public class SpecialAccessSettings extends DashboardFragment {
         return SettingsEnums.SPECIAL_ACCESS;
     }
 
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return SpecialAccessSettingsScreen.KEY;
+    }
+
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(R.xml.special_access);
 }
+// LINT.ThenChange(SettingsAccessSettingsScreen.kt)

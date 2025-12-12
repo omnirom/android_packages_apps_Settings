@@ -43,10 +43,10 @@ import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
 import androidx.test.core.app.ApplicationProvider;
 
-import com.android.internal.R;
 import com.android.settings.development.DevelopmentSettingsDashboardFragment;
 import com.android.settings.development.RebootConfirmationDialogFragment;
 import com.android.window.flags.Flags;
+import com.android.wm.shell.shared.desktopmode.FakeDesktopState;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -57,7 +57,6 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowSystemProperties;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {
@@ -84,10 +83,13 @@ public class DesktopModePreferenceControllerTest {
     private Resources mResources;
     private Context mContext;
     private DesktopModePreferenceController mController;
+    private FakeDesktopState mDesktopState;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+
+        mDesktopState = new FakeDesktopState();
 
         FragmentActivity activity = spy(Robolectric.buildActivity(
                 FragmentActivity.class).create().get());
@@ -100,45 +102,39 @@ public class DesktopModePreferenceControllerTest {
         mResources = spy(mContext.getResources());
         when(mContext.getResources()).thenReturn(mResources);
 
-        mController = new DesktopModePreferenceController(mContext, mFragment);
+        mController = new DesktopModePreferenceController(mContext, mFragment, mDesktopState);
 
         when(mScreen.findPreference(mController.getPreferenceKey())).thenReturn(mPreference);
         mController.displayPreference(mScreen);
 
         // Set desktop mode available
-        when(mResources.getBoolean(R.bool.config_isDesktopModeSupported))
-                .thenReturn(true);
-        when(mResources
-                .getBoolean(com.android.internal.R.bool.config_canInternalDisplayHostDesktops))
-                .thenReturn(true);
-        ShadowSystemProperties.override("persist.wm.debug.desktop_mode_enforce_device_restrictions",
-                "false");
+        mDesktopState.setCanEnterDesktopMode(true);
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_SHOW_DESKTOP_EXPERIENCE_DEV_OPTION)
     public void isAvailable_desktopModeDevOptionNotSupported_returnsFalse() {
         mController = spy(mController);
         // Dev option is not supported if Desktop mode is not supported
-        when(mResources.getBoolean(R.bool.config_isDesktopModeSupported)).thenReturn(false);
-        ShadowSystemProperties.override("persist.wm.debug.desktop_mode_enforce_device_restrictions",
-                "true");
+        mDesktopState.setCanShowDesktopModeDevOption(false);
+        mDesktopState.setCanShowDesktopExperienceDevOption(false);
 
         assertThat(mController.isAvailable()).isFalse();
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_SHOW_DESKTOP_EXPERIENCE_DEV_OPTION)
     public void isAvailable_desktopModeDevOptionSupported_returnsTrue() {
         mController = spy(mController);
+        mDesktopState.setCanShowDesktopModeDevOption(true);
+        mDesktopState.setCanShowDesktopExperienceDevOption(false);
 
         assertThat(mController.isAvailable()).isTrue();
     }
 
-    @EnableFlags(Flags.FLAG_SHOW_DESKTOP_EXPERIENCE_DEV_OPTION)
     @Test
     public void isAvailable_whenDesktopExperienceDevOptionIsEnabled_returnsFalse() {
         mController = spy(mController);
+        mDesktopState.setCanShowDesktopModeDevOption(true);
+        mDesktopState.setCanShowDesktopExperienceDevOption(true);
 
         assertThat(mController.isAvailable()).isFalse();
     }
@@ -186,6 +182,7 @@ public class DesktopModePreferenceControllerTest {
     @Test
     @EnableFlags(Flags.FLAG_ENABLE_DESKTOP_WINDOWING_MODE)
     public void updateState_overrideUnset_defaultDevOptionStatusOn_checksPreference() {
+        mDesktopState.setDeviceEligibleForDesktopMode(true);
         Settings.Global.putInt(mContext.getContentResolver(),
                 DEVELOPMENT_OVERRIDE_DESKTOP_MODE_FEATURES, OVERRIDE_UNSET.getSetting());
 
@@ -199,6 +196,7 @@ public class DesktopModePreferenceControllerTest {
     public void updateState_overrideUnset_defaultDevOptionStatusOff_unchecksPreference() {
         Settings.Global.putInt(mContext.getContentResolver(),
                 DEVELOPMENT_OVERRIDE_DESKTOP_MODE_FEATURES, OVERRIDE_UNSET.getSetting());
+        mDesktopState.setDeviceEligibleForDesktopMode(true);
 
         mController.updateState(mPreference);
 
@@ -211,6 +209,7 @@ public class DesktopModePreferenceControllerTest {
         // Set no override
         Settings.Global.putString(mContext.getContentResolver(),
                 DEVELOPMENT_OVERRIDE_DESKTOP_MODE_FEATURES, null);
+        mDesktopState.setDeviceEligibleForDesktopMode(true);
 
         mController.updateState(mPreference);
 
@@ -223,6 +222,7 @@ public class DesktopModePreferenceControllerTest {
         // Set no override
         Settings.Global.putString(mContext.getContentResolver(),
                 DEVELOPMENT_OVERRIDE_DESKTOP_MODE_FEATURES, null);
+        mDesktopState.setDeviceEligibleForDesktopMode(true);
 
         mController.updateState(mPreference);
 
@@ -247,6 +247,7 @@ public class DesktopModePreferenceControllerTest {
     public void updateState_overrideUnknown_defaultDevOptionStatusOn_checksPreference() {
         Settings.Global.putInt(mContext.getContentResolver(),
                 DEVELOPMENT_OVERRIDE_DESKTOP_MODE_FEATURES, -2);
+        mDesktopState.setDeviceEligibleForDesktopMode(true);
 
         mController.updateState(mPreference);
 
@@ -258,6 +259,7 @@ public class DesktopModePreferenceControllerTest {
     public void updateState_overrideUnknown_defaultDevOptionStatusOff_unchecksPreference() {
         Settings.Global.putInt(mContext.getContentResolver(),
                 DEVELOPMENT_OVERRIDE_DESKTOP_MODE_FEATURES, -2);
+        mDesktopState.setDeviceEligibleForDesktopMode(true);
 
         mController.updateState(mPreference);
 

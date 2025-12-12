@@ -25,6 +25,9 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
+import com.android.settings.R;
+import com.android.settingslib.widget.SettingsThemeHelper;
+
 /** A dialog to ask the user to forget a bluetooth device when the key is missing. */
 public class BluetoothKeyMissingDialog extends FragmentActivity {
     public static final String FRAGMENT_TAG = "BtKeyMissingFrg";
@@ -32,6 +35,9 @@ public class BluetoothKeyMissingDialog extends FragmentActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (SettingsThemeHelper.isExpressiveTheme(this)) {
+            setTheme(R.style.Transparent_Expressive);
+        }
 
         getWindow().addSystemFlags(SYSTEM_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS);
         Intent intent = getIntent();

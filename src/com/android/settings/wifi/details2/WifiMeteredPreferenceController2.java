@@ -25,6 +25,7 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 
 import com.android.settings.core.BasePreferenceController;
+import com.android.settings.wifi.WifiUtils;
 import com.android.wifitrackerlib.WifiEntry;
 
 /**
@@ -47,6 +48,7 @@ public class WifiMeteredPreferenceController2 extends BasePreferenceController i
         final int meteredOverride = getMeteredOverride();
         preference.setSelectable(mWifiEntry.canSetMeteredChoice());
         listPreference.setValue(Integer.toString(meteredOverride));
+        preference.setEnabled(WifiUtils.isNetworkEditable(mWifiEntry, mContext));
         updateSummary(listPreference, meteredOverride);
     }
 

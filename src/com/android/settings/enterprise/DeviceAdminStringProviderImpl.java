@@ -97,11 +97,19 @@ class DeviceAdminStringProviderImpl implements DeviceAdminStringProvider {
 
     @Override
     public String getDisabledByParentContent() {
-        return mContext.getString(R.string.disabled_by_policy_parental_consent);
+        if (!android.app.supervision.flags.Flags.enableSupervisionSettingsScreen()) {
+            return mContext.getString(R.string.disabled_by_policy_parental_consent);
+        }
+        return mContext.getString(R.string.disabled_by_policy_content_parental_controls);
     }
 
     @Override
     public String getDisabledBiometricsParentConsentContent() {
         return mContext.getString(R.string.disabled_by_policy_content_biometric_parental_consent);
+    }
+
+    @Override
+    public String getDisabledByParentalControlsTitle() {
+        return mContext.getString(R.string.disabled_by_policy_title_parental_controls);
     }
 }

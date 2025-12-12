@@ -21,6 +21,8 @@ import static android.view.WindowInsets.Type.displayCutout;
 import static android.view.WindowInsets.Type.systemBars;
 import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_GESTURAL;
 
+import static com.android.internal.accessibility.AccessibilityShortcutController.MAGNIFICATION_COMPONENT_NAME;
+import static com.android.internal.accessibility.AccessibilityShortcutController.MAGNIFICATION_CONTROLLER_NAME;
 import static com.android.internal.accessibility.common.ShortcutConstants.UserShortcutType.GESTURE;
 import static com.android.internal.accessibility.common.ShortcutConstants.UserShortcutType.HARDWARE;
 import static com.android.internal.accessibility.common.ShortcutConstants.UserShortcutType.QUICK_SETTINGS;
@@ -38,6 +40,7 @@ import android.icu.text.CaseMap;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.WindowManager;
 import android.view.WindowMetrics;
@@ -46,7 +49,6 @@ import android.view.accessibility.AccessibilityManager;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-import androidx.annotation.VisibleForTesting;
 
 import com.android.internal.accessibility.common.ShortcutConstants.UserShortcutType;
 import com.android.internal.accessibility.util.ShortcutUtils;
@@ -61,6 +63,8 @@ import java.util.Locale;
 
 /** Provides utility methods to accessibility settings only. */
 public final class AccessibilityUtil {
+    private static final String TAG = AccessibilityUtil.class.getSimpleName();
+
     // LINT.IfChange(shortcut_type_ui_order)
     static final int[] SHORTCUTS_ORDER_IN_UI = {
             QUICK_SETTINGS,
@@ -124,7 +128,7 @@ public final class AccessibilityUtil {
      * Returns On/Off string according to the setting which specifies the integer value 1 or 0. This
      * setting is defined in the secure system settings {@link android.provider.Settings.Secure}.
      */
-    static CharSequence getSummary(
+    public static CharSequence getSummary(
             Context context, String settingsSecureKey, @StringRes int enabledString,
             @StringRes int disabledString) {
         boolean enabled = Settings.Secure.getInt(context.getContentResolver(),
@@ -200,17 +204,20 @@ public final class AccessibilityUtil {
      * @return The user shortcut type if component name existed in {@code UserShortcutType} string
      * Settings.
      */
-    static int getUserShortcutTypesFromSettings(Context context,
+    public static int getUserShortcutTypesFromSettings(@NonNull Context context,
             @NonNull ComponentName componentName) {
+        // TODO(b/147990389): Delete the branching logic for getting componentNameString after we
+        //  migrated to MAGNIFICATION_COMPONENT_NAME.
+        String componentNameString;
+        if (componentName.equals(MAGNIFICATION_COMPONENT_NAME)) {
+            componentNameString = MAGNIFICATION_CONTROLLER_NAME;
+        } else {
+            componentNameString = componentName.flattenToString();
+        }
         int shortcutTypes = UserShortcutType.DEFAULT;
         for (int shortcutType : AccessibilityUtil.SHORTCUTS_ORDER_IN_UI) {
-            if (!android.provider.Flags.a11yStandaloneGestureEnabled()) {
-                if ((shortcutType & GESTURE) == GESTURE) {
-                    continue;
-                }
-            }
             if (ShortcutUtils.isShortcutContained(
-                    context, shortcutType, componentName.flattenToString())) {
+                    context, shortcutType, componentNameString)) {
                 shortcutTypes |= shortcutType;
             }
         }
@@ -288,14 +295,11 @@ public final class AccessibilityUtil {
     /**
      * Assembles a localized string describing the provided shortcut types.
      */
-    public static CharSequence getShortcutSummaryList(Context context, int shortcutTypes) {
+    @NonNull
+    public static CharSequence getShortcutSummaryList(@NonNull Context context, int shortcutTypes) {
         final List<CharSequence> list = new ArrayList<>();
 
         for (int shortcutType : AccessibilityUtil.SHORTCUTS_ORDER_IN_UI) {
-            if (!android.provider.Flags.a11yStandaloneGestureEnabled()
-                    && (shortcutType & GESTURE) == GESTURE) {
-                continue;
-            }
             if (!com.android.server.accessibility.Flags
                     .enableMagnificationMultipleFingerMultipleTapGesture()
                     && (shortcutType & TWOFINGER_DOUBLETAP) == TWOFINGER_DOUBLETAP) {
@@ -306,7 +310,8 @@ public final class AccessibilityUtil {
                 list.add(switch (shortcutType) {
                     case QUICK_SETTINGS -> context.getText(
                             R.string.accessibility_feature_shortcut_setting_summary_quick_settings);
-                    case SOFTWARE -> getSoftwareShortcutSummary(context);
+                    case SOFTWARE -> context.getText(
+                            R.string.accessibility_shortcut_edit_summary_software);
                     case GESTURE -> context.getText(
                             R.string.accessibility_shortcut_edit_summary_software_gesture);
                     case HARDWARE -> context.getText(
@@ -320,24 +325,14 @@ public final class AccessibilityUtil {
             }
         }
 
+        if (list.isEmpty()) {
+            Log.e(TAG, "With empty shortcut list, the preference should not be checked, "
+                    + "and this method should not be called");
+            return "";
+        }
+
         list.sort(CharSequence::compare);
         return CaseMap.toTitle().wholeString().noLowercase().apply(Locale.getDefault(), /* iter= */
                 null, LocaleUtils.getConcatenatedString(list));
-    }
-
-    @VisibleForTesting
-    static CharSequence getSoftwareShortcutSummary(Context context) {
-        if (android.provider.Flags.a11yStandaloneGestureEnabled()) {
-            return context.getText(R.string.accessibility_shortcut_edit_summary_software);
-        }
-        int resId;
-        if (AccessibilityUtil.isFloatingMenuEnabled(context)) {
-            resId = R.string.accessibility_shortcut_edit_summary_software;
-        } else if (AccessibilityUtil.isGestureNavigateEnabled(context)) {
-            resId = R.string.accessibility_shortcut_edit_summary_software_gesture;
-        } else {
-            resId = R.string.accessibility_shortcut_edit_summary_software;
-        }
-        return context.getText(resId);
     }
 }

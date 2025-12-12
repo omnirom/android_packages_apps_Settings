@@ -21,12 +21,14 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 import android.content.Context;
 import android.util.Pair;
 
+import com.android.settings.SettingsActivity;
 import com.android.settings.testutils.BatteryTestUtils;
 import com.android.settings.testutils.shadow.ShadowDashboardFragment;
 
@@ -54,11 +56,12 @@ public final class PowerUsageAdvancedTest {
 
     private Predicate<PowerAnomalyEvent> mCardFilterPredicate;
     private Predicate<PowerAnomalyEvent> mSlotFilterPredicate;
+    private BatteryChartPreferenceController mBatteryChartPreferenceController;
 
     @Mock private BatteryTipsController mBatteryTipsController;
-    @Mock private BatteryChartPreferenceController mBatteryChartPreferenceController;
     @Mock private ScreenOnTimeController mScreenOnTimeController;
     @Mock private BatteryUsageBreakdownController mBatteryUsageBreakdownController;
+    @Mock private SettingsActivity mSettingsActivity;
 
     @Before
     public void setUp() {
@@ -68,6 +71,10 @@ public final class PowerUsageAdvancedTest {
 
         mPowerUsageAdvanced = spy(new PowerUsageAdvanced());
         mPowerUsageAdvanced.mBatteryTipsController = mBatteryTipsController;
+        mBatteryChartPreferenceController =
+                spy(new BatteryChartPreferenceController(
+                        mContext, /* lifecycle= */ null, mSettingsActivity));
+        mBatteryChartPreferenceController.mPrefContext = mContext;
         mPowerUsageAdvanced.mBatteryChartPreferenceController = mBatteryChartPreferenceController;
         mPowerUsageAdvanced.mScreenOnTimeController = mScreenOnTimeController;
         mPowerUsageAdvanced.mBatteryUsageBreakdownController = mBatteryUsageBreakdownController;
@@ -160,10 +167,12 @@ public final class PowerUsageAdvancedTest {
                 .isEqualTo(event.getEventId());
         verify(mPowerUsageAdvanced.mBatteryTipsController).setOnAnomalyConfirmListener(isNull());
         verify(mPowerUsageAdvanced.mBatteryTipsController).setOnAnomalyRejectListener(isNull());
-        verify(mPowerUsageAdvanced.mBatteryChartPreferenceController)
+        verify(mBatteryChartPreferenceController)
                 .onHighlightSlotIndexUpdate(
                         eq(BatteryChartViewModel.SELECTED_INDEX_INVALID),
                         eq(BatteryChartViewModel.SELECTED_INDEX_INVALID));
+        // Skip refreshUI because highlightSlot has not changed.
+        verify(mBatteryChartPreferenceController, never()).refreshUi();
     }
 
     @Test
@@ -176,15 +185,13 @@ public final class PowerUsageAdvancedTest {
                 .isEqualTo(event.getEventId());
         verify(mBatteryTipsController).setOnAnomalyConfirmListener(isNull());
         verify(mBatteryTipsController).setOnAnomalyRejectListener(isNull());
-        assertThat(
-                        mPowerUsageAdvanced
-                                .mBatteryLevelData
-                                .get()
-                                .getIndexByTimestamps(
-                                        event.getWarningItemInfo().getStartTimestamp(),
-                                        event.getWarningItemInfo().getEndTimestamp()))
+        assertThat(mPowerUsageAdvanced.mBatteryLevelData.get()
+                .getIndexByTimestamps(
+                        event.getWarningItemInfo().getStartTimestamp(),
+                        event.getWarningItemInfo().getEndTimestamp()))
                 .isEqualTo(Pair.create(1, 0));
         verify(mBatteryChartPreferenceController).onHighlightSlotIndexUpdate(eq(1), eq(0));
+        verify(mBatteryChartPreferenceController).refreshUi();
         verify(mBatteryTipsController).setOnAnomalyConfirmListener(notNull());
     }
 
@@ -199,6 +206,7 @@ public final class PowerUsageAdvancedTest {
         assertThat(mPowerUsageAdvanced.mHighlightEventWrapper.get().getEventId())
                 .isEqualTo(appsEvent.getEventId());
         verify(mBatteryChartPreferenceController).onHighlightSlotIndexUpdate(eq(1), eq(0));
+        verify(mBatteryChartPreferenceController).refreshUi();
         verify(mBatteryTipsController).setOnAnomalyConfirmListener(isNull());
         verify(mBatteryTipsController).setOnAnomalyRejectListener(isNull());
     }

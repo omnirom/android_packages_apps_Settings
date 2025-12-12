@@ -16,10 +16,14 @@
 
 package com.android.settings.biometrics;
 
+import static android.app.admin.DevicePolicyIdentifiers.KEYGUARD_DISABLED_FEATURES_POLICY;
+
 import static com.android.settings.Utils.SETTINGS_PACKAGE_NAME;
 import static com.android.settings.biometrics.BiometricEnrollBase.EXTRA_FROM_SETTINGS_SUMMARY;
 
+import android.annotation.NonNull;
 import android.app.admin.DevicePolicyManager;
+import android.app.admin.EnforcingAdmin;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -93,6 +97,27 @@ public class BiometricNavigationUtils {
                 : getSettingsPageIntent(className, extras);
     }
 
+    /**
+     * Returns {@link Intent} to launch an appropriate Settings screen.
+     *
+     * <p>If the Setting is disabled by admin, returns {@link Intent} to launch an explanation.
+     * If Quiet Mode is enabled for managed profile, returns {@link Intent} to launch a dialog
+     * to disable the Quiet Mode. Otherwise, returns {@link Intent} to launch the Settings screen.
+     *
+     * @param className      The class name of Settings screen to launch.
+     * @param enforcingAdmin Details of admin account that disables changing the setting.
+     * @param extras         Extras to put into the result {@link Intent}.
+     */
+    public Intent getBiometricSettingsIntent(Context context, String className,
+            EnforcingAdmin enforcingAdmin, Bundle extras) {
+        if (enforcingAdmin != null) {
+            return getRestrictedDialogIntent(context, enforcingAdmin);
+        }
+        final Intent quietModeDialogIntent = getQuietModeDialogIntent(context);
+        return quietModeDialogIntent != null ? quietModeDialogIntent
+                : getSettingsPageIntent(className, extras);
+    }
+
     private Intent getQuietModeDialogIntent(Context context) {
         final UserManager userManager = UserManager.get(context);
         if (userManager.isQuietModeEnabled(UserHandle.of(mUserId))) {
@@ -111,6 +136,20 @@ public class BiometricNavigationUtils {
         }
         intent.putExtra(DevicePolicyManager.EXTRA_RESTRICTION, enforcedAdmin.enforcedRestriction);
         intent.putExtra(Intent.EXTRA_USER_ID, targetUserId);
+        return intent;
+    }
+
+    private Intent getRestrictedDialogIntent(Context context,
+            @NonNull EnforcingAdmin enforcingAdmin) {
+        final Intent intent = RestrictedLockUtils.getShowAdminSupportDetailsIntent(enforcingAdmin);
+        int targetUserId = mUserId;
+        if (enforcingAdmin.getUserHandle() != null && RestrictedLockUtils
+                .isCurrentUserOrProfile(context, enforcingAdmin.getUserHandle().getIdentifier())) {
+            targetUserId = enforcingAdmin.getUserHandle().getIdentifier();
+        }
+        intent.putExtra(DevicePolicyManager.EXTRA_RESTRICTION, KEYGUARD_DISABLED_FEATURES_POLICY);
+        intent.putExtra(Intent.EXTRA_USER_ID, targetUserId);
+        intent.putExtra(DevicePolicyManager.EXTRA_ENFORCING_ADMIN, enforcingAdmin);
         return intent;
     }
 

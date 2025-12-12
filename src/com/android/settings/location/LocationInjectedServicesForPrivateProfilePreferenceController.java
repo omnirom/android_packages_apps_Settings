@@ -41,11 +41,6 @@ public class LocationInjectedServicesForPrivateProfilePreferenceController exten
 
     @Override
     protected void injectLocationServices(PreferenceScreen screen) {
-        if (!android.os.Flags.allowPrivateProfile()
-                || !android.multiuser.Flags.enablePrivateSpaceFeatures()
-                || !android.multiuser.Flags.handleInterleavedSettingsForPrivateSpace()) {
-            return;
-        }
         final UserHandle privateProfile = Utils.getProfileOfType(mUserManager,
                 ProfileSelectFragment.ProfileType.PRIVATE);
         if (privateProfile == null) {

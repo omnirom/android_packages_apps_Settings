@@ -35,27 +35,34 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
-/**
- * Preference controller for "Open network select"
- */
-class OpenNetworkSelectPagePreferenceController @JvmOverloads constructor(
+/** Preference controller for "Open network select" */
+class OpenNetworkSelectPagePreferenceController
+@JvmOverloads
+constructor(
     context: Context,
     key: String,
     private val allowedNetworkTypesFlowFactory: (subId: Int) -> Flow<Long> =
         context::allowedNetworkTypesFlow,
     private val serviceStateFlowFactory: (subId: Int) -> Flow<ServiceState> =
         context::serviceStateFlow,
-) : TelephonyBasePreferenceController(context, key),
+) :
+    TelephonyBasePreferenceController(context, key),
     AutoSelectPreferenceController.OnNetworkSelectModeListener {
 
     private var preference: Preference? = null
+    private var networkSelectionMode: Int = TelephonyManager.NETWORK_SELECTION_MODE_AUTO
 
-    /**
-     * Initialization based on given subscription id.
-     */
+    /** Initialization based on given subscription id. */
     fun init(subId: Int): OpenNetworkSelectPagePreferenceController {
         mSubId = subId
         return this
+    }
+
+    override fun updateState(preference: Preference?) {
+        super.updateState(preference)
+        preference?.isEnabled =
+            !mIsAirplaneModeOn &&
+                networkSelectionMode != TelephonyManager.NETWORK_SELECTION_MODE_AUTO
     }
 
     override fun getAvailabilityStatus(subId: Int) =
@@ -65,32 +72,36 @@ class OpenNetworkSelectPagePreferenceController @JvmOverloads constructor(
     override fun displayPreference(screen: PreferenceScreen) {
         super.displayPreference(screen)
         preference = screen.findPreference(preferenceKey)
-        preference?.intent = Intent().apply {
-            setClass(mContext, NetworkSelectActivity::class.java)
-            putExtra(Settings.EXTRA_SUB_ID, mSubId)
-        }
+        preference?.intent =
+            Intent().apply {
+                setClass(mContext, NetworkSelectActivity::class.java)
+                putExtra(Settings.EXTRA_SUB_ID, mSubId)
+            }
     }
 
     override fun onViewCreated(viewLifecycleOwner: LifecycleOwner) {
         allowedNetworkTypesFlowFactory(mSubId).collectLatestWithLifecycle(viewLifecycleOwner) {
-            preference?.isVisible = withContext(Dispatchers.Default) {
-                MobileNetworkUtils.shouldDisplayNetworkSelectOptions(mContext, mSubId)
-            }
+            preference?.isVisible =
+                withContext(Dispatchers.Default) {
+                    MobileNetworkUtils.shouldDisplayNetworkSelectOptions(mContext, mSubId)
+                }
         }
 
-        serviceStateFlowFactory(mSubId)
-            .collectLatestWithLifecycle(viewLifecycleOwner) { serviceState ->
-                preference?.summary = if (serviceState.state == ServiceState.STATE_IN_SERVICE) {
+        serviceStateFlowFactory(mSubId).collectLatestWithLifecycle(viewLifecycleOwner) {
+            serviceState ->
+            preference?.summary =
+                if (serviceState.state == ServiceState.STATE_IN_SERVICE) {
                     withContext(Dispatchers.Default) {
                         MobileNetworkUtils.getCurrentCarrierNameForDisplay(mContext, mSubId)
                     }
                 } else {
                     mContext.getString(R.string.network_disconnected)
                 }
-            }
+        }
     }
 
     override fun onNetworkSelectModeUpdated(mode: Int) {
-        preference?.isEnabled = mode != TelephonyManager.NETWORK_SELECTION_MODE_AUTO
+        this.networkSelectionMode = mode
+        updateState(preference)
     }
 }

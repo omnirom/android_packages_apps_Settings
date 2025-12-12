@@ -41,8 +41,6 @@ public class AppNotificationSettings extends NotificationSettings {
     private static final String TAG = "AppNotificationSettings";
     private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
 
-    boolean mShowAll = false;
-
     @Override
     public int getMetricsCategory() {
         return SettingsEnums.NOTIFICATION_APP_NOTIFICATION;
@@ -122,21 +120,20 @@ public class AppNotificationSettings extends NotificationSettings {
                 mBackend));
         mControllers.add(new DndPreferenceController(context, mBackend));
         mControllers.add(new AppLinkPreferenceController(context));
-        mControllers.add(new ChannelListPreferenceController(context, mBackend));
+        mControllers.add(new ChannelListPreferenceController(
+                context, mDependentFieldListener, mBackend));
         mControllers.add(new AppConversationListPreferenceController(context, mBackend));
         mControllers.add(new InvalidConversationInfoPreferenceController(context, mBackend));
         mControllers.add(new InvalidConversationPreferenceController(context, mBackend));
         mControllers.add(new BubbleSummaryPreferenceController(context, mBackend));
         mControllers.add(new NotificationsOffPreferenceController(context));
-        mControllers.add(new DeletedChannelsPreferenceController(context, mBackend));
-        mControllers.add(new ShowMorePreferenceController(
-                context, mDependentFieldListener, mBackend));
         mControllers.add(new BundleListPreferenceController(context, mBackend));
         mControllers.add(new PromotedNotificationsPreferenceController(context, mBackend));
         mControllers.add(new AdjustmentKeyPreferenceController(context, mBackend,
                 Adjustment.KEY_SUMMARIZATION));
         mControllers.add(new AdjustmentKeyPreferenceController(context, mBackend,
                 Adjustment.KEY_TYPE));
+        mControllers.add(new AiCategoryPreferenceController(context, mBackend));
         return new ArrayList<>(mControllers);
     }
 }

@@ -17,6 +17,8 @@
 package com.android.settings.datausage
 
 import android.app.settings.SettingsEnums
+import android.content.Context
+import android.content.Intent
 import android.net.NetworkPolicy
 import android.net.NetworkTemplate
 import android.os.Bundle
@@ -25,23 +27,26 @@ import android.telephony.SubscriptionManager
 import android.util.EventLog
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.OpenForTesting
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import com.android.settings.R
+import com.android.settings.Utils
 import com.android.settings.dashboard.DashboardFragment
 import com.android.settings.datausage.lib.BillingCycleRepository
 import com.android.settings.datausage.lib.NetworkUsageData
-import com.android.settings.network.SubscriptionUtil
 import com.android.settings.network.telephony.SubscriptionRepository
 import com.android.settingslib.spa.framework.util.collectLatestWithLifecycle
 import com.android.settingslib.spaprivileged.framework.common.userManager
+import com.android.settingslib.widget.LayoutPreference
 import kotlin.jvm.optionals.getOrNull
 
+// LINT.IfChange
 /**
- * Panel showing data usage history across various networks, including options
- * to inspect based on usage cycle and control through [NetworkPolicy].
+ * Panel showing data usage history across various networks, including options to inspect based on
+ * usage cycle and control through [NetworkPolicy].
  */
 @OpenForTesting
 open class DataUsageList : DashboardFragment() {
@@ -86,41 +91,44 @@ open class DataUsageList : DashboardFragment() {
             finish()
             return
         }
-        dataUsageListAppsController = use(DataUsageListAppsController::class.java).apply {
-            init(template)
-        }
-        chartDataUsagePreferenceController = use(ChartDataUsagePreferenceController::class.java)
-            .apply { init(template) }
+        dataUsageListAppsController =
+            use(DataUsageListAppsController::class.java).apply { init(template) }
+        chartDataUsagePreferenceController =
+            use(ChartDataUsagePreferenceController::class.java).apply { init(template) }
 
         updateWarning()
     }
 
     private fun updateWarning() {
         val template = template ?: return
-        val warningPreference = findPreference<Preference>(KEY_WARNING)!!
+        val preference = findPreference<LayoutPreference>(KEY_WARNING) ?: return
+        val textView = preference.findViewById<TextView>(R.id.text) ?: return
+        val context = requireContext()
         if (template.matchRule != NetworkTemplate.MATCH_WIFI) {
-            warningPreference.setSummary(R.string.operator_warning)
-        } else if (SubscriptionUtil.isSimHardwareVisible(context)) {
-            warningPreference.setSummary(R.string.non_carrier_data_usage_warning)
+            textView.text = context.getString(R.string.operator_warning)
+        } else if (Utils.isMobileDataCapable(context)) {
+            textView.text = context.getString(R.string.non_carrier_data_usage_warning)
         }
     }
 
     override fun onViewCreated(v: View, savedInstanceState: Bundle?) {
         super.onViewCreated(v, savedInstanceState)
 
-        billingCycleRepository.isModifiableFlow(subId)
+        billingCycleRepository
+            .isModifiableFlow(subId)
             .collectLatestWithLifecycle(viewLifecycleOwner, action = ::updatePolicy)
 
         val template = template ?: return
         viewModel.templateFlow.value = template
-        dataUsageListHeaderController = DataUsageListHeaderController(
-            setPinnedHeaderView(R.layout.apps_filter_spinner),
-            template,
-            metricsCategory,
-            viewLifecycleOwner,
-            viewModel.cyclesFlow,
-            ::updateSelectedCycle,
-        )
+        dataUsageListHeaderController =
+            DataUsageListHeaderController(
+                setPinnedHeaderView(R.layout.apps_filter_spinner),
+                template,
+                metricsCategory,
+                viewLifecycleOwner,
+                viewModel.cyclesFlow,
+                ::updateSelectedCycle,
+            )
         viewModel.cyclesFlow.collectLatestWithLifecycle(viewLifecycleOwner) { cycles ->
             dataUsageListAppsController?.updateCycles(cycles)
         }
@@ -132,7 +140,8 @@ open class DataUsageList : DashboardFragment() {
 
     private fun finishIfSubscriptionDisabled() {
         if (SubscriptionManager.isUsableSubscriptionId(subId)) {
-            SubscriptionRepository(requireContext()).isSubscriptionEnabledFlow(subId)
+            SubscriptionRepository(requireContext())
+                .isSubscriptionEnabledFlow(subId)
                 .collectLatestWithLifecycle(viewLifecycleOwner) { isSubscriptionEnabled ->
                     if (!isSubscriptionEnabled) finish()
                 }
@@ -143,20 +152,43 @@ open class DataUsageList : DashboardFragment() {
 
     override fun getLogTag() = TAG
 
+    override fun getPreferenceScreenBindingKey(context: Context): String {
+        return DataUsageListScreen.KEY
+    }
+
     private fun processArgument() {
         arguments?.let {
             subId = it.getInt(EXTRA_SUB_ID, SubscriptionManager.INVALID_SUBSCRIPTION_ID)
             template = it.getParcelable(EXTRA_NETWORK_TEMPLATE, NetworkTemplate::class.java)
         }
         if (template == null && subId == SubscriptionManager.INVALID_SUBSCRIPTION_ID) {
-            subId = intent.getIntExtra(
-                Settings.EXTRA_SUB_ID,
-                SubscriptionManager.INVALID_SUBSCRIPTION_ID,
-            )
-            template = intent.getParcelableExtra(
-                Settings.EXTRA_NETWORK_TEMPLATE,
-                NetworkTemplate::class.java,
-            ) ?: DataUsageUtils.getMobileNetworkTemplateFromSubId(context, intent).getOrNull()
+            subId =
+                intent.getIntExtra(
+                    Settings.EXTRA_SUB_ID,
+                    SubscriptionManager.INVALID_SUBSCRIPTION_ID,
+                )
+            val localIntent: Intent = intent.clone() as Intent
+            if (subId == SubscriptionManager.INVALID_SUBSCRIPTION_ID) {
+                subId =
+                    getPreferenceScreenBindingArgs(requireContext())?.getInt(Settings.EXTRA_SUB_ID)
+                        ?: SubscriptionManager.INVALID_SUBSCRIPTION_ID
+                Log.d(
+                    TAG,
+                    "processArgument: get subId from ScreenBindingArgs and reset subId into intent.",
+                )
+                // Add this extra into the intent because it is required in the
+                // DataUsageUtils.getMobileNetworkTemplateFromSubId.
+                if (subId != SubscriptionManager.INVALID_SUBSCRIPTION_ID) {
+                    localIntent.putExtra(Settings.EXTRA_SUB_ID, subId)
+                }
+            }
+            template =
+                intent.getParcelableExtra(
+                    Settings.EXTRA_NETWORK_TEMPLATE,
+                    NetworkTemplate::class.java,
+                )
+                    ?: DataUsageUtils.getMobileNetworkTemplateFromSubId(context, localIntent)
+                        .getOrNull()
         }
     }
 
@@ -166,9 +198,7 @@ open class DataUsageList : DashboardFragment() {
         chartDataUsagePreferenceController?.setBillingCycleModifiable(isModifiable)
     }
 
-    /**
-     * Updates the chart and detail data when initial loaded or selected cycle changed.
-     */
+    /** Updates the chart and detail data when initial loaded or selected cycle changed. */
     private fun updateSelectedCycle(usageData: NetworkUsageData) {
         Log.d(TAG, "showing cycle $usageData")
 
@@ -194,7 +224,7 @@ open class DataUsageList : DashboardFragment() {
         private const val TAG = "DataUsageList"
         private const val KEY_USAGE_AMOUNT = "usage_amount"
 
-        @VisibleForTesting
-        const val KEY_WARNING = "warning"
+        @VisibleForTesting const val KEY_WARNING = "warning"
     }
 }
+// LINT.ThenChange(DataUsageListScreen.kt)

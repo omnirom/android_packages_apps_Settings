@@ -30,7 +30,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
@@ -229,9 +229,8 @@ public class HighlightablePreferenceGroupAdapterTest {
         mAdapter.updateBackground(mViewHolder, 10);
 
         assertThat(mAdapter.mFadeInAnimated).isTrue();
-        assertThat(mViewHolder.itemView.getBackground()).isInstanceOf(ColorDrawable.class);
+        assertThat(mViewHolder.itemView.getBackground()).isInstanceOf(TransitionDrawable.class);
         assertThat(mViewHolder.itemView.getTag(R.id.preference_highlighted)).isEqualTo(true);
-        verify(mAdapter).requestRemoveHighlightDelayed(mViewHolder, 10);
     }
 
     @Test
@@ -255,15 +254,11 @@ public class HighlightablePreferenceGroupAdapterTest {
         // mFadeInAnimated change from false to true - indicating background change is scheduled
         // through animation.
         assertThat(mAdapter.mFadeInAnimated).isTrue();
-        // remove highlight should be requested.
-        verify(mAdapter).requestRemoveHighlightDelayed(mViewHolder, 10);
 
         ReflectionHelpers.setField(mAdapter, "mHighlightPosition", 10);
         mAdapter.updateBackground(mViewHolder, 10);
-        // only sets background color once - if it's animation this would be called many times
-        verify(mViewHolder.itemView).setBackgroundResource(mAdapter.mHighlightBackgroundRes);
-        // remove highlight should be requested.
-        verify(mAdapter, times(2)).requestRemoveHighlightDelayed(mViewHolder, 10);
+        verify(mViewHolder.itemView, times(3)).setBackgroundResource(
+                mAdapter.mHighlightBackgroundRes);
     }
 
     @Test

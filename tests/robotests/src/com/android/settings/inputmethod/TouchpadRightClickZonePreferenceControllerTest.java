@@ -71,7 +71,6 @@ public class TouchpadRightClickZonePreferenceControllerTest {
     @Test
     public void getAvailabilityStatus_expected() {
         int deviceId = 1;
-        ShadowInputDevice.sDeviceIds = new int[]{deviceId};
         InputDevice device = ShadowInputDevice.makeInputDevicebyIdWithSources(deviceId,
                 InputDevice.SOURCE_TOUCHPAD);
         ShadowInputDevice.addDevice(deviceId, device);

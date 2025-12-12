@@ -26,12 +26,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.settings.R
+import com.android.settings.flags.Flags
 import com.android.settings.spa.preference.ComposePreferenceController
 import com.android.settingslib.spa.widget.preference.MainSwitchPreference
 import com.android.settingslib.spa.widget.preference.SwitchPreferenceModel
 import kotlinx.coroutines.launch
 
-class MobileNetworkSwitchController @JvmOverloads constructor(
+class MobileNetworkSwitchController
+@JvmOverloads
+constructor(
     context: Context,
     preferenceKey: String,
     private val subscriptionRepository: SubscriptionRepository = SubscriptionRepository(context),
@@ -51,29 +54,36 @@ class MobileNetworkSwitchController @JvmOverloads constructor(
     override fun Content() {
         val context = LocalContext.current
         if (remember { !context.isVisible() }) return
-        val checked by remember {
-            subscriptionRepository.isSubscriptionEnabledFlow(subId)
-        }.collectAsStateWithLifecycle(initialValue = null)
-        val changeable by remember {
-            subscriptionActivationRepository.isActivationChangeableFlow()
-        }.collectAsStateWithLifecycle(initialValue = true)
+        val checked by
+            remember { subscriptionRepository.isSubscriptionEnabledFlow(subId) }
+                .collectAsStateWithLifecycle(initialValue = null)
+        val changeable by
+            remember { subscriptionActivationRepository.isActivationChangeableFlow() }
+                .collectAsStateWithLifecycle(initialValue = true)
         val coroutineScope = rememberCoroutineScope()
-        MainSwitchPreference(model = object : SwitchPreferenceModel {
-            override val title = stringResource(R.string.mobile_network_use_sim_on)
-            override val changeable = { changeable }
-            override val checked = { checked }
-            override val onCheckedChange: (Boolean) -> Unit = { newChecked ->
-                coroutineScope.launch {
-                    subscriptionActivationRepository.setActive(subId, newChecked)
+        MainSwitchPreference(
+            model =
+                object : SwitchPreferenceModel {
+                    override val title = stringResource(R.string.mobile_network_use_sim_on)
+                    override val changeable = { changeable }
+                    override val checked = { checked }
+                    override val onCheckedChange: (Boolean) -> Unit = { newChecked ->
+                        coroutineScope.launch {
+                            subscriptionActivationRepository.setActive(subId, newChecked)
+                        }
+                    }
                 }
-            }
-        })
+        )
     }
 
     private fun Context.isVisible(): Boolean {
-        val subInfo = subscriptionRepository.getSelectableSubscriptionInfoList()
-            .firstOrNull { it.subscriptionId == subId }
-            ?: return false
+        if (Flags.deeplinkNetworkAndInternet25q4()) {
+            return false
+        }
+        val subInfo =
+            subscriptionRepository.getSelectableSubscriptionInfoList().firstOrNull {
+                it.subscriptionId == subId
+            } ?: return false
         // For eSIM, we always want the toggle. If telephony stack support disabling a pSIM
         // directly, we show the toggle.
         return subInfo.isEmbedded || requireSubscriptionManager().canDisablePhysicalSubscription()

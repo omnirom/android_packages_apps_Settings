@@ -33,6 +33,7 @@ import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.android.settings.Utils;
 import com.android.settings.datausage.lib.DataUsageLib;
 import com.android.settings.network.ProxySubscriptionManager;
 
@@ -84,11 +85,11 @@ public final class DataUsageUtils {
 
     /**
      * Returns whether device has mobile data.
-     * TODO: This is the opposite to Utils.isWifiOnly(), it should be refactored into 1 method.
+     * The only purpose of this helper method is to allow easy mocking, e.g. via
+     * ShadowDataUsageUtils.IS_MOBILE_DATA_SUPPORTED.
      */
     public static boolean hasMobileData(Context context) {
-        final TelephonyManager tele = context.getSystemService(TelephonyManager.class);
-        return tele.isDataCapable();
+        return Utils.isMobileDataCapable(context);
     }
 
     /**

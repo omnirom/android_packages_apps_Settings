@@ -104,9 +104,7 @@ public class ConfirmDeviceCredentialUtils {
     }
 
     private static boolean isBiometricUnlockEnabledForPrivateSpace() {
-        return android.os.Flags.allowPrivateProfile()
-                && android.multiuser.Flags.enableBiometricsToUnlockPrivateSpace()
-                && android.multiuser.Flags.enablePrivateSpaceFeatures();
+        return android.multiuser.Flags.enableBiometricsToUnlockPrivateSpace();
     }
 
     /**

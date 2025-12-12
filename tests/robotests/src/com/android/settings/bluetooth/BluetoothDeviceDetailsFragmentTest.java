@@ -22,43 +22,36 @@ import static com.android.settings.bluetooth.BluetoothDetailsHearingDeviceSettin
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
+import static org.robolectric.shadows.ShadowLooper.shadowMainLooper;
 
+import android.app.Application;
 import android.app.settings.SettingsEnums;
+import android.bluetooth.BluetoothDevice;
 import android.companion.CompanionDeviceManager;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.input.InputManager;
 import android.os.Bundle;
-import android.os.UserManager;
-import android.platform.test.annotations.DisableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.FeatureFlagUtils;
 import android.view.InputDevice;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.PreferenceScreen;
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
-import com.android.settings.bluetooth.ui.view.DeviceDetailsFragmentFormatter;
-import com.android.settings.flags.Flags;
-import com.android.settings.testutils.FakeFeatureFactory;
+import com.android.settings.SubSettings;
+import com.android.settings.core.SubSettingLauncher;
+import com.android.settings.testutils.shadow.ShadowBluetoothUtils;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
 import com.android.settingslib.core.AbstractPreferenceController;
-import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 
 import com.google.common.collect.ImmutableList;
 
@@ -67,233 +60,212 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.robolectric.fakes.RoboMenu;
+import org.robolectric.shadows.ShadowApplication;
 
 import java.util.List;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(shadows = {
-        com.android.settings.testutils.shadow.ShadowUserManager.class,
-        com.android.settings.testutils.shadow.ShadowFragment.class,
-})
+@Config(
+        shadows = {
+            com.android.settings.testutils.shadow.ShadowUserManager.class,
+            com.android.settings.testutils.shadow.ShadowBluetoothUtils.class
+        })
 public class BluetoothDeviceDetailsFragmentTest {
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     private static final String TEST_ADDRESS = "55:66:77:88:99:AA";
     private static final int TEST_DEVICE_ID = 123;
 
     private BluetoothDeviceDetailsFragment mFragment;
-    private Context mContext;
-    private RoboMenu mMenu;
-    private MenuInflater mInflater;
-    private FragmentTransaction mFragmentTransaction;
+    private Context mContext = spy(ApplicationProvider.getApplicationContext());
     private FragmentActivity mActivity;
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private CachedBluetoothDevice mCachedDevice;
+
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private LocalBluetoothManager mLocalManager;
-    @Mock
-    private PreferenceScreen mPreferenceScreen;
-    @Mock
-    private UserManager mUserManager;
-    @Mock
-    private InputManager mInputManager;
-    @Mock
-    private CompanionDeviceManager mCompanionDeviceManager;
-    @Mock
-    private DeviceDetailsFragmentFormatter mFormatter;
+
+    @Mock private InputManager mInputManager;
+    @Mock private CompanionDeviceManager mCompanionDeviceManager;
+    @Mock private BluetoothDevice mBluetoothDevice;
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        mContext = spy(RuntimeEnvironment.application);
-        doReturn(mInputManager).when(mContext).getSystemService(InputManager.class);
-        doReturn(new int[]{TEST_DEVICE_ID}).when(mInputManager).getInputDeviceIds();
+        mSetFlagsRule.disableFlags(
+                com.android.settingslib.flags.Flags.FLAG_HEARING_DEVICES_AMBIENT_VOLUME_CONTROL);
+        ShadowBluetoothUtils.sLocalBluetoothManager = mLocalManager;
+        doReturn(new int[] {TEST_DEVICE_ID}).when(mInputManager).getInputDeviceIds();
         doReturn(TEST_ADDRESS).when(mInputManager).getInputDeviceBluetoothAddress(TEST_DEVICE_ID);
 
-        doReturn(mCompanionDeviceManager).when(mContext)
+        ShadowApplication shadowApplication =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
+        shadowApplication.setSystemService(
+                Context.COMPANION_DEVICE_SERVICE, mCompanionDeviceManager);
+        shadowApplication.setSystemService(Context.INPUT_SERVICE, mInputManager);
+        doReturn(mCompanionDeviceManager)
+                .when(mContext)
                 .getSystemService(CompanionDeviceManager.class);
-        when(mCompanionDeviceManager.getAllAssociations()).thenReturn(ImmutableList.of());
-        FakeFeatureFactory fakeFeatureFactory = FakeFeatureFactory.setupForTest();
-        when(fakeFeatureFactory.mBluetoothFeatureProvider.getDeviceDetailsFragmentFormatter(any(),
-                any(), any(), eq(mCachedDevice), any())).thenReturn(mFormatter);
-
-        mFragment = setupFragment();
-        mFragment.onAttach(mContext);
-
-        mMenu = new RoboMenu(mContext);
-        mInflater = new MenuInflater(mContext);
+        doReturn(ImmutableList.of()).when(mCompanionDeviceManager).getAllAssociations();
     }
 
     @Test
     public void verifyOnAttachResult() {
-        assertThat(mFragment.mDeviceAddress).isEqualTo(TEST_ADDRESS);
-        assertThat(mFragment.mManager).isEqualTo(mLocalManager);
-        assertThat(mFragment.mCachedDevice).isEqualTo(mCachedDevice);
-        assertThat(mFragment.mInputDevice).isEqualTo(null);
+        runFragmentTest(
+                () -> {
+                    assertThat(mFragment.deviceAddress).isEqualTo(TEST_ADDRESS);
+                    assertThat(mFragment.localBluetoothManager).isEqualTo(mLocalManager);
+                    assertThat(mFragment.cachedDevice).isEqualTo(mCachedDevice);
+                    assertThat(mFragment.mInputDevice).isEqualTo(null);
+                });
     }
 
     @Test
     public void verifyOnAttachResult_flagEnabledAndInputDeviceSet_returnsInputDevice() {
-        FeatureFlagUtils.setEnabled(mContext, FeatureFlagUtils.SETTINGS_SHOW_STYLUS_PREFERENCES,
-                true);
+        FeatureFlagUtils.setEnabled(
+                mContext, FeatureFlagUtils.SETTINGS_SHOW_STYLUS_PREFERENCES, true);
         InputDevice inputDevice = mock(InputDevice.class);
-        BluetoothDeviceDetailsFragment fragment = setupFragment();
-        FragmentActivity activity = mock(FragmentActivity.class);
         doReturn(inputDevice).when(mInputManager).getInputDevice(TEST_DEVICE_ID);
-        doReturn(activity).when(fragment).getActivity();
 
-        fragment.onAttach(mContext);
-
-        assertThat(fragment.mDeviceAddress).isEqualTo(TEST_ADDRESS);
-        assertThat(fragment.mManager).isEqualTo(mLocalManager);
-        assertThat(fragment.mCachedDevice).isEqualTo(mCachedDevice);
-        assertThat(fragment.mInputDevice).isEqualTo(inputDevice);
+        runFragmentTest(
+                () -> {
+                    assertThat(mFragment.deviceAddress).isEqualTo(TEST_ADDRESS);
+                    assertThat(mFragment.localBluetoothManager).isEqualTo(mLocalManager);
+                    assertThat(mFragment.cachedDevice).isEqualTo(mCachedDevice);
+                    assertThat(mFragment.mInputDevice).isEqualTo(inputDevice);
+                });
     }
 
     @Test
     public void verifyOnAttachResult_flagDisabled_returnsNullInputDevice() {
-        FeatureFlagUtils.setEnabled(mContext, FeatureFlagUtils.SETTINGS_SHOW_STYLUS_PREFERENCES,
-                false);
+        FeatureFlagUtils.setEnabled(
+                mContext, FeatureFlagUtils.SETTINGS_SHOW_STYLUS_PREFERENCES, false);
         InputDevice inputDevice = mock(InputDevice.class);
-        BluetoothDeviceDetailsFragment fragment = setupFragment();
-        FragmentActivity activity = mock(FragmentActivity.class);
         doReturn(inputDevice).when(mInputManager).getInputDevice(TEST_DEVICE_ID);
-        doReturn(activity).when(fragment).getActivity();
-
-        fragment.onAttach(mContext);
-
-        assertThat(fragment.mDeviceAddress).isEqualTo(TEST_ADDRESS);
-        assertThat(fragment.mManager).isEqualTo(mLocalManager);
-        assertThat(fragment.mCachedDevice).isEqualTo(mCachedDevice);
-        assertThat(fragment.mInputDevice).isEqualTo(null);
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_ENABLE_BLUETOOTH_DEVICE_DETAILS_POLISH)
-    public void getTitle_displayEditTitle() {
-        mFragment.onCreateOptionsMenu(mMenu, mInflater);
-
-        final MenuItem item = mMenu.getItem(0);
-
-        assertThat(item.getTitle()).isEqualTo(mContext.getString(R.string.bluetooth_rename_button));
+        runFragmentTest(
+                () -> {
+                    assertThat(mFragment.deviceAddress).isEqualTo(TEST_ADDRESS);
+                    assertThat(mFragment.localBluetoothManager).isEqualTo(mLocalManager);
+                    assertThat(mFragment.cachedDevice).isEqualTo(mCachedDevice);
+                    assertThat(mFragment.mInputDevice).isEqualTo(null);
+                });
     }
 
     @Test
     public void getTitle_inputDeviceTitle() {
-        FeatureFlagUtils.setEnabled(mContext, FeatureFlagUtils.SETTINGS_SHOW_STYLUS_PREFERENCES,
-                true);
+        FeatureFlagUtils.setEnabled(
+                mContext, FeatureFlagUtils.SETTINGS_SHOW_STYLUS_PREFERENCES, true);
         InputDevice inputDevice = mock(InputDevice.class);
         doReturn(true).when(inputDevice).supportsSource(InputDevice.SOURCE_STYLUS);
         doReturn(inputDevice).when(mInputManager).getInputDevice(TEST_DEVICE_ID);
-        mFragment.onAttach(mContext);
 
-        mFragment.setTitleForInputDevice();
-
-        assertThat(mActivity.getTitle().toString()).isEqualTo(
-                mContext.getString(R.string.stylus_device_details_title));
+        runFragmentTest(
+                () -> {
+                    assertThat(mActivity.getTitle().toString())
+                            .isEqualTo(mContext.getString(R.string.stylus_device_details_title));
+                });
     }
 
     @Test
     public void getTitle_inputDeviceNull_doesNotSetTitle() {
-        FeatureFlagUtils.setEnabled(mContext, FeatureFlagUtils.SETTINGS_SHOW_STYLUS_PREFERENCES,
-                true);
+        FeatureFlagUtils.setEnabled(
+                mContext, FeatureFlagUtils.SETTINGS_SHOW_STYLUS_PREFERENCES, true);
         doReturn(null).when(mInputManager).getInputDevice(TEST_DEVICE_ID);
-        mFragment.onAttach(mContext);
-
-        mFragment.setTitleForInputDevice();
-
-        verify(mActivity, times(0)).setTitle(any());
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_ENABLE_BLUETOOTH_DEVICE_DETAILS_POLISH)
-    public void editMenu_clicked_showDialog() {
-        mFragment.onCreateOptionsMenu(mMenu, mInflater);
-        final MenuItem item = mMenu.getItem(0);
-        ArgumentCaptor<Fragment> captor = ArgumentCaptor.forClass(Fragment.class);
-
-        mFragment.onOptionsItemSelected(item);
-
-        assertThat(item.getItemId())
-                .isEqualTo(BluetoothDeviceDetailsFragment.EDIT_DEVICE_NAME_ITEM_ID);
-        verify(mFragmentTransaction).add(captor.capture(), eq(RemoteDeviceNameDialogFragment.TAG));
-        RemoteDeviceNameDialogFragment dialog = (RemoteDeviceNameDialogFragment) captor.getValue();
-        assertThat(dialog).isNotNull();
+        runFragmentTest(
+                () -> {
+                    assertThat(mActivity.getTitle().toString())
+                            .isNotEqualTo(mContext.getString(R.string.stylus_device_details_title));
+                });
     }
 
     @Test
     public void finishFragmentIfNecessary_deviceIsBondNone_finishFragment() {
         when(mCachedDevice.getBondState()).thenReturn(BOND_NONE);
 
-        mFragment.finishFragmentIfNecessary();
+        runFragmentTest(
+                () -> {
+                    mFragment.finishFragmentIfNecessary();
 
-        verify(mFragment).finish();
+                    assertThat(mActivity.isFinishing()).isTrue();
+                });
     }
 
     @Test
     public void createPreferenceControllers_launchFromHAPage_deviceControllerNotExist() {
-        BluetoothDeviceDetailsFragment fragment = setupFragment();
-        Intent intent = fragment.getActivity().getIntent();
-        intent.putExtra(MetricsFeatureProvider.EXTRA_SOURCE_METRICS_CATEGORY,
-                SettingsEnums.ACCESSIBILITY_HEARING_AID_SETTINGS);
-        fragment.onAttach(mContext);
-
-        List<AbstractPreferenceController> controllerList = fragment.createPreferenceControllers(
-                mContext);
-
-        assertThat(controllerList.stream()
-                .anyMatch(controller -> controller.getPreferenceKey().equals(
-                        KEY_HEARING_DEVICE_SETTINGS))).isFalse();
+        runFragmentTest(
+                SettingsEnums.ACCESSIBILITY_HEARING_AID_SETTINGS,
+                () -> {
+                    List<AbstractPreferenceController> controllerList =
+                            mFragment.createPreferenceControllers(mContext);
+                    boolean hasController =
+                            controllerList.stream()
+                                    .anyMatch(
+                                            controller ->
+                                                    controller
+                                                            .getPreferenceKey()
+                                                            .equals(KEY_HEARING_DEVICE_SETTINGS));
+                    assertThat(hasController).isFalse();
+                });
     }
 
     @Test
     public void createPreferenceControllers_notLaunchFromHAPage_deviceControllerExist() {
-        BluetoothDeviceDetailsFragment fragment = setupFragment();
-        Intent intent = fragment.getActivity().getIntent();
-        intent.putExtra(MetricsFeatureProvider.EXTRA_SOURCE_METRICS_CATEGORY,
-                SettingsEnums.PAGE_UNKNOWN);
-        fragment.onAttach(mContext);
+        runFragmentTest(
+                SettingsEnums.PAGE_UNKNOWN,
+                () -> {
+                    List<AbstractPreferenceController> controllerList =
+                            mFragment.createPreferenceControllers(mContext);
+                    boolean hasController =
+                            controllerList.stream()
+                                    .anyMatch(
+                                            controller ->
+                                                    controller
+                                                            .getPreferenceKey()
+                                                            .equals(KEY_HEARING_DEVICE_SETTINGS));
 
-        List<AbstractPreferenceController> controllerList = fragment.createPreferenceControllers(
-                mContext);
-
-        assertThat(controllerList.stream()
-                .anyMatch(controller -> controller.getPreferenceKey().equals(
-                        KEY_HEARING_DEVICE_SETTINGS))).isTrue();
+                    assertThat(hasController).isTrue();
+                });
     }
 
-    private BluetoothDeviceDetailsFragment setupFragment() {
-        BluetoothDeviceDetailsFragment fragment = spy(
-                BluetoothDeviceDetailsFragment.newInstance(TEST_ADDRESS));
-        doReturn(mLocalManager).when(fragment).getLocalBluetoothManager(any());
-        doReturn(mCachedDevice).when(fragment).getCachedDevice(any());
-        doReturn(mPreferenceScreen).when(fragment).getPreferenceScreen();
-        doReturn(mUserManager).when(fragment).getUserManager();
+    private void runFragmentTest(Runnable testBody) {
+        runFragmentTest(SettingsEnums.PAGE_UNKNOWN, testBody);
+    }
 
-        mActivity = spy(Robolectric.setupActivity(FragmentActivity.class));
-        doReturn(mActivity).when(fragment).getActivity();
-        doReturn(mContext).when(fragment).getContext();
-
-        FragmentManager fragmentManager = mock(FragmentManager.class);
-        doReturn(fragmentManager).when(fragment).getFragmentManager();
-        mFragmentTransaction = mock(FragmentTransaction.class);
-        doReturn(mFragmentTransaction).when(fragmentManager).beginTransaction();
-
+    private void runFragmentTest(int sourceMetricsCategory, Runnable testBody) {
+        when(mLocalManager.getBluetoothAdapter().getRemoteDevice(TEST_ADDRESS))
+                .thenReturn(mBluetoothDevice);
+        when(mLocalManager.getCachedDeviceManager().findDevice(mBluetoothDevice))
+                .thenReturn(mCachedDevice);
         doReturn(TEST_ADDRESS).when(mCachedDevice).getAddress();
         doReturn(TEST_ADDRESS).when(mCachedDevice).getIdentityAddress();
-        Bundle args = new Bundle();
-        args.putString(BluetoothDeviceDetailsFragment.KEY_DEVICE_ADDRESS, TEST_ADDRESS);
-        fragment.setArguments(args);
 
-        return fragment;
+        Bundle args = new Bundle();
+        args.putString("device_address", TEST_ADDRESS);
+        Intent intent =
+                new SubSettingLauncher(mContext)
+                        .setDestination(BluetoothDeviceDetailsFragment.class.getName())
+                        .setArguments(args)
+                        .setTitleRes(R.string.device_details_title)
+                        .setSourceMetricsCategory(sourceMetricsCategory)
+                        .toIntent();
+
+        try (ActivityScenario<SubSettings> activityScenario = ActivityScenario.launch(intent)) {
+            activityScenario.onActivity(
+                    activity -> {
+                        mActivity = activity;
+                        mFragment =
+                                (BluetoothDeviceDetailsFragment)
+                                        activity.getSupportFragmentManager().getFragments().get(0);
+                        testBody.run();
+                    });
+        }
+
+        shadowMainLooper().idle();
     }
 }

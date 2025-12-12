@@ -16,10 +16,10 @@ flag {
 }
 
 flag {
-    name: "catalyst_media_controls"
+    name: "catalyst_sound_screen_25q4"
     namespace: "android_settings"
-    description: "Flag for Media"
-    bug: "337243570"
+    description: "Flag for Sound & vibration in 25Q4"
+    bug: "405344827"
 }
 
 flag {
@@ -30,15 +30,22 @@ flag {
 }
 
 flag {
-    name: "catalyst_vibration_screen"
+    name: "catalyst_vibration_intensity_screen_25q4"
     namespace: "android_settings"
     description: "Flag for Vibration & haptics full page migration"
-    bug: "323791114"
+    bug: "405344827"
 }
 
 flag {
     name: "catalyst_spatial_audio"
     namespace: "android_settings"
-    description: "Flag for Spatial audio in 25Q3"
-    bug: "352179685"
+    description: "Flag for Spatial audio in 25Q4"
+    bug: "405344827"
+}
+
+flag {
+  name: "deeplink_sound_and_vibration_25q4"
+  namespace: "android_settings"
+  description: "Flag using for all common deeplink migration in 25Q4"
+  bug: "405344827"
 }

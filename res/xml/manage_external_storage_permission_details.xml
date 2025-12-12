@@ -26,7 +26,6 @@
 
     <com.android.settingslib.widget.FooterPreference
         android:title="@string/allow_manage_external_storage_description"
-        android:selectable="false"
         settings:searchable="false"/>
 
 </PreferenceScreen>

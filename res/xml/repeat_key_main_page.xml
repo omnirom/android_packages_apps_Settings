@@ -25,18 +25,26 @@
         android:key="repeat_keys_main_switch"
         android:title="@string/keyboard_repeat_keys_title"
         settings:controller="com.android.settings.inputmethod.KeyboardRepeatKeysController"/>
-    <com.android.settings.widget.LabeledSeekBarPreference
+    <com.android.settingslib.widget.SliderPreference
         android:key="repeat_keys_timeout_preference"
         android:title="@string/keyboard_repeat_keys_timeout_title"
         android:min="0"
         android:max="6"
         settings:seekBarIncrement="1"
+        settings:iconEnd="@drawable/ic_add_24dp"
+        settings:iconStart="@drawable/ic_remove_24dp"
+        settings:iconEndContentDescription="@string/keyboard_repeat_keys_increase_delay_desc"
+        settings:iconStartContentDescription="@string/keyboard_repeat_keys_decrease_delay_desc"
         settings:controller= "com.android.settings.inputmethod.KeyboardRepeatKeysTimeOutPreferenceController" />
-    <com.android.settings.widget.LabeledSeekBarPreference
+    <com.android.settingslib.widget.SliderPreference
         android:key="repeat_keys_delay_preference"
         android:title="@string/keyboard_repeat_keys_delay_title"
         android:min="0"
         android:max="8"
         settings:seekBarIncrement="1"
+        settings:iconEnd="@drawable/ic_add_24dp"
+        settings:iconStart="@drawable/ic_remove_24dp"
+        settings:iconEndContentDescription="@string/keyboard_repeat_keys_increase_rate_desc"
+        settings:iconStartContentDescription="@string/keyboard_repeat_keys_decrease_rate_desc"
         settings:controller= "com.android.settings.inputmethod.KeyboardRepeatKeysDelayPreferenceController" />
 </PreferenceScreen>

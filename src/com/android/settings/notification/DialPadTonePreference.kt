@@ -15,21 +15,44 @@
  */
 package com.android.settings.notification
 
+import android.app.settings.SettingsEnums.ACTION_DIAL_PAD_TONE
 import android.content.Context
 import android.provider.Settings.System.DTMF_TONE_WHEN_DIALING
 import com.android.settings.R
 import com.android.settings.Utils
+import com.android.settings.contract.KEY_DIAL_PAD_TONE
+import com.android.settings.metrics.PreferenceActionMetricsProvider
 import com.android.settingslib.datastore.SettingsSystemStore
 import com.android.settingslib.metadata.PreferenceAvailabilityProvider
+import com.android.settingslib.metadata.ReadWritePermit
+import com.android.settingslib.metadata.SensitivityLevel
 import com.android.settingslib.metadata.SwitchPreference
 
 // LINT.IfChange
 class DialPadTonePreference :
     SwitchPreference(DTMF_TONE_WHEN_DIALING, R.string.dial_pad_tones_title),
+    PreferenceActionMetricsProvider,
     PreferenceAvailabilityProvider {
+    override val preferenceActionMetrics: Int
+        get() = ACTION_DIAL_PAD_TONE
+
+    override fun tags(context: Context) = arrayOf(KEY_DIAL_PAD_TONE)
 
     override fun storage(context: Context) = SettingsSystemStore.get(context)
 
     override fun isAvailable(context: Context) = Utils.isVoiceCapable(context)
+
+    override fun getReadPermissions(context: Context) = SettingsSystemStore.getReadPermissions()
+
+    override fun getReadPermit(context: Context, callingPid: Int, callingUid: Int) =
+        ReadWritePermit.ALLOW
+
+    override fun getWritePermissions(context: Context) = SettingsSystemStore.getWritePermissions()
+
+    override fun getWritePermit(context: Context, callingPid: Int, callingUid: Int) =
+        ReadWritePermit.ALLOW
+
+    override val sensitivityLevel
+        get() = SensitivityLevel.NO_SENSITIVITY
 }
 // LINT.ThenChange(DialPadTonePreferenceController.java)

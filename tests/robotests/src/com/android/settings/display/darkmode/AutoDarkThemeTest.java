@@ -19,17 +19,15 @@ package com.android.settings.display.darkmode;
 import static android.app.UiModeManager.MODE_ATTENTION_THEME_OVERLAY_NIGHT;
 import static android.app.UiModeManager.MODE_NIGHT_AUTO;
 import static android.app.UiModeManager.MODE_NIGHT_CUSTOM;
-import static android.app.UiModeManager.MODE_NIGHT_CUSTOM_TYPE_BEDTIME;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
-import android.app.Flags;
+import android.app.Application;
 import android.app.UiModeManager;
 import android.content.Context;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.service.notification.ZenDeviceEffects;
 
@@ -72,7 +70,8 @@ public class AutoDarkThemeTest {
         MockitoAnnotations.initMocks(this);
         mContext = ApplicationProvider.getApplicationContext();
 
-        ShadowApplication shadowApp = ShadowApplication.getInstance();
+        ShadowApplication shadowApp =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         shadowApp.setSystemService(Context.UI_MODE_SERVICE, mUiModeManager);
 
         ZenModesBackend.setInstance(mZenModesBackend);
@@ -92,7 +91,6 @@ public class AutoDarkThemeTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
     public void getStatus_inactiveButUsedInModes() {
         when(mUiModeManager.getNightMode()).thenReturn(MODE_NIGHT_CUSTOM);
         when(mZenModesBackend.getModes()).thenReturn(List.of(MODE_WITH_DARK_THEME));
@@ -101,7 +99,6 @@ public class AutoDarkThemeTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
     public void getStatus_activeDueToModes() {
         when(mUiModeManager.getNightMode()).thenReturn(MODE_NIGHT_CUSTOM);
         when(mUiModeManager.getAttentionModeThemeOverlay()).thenReturn(
@@ -110,24 +107,6 @@ public class AutoDarkThemeTest {
                 List.of(new TestModeBuilder(MODE_WITH_DARK_THEME).setActive(true).build()));
 
         assertThat(getStatus(true)).isEqualTo("Will turn off when Sechseläuten ends");
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_MODES_UI)
-    public void getStatus_inactiveButUsingBedtime() {
-        when(mUiModeManager.getNightMode()).thenReturn(MODE_NIGHT_CUSTOM);
-        when(mUiModeManager.getNightModeCustomType()).thenReturn(MODE_NIGHT_CUSTOM_TYPE_BEDTIME);
-
-        assertThat(getStatus(false)).isEqualTo("Will turn on automatically at bedtime");
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_MODES_UI)
-    public void getStatus_activeDueToBedtime() {
-        when(mUiModeManager.getNightMode()).thenReturn(MODE_NIGHT_CUSTOM);
-        when(mUiModeManager.getNightModeCustomType()).thenReturn(MODE_NIGHT_CUSTOM_TYPE_BEDTIME);
-
-        assertThat(getStatus(true)).isEqualTo("Will turn off automatically after bedtime");
     }
 
     @Test
@@ -153,7 +132,6 @@ public class AutoDarkThemeTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
     public void getModesThatChangeDarkTheme_returnsModeNames() {
         ZenMode modeThatChanges1 = new TestModeBuilder()
                 .setName("Inactive")
@@ -177,7 +155,6 @@ public class AutoDarkThemeTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
     public void getActiveModesThatChangeDarkTheme_returnsModeNames() {
         ZenMode inactiveModeThatUsesDarkTheme = new TestModeBuilder()
                 .setName("Inactive")

@@ -252,4 +252,4 @@ public class WifiTetherPreferenceController extends AbstractPreferenceController
         return true;
     }
 }
-// LINT.ThenChange(WifiHotspotSwitchPreference.kt)
+// LINT.ThenChange(WifiHotspotScreen.kt)

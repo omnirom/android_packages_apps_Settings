@@ -16,133 +16,121 @@
 
 package com.android.settings.development;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.os.IBinder;
+import android.os.Parcel;
 import android.os.RemoteException;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.preference.PreferenceScreen;
 import androidx.preference.TwoStatePreference;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.flags.Flags;
-import com.android.settings.testutils.shadow.ShadowParcel;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
 public class ShowHdrSdrRatioPreferenceControllerTest {
 
-    @Mock
-    private Context mContext;
+    @Rule
+    public MockitoRule mockito = MockitoJUnit.rule();
     @Mock
     private PreferenceScreen mScreen;
     @Mock
     private TwoStatePreference mPreference;
     @Mock
     private IBinder mSurfaceFlinger;
-
     private ShowHdrSdrRatioPreferenceController mController;
+    private Context mContext;
 
     @Rule
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        mContext = RuntimeEnvironment.application;
+        mContext = ApplicationProvider.getApplicationContext();
         mController = new ShowHdrSdrRatioPreferenceController(mContext, mSurfaceFlinger, true);
         when(mScreen.findPreference(mController.getPreferenceKey())).thenReturn(mPreference);
         mController.displayPreference(mScreen);
     }
 
     @Test
-    @Config(shadows = ShadowParcel.class)
+    @EnableFlags(Flags.FLAG_DEVELOPMENT_HDR_SDR_RATIO)
     public void onPreferenceChange_settingEnabled_shouldChecked() throws RemoteException {
-        mSetFlagsRule.enableFlags(Flags.FLAG_DEVELOPMENT_HDR_SDR_RATIO);
         assertTrue(mController.isAvailable());
-        ShadowParcel.sReadBoolResult = true;
-        doReturn(true).when(mSurfaceFlinger)
-            .transact(anyInt(), any(), any(), eq(0 /* flags */));
+        mockSurfaceFlingerTransactResponse(true);
         mController.onPreferenceChange(mPreference, true /* new value */);
         verify(mPreference).setChecked(true);
     }
 
     @Test
-    @Config(shadows = ShadowParcel.class)
+    @EnableFlags(Flags.FLAG_DEVELOPMENT_HDR_SDR_RATIO)
     public void onPreferenceChange_settingDisabled_shouldUnchecked() throws RemoteException {
-        mSetFlagsRule.enableFlags(Flags.FLAG_DEVELOPMENT_HDR_SDR_RATIO);
         assertTrue(mController.isAvailable());
-        ShadowParcel.sReadBoolResult = false;
-        doReturn(true).when(mSurfaceFlinger)
-            .transact(anyInt(), any(), any(), eq(0 /* flags */));
+        mockSurfaceFlingerTransactResponse(false);
         mController.onPreferenceChange(mPreference, false /* new value */);
         verify(mPreference).setChecked(false);
     }
 
     @Test
-    @Config(shadows = ShadowParcel.class)
+    @EnableFlags(Flags.FLAG_DEVELOPMENT_HDR_SDR_RATIO)
     public void updateState_settingEnabled_shouldChecked() throws RemoteException {
-        mSetFlagsRule.enableFlags(Flags.FLAG_DEVELOPMENT_HDR_SDR_RATIO);
         assertTrue(mController.isAvailable());
-        ShadowParcel.sReadBoolResult = true;
-        doReturn(true).when(mSurfaceFlinger)
-            .transact(anyInt(), any(), any(), eq(0 /* flags */));
+        mockSurfaceFlingerTransactResponse(true);
         mController.updateState(mPreference);
         verify(mPreference).setChecked(true);
     }
 
     @Test
-    @Config(shadows = ShadowParcel.class)
+    @EnableFlags(Flags.FLAG_DEVELOPMENT_HDR_SDR_RATIO)
     public void updateState_settingDisabled_shouldUnchecked() throws RemoteException {
-        mSetFlagsRule.enableFlags(Flags.FLAG_DEVELOPMENT_HDR_SDR_RATIO);
         assertTrue(mController.isAvailable());
-        ShadowParcel.sReadBoolResult = false;
-        doReturn(true).when(mSurfaceFlinger)
-            .transact(anyInt(), any(), any(), eq(0 /* flags */));
+        mockSurfaceFlingerTransactResponse(false);
         mController.updateState(mPreference);
         verify(mPreference).setChecked(false);
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_DEVELOPMENT_HDR_SDR_RATIO)
     public void settingNotAvailable_isHdrSdrRatioAvailableFalse_flagsOff() {
-        mSetFlagsRule.disableFlags(Flags.FLAG_DEVELOPMENT_HDR_SDR_RATIO);
         mController = new ShowHdrSdrRatioPreferenceController(mContext, mSurfaceFlinger, true);
         assertFalse(mController.isAvailable());
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVELOPMENT_HDR_SDR_RATIO)
     public void settingNotAvailable_isHdrSdrRatioAvailableTrue_flagsOn() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_DEVELOPMENT_HDR_SDR_RATIO);
         mController = new ShowHdrSdrRatioPreferenceController(mContext, mSurfaceFlinger, false);
         assertFalse(mController.isAvailable());
     }
 
     @Test
-    @Config(shadows = ShadowParcel.class)
+    @EnableFlags(Flags.FLAG_DEVELOPMENT_HDR_SDR_RATIO)
     public void onDeveloperOptionsSwitchDisabled_preferenceUnchecked_shouldNotTurnOffPreference()
             throws RemoteException {
-        mSetFlagsRule.enableFlags(Flags.FLAG_DEVELOPMENT_HDR_SDR_RATIO);
         assertTrue(mController.isAvailable());
-        ShadowParcel.sReadBoolResult = false;
-        doReturn(true).when(mSurfaceFlinger)
-            .transact(anyInt(), any(), any(), eq(0 /* flags */));
+        mockSurfaceFlingerTransactResponse(false);
         when(mPreference.isChecked()).thenReturn(false);
         mController.onDeveloperOptionsSwitchDisabled();
 
@@ -152,20 +140,32 @@ public class ShowHdrSdrRatioPreferenceControllerTest {
     }
 
     @Test
-    @Config(shadows = ShadowParcel.class)
+    @EnableFlags(Flags.FLAG_DEVELOPMENT_HDR_SDR_RATIO)
     public void onDeveloperOptionsSwitchDisabled_preferenceChecked_shouldTurnOffPreference()
             throws RemoteException {
-        mSetFlagsRule.enableFlags(Flags.FLAG_DEVELOPMENT_HDR_SDR_RATIO);
         assertTrue(mController.isAvailable());
-        ShadowParcel.sReadBoolResult = true;
-        doReturn(true).when(mSurfaceFlinger)
-            .transact(anyInt(), any(), any(), eq(0 /* flags */));
+        mockSurfaceFlingerTransactResponse(true);
         when(mPreference.isChecked()).thenReturn(true);
         mController.onDeveloperOptionsSwitchDisabled();
 
         mController.writeShowHdrSdrRatioSetting(false);
         verify(mPreference).setChecked(false);
         verify(mPreference).setEnabled(false);
+    }
+
+    private void mockSurfaceFlingerTransactResponse(boolean replyResult) throws RemoteException {
+        doAnswer(new Answer<Boolean>() {
+            @Override
+            public Boolean answer(InvocationOnMock invocation) {
+                // Get the arguments passed to the mocked method
+                Object[] args = invocation.getArguments();
+                if (args[2] instanceof Parcel reply) {
+                    reply.writeBoolean(replyResult);
+                    reply.setDataPosition(0);
+                }
+                return true;
+            }
+        }).when(mSurfaceFlinger).transact(anyInt(), any(), any(), eq(0 /* flags */));
     }
 }
 

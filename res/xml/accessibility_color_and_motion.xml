@@ -41,16 +41,16 @@
         settings:controller="com.android.settings.accessibility.ColorInversionPreferenceController"/>
 
     <!-- DarkModePreference is searchable in the Display & Touch setting.
-         With catalyst, we're reusing the same preference. Will let the SettingsSearch
-          to determine how to resolve multi-entry on same preference. -->
+         Therefore, we set searchable = false here to avoid duplicate search results. -->
     <com.android.settings.display.darkmode.DarkModePreference
-        android:key="dark_ui_mode"
+        android:key="dark_ui_mode_accessibility"
         android:icon="@drawable/ic_dark_ui"
         android:title="@string/dark_ui_mode"
         android:fragment="com.android.settings.display.darkmode.DarkModeSettingsFragment"
         android:widgetLayout="@null"
         settings:widgetLayout="@null"
-        settings:controller="com.android.settings.display.DarkUIPreferenceController" />
+        settings:controller="com.android.settings.display.DarkUIPreferenceController"
+        settings:searchable="false" />
 
     <SwitchPreferenceCompat
         android:icon="@drawable/ic_accessibility_animation"
@@ -64,5 +64,14 @@
         android:persistent="false"
         android:title="@string/experimental_category_title">
     </PreferenceCategory>
+
+    <com.android.settingslib.widget.ButtonPreference
+        android:key="feedback"
+        android:title="@string/accessibility_send_feedback_title"
+        android:icon="@drawable/ic_feedback"
+        settings:searchable="false"
+        settings:buttonPreferenceSize="normal"
+        settings:buttonPreferenceType="tonal"
+        settings:controller="com.android.settings.accessibility.FeedbackButtonPreferenceController" />
 </PreferenceScreen>
 <!-- LINT.ThenChange(/src/com/android/settings/accessibility/ColorAndMotionScreen.kt:ui_hierarchy) -->

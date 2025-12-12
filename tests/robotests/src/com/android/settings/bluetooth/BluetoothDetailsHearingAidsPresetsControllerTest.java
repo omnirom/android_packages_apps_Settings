@@ -293,7 +293,7 @@ public class BluetoothDetailsHearingAidsPresetsControllerTest extends
     }
 
     private ListPreference getTestPresetPreference(String key) {
-        final ListPreference presetPreference = spy(new ListPreference(mContext));
+        final ListPreference presetPreference = spy(new PresetListPreference(mContext));
         when(presetPreference.findIndexOfValue(String.valueOf(TEST_PRESET_INDEX))).thenReturn(0);
         when(presetPreference.getEntries()).thenReturn(new CharSequence[]{TEST_PRESET_NAME});
         when(presetPreference.getEntryValues()).thenReturn(

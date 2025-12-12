@@ -50,6 +50,7 @@ import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 /**
  * A preference controller to turn on/off keyboard vibration state with a single toggle.
  */
+// LINT.IfChange
 public class KeyboardVibrationTogglePreferenceController extends TogglePreferenceController
         implements DefaultLifecycleObserver {
 
@@ -164,3 +165,4 @@ public class KeyboardVibrationTogglePreferenceController extends TogglePreferenc
         return success;
     }
 }
+// LINT.ThenChange(KeyboardVibrationSwitchPreference.kt)

@@ -16,8 +16,6 @@
 
 package com.android.settings.enterprise;
 
-import static android.app.admin.DevicePolicyManager.DEVICE_OWNER_TYPE_FINANCED;
-
 import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 
@@ -48,7 +46,6 @@ public class PrivacySettingsPreferenceFactory {
 
     private static boolean isFinancedDevice(Context context) {
         final DevicePolicyManager dpm = context.getSystemService(DevicePolicyManager.class);
-        return dpm.isDeviceManaged() && dpm.getDeviceOwnerType(
-                dpm.getDeviceOwnerComponentOnAnyUser()) == DEVICE_OWNER_TYPE_FINANCED;
+        return dpm.isFinancedDevice();
     }
 }

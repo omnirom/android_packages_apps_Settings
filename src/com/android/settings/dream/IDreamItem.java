@@ -74,4 +74,10 @@ public interface IDreamItem {
     default @DreamItemViewTypes.ViewType int viewType() {
         return DreamItemViewTypes.DREAM_ITEM;
     }
+
+    /**
+     * Callback which can be implemented to handle the preview of this dream.
+     */
+    default void onPreviewClicked() {
+    }
 }

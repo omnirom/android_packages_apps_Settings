@@ -16,7 +16,6 @@
 
 package com.android.settings.applications.specialaccess.zenaccess;
 
-import android.app.Flags;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.os.Bundle;
@@ -51,9 +50,7 @@ public class ZenAccessDetails extends AppInfoWithHeader implements
     @Override
     public void onResume() {
         super.onResume();
-        requireActivity().setTitle(Flags.modesUi()
-                ? R.string.manage_zen_modes_access_title
-                : R.string.manage_zen_access_title);
+        requireActivity().setTitle(R.string.manage_zen_modes_access_title);
     }
 
     @Override
@@ -89,9 +86,7 @@ public class ZenAccessDetails extends AppInfoWithHeader implements
             preference.setSummary(getString(R.string.zen_access_disabled_package_warning));
             return;
         }
-        preference.setTitle(Flags.modesUi()
-                ? R.string.zen_modes_access_detail_switch
-                : R.string.zen_access_detail_switch);
+        preference.setTitle(R.string.zen_modes_access_detail_switch);
         preference.setChecked(ZenAccessController.hasAccess(context, mPackageName));
         preference.setOnPreferenceChangeListener((p, newValue) -> {
             final boolean access = (Boolean) newValue;

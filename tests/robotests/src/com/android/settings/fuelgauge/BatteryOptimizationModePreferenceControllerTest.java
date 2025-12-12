@@ -20,6 +20,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
@@ -28,6 +29,7 @@ import static org.mockito.Mockito.verify;
 
 import android.content.Context;
 
+import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settingslib.widget.MainSwitchPreference;
@@ -54,6 +56,8 @@ public class BatteryOptimizationModePreferenceControllerTest {
     @Mock MainSwitchPreference mBackgroundUsageAllowabilityPreference;
     @Mock SelectorWithWidgetPreference mOptimizedPreference;
     @Mock SelectorWithWidgetPreference mUnrestrictedPreference;
+    @Mock WarningFramePreference mWarningFramePreference;
+    @Mock WarningFrameSelectorPreference mWarningFrameSelectorPreference;
 
     @Before
     public void setUp() throws Exception {
@@ -64,7 +68,7 @@ public class BatteryOptimizationModePreferenceControllerTest {
         mBackgroundUsageController =
                 spy(
                         new BatteryOptimizationModePreferenceController(
-                                mContext, "test", mBatteryOptimizeUtils));
+                                mContext, "test", mBatteryOptimizeUtils, null, null));
         mBackgroundUsageController.mBackgroundUsageAllowabilityPreference =
                 mBackgroundUsageAllowabilityPreference;
         mBackgroundUsageController.mOptimizedPreference = mOptimizedPreference;
@@ -127,6 +131,47 @@ public class BatteryOptimizationModePreferenceControllerTest {
         mBackgroundUsageController.updatePreferences(mTestMode);
 
         verifyPreferences(mTestMode);
+    }
+
+    @Test
+    public void initPreferenceHint_withHintInfoUnsupportedPrefType_doNothing() {
+        final PreferenceScreen screen = spy(new PreferenceScreen(mContext, null));
+        mBackgroundUsageController.mHintPrefKey = "test_hint";
+        mBackgroundUsageController.mHintText = "test hint";
+        doReturn(mWarningFramePreference)
+                .when(screen)
+                .findPreference(mBackgroundUsageController.mHintPrefKey);
+
+        mBackgroundUsageController.initPreferenceHint(screen);
+
+        verify(mWarningFramePreference, never()).setHint(any());
+    }
+
+    @Test
+    public void initPreferenceHint_withHintInfoSupportedPrefType_setHint() {
+        final PreferenceScreen screen = spy(new PreferenceScreen(mContext, null));
+        mBackgroundUsageController.mHintPrefKey = "test_hint";
+        mBackgroundUsageController.mHintText = "test hint";
+        doReturn(mWarningFrameSelectorPreference)
+                .when(screen)
+                .findPreference(mBackgroundUsageController.mHintPrefKey);
+
+        mBackgroundUsageController.initPreferenceHint(screen);
+
+        verify(mWarningFrameSelectorPreference).setHint(eq(mBackgroundUsageController.mHintText));
+    }
+
+    @Test
+    public void initPreferenceHint_lackHintInfo_doNothing() {
+        final PreferenceScreen screen = spy(new PreferenceScreen(mContext, null));
+        mBackgroundUsageController.mHintPrefKey = "test_hint";
+        doReturn(mWarningFrameSelectorPreference)
+                .when(screen)
+                .findPreference(mBackgroundUsageController.mHintPrefKey);
+
+        mBackgroundUsageController.initPreferenceHint(screen);
+
+        verify(mWarningFramePreference, never()).setHint(any());
     }
 
     @Test

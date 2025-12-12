@@ -18,8 +18,13 @@ package com.android.settings.applications.appinfo;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.robolectric.Shadows.shadowOf;
+
+import android.app.Application;
 import android.app.role.RoleManager;
 import android.content.Context;
+
+import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +33,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.shadows.ShadowApplication;
 
 @RunWith(RobolectricTestRunner.class)
 public class DefaultPhoneShortcutPreferenceControllerTest {
@@ -44,7 +48,8 @@ public class DefaultPhoneShortcutPreferenceControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        ShadowApplication.getInstance().setSystemService(Context.ROLE_SERVICE, mRoleManager);
+        shadowOf((Application) ApplicationProvider.getApplicationContext())
+                .setSystemService(Context.ROLE_SERVICE, mRoleManager);
         mController = new DefaultPhoneShortcutPreferenceController(RuntimeEnvironment.application,
                 TEST_PACKAGE_NAME);
     }

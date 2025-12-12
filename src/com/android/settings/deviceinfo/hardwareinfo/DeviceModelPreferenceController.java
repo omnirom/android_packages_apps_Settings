@@ -20,6 +20,7 @@ import android.content.Context;
 
 import com.android.settings.deviceinfo.HardwareInfoPreferenceController;
 
+// LINT.IfChange
 public class DeviceModelPreferenceController extends HardwareInfoPreferenceController {
 
     public DeviceModelPreferenceController(Context context, String key) {
@@ -55,3 +56,4 @@ public class DeviceModelPreferenceController extends HardwareInfoPreferenceContr
         return true;
     }
 }
+// LINT.ThenChange(DeviceModelPreference.kt)

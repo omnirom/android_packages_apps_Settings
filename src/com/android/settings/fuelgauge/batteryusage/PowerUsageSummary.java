@@ -36,6 +36,7 @@ import androidx.preference.Preference;
 
 import com.android.settings.R;
 import com.android.settings.Utils;
+import com.android.settings.flags.Flags;
 import com.android.settings.fuelgauge.BatteryHeaderTextPreferenceController;
 import com.android.settings.fuelgauge.BatteryInfo;
 import com.android.settings.fuelgauge.BatteryInfoLoader;
@@ -225,9 +226,10 @@ public class PowerUsageSummary extends PowerUsageBase
 
     @VisibleForTesting
     void initPreference() {
-        mBatteryUsagePreference = findPreference(KEY_BATTERY_USAGE);
-        mBatteryUsagePreference.setSummary(getString(R.string.advanced_battery_preference_summary));
-        mBatteryUsagePreference.setVisible(mPowerFeatureProvider.isBatteryUsageEnabled());
+        if (!isCatalystEnabled() || !Flags.deeplinkBattery25q4()) {
+            mBatteryUsagePreference = findPreference(KEY_BATTERY_USAGE);
+            mBatteryUsagePreference.setVisible(mPowerFeatureProvider.isBatteryUsageEnabled());
+        }
 
         mHelpPreference = findPreference(KEY_BATTERY_ERROR);
         mHelpPreference.setVisible(false);

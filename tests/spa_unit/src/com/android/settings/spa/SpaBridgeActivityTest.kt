@@ -79,10 +79,10 @@ class SpaBridgeActivityTest {
                 META_DATA_KEY_HIGHLIGHT_MENU_KEY to HIGHLIGHT_MENU_KEY,
             )
 
-        val (destination, highlightMenuKey) = activity.getDestination()!!
+        val spaDestination = activity.getDestination()!!
 
-        assertThat(destination).isEqualTo(DESTINATION)
-        assertThat(highlightMenuKey).isEqualTo(HIGHLIGHT_MENU_KEY)
+        assertThat(spaDestination.destination).isEqualTo(DESTINATION)
+        assertThat(spaDestination.highlightMenuKey).isEqualTo(HIGHLIGHT_MENU_KEY)
     }
 
     private companion object {

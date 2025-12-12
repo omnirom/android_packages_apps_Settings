@@ -154,7 +154,7 @@ public class Enhanced4gBasePreferenceController extends TelephonyTogglePreferenc
 
         final VolteQueryImsState queryState = queryImsState(mSubId);
         switchPreference.setEnabled(isUserControlAllowed(getCarrierConfigForSubId(mSubId))
-                && queryState.isAllowUserControl());
+                && queryState.isAllowUserControl() && !mIsAirplaneModeOn);
         switchPreference.setChecked(queryState.isEnabledByUser()
                 && queryState.isAllowUserControl());
     }

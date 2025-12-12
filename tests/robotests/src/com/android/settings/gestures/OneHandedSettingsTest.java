@@ -16,25 +16,17 @@
 
 package com.android.settings.gestures;
 
-import static com.android.settings.gestures.OneHandedSettings.ONE_HANDED_SHORTCUT_KEY;
-
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.spy;
 
 import android.content.Context;
 import android.os.SystemProperties;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.SearchIndexableResource;
 
 import androidx.test.core.app.ApplicationProvider;
 
-import com.android.settingslib.search.SearchIndexableRaw;
-
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -43,12 +35,11 @@ import org.robolectric.util.ReflectionHelpers;
 
 import java.util.List;
 
-/** Tests for {@link OneHandedSettings}. */
+/**
+ * Tests for {@link OneHandedSettings}.
+ */
 @RunWith(RobolectricTestRunner.class)
 public class OneHandedSettingsTest {
-
-    @Rule
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     private final Context mContext = ApplicationProvider.getApplicationContext();
     private OneHandedSettings mSettings;
@@ -94,26 +85,6 @@ public class OneHandedSettingsTest {
                 ReflectionHelpers.ClassParameter.from(Context.class, mContext));
         final boolean isEnabled = (Boolean) obj;
         assertThat(isEnabled).isFalse();
-    }
-
-    @Test
-    @DisableFlags(com.android.settings.accessibility.Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
-    public void getRawDataToIndex_flagDisabled_isEmpty() {
-        final List<SearchIndexableRaw> rawData = OneHandedSettings
-                .SEARCH_INDEX_DATA_PROVIDER.getRawDataToIndex(mContext, true);
-        final List<String> actualSearchKeys = rawData.stream().map(raw -> raw.key).toList();
-
-        assertThat(actualSearchKeys).isEmpty();
-    }
-
-    @Test
-    @EnableFlags(com.android.settings.accessibility.Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
-    public void getRawDataToIndex_returnsOnlyShortcutKey() {
-        final List<SearchIndexableRaw> rawData = OneHandedSettings
-                .SEARCH_INDEX_DATA_PROVIDER.getRawDataToIndex(mContext, true);
-        final List<String> actualSearchKeys = rawData.stream().map(raw -> raw.key).toList();
-
-        assertThat(actualSearchKeys).containsExactly(ONE_HANDED_SHORTCUT_KEY);
     }
 
     @Test

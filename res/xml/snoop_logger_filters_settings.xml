@@ -20,9 +20,8 @@
     xmlns:settings="http://schemas.android.com/apk/res-auto"
     android:title="@string/bt_hci_snoop_log_filters_dashboard_title" >
 
-    <PreferenceCategory
+    <com.android.settingslib.widget.UntitledPreferenceCategory
         android:key="snoop_logger_filters_category"
-        android:layout="@layout/preference_category_no_label"
         android:title="@string/bt_hci_snoop_log_filters_dashboard_summary"
         settings:controller=
           "com.android.settings.development.snooplogger.SnoopLoggerFiltersPreferenceController" />
@@ -30,6 +29,5 @@
     <com.android.settingslib.widget.FooterPreference
         android:key="snoop_logger_filters_footer"
         android:title="@string/bt_hci_snoop_log_filters_dashboard_footer"
-        android:selectable="false"
         settings:searchable="false"/>
 </PreferenceScreen>

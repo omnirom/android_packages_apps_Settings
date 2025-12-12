@@ -15,8 +15,9 @@
  */
 package com.android.settings.display;
 
+import static com.android.systemui.shared.Flags.ambientAod;
+
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.hardware.display.AmbientDisplayConfiguration;
 import android.os.PowerManager;
 import android.os.SystemProperties;
@@ -37,7 +38,6 @@ public class AmbientDisplayAlwaysOnPreferenceController extends TogglePreference
 
     private static final int MY_USER = UserHandle.myUserId();
     private static final String PROP_AWARE_AVAILABLE = "ro.vendor.aware_available";
-    private static final String AOD_SUPPRESSED_TOKEN = "winddown";
 
     private AmbientDisplayConfiguration mConfig;
 
@@ -45,9 +45,14 @@ public class AmbientDisplayAlwaysOnPreferenceController extends TogglePreference
         super(context, key);
     }
 
+    protected boolean ambientAodMigration() {
+        return !ambientAod();
+    }
+
     @Override
     public int getAvailabilityStatus() {
-        return isAvailable(getConfig())
+        return ambientAodMigration()
+                && isAvailable(getConfig())
                 && !SystemProperties.getBoolean(PROP_AWARE_AVAILABLE, false) ?
                 AVAILABLE : UNSUPPORTED_ON_DEVICE;
     }
@@ -112,23 +117,9 @@ public class AmbientDisplayAlwaysOnPreferenceController extends TogglePreference
 
     /**
      * Returns whether AOD is suppressed by Bedtime mode, a feature of Digital Wellbeing.
-     *
-     * We know that Bedtime mode suppresses AOD using {@link AOD_SUPPRESSED_TOKEN}. If the Digital
-     * Wellbeing app is suppressing AOD with {@link AOD_SUPPRESSED_TOKEN}, then we can infer that
-     * AOD is being suppressed by Bedtime mode.
      */
     public static boolean isAodSuppressedByBedtime(Context context) {
-        int uid;
-        final PowerManager powerManager = context.getSystemService(PowerManager.class);
-        final PackageManager packageManager = context.getPackageManager();
-        final String packageName = context.getString(
-                com.android.internal.R.string.config_systemWellbeing);
-        try {
-            uid = packageManager.getApplicationInfo(packageName, /* flags= */ 0).uid;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-        return powerManager.isAmbientDisplaySuppressedForTokenByApp(AOD_SUPPRESSED_TOKEN, uid);
+        return context.getSystemService(PowerManager.class).isAmbientDisplaySuppressed();
     }
 }
 // LINT.ThenChange(AmbientDisplayAlwaysOnPreference.kt)

@@ -22,9 +22,7 @@ import static org.mockito.Mockito.spy;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
-import android.provider.Flags;
 
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
@@ -118,7 +116,6 @@ public class FloatingButtonShortcutOptionControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
     public void isShortcutAvailable_gestureNavigationMode_returnsTrue() {
         AccessibilityTestUtils.setSoftwareShortcutMode(
                 mContext, /* gestureNavEnabled= */ true, /* floatingButtonEnabled= */ false);

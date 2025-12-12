@@ -29,4 +29,9 @@ public class TextReadingFragmentForDisplaySettingsController extends
         // Pass the fixed entry point to the parent controller for logging.
         super(context, preferenceKey, DISPLAY_SETTINGS);
     }
+
+    @Override
+    public int getAvailabilityStatus() {
+        return AVAILABLE;
+    }
 }

@@ -16,13 +16,8 @@
 
 package com.android.settings.ui.privatespace
 
-
-import android.os.Flags
-import android.platform.test.annotations.RequiresFlagsDisabled
-import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import android.provider.Settings
-import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
@@ -36,15 +31,11 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @RunWith(AndroidJUnit4::class)
-@RequiresFlagsEnabled(Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-        android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES)
 class PrivateSpaceAuthenticationActivityTest {
     private val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 
-    @get:Rule
-    public val mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
+    @get:Rule public val mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @Before
     fun setUp() {
@@ -58,7 +49,7 @@ class PrivateSpaceAuthenticationActivityTest {
         device.clickObject(By.text(PRIVATE_SPACE_SETTING))
         device.waitObject(By.text(DIALOG_TITLE))
         Thread.sleep(1000)
-        device.assertHasTexts(listOf("Set a screen lock","Cancel"))
+        device.assertHasTexts(listOf("Set a screen lock", "Cancel"))
     }
 
     @Test
@@ -78,7 +69,7 @@ class PrivateSpaceAuthenticationActivityTest {
         device.clickObject(By.text(PRIVATE_SPACE_SETTING))
         device.waitObject(By.text(DIALOG_TITLE))
         Thread.sleep(1000)
-        device.assertHasTexts(listOf(SET_LOCK_BUTTON,CANCEL_TEXT))
+        device.assertHasTexts(listOf(SET_LOCK_BUTTON, CANCEL_TEXT))
         device.clickObject(By.text(SET_LOCK_BUTTON))
         Thread.sleep(1000)
         device.assertHasTexts(listOf(PATTERN_TEXT, PIN_TEXT, PASSWORD_TEXT))

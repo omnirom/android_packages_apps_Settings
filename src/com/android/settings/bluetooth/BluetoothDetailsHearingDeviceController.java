@@ -40,9 +40,9 @@ import java.util.List;
 public class BluetoothDetailsHearingDeviceController extends BluetoothDetailsController {
 
     public static final int ORDER_HEARING_DEVICE_SETTINGS = 1;
-    public static final int ORDER_HEARING_AIDS_PRESETS = 2;
-    public static final int ORDER_HEARING_DEVICE_INPUT_ROUTING = 3;
-    public static final int ORDER_AMBIENT_VOLUME = 4;
+    public static final int ORDER_AMBIENT_VOLUME = 2;
+    public static final int ORDER_HEARING_AIDS_PRESETS = 3;
+    public static final int ORDER_HEARING_DEVICE_INPUT_ROUTING = 4;
     static final String KEY_HEARING_DEVICE_GROUP = "hearing_device_group";
 
     private final List<BluetoothDetailsController> mControllers = new ArrayList<>();
@@ -106,8 +106,13 @@ public class BluetoothDetailsHearingDeviceController extends BluetoothDetailsCon
             mControllers.add(new BluetoothDetailsHearingDeviceSettingsController(mContext,
                     mFragment, mCachedDevice, mLifecycle));
         }
-        mControllers.add(new BluetoothDetailsHearingAidsPresetsController(mContext, mFragment,
-                mManager, mCachedDevice, mLifecycle));
+        if (com.android.settingslib.flags.Flags.hearingDevicesSeparatedPresetControl()) {
+            mControllers.add(new BluetoothDetailsPresetPreferenceController(mContext, mManager,
+                    mFragment, mCachedDevice, mLifecycle));
+        } else {
+            mControllers.add(new BluetoothDetailsHearingAidsPresetsController(mContext, mFragment,
+                    mManager, mCachedDevice, mLifecycle));
+        }
         if (com.android.settingslib.flags.Flags.hearingDevicesAmbientVolumeControl()) {
             mControllers.add(new BluetoothDetailsAmbientVolumePreferenceController(mContext,
                     mManager, mFragment, mCachedDevice, mLifecycle));

@@ -19,7 +19,6 @@ package com.android.settings.inputmethod;
 import static android.view.WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
@@ -41,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.preference.Preference;

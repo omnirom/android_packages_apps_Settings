@@ -16,6 +16,8 @@
 
 package com.android.settings.password;
 
+import static com.android.settings.password.ChooseLockSettingsHelper.EXTRA_KEY_USE_EXPRESSIVE_STYLE;
+
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -25,6 +27,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.UserHandle;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +49,7 @@ import com.android.settings.password.ChooseLockPattern.IntentBuilder;
 import com.android.settings.testutils.shadow.ShadowAlertDialogCompat;
 import com.android.settings.testutils.shadow.ShadowLockPatternUtils;
 import com.android.settings.testutils.shadow.ShadowUtils;
+import com.android.settingslib.widget.theme.flags.Flags;
 
 import com.google.android.setupcompat.PartnerCustomizationLayout;
 import com.google.android.setupcompat.template.FooterBarMixin;
@@ -52,6 +57,7 @@ import com.google.android.setupcompat.template.FooterButton;
 
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -67,6 +73,9 @@ import java.util.Arrays;
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {ShadowUtils.class, ShadowAlertDialogCompat.class, ShadowLockPatternUtils.class})
 public class SetupChooseLockPatternTest {
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
     private Context mContext;
 
     private SetupChooseLockPattern mActivity;
@@ -97,6 +106,21 @@ public class SetupChooseLockPatternTest {
         final int componentEnabled = spm.getComponentEnabledSettingFlags(cname)
                 & PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
         assertThat(componentEnabled).isEqualTo(PackageManager.COMPONENT_ENABLED_STATE_ENABLED);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
+    public void createSetupActivity_independentFromSettingsLibExpressiveStyle() {
+        final Intent intent =
+                SetupChooseLockPattern.modifyIntentForSetup(
+                        mContext,
+                        new IntentBuilder(mContext)
+                                .setUserId(UserHandle.myUserId())
+                                .build());
+
+        assertWithMessage("EXTRA_KEY_USE_EXPRESSIVE_STYLE").that(
+                intent.getBooleanExtra(EXTRA_KEY_USE_EXPRESSIVE_STYLE, false))
+                .isFalse();
     }
 
     @Test

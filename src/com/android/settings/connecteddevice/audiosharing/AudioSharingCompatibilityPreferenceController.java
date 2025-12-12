@@ -16,6 +16,8 @@
 
 package com.android.settings.connecteddevice.audiosharing;
 
+import static com.android.settings.connecteddevice.audiosharing.AudioSharingUtils.MetricKey.METRIC_KEY_VALUE;
+
 import android.app.settings.SettingsEnums;
 import android.bluetooth.BluetoothLeBroadcast;
 import android.bluetooth.BluetoothLeBroadcastMetadata;
@@ -155,7 +157,8 @@ public class AudioSharingCompatibilityPreferenceController extends TogglePrefere
 
     @Override
     public int getAvailabilityStatus() {
-        return BluetoothUtils.isAudioSharingUIAvailable(mContext) ? AVAILABLE
+        return BluetoothUtils.isAudioSharingUIAvailable(mContext)
+                ? AVAILABLE
                 : UNSUPPORTED_ON_DEVICE;
     }
 
@@ -187,7 +190,11 @@ public class AudioSharingCompatibilityPreferenceController extends TogglePrefere
         mBroadcast.setImproveCompatibility(isChecked);
         // TODO: call updateBroadcast once framework change ready.
         mMetricsFeatureProvider.action(
-                mContext, SettingsEnums.ACTION_AUDIO_SHARING_IMPROVE_COMPATIBILITY, isChecked);
+                SettingsEnums.PAGE_UNKNOWN,
+                SettingsEnums.ACTION_AUDIO_SHARING_IMPROVE_COMPATIBILITY,
+                SettingsEnums.PAGE_UNKNOWN,
+                /* changedPreferenceKey= */ METRIC_KEY_VALUE.toString(),
+                /* changedPreferenceIntValue= */ isChecked ? 1 : 0);
         return true;
     }
 

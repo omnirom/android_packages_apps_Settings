@@ -28,7 +28,7 @@
     <com.android.settingslib.widget.MainSwitchPreference
         android:key="gesture_double_tap_power_enabled_main_switch"
         android:title="@string/double_tap_power_enabled"
-        settings:keywords="@string/keywords_gesture"
+        settings:keywords="@string/keywords_double_tap_power"
         settings:controller="com.android.settings.gestures.DoubleTapPowerMainSwitchPreferenceController"/>
     <PreferenceCategory
         android:key="gesture_double_tap_power_actions"
@@ -40,6 +40,17 @@
         <com.android.settingslib.widget.SelectorWithWidgetPreference
             android:key="gesture_double_power_tap_wallet"
             android:title="@string/double_tap_power_wallet_action_title"
+            settings:keywords="@string/keywords_double_tap_power_wallet_action"
             settings:controller="com.android.settings.gestures.DoubleTapPowerForWalletPreferenceController"/>
     </PreferenceCategory>
+    <com.android.settingslib.widget.CardPreference
+        android:key="gesture_double_tap_power_lockscreen_shortcut_tip"
+        android:title="@string/double_tap_power_lockscreen_shortcut_tip_title"
+        android:icon="@drawable/ic_double_tap_power_lockscreen_shortcut_tip_icon"
+        settings:controller="com.android.settings.gestures.DoubleTapPowerLockscreenTipPreferenceController" />
+    <com.android.settingslib.widget.FooterPreference
+        android:key="gesture_double_tap_power_wallet_footer"
+        android:title="@string/double_tap_power_wallet_footer_title"
+        settings:searchable="false"
+        settings:controller="com.android.settings.gestures.DoubleTapPowerWalletFooterPreferenceController" />
 </PreferenceScreen>

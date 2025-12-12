@@ -16,12 +16,16 @@
 
 package com.android.settings.password;
 
+import static com.android.settings.password.ChooseLockSettingsHelper.EXTRA_KEY_USE_EXPRESSIVE_STYLE;
+
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -41,6 +45,7 @@ import com.android.settings.testutils.shadow.ShadowDevicePolicyManager;
 import com.android.settings.testutils.shadow.ShadowLockPatternUtils;
 import com.android.settings.testutils.shadow.ShadowUtils;
 import com.android.settings.widget.ScrollToParentEditText;
+import com.android.settingslib.widget.theme.flags.Flags;
 
 import com.google.android.setupcompat.PartnerCustomizationLayout;
 import com.google.android.setupcompat.template.FooterBarMixin;
@@ -48,6 +53,7 @@ import com.google.android.setupcompat.template.FooterBarMixin;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -74,6 +80,9 @@ import java.util.List;
                 ShadowAlertDialogCompat.class
         })
 public class SetupChooseLockPasswordTest {
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
     private Context mApplication;
 
     @Before
@@ -98,6 +107,21 @@ public class SetupChooseLockPasswordTest {
 
         ActivityController.of(new SetupChooseLockPassword(), intent).setup().get();
     }
+
+    @Test
+    @EnableFlags(Flags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
+    public void createSetupActivity_independentFromSettingsLibExpressiveStyle() {
+        // SetupChooseLockPassword use ThemeHelper.shouldApplyGlifExpressiveStyle(context));
+        final Intent intent =
+                SetupChooseLockPassword.modifyIntentForSetup(
+                        mApplication,
+                        new IntentBuilder(mApplication).build());
+
+        assertWithMessage("EXTRA_KEY_USE_EXPRESSIVE_STYLE").that(
+                intent.getBooleanExtra(EXTRA_KEY_USE_EXPRESSIVE_STYLE, false))
+                .isFalse();
+    }
+
 
     @Test
     public void createActivity_withShowOptionsButtonExtra_shouldShowButton() {

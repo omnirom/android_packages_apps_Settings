@@ -18,13 +18,11 @@ package com.android.settings.spa.app.specialaccess
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager.GET_ACTIVITIES
-import android.content.pm.PackageManager.PackageInfoFlags
 import android.nfc.NfcAdapter
 import android.util.Log
 import androidx.compose.runtime.Composable
 import com.android.settings.R
-import com.android.settingslib.spa.livedata.observeAsCallback
+import com.android.settings.spa.livedata.observeAsCallback
 import com.android.settingslib.spaprivileged.model.app.AppRecord
 import com.android.settingslib.spaprivileged.model.app.userId
 import com.android.settingslib.spaprivileged.template.app.TogglePermissionAppListModel
@@ -49,8 +47,7 @@ class NfcTagAppsSettingsListModel(private val context: Context) :
     override val pageTitleResId = R.string.change_nfc_tag_apps_title
     override val switchTitleResId = R.string.change_nfc_tag_apps_detail_switch
     override val footerResId = R.string.change_nfc_tag_apps_detail_summary
-
-    private val packageManager = context.packageManager
+    override val showSystemAppsInitially = true
 
     override fun transform(
         userIdFlow: Flow<Int>,
@@ -122,6 +119,5 @@ class NfcTagAppsSettingsListModel(private val context: Context) :
 
     private companion object {
         const val TAG = "NfcTagAppsSettingsListModel"
-        val GET_ACTIVITIES_FLAGS = PackageInfoFlags.of(GET_ACTIVITIES.toLong())
     }
 }

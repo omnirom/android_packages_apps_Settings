@@ -39,7 +39,7 @@ import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.testutils.shadow.ShadowInteractionJankMonitor;
-import com.android.settings.widget.SeekBarPreference;
+import com.android.settingslib.widget.SliderPreference;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -65,7 +65,7 @@ public class FloatingMenuTransparencyPreferenceControllerTest {
     @Mock
     private ContentResolver mContentResolver;
     private FloatingMenuTransparencyPreferenceController mController;
-    private SeekBarPreference mSeekBarPreference;
+    private SliderPreference mSliderPreference;
 
     @Mock
     private PreferenceScreen mScreen;
@@ -75,8 +75,8 @@ public class FloatingMenuTransparencyPreferenceControllerTest {
         when(mContext.getContentResolver()).thenReturn(mContentResolver);
         mController = new FloatingMenuTransparencyPreferenceController(mContext, "test_key");
 
-        mSeekBarPreference = new SeekBarPreference(mContext);
-        doReturn(mSeekBarPreference).when(mScreen).findPreference("test_key");
+        mSliderPreference = new SliderPreference(mContext);
+        doReturn(mSliderPreference).when(mScreen).findPreference("test_key");
     }
 
     @Test
@@ -104,7 +104,7 @@ public class FloatingMenuTransparencyPreferenceControllerTest {
 
         mController.displayPreference(mScreen);
 
-        assertThat(mSeekBarPreference.isEnabled()).isTrue();
+        assertThat(mSliderPreference.isEnabled()).isTrue();
     }
 
     @Test
@@ -116,7 +116,7 @@ public class FloatingMenuTransparencyPreferenceControllerTest {
 
         mController.displayPreference(mScreen);
 
-        assertThat(mSeekBarPreference.isEnabled()).isFalse();
+        assertThat(mSliderPreference.isEnabled()).isFalse();
     }
 
     @Test
@@ -126,7 +126,7 @@ public class FloatingMenuTransparencyPreferenceControllerTest {
 
         mController.displayPreference(mScreen);
 
-        assertThat(mSeekBarPreference.isEnabled()).isFalse();
+        assertThat(mSliderPreference.isEnabled()).isFalse();
     }
 
     @Test
@@ -141,7 +141,7 @@ public class FloatingMenuTransparencyPreferenceControllerTest {
                 ACCESSIBILITY_BUTTON_MODE_NAVIGATION_BAR);
         mController.mContentObserver.onChange(false);
 
-        assertThat(mSeekBarPreference.isEnabled()).isFalse();
+        assertThat(mSliderPreference.isEnabled()).isFalse();
     }
 
     @Test
@@ -156,7 +156,7 @@ public class FloatingMenuTransparencyPreferenceControllerTest {
                 ACCESSIBILITY_BUTTON_MODE_FLOATING_MENU);
         mController.mContentObserver.onChange(false);
 
-        assertThat(mSeekBarPreference.isEnabled()).isTrue();
+        assertThat(mSliderPreference.isEnabled()).isTrue();
     }
 
     @Test

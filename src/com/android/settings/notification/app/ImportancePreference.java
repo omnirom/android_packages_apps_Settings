@@ -34,6 +34,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
@@ -44,15 +45,11 @@ public class ImportancePreference extends Preference {
 
     private boolean mIsConfigurable = true;
     private int mImportance;
-    private boolean mDisplayInStatusBar;
-    private boolean mDisplayOnLockscreen;
     private View mSilenceButton;
     private View mAlertButton;
-    private Context mContext;
     Drawable selectedBackground;
     Drawable unselectedBackground;
     private static final int BUTTON_ANIM_TIME_MS = 100;
-    private static final boolean SHOW_BUTTON_SUMMARY = false;
 
     public ImportancePreference(Context context, AttributeSet attrs,
             int defStyleAttr, int defStyleRes) {
@@ -76,12 +73,14 @@ public class ImportancePreference extends Preference {
     }
 
     private void init(Context context) {
-        mContext = context;
-        selectedBackground = mContext.getDrawable(
+        selectedBackground = context.getDrawable(
                 R.drawable.notification_importance_button_background_selected);
-        unselectedBackground = mContext.getDrawable(
+        unselectedBackground = context.getDrawable(
                 R.drawable.notification_importance_button_background_unselected);
-        setLayoutResource(R.layout.notif_importance_preference);
+        int layoutId = android.app.Flags.notificationsRedesignTemplates()
+                ? R.layout.notification_2025_importance_preference
+                : R.layout.notif_importance_preference;
+        setLayoutResource(layoutId);
     }
 
     public void setImportance(int importance) {
@@ -92,16 +91,8 @@ public class ImportancePreference extends Preference {
         mIsConfigurable = configurable;
     }
 
-    public void setDisplayInStatusBar(boolean display) {
-        mDisplayInStatusBar = display;
-    }
-
-    public void setDisplayOnLockscreen(boolean display) {
-        mDisplayOnLockscreen = display;
-    }
-
     @Override
-    public void onBindViewHolder(final PreferenceViewHolder holder) {
+    public void onBindViewHolder(@NonNull final PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
         holder.itemView.setClickable(false);
 

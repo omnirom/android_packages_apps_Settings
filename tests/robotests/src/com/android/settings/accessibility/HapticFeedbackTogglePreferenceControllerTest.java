@@ -41,6 +41,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
+// LINT.IfChange
 @RunWith(RobolectricTestRunner.class)
 public class HapticFeedbackTogglePreferenceControllerTest {
 
@@ -175,3 +176,4 @@ public class HapticFeedbackTogglePreferenceControllerTest {
         return Settings.System.getInt(mContext.getContentResolver(), settingKey);
     }
 }
+// LINT.ThenChange(TouchVibrationIntensitySwitchPreferenceTest.kt)

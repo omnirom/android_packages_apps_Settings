@@ -57,7 +57,6 @@ public final class PointerTouchpadPreferenceControllerTest {
     @Test
     public void getAvailableStatus_noTouchpadOrMouseConditionallyUnavailable() {
         int deviceId = 1;
-        ShadowInputDevice.sDeviceIds = new int[]{deviceId};
         InputDevice device = ShadowInputDevice.makeInputDevicebyIdWithSources(deviceId,
                 InputDevice.SOURCE_BLUETOOTH_STYLUS);
         ShadowInputDevice.addDevice(deviceId, device);
@@ -68,7 +67,6 @@ public final class PointerTouchpadPreferenceControllerTest {
     @Test
     public void getAvailabilityStatus_isTouchpadAvailable() {
         int deviceId = 1;
-        ShadowInputDevice.sDeviceIds = new int[]{deviceId};
         InputDevice device = ShadowInputDevice.makeInputDevicebyIdWithSources(deviceId,
                 InputDevice.SOURCE_TOUCHPAD);
         ShadowInputDevice.addDevice(deviceId, device);
@@ -80,7 +78,6 @@ public final class PointerTouchpadPreferenceControllerTest {
     @Test
     public void getAvailabilityStatus_isMouseAvailable() {
         int deviceId = 1;
-        ShadowInputDevice.sDeviceIds = new int[]{deviceId};
         InputDevice device = ShadowInputDevice.makeInputDevicebyIdWithSources(deviceId,
                 InputDevice.SOURCE_MOUSE);
         ShadowInputDevice.addDevice(deviceId, device);

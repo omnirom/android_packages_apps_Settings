@@ -1,87 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2014 The Android Open Source Project
+<!--
+  Copyright (C) 2025 The Android Open Source Project
 
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-          http://www.apache.org/licenses/LICENSE-2.0
+       http://www.apache.org/licenses/LICENSE-2.0
 
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
--->
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:gravity="center_vertical"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:clickable="false"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="?android:attr/selectableItemBackground"
+    android:clipToPadding="false"
+    android:baselineAligned="false">
 
-    <include layout="@layout/settingslib_icon_frame"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="16dp">
+        android:layout_weight="1"
+        android:paddingVertical="@dimen/settingslib_expressive_space_small1">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@android:id/title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:singleLine="true"
-                android:textAlignment="viewStart"
-                android:textAppearance="?android:attr/textAppearanceListItem"
-                android:ellipsize="marquee"
-                android:fadingEdge="horizontal"/>
-            <!-- Preference should place its actual preference widget here. -->
-            <LinearLayout
-                android:id="@android:id/widget_frame"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="end|center_vertical"
-                android:paddingStart="12dp"
-                android:orientation="vertical"/>
-        </LinearLayout>
+        <!-- Title -->
+        <TextView
+            android:id="@android:id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textAlignment="viewStart"
+            android:textAppearance="@style/TextAppearance.SettingsLib.TitleMedium"
+            android:textColor="@color/settingslib_text_color_primary"
+            android:maxLines="2"
+            android:ellipsize="marquee"/>
 
-        <LinearLayout
+        <!-- Summary -->
+        <TextView
+            android:id="@android:id/summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@android:id/title"
+            android:layout_alignLeft="@android:id/title"
+            android:layout_alignStart="@android:id/title"
+            android:layout_gravity="start"
+            android:textAlignment="viewStart"
+            android:textAppearance="@style/TextAppearance.SettingsLib.TitleMedium"
+            android:textColor="@color/settingslib_text_color_secondary"
+            android:maxLines="10"/>
+
+        <!-- Slider -->
+        <include
+            layout="@layout/settingslib_expressive_layout_slider"
+            android:id="@+id/slider_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_alignStart="@android:id/summary"
+            android:layout_below="@android:id/summary"/>
 
-            <SeekBar
-                android:id="@*android:id/seekbar"
-                android:layout_gravity="center_vertical"
-                android:paddingStart="0dp"
-                android:paddingEnd="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"/>
+        <TextView
+            android:id="@+id/suppression_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:layout_below="@id/slider_frame"
+            android:textAlignment="viewStart"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:visibility="gone"
+            android:textAppearance="@style/TextAppearance.SettingsLib.TitleMedium"
+            android:textColor="@color/settingslib_text_color_secondary"/>
 
-            <TextView
-                android:id="@+id/suppression_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|start"
-                android:textAlignment="viewStart"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:visibility="gone"
-                android:textAppearance="@*android:style/TextAppearance.DeviceDefault.Body1"
-                android:textColor="?android:attr/textColorSecondary"/>
+    </RelativeLayout>
 
-        </LinearLayout>
+    <!-- Icon -->
+    <LinearLayout
+        android:id="@+id/icon_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/settingslib_expressive_space_extrasmall5"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@android:id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            app:maxWidth="48dp"
+            app:maxHeight="48dp"/>
+
     </LinearLayout>
-
 </LinearLayout>

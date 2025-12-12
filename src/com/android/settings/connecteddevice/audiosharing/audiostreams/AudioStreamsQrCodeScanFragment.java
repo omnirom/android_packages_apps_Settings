@@ -49,7 +49,7 @@ import androidx.annotation.VisibleForTesting;
 import com.android.settings.R;
 import com.android.settings.bluetooth.Utils;
 import com.android.settings.core.InstrumentedFragment;
-import com.android.settingslib.bluetooth.BluetoothBroadcastUtils;
+import com.android.settingslib.bluetooth.BluetoothLeBroadcastMetadataExt;
 import com.android.settingslib.bluetooth.BluetoothUtils;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
 import com.android.settingslib.qrcode.QrCamera;
@@ -205,7 +205,7 @@ public class AudioStreamsQrCodeScanFragment extends InstrumentedFragment
 
     @Override
     public boolean isValid(String qrCode) {
-        if (qrCode.startsWith(BluetoothBroadcastUtils.SCHEME_BT_BROADCAST_METADATA)) {
+        if (BluetoothLeBroadcastMetadataExt.INSTANCE.convertToBroadcastMetadata(qrCode) != null) {
             return true;
         }
         Message message =

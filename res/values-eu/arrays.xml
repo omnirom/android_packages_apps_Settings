@@ -133,7 +133,7 @@
   <string-array name="wifi_proxy_settings">
     <item msgid="4669222334822978847">"Bat ere ez"</item>
     <item msgid="6242198071587397280">"Eskuzkoa"</item>
-    <item msgid="464383874780058242">"Proxy-konfigurazio automatikoa"</item>
+    <item msgid="464383874780058242">"Proxy-konfigurazio auto."</item>
   </string-array>
   <string-array name="apn_auth_entries">
     <item msgid="2900892411844440682">"Bat ere ez"</item>
@@ -315,6 +315,10 @@
     <item msgid="7397961711906421599">"Ertaina"</item>
     <item msgid="4079132024502041928">"Luzea"</item>
   </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"DHCP"</item>
+    <item msgid="4425163520864432692">"Estatikoa"</item>
+  </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"Lehenetsia"</item>
     <item msgid="4234707448428002595">"Sans-serif"</item>
@@ -359,17 +363,13 @@
     <item msgid="6485511780196327736">"Beste aplikazio batzuen gainean"</item>
     <item msgid="3605616699204153590">"Nabigazio-barra"</item>
   </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"Botoia"</item>
-    <item msgid="6922258575853746220">"Keinua"</item>
-  </string-array>
   <string-array name="accessibility_button_size_selector_titles">
     <item msgid="7482952318152486459">"Txikia"</item>
     <item msgid="1666628329913333563">"Handia"</item>
   </string-array>
   <string-array name="vpn_proxy_settings">
     <item msgid="7165538292837266997">"Bat ere ez"</item>
-    <item msgid="2397017538263427575">"Eskuzko ezarpenak"</item>
+    <item msgid="2397017538263427575">"Eskuzkoa"</item>
   </string-array>
   <string-array name="vpn_states">
     <item msgid="2262719249581510939">"Deskonektatuta"</item>
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"Erlojua"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"Bat ere ez"</item>
+    <item msgid="321837941231023175">"Orri nagusia"</item>
+    <item msgid="953234843613969792">"Azkenaldiko aplikazioak"</item>
+    <item msgid="1713942773283586136">"Jakinarazpenak"</item>
+    <item msgid="5687603742365489342">"Ezarpen bizkorrak"</item>
+    <item msgid="5454862951059393431">"Pantaila blokeatua"</item>
   </string-array>
 </resources>

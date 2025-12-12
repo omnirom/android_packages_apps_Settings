@@ -23,7 +23,6 @@
 
     <com.android.settingslib.widget.FooterPreference
         android:key="add_account_enterprise_disclosure_footer"
-        android:selectable="false"
         settings:searchable="false"
         settings:controller="com.android.settings.accounts.EnterpriseDisclosurePreferenceController"/>
 </PreferenceScreen>

@@ -102,7 +102,7 @@ public class PictureInPictureDetails extends AppInfoWithHeader
      * @return whether the app associated with the given {@param packageName} is allowed to enter
      * picture-in-picture.
      */
-    static boolean getEnterPipStateForPackage(Context context, int uid, String packageName) {
+    public static boolean getEnterPipStateForPackage(Context context, int uid, String packageName) {
         final AppOpsManager appOps = context.getSystemService(AppOpsManager.class);
         return appOps.checkOpNoThrow(OP_PICTURE_IN_PICTURE, uid, packageName) == MODE_ALLOWED;
     }

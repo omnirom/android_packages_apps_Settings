@@ -124,6 +124,34 @@ public class CdmaSystemSelectPreferenceControllerTest {
     }
 
     @Test
+    public void updateState_isAirplaneModeOff_enabled() {
+        doReturn(TelephonyManager.CDMA_ROAMING_MODE_RADIO_DEFAULT).when(
+                mTelephonyManager).getCdmaRoamingMode();
+        when(mTelephonyManager.getAllowedNetworkTypesForReason(
+                TelephonyManager.ALLOWED_NETWORK_TYPES_REASON_USER)).thenReturn(
+                (long) (LTE));
+
+        mController.notifyAirplaneModeChanged(false);
+        mController.updateState(mPreference);
+
+        assertThat(mPreference.isEnabled()).isTrue();
+    }
+
+    @Test
+    public void updateState_isAirplaneModeOn_disabled() {
+        doReturn(TelephonyManager.CDMA_ROAMING_MODE_HOME).when(
+                mTelephonyManager).getCdmaRoamingMode();
+        when(mTelephonyManager.getAllowedNetworkTypesForReason(
+                TelephonyManager.ALLOWED_NETWORK_TYPES_REASON_USER)).thenReturn(
+                (long) (LTE));
+
+        mController.notifyAirplaneModeChanged(true);
+        mController.updateState(mPreference);
+
+        assertThat(mPreference.isEnabled()).isFalse();
+    }
+
+    @Test
     public void updateState_stateOther_resetToDefault() {
         Settings.Global.putInt(mContext.getContentResolver(),
                 Settings.Global.CDMA_ROAMING_MODE,

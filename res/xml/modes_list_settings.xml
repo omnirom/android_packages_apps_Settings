@@ -29,10 +29,12 @@
         <!-- Preferences leading to individual mode pages are added in this PreferenceCategory. -->
     </PreferenceCategory>
 
-    <Preference
-        android:key="add_mode"
-        android:title="@string/zen_modes_add_mode"
-        android:icon="@drawable/ic_add_24dp"
-        settings:allowDividerAbove="false"/>
+    <com.android.settingslib.widget.UntitledPreferenceCategory>
+      <Preference
+          android:key="add_mode"
+          android:title="@string/zen_modes_add_mode"
+          android:icon="@drawable/ic_add_24dp"
+          settings:allowDividerAbove="false"/>
+    </com.android.settingslib.widget.UntitledPreferenceCategory>
 
 </PreferenceScreen>

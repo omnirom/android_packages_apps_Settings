@@ -40,7 +40,8 @@ public class VrListenerSettings extends ManagedServiceSettings {
             .setNoun("vr listener")
             .setWarningDialogTitle(R.string.vr_listener_security_warning_title)
             .setWarningDialogSummary(R.string.vr_listener_security_warning_summary)
-            .setEmptyText(R.string.no_vr_listeners)
+            .setEmptyText(R.string.no_applications)
+            .setZeroResourceIcon(R.drawable.ic_apps)
             .build();
 
     @Override

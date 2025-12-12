@@ -3,7 +3,7 @@ container: "system_ext"
 
 flag {
   name: "enable_nested_toggle_switches"
-  namespace: "android_settings"
+  namespace: "settings_experience"
   description: "Enable nested toggle switches in Adaptive connectivity settings UI"
   bug: "393645580"
 }

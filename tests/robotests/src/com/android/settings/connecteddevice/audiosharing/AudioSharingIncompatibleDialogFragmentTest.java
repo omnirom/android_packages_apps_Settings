@@ -20,8 +20,11 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.robolectric.shadows.ShadowLooper.shadowMainLooper;
 
+import android.app.settings.SettingsEnums;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothStatusCodes;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.view.View;
 import android.widget.TextView;
@@ -85,13 +88,13 @@ public class AudioSharingIncompatibleDialogFragmentTest {
 
     @Test
     public void getMetricsCategory_correctValue() {
-        // TODO: update to real metrics id
-        assertThat(mFragment.getMetricsCategory()).isEqualTo(0);
+        assertThat(mFragment.getMetricsCategory()).isEqualTo(
+                SettingsEnums.DIALOG_AUDIO_SHARING_INCOMPATIBLE_DEVICE);
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onCreateDialog_flagOff_dialogNotExist() {
-        mSetFlagsRule.disableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         AudioSharingIncompatibleDialogFragment.show(mParent, TEST_DEVICE_NAME,
                 EMPTY_EVENT_LISTENER);
         shadowMainLooper().idle();
@@ -100,8 +103,8 @@ public class AudioSharingIncompatibleDialogFragmentTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onCreateDialog_unattachedFragment_dialogNotExist() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         AudioSharingIncompatibleDialogFragment.show(new Fragment(), TEST_DEVICE_NAME,
                 EMPTY_EVENT_LISTENER);
         shadowMainLooper().idle();
@@ -110,8 +113,8 @@ public class AudioSharingIncompatibleDialogFragmentTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onCreateDialog_flagOn_showDialog() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         AudioSharingIncompatibleDialogFragment.show(mParent, TEST_DEVICE_NAME,
                 EMPTY_EVENT_LISTENER);
         shadowMainLooper().idle();
@@ -126,8 +129,8 @@ public class AudioSharingIncompatibleDialogFragmentTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onCreateDialog_clickBtn_callbackTriggered() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING);
         AtomicBoolean isBtnClicked = new AtomicBoolean(false);
         AudioSharingIncompatibleDialogFragment.show(mParent, TEST_DEVICE_NAME,
                 () -> isBtnClicked.set(true));

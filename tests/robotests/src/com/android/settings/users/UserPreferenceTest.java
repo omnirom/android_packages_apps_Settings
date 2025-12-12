@@ -49,7 +49,13 @@ public class UserPreferenceTest {
     }
 
     @Test
-    public void testShouldHideSecondTarget_shouldHide() {
+    public void testShouldHideSecondTarget_noEditClickListener_shouldHide() {
         assertThat(mUserPreference.shouldHideSecondTarget()).isTrue();
+    }
+
+    @Test
+    public void testShouldHideSecondTarget_hasEditClickListener_shouldShow() {
+        mUserPreference.setOnEditClickListener((view) -> {});
+        assertThat(mUserPreference.shouldHideSecondTarget()).isFalse();
     }
 }

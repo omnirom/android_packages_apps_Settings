@@ -19,6 +19,7 @@ package com.android.settings.wifi;
 import static com.android.settings.network.SatelliteWarningDialogActivity.EXTRA_TYPE_OF_SATELLITE_WARNING_DIALOG;
 import static com.android.settings.network.SatelliteWarningDialogActivity.TYPE_IS_WIFI;
 
+import android.app.admin.EnforcingAdmin;
 import android.app.settings.SettingsEnums;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -157,7 +158,7 @@ public class WifiEnabler implements SwitchWidgetController.OnSwitchChangeListene
 
     private void handleWifiStateChanged(int state) {
         // Clear any previous state
-        mSwitchWidget.setDisabledByAdmin(null);
+        mSwitchWidget.setDisabledByAdmin((EnforcingAdmin) null);
 
         switch (state) {
             case WifiManager.WIFI_STATE_ENABLING:

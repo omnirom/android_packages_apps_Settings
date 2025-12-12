@@ -18,12 +18,12 @@ package com.android.settings.testutils.shadow;
 
 import android.content.Context;
 
-import com.android.settings.development.WirelessDebuggingPreferenceController;
+import com.android.settings.development.AdbWirelessDebuggingPreferenceController;
 
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 
-@Implements(WirelessDebuggingPreferenceController.class)
+@Implements(AdbWirelessDebuggingPreferenceController.class)
 public class ShadowWirelessDebuggingPreferenceController {
     private static boolean sIsWifiConnected;
 

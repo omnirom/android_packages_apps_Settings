@@ -21,8 +21,6 @@ import static org.mockito.Mockito.when;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -36,7 +34,6 @@ import com.android.settingslib.search.SearchIndexableRaw;
 import com.google.common.collect.ImmutableList;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -51,9 +48,6 @@ import java.util.List;
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {ShadowBluetoothUtils.class})
 public class SavedHearingDevicePreferenceControllerTest {
-    @Rule
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
     private static final String PREFERENCE_KEY = "preference_key";
     private static final String DEVICE_NAME = "device";
 
@@ -90,11 +84,11 @@ public class SavedHearingDevicePreferenceControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
-    public void updateDynamicRawDataToIndex_isNotHearingAidDevice_deviceIsNotSearchable() {
+
+    public void updateDynamicRawDataToIndex_isNotHearingDevice_deviceIsNotSearchable() {
         when(mDevice.getBondState()).thenReturn(BluetoothDevice.BOND_BONDED);
         when(mDevice.isConnected()).thenReturn(false);
-        when(mCachedDevice.isHearingAidDevice()).thenReturn(false);
+        when(mCachedDevice.isHearingDevice()).thenReturn(false);
         List<SearchIndexableRaw> searchData = new ArrayList<>();
 
         mSavedHearingDevicePreferenceController.updateDynamicRawDataToIndex(searchData);
@@ -103,11 +97,10 @@ public class SavedHearingDevicePreferenceControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
-    public void updateDynamicRawDataToIndex_isHearingAidDevice_deviceIsSearchable() {
+    public void updateDynamicRawDataToIndex_isHearingDevice_deviceIsSearchable() {
         when(mDevice.getBondState()).thenReturn(BluetoothDevice.BOND_BONDED);
         when(mDevice.isConnected()).thenReturn(false);
-        when(mCachedDevice.isHearingAidDevice()).thenReturn(true);
+        when(mCachedDevice.isHearingDevice()).thenReturn(true);
         List<SearchIndexableRaw> searchData = new ArrayList<>();
 
         mSavedHearingDevicePreferenceController.updateDynamicRawDataToIndex(searchData);

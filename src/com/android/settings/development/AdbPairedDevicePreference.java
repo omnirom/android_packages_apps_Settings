@@ -19,10 +19,8 @@ package com.android.settings.development;
 import android.content.Context;
 import android.debug.PairDevice;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.preference.Preference;
-import androidx.preference.PreferenceViewHolder;
 
 import com.android.settings.R;
 
@@ -41,12 +39,8 @@ public class AdbPairedDevicePreference extends Preference {
         super(context);
 
         mPairedDevice = pairedDevice;
-        setWidgetLayoutResource(getWidgetLayoutResourceId());
+        setWidgetLayoutResource(R.layout.preference_widget_gear);
         refresh();
-    }
-
-    protected int getWidgetLayoutResourceId() {
-        return R.layout.preference_widget_gear_optional_background;
     }
 
     /**
@@ -62,17 +56,6 @@ public class AdbPairedDevicePreference extends Preference {
 
     public PairDevice getPairedDevice() {
         return mPairedDevice;
-    }
-
-    @Override
-    public void onBindViewHolder(PreferenceViewHolder holder) {
-        super.onBindViewHolder(holder);
-
-        final View gear = holder.findViewById(R.id.settings_button);
-        final View gearNoBg = holder.findViewById(R.id.settings_button_no_background);
-
-        gear.setVisibility(View.INVISIBLE);
-        gearNoBg.setVisibility(View.VISIBLE);
     }
 
     static void setTitle(AdbPairedDevicePreference preference, PairDevice pairedDevice) {

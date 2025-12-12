@@ -23,6 +23,8 @@ import android.app.settings.SettingsEnums;
 import android.content.Context;
 
 import androidx.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
@@ -45,31 +47,41 @@ public class DeviceStateAutoRotateSettingController extends TogglePreferenceCont
 
     private TwoStatePreference mPreference;
 
+    @NonNull
     private final DeviceStateAutoRotateSettingManager mAutoRotateSettingsManager;
     private final int mOrder;
     private final DeviceStateAutoRotateSettingManager.DeviceStateAutoRotateSettingListener
             mDeviceStateAutoRotateSettingListener = () -> updateState(mPreference);
     private final int mDeviceState;
+    @NonNull
     private final String mDeviceStateDescription;
+    @NonNull
     private final MetricsFeatureProvider mMetricsFeatureProvider;
 
     @VisibleForTesting
-    DeviceStateAutoRotateSettingController(Context context, int deviceState,
-            String deviceStateDescription, int order,
-            MetricsFeatureProvider metricsFeatureProvider) {
+    DeviceStateAutoRotateSettingController(@NonNull Context context, int deviceState,
+            @NonNull String deviceStateDescription, int order,
+            @NonNull MetricsFeatureProvider metricsFeatureProvider,
+            @Nullable DeviceStateAutoRotateSettingManager deviceStateAutoRotateSettingManager) {
         super(context, getPreferenceKeyForDeviceState(deviceState));
+
+        if (deviceStateAutoRotateSettingManager == null) {
+            throw new IllegalStateException("DeviceStateAutoRotateSettingController should not be "
+                    + "created when DeviceStateAutoRotateSettingManager is not present");
+        }
+
         mMetricsFeatureProvider = metricsFeatureProvider;
         mDeviceState = deviceState;
         mDeviceStateDescription = deviceStateDescription;
-        mAutoRotateSettingsManager =
-                DeviceStateAutoRotateSettingManagerProvider.getSingletonInstance(context);
+        mAutoRotateSettingsManager = deviceStateAutoRotateSettingManager;
         mOrder = order;
     }
 
-    public DeviceStateAutoRotateSettingController(Context context, int deviceState,
-            String deviceStateDescription, int order) {
+    public DeviceStateAutoRotateSettingController(@NonNull Context context, int deviceState,
+            @NonNull String deviceStateDescription, int order) {
         this(context, deviceState, deviceStateDescription, order,
-                FeatureFactory.getFeatureFactory().getMetricsFeatureProvider());
+                FeatureFactory.getFeatureFactory().getMetricsFeatureProvider(),
+                DeviceStateAutoRotateSettingManagerProvider.getSingletonInstance(context));
     }
 
     void init(Lifecycle lifecycle) {
@@ -113,7 +125,11 @@ public class DeviceStateAutoRotateSettingController extends TogglePreferenceCont
 
     @Override
     public boolean isChecked() {
-        return !mAutoRotateSettingsManager.isRotationLocked(mDeviceState);
+        // It is highly unlikely to receive null value here. In the improbable event of null, a
+        // non-null update will follow shortly, and the users will potentially see incorrect
+        // state for a short time.
+        final Boolean isRotationLocked = mAutoRotateSettingsManager.isRotationLocked(mDeviceState);
+        return isRotationLocked != null && !isRotationLocked;
     }
 
     @Override

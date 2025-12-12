@@ -16,6 +16,11 @@
 
 package com.android.settings.users;
 
+import static android.os.UserManager.DISALLOW_ADD_USER;
+import static android.os.UserManager.DISALLOW_REMOVE_USER;
+
+import static com.android.settings.testutils.DevicePolicyUtils.DPC_ADMIN;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assume.assumeTrue;
@@ -24,10 +29,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import android.app.admin.PolicyEnforcementInfo;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.SystemProperties;
 import android.os.UserManager;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.preference.PreferenceScreen;
 
@@ -37,6 +45,7 @@ import com.android.settingslib.RestrictedSwitchPreference;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -45,12 +54,18 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import java.util.Collections;
+import java.util.List;
+
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {
         ShadowUserManager.class,
         ShadowDevicePolicyManager.class
 })
 public class GuestTelephonyPreferenceControllerTest {
+
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Mock(answer = RETURNS_DEEP_STUBS)
     private PreferenceScreen mScreen;
@@ -149,6 +164,58 @@ public class GuestTelephonyPreferenceControllerTest {
 
         assertThat(mUserManager.hasGuestUserRestriction("no_outgoing_calls", true)).isTrue();
         assertThat(mUserManager.hasGuestUserRestriction("no_sms", true)).isTrue();
+    }
+
+    @Test
+    @EnableFlags(android.app.admin.flags.Flags.FLAG_POLICY_TRANSPARENCY_REFACTOR_ENABLED)
+    public void updateState_removeUserRestricted_shouldDisplayPreference_disabledByAdmin() {
+        assumeTrue("Device does not have telephony feature ",
+                mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY));
+        SystemProperties.set("fw.max_users", Long.toBinaryString(4));
+        mUserManager.setIsAdminUser(true);
+        mUserManager.setUserSwitcherEnabled(true);
+        mUserManager.setSupportsMultipleUsers(true);
+        mUserManager.setUserTypeEnabled(UserManager.USER_TYPE_FULL_RESTRICTED, true);
+        mUserManager.setUserTypeEnabled(UserManager.USER_TYPE_FULL_SYSTEM, true);
+        mUserManager.setUserTypeEnabled(UserManager.USER_TYPE_FULL_GUEST, true);
+        mDpm.setPolicyEnforcementInfoForUserRestriction(DISALLOW_REMOVE_USER,
+                new PolicyEnforcementInfo(List.of(DPC_ADMIN)));
+
+        final GuestTelephonyPreferenceController controller =
+                new GuestTelephonyPreferenceController(mContext, "fake_key");
+        final RestrictedSwitchPreference preference = mock(RestrictedSwitchPreference.class);
+
+        controller.updateState(preference);
+
+        verify(preference).setVisible(true);
+        verify(preference).setDisabledByAdmin(DPC_ADMIN);
+    }
+
+    @Test
+    @EnableFlags(android.app.admin.flags.Flags.FLAG_POLICY_TRANSPARENCY_REFACTOR_ENABLED)
+    public void updateState_addUserRestricted_shouldDisplayPreference_disabledByAdmin() {
+        assumeTrue("Device does not have telephony feature ",
+                mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY));
+        SystemProperties.set("fw.max_users", Long.toBinaryString(4));
+        mUserManager.setIsAdminUser(true);
+        mUserManager.setUserSwitcherEnabled(true);
+        mUserManager.setSupportsMultipleUsers(true);
+        mUserManager.setUserTypeEnabled(UserManager.USER_TYPE_FULL_RESTRICTED, true);
+        mUserManager.setUserTypeEnabled(UserManager.USER_TYPE_FULL_SYSTEM, true);
+        mUserManager.setUserTypeEnabled(UserManager.USER_TYPE_FULL_GUEST, true);
+        mDpm.setPolicyEnforcementInfoForUserRestriction(DISALLOW_REMOVE_USER,
+                new PolicyEnforcementInfo(Collections.EMPTY_LIST));
+        mDpm.setPolicyEnforcementInfoForUserRestriction(DISALLOW_ADD_USER,
+                new PolicyEnforcementInfo(List.of(DPC_ADMIN)));
+
+        final GuestTelephonyPreferenceController controller =
+                new GuestTelephonyPreferenceController(mContext, "fake_key");
+        final RestrictedSwitchPreference preference = mock(RestrictedSwitchPreference.class);
+
+        controller.updateState(preference);
+
+        verify(preference).setVisible(true);
+        verify(preference).setDisabledByAdmin(DPC_ADMIN);
     }
 
 }

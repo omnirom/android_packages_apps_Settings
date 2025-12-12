@@ -42,7 +42,7 @@
     <item msgid="6981910499530067289">"15 sekund"</item>
     <item msgid="841968393904987343">"30 sekund"</item>
     <item msgid="8209996803755081758">"1 minuta"</item>
-    <item msgid="8532038695054819775">"2 minut"</item>
+    <item msgid="8532038695054819775">"2 minuty"</item>
     <item msgid="230858078069711241">"5 minut"</item>
     <item msgid="7289395602286160723">"10 minut"</item>
     <item msgid="3142577549730704595">"30 minut"</item>
@@ -315,14 +315,18 @@
     <item msgid="7397961711906421599">"Średnio"</item>
     <item msgid="4079132024502041928">"Długo"</item>
   </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"DHCP"</item>
+    <item msgid="4425163520864432692">"Statyczny"</item>
+  </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"Domyślna"</item>
     <item msgid="4234707448428002595">"Bezszeryfowa"</item>
     <item msgid="2390008695651897663">"Bezszeryfowa wąska"</item>
     <item msgid="2396492419730702454">"Bezszeryfowa o stałej szerokości"</item>
-    <item msgid="8199675052804786099">"Szeryfowy"</item>
-    <item msgid="4554123140736897688">"Szeryfowy o stałej szerokości"</item>
-    <item msgid="5485652650875486635">"Zwykły"</item>
+    <item msgid="8199675052804786099">"Szeryfowa"</item>
+    <item msgid="4554123140736897688">"Szeryfowa o stałej szerokości"</item>
+    <item msgid="5485652650875486635">"Zwykła"</item>
     <item msgid="1071057864355989694">"Kursywa"</item>
     <item msgid="5012882784126308133">"Kapitaliki"</item>
   </string-array>
@@ -358,10 +362,6 @@
   <string-array name="accessibility_button_location_selector_titles">
     <item msgid="6485511780196327736">"Pływający nad innymi aplikacjami"</item>
     <item msgid="3605616699204153590">"Pasek nawigacyjny"</item>
-  </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"Przycisk"</item>
-    <item msgid="6922258575853746220">"Gest"</item>
   </string-array>
   <string-array name="accessibility_button_size_selector_titles">
     <item msgid="7482952318152486459">"Mały"</item>
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"Zegar"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"Brak"</item>
+    <item msgid="321837941231023175">"Ekran główny"</item>
+    <item msgid="953234843613969792">"Ostatnio używane aplikacje"</item>
+    <item msgid="1713942773283586136">"Powiadomienia"</item>
+    <item msgid="5687603742365489342">"Szybkie ustawienia"</item>
+    <item msgid="5454862951059393431">"Ekran blokady"</item>
   </string-array>
 </resources>

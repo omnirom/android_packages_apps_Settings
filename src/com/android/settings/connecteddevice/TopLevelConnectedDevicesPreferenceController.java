@@ -21,6 +21,7 @@ import android.content.Context;
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 
+// LINT.IfChange
 public class TopLevelConnectedDevicesPreferenceController extends BasePreferenceController {
 
     public TopLevelConnectedDevicesPreferenceController(Context context,
@@ -34,3 +35,4 @@ public class TopLevelConnectedDevicesPreferenceController extends BasePreference
                 ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
     }
 }
+// LINT.ThenChange(ConnectedDeviceDashboardScreen.kt)

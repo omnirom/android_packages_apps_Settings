@@ -21,6 +21,7 @@ import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.TextUtils;
@@ -61,6 +62,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A locale picker fragment to show app languages.
@@ -80,7 +82,6 @@ public class AppLocalePickerFragment extends DashboardFragment implements
     private static final String KEY_PREFERENCE_APP_LOCALE_LIST = "app_locale_list";
     private static final String KEY_PREFERENCE_APP_LOCALE_SUGGESTED_LIST =
             "app_locale_suggested_list";
-    private static final String KEY_PREFERENCE_APP_DISCLAIMER = "app_locale_disclaimer";
     private static final String KEY_PREFERENCE_APP_INTRO = "app_intro";
     private static final String KEY_PREFERENCE_APP_DESCRIPTION = "app_locale_description";
 
@@ -110,6 +111,7 @@ public class AppLocalePickerFragment extends DashboardFragment implements
     private ApplicationInfo mApplicationInfo;
     private boolean mIsNumberingMode;
     private CharSequence mPreviousSearch = null;
+    @Nullable private CharSequence mPrefix;
 
     @Override
     public void onCreate(@NonNull Bundle icicle) {
@@ -133,7 +135,6 @@ public class AppLocalePickerFragment extends DashboardFragment implements
         mPreferenceScreen = getPreferenceScreen();
         setHasOptionsMenu(true);
         mApplicationInfo = getApplicationInfo(mPackageName, mUid);
-        setupDisclaimerPreference();
         setupIntroPreference();
         setupDescriptionPreference();
         mExpandSearch = mActivity.getIntent().getBooleanExtra(EXTRA_EXPAND_SEARCH_VIEW, false);
@@ -195,13 +196,6 @@ public class AppLocalePickerFragment extends DashboardFragment implements
                 mSearchView.setQuery(null, false /* submit */);
             }
         }
-    }
-
-    private void setupDisclaimerPreference() {
-        final Preference pref = mPreferenceScreen.findPreference(KEY_PREFERENCE_APP_DISCLAIMER);
-        boolean shouldShowPref = pref != null && FeatureFlagUtils.isEnabled(
-                mActivity, FeatureFlagUtils.SETTINGS_APP_LOCALE_OPT_IN_ENABLED);
-        pref.setVisible(shouldShowPref);
     }
 
     private void setupIntroPreference() {
@@ -271,7 +265,13 @@ public class AppLocalePickerFragment extends DashboardFragment implements
             mSearchFilter = new SearchFilter();
         }
 
-        mOriginalLocaleInfos = mAppLocaleAllListPreferenceController.getSupportedLocaleList();
+        if (mSuggestedListPreferenceController != null
+                && mAppLocaleAllListPreferenceController != null) {
+            mOriginalLocaleInfos = mAppLocaleAllListPreferenceController.getSupportedLocaleList();
+            mOriginalLocaleInfos.addAll(
+                    mSuggestedListPreferenceController.getSuggestedLocaleList().stream().collect(
+                            Collectors.toList()));
+        }
         // If we haven't load apps list completely, don't filter anything.
         if (mOriginalLocaleInfos == null) {
             Log.w(TAG, "Locales haven't loaded completely yet, so nothing can be filtered");
@@ -285,7 +285,7 @@ public class AppLocalePickerFragment extends DashboardFragment implements
         @Override
         protected FilterResults performFiltering(CharSequence prefix) {
             FilterResults results = new FilterResults();
-
+            mPrefix = prefix;
             if (mOriginalLocaleInfos == null) {
                 mOriginalLocaleInfos = new ArrayList<>(mLocaleOptions);
             }
@@ -330,13 +330,15 @@ public class AppLocalePickerFragment extends DashboardFragment implements
             }
 
             mLocaleOptions = (ArrayList<LocaleStore.LocaleInfo>) results.values;
+            List<LocaleStore.LocaleInfo> list = new ArrayList<>();
+            list.addAll(mLocaleOptions);
             // Need to scroll to first preference when searching.
             if (mRecyclerView != null) {
                 mRecyclerView.post(() -> mRecyclerView.scrollToPosition(0));
             }
 
-            mAppLocaleAllListPreferenceController.onSearchListChanged(mLocaleOptions, null);
-            mSuggestedListPreferenceController.onSearchListChanged(mLocaleOptions, null);
+            mSuggestedListPreferenceController.onSearchListChanged(list, mPrefix);
+            mAppLocaleAllListPreferenceController.onSearchListChanged(list, mPrefix);
         }
 
         // TODO: decide if this is enough, or we want to use a BreakIterator...
@@ -405,8 +407,18 @@ public class AppLocalePickerFragment extends DashboardFragment implements
 
     private List<AbstractPreferenceController> buildPreferenceControllers(
             @NonNull Context context) {
+        final List<AbstractPreferenceController> controllers = new ArrayList<>();
         Bundle args = getArguments();
-        mPackageName = args.getString(ARG_PACKAGE_NAME);
+        Uri data = getIntent().getData();
+        if (data != null) {
+            mPackageName = data.getSchemeSpecificPart();
+        } else if (args != null) {
+            mPackageName = args.getString(ARG_PACKAGE_NAME);
+        }
+        if (TextUtils.isEmpty(mPackageName)) {
+            return controllers;
+        }
+
         mUid = args.getInt(ARG_PACKAGE_UID);
         mLocaleInfo = (LocaleStore.LocaleInfo) args.getSerializable(
                 RegionAndNumberingSystemPickerFragment.EXTRA_TARGET_LOCALE);
@@ -421,7 +433,6 @@ public class AppLocalePickerFragment extends DashboardFragment implements
         mAppLocaleAllListPreferenceController = new AppLocaleAllListPreferenceController(
                 context, KEY_PREFERENCE_APP_LOCALE_LIST, mPackageName, mIsNumberingMode,
                 mLocaleInfo, getActivity(), appLocaleCollector);
-        final List<AbstractPreferenceController> controllers = new ArrayList<>();
         controllers.add(mSuggestedListPreferenceController);
         controllers.add(mAppLocaleAllListPreferenceController);
 

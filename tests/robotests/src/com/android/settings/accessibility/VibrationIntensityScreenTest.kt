@@ -18,33 +18,36 @@ package com.android.settings.accessibility
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Resources
+import android.media.AudioManager
 import android.os.Vibrator
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.settings.R
+import androidx.core.content.getSystemService
+import com.android.settings.R.integer.config_vibration_supported_intensity_levels
 import com.android.settings.flags.Flags
-import com.android.settingslib.preference.CatalystScreenTestCase
+import com.android.settings.testutils2.SettingsCatalystTestCase
+import com.android.settings.testutils.shadow.SettingsShadowResources
+import com.android.settings.testutils.shadow.ShadowAudioManager
 import com.google.common.truth.Truth.assertThat
+import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.stub
+import org.robolectric.Shadows.shadowOf
+import org.robolectric.annotation.Config
 
 // LINT.IfChange
-@RunWith(AndroidJUnit4::class)
-class VibrationIntensityScreenTest : CatalystScreenTestCase() {
-    private lateinit var mockVibrator: Vibrator
+@Config(shadows = [ShadowAudioManager::class, SettingsShadowResources::class])
+class VibrationIntensityScreenTest : SettingsCatalystTestCase() {
+    private lateinit var vibratorMock: Vibrator
 
-    private val resourcesSpy: Resources =
-        spy((ApplicationProvider.getApplicationContext() as Context).resources)
+    private val resourcesSpy: Resources = spy(appContext.resources)
 
     private val context: Context =
-        object : ContextWrapper(ApplicationProvider.getApplicationContext()) {
+        object : ContextWrapper(appContext) {
             override fun getSystemService(name: String): Any? =
                 when {
-                    name == VIBRATOR_SERVICE -> mockVibrator
+                    name == VIBRATOR_SERVICE -> vibratorMock
                     else -> super.getSystemService(name)
                 }
 
@@ -56,36 +59,50 @@ class VibrationIntensityScreenTest : CatalystScreenTestCase() {
     override val flagName: String
         get() = Flags.FLAG_CATALYST_VIBRATION_INTENSITY_SCREEN
 
-    @Test
-    fun key() {
-        assertThat(preferenceScreenCreator.key).isEqualTo(VibrationIntensityScreen.KEY)
+    @Before
+    fun setUp() {
+        setRingerMode(AudioManager.RINGER_MODE_NORMAL)
     }
 
     @Test
     fun isAvailable_noVibrator_unavailable() {
-        mockVibrator = mock { on { hasVibrator() } doReturn false }
+        vibratorMock = mock { on { hasVibrator() } doReturn false }
         resourcesSpy.stub {
-            on { getInteger(R.integer.config_vibration_supported_intensity_levels) } doReturn 3
+            on { getInteger(config_vibration_supported_intensity_levels) } doReturn 3
         }
         assertThat(preferenceScreenCreator.isAvailable(context)).isFalse()
     }
 
     @Test
     fun isAvailable_hasVibratorAndSingleIntensityLevel_unavailable() {
-        mockVibrator = mock { on { hasVibrator() } doReturn true }
+        vibratorMock = mock { on { hasVibrator() } doReturn true }
         resourcesSpy.stub {
-            on { getInteger(R.integer.config_vibration_supported_intensity_levels) } doReturn 1
+            on { getInteger(config_vibration_supported_intensity_levels) } doReturn 1
         }
         assertThat(preferenceScreenCreator.isAvailable(context)).isFalse()
     }
 
     @Test
     fun isAvailable_hasVibratorAndMultipleIntensityLevels_available() {
-        mockVibrator = mock { on { hasVibrator() } doReturn true }
+        vibratorMock = mock { on { hasVibrator() } doReturn true }
         resourcesSpy.stub {
-            on { getInteger(R.integer.config_vibration_supported_intensity_levels) } doReturn 2
+            on { getInteger(config_vibration_supported_intensity_levels) } doReturn 2
         }
         assertThat(preferenceScreenCreator.isAvailable(context)).isTrue()
+    }
+
+    @Test
+    override fun migration() {
+        // make screen available
+        shadowOf(appContext.getSystemService(Vibrator::class.java)).setHasVibrator(true)
+        SettingsShadowResources.overrideResource(config_vibration_supported_intensity_levels, 2)
+        super.migration()
+    }
+
+    private fun setRingerMode(ringerMode: Int) {
+        val audioManager = context.getSystemService<AudioManager>()
+        audioManager?.ringerModeInternal = ringerMode
+        assertThat(audioManager?.ringerModeInternal).isEqualTo(ringerMode)
     }
 }
 // LINT.ThenChange(VibrationPreferenceControllerTest.java)

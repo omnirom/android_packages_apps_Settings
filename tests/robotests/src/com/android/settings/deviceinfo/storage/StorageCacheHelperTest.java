@@ -61,6 +61,7 @@ public class StorageCacheHelperTest {
     @Test
     public void hasCachedSizeInfo_hasCacheData_shouldReturnTrue() {
         mHelper.cacheSizeInfo(getFakeStorageCache());
+        mHelper.cacheTotalSizeAndTotalUsedSize(FAKE_TOTAL_SIZE, FAKE_TOTAL_USED_SIZE);
 
         assertThat(mHelper.hasCachedSizeInfo()).isTrue();
     }

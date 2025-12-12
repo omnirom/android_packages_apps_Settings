@@ -61,31 +61,6 @@ public class DefaultCombinedPreferenceControllerTest {
     }
 
     @Test
-    public void ensureSettingIntentNullForNewDesign() {
-        if (!PrimaryProviderPreference.shouldUseNewSettingsUi()) {
-            return;
-        }
-
-        // The setting intent should be null for the new design since this
-        // is handled by the delegate for the PrimaryProviderPreference.
-        DefaultCombinedPreferenceController dcpc =
-                new DefaultCombinedPreferenceController(mContext, false, false);
-        assertThat(dcpc.getSettingIntent(null).getPackage()).isNull();
-    }
-
-    @Test
-    public void ensureSettingIntentNotNullForOldDesign() {
-        if (PrimaryProviderPreference.shouldUseNewSettingsUi()) {
-            return;
-        }
-
-        // For the old design the setting intent should still be used.
-        DefaultCombinedPreferenceController dcpc =
-                new DefaultCombinedPreferenceController(mContext, false, false);
-        assertThat(dcpc.getSettingIntent(null).getPackage()).isNotNull();
-    }
-
-    @Test
     public void ensureSettingsActivityIntentCreatedSuccessfully() {
         // Ensure that the settings activity is only created if we haved the right combination
         // of package and class name.
@@ -99,7 +74,7 @@ public class DefaultCombinedPreferenceControllerTest {
 
     @Test
     public void ensureUpdatePreferenceForProviderPopulatesInfo() {
-        if (!PrimaryProviderPreference.shouldUseNewSettingsUi()) {
+        if (PrimaryProviderPreference.shouldUseNewSettingsUi()) {
             return;
         }
 

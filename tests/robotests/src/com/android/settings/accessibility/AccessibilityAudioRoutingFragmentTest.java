@@ -20,8 +20,6 @@ import static com.google.common.truth.Truth.assertThat;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.FeatureFlagUtils;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -50,8 +48,6 @@ public class AccessibilityAudioRoutingFragmentTest {
 
     @Rule
     public MockitoRule mMockitoRule = MockitoJUnit.rule();
-    @Rule
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Spy
     private final Context mContext = ApplicationProvider.getApplicationContext();
@@ -70,7 +66,6 @@ public class AccessibilityAudioRoutingFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
     public void deviceSupportsHearingAidAndPageEnabled_isPageSearchEnabled_returnTrue() {
         FeatureFlagUtils.setEnabled(mContext,
                 FeatureFlagUtils.SETTINGS_AUDIO_ROUTING, true);
@@ -81,7 +76,6 @@ public class AccessibilityAudioRoutingFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
     public void deviceDoesNotSupportHearingAidAndPageEnabled_isPageSearchEnabled_returnFalse() {
         FeatureFlagUtils.setEnabled(mContext,
                 FeatureFlagUtils.SETTINGS_AUDIO_ROUTING, true);
@@ -92,7 +86,6 @@ public class AccessibilityAudioRoutingFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
     public void deviceSupportsHearingAidAndPageDisabled_isPageSearchEnabled_returnFalse() {
         FeatureFlagUtils.setEnabled(mContext,
                 FeatureFlagUtils.SETTINGS_AUDIO_ROUTING, false);

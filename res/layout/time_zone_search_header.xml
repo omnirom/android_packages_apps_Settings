@@ -14,15 +14,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<!-- similar to preference_material.xml but textview for emoji country flag
-instead of an ImageView -->
-
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
           android:id="@android:id/title"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginBottom="16dp"
           android:layout_marginTop="16dp"
-          android:textAppearance="@style/TextAppearance.CategoryTitle"
+          android:textAppearance="@style/TextAppearance.CategoryTitle.SettingsLib"
           android:textColor="?android:attr/colorAccent"
-          android:paddingStart="@dimen/preference_no_icon_padding_start"/>
+          android:paddingStart="?android:attr/listPreferredItemPaddingStart"/>

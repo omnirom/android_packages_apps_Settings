@@ -18,10 +18,14 @@ package com.android.settings.biometrics.combination;
 import static android.provider.Settings.Secure.BIOMETRIC_APP_ENABLED;
 
 import android.app.admin.DevicePolicyManager;
+import android.app.admin.EnforcingAdmin;
+import android.app.admin.PolicyEnforcementInfo;
 import android.content.Context;
 import android.hardware.face.FaceManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.provider.Settings;
+
+import androidx.annotation.Nullable;
 
 import com.android.settings.Utils;
 import com.android.settings.biometrics.activeunlock.ActiveUnlockStatusUtils;
@@ -50,6 +54,14 @@ public class BiometricSettingsAppPreferenceController extends TogglePreferenceCo
     protected EnforcedAdmin getRestrictingAdmin() {
         return RestrictedLockUtilsInternal.checkIfKeyguardFeaturesDisabled(mContext,
                 DevicePolicyManager.KEYGUARD_DISABLE_BIOMETRICS, mUserId);
+    }
+
+    @Nullable
+    protected EnforcingAdmin getEnforcingAdmin() {
+        PolicyEnforcementInfo info =
+                RestrictedLockUtilsInternal.getEnforcingAdminsForKeyguardFeatures(mContext,
+                        DevicePolicyManager.KEYGUARD_DISABLE_BIOMETRICS, mUserId);
+        return info == null ? null : info.getMostImportantEnforcingAdmin();
     }
 
     public void setUserId(int userId) {

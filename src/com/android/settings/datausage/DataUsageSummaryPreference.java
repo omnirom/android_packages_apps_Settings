@@ -42,6 +42,8 @@ import com.android.settings.datausage.lib.DataUsageFormatter;
 import com.android.settingslib.Utils;
 import com.android.settingslib.spaprivileged.framework.common.BytesFormatter;
 import com.android.settingslib.utils.StringUtil;
+import com.android.settingslib.widget.GroupSectionDividerMixin;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -52,7 +54,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Provides a summary of data usage.
  */
-public class DataUsageSummaryPreference extends Preference {
+public class DataUsageSummaryPreference extends Preference implements GroupSectionDividerMixin {
     private static final long MILLIS_IN_A_DAY = TimeUnit.DAYS.toMillis(1);
     private static final long WARNING_AGE = TimeUnit.HOURS.toMillis(6L);
     @VisibleForTesting
@@ -85,9 +87,20 @@ public class DataUsageSummaryPreference extends Preference {
     /** The number of bytes used since the start of the cycle. */
     private long mDataplanUse;
 
+    private boolean mIsExpressiveTheme;
+
     public DataUsageSummaryPreference(Context context, AttributeSet attrs) {
+        this(context, attrs, SettingsThemeHelper.isExpressiveTheme(context));
+    }
+
+    public DataUsageSummaryPreference(Context context, AttributeSet attrs,
+            boolean isExpressiveTheme) {
         super(context, attrs);
-        setLayoutResource(R.layout.data_usage_summary_preference);
+        mIsExpressiveTheme = isExpressiveTheme;
+        int resId = mIsExpressiveTheme
+                ? R.layout.data_usage_summary_preference_expressive
+                : R.layout.data_usage_summary_preference;
+        setLayoutResource(resId);
     }
 
     public void setLimitInfo(CharSequence text) {
@@ -145,7 +158,9 @@ public class DataUsageSummaryPreference extends Preference {
             bar.setVisibility(View.VISIBLE);
             getLabelBar(holder).setVisibility(View.VISIBLE);
             bar.setProgress((int) (mProgress * 100));
-            (getLabel1(holder)).setText(mStartLabel);
+            if (!mIsExpressiveTheme) {
+                (getLabel1(holder)).setText(mStartLabel);
+            }
             (getLabel2(holder)).setText(mEndLabel);
         } else {
             bar.setVisibility(View.GONE);
@@ -153,13 +168,17 @@ public class DataUsageSummaryPreference extends Preference {
         }
 
         updateDataUsageLabels(holder);
+        updateCycleTimeText(holder);
+
+        if (mIsExpressiveTheme) {
+            return;
+        }
 
         TextView usageTitle = getUsageTitle(holder);
         TextView carrierInfo = getCarrierInfo(holder);
         TextView limitInfo = getDataLimits(holder);
 
         usageTitle.setVisibility(mNumPlans > 1 ? View.VISIBLE : View.GONE);
-        updateCycleTimeText(holder);
         updateCarrierInfo(carrierInfo);
         limitInfo.setVisibility(TextUtils.isEmpty(mLimitInfoText) ? View.GONE : View.VISIBLE);
         limitInfo.setText(mLimitInfoText);
@@ -207,7 +226,7 @@ public class DataUsageSummaryPreference extends Preference {
     }
 
     private void updateCycleTimeText(PreferenceViewHolder holder) {
-        TextView cycleTime = getCycleTime(holder);
+        TextView cycleTime = mIsExpressiveTheme ? getLabel1(holder) : getCycleTime(holder);
 
         // Takes zero as a special case which value is never set.
         if (mCycleEndTimeMs == null) {

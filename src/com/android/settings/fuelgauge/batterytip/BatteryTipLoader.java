@@ -24,7 +24,6 @@ import androidx.annotation.VisibleForTesting;
 import com.android.settings.fuelgauge.BatteryInfo;
 import com.android.settings.fuelgauge.BatteryUtils;
 import com.android.settings.fuelgauge.batterytip.detectors.BatteryDefenderDetector;
-import com.android.settings.fuelgauge.batterytip.detectors.HighUsageDetector;
 import com.android.settings.fuelgauge.batterytip.detectors.IncompatibleChargerDetector;
 import com.android.settings.fuelgauge.batterytip.tips.BatteryTip;
 import com.android.settings.overlay.FeatureFactory;
@@ -58,9 +57,6 @@ public class BatteryTipLoader extends AsyncLoaderCompat<List<BatteryTip>> {
         final BatteryInfo batteryInfo = mBatteryUtils.getBatteryInfo(TAG);
         final Context context = getContext().getApplicationContext();
 
-        tips.add(
-                new HighUsageDetector(context, batteryTipPolicy, mBatteryUsageStats, batteryInfo)
-                        .detect());
         tips.add(new BatteryDefenderDetector(batteryInfo, context).detect());
         tips.add(new IncompatibleChargerDetector(context).detect());
         FeatureFactory.getFeatureFactory()

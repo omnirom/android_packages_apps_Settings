@@ -128,11 +128,11 @@
   </string-array>
   <string-array name="wifi_ip_settings">
     <item msgid="6665889765350160154">"DHCP"</item>
-    <item msgid="6215795691318745695">"ပုံမှန်ဖြစ်သော"</item>
+    <item msgid="6215795691318745695">"ပုံသေ"</item>
   </string-array>
   <string-array name="wifi_proxy_settings">
     <item msgid="4669222334822978847">"မရှိ"</item>
-    <item msgid="6242198071587397280">"ကိုယ်တိုင်ထည့်သွင်းခြင်း"</item>
+    <item msgid="6242198071587397280">"ကိုယ်တိုင်"</item>
     <item msgid="464383874780058242">"ပရောက်စီ အော်တို-စီစဉ်"</item>
   </string-array>
   <string-array name="apn_auth_entries">
@@ -315,6 +315,10 @@
     <item msgid="7397961711906421599">"အလယ်အလတ်"</item>
     <item msgid="4079132024502041928">"အရှည်"</item>
   </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"DHCP"</item>
+    <item msgid="4425163520864432692">"ပုံမှန်"</item>
+  </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"မူလစာလုံး"</item>
     <item msgid="4234707448428002595">"Sans-serif"</item>
@@ -358,10 +362,6 @@
   <string-array name="accessibility_button_location_selector_titles">
     <item msgid="6485511780196327736">"အခြားအက်ပ်များပေါ်တွင် မြင်ရခြင်း"</item>
     <item msgid="3605616699204153590">"လမ်းညွှန်ဘား"</item>
-  </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"ခလုတ်"</item>
-    <item msgid="6922258575853746220">"လက်ဟန်"</item>
   </string-array>
   <string-array name="accessibility_button_size_selector_titles">
     <item msgid="7482952318152486459">"သေး"</item>
@@ -412,7 +412,7 @@
   </string-array>
   <string-array name="wifi_metered_entries">
     <item msgid="3237321077949659241">"အလိုအလျောက် ရှာရန်"</item>
-    <item msgid="3779092145391320375">"အခမဲ့မဟုတ်အဖြစ် သတ်မှတ်ရန်"</item>
+    <item msgid="3779092145391320375">"အခပေးအဖြစ် သတ်မှတ်ရန်"</item>
     <item msgid="2047166446768045816">"အခမဲ့အဖြစ် သတ်မှတ်ရန်"</item>
   </string-array>
   <string-array name="wifi_privacy_entries">
@@ -420,7 +420,7 @@
     <item msgid="741680937828608749">"စက်၏ MAC သုံးရန်"</item>
   </string-array>
   <string-array name="wifi_dhcp_entries">
-    <item msgid="2532836996945493932">"ကွန်ရက်သို့ စက်အမည် ပို့ပါ"</item>
+    <item msgid="2532836996945493932">"ကွန်ရက်သို့ စက်အမည် ပို့ရန်"</item>
     <item msgid="7928900271137707489">"ကွန်ရက်သို့ စက်အမည် မပို့ပါနှင့်"</item>
   </string-array>
   <string-array name="wifi_hidden_entries">
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"နာရီ"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"မရှိ"</item>
+    <item msgid="321837941231023175">"ပင်မစာမျက်နှာ"</item>
+    <item msgid="953234843613969792">"မကြာသေးမီက အက်ပ်များ"</item>
+    <item msgid="1713942773283586136">"အကြောင်းကြားချက်များ"</item>
+    <item msgid="5687603742365489342">"အမြန်ဆက်တင်များ"</item>
+    <item msgid="5454862951059393431">"လော့ခ်မျက်နှာပြင်"</item>
   </string-array>
 </resources>

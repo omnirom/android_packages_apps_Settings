@@ -72,7 +72,7 @@ public class LocationInjectedServicesPreferenceControllerTest {
     @Rule
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
-    private static final String KEY_LOCATION_SERVICES = "location_service";
+    private static final String KEY_LOCATION_SERVICES = "location_services_screen";
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private LocationSettings mFragment;
@@ -186,10 +186,6 @@ public class LocationInjectedServicesPreferenceControllerTest {
 
     @Test
     public void privateProfileDisallowShareLocationOn_getParentUserLocationServicesOnly() {
-        mSetFlagsRule.enableFlags(
-                android.os.Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES,
-                android.multiuser.Flags.FLAG_HANDLE_INTERLEAVED_SETTINGS_FOR_PRIVATE_SPACE);
         final int fakePrivateProfileId = 123;
         ShadowUserManager.getShadow().setProfileIdsWithDisabled(
                 new int[]{UserHandle.myUserId(), fakePrivateProfileId});
@@ -221,10 +217,6 @@ public class LocationInjectedServicesPreferenceControllerTest {
 
     @Test
     public void privateProfileDisallowShareLocationOff_getAllUserLocationServices() {
-        mSetFlagsRule.enableFlags(
-                android.os.Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES,
-                android.multiuser.Flags.FLAG_HANDLE_INTERLEAVED_SETTINGS_FOR_PRIVATE_SPACE);
         final int fakePrivateProfileId = 123;
         ShadowUserManager.getShadow().setProfileIdsWithDisabled(
                 new int[]{UserHandle.myUserId(), fakePrivateProfileId});

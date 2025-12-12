@@ -29,7 +29,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.settings.R
 import com.android.settings.development.Enable16kUtils
-import com.android.settings.flags.Flags
 import com.android.settingslib.RestrictedLockUtils
 import com.android.settingslib.RestrictedLockUtilsInternal
 import com.android.settingslib.spa.framework.compose.OverridableFlow
@@ -73,7 +72,7 @@ private class Enable16KbAppCompatSwitchPresenter(private val context: Context, p
                                                  private val packageInfoPresenter: PackageInfoPresenter) {
     private val packageManager = context.packageManager
     fun isAvailable(): Boolean {
-        return Enable16kUtils.isUsing16kbPages() && Flags.pageSizeAppCompatSetting()
+        return Enable16kUtils.isUsing16kbPages()
     }
 
     private val isChecked = OverridableFlow(flow {

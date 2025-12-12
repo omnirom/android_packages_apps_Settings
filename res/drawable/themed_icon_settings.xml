@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2025 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="@dimen/theme_icon_size"
+    android:height="@dimen/theme_icon_size"
+    android:viewportWidth="90"
+    android:viewportHeight="90">
+<path
+        android:fillColor="@android:color/white"
+        android:pathData="M45.0604 50.25C42.1654 50.25 39.8104 47.895 39.8104 45 39.8104 42.105 42.1654 39.75 45.0604 39.75 47.9554 39.75 50.3104 42.105 50.3104 45 50.3104 47.895 47.9554 50.25 45.0604 50.25ZM56.2504 45C56.2504 44.655 56.2354 44.325 56.2054 43.98L60.0604 41.07 55.9354 33.93 51.4954 35.805C50.9404 35.415 50.3554 35.07 49.7404 34.785L49.1254 30H40.8754L40.2754 34.785C39.6604 35.07 39.0754 35.415 38.5204 35.805L34.0654 33.93 29.9404 41.07 33.7954 43.98C33.7654 44.325 33.7504 44.655 33.7504 45 33.7504 45.345 33.7654 45.675 33.7954 46.02L29.9404 48.93 34.0654 56.07 38.5054 54.195C39.0604 54.585 39.6454 54.93 40.2604 55.215L40.8754 60H49.1254L49.7254 55.215C50.3404 54.93 50.9254 54.585 51.4804 54.195L55.9204 56.07 60.0454 48.93 56.1904 46.02C56.2354 45.675 56.2504 45.345 56.2504 45ZM53.2504 45C53.2504 45.795 53.1304 46.56 52.9204 47.295L56.1304 49.725 54.6604 52.29 50.9554 50.73C49.8904 51.84 48.5254 52.65 46.9804 53.025L46.4704 57H43.5154L43.0204 53.01C41.4904 52.635 40.1104 51.825 39.0454 50.715L35.3404 52.275 33.8704 49.71 37.0804 47.28C36.8704 46.545 36.7504 45.78 36.7504 44.985 36.7504 44.19 36.8704 43.425 37.0804 42.69L33.8704 40.275 35.3404 37.71 39.0454 39.27C40.1104 38.16 41.4754 37.35 43.0204 36.975L43.5304 33H46.4854L46.9804 36.99C48.5104 37.365 49.8904 38.175 50.9554 39.285L54.6604 37.725 56.1304 40.29 52.9204 42.72C53.1304 43.425 53.2504 44.205 53.2504 45Z"/>
+</vector>

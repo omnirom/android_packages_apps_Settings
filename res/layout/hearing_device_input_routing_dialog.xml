@@ -15,37 +15,43 @@
      limitations under the License.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="?android:attr/dialogPreferredPadding"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:textDirection="locale"
+    android:layoutDirection="locale"
+    android:scrollbarStyle="outsideOverlay">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="?android:attr/dialogPreferredPadding"
+        android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textDirection="locale"
         android:textAppearance="?android:attr/textAppearanceListItemSecondary"
         android:text="@string/bluetooth_hearing_device_input_routing_dialog_summary" />
 
-    <RadioGroup
-        android:id="@+id/input_routing_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:checkedButton="@id/input_from_hearing_device">
-        <RadioButton
-            android:id="@+id/input_from_hearing_device"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/input_routing_group"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="?android:attr/listPreferredItemHeight"
-            android:text="@string/bluetooth_hearing_device_input_routing_hearing_device_option"/>
-        <RadioButton
-            android:id="@+id/input_from_builtin_mic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="?android:attr/listPreferredItemHeight"
-            android:text="@string/bluetooth_hearing_device_input_routing_builtin_option"/>
-    </RadioGroup>
-
-</LinearLayout>
+            android:layout_marginTop="16dp"
+            android:checkedButton="@id/input_from_hearing_device">
+            <RadioButton
+                android:id="@+id/input_from_hearing_device"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="?android:attr/listPreferredItemHeight"
+                android:text="@string/bluetooth_hearing_device_input_routing_hearing_device_option"/>
+            <RadioButton
+                android:id="@+id/input_from_builtin_mic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="?android:attr/listPreferredItemHeight"
+                android:text="@string/bluetooth_hearing_device_input_routing_builtin_option"/>
+        </RadioGroup>
+    </LinearLayout>
+</ScrollView>

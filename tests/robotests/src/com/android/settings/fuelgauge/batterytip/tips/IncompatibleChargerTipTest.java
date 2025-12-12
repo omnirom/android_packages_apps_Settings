@@ -17,25 +17,29 @@ package com.android.settings.fuelgauge.batterytip.tips;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;
+import android.text.SpannableString;
 import android.util.Log;
 
 import androidx.preference.Preference;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
+import com.android.settings.Utils;
 import com.android.settings.testutils.FakeFeatureFactory;
-import com.android.settings.widget.TipCardPreference;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
+import com.android.settingslib.widget.BannerMessagePreference;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -49,7 +53,7 @@ public final class IncompatibleChargerTipTest {
     private FakeFeatureFactory mFeatureFactory;
     private IncompatibleChargerTip mIncompatibleChargerTip;
     private MetricsFeatureProvider mMetricsFeatureProvider;
-    private TipCardPreference mCardPreference;
+    private BannerMessagePreference mCardPreference;
 
     @Rule public MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Mock private BatteryTip mBatteryTip;
@@ -61,7 +65,7 @@ public final class IncompatibleChargerTipTest {
         mMetricsFeatureProvider = mFeatureFactory.metricsFeatureProvider;
         mContext = ApplicationProvider.getApplicationContext();
         mIncompatibleChargerTip = new IncompatibleChargerTip(BatteryTip.StateType.NEW);
-        mCardPreference = new TipCardPreference(mContext);
+        mCardPreference = spy(new BannerMessagePreference(mContext));
 
         when(mPreference.getContext()).thenReturn(mContext);
     }
@@ -103,18 +107,24 @@ public final class IncompatibleChargerTipTest {
     }
 
     @Test
-    public void updatePreference_shouldSetSecondaryButtonText() {
-        String expected = mContext.getString(R.string.learn_more);
+    public void updatePreference_shouldSetNegativeButtonText() {
+        SpannableString expected =
+                Utils.createAccessibleSequence(
+                        mContext.getString(R.string.learn_more),
+                        mContext.getString(
+                                R.string.battery_tip_incompatible_charging_content_description));
+        ArgumentCaptor<CharSequence> captor = ArgumentCaptor.forClass(CharSequence.class);
 
         mIncompatibleChargerTip.updatePreference(mCardPreference);
 
-        assertThat(mCardPreference.getPrimaryButtonText()).isEqualTo(expected);
+        verify(mCardPreference).setNegativeButtonText(captor.capture());
+        assertThat(captor.getValue().toString()).isEqualTo(expected.toString());
     }
 
     @Test
-    public void updatePreference_shouldSetSecondaryButtonVisible() {
+    public void updatePreference_shouldSetNegativeButtonVisible() {
         mIncompatibleChargerTip.updatePreference(mCardPreference);
-        assertThat(mCardPreference.getPrimaryButtonVisibility()).isTrue();
+        verify(mCardPreference).setNegativeButtonVisible(true);
     }
 
     private String getLastErrorLog() {

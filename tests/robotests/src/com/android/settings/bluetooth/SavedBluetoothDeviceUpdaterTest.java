@@ -35,7 +35,6 @@ import android.graphics.drawable.Drawable;
 import android.util.Pair;
 
 import com.android.settings.connecteddevice.DevicePreferenceCallback;
-import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.testutils.shadow.ShadowBluetoothAdapter;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.CachedBluetoothDeviceManager;
@@ -61,24 +60,14 @@ public class SavedBluetoothDeviceUpdaterTest {
     private static final String MAC_ADDRESS = "04:52:C7:0B:D8:3C";
     private static final String TEST_EXCLUSIVE_MANAGER = "com.test.manager";
 
-    @Mock
-    private DashboardFragment mDashboardFragment;
-    @Mock
-    private DevicePreferenceCallback mDevicePreferenceCallback;
-    @Mock
-    private CachedBluetoothDevice mCachedBluetoothDevice;
-    @Mock
-    private BluetoothDevice mBluetoothDevice;
-    @Mock
-    private BluetoothAdapter mBluetoothAdapter;
-    @Mock
-    private CachedBluetoothDeviceManager mDeviceManager;
-    @Mock
-    private LocalBluetoothManager mBluetoothManager;
-    @Mock
-    private Drawable mDrawable;
-    @Mock
-    private PackageManager mPackageManager;
+    @Mock private DevicePreferenceCallback mDevicePreferenceCallback;
+    @Mock private CachedBluetoothDevice mCachedBluetoothDevice;
+    @Mock private BluetoothDevice mBluetoothDevice;
+    @Mock private BluetoothAdapter mBluetoothAdapter;
+    @Mock private CachedBluetoothDeviceManager mDeviceManager;
+    @Mock private LocalBluetoothManager mBluetoothManager;
+    @Mock private Drawable mDrawable;
+    @Mock private PackageManager mPackageManager;
 
     private Context mContext;
     private SavedBluetoothDeviceUpdater mBluetoothDeviceUpdater;
@@ -91,23 +80,12 @@ public class SavedBluetoothDeviceUpdaterTest {
 
         Pair<Drawable, String> pairs = new Pair<>(mDrawable, "fake_device");
         mContext = spy(RuntimeEnvironment.application);
-        doReturn(mContext).when(mDashboardFragment).getContext();
         when(mCachedBluetoothDevice.getDevice()).thenReturn(mBluetoothDevice);
         when(mCachedBluetoothDevice.getAddress()).thenReturn(MAC_ADDRESS);
         when(mBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_BONDED);
         when(mCachedBluetoothDevice.getDrawableWithDescription()).thenReturn(pairs);
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
 
-        mBluetoothDeviceUpdater = spy(new SavedBluetoothDeviceUpdater(mContext,
-                mDevicePreferenceCallback, false, /* metricsCategory= */ 0));
-        mBluetoothDeviceUpdater.setPrefContext(mContext);
-        mBluetoothDeviceUpdater.mBluetoothAdapter = mBluetoothAdapter;
-        mBluetoothDeviceUpdater.mLocalManager = mBluetoothManager;
-        mPreference = new BluetoothDevicePreference(mContext, mCachedBluetoothDevice,
-                false, BluetoothDevicePreference.SortType.TYPE_DEFAULT);
-        doNothing().when(mBluetoothDeviceUpdater).addPreference(any());
-        doNothing().when(mBluetoothDeviceUpdater).removePreference(
-                any(CachedBluetoothDevice.class));
         mCachedDevices.add(mCachedBluetoothDevice);
         when(mBluetoothManager.getCachedDeviceManager()).thenReturn(mDeviceManager);
         when(mDeviceManager.getCachedDevicesCopy()).thenReturn(mCachedDevices);
@@ -115,52 +93,86 @@ public class SavedBluetoothDeviceUpdaterTest {
 
     @Test
     public void onProfileConnectionStateChanged_deviceConnected_removePreference() {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
         when(mBluetoothDevice.isConnected()).thenReturn(true);
 
-        mBluetoothDeviceUpdater.onProfileConnectionStateChanged(mCachedBluetoothDevice,
-                BluetoothProfile.STATE_CONNECTED, BluetoothProfile.A2DP);
+        mBluetoothDeviceUpdater.onProfileConnectionStateChanged(
+                mCachedBluetoothDevice, BluetoothProfile.STATE_CONNECTED, BluetoothProfile.A2DP);
+
+        verify(mBluetoothDeviceUpdater).removePreference(mCachedBluetoothDevice);
+    }
+
+    @Test
+    public void
+            onProfileConnectionStateChanged_showConnectedDevice_inDeviceList_notRemovePreference() {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ true);
+        when(mBluetoothDevice.isConnected()).thenReturn(true);
+
+        mBluetoothDeviceUpdater.onProfileConnectionStateChanged(
+                mCachedBluetoothDevice, BluetoothProfile.STATE_CONNECTED, BluetoothProfile.A2DP);
+
+        verify(mBluetoothDeviceUpdater, never()).removePreference(mCachedBluetoothDevice);
+    }
+
+    @Test
+    public void
+            onProfileConnectionStateChanged_showConnectedDevice_notInDeviceList_removePreference() {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ true);
+        when(mBluetoothDevice.isConnected()).thenReturn(true);
+        mCachedDevices.clear();
+
+        mBluetoothDeviceUpdater.onProfileConnectionStateChanged(
+                mCachedBluetoothDevice, BluetoothProfile.STATE_CONNECTED, BluetoothProfile.A2DP);
 
         verify(mBluetoothDeviceUpdater).removePreference(mCachedBluetoothDevice);
     }
 
     @Test
     public void onProfileConnectionStateChanged_deviceDisconnected_addPreference() {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
         when(mBluetoothDevice.isConnected()).thenReturn(false);
 
-        mBluetoothDeviceUpdater.onProfileConnectionStateChanged(mCachedBluetoothDevice,
-                BluetoothProfile.STATE_DISCONNECTED, BluetoothProfile.A2DP);
+        mBluetoothDeviceUpdater.onProfileConnectionStateChanged(
+                mCachedBluetoothDevice, BluetoothProfile.STATE_DISCONNECTED, BluetoothProfile.A2DP);
 
-        verify(mBluetoothDeviceUpdater).addPreference(mCachedBluetoothDevice,
-                BluetoothDevicePreference.SortType.TYPE_NO_SORT);
+        verify(mBluetoothDeviceUpdater)
+                .addPreference(
+                        mCachedBluetoothDevice, BluetoothDevicePreference.SortType.TYPE_NO_SORT);
+    }
+
+    @Test
+    public void onProfileConnectionStateChanged_leDeviceDisconnected_inDeviceList_addPreference() {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
+        when(mBluetoothDevice.isConnected()).thenReturn(false);
+
+        mBluetoothDeviceUpdater.onProfileConnectionStateChanged(
+                mCachedBluetoothDevice,
+                BluetoothProfile.STATE_DISCONNECTED,
+                BluetoothProfile.LE_AUDIO);
+
+        verify(mBluetoothDeviceUpdater)
+                .addPreference(
+                        mCachedBluetoothDevice, BluetoothDevicePreference.SortType.TYPE_NO_SORT);
     }
 
     @Test
     public void
-            onProfileConnectionStateChanged_leDeviceDisconnected_inDeviceList_invokesAddPreference()
-    {
-        when(mBluetoothDevice.isConnected()).thenReturn(false);
-
-        mBluetoothDeviceUpdater.onProfileConnectionStateChanged(mCachedBluetoothDevice,
-                BluetoothProfile.STATE_DISCONNECTED, BluetoothProfile.LE_AUDIO);
-
-        verify(mBluetoothDeviceUpdater).addPreference(mCachedBluetoothDevice,
-                BluetoothDevicePreference.SortType.TYPE_NO_SORT);
-    }
-
-    @Test
-    public void
-    onProfileConnectionStateChanged_deviceDisconnected_notInDeviceList_invokesRemovePreference() {
+            onProfileConnectionStateChanged_deviceDisconnected_notInDeviceList_removePreference() {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
         when(mBluetoothDevice.isConnected()).thenReturn(false);
         mCachedDevices.clear();
 
-        mBluetoothDeviceUpdater.onProfileConnectionStateChanged(mCachedBluetoothDevice,
-                BluetoothProfile.STATE_DISCONNECTED, BluetoothProfile.LE_AUDIO);
+        mBluetoothDeviceUpdater.onProfileConnectionStateChanged(
+                mCachedBluetoothDevice,
+                BluetoothProfile.STATE_DISCONNECTED,
+                BluetoothProfile.LE_AUDIO);
 
         verify(mBluetoothDeviceUpdater).removePreference(mCachedBluetoothDevice);
     }
 
     @Test
     public void onClick_Preference_setConnect() {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
         mBluetoothDeviceUpdater.onPreferenceClick(mPreference);
 
         verify(mCachedBluetoothDevice).connect();
@@ -168,6 +180,7 @@ public class SavedBluetoothDeviceUpdaterTest {
 
     @Test
     public void onClick_Preference_connected_setActive() {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
         when(mCachedBluetoothDevice.isConnected()).thenReturn(true);
 
         mBluetoothDeviceUpdater.onPreferenceClick(mPreference);
@@ -177,6 +190,7 @@ public class SavedBluetoothDeviceUpdaterTest {
 
     @Test
     public void forceUpdate_findCachedBluetoothDeviceIsMatched_addPreference() {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
         final List<BluetoothDevice> bluetoothDevices = new ArrayList<>();
         bluetoothDevices.add(mBluetoothDevice);
 
@@ -189,12 +203,14 @@ public class SavedBluetoothDeviceUpdaterTest {
 
         mBluetoothDeviceUpdater.forceUpdate();
 
-        verify(mBluetoothDeviceUpdater).addPreference(mCachedBluetoothDevice,
-                BluetoothDevicePreference.SortType.TYPE_NO_SORT);
+        verify(mBluetoothDeviceUpdater)
+                .addPreference(
+                        mCachedBluetoothDevice, BluetoothDevicePreference.SortType.TYPE_NO_SORT);
     }
 
     @Test
     public void forceUpdate_findCachedBluetoothDeviceNotMatched_removePreference() {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
         final List<BluetoothDevice> bluetoothDevices = new ArrayList<>();
         bluetoothDevices.add(mBluetoothDevice);
 
@@ -211,7 +227,26 @@ public class SavedBluetoothDeviceUpdaterTest {
     }
 
     @Test
+    public void forceUpdate_showConnectedDevice_findConnectedDevice_notRemovePreference() {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ true);
+        final List<BluetoothDevice> bluetoothDevices = new ArrayList<>();
+        bluetoothDevices.add(mBluetoothDevice);
+
+        when(mBluetoothAdapter.isEnabled()).thenReturn(true);
+        when(mBluetoothAdapter.getMostRecentlyConnectedDevices()).thenReturn(bluetoothDevices);
+        when(mBluetoothManager.getCachedDeviceManager()).thenReturn(mDeviceManager);
+        when(mDeviceManager.findDevice(mBluetoothDevice)).thenReturn(mCachedBluetoothDevice);
+        when(mBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_BONDED);
+        when(mBluetoothDevice.isConnected()).thenReturn(true);
+
+        mBluetoothDeviceUpdater.forceUpdate();
+
+        verify(mBluetoothDeviceUpdater, never()).removePreference(mCachedBluetoothDevice);
+    }
+
+    @Test
     public void forceUpdate_notFindCachedBluetoothDevice_doNothing() {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
         final List<BluetoothDevice> bluetoothDevices = new ArrayList<>();
         bluetoothDevices.add(mBluetoothDevice);
 
@@ -223,12 +258,14 @@ public class SavedBluetoothDeviceUpdaterTest {
         mBluetoothDeviceUpdater.forceUpdate();
 
         verify(mBluetoothDeviceUpdater, never()).removePreference(mCachedBluetoothDevice);
-        verify(mBluetoothDeviceUpdater, never()).addPreference(mCachedBluetoothDevice,
-                BluetoothDevicePreference.SortType.TYPE_NO_SORT);
+        verify(mBluetoothDeviceUpdater, never())
+                .addPreference(
+                        mCachedBluetoothDevice, BluetoothDevicePreference.SortType.TYPE_NO_SORT);
     }
 
     @Test
     public void forceUpdate_bluetoothAdapterNotEnable_removeAllDevicesFromPreference() {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
         final Collection<CachedBluetoothDevice> cachedDevices = new ArrayList<>();
         cachedDevices.add(mCachedBluetoothDevice);
 
@@ -243,6 +280,7 @@ public class SavedBluetoothDeviceUpdaterTest {
 
     @Test
     public void forceUpdate_deviceNotContain_removePreference() {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
         final List<BluetoothDevice> bluetoothDevices = new ArrayList<>();
         bluetoothDevices.add(mBluetoothDevice);
         final BluetoothDevice device2 = mock(BluetoothDevice.class);
@@ -263,12 +301,14 @@ public class SavedBluetoothDeviceUpdaterTest {
         mBluetoothDeviceUpdater.forceUpdate();
 
         verify(mBluetoothDeviceUpdater).removePreference(cachedDevice2);
-        verify(mBluetoothDeviceUpdater).addPreference(mCachedBluetoothDevice,
-                BluetoothDevicePreference.SortType.TYPE_NO_SORT);
+        verify(mBluetoothDeviceUpdater)
+                .addPreference(
+                        mCachedBluetoothDevice, BluetoothDevicePreference.SortType.TYPE_NO_SORT);
     }
 
     @Test
     public void forceUpdate_deviceIsSubDevice_doesNothing() {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
         final List<BluetoothDevice> bluetoothDevices = new ArrayList<>();
         bluetoothDevices.add(mBluetoothDevice);
 
@@ -281,12 +321,14 @@ public class SavedBluetoothDeviceUpdaterTest {
         mBluetoothDeviceUpdater.forceUpdate();
 
         verify(mBluetoothDeviceUpdater, never()).removePreference(mCachedBluetoothDevice);
-        verify(mBluetoothDeviceUpdater, never()).addPreference(mCachedBluetoothDevice,
-                BluetoothDevicePreference.SortType.TYPE_NO_SORT);
+        verify(mBluetoothDeviceUpdater, never())
+                .addPreference(
+                        mCachedBluetoothDevice, BluetoothDevicePreference.SortType.TYPE_NO_SORT);
     }
 
     @Test
     public void update_notExclusivelyManagedDevice_addDevice() {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
         final Collection<CachedBluetoothDevice> cachedDevices = new ArrayList<>();
         cachedDevices.add(mCachedBluetoothDevice);
 
@@ -295,40 +337,45 @@ public class SavedBluetoothDeviceUpdaterTest {
         when(mDeviceManager.getCachedDevicesCopy()).thenReturn(cachedDevices);
         when(mBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_BONDED);
         when(mBluetoothDevice.isConnected()).thenReturn(false);
-        when(mBluetoothDevice.getMetadata(BluetoothDevice.METADATA_EXCLUSIVE_MANAGER)).thenReturn(
-                null);
+        when(mBluetoothDevice.getMetadata(BluetoothDevice.METADATA_EXCLUSIVE_MANAGER))
+                .thenReturn(null);
 
         mBluetoothDeviceUpdater.update(mCachedBluetoothDevice);
 
-        verify(mBluetoothDeviceUpdater).addPreference(mCachedBluetoothDevice,
-                BluetoothDevicePreference.SortType.TYPE_NO_SORT);
+        verify(mBluetoothDeviceUpdater)
+                .addPreference(
+                        mCachedBluetoothDevice, BluetoothDevicePreference.SortType.TYPE_NO_SORT);
     }
 
     @Test
     public void update_existingExclusivelyManagedDevice_packageEnabled_removePreference()
             throws Exception {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
         final Collection<CachedBluetoothDevice> cachedDevices = new ArrayList<>();
         when(mBluetoothAdapter.isEnabled()).thenReturn(true);
         when(mBluetoothManager.getCachedDeviceManager()).thenReturn(mDeviceManager);
         when(mDeviceManager.getCachedDevicesCopy()).thenReturn(cachedDevices);
         when(mBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_BONDED);
         when(mBluetoothDevice.isConnected()).thenReturn(false);
-        when(mBluetoothDevice.getMetadata(BluetoothDevice.METADATA_EXCLUSIVE_MANAGER)).thenReturn(
-                TEST_EXCLUSIVE_MANAGER.getBytes());
-        doReturn(new ApplicationInfo()).when(mPackageManager).getApplicationInfo(
-                TEST_EXCLUSIVE_MANAGER, 0);
+        when(mBluetoothDevice.getMetadata(BluetoothDevice.METADATA_EXCLUSIVE_MANAGER))
+                .thenReturn(TEST_EXCLUSIVE_MANAGER.getBytes());
+        doReturn(new ApplicationInfo())
+                .when(mPackageManager)
+                .getApplicationInfo(TEST_EXCLUSIVE_MANAGER, 0);
         mBluetoothDeviceUpdater.mPreferenceMap.put(mBluetoothDevice, mPreference);
 
         mBluetoothDeviceUpdater.update(mCachedBluetoothDevice);
 
         verify(mBluetoothDeviceUpdater).removePreference(mCachedBluetoothDevice);
-        verify(mBluetoothDeviceUpdater, never()).addPreference(mCachedBluetoothDevice,
-                BluetoothDevicePreference.SortType.TYPE_NO_SORT);
+        verify(mBluetoothDeviceUpdater, never())
+                .addPreference(
+                        mCachedBluetoothDevice, BluetoothDevicePreference.SortType.TYPE_NO_SORT);
     }
 
     @Test
     public void update_newExclusivelyManagedDevice_packageEnabled_doNotAddPreference()
             throws Exception {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
         final Collection<CachedBluetoothDevice> cachedDevices = new ArrayList<>();
         cachedDevices.add(mCachedBluetoothDevice);
         when(mBluetoothAdapter.isEnabled()).thenReturn(true);
@@ -336,42 +383,46 @@ public class SavedBluetoothDeviceUpdaterTest {
         when(mDeviceManager.getCachedDevicesCopy()).thenReturn(cachedDevices);
         when(mBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_BONDED);
         when(mBluetoothDevice.isConnected()).thenReturn(false);
-        when(mBluetoothDevice.getMetadata(BluetoothDevice.METADATA_EXCLUSIVE_MANAGER)).thenReturn(
-                TEST_EXCLUSIVE_MANAGER.getBytes());
-        doReturn(new ApplicationInfo()).when(mPackageManager).getApplicationInfo(
-                TEST_EXCLUSIVE_MANAGER, 0);
-
-        mBluetoothDeviceUpdater.update(mCachedBluetoothDevice);
-
-        verify(mBluetoothDeviceUpdater).removePreference(mCachedBluetoothDevice);
-        verify(mBluetoothDeviceUpdater, never()).addPreference(mCachedBluetoothDevice,
-                BluetoothDevicePreference.SortType.TYPE_NO_SORT);
-    }
-
-    @Test
-    public void update_exclusivelyManagedDevice_packageNotInstalled_addDevice()
-            throws Exception {
-        final Collection<CachedBluetoothDevice> cachedDevices = new ArrayList<>();
-        cachedDevices.add(mCachedBluetoothDevice);
-        when(mBluetoothAdapter.isEnabled()).thenReturn(true);
-        when(mBluetoothManager.getCachedDeviceManager()).thenReturn(mDeviceManager);
-        when(mDeviceManager.getCachedDevicesCopy()).thenReturn(cachedDevices);
-        when(mBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_BONDED);
-        when(mBluetoothDevice.isConnected()).thenReturn(false);
-        when(mBluetoothDevice.getMetadata(BluetoothDevice.METADATA_EXCLUSIVE_MANAGER)).thenReturn(
-                TEST_EXCLUSIVE_MANAGER.getBytes());
-        doThrow(new PackageManager.NameNotFoundException()).when(mPackageManager)
+        when(mBluetoothDevice.getMetadata(BluetoothDevice.METADATA_EXCLUSIVE_MANAGER))
+                .thenReturn(TEST_EXCLUSIVE_MANAGER.getBytes());
+        doReturn(new ApplicationInfo())
+                .when(mPackageManager)
                 .getApplicationInfo(TEST_EXCLUSIVE_MANAGER, 0);
 
         mBluetoothDeviceUpdater.update(mCachedBluetoothDevice);
 
-        verify(mBluetoothDeviceUpdater).addPreference(mCachedBluetoothDevice,
-                BluetoothDevicePreference.SortType.TYPE_NO_SORT);
+        verify(mBluetoothDeviceUpdater).removePreference(mCachedBluetoothDevice);
+        verify(mBluetoothDeviceUpdater, never())
+                .addPreference(
+                        mCachedBluetoothDevice, BluetoothDevicePreference.SortType.TYPE_NO_SORT);
     }
 
     @Test
-    public void update_exclusivelyManagedDevice_packageNotEnabled_addDevice()
-            throws Exception {
+    public void update_exclusivelyManagedDevice_packageNotInstalled_addDevice() throws Exception {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
+        final Collection<CachedBluetoothDevice> cachedDevices = new ArrayList<>();
+        cachedDevices.add(mCachedBluetoothDevice);
+        when(mBluetoothAdapter.isEnabled()).thenReturn(true);
+        when(mBluetoothManager.getCachedDeviceManager()).thenReturn(mDeviceManager);
+        when(mDeviceManager.getCachedDevicesCopy()).thenReturn(cachedDevices);
+        when(mBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_BONDED);
+        when(mBluetoothDevice.isConnected()).thenReturn(false);
+        when(mBluetoothDevice.getMetadata(BluetoothDevice.METADATA_EXCLUSIVE_MANAGER))
+                .thenReturn(TEST_EXCLUSIVE_MANAGER.getBytes());
+        doThrow(new PackageManager.NameNotFoundException())
+                .when(mPackageManager)
+                .getApplicationInfo(TEST_EXCLUSIVE_MANAGER, 0);
+
+        mBluetoothDeviceUpdater.update(mCachedBluetoothDevice);
+
+        verify(mBluetoothDeviceUpdater)
+                .addPreference(
+                        mCachedBluetoothDevice, BluetoothDevicePreference.SortType.TYPE_NO_SORT);
+    }
+
+    @Test
+    public void update_exclusivelyManagedDevice_packageNotEnabled_addDevice() throws Exception {
+        setUpSavedBluetoothDeviceUpdaterUnderTest(/* showConnectedDevice */ false);
         final Collection<CachedBluetoothDevice> cachedDevices = new ArrayList<>();
         cachedDevices.add(mCachedBluetoothDevice);
         ApplicationInfo appInfo = new ApplicationInfo();
@@ -381,13 +432,37 @@ public class SavedBluetoothDeviceUpdaterTest {
         when(mDeviceManager.getCachedDevicesCopy()).thenReturn(cachedDevices);
         when(mBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_BONDED);
         when(mBluetoothDevice.isConnected()).thenReturn(false);
-        when(mBluetoothDevice.getMetadata(BluetoothDevice.METADATA_EXCLUSIVE_MANAGER)).thenReturn(
-                TEST_EXCLUSIVE_MANAGER.getBytes());
+        when(mBluetoothDevice.getMetadata(BluetoothDevice.METADATA_EXCLUSIVE_MANAGER))
+                .thenReturn(TEST_EXCLUSIVE_MANAGER.getBytes());
         doReturn(appInfo).when(mPackageManager).getApplicationInfo(TEST_EXCLUSIVE_MANAGER, 0);
 
         mBluetoothDeviceUpdater.update(mCachedBluetoothDevice);
 
-        verify(mBluetoothDeviceUpdater).addPreference(mCachedBluetoothDevice,
-                BluetoothDevicePreference.SortType.TYPE_NO_SORT);
+        verify(mBluetoothDeviceUpdater)
+                .addPreference(
+                        mCachedBluetoothDevice, BluetoothDevicePreference.SortType.TYPE_NO_SORT);
+    }
+
+    private void setUpSavedBluetoothDeviceUpdaterUnderTest(boolean showConnectedDevice) {
+        mBluetoothDeviceUpdater =
+                spy(
+                        new SavedBluetoothDeviceUpdater(
+                                mContext,
+                                mDevicePreferenceCallback,
+                                showConnectedDevice,
+                                /* metricsCategory= */ 0));
+        mBluetoothDeviceUpdater.setPrefContext(mContext);
+        mBluetoothDeviceUpdater.mBluetoothAdapter = mBluetoothAdapter;
+        mBluetoothDeviceUpdater.mLocalManager = mBluetoothManager;
+        mPreference =
+                new BluetoothDevicePreference(
+                        mContext,
+                        mCachedBluetoothDevice,
+                        false,
+                        BluetoothDevicePreference.SortType.TYPE_DEFAULT);
+        doNothing().when(mBluetoothDeviceUpdater).addPreference(any());
+        doNothing()
+                .when(mBluetoothDeviceUpdater)
+                .removePreference(any(CachedBluetoothDevice.class));
     }
 }

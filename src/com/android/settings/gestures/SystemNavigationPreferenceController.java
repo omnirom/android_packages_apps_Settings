@@ -27,6 +27,7 @@ import android.content.pm.PackageManager;
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 
+// LINT.IfChange
 public class SystemNavigationPreferenceController extends BasePreferenceController {
 
     static final String PREF_KEY_SYSTEM_NAVIGATION = "gesture_system_navigation";
@@ -97,3 +98,4 @@ public class SystemNavigationPreferenceController extends BasePreferenceControll
                 com.android.internal.R.integer.config_navBarInteractionMode);
     }
 }
+// LINT.ThenChange(SystemNavigationGestureScreen.kt)

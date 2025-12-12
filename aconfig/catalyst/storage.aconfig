@@ -1,0 +1,9 @@
+package: "com.android.settings.flags"
+container: "system_ext"
+
+flag {
+    name: "catalyst_system_storage"
+    namespace: "android_settings"
+    description: "Flag for System Storage page"
+    bug: "406566979"
+}

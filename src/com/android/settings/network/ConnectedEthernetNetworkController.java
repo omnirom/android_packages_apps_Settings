@@ -23,6 +23,7 @@ import android.graphics.drawable.Drawable;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
@@ -35,8 +36,10 @@ import com.android.settingslib.core.AbstractPreferenceController;
 public class ConnectedEthernetNetworkController extends AbstractPreferenceController
         implements InternetUpdater.InternetChangeListener {
 
-    public static final String KEY = "connected_ethernet_network";
+    public static final String KEY = "connected_ethernet_category";
+    public static final String KEY_NETWORK = "connected_ethernet_network";
 
+    private PreferenceCategory mCategory;
     private Preference mPreference;
     private InternetUpdater mInternetUpdater;
     private @InternetUpdater.InternetType int mInternetType;
@@ -60,7 +63,8 @@ public class ConnectedEthernetNetworkController extends AbstractPreferenceContro
     @Override
     public void displayPreference(PreferenceScreen screen) {
         super.displayPreference(screen);
-        mPreference = screen.findPreference(KEY);
+        mCategory = screen.findPreference(KEY);
+        mPreference = screen.findPreference(KEY_NETWORK);
         final Drawable drawable = mContext.getDrawable(R.drawable.ic_settings_ethernet);
         if (drawable != null) {
             drawable.setTintList(
@@ -76,8 +80,8 @@ public class ConnectedEthernetNetworkController extends AbstractPreferenceContro
      */
     public void onInternetTypeChanged(@InternetUpdater.InternetType int internetType) {
         mInternetType = internetType;
-        if (mPreference != null) {
-            mPreference.setVisible(isAvailable());
+        if (mCategory != null) {
+            mCategory.setVisible(isAvailable());
         }
     }
 }

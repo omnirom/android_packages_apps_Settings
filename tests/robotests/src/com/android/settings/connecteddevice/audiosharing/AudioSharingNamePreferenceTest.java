@@ -18,7 +18,9 @@ package com.android.settings.connecteddevice.audiosharing;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -28,6 +30,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -44,6 +48,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
@@ -51,6 +56,10 @@ import org.robolectric.RobolectricTestRunner;
 @RunWith(RobolectricTestRunner.class)
 public class AudioSharingNamePreferenceTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Mock
+    private View mView;
+    @Mock
+    private ViewGroup mViewGroup;
     private Context mContext;
     private AudioSharingNamePreference mPreference;
 
@@ -68,6 +77,26 @@ public class AudioSharingNamePreferenceTest {
                                 .preference_two_target);
         assertThat(mPreference.getWidgetLayoutResource())
                 .isEqualTo(R.layout.preference_widget_qrcode);
+    }
+
+    @Test
+    public void initialize_correctLayout_addView() {
+        when(mView.getContext()).thenReturn(mContext);
+        EditText editText = spy(new EditText(mContext));
+        when(mView.findViewById(android.R.id.edit)).thenReturn(editText);
+        when(editText.getParent()).thenReturn(mViewGroup);
+
+        mPreference.onBindDialogView(mView);
+        verify(mViewGroup).addView(any(), any());
+    }
+
+    @Test
+    public void initialize_incorrectLayout_doNothing() {
+        when(mView.getContext()).thenReturn(mContext);
+        when(mView.findViewById(android.R.id.edit)).thenReturn(null);
+
+        mPreference.onBindDialogView(mView);
+        verify(mViewGroup, never()).addView(any(), any());
     }
 
     @Test

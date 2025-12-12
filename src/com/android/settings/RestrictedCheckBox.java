@@ -18,6 +18,7 @@ package com.android.settings;
 
 import static com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
 
+import android.app.admin.EnforcingAdmin;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.util.AttributeSet;
@@ -34,6 +35,8 @@ public class RestrictedCheckBox extends CheckBox {
     private Context mContext;
     private boolean mDisabledByAdmin;
     private EnforcedAdmin mEnforcedAdmin;
+    private EnforcingAdmin mEnforcingAdmin;
+    private String mRestriction;
 
     public RestrictedCheckBox(Context context) {
         this(context, null);
@@ -47,15 +50,29 @@ public class RestrictedCheckBox extends CheckBox {
     @Override
     public boolean performClick() {
         if (mDisabledByAdmin) {
-            RestrictedLockUtils.sendShowAdminSupportDetailsIntent(mContext, mEnforcedAdmin);
+            // Either the enforcing admin or the enforced admin should be set, but not both.
+            if (mEnforcingAdmin != null) {
+                RestrictedLockUtils.sendShowAdminSupportDetailsIntent(
+                        mContext, mEnforcingAdmin, mRestriction);
+            } else if (mEnforcedAdmin != null) {
+                RestrictedLockUtils.sendShowAdminSupportDetailsIntent(mContext, mEnforcedAdmin);
+            }
             return true;
         }
         return super.performClick();
     }
 
+    @Deprecated
     public void setDisabledByAdmin(EnforcedAdmin admin) {
-        final boolean disabled = (admin != null);
         mEnforcedAdmin = admin;
+        updateDisabledState((admin != null));
+    }
+
+    public void setRestriction(String restriction) {
+        mRestriction = restriction;
+    }
+
+    private void updateDisabledState(boolean disabled) {
         if (mDisabledByAdmin != disabled) {
             mDisabledByAdmin = disabled;
             RestrictedLockUtilsInternal.setTextViewAsDisabledByAdmin(mContext, this,

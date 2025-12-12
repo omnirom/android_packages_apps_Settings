@@ -20,10 +20,13 @@ import static com.android.settings.network.telephony.EnabledNetworkModePreferenc
 import static com.android.settings.network.telephony.EnabledNetworkModePreferenceControllerHelperKt.setAllowedNetworkTypes;
 import static com.android.settings.network.telephony.mode.NetworkModes.addNrToLteNetworkMode;
 import static com.android.settings.network.telephony.mode.NetworkModes.reduceNrToLteNetworkMode;
+import static com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.PersistableBundle;
+import android.os.UserHandle;
+import android.os.UserManager;
 import android.telephony.CarrierConfigManager;
 import android.telephony.RadioAccessFamily;
 import android.telephony.SubscriptionInfo;
@@ -54,6 +57,7 @@ import com.android.settings.network.CarrierConfigCache;
 import com.android.settings.network.SubscriptionsChangeListener;
 import com.android.settings.network.telephony.NetworkModeChoicesProto.EnabledNetworks;
 import com.android.settings.network.telephony.NetworkModeChoicesProto.UiOptions;
+import com.android.settingslib.RestrictedLockUtilsInternal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,19 +68,26 @@ import java.util.stream.Stream;
 /**
  * Preference controller for "Enabled network mode"
  */
+// LINT.IfChange
 public class EnabledNetworkModePreferenceController extends
         BasePreferenceController implements
         ListPreference.OnPreferenceChangeListener, DefaultLifecycleObserver,
-        SubscriptionsChangeListener.SubscriptionsChangeListenerClient {
+        SubscriptionsChangeListener.SubscriptionsChangeListenerClient, AirplaneModeChangedCallback {
 
     private static final String LOG_TAG = "EnabledNetworkMode";
+    private static final long BITMASK_2G = TelephonyManager.NETWORK_TYPE_BITMASK_GSM
+            | TelephonyManager.NETWORK_TYPE_BITMASK_GPRS
+            | TelephonyManager.NETWORK_TYPE_BITMASK_EDGE
+            | TelephonyManager.NETWORK_TYPE_BITMASK_CDMA
+            | TelephonyManager.NETWORK_TYPE_BITMASK_1xRTT;
 
     private int mSubId = SubscriptionManager.INVALID_SUBSCRIPTION_ID;
     private AllowedNetworkTypesListener mAllowedNetworkTypesListener;
     private Preference mPreference;
     private PreferenceScreen mPreferenceScreen;
     private TelephonyManager mTelephonyManager;
-    private PreferenceEntriesBuilder mBuilder;
+    @VisibleForTesting
+    PreferenceEntriesBuilder mBuilder;
     private SubscriptionsChangeListener mSubscriptionsListener;
     private int mCallState = TelephonyManager.CALL_STATE_IDLE;
     private PhoneCallStateTelephonyCallback mTelephonyCallback;
@@ -85,6 +96,7 @@ public class EnabledNetworkModePreferenceController extends
     private SatelliteManager mSatelliteManager;
     private boolean mIsSatelliteSessionStarted = false;
     private boolean mIsCurrentSubscriptionForSatellite = false;
+    protected boolean mIsAirplaneModeOn = false;
 
     @VisibleForTesting
     final SelectedNbIotSatelliteSubscriptionCallback mSelectedNbIotSatelliteSubscriptionCallback =
@@ -142,17 +154,15 @@ public class EnabledNetworkModePreferenceController extends
 
     @Override
     public void onStart(@NonNull LifecycleOwner owner) {
-        if (com.android.settings.flags.Flags.satelliteOemSettingsUxMigration()) {
-            if (mSatelliteManager != null) {
-                try {
-                    mSatelliteManager.registerForModemStateChanged(
-                            mContext.getMainExecutor(), mSatelliteModemStateCallback);
-                    mSatelliteManager.registerForSelectedNbIotSatelliteSubscriptionChanged(
-                            mContext.getMainExecutor(),
-                            mSelectedNbIotSatelliteSubscriptionCallback);
-                } catch (IllegalStateException e) {
-                    Log.w(LOG_TAG, "IllegalStateException : " + e);
-                }
+        if (mSatelliteManager != null) {
+            try {
+                mSatelliteManager.registerForModemStateChanged(
+                        mContext.getMainExecutor(), mSatelliteModemStateCallback);
+                mSatelliteManager.registerForSelectedNbIotSatelliteSubscriptionChanged(
+                        mContext.getMainExecutor(),
+                        mSelectedNbIotSatelliteSubscriptionCallback);
+            } catch (IllegalStateException e) {
+                Log.w(LOG_TAG, "IllegalStateException : " + e);
             }
         }
 
@@ -167,15 +177,13 @@ public class EnabledNetworkModePreferenceController extends
     @Override
     public void onStop(@NonNull LifecycleOwner owner) {
         mSubscriptionsListener.stop();
-        if (com.android.settings.flags.Flags.satelliteOemSettingsUxMigration()) {
-            if (mSatelliteManager != null) {
-                try {
-                    mSatelliteManager.unregisterForModemStateChanged(mSatelliteModemStateCallback);
-                    mSatelliteManager.unregisterForSelectedNbIotSatelliteSubscriptionChanged(
-                            mSelectedNbIotSatelliteSubscriptionCallback);
-                } catch (IllegalStateException e) {
-                    Log.w(LOG_TAG, "IllegalStateException : " + e);
-                }
+        if (mSatelliteManager != null) {
+            try {
+                mSatelliteManager.unregisterForModemStateChanged(mSatelliteModemStateCallback);
+                mSatelliteManager.unregisterForSelectedNbIotSatelliteSubscriptionChanged(
+                        mSelectedNbIotSatelliteSubscriptionCallback);
+            } catch (IllegalStateException e) {
+                Log.w(LOG_TAG, "IllegalStateException : " + e);
             }
         }
 
@@ -202,14 +210,9 @@ public class EnabledNetworkModePreferenceController extends
         }
 
         final ListPreference listPreference = (ListPreference) preference;
+        mBuilder.refresh();
+        mBuilder.updateListPreference(listPreference);
 
-        mBuilder.setPreferenceEntries();
-        mBuilder.setPreferenceValueAndSummary();
-
-        listPreference.setEntries(mBuilder.getEntries());
-        listPreference.setEntryValues(mBuilder.getEntryValues());
-        listPreference.setValue(Integer.toString(mBuilder.getSelectedEntryValue()));
-        listPreference.setSummary(mBuilder.getSummary());
         boolean listPreferenceEnabled = isPreferenceShallEnabled();
         listPreference.setEnabled(listPreferenceEnabled);
         if (!listPreferenceEnabled) {
@@ -234,7 +237,12 @@ public class EnabledNetworkModePreferenceController extends
         return true;
     }
 
-    void init(int subId, FragmentManager fragmentManager) {
+    @Override
+    public void notifyAirplaneModeChanged(boolean isAirplaneModeOn) {
+        this.mIsAirplaneModeOn = isAirplaneModeOn;
+    }
+
+    public void init(int subId, FragmentManager fragmentManager) {
         mSubId = subId;
         mFragmentManager = fragmentManager;
         mTelephonyManager = mContext.getSystemService(TelephonyManager.class)
@@ -271,10 +279,11 @@ public class EnabledNetworkModePreferenceController extends
                 + mIsSatelliteSessionStarted + " / mIsCurrentSubscriptionForSatellite : "
                 + mIsCurrentSubscriptionForSatellite);
         return isCallStateIdle()
-                && !(mIsSatelliteSessionStarted && mIsCurrentSubscriptionForSatellite);
+                && !(mIsSatelliteSessionStarted && mIsCurrentSubscriptionForSatellite)
+                && !mIsAirplaneModeOn;
     }
 
-    private final class PreferenceEntriesBuilder {
+    public static class PreferenceEntriesBuilder {
         private CarrierConfigCache mCarrierConfigCache;
         private Context mContext;
         private TelephonyManager mTelephonyManager;
@@ -320,9 +329,14 @@ public class EnabledNetworkModePreferenceController extends
                         CarrierConfigManager.KEY_SHOW_CDMA_CHOICES_BOOL);
                 mShow4gForLTE = carrierConfig.getBoolean(
                         CarrierConfigManager.KEY_SHOW_4G_FOR_LTE_DATA_ICON_BOOL);
-                mDisplay2gOptions = carrierConfig.getBoolean(
-                        CarrierConfigManager.KEY_PREFER_2G_BOOL);
 
+                long currentlyAllowedNetworkTypes =
+                        mTelephonyManager.getAllowedNetworkTypesForReason(
+                                TelephonyManager.ALLOWED_NETWORK_TYPES_REASON_ENABLE_2G);
+                boolean networkType2gEnable = (currentlyAllowedNetworkTypes & BITMASK_2G) != 0;
+                mDisplay2gOptions =
+                        carrierConfig.getBoolean(CarrierConfigManager.KEY_PREFER_2G_BOOL)
+                                && networkType2gEnable && !isDisabledByAdmin();
                 if (flagHidePrefer3gItem) {
                     mDisplay3gOptions = carrierConfig.getBoolean(
                             CarrierConfigManager.KEY_PREFER_3G_VISIBILITY_BOOL);
@@ -359,6 +373,15 @@ public class EnabledNetworkModePreferenceController extends
                     + " ,Display3gOptions:" + mDisplay3gOptions
                     + " ,Display4gOptions" + mLteEnabled
                     + " ,Show4gForLTE :" + mShow4gForLTE);
+        }
+
+        private EnforcedAdmin getEnforcedAdmin() {
+            return RestrictedLockUtilsInternal.checkIfRestrictionEnforced(mContext,
+                    UserManager.DISALLOW_CELLULAR_2G, UserHandle.myUserId());
+        }
+
+        private boolean isDisabledByAdmin() {
+            return getEnforcedAdmin() != null;
         }
 
         void setPreferenceEntries() {
@@ -856,7 +879,8 @@ public class EnabledNetworkModePreferenceController extends
                     .toArray(String[]::new);
         }
 
-        private int getSelectedEntryValue() {
+        /** Return the selected entry. */
+        public int getSelectedEntryValue() {
             return mSelectedEntry;
         }
 
@@ -874,7 +898,8 @@ public class EnabledNetworkModePreferenceController extends
             }
         }
 
-        private String getSummary() {
+        /** Return the summary. */
+        public String getSummary() {
             return mSummary;
         }
 
@@ -890,6 +915,30 @@ public class EnabledNetworkModePreferenceController extends
             return mIs5gEntryDisplayed;
         }
 
+        /**
+         * Returns the resources associated with Subscription.
+         *
+         * @return Resources associated with Subscription.
+         */
+        @VisibleForTesting
+        Resources getResourcesForSubId() {
+            return SubscriptionManager.getResourcesForSubId(mContext, mSubId);
+        }
+
+        /** Refresh builder data */
+        public void refresh() {
+            setPreferenceEntries();
+            setPreferenceValueAndSummary();
+        }
+
+        /** Updates the list preference */
+        public void updateListPreference(ListPreference listPreference) {
+            refresh();
+            listPreference.setEntries(getEntries());
+            listPreference.setEntryValues(getEntryValues());
+            listPreference.setValue(Integer.toString(getSelectedEntryValue()));
+            listPreference.setSummary(getSummary());
+        }
     }
 
     @VisibleForTesting
@@ -929,16 +978,6 @@ public class EnabledNetworkModePreferenceController extends
         }
     }
 
-    /**
-     * Returns the resources associated with Subscription.
-     *
-     * @return Resources associated with Subscription.
-     */
-    @VisibleForTesting
-    Resources getResourcesForSubId() {
-        return SubscriptionManager.getResourcesForSubId(mContext, mSubId);
-    }
-
     @Override
     public void onAirplaneModeChanged(boolean airplaneModeEnabled) {
     }
@@ -947,6 +986,8 @@ public class EnabledNetworkModePreferenceController extends
     public void onSubscriptionsChanged() {
         if (mBuilder != null) {
             mBuilder.updateConfig();
+            updatePreference();
         }
     }
 }
+// LINT.ThenChange(EnabledNetworkModePreference.kt)

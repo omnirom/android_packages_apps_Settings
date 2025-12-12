@@ -126,15 +126,8 @@ public class StorageSelectionPreferenceController extends BasePreferenceControll
             if (view == null) {
                 view = getDefaultView(position, view, parent);
             }
-
-            TextView textView = null;
-            try {
-                textView = (TextView) view;
-            } catch (ClassCastException e) {
-                throw new IllegalStateException("Default view should be a TextView, ", e);
-            }
-            textView.setText(getItem(position).getDescription());
-            return textView;
+            asTextView(view).setText(getItem(position).getDescription());
+            return view;
         }
 
         @Override
@@ -142,15 +135,28 @@ public class StorageSelectionPreferenceController extends BasePreferenceControll
             if (view == null) {
                 view = getDefaultDropDownView(position, view, parent);
             }
+            asTextView(view).setText(getItem(position).getDescription());
+            return view;
+        }
 
-            TextView textView = null;
-            try {
-                textView = (TextView) view;
-            } catch (ClassCastException e) {
-                throw new IllegalStateException("Default drop down view should be a TextView, ", e);
+        private TextView asTextView(View view) {
+            // The different if-else branches handle different versions of the XML
+            // layout from SettingsLib/SettingsSpinner/res.
+            if (view instanceof TextView) {
+                // layout-v33/settings_spinner_dropdown_view.xml
+                return (TextView) view;
+            } else if (view instanceof ViewGroup) {
+                // layout-v36/settings_expressive_spinner_dropdown_view.xml
+                ViewGroup viewGroup = (ViewGroup) view;
+                final int count = viewGroup.getChildCount();
+                for (int i = 0; i < count; i++) {
+                    final View child = viewGroup.getChildAt(i);
+                    if (child instanceof TextView) {
+                        return (TextView) child;
+                    }
+                }
             }
-            textView.setText(getItem(position).getDescription());
-            return textView;
+            throw new IllegalStateException("Default view should be a TextView");
         }
     }
 }

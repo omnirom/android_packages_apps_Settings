@@ -57,7 +57,7 @@ public class AdbQrCodePreferenceControllerTest {
     @Mock
     private IAdbManager mAdbManager;
     @Mock
-    private WirelessDebuggingFragment mFragment;
+    private AdbWirelessDebuggingFragment mFragment;
 
     private AdbQrCodePreferenceController mController;
     private Context mContext;
@@ -113,6 +113,6 @@ public class AdbQrCodePreferenceControllerTest {
         mController.handlePreferenceTreeClick(mPreference);
 
         verify(mFragment).startActivityForResult(any(Intent.class),
-                eq(WirelessDebuggingFragment.PAIRING_DEVICE_REQUEST));
+                eq(AdbWirelessDebuggingFragment.PAIRING_DEVICE_REQUEST));
     }
 }

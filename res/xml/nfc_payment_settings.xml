@@ -22,6 +22,7 @@
     <com.android.settings.widget.GearPreference
         android:key="nfc_payment_app"
         android:title="@string/nfc_default_payment_settings_title"
+        settings:userRestriction="no_near_field_communication_radio"
         android:fragment="com.android.settings.nfc.DefaultPaymentSettings"/>
 
     <ListPreference

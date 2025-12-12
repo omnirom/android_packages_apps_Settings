@@ -19,7 +19,6 @@ package com.android.settings.accessibility.shortcuts;
 import static com.android.internal.accessibility.common.ShortcutConstants.UserShortcutType.GESTURE;
 
 import android.content.Context;
-import android.text.SpannableStringBuilder;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
@@ -32,7 +31,7 @@ import com.android.settingslib.utils.StringUtil;
  * A controller handles displaying the gesture shortcut option preference and
  * configuring the shortcut.
  */
-public class GestureShortcutOptionController extends SoftwareShortcutOptionPreferenceController {
+public class GestureShortcutOptionController extends ShortcutOptionPreferenceController {
 
     public GestureShortcutOptionController(Context context, String preferenceKey) {
         super(context, preferenceKey);
@@ -55,36 +54,21 @@ public class GestureShortcutOptionController extends SoftwareShortcutOptionPrefe
 
     @Override
     protected int getShortcutType() {
-        return android.provider.Flags.a11yStandaloneGestureEnabled()
-                ? GESTURE : super.getShortcutType();
+        return GESTURE;
     }
 
     @Override
     protected boolean isShortcutAvailable() {
-        if (android.provider.Flags.a11yStandaloneGestureEnabled()) {
-            return !isInSetupWizard()
+        return !isInSetupWizard()
                     && AccessibilityUtil.isGestureNavigateEnabled(mContext);
-        } else {
-            return !isInSetupWizard()
-                    && AccessibilityUtil.isGestureNavigateEnabled(mContext)
-                    && !AccessibilityUtil.isFloatingMenuEnabled(mContext);
-        }
     }
 
     @Override
     public CharSequence getSummary() {
         int numFingers = AccessibilityUtil.isTouchExploreEnabled(mContext) ? 3 : 2;
-        String instruction = StringUtil.getIcuPluralsString(
+        return StringUtil.getIcuPluralsString(
                 mContext,
                 numFingers,
                 R.string.accessibility_shortcut_edit_dialog_summary_gesture);
-
-        final SpannableStringBuilder sb = new SpannableStringBuilder();
-        sb.append(instruction);
-        if (!isInSetupWizard() && !android.provider.Flags.a11yStandaloneGestureEnabled()) {
-            sb.append("\n\n").append(getCustomizeAccessibilityButtonLink());
-        }
-
-        return sb;
     }
 }

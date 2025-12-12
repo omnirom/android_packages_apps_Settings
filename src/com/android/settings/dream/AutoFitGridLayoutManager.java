@@ -16,6 +16,8 @@
 
 package com.android.settings.dream;
 
+import static android.service.dreams.Flags.dreamsV2;
+
 import android.content.Context;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -25,10 +27,14 @@ import com.android.settings.R;
 
 /** Grid layout manager that calculates the number of columns for the screen size. */
 public final class AutoFitGridLayoutManager extends GridLayoutManager {
+    private final int mMinimumSpanCount;
+
     private final float mColumnWidth;
 
     public AutoFitGridLayoutManager(Context context) {
         super(context, /* spanCount= */ 1);
+
+        this.mMinimumSpanCount = getMinimumSpanCount(context);
         this.mColumnWidth = context
                 .getResources()
                 .getDimensionPixelSize(R.dimen.dream_item_min_column_width);
@@ -37,8 +43,18 @@ public final class AutoFitGridLayoutManager extends GridLayoutManager {
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         final int totalSpace = getWidth() - getPaddingRight() - getPaddingLeft();
-        final int spanCount = Math.max(1, (int) (totalSpace / mColumnWidth));
+        final int spanCount = Math.max(mMinimumSpanCount, (int) (totalSpace / mColumnWidth));
         setSpanCount(spanCount);
         super.onLayoutChildren(recycler, state);
+    }
+
+    private int getMinimumSpanCount(Context context) {
+        if (!dreamsV2()) {
+            return 1;
+        }
+
+        return context
+                .getResources()
+                .getInteger(R.integer.config_dream_picker_min_span_count);
     }
 }

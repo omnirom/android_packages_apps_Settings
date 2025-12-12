@@ -52,6 +52,7 @@ import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settingslib.notification.modes.ZenMode;
 import com.android.settingslib.notification.modes.ZenModesBackend;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 /**
  * Interstitial page for modes that are disabled, but not disabled by the user. This page
@@ -78,7 +79,9 @@ public class SetupInterstitialActivity extends FragmentActivity {
         Utils.setupEdgeToEdge(this);
         super.onCreate(savedInstanceState);
         mBackend = ZenModesBackend.getInstance(this);
-        setContentView(R.layout.mode_interstitial_layout);
+        setContentView(SettingsThemeHelper.isExpressiveTheme(this)
+                ? R.layout.mode_interstitial_layout_expressive
+                : R.layout.mode_interstitial_layout);
 
         // Set up toolbar to only have a back button & no title
         Toolbar toolbar = findViewById(R.id.action_bar);
@@ -137,7 +140,11 @@ public class SetupInterstitialActivity extends FragmentActivity {
 
         ImageView img = findViewById(R.id.image);
         if (img != null) {
-            setImage(img, mode);
+            if (SettingsThemeHelper.isExpressiveTheme(this)) {
+                setImageExpressive(img, mode);
+            } else {
+                setImage(img, mode);
+            }
         }
 
         Button button = findViewById(R.id.enable_mode_button);
@@ -178,6 +185,21 @@ public class SetupInterstitialActivity extends FragmentActivity {
                     R.drawable.modes_interstitial_other;
             case TYPE_UNKNOWN -> R.drawable.modes_interstitial_unknown;
             default -> R.drawable.modes_interstitial_unknown;
+        };
+
+        img.setImageResource(drawableRes);
+    }
+
+    private void setImageExpressive(@NonNull ImageView img, @NonNull ZenMode mode) {
+        int drawableRes = switch (mode.getType()) {
+            case TYPE_BEDTIME -> R.drawable.modes_interstitial_bedtime_expressive;
+            case TYPE_DRIVING -> R.drawable.modes_interstitial_driving_expressive;
+            case TYPE_THEATER -> R.drawable.modes_interstitial_theater_expressive;
+            // Immersive and Managed should have specific images, but they aren't (yet?) available.
+            case TYPE_OTHER, TYPE_SCHEDULE_CALENDAR, TYPE_SCHEDULE_TIME,
+                 TYPE_IMMERSIVE, TYPE_MANAGED -> R.drawable.modes_interstitial_other_expressive;
+            case TYPE_UNKNOWN -> R.drawable.modes_interstitial_unknown_expressive;
+            default -> R.drawable.modes_interstitial_unknown_expressive;
         };
 
         img.setImageResource(drawableRes);

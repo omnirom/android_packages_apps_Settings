@@ -22,6 +22,7 @@ import static com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
 
 import android.app.Dialog;
 import android.app.admin.DevicePolicyManager;
+import android.app.admin.EnforcingAdmin;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.AttributeSet;
@@ -123,7 +124,7 @@ public class TimeoutListPreference extends RestrictedListPreference {
             setDisabledByAdmin(admin);
             return;
         } else {
-            setDisabledByAdmin(null);
+            setDisabledByAdmin((EnforcingAdmin) null);
         }
 
         if (revisedEntries.size() != getEntries().length) {

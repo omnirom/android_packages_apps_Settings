@@ -104,31 +104,21 @@ public class WifiDppUtils {
     /** The data to recognize if it's a Wi-Fi hotspot for configuration */
     static final String EXTRA_IS_HOTSPOT = "isHotspot";
 
-    /**
-     * Default status code for Easy Connect
-     */
+    /** Default status code for Easy Connect */
     static final int EASY_CONNECT_EVENT_FAILURE_NONE = 0;
 
-    /**
-     * Success status code for Easy Connect.
-     */
+    /** Success status code for Easy Connect. */
     static final int EASY_CONNECT_EVENT_SUCCESS = 1;
 
     private static final Duration VIBRATE_DURATION_QR_CODE_RECOGNITION = Duration.ofMillis(3);
 
-    /**
-     * Parameters to check whether the device has been locked recently
-     */
-    @VisibleForTesting
-    public static final String AES_CBC_PKCS7_PADDING = "AES/CBC/PKCS7Padding";
-    @VisibleForTesting
-    public static final String WIFI_SHARING_KEY_ALIAS = "wifi_sharing_auth_key";
-    @VisibleForTesting
-    public static final int WIFI_SHARING_MAX_UNLOCK_SECONDS = 60;
+    /** Parameters to check whether the device has been locked recently */
+    @VisibleForTesting public static final String AES_CBC_PKCS7_PADDING = "AES/CBC/PKCS7Padding";
 
-    /**
-     * Returns whether the device support WiFi DPP.
-     */
+    @VisibleForTesting public static final String WIFI_SHARING_KEY_ALIAS = "wifi_sharing_auth_key";
+    @VisibleForTesting public static final int WIFI_SHARING_MAX_UNLOCK_SECONDS = 60;
+
+    /** Returns whether the device support WiFi DPP. */
     static boolean isWifiDppEnabled(Context context) {
         final WifiManager manager = context.getSystemService(WifiManager.class);
         return manager.isEasyConnectSupported();
@@ -137,10 +127,9 @@ public class WifiDppUtils {
     /**
      * Returns an intent to launch QR code scanner for Wi-Fi DPP enrollee.
      *
-     * After enrollee success, the callee activity will return connecting WifiConfiguration by
-     * putExtra {@code WifiDialogActivity.KEY_WIFI_CONFIGURATION} for
-     * {@code Activity#setResult(int resultCode, Intent data)}. The calling object should check
-     * if it's available before using it.
+     * <p>After enrollee success, the callee activity will return connecting WifiConfiguration by
+     * putExtra {@code WifiDialogActivity.KEY_WIFI_CONFIGURATION} for {@code Activity#setResult(int
+     * resultCode, Intent data)}. The calling object should check if it's available before using it.
      *
      * @param ssid The data corresponding to {@code WifiConfiguration} SSID
      * @return Intent for launching QR code scanner
@@ -154,8 +143,8 @@ public class WifiDppUtils {
         return intent;
     }
 
-    private static String getPresharedKey(WifiManager wifiManager,
-            WifiConfiguration wifiConfiguration) {
+    private static String getPresharedKey(
+            WifiManager wifiManager, WifiConfiguration wifiConfiguration) {
         final List<WifiConfiguration> privilegedWifiConfigurations =
                 wifiManager.getPrivilegedConfiguredNetworks();
 
@@ -165,7 +154,7 @@ public class WifiDppUtils {
                 // to identify it.
                 if (wifiConfiguration.allowedKeyManagement.get(KeyMgmt.NONE)
                         && wifiConfiguration.allowedAuthAlgorithms.get(
-                        WifiConfiguration.AuthAlgorithm.SHARED)) {
+                                WifiConfiguration.AuthAlgorithm.SHARED)) {
                     return privilegedWifiConfiguration
                             .wepKeys[privilegedWifiConfiguration.wepTxKeyIndex];
                 } else {
@@ -189,7 +178,7 @@ public class WifiDppUtils {
         if (str.charAt(end) == '\"') {
             end--;
         }
-        return str.substring(begin, end+1);
+        return str.substring(begin, end + 1);
     }
 
     static String getSecurityString(WifiConfiguration config) {
@@ -199,12 +188,13 @@ public class WifiDppUtils {
         if (config.allowedKeyManagement.get(KeyMgmt.OWE)) {
             return WifiQrCode.SECURITY_NO_PASSWORD;
         }
-        if (config.allowedKeyManagement.get(KeyMgmt.WPA_PSK) ||
-                config.allowedKeyManagement.get(KeyMgmt.WPA2_PSK)) {
+        if (config.allowedKeyManagement.get(KeyMgmt.WPA_PSK)
+                || config.allowedKeyManagement.get(KeyMgmt.WPA2_PSK)) {
             return WifiQrCode.SECURITY_WPA_PSK;
         }
-        return (config.wepKeys[0] == null) ?
-                WifiQrCode.SECURITY_NO_PASSWORD : WifiQrCode.SECURITY_WEP;
+        return (config.wepKeys[0] == null)
+                ? WifiQrCode.SECURITY_NO_PASSWORD
+                : WifiQrCode.SECURITY_WEP;
     }
 
     static String getSecurityString(WifiEntry wifiEntry) {
@@ -227,16 +217,16 @@ public class WifiDppUtils {
      * Returns an intent to launch QR code generator. It may return null if the security is not
      * supported by QR code generator.
      *
-     * Do not use this method for Wi-Fi hotspot network, use
-     * {@code getHotspotConfiguratorIntentOrNull} instead.
+     * <p>Do not use this method for Wi-Fi hotspot network, use {@code
+     * getHotspotConfiguratorIntentOrNull} instead.
      *
-     * @param context     The context to use for the content resolver
+     * @param context The context to use for the content resolver
      * @param wifiManager An instance of {@link WifiManager}
      * @param accessPoint An instance of {@link AccessPoint}
      * @return Intent for launching QR code generator
      */
-    public static Intent getConfiguratorQrCodeGeneratorIntentOrNull(Context context,
-            WifiManager wifiManager, AccessPoint accessPoint) {
+    public static Intent getConfiguratorQrCodeGeneratorIntentOrNull(
+            Context context, WifiManager wifiManager, AccessPoint accessPoint) {
         final Intent intent = new Intent(context, WifiDppConfiguratorActivity.class);
         if (isSupportConfiguratorQrCodeGenerator(context, accessPoint)) {
             intent.setAction(WifiDppConfiguratorActivity.ACTION_CONFIGURATOR_QR_CODE_GENERATOR);
@@ -259,16 +249,16 @@ public class WifiDppUtils {
      * Returns an intent to launch QR code generator. It may return null if the security is not
      * supported by QR code generator.
      *
-     * Do not use this method for Wi-Fi hotspot network, use
-     * {@code getHotspotConfiguratorIntentOrNull} instead.
+     * <p>Do not use this method for Wi-Fi hotspot network, use {@code
+     * getHotspotConfiguratorIntentOrNull} instead.
      *
-     * @param context     The context to use for the content resolver
+     * @param context The context to use for the content resolver
      * @param wifiManager An instance of {@link WifiManager}
      * @param wifiEntry An instance of {@link WifiEntry}
      * @return Intent for launching QR code generator
      */
-    public static Intent getConfiguratorQrCodeGeneratorIntentOrNull(Context context,
-            WifiManager wifiManager, WifiEntry wifiEntry) {
+    public static Intent getConfiguratorQrCodeGeneratorIntentOrNull(
+            Context context, WifiManager wifiManager, WifiEntry wifiEntry) {
         final Intent intent = new Intent(context, WifiDppConfiguratorActivity.class);
         if (wifiEntry.canShare()) {
             intent.setAction(WifiDppConfiguratorActivity.ACTION_CONFIGURATOR_QR_CODE_GENERATOR);
@@ -286,13 +276,13 @@ public class WifiDppUtils {
      * Returns an intent to launch QR code scanner. It may return null if the security is not
      * supported by QR code scanner.
      *
-     * @param context     The context to use for the content resolver
+     * @param context The context to use for the content resolver
      * @param wifiManager An instance of {@link WifiManager}
      * @param wifiEntry An instance of {@link WifiEntry}
      * @return Intent for launching QR code scanner
      */
-    public static Intent getConfiguratorQrCodeScannerIntentOrNull(Context context,
-            WifiManager wifiManager, WifiEntry wifiEntry) {
+    public static Intent getConfiguratorQrCodeScannerIntentOrNull(
+            Context context, WifiManager wifiManager, WifiEntry wifiEntry) {
         final Intent intent = new Intent(context, WifiDppConfiguratorActivity.class);
         if (wifiEntry.canEasyConnect()) {
             intent.setAction(WifiDppConfiguratorActivity.ACTION_CONFIGURATOR_QR_CODE_SCANNER);
@@ -321,8 +311,8 @@ public class WifiDppUtils {
      * @param softApConfiguration {@link SoftApConfiguration} of the Wi-Fi hotspot
      * @return Intent for launching QR code generator
      */
-    public static Intent getHotspotConfiguratorIntentOrNull(Context context,
-            WifiManager wifiManager, SoftApConfiguration softApConfiguration) {
+    public static Intent getHotspotConfiguratorIntentOrNull(
+            Context context, WifiManager wifiManager, SoftApConfiguration softApConfiguration) {
         final Intent intent = new Intent(context, WifiDppConfiguratorActivity.class);
         if (isSupportHotspotConfiguratorQrCodeGenerator(softApConfiguration)) {
             intent.setAction(WifiDppConfiguratorActivity.ACTION_CONFIGURATOR_QR_CODE_GENERATOR);
@@ -344,8 +334,8 @@ public class WifiDppUtils {
 
         // When the value of this key is read, the actual key is not returned, just a "*".
         // Call privileged system API to obtain actual key.
-        final String preSharedKey = removeFirstAndLastDoubleQuotes(
-                softApConfiguration.getPassphrase());
+        final String preSharedKey =
+                removeFirstAndLastDoubleQuotes(softApConfiguration.getPassphrase());
 
         if (!TextUtils.isEmpty(ssid)) {
             intent.putExtra(EXTRA_WIFI_SSID, ssid);
@@ -358,7 +348,6 @@ public class WifiDppUtils {
         }
         intent.putExtra(EXTRA_WIFI_HIDDEN_SSID, softApConfiguration.isHiddenSsid());
 
-
         intent.putExtra(EXTRA_WIFI_NETWORK_ID, WifiConfiguration.INVALID_NETWORK_ID);
         intent.putExtra(EXTRA_IS_HOTSPOT, true);
 
@@ -366,22 +355,22 @@ public class WifiDppUtils {
     }
 
     /**
-     * Set all extra except {@code EXTRA_WIFI_NETWORK_ID} for the intent to
-     * launch configurator activity later.
+     * Set all extra except {@code EXTRA_WIFI_NETWORK_ID} for the intent to launch configurator
+     * activity later.
      *
      * @param intent the target to set extra
      * @param wifiManager an instance of {@code WifiManager}
      * @param wifiConfiguration the Wi-Fi network for launching configurator activity
      */
-    private static void setConfiguratorIntentExtra(Intent intent, WifiManager wifiManager,
-            WifiConfiguration wifiConfiguration) {
+    private static void setConfiguratorIntentExtra(
+            Intent intent, WifiManager wifiManager, WifiConfiguration wifiConfiguration) {
         final String ssid = removeFirstAndLastDoubleQuotes(wifiConfiguration.SSID);
         final String security = getSecurityString(wifiConfiguration);
 
         // When the value of this key is read, the actual key is not returned, just a "*".
         // Call privileged system API to obtain actual key.
-        final String preSharedKey = removeFirstAndLastDoubleQuotes(getPresharedKey(wifiManager,
-                wifiConfiguration));
+        final String preSharedKey =
+                removeFirstAndLastDoubleQuotes(getPresharedKey(wifiManager, wifiConfiguration));
 
         if (!TextUtils.isEmpty(ssid)) {
             intent.putExtra(EXTRA_WIFI_SSID, ssid);
@@ -409,30 +398,30 @@ public class WifiDppUtils {
             cipher.doFinal();
             return true;
         } catch (NoSuchPaddingException
-                 | IllegalBlockSizeException
-                 | NoSuchAlgorithmException
-                 | BadPaddingException
-                 | InvalidKeyException e) {
+                | IllegalBlockSizeException
+                | NoSuchAlgorithmException
+                | BadPaddingException
+                | InvalidKeyException e) {
             return false;
         }
     }
 
     private static SecretKey generateSecretKey(String keyStoreAlias, int seconds) {
-        KeyGenParameterSpec spec = new KeyGenParameterSpec
-                .Builder(keyStoreAlias, KeyProperties.PURPOSE_ENCRYPT)
-                .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-                .setUserAuthenticationRequired(true)
-                .setUserAuthenticationParameters(
-                        seconds,
-                        KeyProperties.AUTH_DEVICE_CREDENTIAL | KeyProperties.AUTH_BIOMETRIC_STRONG)
-                .build();
+        KeyGenParameterSpec spec =
+                new KeyGenParameterSpec.Builder(keyStoreAlias, KeyProperties.PURPOSE_ENCRYPT)
+                        .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+                        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+                        .setUserAuthenticationRequired(true)
+                        .setUserAuthenticationParameters(
+                                seconds,
+                                KeyProperties.AUTH_DEVICE_CREDENTIAL
+                                        | KeyProperties.AUTH_BIOMETRIC_STRONG)
+                        .build();
         try {
             KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES);
             keyGenerator.init(spec);
             return keyGenerator.generateKey();
-        } catch (NoSuchAlgorithmException
-                 | InvalidAlgorithmParameterException e) {
+        } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
             return null;
         }
     }
@@ -441,9 +430,9 @@ public class WifiDppUtils {
      * Shows authentication screen to confirm credentials (pin, pattern or password) for the current
      * user of the device.
      *
-     * @param context         The {@code Context} used to get {@code KeyguardManager} service
+     * @param context The {@code Context} used to get {@code KeyguardManager} service
      * @param successRunnable The {@code Runnable} which will be executed if the user does not setup
-     *                        device security or if lock screen is unlocked
+     *     device security or if lock screen is unlocked
      */
     public static void showLockScreen(@NonNull Context context, @NonNull Runnable successRunnable) {
         KeyguardManager keyguardManager = context.getSystemService(KeyguardManager.class);
@@ -451,20 +440,41 @@ public class WifiDppUtils {
             successRunnable.run();
             return;
         }
-        showLockScreen(context, successRunnable, keyguardManager);
+        showLockScreen(context, successRunnable, keyguardManager, new CancellationSignal());
     }
 
     /**
-     * Shows authentication screen to confirm credentials (pin, pattern or password) for the
-     * current user of the device. But if the device has been unlocked recently, the
-     * authentication screen will be skipped.
+     * Shows authentication screen to confirm credentials (pin, pattern or password) for the current
+     * user of the device.
      *
-     * @param context         The {@code Context} used to get {@code KeyguardManager} service
+     * @param context The {@code Context} used to get {@code KeyguardManager} service
      * @param successRunnable The {@code Runnable} which will be executed if the user does not setup
-     *                        device security or if lock screen is unlocked
+     *     device security or if lock screen is unlocked
+     * @param cancellationSignal The cancellation signal that can be used to cancel the prompt
      */
-    public static void showLockScreenForWifiSharing(@NonNull Context context,
-            @NonNull Runnable successRunnable) {
+    public static void showLockScreen(
+            @NonNull Context context,
+            @NonNull Runnable successRunnable,
+            @NonNull CancellationSignal cancellationSignal) {
+        KeyguardManager keyguardManager = context.getSystemService(KeyguardManager.class);
+        if (keyguardManager == null || !keyguardManager.isKeyguardSecure()) {
+            successRunnable.run();
+            return;
+        }
+        showLockScreen(context, successRunnable, keyguardManager, cancellationSignal);
+    }
+
+    /**
+     * Shows authentication screen to confirm credentials (pin, pattern or password) for the current
+     * user of the device. But if the device has been unlocked recently, the authentication screen
+     * will be skipped.
+     *
+     * @param context The {@code Context} used to get {@code KeyguardManager} service
+     * @param successRunnable The {@code Runnable} which will be executed if the user does not setup
+     *     device security or if lock screen is unlocked
+     */
+    public static void showLockScreenForWifiSharing(
+            @NonNull Context context, @NonNull Runnable successRunnable) {
         KeyguardManager keyguardManager = context.getSystemService(KeyguardManager.class);
         if (keyguardManager == null || !keyguardManager.isKeyguardSecure()) {
             successRunnable.run();
@@ -475,12 +485,15 @@ public class WifiDppUtils {
             successRunnable.run();
             return;
         }
-        showLockScreen(context, successRunnable, keyguardManager);
+        showLockScreen(context, successRunnable, keyguardManager, new CancellationSignal());
     }
 
     @SuppressLint("MissingPermission")
-    private static void showLockScreen(@NonNull Context context, @NonNull Runnable successRunnable,
-            @NonNull KeyguardManager keyguardManager) {
+    private static void showLockScreen(
+            @NonNull Context context,
+            @NonNull Runnable successRunnable,
+            @NonNull KeyguardManager keyguardManager,
+            @NonNull CancellationSignal cancellationSignal) {
         BiometricPrompt.AuthenticationCallback authenticationCallback =
                 new BiometricPrompt.AuthenticationCallback() {
                     @Override
@@ -491,12 +504,13 @@ public class WifiDppUtils {
 
                     @Override
                     public void onAuthenticationError(int errorCode, CharSequence errString) {
-                        //Do nothing
+                        // Do nothing
                     }
                 };
         int userId = UserHandle.myUserId();
-        BiometricPrompt.Builder builder = new BiometricPrompt.Builder(context)
-                .setTitle(context.getText(R.string.wifi_dpp_lockscreen_title));
+        BiometricPrompt.Builder builder =
+                new BiometricPrompt.Builder(context)
+                        .setTitle(context.getText(R.string.wifi_dpp_lockscreen_title));
         if (keyguardManager.isDeviceSecure()) {
             builder.setDeviceCredentialAllowed(true);
             builder.setTextForDeviceCredential(
@@ -507,9 +521,8 @@ public class WifiDppUtils {
         }
         BiometricPrompt bp = builder.build();
         Handler handler = new Handler(Looper.getMainLooper());
-        bp.authenticate(new CancellationSignal(),
-                runnable -> handler.post(runnable),
-                authenticationCallback);
+        bp.authenticate(
+                cancellationSignal, runnable -> handler.post(runnable), authenticationCallback);
     }
 
     /**
@@ -518,8 +531,8 @@ public class WifiDppUtils {
      * @param context The context to use for {@code WifiManager}
      * @param accessPoint The {@link AccessPoint} of the Wi-Fi network
      */
-    public static boolean isSupportConfiguratorQrCodeGenerator(Context context,
-            AccessPoint accessPoint) {
+    public static boolean isSupportConfiguratorQrCodeGenerator(
+            Context context, AccessPoint accessPoint) {
         if (accessPoint.isPasspoint()) {
             return false;
         }
@@ -591,11 +604,12 @@ public class WifiDppUtils {
     static void triggerVibrationForQrCodeRecognition(Context context) {
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         if (vibrator == null) {
-          return;
+            return;
         }
-        vibrator.vibrate(VibrationEffect.createOneShot(
-                VIBRATE_DURATION_QR_CODE_RECOGNITION.toMillis(),
-                VibrationEffect.DEFAULT_AMPLITUDE));
+        vibrator.vibrate(
+                VibrationEffect.createOneShot(
+                        VIBRATE_DURATION_QR_CODE_RECOGNITION.toMillis(),
+                        VibrationEffect.DEFAULT_AMPLITUDE));
     }
 
     @WifiEntry.Security

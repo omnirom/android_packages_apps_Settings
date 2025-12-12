@@ -18,12 +18,19 @@ package com.android.settings.network
 
 import android.content.Context
 import android.os.OutcomeReceiver
+import android.telephony.NetworkRegistrationInfo
+import android.telephony.TelephonyCallback
+import android.telephony.TelephonyCallback.CarrierRoamingNtnListener
+import android.telephony.TelephonyManager
+import android.telephony.satellite.SatelliteAccessConfiguration
 import android.telephony.satellite.SatelliteManager
+import android.telephony.satellite.SatelliteManager.SatelliteException
 import android.telephony.satellite.SatelliteModemStateCallback
 import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.concurrent.futures.CallbackToFutureAdapter
-import com.android.internal.telephony.flags.Flags
+import com.android.settings.network.telephony.satellite.SatelliteCarrierSettingUtils
+import com.android.settings.network.telephony.telephonyCallbackFlow
 import com.google.common.util.concurrent.Futures.immediateFuture
 import com.google.common.util.concurrent.ListenableFuture
 import java.util.concurrent.Executor
@@ -38,19 +45,15 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 
-/**
- * A repository class for interacting with the SatelliteManager API.
- */
-open class SatelliteRepository(
-    private val context: Context,
-) {
+/** A repository class for interacting with the SatelliteManager API. */
+open class SatelliteRepository(private val context: Context) {
 
     /**
      * Checks if the satellite modem is enabled.
      *
      * @param executor The executor to run the asynchronous operation on
      * @return A ListenableFuture that will resolve to `true` if the satellite modem enabled,
-     *         `false` otherwise.
+     *   `false` otherwise.
      */
     fun requestIsEnabled(executor: Executor): ListenableFuture<Boolean> {
         val satelliteManager: SatelliteManager? =
@@ -62,25 +65,26 @@ open class SatelliteRepository(
 
         return CallbackToFutureAdapter.getFuture { completer ->
             try {
-                satelliteManager.requestIsEnabled(executor,
-                    object : OutcomeReceiver<Boolean, SatelliteManager.SatelliteException> {
+                satelliteManager.requestIsEnabled(
+                    executor,
+                    object : OutcomeReceiver<Boolean, SatelliteException> {
                         override fun onResult(result: Boolean) {
                             Log.i(TAG, "Satellite modem enabled status: $result")
                             completer.set(result)
                         }
 
-                        override fun onError(error: SatelliteManager.SatelliteException) {
+                        override fun onError(error: SatelliteException) {
                             super.onError(error)
                             Log.w(TAG, "Can't get satellite modem enabled status", error)
                             completer.set(false)
                         }
-                    })
+                    },
+                )
                 "requestIsEnabled"
             } catch (e: IllegalStateException) {
                 Log.w(TAG, "IllegalStateException $e")
                 completer.set(false)
             }
-
         }
     }
 
@@ -89,10 +93,12 @@ open class SatelliteRepository(
      *
      * @param executor The executor to run the asynchronous operation on
      * @return A ListenableFuture that will resolve to `true` if a satellite session has started,
-     *         `false` otherwise.
+     *   `false` otherwise.
      */
     fun requestIsSessionStarted(executor: Executor): ListenableFuture<Boolean> {
-        isSessionStarted?.let { return immediateFuture(it) }
+        isSessionStarted?.let {
+            return immediateFuture(it)
+        }
 
         val satelliteManager: SatelliteManager? =
             context.getSystemService(SatelliteManager::class.java)
@@ -102,17 +108,19 @@ open class SatelliteRepository(
         }
 
         return CallbackToFutureAdapter.getFuture { completer ->
-            val callback = object : SatelliteModemStateCallback {
-                override fun onSatelliteModemStateChanged(state: Int) {
-                    val isSessionStarted = isSatelliteSessionStarted(state)
-                    Log.i(
-                        TAG, "Satellite modem state changed: state=$state"
-                            + ", isSessionStarted=$isSessionStarted"
-                    )
-                    completer.set(isSessionStarted)
-                    satelliteManager.unregisterForModemStateChanged(this)
+            val callback =
+                object : SatelliteModemStateCallback {
+                    override fun onSatelliteModemStateChanged(state: Int) {
+                        val isSessionStarted = isSatelliteSessionStarted(state)
+                        Log.i(
+                            TAG,
+                            "Satellite modem state changed: state=$state" +
+                                ", isSessionStarted=$isSessionStarted",
+                        )
+                        completer.set(isSessionStarted)
+                        satelliteManager.unregisterForModemStateChanged(this)
+                    }
                 }
-            }
 
             var registerResult = SatelliteManager.SATELLITE_MODEM_STATE_UNKNOWN
             try {
@@ -136,7 +144,7 @@ open class SatelliteRepository(
      * @return A Flow emitting `true` when the session is started and `false` otherwise.
      */
     fun getIsSessionStartedFlow(
-        defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
+        defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
     ): Flow<Boolean> {
         val satelliteManager: SatelliteManager? =
             context.getSystemService(SatelliteManager::class.java)
@@ -146,40 +154,46 @@ open class SatelliteRepository(
         }
 
         return callbackFlow {
-            val callback = SatelliteModemStateCallback { state ->
-                val isSessionStarted = isSatelliteSessionStarted(state)
-                Log.i(
-                    TAG, "Satellite modem state changed: state=$state"
-                        + ", isSessionStarted=$isSessionStarted"
-                )
-                trySend(isSessionStarted)
-            }
-            var registerResult: Int = SatelliteManager.SATELLITE_RESULT_ERROR
-            try {
-                registerResult = satelliteManager.registerForModemStateChanged(
-                    defaultDispatcher.asExecutor(),
-                    callback
-                )
-            } catch (e: IllegalStateException) {
-                Log.w(TAG, "IllegalStateException $e")
-            }
-
-            if (registerResult != SatelliteManager.SATELLITE_RESULT_SUCCESS) {
-                // If the registration failed (e.g., device doesn't support satellite),
-                // SatelliteManager will not emit the current state by callback.
-                // We send `false` value by ourself to make sure the flow has initial value.
-                Log.w(TAG, "Failed to register for satellite modem state change: $registerResult")
-                trySend(false)
-            }
-
-            awaitClose {
+                val callback = SatelliteModemStateCallback { state ->
+                    val isSessionStarted = isSatelliteSessionStarted(state)
+                    Log.i(
+                        TAG,
+                        "Satellite modem state changed: state=$state" +
+                            ", isSessionStarted=$isSessionStarted",
+                    )
+                    trySend(isSessionStarted)
+                }
+                var registerResult: Int = SatelliteManager.SATELLITE_RESULT_ERROR
                 try {
-                    satelliteManager.unregisterForModemStateChanged(callback)
+                    registerResult =
+                        satelliteManager.registerForModemStateChanged(
+                            defaultDispatcher.asExecutor(),
+                            callback,
+                        )
                 } catch (e: IllegalStateException) {
                     Log.w(TAG, "IllegalStateException $e")
                 }
+
+                if (registerResult != SatelliteManager.SATELLITE_RESULT_SUCCESS) {
+                    // If the registration failed (e.g., device doesn't support satellite),
+                    // SatelliteManager will not emit the current state by callback.
+                    // We send `false` value by ourself to make sure the flow has initial value.
+                    Log.w(
+                        TAG,
+                        "Failed to register for satellite modem state change: $registerResult",
+                    )
+                    trySend(false)
+                }
+
+                awaitClose {
+                    try {
+                        satelliteManager.unregisterForModemStateChanged(callback)
+                    } catch (e: IllegalStateException) {
+                        Log.w(TAG, "IllegalStateException $e")
+                    }
+                }
             }
-        }.flowOn(Dispatchers.Default)
+            .flowOn(Dispatchers.Default)
     }
 
     /**
@@ -193,13 +207,14 @@ open class SatelliteRepository(
             SatelliteManager.SATELLITE_MODEM_STATE_OFF,
             SatelliteManager.SATELLITE_MODEM_STATE_UNAVAILABLE,
             SatelliteManager.SATELLITE_MODEM_STATE_UNKNOWN -> false
+
             else -> true
         }
     }
 
     /**
-     *  @return A list with application package names which support Satellite service.
-     *  e.g. "com.android.settings"
+     * @return A list with application package names which support Satellite service. e.g.
+     *   "com.android.settings"
      */
     open fun getSatelliteDataOptimizedApps(): List<String> {
         val satelliteManager: SatelliteManager? =
@@ -209,11 +224,105 @@ open class SatelliteRepository(
             return emptyList()
         }
         try {
-            return satelliteManager.getSatelliteDataOptimizedApps();
+            return satelliteManager.getSatelliteDataOptimizedApps()
         } catch (e: IllegalStateException) {
             Log.w(TAG, "IllegalStateException $e")
         }
         return emptyList()
+    }
+
+    /** Gets result of [CarrierRoamingNtnListener.onCarrierRoamingNtnAvailableServicesChanged]. */
+    fun carrierRoamingNtnAvailableServicesChangedFlow(subId: Int): Flow<Boolean> =
+        context.telephonyCallbackFlow(subId) {
+            object : TelephonyCallback(), CarrierRoamingNtnListener {
+                override fun onCarrierRoamingNtnAvailableServicesChanged(
+                    availableServices: IntArray
+                ) {
+                    val isSmsAvailable: Boolean =
+                        availableServices.any { it ->
+                            Log.d(TAG, "availableServices : $it")
+                            it == NetworkRegistrationInfo.SERVICE_TYPE_SMS
+                        }
+                    Log.d(TAG, "isSmsAvailable : $isSmsAvailable")
+                    trySend(isSmsAvailable)
+                }
+
+                override fun onCarrierRoamingNtnModeChanged(active: Boolean) {}
+            }
+        }
+
+    /** Gets result of [SatelliteManager.requestIsSupported]. */
+    fun requestIsSupportedFlow(): Flow<Boolean> {
+        val satelliteManager: SatelliteManager? =
+            context.getSystemService(SatelliteManager::class.java)
+        if (satelliteManager == null) {
+            Log.w(TAG, "SatelliteManager is null")
+            return flowOf(false)
+        }
+        return callbackFlow {
+                val callback =
+                    object : OutcomeReceiver<Boolean, SatelliteException> {
+                        override fun onError(error: SatelliteException) {
+                            super.onError(error)
+                            trySend(false)
+                        }
+
+                        override fun onResult(result: Boolean) {
+                            Log.w(TAG, "requestIsSupported : Result is $result")
+                            trySend(result)
+                        }
+                    }
+
+                satelliteManager.requestIsSupported(Dispatchers.Default.asExecutor(), callback)
+
+                awaitClose {}
+            }
+            .flowOn(Dispatchers.Default)
+    }
+
+    /** Gets result of [SatelliteManager.requestIsSupported]. */
+    open fun isSatelliteAccessConfigurationForCurrentLocationFlow(subid: Int): Flow<Boolean> {
+        val satelliteManager: SatelliteManager? =
+            context.getSystemService(SatelliteManager::class.java)
+        if (satelliteManager == null) {
+            Log.w(TAG, "SatelliteManager is null")
+            return flowOf(false)
+        }
+        var carrierId =
+            context.getSystemService(TelephonyManager::class.java).let {
+                it.createForSubscriptionId(subid).let { it.simSpecificCarrierId }
+            }
+        return callbackFlow {
+                val callback =
+                    object : OutcomeReceiver<SatelliteAccessConfiguration, SatelliteException> {
+                        override fun onError(error: SatelliteException) {
+                            super.onError(error)
+                            Log.d(
+                                TAG,
+                                "requestSatelliteAccessConfigurationForCurrentLocation SatelliteException : Exception is $error",
+                            )
+                            trySend(true)
+                        }
+
+                        override fun onResult(result: SatelliteAccessConfiguration) {
+                            trySend(
+                                SatelliteCarrierSettingUtils.isCarrierSatelliteRegionSupported(
+                                    context,
+                                    result.tagIds,
+                                    carrierId,
+                                )
+                            )
+                        }
+                    }
+
+                satelliteManager.requestSatelliteAccessConfigurationForCurrentLocation(
+                    Dispatchers.Default.asExecutor(),
+                    callback,
+                )
+
+                awaitClose {}
+            }
+            .flowOn(Dispatchers.Default)
     }
 
     companion object {

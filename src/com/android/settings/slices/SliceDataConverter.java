@@ -75,6 +75,7 @@ import java.util.Set;
  * - All {@link DashboardFragment DashboardFragments} indexed by settings search
  * - Accessibility services
  */
+@Deprecated(forRemoval = true)
 class SliceDataConverter {
 
     private static final String TAG = "SliceDataConverter";

@@ -37,7 +37,6 @@ import com.android.settings.media.MediaOutputIndicatorSlice;
 import com.android.settings.media.RemoteMediaSlice;
 import com.android.settings.network.ProviderModelSlice;
 import com.android.settings.network.telephony.MobileDataSlice;
-import com.android.settings.notification.zen.ZenModeButtonPreferenceController;
 import com.android.settings.wifi.calling.WifiCallingSliceHelper;
 import com.android.settings.wifi.slice.WifiSlice;
 import com.android.settingslib.media.MediaOutputConstants;
@@ -47,6 +46,7 @@ import java.util.Map;
 /**
  * A registry of custom slice Uris.
  */
+@Deprecated(forRemoval = true)
 public class CustomSliceRegistry {
 
     /**
@@ -248,7 +248,7 @@ public class CustomSliceRegistry {
             .scheme(ContentResolver.SCHEME_CONTENT)
             .authority(SettingsSliceProvider.SLICE_AUTHORITY)
             .appendPath(SettingsSlicesContract.PATH_SETTING_ACTION)
-            .appendPath(ZenModeButtonPreferenceController.KEY)
+            .appendPath("zen_mode_toggle")
             .build();
 
     /**

@@ -22,14 +22,25 @@ import android.content.Context;
 import android.telephony.satellite.SatelliteManager;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /** A until for carrier satellite setting. */
 public class SatelliteCarrierSettingUtils {
     private static final String TAG = "SatelliteCarrierSettingUtils";
+
+    /**
+     * {@link android.telephony.satellite.SatelliteAccessConfiguration} is used to store satellite
+     * access configuration that will be applied to the satellite communication at the corresponding
+     * region. 1001 is one of the Tag ID, and is pointed out current region is supported by carrier
+     * satellite service.
+     */
+    public static final int SATELLITE_REGION_TAG_ID = 1001;
 
     @VisibleForTesting
     static SatelliteManagerWrapper sSatelliteManagerWrapper;
@@ -52,15 +63,34 @@ public class SatelliteCarrierSettingUtils {
     /**
      * Use getSatelliteDataSupportMode to check data mode is restricted.
      *
-     * @return true if data mode is restricted.
+     * @return Integer of {@code CarrierConfigManager#SATELLITE_DATA_SUPPORT_MODE}
      */
-    public static boolean isSatelliteDataRestricted(Context context, int subId) {
+    public static int getSatelliteDataMode(Context context, int subId) {
         SatelliteManagerWrapper wrapper =
                 sSatelliteManagerWrapper == null ? new SatelliteManagerWrapper(context)
                         : sSatelliteManagerWrapper;
-        return wrapper.getSatelliteDataSupportMode(subId) <= SATELLITE_DATA_SUPPORT_ONLY_RESTRICTED;
+        return wrapper.getSatelliteDataSupportMode(subId);
     }
 
+    /**
+     * Check if current carrier is supported in this region.
+     */
+    public static boolean isCarrierSatelliteRegionSupported(Context context,
+            @Nullable List<Integer> tagIds, int carrierId) {
+        if (tagIds == null) {
+            return true;
+        }
+
+        int[] carrierIds = context.getResources().getIntArray(
+                com.android.settings.R.array.config_carrier_id_list_for_satellite_geo_fence_check);
+        Log.d(TAG, "tagIds is " + tagIds + " / carrier id : " + carrierId);
+        boolean isCarrierNeedToCheckRegion = Arrays.stream(carrierIds).anyMatch(
+                it -> it == carrierId);
+        if (!isCarrierNeedToCheckRegion) {
+            return true;
+        }
+        return tagIds.stream().anyMatch(tagId -> tagId == SATELLITE_REGION_TAG_ID);
+    }
 
     @VisibleForTesting
     static class SatelliteManagerWrapper {
@@ -78,7 +108,7 @@ public class SatelliteCarrierSettingUtils {
             try {
                 Set<Integer> restrictionReason =
                         mSatelliteManager.getAttachRestrictionReasonsForCarrier(subId);
-                Log.d(TAG, "Error to getAttachRestrictionReasonsForCarrier : " + restrictionReason);
+                Log.d(TAG, "getAttachRestrictionReasonsForCarrier : " + restrictionReason);
                 return restrictionReason;
             } catch (SecurityException | IllegalStateException | IllegalArgumentException e) {
                 Log.d(TAG, "Error to getAttachRestrictionReasonsForCarrier : " + e);

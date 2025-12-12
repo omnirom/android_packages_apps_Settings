@@ -22,8 +22,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowLooper.idleMainLooper;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.face.FaceManager;
@@ -31,6 +33,7 @@ import android.hardware.fingerprint.FingerprintManager;
 import android.os.UserManager;
 
 import androidx.preference.PreferenceScreen;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.testutils.ActiveUnlockTestUtils;
 import com.android.settings.testutils.shadow.ShadowDeviceConfig;
@@ -48,7 +51,6 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowApplication;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {ShadowDeviceConfig.class})
@@ -73,10 +75,12 @@ public class ActiveUnlockStatusPreferenceControllerTest {
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
         when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)).thenReturn(true);
         when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_FACE)).thenReturn(true);
-        ShadowApplication.getInstance()
+        shadowOf((Application) ApplicationProvider.getApplicationContext())
                 .setSystemService(Context.FINGERPRINT_SERVICE, mFingerprintManager);
-        ShadowApplication.getInstance().setSystemService(Context.FACE_SERVICE, mFaceManager);
-        ShadowApplication.getInstance().setSystemService(Context.USER_SERVICE, mUserManager);
+        shadowOf((Application) ApplicationProvider.getApplicationContext())
+                .setSystemService(Context.FACE_SERVICE, mFaceManager);
+        shadowOf((Application) ApplicationProvider.getApplicationContext())
+                .setSystemService(Context.USER_SERVICE, mUserManager);
         when(mUserManager.getProfileIdsWithDisabled(anyInt())).thenReturn(new int[] {1234});
         mPreference = new RestrictedPreference(mContext);
         when(mPreferenceScreen.findPreference(any())).thenReturn(mPreference);

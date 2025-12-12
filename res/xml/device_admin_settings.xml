@@ -26,6 +26,5 @@
     <com.android.settingslib.widget.FooterPreference
         android:key="device_admin_footer"
         android:title="@string/no_device_admins"
-        android:selectable="false"
         settings:searchable="false"/>
 </PreferenceScreen>

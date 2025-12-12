@@ -16,20 +16,16 @@
 
 package com.android.settings
 
-import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.settings.Settings.FactoryResetActivity
-import com.android.settings.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import org.junit.Ignore
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -37,22 +33,8 @@ import org.junit.runner.RunWith
 @Ignore
 @RunWith(AndroidJUnit4::class)
 class MainClearTest {
-    @get:Rule
-    val mSetFlagsRule = SetFlagsRule()
-
     @Test
-    fun factoryResetCancelButton_flagDisabled_noCancelButton() {
-        mSetFlagsRule.disableFlags(Flags.FLAG_SHOW_FACTORY_RESET_CANCEL_BUTTON)
-        ActivityScenario.launch(FactoryResetActivity::class.java).use {
-            ensurePrimaryButton()
-            onView(withText(android.R.string.cancel)).check(doesNotExist())
-            it.onActivity { activity -> assertThat(activity.isFinishing).isFalse() }
-        }
-    }
-
-    @Test
-    fun factoryResetCancelButton_flagEnabled_showCancelButton() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_SHOW_FACTORY_RESET_CANCEL_BUTTON)
+    fun factoryResetCancelButton() {
         ActivityScenario.launch(FactoryResetActivity::class.java).use {
             ensurePrimaryButton()
             it.onActivity { activity -> assertThat(activity.isFinishing).isFalse() }

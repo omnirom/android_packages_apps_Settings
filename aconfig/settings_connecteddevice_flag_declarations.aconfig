@@ -16,17 +16,20 @@ flag {
 }
 
 flag {
+  name: "resolution_and_enable_connected_display_setting_bugfix"
+  namespace: "display_manager"
+  description: "Allow enabling/disabling and changing resolution of the connected display."
+  bug: "253296253"
+  metadata {
+    purpose: PURPOSE_BUGFIX
+  }
+}
+
+flag {
   name: "display_topology_pane_in_display_list"
   namespace: "display_manager"
   description: "Shows the connected display setting and shows the topology pane in the display list, even with only one display connected."
   bug: "352648432"
-}
-
-flag {
-  name: "enable_auth_challenge_for_usb_preferences"
-  namespace: "safety_center"
-  description: "Gates whether to require an auth challenge for changing USB preferences"
-  bug: "317367746"
 }
 
 flag {
@@ -44,4 +47,38 @@ flag {
   namespace: "lse_desktop_experience"
   description: "Allow changing display size of the connected display."
   bug: "392853666"
+}
+
+flag {
+  name: "show_stacked_mirroring_display_connected_display_setting"
+  namespace: "lse_desktop_experience"
+  description: "Stack mirroring displays on the display topology pane."
+  bug: "401059862"
+}
+
+flag {
+  name: "show_tabbed_connected_display_setting"
+  namespace: "lse_desktop_experience"
+  description: "Show floating toolbar display selection and tabbed display settings."
+  bug: "409354332"
+}
+
+flag {
+    name: "enable_default_display_in_topology_switch_bugfix"
+    namespace: "lse_desktop_experience"
+    description: "Add switch in the settings page to include default display in display topology"
+    bug: "420885578"
+    metadata {
+        purpose: PURPOSE_BUGFIX
+    }
+}
+
+flag {
+    name: "enable_resolution_apply_confirmation_bugfix"
+    namespace: "display_manager"
+    description: "Shows dialog to let user confirms if the resolution selected should be persisted"
+    bug: "421018668"
+    metadata {
+        purpose: PURPOSE_BUGFIX
+    }
 }

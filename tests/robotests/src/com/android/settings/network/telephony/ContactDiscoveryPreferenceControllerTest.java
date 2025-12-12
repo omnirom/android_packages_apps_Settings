@@ -19,6 +19,8 @@ package com.android.settings.network.telephony;
 import static com.android.settings.core.BasePreferenceController.AVAILABLE;
 import static com.android.settings.core.BasePreferenceController.CONDITIONALLY_UNAVAILABLE;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -29,6 +31,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
@@ -46,6 +49,7 @@ import android.telephony.ims.RcsUceAdapter;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.preference.Preference;
 import androidx.preference.SwitchPreference;
 
 import com.android.settings.network.CarrierConfigCache;
@@ -158,6 +162,30 @@ public class ContactDiscoveryPreferenceControllerTest {
         // Verify content discovery is disabled when the user disables it.
         assertTrue(mPreferenceControllerUT.setChecked(false /*isChecked*/));
         verify(mRcsUceAdapter).setUceSettingEnabled(false);
+    }
+
+    @Test
+    public void notifyAirplaneModeChanged_isAirplaneModeOff_setEnableTrue() {
+        Preference testPreference = mock(Preference.class);
+
+        mPreferenceControllerUT.notifyAirplaneModeChanged(false);
+        mPreferenceControllerUT.updateState(testPreference);
+
+
+        assertThat(mPreferenceControllerUT.mIsAirplaneModeOn).isFalse();
+        verify(testPreference).setEnabled(true);
+    }
+
+    @Test
+    public void notifyAirplaneModeChanged_isAirplaneModeOn_setEnableFalse() {
+        Preference testPreference = mock(Preference.class);
+
+        mPreferenceControllerUT.notifyAirplaneModeChanged(true);
+        mPreferenceControllerUT.updateState(testPreference);
+
+
+        assertThat(mPreferenceControllerUT.mIsAirplaneModeOn).isTrue();
+        verify(testPreference).setEnabled(false);
     }
 
     private void setRcsPresenceConfig(boolean isEnabled) {

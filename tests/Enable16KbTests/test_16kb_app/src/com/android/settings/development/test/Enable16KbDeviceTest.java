@@ -46,8 +46,7 @@ public class Enable16KbDeviceTest {
     private static final String ENABLE_16K_TOGGLE = "Boot with 16 KB page size";
     private static final String BUILD_NUMBER = "Build number";
     private static final String USE_DEVELOPER_OPTIONS = "Use developer options";
-    private static final String EXT4_CONFIRMATION = "Erase all data";
-    private static final String EXT4_TITLE = "Reformat device to ext4? (required for 16 KB mode)";
+    private static final String DATA_WIPE_AND_UPDATE = "Erase all data and update";
     private static final String TOGGLE_16K_TITLE = "Switch from 4 KB mode to 16 KB mode";
     private static final String TOGGLE_4K_TITLE = "Switch from 16 KB mode to 4 KB mode";
     private static final String ANDROID_WIDGET_SCROLLVIEW = "android.widget.ScrollView";
@@ -85,45 +84,31 @@ public class Enable16KbDeviceTest {
     }
 
     @Test
-    public void enable16k_switchToExt4() throws Exception {
+    public void enable16k_eraseAndSwitchTo16kb() throws Exception {
         unlockDeveloperOptions();
         SettingsHelper.launchSettingsPage(
                 mContext, Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS);
         clickOnObject(By.text(ENABLE_16K_TOGGLE));
 
-        // Verify that ext4 toggle is visible
-        verifyTextOnScreen(EXT4_TITLE);
+        // Verify that ext4 + ota dialog is visible
+        verifyTextOnScreen(TOGGLE_16K_TITLE);
 
         UiObject2 confirmationObject =
-            mDevice.wait(Until.findObject(By.text(EXT4_CONFIRMATION)), TIMEOUT);
+                mDevice.wait(Until.findObject(By.text(DATA_WIPE_AND_UPDATE)), TIMEOUT);
         if (confirmationObject == null) {
             // Workaround for (b/390535191). AOSP targets display the string in all caps.
             confirmationObject = mDevice.wait(
-                Until.findObject(By.text(EXT4_CONFIRMATION.toUpperCase(Locale.ROOT))), TIMEOUT);
+                Until.findObject(By.text(DATA_WIPE_AND_UPDATE.toUpperCase(Locale.ROOT))), TIMEOUT);
         }
         assertTrue(confirmationObject != null);
         confirmationObject.click();
     }
 
     @Test
-    public void enable16k_switchTo16Kb() throws Exception {
-        // Device will be in 4kb mode
-        openPersistentNotification(NOTIFICATION_TITLE_4K);
-        unlockDeveloperOptions();
-        SettingsHelper.launchSettingsPage(
-                mContext, Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS);
-
-        clickOnObject(By.text(ENABLE_16K_TOGGLE));
-        // Verify that text is displayed to switch to 16kb
-        verifyTextOnScreen(TOGGLE_16K_TITLE);
-
-        mDevice.wait(Until.findObject(By.text(OKAY)), TIMEOUT).click();
-    }
-
-    @Test
     public void enable16k_switchTo4Kb() throws Exception {
         // Device will be in 16kb mode
         openPersistentNotification(NOTIFICATION_TITLE_16K);
+        unlockDeveloperOptions();
         SettingsHelper.launchSettingsPage(
                 mContext, Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS);
 

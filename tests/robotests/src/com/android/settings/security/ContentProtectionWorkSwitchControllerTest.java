@@ -236,7 +236,8 @@ public class ContentProtectionWorkSwitchControllerTest {
 
         mController.displayPreference(mMockPreferenceScreen);
 
-        verify(mMockSwitchPreference, never()).setDisabledByAdmin(any());
+        verify(mMockSwitchPreference, never()).setDisabledByAdmin(
+                (RestrictedLockUtils.EnforcedAdmin) any());
         assertThat(mController.mCounterGetManagedProfile).isEqualTo(3);
         assertThat(mController.mCounterGetEnforcedAdmin).isEqualTo(0);
     }
@@ -262,7 +263,8 @@ public class ContentProtectionWorkSwitchControllerTest {
 
         mController.displayPreference(mMockPreferenceScreen);
 
-        verify(mMockSwitchPreference, never()).setDisabledByAdmin(any());
+        verify(mMockSwitchPreference, never()).setDisabledByAdmin(
+                (RestrictedLockUtils.EnforcedAdmin) any());
         assertThat(mController.mCounterGetManagedProfile).isEqualTo(1);
         assertThat(mController.mCounterGetEnforcedAdmin).isEqualTo(0);
     }

@@ -15,11 +15,17 @@
  */
 package com.android.settings.testutils.shadow;
 
+import static android.app.admin.DpcAuthority.DPC_AUTHORITY;
+
 import android.annotation.NonNull;
 import android.annotation.UserIdInt;
 import android.app.admin.DevicePolicyManager;
+import android.app.admin.EnforcingAdmin;
+import android.app.admin.PolicyEnforcementInfo;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.UserHandle;
 
 import com.android.internal.util.ArrayUtils;
 import com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
@@ -28,6 +34,8 @@ import com.android.settingslib.RestrictedLockUtilsInternal;
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 import org.robolectric.annotation.Resetter;
+
+import java.util.List;
 
 @Implements(RestrictedLockUtilsInternal.class)
 public class ShadowRestrictedLockUtilsInternal {
@@ -90,6 +98,14 @@ public class ShadowRestrictedLockUtilsInternal {
     protected static EnforcedAdmin checkIfKeyguardFeaturesDisabled(Context context,
             int features, final @UserIdInt int userId) {
         return (sKeyguardDisabledFeatures & features) == 0 ? null : new EnforcedAdmin();
+    }
+
+    @Implementation
+    protected static PolicyEnforcementInfo getEnforcingAdminsForKeyguardFeatures(Context context,
+            int features, final @UserIdInt int userId) {
+        return (sKeyguardDisabledFeatures & features) == 0 ? null : new PolicyEnforcementInfo(
+                List.of(new EnforcingAdmin("test", DPC_AUTHORITY, UserHandle.of(userId),
+                        new ComponentName("test", "test.class"))));
     }
 
     @Implementation

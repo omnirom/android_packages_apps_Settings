@@ -89,6 +89,9 @@ public class SafetySourceBroadcastReceiver extends BroadcastReceiver {
         if (sourceIds.contains(WearSafetySource.SAFETY_SOURCE_ID)) {
             WearSafetySource.setSafetySourceData(context, safetyEvent);
         }
+        if (sourceIds.contains(IdentityCheckSafetySource.SAFETY_SOURCE_ID)) {
+            IdentityCheckSafetySource.Companion.setSafetySourceData(context, safetyEvent);
+        }
     }
 
     private static void refreshAllSafetySources(Context context, SafetyEvent safetyEvent) {
@@ -99,5 +102,6 @@ public class SafetySourceBroadcastReceiver extends BroadcastReceiver {
         FaceSafetySource.setSafetySourceData(context, safetyEvent);
         FingerprintSafetySource.setSafetySourceData(context, safetyEvent);
         WearSafetySource.setSafetySourceData(context, safetyEvent);
+        IdentityCheckSafetySource.Companion.setSafetySourceData(context, safetyEvent);
     }
 }

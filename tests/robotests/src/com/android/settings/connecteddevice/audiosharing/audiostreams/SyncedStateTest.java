@@ -25,7 +25,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.shadows.ShadowLooper.shadowMainLooper;
 
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothLeBroadcastMetadata;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,10 +32,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
+import com.android.settings.testutils.shadow.ShadowAlertDialogCompat;
 import com.android.settingslib.bluetooth.BluetoothLeBroadcastMetadataExt;
 
 import org.junit.After;
@@ -50,13 +51,12 @@ import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadow.api.Shadow;
-import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowLooper;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(
         shadows = {
-            ShadowAlertDialog.class,
+            ShadowAlertDialogCompat.class,
         })
 public class SyncedStateTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
@@ -74,14 +74,15 @@ public class SyncedStateTest {
 
     @Before
     public void setUp() {
-        ShadowAlertDialog.reset();
+        ShadowAlertDialogCompat.reset();
         mMockContext = ApplicationProvider.getApplicationContext();
+        mMockContext.setTheme(androidx.appcompat.R.style.Theme_AppCompat);
         mInstance = SyncedState.getInstance();
     }
 
     @After
     public void tearDown() {
-        ShadowAlertDialog.reset();
+        ShadowAlertDialogCompat.reset();
     }
 
     @Test
@@ -113,7 +114,7 @@ public class SyncedStateTest {
         listener.onPreferenceClick(mMockPreference);
         shadowMainLooper().idle();
 
-        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
+        AlertDialog dialog = ShadowAlertDialogCompat.getLatestAlertDialog();
         assertThat(dialog).isNull();
         verify(mMockController).handleSourceAddRequest(mMockPreference, mMockMetadata);
     }
@@ -134,7 +135,7 @@ public class SyncedStateTest {
         listener.onPreferenceClick(mMockPreference);
         shadowMainLooper().idle();
 
-        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
+        AlertDialog dialog = ShadowAlertDialogCompat.getLatestAlertDialog();
 
         assertThat(dialog).isNotNull();
         assertThat(dialog.isShowing()).isTrue();
@@ -151,7 +152,7 @@ public class SyncedStateTest {
                 .isEqualTo(
                         mMockContext.getString(R.string.bluetooth_connect_access_dialog_positive));
 
-        ShadowAlertDialog shadowDialog = Shadow.extract(dialog);
+        ShadowAlertDialogCompat shadowDialog = Shadow.extract(dialog);
         EditText editText = shadowDialog.getView().findViewById(R.id.broadcast_edit_text);
         assertThat(editText).isNotNull();
         editText.setText(VALID_PASSWORD);

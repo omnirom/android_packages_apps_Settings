@@ -51,6 +51,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
@@ -81,6 +83,7 @@ import java.util.Set;
  * Settings screen listing VPNs. Configured VPNs and networks managed by apps
  * are shown in the same list.
  */
+// LINT.IfChange
 public class VpnSettings extends RestrictedDashboardFragment implements
         Handler.Callback, Preference.OnPreferenceClickListener {
     private static final String LOG_TAG = "VpnSettings";
@@ -96,6 +99,11 @@ public class VpnSettings extends RestrictedDashboardFragment implements
             .removeCapability(NetworkCapabilities.NET_CAPABILITY_NOT_RESTRICTED)
             .removeCapability(NetworkCapabilities.NET_CAPABILITY_TRUSTED)
             .build();
+
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return VpnSettingsScreen.KEY;
+    }
 
     private ConnectivityManager mConnectivityManager;
     private UserManager mUserManager;
@@ -713,3 +721,4 @@ public class VpnSettings extends RestrictedDashboardFragment implements
         mFeatureProvider = featureProvider;
     }
 }
+// LINT.ThenChange(VpnSettingsScreen.kt)

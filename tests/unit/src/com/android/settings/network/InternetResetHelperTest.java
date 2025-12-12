@@ -69,8 +69,6 @@ public class InternetResetHelperTest {
     private InternetResetHelper mInternetResetHelper;
     private Preference mResettingPreference;
     private Preference mWifiTogglePreferences;
-    private PreferenceCategory mConnectedWifiEntryPreferences;
-    private PreferenceCategory mFirstWifiEntryPreference;
     private PreferenceCategory mWifiEntryPreferences;
 
     @Before
@@ -82,15 +80,11 @@ public class InternetResetHelperTest {
         }
         mResettingPreference = spy(new Preference(mContext));
         mWifiTogglePreferences = new Preference(mContext);
-        mConnectedWifiEntryPreferences = spy(new PreferenceCategory(mContext));
-        mFirstWifiEntryPreference = spy(new PreferenceCategory(mContext));
         mWifiEntryPreferences = spy(new PreferenceCategory(mContext));
 
         mInternetResetHelper = new InternetResetHelper(mContext, mock(Lifecycle.class),
                 mMobileNetworkController,
                 mWifiTogglePreferences,
-                mConnectedWifiEntryPreferences,
-                mFirstWifiEntryPreference,
                 mWifiEntryPreferences,
                 mResettingPreference);
         mInternetResetHelper.mHandlerInjector = mHandlerInjector;
@@ -159,8 +153,6 @@ public class InternetResetHelperTest {
         // Hide subsystem preferences
         verify(mMobileNetworkController).hidePreference(true /* hide */, true /* immediately*/);
         assertThat(mWifiTogglePreferences.isVisible()).isFalse();
-        assertThat(mConnectedWifiEntryPreferences.isVisible()).isFalse();
-        assertThat(mFirstWifiEntryPreference.isVisible()).isFalse();
         assertThat(mWifiEntryPreferences.isVisible()).isFalse();
     }
 
@@ -178,8 +170,6 @@ public class InternetResetHelperTest {
         verify(mMobileNetworkController).hidePreference(false /* hide */, true /* immediately*/);
         // Hide Wi-Fi preferences
         assertThat(mWifiTogglePreferences.isVisible()).isFalse();
-        assertThat(mConnectedWifiEntryPreferences.isVisible()).isFalse();
-        assertThat(mFirstWifiEntryPreference.isVisible()).isFalse();
         assertThat(mWifiEntryPreferences.isVisible()).isFalse();
     }
 
@@ -195,8 +185,6 @@ public class InternetResetHelperTest {
         assertThat(mResettingPreference.isVisible()).isTrue();
         // Show Wi-Fi preferences
         assertThat(mWifiTogglePreferences.isVisible()).isTrue();
-        assertThat(mConnectedWifiEntryPreferences.isVisible()).isTrue();
-        assertThat(mFirstWifiEntryPreference.isVisible()).isTrue();
         assertThat(mWifiEntryPreferences.isVisible()).isTrue();
         // Hide Mobile Network controller
         verify(mMobileNetworkController, never())
@@ -214,8 +202,6 @@ public class InternetResetHelperTest {
         // Show subsystem preferences
         verify(mMobileNetworkController).hidePreference(false, true);
         assertThat(mWifiTogglePreferences.isVisible()).isTrue();
-        assertThat(mConnectedWifiEntryPreferences.isVisible()).isTrue();
-        assertThat(mFirstWifiEntryPreference.isVisible()).isTrue();
         assertThat(mWifiEntryPreferences.isVisible()).isTrue();
         // Hide resetting preference
         assertThat(mResettingPreference.isVisible()).isFalse();

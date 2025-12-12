@@ -19,6 +19,8 @@ package com.android.settings.display;
 import static android.provider.Settings.Secure.DOZE_ALWAYS_ON;
 import static android.provider.Settings.Secure.DOZE_WAKE_DISPLAY_GESTURE;
 
+import static com.android.systemui.shared.Flags.ambientAod;
+
 import android.annotation.ColorInt;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
@@ -73,12 +75,17 @@ public class AlwaysOnDisplaySlice implements CustomSliceable {
         @ColorInt final int color = Utils.getColorAccentDefaultColor(mContext);
         final boolean isChecked = mConfig.alwaysOnEnabled(MY_USER);
 
+        int title = R.string.doze_always_on_title;
+        if (ambientAod()) {
+            title = R.string.doze_always_on_title2;
+        }
+
         return new ListBuilder(mContext, CustomSliceRegistry.ALWAYS_ON_SLICE_URI,
                 ListBuilder.INFINITY)
                 .setAccentColor(color)
                 .setKeywords(getKeywords())
                 .addRow(new ListBuilder.RowBuilder()
-                        .setTitle(mContext.getText(R.string.doze_always_on_title))
+                        .setTitle(mContext.getText(title))
                         .setSubtitle(mContext.getText(R.string.doze_always_on_summary))
                         .setPrimaryAction(
                                 SliceAction.createToggle(toggleAction, null /* actionTitle */,

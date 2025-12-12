@@ -16,6 +16,8 @@
 
 package com.android.settings.display;
 
+import static com.android.settingslib.widget.SliderPreference.HAPTIC_FEEDBACK_MODE_ON_ENDS;
+
 import android.content.Context;
 import android.hardware.display.ColorDisplayManager;
 import android.text.TextUtils;
@@ -68,7 +70,7 @@ public class NightDisplayIntensityPreferenceController extends SliderPreferenceC
         preference.setUpdatesContinuously(true);
         preference.setMax(getMax());
         preference.setMin(getMin());
-        // TODO(b/394828723) add haptic feedback
+        preference.setHapticFeedbackMode(HAPTIC_FEEDBACK_MODE_ON_ENDS);
     }
 
     @Override

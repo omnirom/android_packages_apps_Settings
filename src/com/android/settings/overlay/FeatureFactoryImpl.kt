@@ -44,6 +44,8 @@ import com.android.settings.connecteddevice.fastpair.FastPairFeatureProvider
 import com.android.settings.connecteddevice.fastpair.FastPairFeatureProviderImpl
 import com.android.settings.connecteddevice.stylus.StylusFeatureProvider
 import com.android.settings.connecteddevice.stylus.StylusFeatureProviderImpl
+import com.android.settings.connecteddevice.threadnetwork.ThreadNetworkFeatureProvider
+import com.android.settings.connecteddevice.threadnetwork.ThreadNetworkFeatureProviderImpl
 import com.android.settings.core.instrumentation.SettingsMetricsFeatureProvider
 import com.android.settings.dashboard.DashboardFeatureProviderImpl
 import com.android.settings.dashboard.suggestions.SuggestionFeatureProvider
@@ -61,13 +63,13 @@ import com.android.settings.localepicker.LocaleFeatureProviderImpl
 import com.android.settings.notification.syncacrossdevices.SyncAcrossDevicesFeatureProvider
 import com.android.settings.notification.syncacrossdevices.SyncAcrossDevicesFeatureProviderImpl
 import com.android.settings.panel.PanelFeatureProviderImpl
+import com.android.settings.privatespace.PrivateSpaceLoginFeatureProvider
+import com.android.settings.privatespace.PrivateSpaceLoginFeatureProviderImpl
 import com.android.settings.search.SearchFeatureProvider
 import com.android.settings.search.SearchFeatureProviderImpl
 import com.android.settings.security.SecurityFeatureProviderImpl
 import com.android.settings.security.SecuritySettingsFeatureProvider
 import com.android.settings.security.SecuritySettingsFeatureProviderImpl
-import com.android.settings.privatespace.PrivateSpaceLoginFeatureProvider
-import com.android.settings.privatespace.PrivateSpaceLoginFeatureProviderImpl
 import com.android.settings.slices.SlicesFeatureProviderImpl
 import com.android.settings.users.UserFeatureProviderImpl
 import com.android.settings.vpn2.AdvancedVpnFeatureProviderImpl
@@ -76,9 +78,7 @@ import com.android.settings.wifi.WifiTrackerLibProviderImpl
 import com.android.settings.wifi.factory.WifiFeatureProvider
 import com.android.settingslib.spaprivileged.framework.common.devicePolicyManager
 
-/**
- * [FeatureFactory] implementation for AOSP Settings.
- */
+/** [FeatureFactory] implementation for AOSP Settings. */
 open class FeatureFactoryImpl : FeatureFactory() {
     private val contextualCardFeatureProvider by lazy {
         ContextualCardFeatureProviderImpl(appContext)
@@ -155,7 +155,9 @@ open class FeatureFactoryImpl : FeatureFactory() {
         BiometricsFeatureProviderImpl()
     }
 
-    override val faceFeatureProvider: FaceFeatureProvider by lazy { FaceFeatureProviderImpl() }
+    override val faceFeatureProvider: FaceFeatureProvider by lazy {
+        FaceFeatureProviderImpl(appContext)
+    }
 
     override val fingerprintFeatureProvider: FingerprintFeatureProvider by lazy {
         FingerprintFeatureProviderImpl()
@@ -169,8 +171,8 @@ open class FeatureFactoryImpl : FeatureFactory() {
         SecuritySettingsFeatureProviderImpl()
     }
 
-    override val accessibilityFeedbackFeatureProvider: AccessibilityFeedbackFeatureProvider
-        by lazy {  AccessibilityFeedbackFeatureProviderImpl() }
+    override val accessibilityFeedbackFeatureProvider:
+        AccessibilityFeedbackFeatureProvider by lazy { AccessibilityFeedbackFeatureProviderImpl() }
 
     override val accessibilitySearchFeatureProvider: AccessibilitySearchFeatureProvider by lazy {
         AccessibilitySearchFeatureProviderImpl()
@@ -190,6 +192,10 @@ open class FeatureFactoryImpl : FeatureFactory() {
 
     override val stylusFeatureProvider: StylusFeatureProvider by lazy {
         StylusFeatureProviderImpl()
+    }
+
+    override val threadNetworkFeatureProvider: ThreadNetworkFeatureProvider by lazy {
+        ThreadNetworkFeatureProviderImpl()
     }
 
     override val fastPairFeatureProvider: FastPairFeatureProvider by lazy {

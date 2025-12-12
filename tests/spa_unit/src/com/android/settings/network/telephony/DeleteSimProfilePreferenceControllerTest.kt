@@ -18,7 +18,6 @@ package com.android.settings.network.telephony
 
 import android.app.KeyguardManager
 import android.content.Context
-import android.os.UserManager
 import android.telephony.SubscriptionInfo
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
@@ -41,23 +40,26 @@ import org.mockito.kotlin.whenever
 
 @RunWith(AndroidJUnit4::class)
 class DeleteSimProfilePreferenceControllerTest {
-    private val subscriptionInfo = mock<SubscriptionInfo> {
-        on { subscriptionId } doReturn SUB_ID
-        on { isEmbedded } doReturn true
-    }
+    private val subscriptionInfo =
+        mock<SubscriptionInfo> {
+            on { subscriptionId } doReturn SUB_ID
+            on { isEmbedded } doReturn true
+        }
 
-    private val mockKeyguardManager = mock<KeyguardManager>() {
-        on { isKeyguardSecure() } doReturn false
-    }
+    private val mockKeyguardManager =
+        mock<KeyguardManager>() { on { isKeyguardSecure() } doReturn false }
 
-    private var context: Context = spy(ApplicationProvider.getApplicationContext()) {
-        doNothing().whenever(mock).startActivity(any())
-        on { getSystemService(Context.KEYGUARD_SERVICE) } doReturn mockKeyguardManager
-    }
+    private var context: Context =
+        spy(ApplicationProvider.getApplicationContext()) {
+            doNothing().whenever(mock).startActivity(any())
+            on { getSystemService(Context.KEYGUARD_SERVICE) } doReturn mockKeyguardManager
+        }
 
     private val preference = Preference(context).apply { key = PREF_KEY }
-    private val preferenceScreen = PreferenceManager(context).createPreferenceScreen(context)
-        .apply { addPreference(preference) }
+    private val preferenceScreen =
+        PreferenceManager(context).createPreferenceScreen(context).apply {
+            addPreference(preference)
+        }
     private var controller = DeleteSimProfilePreferenceController(context, PREF_KEY)
 
     @Before
@@ -112,6 +114,15 @@ class DeleteSimProfilePreferenceControllerTest {
         controller.handlePreferenceTreeClick(preference)
 
         verify(context, times(1)).startActivity(any())
+    }
+
+    @Test
+    fun updateState_isAirplaneModeOn_disabled() {
+        controller.notifyAirplaneModeChanged(true)
+
+        controller.updateState(preference)
+
+        assertThat(preference.isEnabled).isFalse()
     }
 
     private companion object {

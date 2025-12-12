@@ -153,7 +153,7 @@ public class AppLocaleSuggestedListPreferenceControllerTest {
     }
 
     @Test
-    public void displayPreference_hasSupportedPreference_categoryIsVisible() {
+    public void displayPreference_hasSuggestedPreference_categoryIsVisible() {
         mController.displayPreference(mPreferenceScreen);
         mSuggestedLocale = mAppLocaleCollector.getSupportedLocaleList(null, false, false);
         List<LocaleStore.LocaleInfo> localeList = new ArrayList<>();

@@ -32,8 +32,6 @@ import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.Settings;
 
@@ -43,10 +41,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
 
-import com.android.internal.R;
 import com.android.settings.development.DevelopmentSettingsDashboardFragment;
 import com.android.settings.development.RebootConfirmationDialogFragment;
-import com.android.window.flags.Flags;
+import com.android.wm.shell.shared.desktopmode.FakeDesktopState;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -84,10 +81,12 @@ public class DesktopModeSecondaryDisplayPreferenceControllerTest {
     private Context mContext;
     private Resources mResources;
     private DesktopModeSecondaryDisplayPreferenceController mController;
+    private FakeDesktopState mDesktopState;
 
     @Before
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
+        mDesktopState = new FakeDesktopState();
         FragmentActivity activity = spy(Robolectric.buildActivity(
                 FragmentActivity.class).create().get());
         mContext = spy(RuntimeEnvironment.application);
@@ -96,26 +95,23 @@ public class DesktopModeSecondaryDisplayPreferenceControllerTest {
         doReturn(mTransaction).when(mFragmentManager).beginTransaction();
         doReturn(mFragmentManager).when(activity).getSupportFragmentManager();
         doReturn(activity).when(mFragment).requireActivity();
-        mController = new DesktopModeSecondaryDisplayPreferenceController(mContext, mFragment);
+        mController = new DesktopModeSecondaryDisplayPreferenceController(mContext, mFragment,
+                mDesktopState);
         when(mScreen.findPreference(mController.getPreferenceKey())).thenReturn(mPreference);
         mController.displayPreference(mScreen);
-        when(mResources.getBoolean(R.bool.config_isDesktopModeSupported)).thenReturn(false);
-        when(mResources.getBoolean(
-                com.android.internal.R.bool.config_canInternalDisplayHostDesktops)).thenReturn(
-                false);
+        mDesktopState.setCanEnterDesktopMode(false);
     }
 
-    @DisableFlags(Flags.FLAG_SHOW_DESKTOP_EXPERIENCE_DEV_OPTION)
     @Test
     public void isAvailable_whenDesktopExperienceDevOptionIsDisabled_shouldBeTrue() {
+        mDesktopState.setCanShowDesktopExperienceDevOption(false);
         assertThat(mController.isAvailable()).isTrue();
     }
 
-    @EnableFlags(Flags.FLAG_SHOW_DESKTOP_EXPERIENCE_DEV_OPTION)
     @Test
     public void isAvailable_whenDesktopExperienceDevOptionIsEnabled_shouldBeFalse() {
-        when(mResources.getBoolean(R.bool.config_isDesktopModeSupported)).thenReturn(true);
-        when(mResources.getBoolean(R.bool.config_canInternalDisplayHostDesktops)).thenReturn(true);
+        mDesktopState.setCanShowDesktopExperienceDevOption(true);
+        mDesktopState.setCanEnterDesktopMode(true);
 
         assertThat(mController.isAvailable()).isFalse();
     }

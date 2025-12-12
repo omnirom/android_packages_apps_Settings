@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 
 public class SystemLocaleAllListPreferenceController extends
         LocalePickerBaseListPreferenceController {
+    private static final String TAG = "SystemLocaleAllListPreferenceController";
     private static final String KEY_PREFERENCE_CATEGORY_ADD_LANGUAGE_ALL_SUPPORTED =
             "system_language_all_supported_category";
     private static final String KEY_PREFERENCE_SYSTEM_LOCALE_LIST = "system_locale_list";
@@ -83,5 +84,10 @@ public class SystemLocaleAllListPreferenceController extends
     @Override
     protected @Nullable LocaleList getExplicitLocaleList() {
         return mExplicitLocales;
+    }
+
+    @Override
+    public @NonNull String getTag() {
+        return TAG;
     }
 }

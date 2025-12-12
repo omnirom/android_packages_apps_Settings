@@ -271,7 +271,7 @@ public class UiccSlotUtil {
             }
             telMgr.setSimSlotMapping(uiccSlotMappings);
             latch.await(waitingTimeMillis, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | IllegalStateException | IllegalArgumentException e) {
             Thread.currentThread().interrupt();
             Log.e(TAG, "Failed switching to physical slot.", e);
         } finally {

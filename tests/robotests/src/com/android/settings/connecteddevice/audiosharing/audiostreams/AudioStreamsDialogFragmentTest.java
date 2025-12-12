@@ -27,20 +27,21 @@ import android.os.Bundle;
 
 import androidx.test.core.app.ApplicationProvider;
 
+import com.android.settings.testutils.shadow.ShadowAlertDialogCompat;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowLooper;
 import org.robolectric.shadows.androidx.fragment.FragmentController;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(
         shadows = {
-            ShadowAlertDialog.class,
+            ShadowAlertDialogCompat.class,
         })
 public class AudioStreamsDialogFragmentTest {
     private final Context mContext = ApplicationProvider.getApplicationContext();
@@ -49,13 +50,15 @@ public class AudioStreamsDialogFragmentTest {
 
     @Before
     public void setUp() {
+        mContext.setTheme(androidx.appcompat.R.style.Theme_AppCompat);
         mDialogBuilder = spy(new AudioStreamsDialogFragment.DialogBuilder(mContext));
-        mFragment = new AudioStreamsDialogFragment(mDialogBuilder, SettingsEnums.PAGE_UNKNOWN);
+        mFragment = new AudioStreamsDialogFragment();
+        mFragment.init(mDialogBuilder, SettingsEnums.PAGE_UNKNOWN);
     }
 
     @After
     public void tearDown() {
-        ShadowAlertDialog.reset();
+        ShadowAlertDialogCompat.reset();
     }
 
     @Test
@@ -78,11 +81,29 @@ public class AudioStreamsDialogFragmentTest {
         AudioStreamsDialogFragment.show(mFragment, mDialogBuilder, SettingsEnums.PAGE_UNKNOWN);
         ShadowLooper.idleMainLooper();
 
-        var dialog = ShadowAlertDialog.getLatestAlertDialog();
+        var dialog = ShadowAlertDialogCompat.getLatestAlertDialog();
         assertThat(dialog).isNotNull();
         assertThat(dialog.isShowing()).isTrue();
 
         AudioStreamsDialogFragment.dismissAll(mFragment);
         assertThat(dialog.isShowing()).isFalse();
+    }
+
+    @Test
+    public void testShowDialog_hostIsNull_doNothing() {
+        AudioStreamsDialogFragment.show(null, mDialogBuilder, SettingsEnums.PAGE_UNKNOWN);
+        ShadowLooper.idleMainLooper();
+
+        var dialog = ShadowAlertDialogCompat.getLatestAlertDialog();
+        assertThat(dialog).isNull();
+    }
+
+    @Test
+    public void testShowDialog_hostNotAdded_doNothing() {
+        AudioStreamsDialogFragment.show(mFragment, mDialogBuilder, SettingsEnums.PAGE_UNKNOWN);
+        ShadowLooper.idleMainLooper();
+
+        var dialog = ShadowAlertDialogCompat.getLatestAlertDialog();
+        assertThat(dialog).isNull();
     }
 }

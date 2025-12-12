@@ -26,8 +26,6 @@ import static org.mockito.Mockito.spy;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.os.Flags;
-import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.Settings;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -41,7 +39,6 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 public class AutoLockPreferenceControllerTest {
-    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     private static final String KEY = "private_space_auto_lock";
     private Context mContext;
     private AutoLockPreferenceController mAutoLockPreferenceController;
@@ -68,28 +65,11 @@ public class AutoLockPreferenceControllerTest {
     }
 
     /**
-     * Tests that the controller is available when both allow private profile and auto lock support
-     * flags are enabled.
+     * Tests that the controller is available.
      */
     @Test
-    public void getAvailabilityStatus_withAutoLockFlagEnabled_returnsAvailable() {
-        mSetFlagsRule.enableFlags(
-                Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_SUPPORT_AUTOLOCK_FOR_PRIVATE_SPACE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-
+    public void getAvailabilityStatus_returnsAvailable() {
         assertThat(mAutoLockPreferenceController.getAvailabilityStatus()).isEqualTo(AVAILABLE);
-    }
-
-    /** Tests that the controller is not available when auto lock flag is off. */
-    @Test
-    public void getAvailabilityStatus_withAutoLockFlagDisabled_returnsNull() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-        mSetFlagsRule.disableFlags(android.multiuser.Flags.FLAG_SUPPORT_AUTOLOCK_FOR_PRIVATE_SPACE);
-
-        assertThat(mAutoLockPreferenceController.getAvailabilityStatus())
-                .isEqualTo(UNSUPPORTED_ON_DEVICE);
     }
 
     /**
@@ -98,11 +78,6 @@ public class AutoLockPreferenceControllerTest {
      */
     @Test
     public void getSummary_whenOptionEveryTimeDeviceLocks_returnsEveryTimeDeviceLocks() {
-        mSetFlagsRule.enableFlags(
-                Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_SUPPORT_AUTOLOCK_FOR_PRIVATE_SPACE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-
         Settings.Secure.putInt(
                 mContentResolver,
                 Settings.Secure.PRIVATE_SPACE_AUTO_LOCK,
@@ -117,11 +92,6 @@ public class AutoLockPreferenceControllerTest {
      */
     @Test
     public void getSummary_whenOptionAfter5MinutesOfInactivity_returnsAfter5MinutesOfInactivity() {
-        mSetFlagsRule.enableFlags(
-                Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_SUPPORT_AUTOLOCK_FOR_PRIVATE_SPACE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-
         Settings.Secure.putInt(
                 mContentResolver,
                 Settings.Secure.PRIVATE_SPACE_AUTO_LOCK,
@@ -136,11 +106,6 @@ public class AutoLockPreferenceControllerTest {
      */
     @Test
     public void getSummary_whenOptionAfterDeviceRestart_returnsOnlyAfterDeviceRestarts() {
-        mSetFlagsRule.enableFlags(
-                Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_SUPPORT_AUTOLOCK_FOR_PRIVATE_SPACE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-
         Settings.Secure.putInt(
                 mContentResolver,
                 Settings.Secure.PRIVATE_SPACE_AUTO_LOCK,

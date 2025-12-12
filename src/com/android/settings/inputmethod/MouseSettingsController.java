@@ -20,8 +20,6 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.android.settings.keyboard.Flags;
-
 public class MouseSettingsController extends InputDeviceSettingsController {
 
     public MouseSettingsController(@NonNull Context context, @NonNull String key) {
@@ -30,11 +28,10 @@ public class MouseSettingsController extends InputDeviceSettingsController {
 
     @Override
     public int getAvailabilityStatus() {
-        boolean isFeatureOn = Flags.keyboardAndTouchpadA11yNewPageEnabled();
         boolean isPointerCustomizationEnabled =
                 android.view.flags.Flags.enableVectorCursorA11ySettings();
         boolean isMouse = InputPeripheralsSettingsUtils.isMouse();
-        return (isFeatureOn && isPointerCustomizationEnabled && isMouse) ? AVAILABLE
+        return (isPointerCustomizationEnabled && isMouse) ? AVAILABLE
                 : CONDITIONALLY_UNAVAILABLE;
     }
 }

@@ -26,10 +26,12 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AuthenticatorDescription;
+import android.app.Application;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
@@ -43,6 +45,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.testutils.shadow.ShadowAccountManager;
 import com.android.settings.testutils.shadow.ShadowContentResolver;
@@ -85,7 +88,8 @@ public class AccountTypePreferenceLoaderTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        ShadowApplication shadowContext = ShadowApplication.getInstance();
+        ShadowApplication shadowContext =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         shadowContext.setSystemService(Context.ACCOUNT_SERVICE, mAccountManager);
         when(mAccountManager.getAuthenticatorTypesAsUser(anyInt())).thenReturn(
             new AuthenticatorDescription[0]);

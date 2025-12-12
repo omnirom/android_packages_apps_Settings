@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2025 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="412dp"
+    android:height="300dp"
+    android:autoMirrored="true"
+    android:viewportHeight="300"
+    android:viewportWidth="412">
+
+  <path
+      android:fillColor="@color/settingslib_materialColorSurfaceContainer"
+      android:pathData="M28,0L384,0A28,28 0,0 1,412 28L412,272A28,28 0,0 1,384 300L28,300A28,28 0,0 1,0 272L0,28A28,28 0,0 1,28 0z" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorSurfaceContainerLowest"
+      android:pathData="M357.72,45H54.21C46.36,45 40,51.36 40,59.21V240.26C40,248.11 46.36,254.47 54.21,254.47H357.72C365.57,254.47 371.93,248.11 371.93,240.26V59.21C371.93,51.36 365.57,45 357.72,45Z" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorOutline"
+      android:pathData="M36,240.26V59.21C36,49.15 44.15,41 54.21,41V45C46.36,45 40,51.36 40,59.21V240.26C40,248.11 46.36,254.47 54.21,254.47H357.72C365.57,254.47 371.93,248.11 371.93,240.26V59.21C371.93,51.36 365.57,45 357.72,45V41C367.78,41 375.93,49.15 375.93,59.21V240.26C375.93,250.32 367.78,258.47 357.72,258.47H54.21C44.15,258.47 36,250.32 36,240.26ZM357.72,41V45H54.21V41H357.72Z" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorOnSurface"
+      android:pathData="M51.01,75.74V61.76C51.01,59.13 53.14,57 55.77,57H69.75C71.6,57 72.52,59.22 71.22,60.52L54.53,77.21C53.23,78.51 51.01,77.59 51.01,75.74Z" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorOnSurface"
+      android:pathData="M360.81,75.74V61.76C360.81,59.13 358.68,57 356.05,57H342.07C340.23,57 339.31,59.22 340.61,60.52L357.29,77.21C358.59,78.51 360.81,77.59 360.81,75.74Z" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorOnSurface"
+      android:pathData="M51.01,223.84V237.82C51.01,240.45 53.14,242.58 55.77,242.58H69.75C71.6,242.58 72.52,240.36 71.22,239.06L54.53,222.38C53.23,221.07 51.01,221.99 51.01,223.84Z" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorOnSurface"
+      android:pathData="M360.81,223.84V237.82C360.81,240.45 358.68,242.58 356.05,242.58H342.07C340.23,242.58 339.31,240.36 340.61,239.06L357.29,222.38C358.59,221.07 360.81,221.99 360.81,223.84Z" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorSecondaryContainer"
+      android:pathData="M189.71,229.53m-6.53,0a6.53,6.53 0,1 1,13.05 0a6.53,6.53 0,1 1,-13.05 0" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorSecondaryContainer"
+      android:pathData="M212.53,229.53m-6.53,0a6.53,6.53 0,1 1,13.05 0a6.53,6.53 0,1 1,-13.05 0" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorSecondaryContainer"
+      android:pathData="M235.53,229.53m-6.53,0a6.53,6.53 0,1 1,13.05 0a6.53,6.53 0,1 1,-13.05 0" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorSecondaryContainer"
+      android:pathData="M281.53,229.53m-6.53,0a6.53,6.53 0,1 1,13.05 0a6.53,6.53 0,1 1,-13.05 0" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorSecondaryContainer"
+      android:pathData="M258.53,229.53m-6.53,0a6.53,6.53 0,1 1,13.05 0a6.53,6.53 0,1 1,-13.05 0" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorSecondaryContainer"
+      android:pathData="M304.53,229.53m-6.53,0a6.53,6.53 0,1 1,13.05 0a6.53,6.53 0,1 1,-13.05 0" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorSecondaryContainer"
+      android:pathData="M97.56,223L167.44,223A6.53,6.53 0,0 1,173.96 229.53L173.96,229.53A6.53,6.53 0,0 1,167.44 236.05L97.56,236.05A6.53,6.53 0,0 1,91.04 229.53L91.04,229.53A6.53,6.53 0,0 1,97.56 223z" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorSecondaryContainer"
+      android:pathData="M93.5,74L171.5,74A2.5,2.5 0,0 1,174 76.5L174,76.5A2.5,2.5 0,0 1,171.5 79L93.5,79A2.5,2.5 0,0 1,91 76.5L91,76.5A2.5,2.5 0,0 1,93.5 74z" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorSecondaryContainer"
+      android:pathData="M93.5,82L149.5,82A2.5,2.5 0,0 1,152 84.5L152,84.5A2.5,2.5 0,0 1,149.5 87L93.5,87A2.5,2.5 0,0 1,91 84.5L91,84.5A2.5,2.5 0,0 1,93.5 82z" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorSecondaryContainer"
+      android:pathData="M109.15,138.57C120.57,127.14 139.09,127.14 150.51,138.57C161.94,149.99 161.94,168.51 150.51,179.93L140.97,189.48C129.54,200.9 111.03,200.9 99.6,189.48C88.18,178.06 88.18,159.54 99.6,148.11L109.15,138.57Z" />
+
+  <path
+      android:fillColor="@color/settingslib_materialColorSecondaryContainer"
+      android:pathData="M280.71,147.74C282.27,148.47 284.08,148.47 285.64,147.74L291.23,145.12C291.85,144.84 292.51,144.66 293.2,144.6L299.34,144.07C301.06,143.92 302.62,143.02 303.61,141.6L307.14,136.54C307.53,135.99 308.02,135.5 308.58,135.11L313.64,131.57C315.05,130.59 315.95,129.02 316.1,127.31L316.63,121.16C316.69,120.48 316.87,119.81 317.16,119.19L319.77,113.61C320.5,112.05 320.5,110.24 319.77,108.68L317.16,103.09C316.87,102.47 316.69,101.81 316.63,101.13L316.1,94.98C315.95,93.26 315.05,91.7 313.64,90.71L308.58,87.18C308.02,86.79 307.53,86.3 307.14,85.74L303.61,80.68C302.62,79.27 301.06,78.37 299.34,78.22L293.2,77.69C292.51,77.63 291.85,77.45 291.23,77.16L285.64,74.55C284.08,73.82 282.27,73.82 280.71,74.55L275.13,77.16C274.51,77.45 273.84,77.63 273.16,77.69L267.02,78.22C265.3,78.37 263.73,79.27 262.74,80.68L259.21,85.74C258.82,86.3 258.33,86.79 257.77,87.18L252.72,90.71C251.3,91.7 250.4,93.26 250.25,94.98L249.72,101.13C249.66,101.81 249.49,102.47 249.2,103.09L246.58,108.68C245.85,110.24 245.85,112.05 246.58,113.61L249.2,119.19C249.49,119.81 249.66,120.48 249.72,121.16L250.25,127.31C250.4,129.02 251.3,130.59 252.72,131.57L257.77,135.11C258.33,135.5 258.82,135.99 259.21,136.54L262.74,141.6C263.73,143.02 265.3,143.92 267.02,144.07L273.16,144.6C273.84,144.66 274.51,144.84 275.13,145.12L280.71,147.74Z" />
+
+</vector>

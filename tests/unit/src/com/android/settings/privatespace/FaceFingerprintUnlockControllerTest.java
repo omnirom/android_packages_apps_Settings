@@ -81,9 +81,6 @@ public class FaceFingerprintUnlockControllerTest {
     @After
     public void tearDown() {
         // Ensure PSMaintainer is able to remove PS.
-        mSetFlagsRule.enableFlags(
-                android.os.Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
         assertThat(mPrivateSpaceMaintainer.deletePrivateSpace())
                 .isEqualTo(PrivateSpaceMaintainer.ErrorDeletingPrivateSpace.DELETE_PS_ERROR_NONE);
     }
@@ -92,9 +89,7 @@ public class FaceFingerprintUnlockControllerTest {
     @Test
     public void getAvailabilityStatus_whenFlagsEnabled_returnsAvailable() {
         mSetFlagsRule.enableFlags(
-                android.os.Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_ENABLE_BIOMETRICS_TO_UNLOCK_PRIVATE_SPACE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
+                android.multiuser.Flags.FLAG_ENABLE_BIOMETRICS_TO_UNLOCK_PRIVATE_SPACE);
 
         assertThat(mFaceFingerprintUnlockController.isAvailable()).isEqualTo(true);
     }
@@ -102,33 +97,7 @@ public class FaceFingerprintUnlockControllerTest {
     /** Tests that the controller is not available when Biometrics flag is not enabled. */
     @Test
     public void getAvailabilityStatus_whenBiometricFlagDisabled_returnsFalse() {
-        mSetFlagsRule.enableFlags(android.os.Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
         mSetFlagsRule.disableFlags(
-                android.multiuser.Flags.FLAG_ENABLE_BIOMETRICS_TO_UNLOCK_PRIVATE_SPACE);
-
-        assertThat(mFaceFingerprintUnlockController.isAvailable()).isEqualTo(false);
-    }
-
-    /**
-     * Tests that the controller is not available when the main private space flag is not
-     * enabled.
-     */
-    @Test
-    public void getAvailabilityStatus_whenPsMainFlagDisabled_returnsFalse() {
-        mSetFlagsRule.disableFlags(android.os.Flags.FLAG_ALLOW_PRIVATE_PROFILE);
-        mSetFlagsRule.enableFlags(
-                android.multiuser.Flags.FLAG_ENABLE_BIOMETRICS_TO_UNLOCK_PRIVATE_SPACE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-
-        assertThat(mFaceFingerprintUnlockController.isAvailable()).isEqualTo(false);
-    }
-
-    /** Tests that the controller is not available when private features flag is not enabled. */
-    @Test
-    public void getAvailabilityStatus_whenPsFeaturesFlagDisabled_returnsFalse() {
-        mSetFlagsRule.disableFlags(android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
-        mSetFlagsRule.enableFlags(android.os.Flags.FLAG_ALLOW_PRIVATE_PROFILE,
                 android.multiuser.Flags.FLAG_ENABLE_BIOMETRICS_TO_UNLOCK_PRIVATE_SPACE);
 
         assertThat(mFaceFingerprintUnlockController.isAvailable()).isEqualTo(false);
@@ -139,9 +108,7 @@ public class FaceFingerprintUnlockControllerTest {
     public void getSummary_whenScreenLock() {
         doReturn(false).when(mLockPatternUtils).isSeparateProfileChallengeEnabled(anyInt());
         mSetFlagsRule.enableFlags(
-                android.os.Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_ENABLE_BIOMETRICS_TO_UNLOCK_PRIVATE_SPACE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
+                android.multiuser.Flags.FLAG_ENABLE_BIOMETRICS_TO_UNLOCK_PRIVATE_SPACE);
 
         mFaceFingerprintUnlockController.updateState(mPreference);
         assertThat(mPreference.isEnabled()).isFalse();
@@ -153,9 +120,7 @@ public class FaceFingerprintUnlockControllerTest {
     public void getSummary_whenSeparateProfileLock() {
         doReturn(true).when(mLockPatternUtils).isSeparateProfileChallengeEnabled(anyInt());
         mSetFlagsRule.enableFlags(
-                android.os.Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_ENABLE_BIOMETRICS_TO_UNLOCK_PRIVATE_SPACE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
+                android.multiuser.Flags.FLAG_ENABLE_BIOMETRICS_TO_UNLOCK_PRIVATE_SPACE);
 
         mFaceFingerprintUnlockController.updateState(mPreference);
         assertThat(mPreference.isEnabled()).isTrue();

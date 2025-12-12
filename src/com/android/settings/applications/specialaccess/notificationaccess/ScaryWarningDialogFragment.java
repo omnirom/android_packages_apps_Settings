@@ -16,7 +16,6 @@
 package com.android.settings.applications.specialaccess.notificationaccess;
 
 import android.app.Dialog;
-import android.app.Flags;
 import android.app.settings.SettingsEnums;
 import android.content.ComponentName;
 import android.content.Context;
@@ -98,9 +97,7 @@ public class ScaryWarningDialogFragment extends InstrumentedDialogFragment {
         ((TextView) content.findViewById(R.id.prompt)).setText(prompt);
 
         ((TextView) content.findViewById(R.id.settings_description)).setText(
-                Flags.modesUi()
-                        ? R.string.nls_feature_modes_settings_summary
-                        : R.string.nls_feature_settings_summary);
+                R.string.nls_feature_modes_settings_summary);
 
         Button allowButton = content.findViewById(R.id.allow_button);
         allowButton.setOnClickListener((view) -> {

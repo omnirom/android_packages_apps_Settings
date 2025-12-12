@@ -27,6 +27,7 @@ import com.android.settings.core.BasePreferenceController;
 /**
  * Summary of the feature setting for bubbles, available through notification menu.
  */
+// LINT.IfChange
 public class BubbleSummaryNotificationPreferenceController extends BasePreferenceController {
 
     public BubbleSummaryNotificationPreferenceController(Context context, String preferenceKey) {
@@ -51,3 +52,4 @@ public class BubbleSummaryNotificationPreferenceController extends BasePreferenc
                 NOTIFICATION_BUBBLES, BubbleHelper.SYSTEM_WIDE_ON) == BubbleHelper.SYSTEM_WIDE_ON;
     }
 }
+// LINT.ThenChange(BubbleNotificationScreen.kt)

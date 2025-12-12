@@ -19,13 +19,12 @@ package com.android.settings.accessibility;
 import android.app.settings.SettingsEnums;
 
 import com.android.settings.R;
-import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.SearchIndexable;
 
 /** Accessibility settings for audio adjustment. */
 @SearchIndexable(forTarget = SearchIndexable.ALL & ~SearchIndexable.ARC)
-public class AudioAdjustmentFragment extends DashboardFragment {
+public class AudioAdjustmentFragment extends BaseSupportFragment {
 
     private static final String TAG = "AudioAdjustmentFragment";
 

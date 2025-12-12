@@ -21,8 +21,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import android.annotation.NonNull;
 import android.content.Context;
 import android.provider.Settings;
+import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 
@@ -30,14 +32,17 @@ import com.android.settings.R;
 import com.android.settings.notification.EnableDndDialogFragment;
 import com.android.settingslib.notification.modes.ZenMode;
 import com.android.settingslib.notification.modes.ZenModesBackend;
+import com.android.settingslib.widget.ButtonPreference;
 import com.android.settingslib.widget.LayoutPreference;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 import java.time.Duration;
 
 class ZenModeButtonPreferenceController extends AbstractZenModePreferenceController {
     private static final String TAG = "ZenModeButtonPrefController";
 
-    private Button mZenButton;
+    static final String KEY = "activate";
+
     private final Fragment mParent;
     private final ManualDurationHelper mDurationHelper;
 
@@ -56,37 +61,47 @@ class ZenModeButtonPreferenceController extends AbstractZenModePreferenceControl
 
     @Override
     public void updateState(Preference preference, @NonNull ZenMode zenMode) {
-        if (mZenButton == null) {
-            mZenButton = ((LayoutPreference) preference).findViewById(R.id.activate_mode);
-        }
-        mZenButton.setOnClickListener(v -> {
-            checkNotNull(mBackend, "Backend not available!");
-            if (zenMode.isActive()) {
-                mBackend.deactivateMode(zenMode);
-            } else {
-                if (zenMode.isManualDnd()) {
-                    // if manual DND, potentially ask for or use desired duration
-                    int zenDuration = mDurationHelper.getZenDuration();
-                    switch (zenDuration) {
-                        case Settings.Secure.ZEN_DURATION_PROMPT:
-                            new EnableDndDialogFragment().show(
-                                    mParent.getParentFragmentManager(), TAG);
-                            break;
-                        case Settings.Secure.ZEN_DURATION_FOREVER:
+        updateButtonState(
+                preference,
+                zenMode.isActive()
+                        ? R.string.zen_mode_action_deactivate
+                        : R.string.zen_mode_action_activate,
+                _unused -> {
+                    checkNotNull(mBackend, "Backend not available!");
+                    if (zenMode.isActive()) {
+                        mBackend.deactivateMode(zenMode);
+                    } else {
+                        if (zenMode.isManualDnd()) {
+                            // if manual DND, potentially ask for or use desired duration
+                            int zenDuration = mDurationHelper.getZenDuration();
+                            switch (zenDuration) {
+                                case Settings.Secure.ZEN_DURATION_PROMPT:
+                                    new EnableDndDialogFragment().show(
+                                            mParent.getParentFragmentManager(), TAG);
+                                    break;
+                                case Settings.Secure.ZEN_DURATION_FOREVER:
+                                    mBackend.activateMode(zenMode, null);
+                                    break;
+                                default:
+                                    mBackend.activateMode(zenMode, Duration.ofMinutes(zenDuration));
+                            }
+                        } else {
                             mBackend.activateMode(zenMode, null);
-                            break;
-                        default:
-                            mBackend.activateMode(zenMode, Duration.ofMinutes(zenDuration));
+                        }
                     }
-                } else {
-                    mBackend.activateMode(zenMode, null);
-                }
-            }
-        });
-        if (zenMode.isActive()) {
-            mZenButton.setText(R.string.zen_mode_action_deactivate);
+                });
+    }
+
+    private void updateButtonState(Preference preference, @StringRes int text,
+            View.OnClickListener clickListener) {
+        if (SettingsThemeHelper.isExpressiveTheme(mContext)) {
+            ButtonPreference buttonPreference = (ButtonPreference) preference;
+            buttonPreference.setTitle(text);
+            buttonPreference.setOnClickListener(clickListener);
         } else {
-            mZenButton.setText(R.string.zen_mode_action_activate);
+            Button button = ((LayoutPreference) preference).findViewById(R.id.activate_mode);
+            button.setText(text);
+            button.setOnClickListener(clickListener);
         }
     }
 }

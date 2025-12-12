@@ -157,7 +157,7 @@ public class UsbBackendTest {
     }
 
     @Test
-    public void areFunctionsSupported_fileTransferDisallowed_shouldReturnFalse() {
+    public void areFunctionsSupported_fileTransferDisallowedByBaseRestriction_shouldReturnFalse() {
         when(mUserManager.hasUserRestriction(UserManager.DISALLOW_USB_FILE_TRANSFER))
                 .thenReturn(true);
         when(mUserManager.hasBaseUserRestriction(
@@ -167,6 +167,19 @@ public class UsbBackendTest {
         final UsbBackend usbBackend = new UsbBackend(mContext, mUserManager);
 
         assertThat(usbBackend.areFunctionsSupported(UsbManager.FUNCTION_MTP)).isFalse();
+    }
+
+    @Test
+    public void areFunctionsSupported_fileTransferDisallowedByAdminRestriction_shouldReturnTrue() {
+        when(mUserManager.hasUserRestriction(UserManager.DISALLOW_USB_FILE_TRANSFER))
+                .thenReturn(true);
+        when(mUserManager.hasBaseUserRestriction(
+                eq(UserManager.DISALLOW_USB_FILE_TRANSFER), any(UserHandle.class)))
+                .thenReturn(false);
+
+        final UsbBackend usbBackend = new UsbBackend(mContext, mUserManager);
+
+        assertThat(usbBackend.areFunctionsSupported(UsbManager.FUNCTION_MTP)).isTrue();
     }
 
     @Test
@@ -200,5 +213,36 @@ public class UsbBackendTest {
 
         assertThat(usbBackend.areFunctionsDisallowedByNonAdminUser(
                 UsbManager.FUNCTION_RNDIS)).isTrue();
+    }
+
+    @Test
+    public void maybeGetUserRestriction_functionMtp_returnsFileTransferRestriction() {
+        final UsbBackend usbBackend = new UsbBackend(mContext, mUserManager);
+
+        assertThat(usbBackend.maybeGetUserRestriction(UsbManager.FUNCTION_MTP)).isEqualTo(
+                UserManager.DISALLOW_USB_FILE_TRANSFER);
+    }
+
+    @Test
+    public void maybeGetUserRestriction_functionPtp_returnsFileTransferRestriction() {
+        final UsbBackend usbBackend = new UsbBackend(mContext, mUserManager);
+
+        assertThat(usbBackend.maybeGetUserRestriction(UsbManager.FUNCTION_PTP)).isEqualTo(
+                UserManager.DISALLOW_USB_FILE_TRANSFER);
+    }
+
+    @Test
+    public void maybeGetUserRestriction_functionRndis_returnsTetheringRestriction() {
+        final UsbBackend usbBackend = new UsbBackend(mContext, mUserManager);
+
+        assertThat(usbBackend.maybeGetUserRestriction(UsbManager.FUNCTION_RNDIS)).isEqualTo(
+                UserManager.DISALLOW_CONFIG_TETHERING);
+    }
+
+    @Test
+    public void maybeGetUserRestriction_functionUvc_returnsNull() {
+        final UsbBackend usbBackend = new UsbBackend(mContext, mUserManager);
+
+        assertThat(usbBackend.maybeGetUserRestriction(UsbManager.FUNCTION_UVC)).isNull();
     }
 }

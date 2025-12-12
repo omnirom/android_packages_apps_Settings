@@ -15,8 +15,12 @@
  */
 package com.android.settings.notification.app;
 
+import android.Manifest;
 import android.app.Flags;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.preference.Preference;
@@ -24,9 +28,11 @@ import androidx.preference.Preference;
 import com.android.settings.notification.NotificationBackend;
 import com.android.settingslib.RestrictedSwitchPreference;
 
+
 public class PromotedNotificationsPreferenceController extends
         NotificationPreferenceController implements Preference.OnPreferenceChangeListener {
     protected static final String KEY_PROMOTED_SWITCH = "promoted_switch";
+    private static final String TAG = "PromotedNotiPrefCon";
 
     public PromotedNotificationsPreferenceController(@NonNull Context context,
             @NonNull NotificationBackend backend) {
@@ -44,8 +50,29 @@ public class PromotedNotificationsPreferenceController extends
         if (!Flags.uiRichOngoing()) {
             return false;
         }
-        return super.isAvailable();
+        return super.isAvailable() && isPermissionRequested();
     }
+
+    private boolean isPermissionRequested() {
+        try {
+            PackageInfo packageInfo = mPm.getPackageInfo(
+                    mAppRow.pkg, PackageManager.GET_PERMISSIONS);
+
+            if (packageInfo.requestedPermissions != null) {
+                for (String requestedPermission : packageInfo.requestedPermissions) {
+                    if (Manifest.permission.POST_PROMOTED_NOTIFICATIONS.equals(
+                            requestedPermission)) {
+                        return true;
+                    }
+                }
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, "isPermissionRequested failed", e);
+        }
+
+        return false;
+    }
+
 
     @Override
     boolean isIncludedInFilter() {

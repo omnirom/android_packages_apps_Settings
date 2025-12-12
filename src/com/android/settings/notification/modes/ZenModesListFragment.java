@@ -21,6 +21,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.Lifecycle;
@@ -35,12 +36,14 @@ import com.android.settingslib.notification.modes.ZenIconLoader;
 import com.android.settingslib.notification.modes.ZenMode;
 import com.android.settingslib.notification.modes.ZenModesBackend;
 import com.android.settingslib.search.SearchIndexable;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 import java.util.Optional;
 
+// LINT.IfChange
 @SearchIndexable
 public class ZenModesListFragment extends ZenModesFragmentBase {
 
@@ -74,7 +77,9 @@ public class ZenModesListFragment extends ZenModesFragmentBase {
 
     @Override
     protected int getPreferenceScreenResId() {
-        return R.xml.modes_list_settings;
+        return SettingsThemeHelper.isExpressiveTheme(requireContext())
+                ? R.xml.modes_list_settings_expressive
+                : R.xml.modes_list_settings;
     }
 
     @Override
@@ -82,7 +87,12 @@ public class ZenModesListFragment extends ZenModesFragmentBase {
         return SettingsEnums.ZEN_PRIORITY_MODES_LIST;
     }
 
-    private void onAvailableModeTypesForAdd(List<ModeType> types) {
+    @VisibleForTesting
+    void onAvailableModeTypesForAdd(List<ModeType> types) {
+        if (!isAdded() || isDetached() || getParentFragmentManager().isStateSaved()) {
+            return; // Probably exited the screen before we completed loading the available types.
+        }
+
         if (types.size() > 1) {
             // Show dialog to choose the mode to be created. Continue once the user chooses.
             ZenModesListAddModeTypeChooserDialog.show(this, this::onChosenModeTypeForAdd, types);
@@ -133,6 +143,11 @@ public class ZenModesListFragment extends ZenModesFragmentBase {
                                 mode.getId(), getMetricsCategory()).launch());
     }
 
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return ZenModesListScreen.KEY;
+    }
+
     /**
      * For Search.
      */
@@ -155,3 +170,4 @@ public class ZenModesListFragment extends ZenModesFragmentBase {
                 }
             };
 }
+// LINT.ThenChange(ZenModesListScreen.kt)

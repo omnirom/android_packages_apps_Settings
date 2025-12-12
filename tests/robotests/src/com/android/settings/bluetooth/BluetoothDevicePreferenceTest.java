@@ -15,6 +15,8 @@
  */
 package com.android.settings.bluetooth;
 
+import static com.android.settingslib.flags.Flags.FLAG_ENABLE_BLUETOOTH_DIAGNOSIS;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -26,6 +28,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import android.app.settings.SettingsEnums;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothLeBroadcastReceiveState;
@@ -33,10 +36,11 @@ import android.bluetooth.BluetoothStatusCodes;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.os.UserManager;
-import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
+import android.provider.Settings;
 import android.util.Pair;
 
 import androidx.appcompat.app.AlertDialog;
@@ -91,6 +95,7 @@ public class BluetoothDevicePreferenceTest {
     private static final Comparator<BluetoothDevicePreference> COMPARATOR =
             Comparator.naturalOrder();
     private static final String FAKE_DESCRIPTION = "fake_description";
+    private static final String BLUETOOTH_DIAGNOSIS_KEY = "cs_bt_diagnostics_enabled";
     private static final int TEST_DEVICE_GROUP_ID = 1;
 
     @Rule
@@ -176,43 +181,7 @@ public class BluetoothDevicePreferenceTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI)
-    public void onClicked_deviceNotBonded_shouldLogBluetoothPairEvent() {
-        when(mCachedBluetoothDevice.isConnected()).thenReturn(false);
-        when(mCachedBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_NONE);
-        when(mCachedBluetoothDevice.startPairing()).thenReturn(true);
-        when(mCachedBluetoothDevice.hasHumanReadableName()).thenReturn(true);
-
-        mPreference.onClicked();
-        Shadows.shadowOf(Looper.getMainLooper()).idle();
-
-        verify(mMetricsFeatureProvider)
-                .action(mContext, MetricsEvent.ACTION_SETTINGS_BLUETOOTH_PAIR);
-        verify(mMetricsFeatureProvider, never())
-                .action(mContext,
-                        MetricsEvent.ACTION_SETTINGS_BLUETOOTH_PAIR_DEVICES_WITHOUT_NAMES);
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI)
-    public void onClicked_deviceNotBonded_shouldLogBluetoothPairEventAndPairWithoutNameEvent() {
-        when(mCachedBluetoothDevice.isConnected()).thenReturn(false);
-        when(mCachedBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_NONE);
-        when(mCachedBluetoothDevice.startPairing()).thenReturn(true);
-        when(mCachedBluetoothDevice.hasHumanReadableName()).thenReturn(false);
-
-        mPreference.onClicked();
-        Shadows.shadowOf(Looper.getMainLooper()).idle();
-
-        verify(mMetricsFeatureProvider)
-                .action(mContext, MetricsEvent.ACTION_SETTINGS_BLUETOOTH_PAIR);
-        verify(mMetricsFeatureProvider)
-                .action(mContext,
-                        MetricsEvent.ACTION_SETTINGS_BLUETOOTH_PAIR_DEVICES_WITHOUT_NAMES);
-    }
-
-    @Test
-    @EnableFlags({Flags.FLAG_ENABLE_LE_AUDIO_SHARING, Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI})
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onClicked_deviceNotBonded_blockPairing() {
         mShadowBluetoothAdapter = Shadow.extract(BluetoothAdapter.getDefaultAdapter());
         mShadowBluetoothAdapter.setEnabled(true);
@@ -261,6 +230,11 @@ public class BluetoothDevicePreferenceTest {
         verify(mMetricsFeatureProvider, never())
                 .action(mContext, MetricsEvent.ACTION_SETTINGS_BLUETOOTH_PAIR);
         verify(mCachedBluetoothDevice, never()).startPairing();
+        verify(mMetricsFeatureProvider)
+                .action(mContext, SettingsEnums.ACTION_SETTINGS_BLUETOOTH_PAIR_IN_AUDIO_SHARING);
+        verify(mMetricsFeatureProvider)
+                .action(mContext,
+                        SettingsEnums.ACTION_SETTINGS_BLUETOOTH_PAIR_BLOCKED_IN_AUDIO_SHARING);
     }
 
     @Test
@@ -477,6 +451,36 @@ public class BluetoothDevicePreferenceTest {
         verify(mCachedDevice1, times(2)).registerCallback(eq(mContext.getMainExecutor()), any());
         verify(mCachedDevice2, times(2)).registerCallback(eq(mContext.getMainExecutor()), any());
         verify(mCachedDevice3, times(1)).registerCallback(eq(mContext.getMainExecutor()), any());
+    }
+
+    @Test
+    @EnableFlags(FLAG_ENABLE_BLUETOOTH_DIAGNOSIS)
+    public void onPreferenceAttributesChanged_pairingFailure_summaryCanNotPair() {
+        Settings.Secure.putInt(mContext.getContentResolver(), BLUETOOTH_DIAGNOSIS_KEY, 1);
+        when(mCachedBluetoothDevice.getBondFailureTimeMillis()).thenReturn(10000L);
+        SystemClock.setCurrentTimeMillis(20000L);
+
+        mPreference.onPreferenceAttributesChanged();
+
+        assertThat(mPreference.getSummary().toString())
+                .isEqualTo(
+                        mContext.getString(
+                                com.android.settingslib.R.string.bluetooth_pairing_failure));
+    }
+
+    @Test
+    @EnableFlags(FLAG_ENABLE_BLUETOOTH_DIAGNOSIS)
+    public void onPreferenceAttributesChanged_connectionFailure_summaryCanNotConnect() {
+        Settings.Secure.putInt(mContext.getContentResolver(), BLUETOOTH_DIAGNOSIS_KEY, 1);
+        when(mCachedBluetoothDevice.getConnectionFailureTimeMillis()).thenReturn(10000L);
+        SystemClock.setCurrentTimeMillis(20000L);
+
+        mPreference.onPreferenceAttributesChanged();
+
+        assertThat(mPreference.getSummary().toString())
+                .isEqualTo(
+                        mContext.getString(
+                                com.android.settingslib.R.string.bluetooth_connection_failure));
     }
 
     private void prepareCachedBluetoothDevice(CachedBluetoothDevice cachedDevice, String address,

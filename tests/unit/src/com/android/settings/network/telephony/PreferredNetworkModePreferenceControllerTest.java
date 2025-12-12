@@ -35,7 +35,6 @@ import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.os.PersistableBundle;
-import android.platform.test.annotations.EnableFlags;
 import android.telephony.RadioAccessFamily;
 import android.telephony.ServiceState;
 import android.telephony.SubscriptionManager;
@@ -46,7 +45,6 @@ import androidx.test.annotation.UiThreadTest;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.settings.flags.Flags;
 import com.android.settings.network.CarrierConfigCache;
 import com.android.settings.testutils.ResourcesUtils;
 
@@ -114,7 +112,6 @@ public class PreferredNetworkModePreferenceControllerTest {
 
     @Test
     @UiThreadTest
-    @EnableFlags(Flags.FLAG_SATELLITE_OEM_SETTINGS_UX_MIGRATION)
     public void updateState_satelliteIsStartedAndSelectedSubForSatellite_disablePreference() {
         mController.mSatelliteModemStateCallback
                 .onSatelliteModemStateChanged(SATELLITE_MODEM_STATE_CONNECTED);
@@ -128,7 +125,6 @@ public class PreferredNetworkModePreferenceControllerTest {
 
     @Test
     @UiThreadTest
-    @EnableFlags(Flags.FLAG_SATELLITE_OEM_SETTINGS_UX_MIGRATION)
     public void updateState_satelliteIsIdle_enablePreference() {
         mController.mSatelliteModemStateCallback
                 .onSatelliteModemStateChanged(SATELLITE_MODEM_STATE_OFF);
@@ -142,7 +138,6 @@ public class PreferredNetworkModePreferenceControllerTest {
 
     @Test
     @UiThreadTest
-    @EnableFlags(Flags.FLAG_SATELLITE_OEM_SETTINGS_UX_MIGRATION)
     public void updateState_notSelectedSubForSatellite_enablePreference() {
         mController.mSatelliteModemStateCallback
                 .onSatelliteModemStateChanged(SATELLITE_MODEM_STATE_CONNECTED);
@@ -152,6 +147,20 @@ public class PreferredNetworkModePreferenceControllerTest {
         mController.updateState(mPreference);
 
         assertTrue(mPreference.isEnabled());
+    }
+
+    @Test
+    @UiThreadTest
+    public void updateState_isAirplaneModeOn_setEnableFalse() {
+        mController.mSatelliteModemStateCallback
+                .onSatelliteModemStateChanged(SATELLITE_MODEM_STATE_CONNECTED);
+        mController.mSelectedNbIotSatelliteSubscriptionCallback
+                .onSelectedNbIotSatelliteSubscriptionChanged(0);
+
+        mController.notifyAirplaneModeChanged(true);
+        mController.updateState(mPreference);
+
+        assertFalse(mPreference.isEnabled());
     }
 
     @Test

@@ -57,6 +57,8 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textStyle="bold"
                     android:singleLine="true"
+                    android:gravity="start"
+                    android:textAlignment="viewStart"
                     android:ellipsize="marquee" />
             </LinearLayout>
 
@@ -68,14 +70,14 @@
                 android:orientation="vertical">
 
                 <TextView android:id="@+id/profile_owner_warning"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="0dp"
                     android:visibility="gone"
                     android:text="@string/adding_profile_owner_warning" />
 
                 <TextView android:id="@+id/admin_description"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="0dip"
                     android:layout_weight="0"
                     android:padding="0dip" />
@@ -96,14 +98,14 @@
 
                     <TextView
                         android:id="@+id/add_msg"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:padding="10dip" />
                 </LinearLayout>
 
                 <TextView android:id="@+id/admin_warning"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_weight="1"
@@ -126,25 +128,24 @@
             </LinearLayout>
 
             <LinearLayout android:id="@+id/buttonPanel"
-                style="?android:attr/buttonBarStyle"
+                style="@style/Widget.SettingsLib.ButtonBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:divider="?android:attr/dividerHorizontal"
-                android:showDividers="beginning|middle|end">
+                android:paddingHorizontal="@dimen/settingslib_expressive_space_small1"
+                android:orientation="vertical">
                 <LinearLayout
                     android:id="@+id/restricted_action"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
-                    <Button android:id="@+id/action_button"
+                    <Button android:id="@+id/admin_action_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:gravity="start|center_vertical"
+                        android:gravity="center"
                         android:maxLines="2"
-                        style="?android:attr/buttonBarButtonStyle"
+                        style="@style/Widget.SettingsLib.DialogButton.Filled"
                         android:clickable="false"
                         android:focusable="false"
                         android:textAllCaps="false"
@@ -154,19 +155,19 @@
                 <Button android:id="@+id/cancel_button"
                     android:layout_width="match_parent"
                     android:layout_gravity="end"
-                    android:gravity="start|center_vertical"
+                    android:gravity="center"
                     android:maxLines="2"
                     android:text="@string/cancel"
-                    style="?android:attr/buttonBarButtonStyle"
+                    style="@style/Widget.SettingsLib.DialogButton.Outline"
                     android:textAllCaps="false"
                     android:layout_height="wrap_content" />
                 <Button android:id="@+id/uninstall_button"
                     android:layout_width="match_parent"
                     android:layout_gravity="end"
-                    android:gravity="start|center_vertical"
+                    android:gravity="center"
                     android:maxLines="2"
                     android:text="@string/uninstall_device_admin"
-                    style="?android:attr/buttonBarButtonStyle"
+                    style="@style/Widget.SettingsLib.DialogButton.Outline"
                     android:textAllCaps="false"
                     android:layout_height="wrap_content"
                     android:visibility="gone" />

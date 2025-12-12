@@ -123,7 +123,7 @@ public class AccessibilityButtonPreviewPreferenceController extends BasePreferen
                             : R.drawable.accessibility_shortcut_type_gesture));
         } else {
             mIllustrationPreference.setImageDrawable(
-                    mContext.getDrawable(R.drawable.accessibility_shortcut_type_navbar));
+                    mContext.getDrawable(R.drawable.accessibility_shortcut_type_navbar_preview));
         }
     }
 }

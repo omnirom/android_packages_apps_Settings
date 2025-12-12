@@ -26,8 +26,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.os.UserHandle;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.Settings;
 import android.view.accessibility.AccessibilityManager;
 
@@ -38,7 +36,6 @@ import com.android.settings.testutils.shadow.SettingsShadowResources;
 import com.android.settings.testutils.shadow.ShadowAccessibilityManager;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -53,9 +50,6 @@ import java.util.List;
 })
 @RunWith(RobolectricTestRunner.class)
 public class HardwareShortcutFromLockscreenPreferenceControllerTest {
-    @Rule
-    public SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
     private Context mContext = ApplicationProvider.getApplicationContext();
     private SwitchPreference mPreference;
     private HardwareShortcutFromLockscreenPreferenceController mController;
@@ -112,7 +106,6 @@ public class HardwareShortcutFromLockscreenPreferenceControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
     public void getAvailabilityStatus_settingEmpty_disabled() {
         mShadowAccessibilityManager.setAccessibilityShortcutTargets(HARDWARE, List.of());
 
@@ -120,7 +113,6 @@ public class HardwareShortcutFromLockscreenPreferenceControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
     public void getAvailabilityStatus_settingNotEmpty_available() {
         mShadowAccessibilityManager.setAccessibilityShortcutTargets(HARDWARE, List.of("Foo"));
 

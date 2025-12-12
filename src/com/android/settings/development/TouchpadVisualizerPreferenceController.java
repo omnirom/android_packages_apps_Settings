@@ -21,9 +21,8 @@ import android.hardware.input.InputSettings;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
-import androidx.preference.SwitchPreference;
+import androidx.preference.SwitchPreferenceCompat;
 
 import com.android.settings.core.PreferenceControllerMixin;
 import com.android.settingslib.development.DeveloperOptionsPreferenceController;
@@ -60,7 +59,7 @@ public class TouchpadVisualizerPreferenceController extends
     @Override
     public void updateState(@NonNull Preference preference) {
         boolean touchpadVisualizerEnabled = InputSettings.useTouchpadVisualizer(mContext);
-        ((SwitchPreference) mPreference).setChecked(touchpadVisualizerEnabled);
+        ((SwitchPreferenceCompat) mPreference).setChecked(touchpadVisualizerEnabled);
     }
 
     @Override
@@ -68,6 +67,6 @@ public class TouchpadVisualizerPreferenceController extends
         super.onDeveloperOptionsSwitchDisabled();
         InputSettings.setTouchpadVisualizer(mContext, false);
 
-        ((SwitchPreference) mPreference).setChecked(false);
+        ((SwitchPreferenceCompat) mPreference).setChecked(false);
     }
 }

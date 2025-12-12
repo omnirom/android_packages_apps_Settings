@@ -17,10 +17,14 @@
 package com.android.settings.widget;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.AttributeSet;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
+
+import com.android.settings.flags.Flags;
+import com.android.settingslib.drawer.EntriesProvider;
 
 /** A customized layout for homepage preference. */
 public class HomepagePreference extends Preference implements
@@ -58,5 +62,19 @@ public class HomepagePreference extends Preference implements
     @Override
     public HomepagePreferenceLayoutHelper getHelper() {
         return mHelper;
+    }
+
+    /**
+     * Set the alert count to show for this Preference.
+     */
+    public void setAlert(int value) {
+        if (Flags.homepageTileAlert()) {
+            Bundle extras = getExtras();
+            int alertValue = extras.getInt(EntriesProvider.EXTRA_ALERT_VALUE, 0);
+            if (value != alertValue) {
+                mHelper.setAlert(value);
+                extras.putInt(EntriesProvider.EXTRA_ALERT_VALUE, value);
+            }
+        }
     }
 }

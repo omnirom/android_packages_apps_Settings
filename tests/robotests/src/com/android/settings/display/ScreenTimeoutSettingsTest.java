@@ -43,7 +43,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
 import android.content.res.Resources;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 import android.provider.SearchIndexableResource;
@@ -52,7 +51,6 @@ import android.provider.Settings;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
-import com.android.settings.flags.Flags;
 import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settingslib.RestrictedLockUtils;
 import com.android.settingslib.widget.CandidateInfo;
@@ -313,7 +311,6 @@ public class ScreenTimeoutSettingsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_PROTECT_SCREEN_TIMEOUT_WITH_AUTH)
     public void onClick_whenUserAlreadyAuthenticated_buttonChecked() {
         String key = "222";
         String defaultKey = "1";
@@ -331,7 +328,6 @@ public class ScreenTimeoutSettingsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_PROTECT_SCREEN_TIMEOUT_WITH_AUTH)
     public void onClick_whenButtonAlreadyChecked_noAuthNeeded() {
         String key = "222";
         mSettings.setDefaultKey(key);
@@ -349,7 +345,6 @@ public class ScreenTimeoutSettingsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_PROTECT_SCREEN_TIMEOUT_WITH_AUTH)
     public void onClick_whenReducingTimeout_noAuthNeeded() {
         String key = "1";
         String defaultKey = "222";
@@ -369,7 +364,6 @@ public class ScreenTimeoutSettingsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_PROTECT_SCREEN_TIMEOUT_WITH_AUTH)
     public void onClick_whenIncreasingTimeout_authNeeded() {
         String key = "222";
         String defaultKey = "1";

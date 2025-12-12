@@ -24,6 +24,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
 
@@ -40,7 +41,7 @@ import com.android.settings.safetycenter.LockScreenSafetySource;
 public class SaveAndFinishWorker extends Fragment {
     private static final String TAG = "SaveAndFinishWorker";
 
-    private Listener mListener;
+    @Nullable private Listener mListener;
     private boolean mFinished;
     private Intent mResultData;
 
@@ -62,7 +63,7 @@ public class SaveAndFinishWorker extends Fragment {
         setRetainInstance(true);
     }
 
-    public SaveAndFinishWorker setListener(Listener listener) {
+    public SaveAndFinishWorker setListener(@Nullable Listener listener) {
         if (mListener == listener) {
             return this;
         }

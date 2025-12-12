@@ -20,12 +20,9 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.hardware.input.InputSettings;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import com.android.settings.core.BasePreferenceController;
-import com.android.settings.keyboard.Flags;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -54,17 +51,9 @@ public class KeyboardAccessibilityMouseKeysControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_KEYBOARD_AND_TOUCHPAD_A11Y_NEW_PAGE_ENABLED)
     public void getAvailabilityStatus_flagIsEnabled_isAvailable() {
         assertThat(mKeyboardAccessibilityMouseKeysController.getAvailabilityStatus())
                 .isEqualTo(BasePreferenceController.AVAILABLE);
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_KEYBOARD_AND_TOUCHPAD_A11Y_NEW_PAGE_ENABLED)
-    public void getAvailabilityStatus_flagIsDisabled_notSupport() {
-        assertThat(mKeyboardAccessibilityMouseKeysController.getAvailabilityStatus())
-                .isEqualTo(BasePreferenceController.UNSUPPORTED_ON_DEVICE);
     }
 
     @Test

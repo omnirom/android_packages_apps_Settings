@@ -315,6 +315,10 @@
     <item msgid="7397961711906421599">"मध्यम"</item>
     <item msgid="4079132024502041928">"लामो"</item>
   </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"DHCP"</item>
+    <item msgid="4425163520864432692">"स्थिर"</item>
+  </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"डिफल्ट"</item>
     <item msgid="4234707448428002595">"Sans-serif"</item>
@@ -358,10 +362,6 @@
   <string-array name="accessibility_button_location_selector_titles">
     <item msgid="6485511780196327736">"अन्य एपहरूमाथि तैरने"</item>
     <item msgid="3605616699204153590">"नेभिगेसन बार"</item>
-  </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"बटन"</item>
-    <item msgid="6922258575853746220">"जेस्चर"</item>
   </string-array>
   <string-array name="accessibility_button_size_selector_titles">
     <item msgid="7482952318152486459">"सानो"</item>
@@ -425,7 +425,7 @@
   </string-array>
   <string-array name="wifi_hidden_entries">
     <item msgid="342232116597649254">"छैन"</item>
-    <item msgid="2163015208097377388">"हो"</item>
+    <item msgid="2163015208097377388">"छ"</item>
   </string-array>
   <string-array name="autofill_logging_level_entries">
     <item msgid="2263571982739726576">"अफ छ"</item>
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"घडी"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"कुनै पनि होइन"</item>
+    <item msgid="321837941231023175">"होम"</item>
+    <item msgid="953234843613969792">"हालसालै चलाइएका एपहरू"</item>
+    <item msgid="1713942773283586136">"नोटिफिकेसनहरू"</item>
+    <item msgid="5687603742365489342">"द्रुत सेटिङ"</item>
+    <item msgid="5454862951059393431">"लकस्क्रिन"</item>
   </string-array>
 </resources>

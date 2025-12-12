@@ -17,27 +17,25 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/lock_screen_notifs_title"
-    xmlns:settings="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:settings="http://schemas.android.com/apk/res-auto">
 
     <com.android.settingslib.widget.MainSwitchPreference
         android:key="lock_screen_notification_global_pref"
-        android:title="@string/switch_on_text"
+        android:title="@string/lockscreen_notification_show_switch"
         settings:controller="com.android.settings.notification.LockScreenNotificationsGlobalPreferenceController"/>
 
-<!--    TODO: replace res with actual illustrations when we have -->
     <com.android.settingslib.widget.IllustrationPreference
         android:key="compact_illustration"
         settings:searchable="false"
         android:selectable="false"
-        settings:lottie_rawRes="@raw/lottie_lock_screen_notification_minimalism_compact_view"
+        settings:lottie_rawRes="@drawable/lock_screen_notification_compact_view"
         settings:dynamicColor="true"/>
 
     <com.android.settingslib.widget.IllustrationPreference
         android:key="full_list_illustration"
         settings:searchable="false"
         android:selectable="false"
-        settings:lottie_rawRes="@raw/lottie_lock_screen_notification_minimalism_full_list"
+        settings:lottie_rawRes="@drawable/lock_screen_notification_full_list_view"
         settings:dynamicColor="true"/>
 
     <com.android.settingslib.widget.LayoutPreference
@@ -52,9 +50,8 @@
         settings:controller="com.android.settings.notification.LockScreenWhatToShowController">
 
         <SwitchPreferenceCompat
-            android:key="lock_screen_notification_show_seen_toggle"
-            android:title="@string/lock_screen_notification_show_seen_title"
-            settings:controller="com.android.settings.notification.LockScreenNotificationShowSeenController" />
+            android:key="lock_screen_notification_show_viewed_toggle"
+            settings:controller="com.android.settings.notification.LockScreenNotificationShowViewedController" />
 
         <SwitchPreferenceCompat
             android:key="lock_screen_notification_show_silent_toggle"

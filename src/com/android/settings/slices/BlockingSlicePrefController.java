@@ -26,6 +26,7 @@ import com.android.settings.core.BasePreferenceController;
  * The blocking slice preference controller. It will make whole page invisible for a certain time
  * until {@link Slice} is fully loaded.
  */
+@Deprecated(forRemoval = true)
 public class BlockingSlicePrefController extends SlicePreferenceController implements
         BasePreferenceController.UiBlocker {
 

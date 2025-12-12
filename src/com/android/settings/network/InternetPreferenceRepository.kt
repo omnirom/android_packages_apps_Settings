@@ -21,13 +21,18 @@ import android.net.NetworkCapabilities
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.provider.Settings
+import android.telephony.SubscriptionManager
 import android.util.Log
 import androidx.annotation.DrawableRes
+import com.android.internal.hidden_from_bootclasspath.com.android.settingslib.flags.Flags.newStatusBarIcons
 import com.android.settings.R
 import com.android.settings.network.telephony.DataSubscriptionRepository
 import com.android.settings.wifi.WifiSummaryRepository
 import com.android.settings.wifi.repository.WifiRepository
+import com.android.settingslib.net.SignalStrengthUtil.shouldInflateSignalStrength
 import com.android.settingslib.spaprivileged.settingsprovider.settingsGlobalBooleanFlow
+import com.android.settingslib.wifi.WifiUtils.Companion.getInternetIconResource
+import com.android.wifitrackerlib.WifiEntry.WIFI_LEVEL_MAX
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -51,10 +56,7 @@ class InternetPreferenceRepository(
         context.settingsGlobalBooleanFlow(Settings.Global.AIRPLANE_MODE_ON),
 ) {
 
-    data class DisplayInfo(
-        val summary: String,
-        @DrawableRes val iconResId: Int,
-    )
+    data class DisplayInfo(val summary: String, @DrawableRes val iconResId: Int)
 
     fun displayInfoFlow(): Flow<DisplayInfo> =
         connectivityRepository
@@ -89,7 +91,9 @@ class InternetPreferenceRepository(
         wifiSummaryRepository.summaryFlow().map { summary ->
             DisplayInfo(
                 summary = summary,
-                iconResId = R.drawable.ic_wifi_signal_4,
+                iconResId =
+                    if (newStatusBarIcons()) getInternetIconResource(WIFI_LEVEL_MAX, false)
+                    else R.drawable.ic_wifi_signal_4,
             )
         }
 
@@ -97,7 +101,16 @@ class InternetPreferenceRepository(
         dataSubscriptionRepository.dataSummaryFlow().map { summary ->
             DisplayInfo(
                 summary = summary,
-                iconResId = R.drawable.ic_network_cell,
+                iconResId =
+                    if (newStatusBarIcons()) {
+                        if (shouldInflateSignalStrength(
+                                context,
+                                SubscriptionManager.getDefaultDataSubscriptionId(),
+                            )
+                        )
+                            com.android.settingslib.R.drawable.ic_mobile_5_5_bar
+                        else com.android.settingslib.R.drawable.ic_mobile_4_4_bar
+                    } else R.drawable.ic_network_cell,
             )
         }
 
@@ -110,10 +123,9 @@ class InternetPreferenceRepository(
         )
 
     private fun defaultDisplayInfoFlow(): Flow<DisplayInfo> =
-        combine(
-            airplaneModeOnFlow,
-            wifiRepository.wifiStateFlow(),
-        ) { airplaneModeOn: Boolean, wifiState: Int ->
+        combine(airplaneModeOnFlow, wifiRepository.wifiStateFlow()) {
+            airplaneModeOn: Boolean,
+            wifiState: Int ->
             if (airplaneModeOn && wifiState != WifiManager.WIFI_STATE_ENABLED) {
                 DisplayInfo(
                     summary = context.getString(R.string.condition_airplane_title),

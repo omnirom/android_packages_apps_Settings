@@ -17,8 +17,11 @@
 package com.android.settings.biometrics.fingerprint2.ui.settings.fragment
 
 import android.app.Activity
+import android.app.admin.DevicePolicyIdentifiers.KEYGUARD_DISABLED_FEATURES_POLICY
 import android.app.admin.DevicePolicyManager
 import android.app.admin.DevicePolicyResources.Strings.Settings.FINGERPRINT_UNLOCK_DISABLED_EXPLANATION
+import android.app.admin.EnforcingAdmin
+import android.app.admin.flags.Flags
 import android.app.settings.SettingsEnums
 import android.content.Context.FINGERPRINT_SERVICE
 import android.content.Intent
@@ -42,8 +45,8 @@ import com.android.settings.biometrics.BiometricEnrollBase
 import com.android.settings.biometrics.BiometricEnrollBase.CONFIRM_REQUEST
 import com.android.settings.biometrics.BiometricEnrollBase.EXTRA_FROM_SETTINGS_SUMMARY
 import com.android.settings.biometrics.BiometricEnrollBase.RESULT_FINISHED
-import com.android.settings.biometrics.fingerprint.FingerprintEnrollEnrolling
 import com.android.settings.biometrics.fingerprint.FingerprintEnroll.InternalActivity
+import com.android.settings.biometrics.fingerprint.FingerprintEnrollEnrolling
 import com.android.settings.biometrics.fingerprint2.data.repository.FingerprintSensorRepositoryImpl
 import com.android.settings.biometrics.fingerprint2.domain.interactor.PressToAuthInteractorImpl
 import com.android.settings.biometrics.fingerprint2.lib.model.FingerprintAuthAttemptModel
@@ -298,20 +301,20 @@ class FingerprintSettingsV2Fragment :
 
   /** Used to indicate that preference has been clicked */
   fun onPrefClicked(fingerprintViewModel: FingerprintData) {
-    Log.d(TAG, "onPrefClicked(${fingerprintViewModel})")
+    Log.d(TAG, "onPrefClicked($fingerprintViewModel)")
     settingsViewModel.onPrefClicked(fingerprintViewModel)
   }
 
   /** Used to indicate that a delete pref has been clicked */
   fun onDeletePrefClicked(fingerprintViewModel: FingerprintData) {
-    Log.d(TAG, "onDeletePrefClicked(${fingerprintViewModel})")
+    Log.d(TAG, "onDeletePrefClicked($fingerprintViewModel)")
     settingsViewModel.onDeleteClicked(fingerprintViewModel)
   }
 
   override fun showSettings(enrolledFingerprints: List<FingerprintData>) {
     val category =
       this@FingerprintSettingsV2Fragment.findPreference(KEY_FINGERPRINTS_ENROLLED_CATEGORY)
-        as PreferenceCategory?
+          as PreferenceCategory?
 
     category?.removeAll()
 
@@ -345,24 +348,34 @@ class FingerprintSettingsV2Fragment :
   override fun updateSfpsPreference(isSfpsPrefVisible: Boolean) {
     val sideFpsPref =
       this@FingerprintSettingsV2Fragment.findPreference(KEY_FINGERPRINT_SIDE_FPS_CATEGORY)
-        as PreferenceCategory?
+          as PreferenceCategory?
     sideFpsPref?.isVisible = isSfpsPrefVisible
     val otherPref =
       this@FingerprintSettingsV2Fragment.findPreference(KEY_FINGERPRINT_SIDE_FPS_SCREEN_ON_TO_AUTH)
-        as Preference?
+          as Preference?
     otherPref?.isVisible = isSfpsPrefVisible
   }
 
   private fun addFooter() {
     val footer =
       this@FingerprintSettingsV2Fragment.findPreference(KEY_FINGERPRINT_FOOTER)
-        as PreferenceCategory?
+          as PreferenceCategory?
     val admin =
-      RestrictedLockUtilsInternal.checkIfKeyguardFeaturesDisabled(
-        activity,
-        DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT,
-        requireActivity().userId,
+      if (
+        Flags.policyTransparencyRefactorEnabled() && Flags.setKeyguardDisabledFeaturesCoexistence()
       )
+        RestrictedLockUtilsInternal.getEnforcingAdminsForKeyguardFeatures(
+          activity,
+          DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT,
+          requireActivity().userId,
+        )
+          ?.mostImportantEnforcingAdmin
+      else
+        RestrictedLockUtilsInternal.checkIfKeyguardFeaturesDisabled(
+          activity,
+          DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT,
+          requireActivity().userId,
+        )
     val activity = requireActivity()
     val helpIntent =
       HelpUtils.getHelpIntent(activity, getString(helpResource), activity::class.java.name)
@@ -386,7 +399,21 @@ class FingerprintSettingsV2Fragment :
 
       column1.learnMoreOnClickListener =
         View.OnClickListener { _ ->
-          RestrictedLockUtils.sendShowAdminSupportDetailsIntent(activity, admin)
+          if (
+            Flags.policyTransparencyRefactorEnabled() &&
+            Flags.setKeyguardDisabledFeaturesCoexistence()
+          ) {
+            RestrictedLockUtils.sendShowAdminSupportDetailsIntent(
+              activity,
+              admin as EnforcingAdmin?,
+              KEYGUARD_DISABLED_FEATURES_POLICY,
+            )
+          } else {
+            RestrictedLockUtils.sendShowAdminSupportDetailsIntent(
+              activity,
+              admin as RestrictedLockUtils.EnforcedAdmin?,
+            )
+          }
         }
       column1.learnMoreOverrideText = getText(R.string.admin_support_more_info)
       footerColumns.add(column1)
@@ -428,7 +455,7 @@ class FingerprintSettingsV2Fragment :
   }
 
   override suspend fun askUserToDeleteDialog(fingerprintViewModel: FingerprintData): Boolean {
-    Log.d(TAG, "showing delete dialog for (${fingerprintViewModel})")
+    Log.d(TAG, "showing delete dialog for ($fingerprintViewModel)")
 
     try {
       val willDelete =
@@ -452,7 +479,7 @@ class FingerprintSettingsV2Fragment :
   override suspend fun askUserToRenameDialog(
     fingerprintViewModel: FingerprintData
   ): Pair<FingerprintData, String>? {
-    Log.d(TAG, "showing rename dialog for (${fingerprintViewModel})")
+    Log.d(TAG, "showing rename dialog for ($fingerprintViewModel)")
     try {
       val toReturn =
         fingerprintPreferences()
@@ -512,10 +539,7 @@ class FingerprintSettingsV2Fragment :
     navigationViewModel.setStepToLaunched()
     Log.d(TAG, "launchFullFingerprintEnrollment")
     val intent = Intent()
-    intent.setClassName(
-      SETTINGS_PACKAGE_NAME,
-      InternalActivity::class.java.name,
-    )
+    intent.setClassName(SETTINGS_PACKAGE_NAME, InternalActivity::class.java.name)
     intent.putExtra(EXTRA_FROM_SETTINGS_SUMMARY, true)
     intent.putExtra(
       SettingsBaseActivity.EXTRA_PAGE_TRANSITION_TYPE,
@@ -560,7 +584,7 @@ class FingerprintSettingsV2Fragment :
   private fun fingerprintPreferences(): List<FingerprintSettingsPreference?> {
     val category =
       this@FingerprintSettingsV2Fragment.findPreference(KEY_FINGERPRINTS_ENROLLED_CATEGORY)
-        as PreferenceCategory?
+          as PreferenceCategory?
 
     return category?.let { cat ->
       cat.childrenToList().map { it as FingerprintSettingsPreference? }

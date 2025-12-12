@@ -17,6 +17,10 @@
 package com.android.settings.notification;
 
 import android.app.settings.SettingsEnums;
+import android.content.Context;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.settings.R;
 import com.android.settings.core.OnActivityResultListener;
@@ -24,6 +28,7 @@ import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.SearchIndexable;
 
+// LINT.IfChange
 @SearchIndexable
 public class BubbleNotificationSettings extends DashboardFragment implements
         OnActivityResultListener {
@@ -44,9 +49,15 @@ public class BubbleNotificationSettings extends DashboardFragment implements
         return R.xml.bubble_notification_settings;
     }
 
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return BubbleNotificationScreen.KEY;
+    }
+
     /**
      * For Search.
      */
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(R.xml.bubble_notification_settings);
 }
+// LINT.ThenChange(BubbleNotificationScreen.kt)

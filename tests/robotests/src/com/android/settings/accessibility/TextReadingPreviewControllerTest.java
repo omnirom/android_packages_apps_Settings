@@ -16,12 +16,18 @@
 
 package com.android.settings.accessibility;
 
+import static com.android.settings.core.BasePreferenceController.CONDITIONALLY_UNAVAILABLE;
+
+import static com.google.common.truth.Truth.assertThat;
+
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
+import android.view.Display;
 
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ApplicationProvider;
@@ -50,11 +56,11 @@ public class TextReadingPreviewControllerTest {
     private static final String PREVIEW_KEY = "preview";
     private static final String FONT_SIZE_KEY = "font_size";
     private static final String DISPLAY_SIZE_KEY = "display_size";
-    private final Context mContext = ApplicationProvider.getApplicationContext();
+    private Context mContext;
     private TextReadingPreviewController mPreviewController;
     private TextReadingPreviewPreference mPreviewPreference;
-    private AccessibilitySeekBarPreference mFontSizePreference;
-    private AccessibilitySeekBarPreference mDisplaySizePreference;
+    private TooltipSliderPreference mFontSizePreference;
+    private TooltipSliderPreference mDisplaySizePreference;
 
     @Mock
     private DisplaySizeData mDisplaySizeData;
@@ -66,14 +72,16 @@ public class TextReadingPreviewControllerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
+        mContext = spy(ApplicationProvider.getApplicationContext());
+        doReturn(Display.DEFAULT_DISPLAY).when(mContext).getDisplayId();
         final FontSizeData fontSizeData = new FontSizeData(mContext);
         final List<Integer> displayData = createFakeDisplayData();
         when(mDisplaySizeData.getValues()).thenReturn(displayData);
         mPreviewPreference = spy(new TextReadingPreviewPreference(mContext, /* attr= */ null));
         mPreviewController = new TextReadingPreviewController(mContext, PREVIEW_KEY, fontSizeData,
                 mDisplaySizeData);
-        mFontSizePreference = new AccessibilitySeekBarPreference(mContext, /* attr= */ null);
-        mDisplaySizePreference = new AccessibilitySeekBarPreference(mContext, /* attr= */ null);
+        mFontSizePreference = new TooltipSliderPreference(mContext, /* attr= */ null);
+        mDisplaySizePreference = new TooltipSliderPreference(mContext, /* attr= */ null);
     }
 
     @Test
@@ -105,6 +113,18 @@ public class TextReadingPreviewControllerTest {
         mPreviewController.displayPreference(mPreferenceScreen);
 
         verify(mPreviewPreference).setPreviewAdapter(any(PreviewPagerAdapter.class));
+    }
+
+    @Test
+    public void initPreviewerAdapter_onNonDefaultDisplay_notAvailable() {
+        doReturn(2).when(mContext).getDisplayId();
+        when(mPreferenceScreen.findPreference(PREVIEW_KEY)).thenReturn(mPreviewPreference);
+        when(mPreferenceScreen.findPreference(FONT_SIZE_KEY)).thenReturn(mFontSizePreference);
+        when(mPreferenceScreen.findPreference(DISPLAY_SIZE_KEY)).thenReturn(mDisplaySizePreference);
+
+        mPreviewController.displayPreference(mPreferenceScreen);
+
+        assertThat(mPreviewController.getAvailabilityStatus()).isEqualTo(CONDITIONALLY_UNAVAILABLE);
     }
 
     private List<Integer> createFakeDisplayData() {

@@ -26,7 +26,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
+import android.app.Application;
 import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -37,6 +39,7 @@ import android.content.pm.ServiceInfo;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.testutils.shadow.ShadowBluetoothUtils;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
@@ -73,7 +76,8 @@ public class NotificationAccessSettingsTest {
 
     @Before
     public void setUp() throws Exception {
-        ShadowApplication shadowApp = ShadowApplication.getInstance();
+        ShadowApplication shadowApp =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         shadowApp.setSystemService(Context.NOTIFICATION_SERVICE, mNotificationManager);
 
         mAccessSettings = new NotificationAccessSettings();

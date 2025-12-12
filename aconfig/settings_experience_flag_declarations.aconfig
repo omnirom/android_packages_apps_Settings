@@ -2,13 +2,6 @@ package: "com.android.settings.flags"
 container: "system_ext"
 
 flag {
-    name: "new_apn_page_enabled"
-    namespace: "settings_experience"
-    description: "Change to the new APN page."
-    bug: "298906796"
-}
-
-flag {
     name: "refactor_print_settings"
     namespace: "settings_experience"
     description: "Refactor the PrintSettings page."
@@ -17,14 +10,3 @@ flag {
         purpose: PURPOSE_BUGFIX
     }
 }
-
-flag {
-    name: "satellite_oem_settings_ux_migration"
-    namespace: "settings_experience"
-    description: "Migrate satellite UX to Android Settings"
-    bug: "378781925"
-    metadata {
-        purpose: PURPOSE_BUGFIX
-    }
-}
-

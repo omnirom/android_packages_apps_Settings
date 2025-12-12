@@ -23,6 +23,7 @@ import android.content.res.Resources;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
+import android.icu.util.TimeZone;
 
 import androidx.annotation.Nullable;
 
@@ -39,6 +40,7 @@ import java.util.Locale;
  */
 public abstract class BaseTimeZoneInfoPicker extends BaseTimeZonePicker {
     protected static final String TAG = "RegionZoneSearchPicker";
+
     protected ZoneAdapter mAdapter;
 
     protected BaseTimeZoneInfoPicker(int titleResId, int searchHintResId,
@@ -48,8 +50,9 @@ public abstract class BaseTimeZoneInfoPicker extends BaseTimeZonePicker {
 
     @Override
     protected BaseTimeZoneAdapter createAdapter(TimeZoneData timeZoneData) {
+        final String currentTimeZoneId = TimeZone.getDefault().getID();
         mAdapter = new ZoneAdapter(getContext(), getAllTimeZoneInfos(timeZoneData),
-                this::onListItemClick, getLocale(), getHeaderText());
+                this::onListItemClick, getLocale(), getHeaderText(), currentTimeZoneId);
         return mAdapter;
     }
 
@@ -76,21 +79,24 @@ public abstract class BaseTimeZoneInfoPicker extends BaseTimeZonePicker {
 
         public ZoneAdapter(Context context, List<TimeZoneInfo> timeZones,
                 OnListItemClickListener<TimeZoneInfoItem> onListItemClickListener, Locale locale,
-                CharSequence headerText) {
-            super(createTimeZoneInfoItems(context, timeZones, locale),
+                @Nullable CharSequence headerText, @Nullable String currentTimeZoneId) {
+            super(createTimeZoneInfoItems(context, timeZones, currentTimeZoneId, locale),
                     onListItemClickListener, locale,  true /* showItemSummary */,
                     headerText /* headerText */);
         }
 
         private static List<TimeZoneInfoItem> createTimeZoneInfoItems(Context context,
-                List<TimeZoneInfo> timeZones, Locale locale) {
+                List<TimeZoneInfo> timeZones, @Nullable String currentTimeZoneId, Locale locale) {
             final DateFormat currentTimeFormat = new SimpleDateFormat(
                     android.text.format.DateFormat.getTimeFormatString(context), locale);
             final ArrayList<TimeZoneInfoItem> results = new ArrayList<>(timeZones.size());
             final Resources resources = context.getResources();
             long i = 0;
             for (TimeZoneInfo timeZone : timeZones) {
-                results.add(new TimeZoneInfoItem(i++, timeZone, resources, currentTimeFormat));
+                boolean isSelected = currentTimeZoneId != null
+                        && currentTimeZoneId.equals(timeZone.getId());
+                results.add(new TimeZoneInfoItem(
+                        i++, isSelected, timeZone, resources, currentTimeFormat));
             }
             return results;
         }
@@ -98,15 +104,17 @@ public abstract class BaseTimeZoneInfoPicker extends BaseTimeZonePicker {
 
     private static class TimeZoneInfoItem implements BaseTimeZoneAdapter.AdapterItem {
         private final long mItemId;
+        private final boolean mIsSelected;
         private final TimeZoneInfo mTimeZoneInfo;
         private final Resources mResources;
         private final DateFormat mTimeFormat;
         private final String mTitle;
         private final String[] mSearchKeys;
 
-        private TimeZoneInfoItem(long itemId, TimeZoneInfo timeZoneInfo, Resources resources,
-                DateFormat timeFormat) {
+        private TimeZoneInfoItem(long itemId, boolean isSelected, TimeZoneInfo timeZoneInfo,
+                Resources resources, DateFormat timeFormat) {
             mItemId = itemId;
+            mIsSelected = isSelected;
             mTimeZoneInfo = timeZoneInfo;
             mResources = resources;
             mTimeFormat = timeFormat;
@@ -158,8 +166,8 @@ public abstract class BaseTimeZoneInfoPicker extends BaseTimeZonePicker {
         }
 
         @Override
-        public String getIconText() {
-            return null;
+        public boolean getIsSelected() {
+            return mIsSelected;
         }
 
         @Override

@@ -16,19 +16,12 @@
 package com.android.settings.deviceinfo.legal
 
 import com.android.settings.flags.Flags
-import com.android.settingslib.preference.CatalystScreenTestCase
-import com.google.common.truth.Truth.assertThat
-import org.junit.Test
+import com.android.settings.testutils2.SettingsCatalystTestCase
 
-class LegalSettingsScreenTest : CatalystScreenTestCase() {
+class LegalSettingsScreenTest : SettingsCatalystTestCase() {
 
     override val preferenceScreenCreator = LegalSettingsScreen()
 
     override val flagName: String
         get() = Flags.FLAG_CATALYST_LEGAL_INFORMATION
-
-    @Test
-    fun key() {
-        assertThat(preferenceScreenCreator.key).isEqualTo(LegalSettingsScreen.KEY)
-    }
 }

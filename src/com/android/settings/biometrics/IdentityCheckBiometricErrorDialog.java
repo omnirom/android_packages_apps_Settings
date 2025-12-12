@@ -18,7 +18,7 @@ package com.android.settings.biometrics;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.app.Dialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
@@ -186,7 +186,8 @@ public class IdentityCheckBiometricErrorDialog extends InstrumentedDialogFragmen
             @Override
             public void onClick(View textView) {
                 dismiss();
-                final Intent autoLockSettingsIntent = new Intent(mActionIdentityCheckSettings);
+                final Intent autoLockSettingsIntent = new Intent(mActionIdentityCheckSettings)
+                        .setPackage(mIdentityCheckSettingsPackageName);
                 final ResolveInfo autoLockSettingsInfo = getActivity().getPackageManager()
                         .resolveActivity(autoLockSettingsIntent, 0 /* flags */);
                 if (autoLockSettingsInfo != null) {

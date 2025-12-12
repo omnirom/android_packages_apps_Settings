@@ -50,7 +50,18 @@ public class StorageCacheHelper {
      * Returns true if there's a cached size info.
      */
     public boolean hasCachedSizeInfo() {
-        return mSharedPreferences.getAll().size() > 0;
+        return mSharedPreferences.contains(TOTAL_SIZE_KEY)
+                && mSharedPreferences.contains(TOTAL_USED_SIZE_KEY)
+                && mSharedPreferences.contains(IMAGES_SIZE_KEY)
+                && mSharedPreferences.contains(VIDEOS_SIZE_KEY)
+                && mSharedPreferences.contains(AUDIO_SIZE_KEY)
+                && mSharedPreferences.contains(APPS_SIZE_KEY)
+                && mSharedPreferences.contains(GAMES_SIZE_KEY)
+                && mSharedPreferences.contains(DOCUMENTS_SIZE_KEY)
+                && mSharedPreferences.contains(OTHER_SIZE_KEY)
+                && mSharedPreferences.contains(TRASH_SIZE_KEY)
+                && mSharedPreferences.contains(SYSTEM_SIZE_KEY)
+                && mSharedPreferences.contains(TEMPORARY_FILES_SIZE_KEY);
     }
 
     /**

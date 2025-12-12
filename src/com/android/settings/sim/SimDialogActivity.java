@@ -41,14 +41,15 @@ import androidx.fragment.app.FragmentManager;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.settings.R;
+import com.android.settings.Utils;
 import com.android.settings.flags.Flags;
 import com.android.settings.network.CarrierConfigCache;
-import com.android.settings.network.SubscriptionUtil;
 import com.android.settings.network.ims.WifiCallingQueryImsState;
 import com.android.settings.network.telephony.MobileNetworkUtils;
 import com.android.settings.network.telephony.SubscriptionActionDialogActivity;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 import java.util.List;
 
@@ -84,11 +85,16 @@ public class SimDialogActivity extends FragmentActivity {
             finish();
             return;
         }
-        if (!SubscriptionUtil.isSimHardwareVisible(this)) {
-            Log.d(TAG, "Not support on device without SIM.");
+        if (!Utils.isMobileDataCapable(this) && !Utils.isVoiceCapable(this)) {
+            Log.d(TAG, "No support on device without data or voice capabilities.");
             finish();
             return;
         }
+
+        if (SettingsThemeHelper.isExpressiveTheme(this)) {
+            setTheme(R.style.Theme_SubSettings_Expressive);
+        }
+
         SimDialogProhibitService.supportDismiss(this);
 
         mMetricsFeatureProvider = FeatureFactory.getFeatureFactory().getMetricsFeatureProvider();

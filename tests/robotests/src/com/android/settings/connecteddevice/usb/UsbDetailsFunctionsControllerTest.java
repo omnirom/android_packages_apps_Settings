@@ -34,6 +34,8 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.hardware.usb.UsbManager;
 import android.net.TetheringManager;
+import android.os.UserHandle;
+import android.os.UserManager;
 import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
@@ -44,6 +46,8 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.flags.Flags;
+import com.android.settings.testutils.shadow.ShadowDevicePolicyManager;
+import com.android.settings.testutils.shadow.ShadowUserManager;
 import com.android.settings.testutils.shadow.ShadowUtils;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 import com.android.settingslib.widget.SelectorWithWidgetPreference;
@@ -65,9 +69,12 @@ import java.util.Iterator;
 import java.util.List;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(shadows = {
-        com.android.settings.testutils.shadow.ShadowFragment.class,
-})
+@Config(
+        shadows = {
+            com.android.settings.testutils.shadow.ShadowFragment.class,
+            ShadowUserManager.class,
+            ShadowDevicePolicyManager.class,
+        })
 public class UsbDetailsFunctionsControllerTest {
 
     private UsbDetailsFunctionsController mDetailsFunctionsController;
@@ -79,12 +86,10 @@ public class UsbDetailsFunctionsControllerTest {
     private SelectorWithWidgetPreference mRadioButtonPreference;
     private UsbDetailsFragment mFragment;
 
-    @Mock
-    private UsbBackend mUsbBackend;
-    @Mock
-    private FragmentActivity mActivity;
-    @Mock
-    private TetheringManager mTetheringManager;
+    @Mock private UsbBackend mUsbBackend;
+    @Mock private FragmentActivity mActivity;
+    @Mock private TetheringManager mTetheringManager;
+
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
@@ -104,8 +109,8 @@ public class UsbDetailsFunctionsControllerTest {
         when(mFragment.getPreferenceScreen()).thenReturn(mScreen);
         when(mContext.getSystemService(TetheringManager.class)).thenReturn(mTetheringManager);
 
-        mDetailsFunctionsController = new UsbDetailsFunctionsController(mContext, mFragment,
-                mUsbBackend);
+        mDetailsFunctionsController =
+                new UsbDetailsFunctionsController(mContext, mFragment, mUsbBackend);
         mPreferenceCategory = new PreferenceCategory(mContext);
         mPreferenceCategory.setKey(mDetailsFunctionsController.getPreferenceKey());
         mScreen.addPreference(mPreferenceCategory);
@@ -119,8 +124,8 @@ public class UsbDetailsFunctionsControllerTest {
         when(mUsbBackend.areFunctionsSupported(anyLong())).thenReturn(true);
 
         mDetailsFunctionsController.displayPreference(mScreen);
-        mDetailsFunctionsController.refresh(true, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK,
-                DATA_ROLE_DEVICE);
+        mDetailsFunctionsController.refresh(
+                true, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
         List<SelectorWithWidgetPreference> prefs = getRadioPreferences();
         Iterator<Long> iter = UsbDetailsFunctionsController.FUNCTIONS_MAP.keySet().iterator();
 
@@ -133,8 +138,8 @@ public class UsbDetailsFunctionsControllerTest {
     public void displayRefresh_disconnected_shouldDisable() {
         when(mUsbBackend.areFunctionsSupported(anyLong())).thenReturn(true);
 
-        mDetailsFunctionsController.refresh(false, UsbManager.FUNCTION_NONE,
-                POWER_ROLE_SINK, DATA_ROLE_DEVICE);
+        mDetailsFunctionsController.refresh(
+                false, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
         assertThat(mPreferenceCategory.isEnabled()).isFalse();
     }
 
@@ -145,8 +150,8 @@ public class UsbDetailsFunctionsControllerTest {
         when(mUsbBackend.areFunctionsSupported(UsbManager.FUNCTION_PTP)).thenReturn(false);
         when(mUsbBackend.areFunctionsSupported(UsbManager.FUNCTION_RNDIS)).thenReturn(false);
 
-        mDetailsFunctionsController.refresh(true, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK,
-                DATA_ROLE_DEVICE);
+        mDetailsFunctionsController.refresh(
+                true, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
         List<SelectorWithWidgetPreference> prefs = getRadioPreferences();
         assertThat(prefs.size()).isEqualTo(1);
         assertThat(prefs.get(0).getKey())
@@ -157,8 +162,8 @@ public class UsbDetailsFunctionsControllerTest {
     public void displayRefresh_mtpEnabled_shouldCheckSwitches() {
         when(mUsbBackend.areFunctionsSupported(anyLong())).thenReturn(true);
 
-        mDetailsFunctionsController.refresh(true, UsbManager.FUNCTION_MTP, POWER_ROLE_SINK,
-                DATA_ROLE_DEVICE);
+        mDetailsFunctionsController.refresh(
+                true, UsbManager.FUNCTION_MTP, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
         List<SelectorWithWidgetPreference> prefs = getRadioPreferences();
 
         assertThat(prefs.get(0).getKey())
@@ -170,8 +175,8 @@ public class UsbDetailsFunctionsControllerTest {
     public void displayRefresh_accessoryEnabled_shouldCheckSwitches() {
         when(mUsbBackend.areFunctionsSupported(anyLong())).thenReturn(true);
 
-        mDetailsFunctionsController.refresh(true, UsbManager.FUNCTION_ACCESSORY, POWER_ROLE_SINK,
-                DATA_ROLE_DEVICE);
+        mDetailsFunctionsController.refresh(
+                true, UsbManager.FUNCTION_ACCESSORY, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
         List<SelectorWithWidgetPreference> prefs = getRadioPreferences();
 
         assertThat(prefs.get(0).getKey())
@@ -183,8 +188,8 @@ public class UsbDetailsFunctionsControllerTest {
     public void displayRefresh_ncmEnabled_checksSwitches() {
         when(mUsbBackend.areFunctionsSupported(anyLong())).thenReturn(true);
 
-        mDetailsFunctionsController.refresh(true, UsbManager.FUNCTION_NCM, POWER_ROLE_SINK,
-                DATA_ROLE_DEVICE);
+        mDetailsFunctionsController.refresh(
+                true, UsbManager.FUNCTION_NCM, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
         List<SelectorWithWidgetPreference> prefs = getRadioPreferences();
 
         assertThat(prefs.get(1).getKey())
@@ -193,11 +198,39 @@ public class UsbDetailsFunctionsControllerTest {
     }
 
     @Test
+    public void displayRefresh_fileTransferRestricted_shouldDisablePref() {
+        when(mUsbBackend.areFunctionsSupported(anyLong())).thenReturn(true);
+        setUserRestriction(UserManager.DISALLOW_USB_FILE_TRANSFER);
+
+        mDetailsFunctionsController.refresh(
+                true, UsbManager.FUNCTION_MTP, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
+        List<SelectorWithWidgetPreference> prefs = getRadioPreferences();
+
+        assertThat(prefs.get(0).getKey())
+                .isEqualTo(UsbBackend.usbFunctionsToString(UsbManager.FUNCTION_MTP));
+        assertThat(prefs.get(0).isEnabled()).isFalse();
+    }
+
+    @Test
+    public void displayRefresh_tetheringRestricted_shouldDisablePref() {
+        when(mUsbBackend.areFunctionsSupported(anyLong())).thenReturn(true);
+        setUserRestriction(UserManager.DISALLOW_CONFIG_TETHERING);
+
+        mDetailsFunctionsController.refresh(
+                true, UsbManager.FUNCTION_NCM, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
+        List<SelectorWithWidgetPreference> prefs = getRadioPreferences();
+
+        assertThat(prefs.get(1).getKey())
+                .isEqualTo(UsbBackend.usbFunctionsToString(UsbManager.FUNCTION_RNDIS));
+        assertThat(prefs.get(1).isEnabled()).isFalse();
+    }
+
+    @Test
     public void onClickMtp_noneEnabled_shouldEnableMtp() {
         when(mUsbBackend.areFunctionsSupported(anyLong())).thenReturn(true);
 
-        mDetailsFunctionsController.refresh(true, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK,
-                DATA_ROLE_DEVICE);
+        mDetailsFunctionsController.refresh(
+                true, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
         when(mUsbBackend.getCurrentFunctions()).thenReturn(UsbManager.FUNCTION_NONE);
         List<SelectorWithWidgetPreference> prefs = getRadioPreferences();
         prefs.get(0).performClick();
@@ -205,8 +238,8 @@ public class UsbDetailsFunctionsControllerTest {
         assertThat(prefs.get(0).getKey())
                 .isEqualTo(UsbBackend.usbFunctionsToString(UsbManager.FUNCTION_MTP));
         verify(mUsbBackend).setCurrentFunctions(UsbManager.FUNCTION_MTP);
-        mDetailsFunctionsController.refresh(true, UsbManager.FUNCTION_MTP, POWER_ROLE_SINK,
-                DATA_ROLE_DEVICE);
+        mDetailsFunctionsController.refresh(
+                true, UsbManager.FUNCTION_MTP, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
         assertThat(prefs.get(0).isChecked()).isTrue();
     }
 
@@ -214,8 +247,8 @@ public class UsbDetailsFunctionsControllerTest {
     public void onClickMtp_ptpEnabled_shouldEnableMtp() {
         when(mUsbBackend.areFunctionsSupported(anyLong())).thenReturn(true);
 
-        mDetailsFunctionsController.refresh(true, UsbManager.FUNCTION_PTP, POWER_ROLE_SINK,
-                DATA_ROLE_DEVICE);
+        mDetailsFunctionsController.refresh(
+                true, UsbManager.FUNCTION_PTP, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
         when(mUsbBackend.getCurrentFunctions()).thenReturn(UsbManager.FUNCTION_PTP);
         List<SelectorWithWidgetPreference> prefs = getRadioPreferences();
         prefs.get(0).performClick();
@@ -223,8 +256,8 @@ public class UsbDetailsFunctionsControllerTest {
         assertThat(prefs.get(0).getKey())
                 .isEqualTo(UsbBackend.usbFunctionsToString(UsbManager.FUNCTION_MTP));
         verify(mUsbBackend).setCurrentFunctions(UsbManager.FUNCTION_MTP);
-        mDetailsFunctionsController.refresh(true, UsbManager.FUNCTION_MTP, POWER_ROLE_SINK,
-                DATA_ROLE_DEVICE);
+        mDetailsFunctionsController.refresh(
+                true, UsbManager.FUNCTION_MTP, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
         assertThat(prefs.get(0).isChecked()).isTrue();
         assertThat(prefs.get(3).getKey())
                 .isEqualTo(UsbBackend.usbFunctionsToString(UsbManager.FUNCTION_PTP));
@@ -236,8 +269,8 @@ public class UsbDetailsFunctionsControllerTest {
     public void onClickNone_mtpEnabled_shouldDisableMtp() {
         when(mUsbBackend.areFunctionsSupported(anyLong())).thenReturn(true);
 
-        mDetailsFunctionsController.refresh(true, UsbManager.FUNCTION_MTP, POWER_ROLE_SINK,
-                DATA_ROLE_DEVICE);
+        mDetailsFunctionsController.refresh(
+                true, UsbManager.FUNCTION_MTP, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
         when(mUsbBackend.getCurrentFunctions()).thenReturn(UsbManager.FUNCTION_MTP);
         List<SelectorWithWidgetPreference> prefs = getRadioPreferences();
         prefs.get(4).performClick();
@@ -245,8 +278,8 @@ public class UsbDetailsFunctionsControllerTest {
         assertThat(prefs.get(4).getKey())
                 .isEqualTo(UsbBackend.usbFunctionsToString(UsbManager.FUNCTION_NONE));
         verify(mUsbBackend).setCurrentFunctions(UsbManager.FUNCTION_NONE);
-        mDetailsFunctionsController.refresh(true, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK,
-                DATA_ROLE_DEVICE);
+        mDetailsFunctionsController.refresh(
+                true, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
         assertThat(prefs.get(0).isChecked()).isFalse();
     }
 
@@ -265,6 +298,16 @@ public class UsbDetailsFunctionsControllerTest {
         return result;
     }
 
+    private void setUserRestriction(String userRestriction) {
+        // For RestrictedLockUtils.checkIfRestrictionEnforced
+        final int userId = UserHandle.myUserId();
+        List<UserManager.EnforcingUser> enforcingUsers = new ArrayList<>();
+        enforcingUsers.add(
+                new UserManager.EnforcingUser(userId, UserManager.RESTRICTION_SOURCE_DEVICE_OWNER));
+        ShadowUserManager.getShadow()
+                .setUserRestrictionSources(userRestriction, UserHandle.of(userId), enforcingUsers);
+    }
+
     @Test
     public void onRadioButtonClicked_functionRndis_startTetheringInvoked() {
         mRadioButtonPreference.setKey(UsbBackend.usbFunctionsToString(UsbManager.FUNCTION_RNDIS));
@@ -272,11 +315,13 @@ public class UsbDetailsFunctionsControllerTest {
 
         mDetailsFunctionsController.onRadioButtonClicked(mRadioButtonPreference);
 
-        verify(mTetheringManager).startTethering(eq(TetheringManager.TETHERING_USB),
-                any(),
-                eq(mDetailsFunctionsController.mOnStartTetheringCallback));
-        assertThat(mDetailsFunctionsController.mPreviousFunction).isEqualTo(
-                UsbManager.FUNCTION_MTP);
+        verify(mTetheringManager)
+                .startTethering(
+                        eq(TetheringManager.TETHERING_USB),
+                        any(),
+                        eq(mDetailsFunctionsController.mOnStartTetheringCallback));
+        assertThat(mDetailsFunctionsController.mPreviousFunction)
+                .isEqualTo(UsbManager.FUNCTION_MTP);
     }
 
     @Test
@@ -286,11 +331,13 @@ public class UsbDetailsFunctionsControllerTest {
 
         mDetailsFunctionsController.onRadioButtonClicked(mRadioButtonPreference);
 
-        verify(mTetheringManager).startTethering(eq(TetheringManager.TETHERING_USB),
-                any(),
-                eq(mDetailsFunctionsController.mOnStartTetheringCallback));
-        assertThat(mDetailsFunctionsController.mPreviousFunction).isEqualTo(
-                UsbManager.FUNCTION_MTP);
+        verify(mTetheringManager)
+                .startTethering(
+                        eq(TetheringManager.TETHERING_USB),
+                        any(),
+                        eq(mDetailsFunctionsController.mOnStartTetheringCallback));
+        assertThat(mDetailsFunctionsController.mPreviousFunction)
+                .isEqualTo(UsbManager.FUNCTION_MTP);
     }
 
     @Test
@@ -301,8 +348,8 @@ public class UsbDetailsFunctionsControllerTest {
         mDetailsFunctionsController.onRadioButtonClicked(mRadioButtonPreference);
 
         verify(mUsbBackend).setCurrentFunctions(UsbManager.FUNCTION_PTP);
-        assertThat(mDetailsFunctionsController.mPreviousFunction).isEqualTo(
-                UsbManager.FUNCTION_MTP);
+        assertThat(mDetailsFunctionsController.mPreviousFunction)
+                .isEqualTo(UsbManager.FUNCTION_MTP);
     }
 
     @Test
@@ -313,8 +360,8 @@ public class UsbDetailsFunctionsControllerTest {
         mDetailsFunctionsController.mPreviousFunction = UsbManager.FUNCTION_ACCESSORY;
         mDetailsFunctionsController.onRadioButtonClicked(mRadioButtonPreference);
 
-        assertThat(mDetailsFunctionsController.mPreviousFunction).isEqualTo(
-                UsbManager.FUNCTION_ACCESSORY);
+        assertThat(mDetailsFunctionsController.mPreviousFunction)
+                .isEqualTo(UsbManager.FUNCTION_ACCESSORY);
     }
 
     @Test
@@ -337,13 +384,14 @@ public class UsbDetailsFunctionsControllerTest {
         mDetailsFunctionsController.onRadioButtonClicked(mRadioButtonPreference);
 
         verify(mUsbBackend, never()).setCurrentFunctions(UsbManager.FUNCTION_PTP);
-        verify(mTetheringManager, never()).startTethering(eq(TetheringManager.TETHERING_USB),
-                any(),
-                eq(mDetailsFunctionsController.mOnStartTetheringCallback));
+        verify(mTetheringManager, never())
+                .startTethering(
+                        eq(TetheringManager.TETHERING_USB),
+                        any(),
+                        eq(mDetailsFunctionsController.mOnStartTetheringCallback));
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_ENABLE_AUTH_CHALLENGE_FOR_USB_PREFERENCES)
     public void onRadioButtonClicked_userAuthenticated() {
         mRadioButtonPreference.setKey(UsbBackend.usbFunctionsToString(UsbManager.FUNCTION_PTP));
         doReturn(UsbManager.FUNCTION_MTP).when(mUsbBackend).getCurrentFunctions();
@@ -371,6 +419,18 @@ public class UsbDetailsFunctionsControllerTest {
     public void onRadioButtonClicked_MidiNoAuthNeeded() {
         mRadioButtonPreference.setKey(UsbBackend.usbFunctionsToString(UsbManager.FUNCTION_MIDI));
         doReturn(UsbManager.FUNCTION_MTP).when(mUsbBackend).getCurrentFunctions();
+        setAuthPassesAutomatically();
+
+        mDetailsFunctionsController.onRadioButtonClicked(mRadioButtonPreference);
+
+        assertThat(mFragment.isUserAuthenticated()).isFalse();
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_EXCLUDE_WEBCAM_AUTH_CHALLENGE)
+    public void onRadioButtonClicked_whenSameSetting_noAuthNeeded() {
+        mRadioButtonPreference.setKey(UsbBackend.usbFunctionsToString(UsbManager.FUNCTION_PTP));
+        doReturn(UsbManager.FUNCTION_PTP).when(mUsbBackend).getCurrentFunctions();
         setAuthPassesAutomatically();
 
         mDetailsFunctionsController.onRadioButtonClicked(mRadioButtonPreference);

@@ -18,16 +18,26 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:settings="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/language_and_region_settings"
     android:key="language_and_region_settings">
+
+  <com.android.settingslib.widget.TopIntroPreference
+      android:title="@string/desc_introduction_of_language_picker"
+      android:persistent="false"
+      android:selectable="false"/>
+
   <PreferenceCategory
       android:key="languages_category"
       android:title="@string/locale_picker_category_title">
-    <Preference
-        android:key="phone_language"
-        android:title="@string/system_language"
-        android:fragment="com.android.settings.localepicker.LocaleListEditor"
-        settings:controller="com.android.settings.language.PhoneLanguagePreferenceController" />
+
+    <com.android.settingslib.widget.ButtonPreference
+        android:key="add_a_language"
+        android:title="@string/add_a_language"
+        android:icon="@drawable/ic_add_24dp"
+        android:order="500"
+        app:buttonPreferenceSize="large"
+        app:buttonPreferenceType="tonal"/>
   </PreferenceCategory>
 
   <PreferenceCategory
@@ -119,7 +129,6 @@
   <com.android.settingslib.widget.FooterPreference
       android:key="new_regional_pref_footer"
       android:title="@string/title_regional_pref_footer"
-      android:selectable="false"
       settings:searchable="false"
       settings:controller="com.android.settings.regionalpreferences.NewRegionalFooterPreferenceController"/>
 </PreferenceScreen>

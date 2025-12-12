@@ -18,11 +18,15 @@ package com.android.settings.homepage.contextualcards.conditional;
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.verify;
+import static org.robolectric.Shadows.shadowOf;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.net.NetworkPolicyManager;
+
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.Settings;
 
@@ -35,7 +39,6 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadow.api.Shadow;
 import org.robolectric.shadows.ShadowActivity;
-import org.robolectric.shadows.ShadowApplication;
 
 @RunWith(RobolectricTestRunner.class)
 public class BackgroundDataConditionControllerTest {
@@ -50,8 +53,8 @@ public class BackgroundDataConditionControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        ShadowApplication.getInstance().setSystemService(Context.NETWORK_POLICY_SERVICE,
-                mNetworkPolicyManager);
+        shadowOf((Application) ApplicationProvider.getApplicationContext())
+                .setSystemService(Context.NETWORK_POLICY_SERVICE, mNetworkPolicyManager);
         mActivity = Robolectric.setupActivity(Activity.class);
         mController = new BackgroundDataConditionController(mActivity, mConditionManager);
     }

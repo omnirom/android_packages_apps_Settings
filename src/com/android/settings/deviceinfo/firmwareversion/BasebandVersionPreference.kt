@@ -42,7 +42,8 @@ class BasebandVersionPreference :
     override fun getSummary(context: Context): CharSequence? =
         SystemProperties.get(BASEBAND_PROPERTY, context.getString(R.string.device_info_default))
 
-    override fun isAvailable(context: Context) = !Utils.isWifiOnly(context)
+    override fun isAvailable(context: Context) =
+        Utils.isMobileDataCapable(context) || Utils.isVoiceCapable(context)
 
     override fun bind(preference: Preference, metadata: PreferenceMetadata) {
         super.bind(preference, metadata)

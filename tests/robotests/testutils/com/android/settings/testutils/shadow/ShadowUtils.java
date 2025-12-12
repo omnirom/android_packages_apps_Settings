@@ -46,7 +46,6 @@ public class ShadowUtils {
     private static ComponentName sDeviceOwnerComponentName;
     private static Map<String, String> sAppNameMap;
     private static boolean sIsSystemAlertWindowEnabled;
-    private static boolean sIsVoiceCapable;
     private static ArraySet<String> sResultLinks = new ArraySet<>();
     private static boolean sIsBatteryPresent;
     private static boolean sIsMultipleBiometricsSupported;
@@ -80,7 +79,6 @@ public class ShadowUtils {
         sFingerprintManager = null;
         sIsUserAMonkey = false;
         sIsDemoUser = false;
-        sIsVoiceCapable = false;
         sResultLinks = new ArraySet<>();
         sIsBatteryPresent = true;
         sIsMultipleBiometricsSupported = false;
@@ -150,15 +148,6 @@ public class ShadowUtils {
 
     public static void setIsSystemAlertWindowEnabled(boolean enabled) {
         sIsSystemAlertWindowEnabled = enabled;
-    }
-
-    @Implementation
-    protected static boolean isVoiceCapable(Context context) {
-        return sIsVoiceCapable;
-    }
-
-    public static void setIsVoiceCapable(boolean isVoiceCapable) {
-        sIsVoiceCapable = isVoiceCapable;
     }
 
     @Implementation

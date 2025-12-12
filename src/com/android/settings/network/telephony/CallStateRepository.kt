@@ -17,6 +17,7 @@
 package com.android.settings.network.telephony
 
 import android.content.Context
+import android.telecom.TelecomManager
 import android.telephony.TelephonyCallback
 import android.telephony.TelephonyManager
 import android.util.Log
@@ -65,6 +66,14 @@ class CallStateRepository(
         .conflate()
         .onEach { Log.d(TAG, "isInCallFlow: $it") }
         .flowOn(Dispatchers.Default)
+
+    fun isInEmergencyCallFlow(): Flow<Boolean> {
+       val telecomManager = context.getSystemService(TelecomManager::class.java)
+        return if (telecomManager == null)
+            flowOf(false)
+        else
+            flowOf(telecomManager.isInEmergencyCall)
+    }
 
     private companion object {
         private const val TAG = "CallStateRepository"

@@ -51,6 +51,7 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
+import com.android.settings.fuelgauge.BatteryOptimizeHistoricalLogEntry.Action;
 import com.android.settings.fuelgauge.batteryusage.BatteryEntry;
 import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settings.testutils.shadow.ShadowHelpUtils;
@@ -76,6 +77,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RunWith(RobolectricTestRunner.class)
@@ -133,6 +135,7 @@ public class PowerBackgroundUsageDetailTest {
         mContext = spy(ApplicationProvider.getApplicationContext());
         when(mContext.getPackageName()).thenReturn(PACKAGE_NAME);
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
+        when(mContext.getApplicationContext()).thenReturn(mContext);
         when(mPackageManager.getInstallSourceInfo(anyString())).thenReturn(mInstallSourceInfo);
 
         final FakeFeatureFactory fakeFeatureFactory = FakeFeatureFactory.setupForTest();
@@ -178,11 +181,13 @@ public class PowerBackgroundUsageDetailTest {
                 .when(mActivity)
                 .startActivityAsUser(captor.capture(), nullable(UserHandle.class));
         doAnswer(callable).when(mActivity).startActivity(captor.capture());
+        BatteryOptimizationActionLogUtils.getSharedPreferences(mContext).edit().clear().commit();
     }
 
     @After
     public void reset() {
         ShadowHelpUtils.reset();
+        BatteryOptimizationActionLogUtils.getSharedPreferences(mContext).edit().clear().commit();
     }
 
     @Test
@@ -245,6 +250,7 @@ public class PowerBackgroundUsageDetailTest {
                         SettingsEnums.FUELGAUGE_POWER_USAGE_MANAGE_BACKGROUND,
                         PACKAGE_NAME,
                         /* consumed battery */ 0);
+        assertBatteryOptimizationAction(Action.UNKNOWN);
     }
 
     @Test
@@ -265,6 +271,42 @@ public class PowerBackgroundUsageDetailTest {
         verifyNoInteractions(mMetricsFeatureProvider);
     }
 
+    @Test
+    public void onPause_cardLaunchedAndFromOptimizeToUnrestrict_withCardSuggestionActionLog()
+            throws Exception {
+        mFragment.mOptimizationMode = BatteryOptimizeUtils.MODE_OPTIMIZED;
+        mFragment.mLaunchSourceType =
+                PowerBackgroundUsageDetail.LaunchSourceType.BATTERY_TIP;
+        when(mBatteryOptimizeUtils.getPackageName()).thenReturn(PACKAGE_NAME);
+        when(mInstallSourceInfo.getInitiatingPackageName()).thenReturn(INITIATING_PACKAGE_NAME);
+
+        mTestMode = BatteryOptimizeUtils.MODE_UNRESTRICTED;
+        assertThat(mBatteryOptimizeUtils.getAppOptimizationMode())
+                .isEqualTo(BatteryOptimizeUtils.MODE_UNRESTRICTED);
+        mFragment.onPause();
+
+        TimeUnit.SECONDS.sleep(1);
+        assertBatteryOptimizationAction(Action.UNKNOWN);
+    }
+
+    @Test
+    public void onPause_cardLaunchedAndFromUnrestrictToOptimize_withUnknownActionLog()
+            throws Exception {
+        mFragment.mOptimizationMode = BatteryOptimizeUtils.MODE_UNRESTRICTED;
+        mFragment.mLaunchSourceType =
+                PowerBackgroundUsageDetail.LaunchSourceType.BATTERY_TIP;
+        when(mBatteryOptimizeUtils.getPackageName()).thenReturn(PACKAGE_NAME);
+        when(mInstallSourceInfo.getInitiatingPackageName()).thenReturn(INITIATING_PACKAGE_NAME);
+
+        mTestMode = BatteryOptimizeUtils.MODE_OPTIMIZED;
+        assertThat(mBatteryOptimizeUtils.getAppOptimizationMode())
+                .isEqualTo(BatteryOptimizeUtils.MODE_OPTIMIZED);
+        mFragment.onPause();
+
+        TimeUnit.SECONDS.sleep(1);
+        assertBatteryOptimizationAction(Action.BATTERY_TIP_ACCEPT);
+    }
+
     private void prepareTestBatteryOptimizationUtils() {
         mBatteryOptimizeUtils = spy(new BatteryOptimizeUtils(mContext, UID, PACKAGE_NAME));
         Answer<Void> setTestMode =
@@ -275,5 +317,12 @@ public class PowerBackgroundUsageDetailTest {
         doAnswer(setTestMode).when(mBatteryOptimizeUtils).setAppUsageState(anyInt(), any());
         Answer<Integer> getTestMode = invocation -> mTestMode;
         doAnswer(getTestMode).when(mBatteryOptimizeUtils).getAppOptimizationMode();
+    }
+
+    private void assertBatteryOptimizationAction(Action expectedAction) {
+        List<Action> actionList =
+                BatteryOptimizationActionLogUtils.getBatteryOptimizeActionLogs(
+                        mContext, List.of(PACKAGE_NAME));
+        assertThat(actionList.getFirst()).isEqualTo(expectedAction);
     }
 }

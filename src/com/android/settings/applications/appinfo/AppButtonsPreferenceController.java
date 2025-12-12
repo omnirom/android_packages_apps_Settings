@@ -32,7 +32,6 @@ import android.content.IntentFilter;
 import android.content.om.OverlayInfo;
 import android.content.om.OverlayManager;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.Flags;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -462,14 +461,9 @@ public class AppButtonsPreferenceController extends BasePreferenceController imp
                     // there is more than one candidate
                     enabled = (mHomePackages.size() > 1);
                 } else if (mPackageInfo.packageName.equals(currentDefaultHome.getPackageName())) {
-                    if (Flags.improveHomeAppBehavior()) {
-                        // Allow uninstallation of current home app if it is a non-system app
-                        // and/or there are other candidate apps available.
-                        if (mPackageInfo.applicationInfo.isSystemApp()
-                                || mHomePackages.size() == 1) {
-                            enabled = false;
-                        }
-                    } else {
+                    // Allow uninstallation of current home app if it is a non-system app
+                    // and/or there are other candidate apps available.
+                    if (mPackageInfo.applicationInfo.isSystemApp() || mHomePackages.size() == 1) {
                         enabled = false;
                     }
                 }

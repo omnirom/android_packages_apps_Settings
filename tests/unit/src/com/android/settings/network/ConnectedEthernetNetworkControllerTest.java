@@ -35,6 +35,7 @@ import android.os.Looper;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ApplicationProvider;
@@ -56,6 +57,7 @@ public class ConnectedEthernetNetworkControllerTest {
     private Context mContext;
     private ConnectedEthernetNetworkController mController;
     private PreferenceScreen mScreen;
+    private PreferenceCategory mCategory;
     private Preference mPreference;
 
     @Before
@@ -71,8 +73,11 @@ public class ConnectedEthernetNetworkControllerTest {
         }
         final PreferenceManager preferenceManager = new PreferenceManager(mContext);
         mScreen = preferenceManager.createPreferenceScreen(mContext);
+        mCategory = new PreferenceCategory(mContext);
+        mCategory.setKey(ConnectedEthernetNetworkController.KEY);
+        mScreen.addPreference(mCategory);
         mPreference = new Preference(mContext);
-        mPreference.setKey(ConnectedEthernetNetworkController.KEY);
+        mPreference.setKey(ConnectedEthernetNetworkController.KEY_NETWORK);
         mScreen.addPreference(mPreference);
     }
 
@@ -116,11 +121,11 @@ public class ConnectedEthernetNetworkControllerTest {
         mController.displayPreference(mScreen);
         mController.onInternetTypeChanged(INTERNET_WIFI);
 
-        assertThat(mPreference.isVisible()).isFalse();
+        assertThat(mCategory.isVisible()).isFalse();
 
         mController.onInternetTypeChanged(INTERNET_ETHERNET);
 
-        assertThat(mPreference.isVisible()).isTrue();
+        assertThat(mCategory.isVisible()).isTrue();
     }
 
     @Test
@@ -128,10 +133,10 @@ public class ConnectedEthernetNetworkControllerTest {
         mController.displayPreference(mScreen);
         mController.onInternetTypeChanged(INTERNET_ETHERNET);
 
-        assertThat(mPreference.isVisible()).isTrue();
+        assertThat(mCategory.isVisible()).isTrue();
 
         mController.onInternetTypeChanged(INTERNET_CELLULAR);
 
-        assertThat(mPreference.isVisible()).isFalse();
+        assertThat(mCategory.isVisible()).isFalse();
     }
 }

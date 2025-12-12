@@ -35,7 +35,7 @@ class SimpleBuildNumberPreferenceTest {
 
     @Test
     fun isIndexable() {
-        assertThat(simpleBuildNumberPreference.isIndexable(context)).isFalse()
+        assertThat(simpleBuildNumberPreference.indexable).isFalse()
     }
 
     @Test

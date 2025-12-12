@@ -38,6 +38,7 @@ import com.android.settings.datausage.lib.NetworkCycleChartData;
 import com.android.settings.datausage.lib.NetworkUsageData;
 import com.android.settings.widget.UsageView;
 import com.android.settingslib.spaprivileged.framework.common.BytesFormatter;
+import com.android.settingslib.widget.GroupSectionDividerMixin;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -45,7 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ChartDataUsagePreference extends Preference {
+public class ChartDataUsagePreference extends Preference implements GroupSectionDividerMixin {
 
     // The resolution we show on the graph so that we can squash things down to ints.
     // Set to half a meg for now.

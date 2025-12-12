@@ -110,7 +110,7 @@ public class EnableLinuxTerminalPreferenceController extends BasePreferenceContr
 
         boolean isInstalled = (mTerminalPackageName != null);
         if (isInstalled) {
-            mPreference.setDisabledByAdmin(/* admin= */ null);
+            mPreference.setDisabledByAdmin((EnforcedAdmin) null);
             mPreference.setEnabled(/* enabled= */ true);
             boolean terminalEnabled =
                     mPackageManager.getApplicationEnabledSetting(mTerminalPackageName)
@@ -119,7 +119,7 @@ public class EnableLinuxTerminalPreferenceController extends BasePreferenceContr
         } else {
             if (mIsPrimaryUser) {
                 Log.e(TAG, "Terminal app doesn't exist for primary user but UI was shown");
-                mPreference.setDisabledByAdmin(/* admin= */ null);
+                mPreference.setDisabledByAdmin((EnforcedAdmin) null);
                 mPreference.setEnabled(/* enabled= */ false);
             } else {
                 // If admin hasn't enabled the system app, mark it as disabled by admin.
@@ -137,8 +137,8 @@ public class EnableLinuxTerminalPreferenceController extends BasePreferenceContr
         }
         try {
             return manager.getPackageInfo(
-                            packageName,
-                            PackageManager.MATCH_ALL | PackageManager.MATCH_DISABLED_COMPONENTS)
+                    packageName,
+                    PackageManager.MATCH_ALL | PackageManager.MATCH_DISABLED_COMPONENTS)
                     != null;
         } catch (PackageManager.NameNotFoundException e) {
             return false;

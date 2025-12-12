@@ -44,7 +44,7 @@ import java.util.List;
 
 /**
  * A group preference controller to add/remove/update preference
- * {@link com.android.settings.notification.RemoteVolumeSeekBarPreference}
+ * {@link com.android.settings.notification.RemoteVolumeSliderPreference}
  **/
 public class RemoteVolumeGroupController extends BasePreferenceController implements
         Preference.OnPreferenceChangeListener, LifecycleObserver, OnDestroy,
@@ -125,26 +125,26 @@ public class RemoteVolumeGroupController extends BasePreferenceController implem
         for (RoutingSessionInfo info : mRoutingSessionInfos) {
             final CharSequence appName = Utils.getApplicationLabel(mContext,
                     info.getClientPackageName());
-            RemoteVolumeSeekBarPreference seekBarPreference = mPreferenceCategory.findPreference(
+            RemoteVolumeSliderPreference sliderPreference = mPreferenceCategory.findPreference(
                     info.getId());
-            if (seekBarPreference != null) {
+            if (sliderPreference != null) {
                 // Update slider
-                if (seekBarPreference.getProgress() != info.getVolume()) {
-                    seekBarPreference.setProgress(info.getVolume());
+                if (sliderPreference.getValue() != info.getVolume()) {
+                    sliderPreference.setValue(info.getVolume());
                 }
-                seekBarPreference.setEnabled(mLocalMediaManager.shouldEnableVolumeSeekBar(info));
+                sliderPreference.setEnabled(mLocalMediaManager.shouldEnableVolumeSeekBar(info));
             } else {
                 // Add slider
-                seekBarPreference = new RemoteVolumeSeekBarPreference(mContext);
-                seekBarPreference.setKey(info.getId());
-                seekBarPreference.setTitle(castVolume);
-                seekBarPreference.setMax(info.getVolumeMax());
-                seekBarPreference.setProgress(info.getVolume());
-                seekBarPreference.setMin(0);
-                seekBarPreference.setOnPreferenceChangeListener(this);
-                seekBarPreference.setIcon(com.android.settingslib.R.drawable.ic_volume_remote);
-                seekBarPreference.setEnabled(mLocalMediaManager.shouldEnableVolumeSeekBar(info));
-                mPreferenceCategory.addPreference(seekBarPreference);
+                sliderPreference = new RemoteVolumeSliderPreference(mContext);
+                sliderPreference.setKey(info.getId());
+                sliderPreference.setTitle(castVolume);
+                sliderPreference.setMax(info.getVolumeMax());
+                sliderPreference.setValue(info.getVolume());
+                sliderPreference.setMin(0);
+                sliderPreference.setOnPreferenceChangeListener(this);
+                sliderPreference.setIcon(com.android.settingslib.R.drawable.ic_volume_remote);
+                sliderPreference.setEnabled(mLocalMediaManager.shouldEnableVolumeSeekBar(info));
+                mPreferenceCategory.addPreference(sliderPreference);
             }
 
             Preference switcherPreference = mPreferenceCategory.findPreference(

@@ -34,6 +34,8 @@ import com.android.settingslib.applications.RecentAppOpsAccess;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 import com.android.settingslib.widget.AppPreference;
 
+import com.android.settingslib.widget.SettingsThemeHelper;
+import com.android.settingslib.widget.ZeroStatePreference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,11 +52,18 @@ public class RecentLocationAccessSeeAllPreferenceController
 
     public RecentLocationAccessSeeAllPreferenceController(Context context, String key) {
         super(context, key);
-        mShowSystem = DeviceConfig.getBoolean(DeviceConfig.NAMESPACE_PRIVACY,
-            SystemUiDeviceConfigFlags.PROPERTY_LOCATION_INDICATORS_SMALL_ENABLED, false)
-            ? Settings.Secure.getInt(mContext.getContentResolver(),
-            Settings.Secure.LOCATION_SHOW_SYSTEM_OPS, 0) == 1
-            : false;
+        mShowSystem =
+                DeviceConfig.getBoolean(
+                                DeviceConfig.NAMESPACE_PRIVACY,
+                                SystemUiDeviceConfigFlags
+                                        .PROPERTY_LOCATION_INDICATORS_SMALL_ENABLED,
+                                false)
+                        ? Settings.Secure.getInt(
+                                        mContext.getContentResolver(),
+                                        Settings.Secure.LOCATION_SHOW_SYSTEM_OPS,
+                                        0)
+                                == 1
+                        : false;
 
         mRecentLocationAccesses = RecentAppOpsAccess.createForLocation(context);
         mMetricsFeatureProvider = FeatureFactory.getFeatureFactory().getMetricsFeatureProvider();
@@ -79,8 +88,8 @@ public class RecentLocationAccessSeeAllPreferenceController
         final UserManager userManager = UserManager.get(mContext);
 
         final List<RecentAppOpsAccess.Access> recentLocationAccesses = new ArrayList<>();
-        for (RecentAppOpsAccess.Access access : mRecentLocationAccesses.getAppListSorted(
-                mShowSystem)) {
+        for (RecentAppOpsAccess.Access access :
+                mRecentLocationAccesses.getAppListSorted(mShowSystem)) {
             if (isRequestMatchesProfileType(
                     userManager, access, ProfileSelectFragment.ProfileType.ALL)) {
                 recentLocationAccesses.add(access);
@@ -89,23 +98,26 @@ public class RecentLocationAccessSeeAllPreferenceController
 
         if (recentLocationAccesses.isEmpty()) {
             // If there's no item to display, add a "No recent apps" item.
-            final Preference banner = new AppPreference(mContext);
-            banner.setTitle(R.string.location_no_recent_apps);
+            Preference banner = null;
+            if (SettingsThemeHelper.isExpressiveTheme(mContext)) {
+                banner = new ZeroStatePreference(mContext);
+                banner.setIcon(R.drawable.ic_settings_location_filled);
+            } else {
+                banner = new AppPreference(mContext);
+            }
+            banner.setTitle(R.string.location_no_recent_accesses);
             banner.setSelectable(false);
             mCategoryAllRecentLocationAccess.addPreference(banner);
         } else {
             for (RecentAppOpsAccess.Access request : recentLocationAccesses) {
-                final Preference appPreference = createAppPreference(
-                        preference.getContext(),
-                        request, mFragment);
+                final Preference appPreference =
+                        createAppPreference(preference.getContext(), request, mFragment);
                 mCategoryAllRecentLocationAccess.addPreference(appPreference);
             }
         }
     }
 
-    /**
-     * Set the value of {@link #mShowSystem}.
-     */
+    /** Set the value of {@link #mShowSystem}. */
     public void setShowSystem(boolean showSystem) {
         mShowSystem = showSystem;
         if (mPreference != null) {

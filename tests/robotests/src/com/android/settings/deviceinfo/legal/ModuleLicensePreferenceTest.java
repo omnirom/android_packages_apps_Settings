@@ -18,10 +18,15 @@ package com.android.settings.deviceinfo.legal;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.robolectric.Shadows.shadowOf;
+
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ModuleInfo;
+
+import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +34,6 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.shadows.ShadowApplication;
 
 @RunWith(RobolectricTestRunner.class)
 public class ModuleLicensePreferenceTest {
@@ -61,7 +65,9 @@ public class ModuleLicensePreferenceTest {
 
         pref.onClick();
 
-        Intent intent = ShadowApplication.getInstance().getNextStartedActivity();
+        Intent intent =
+                shadowOf((Application) ApplicationProvider.getApplicationContext())
+                        .getNextStartedActivity();
         assertThat(intent.getAction()).isEqualTo(Intent.ACTION_VIEW);
         assertThat(intent.getData())
                 .isEqualTo(ModuleLicenseProvider.getUriForPackage(PACKAGE_NAME));

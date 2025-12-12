@@ -23,7 +23,7 @@ import android.text.TextUtils;
 import com.android.settings.R;
 
 // LINT.IfChange
-public class CallVolumePreferenceController extends VolumeSeekBarPreferenceController {
+public class CallVolumePreferenceController extends VolumeSliderPreferenceController {
 
     private AudioManager mAudioManager;
 

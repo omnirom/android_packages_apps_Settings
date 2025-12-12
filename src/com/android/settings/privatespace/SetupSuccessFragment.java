@@ -56,10 +56,6 @@ public class SetupSuccessFragment extends InstrumentedFragment {
             LayoutInflater inflater,
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        if (!android.os.Flags.allowPrivateProfile()
-                || !android.multiuser.Flags.enablePrivateSpaceFeatures()) {
-            return null;
-        }
         GlifLayout rootView =
                 (GlifLayout)
                         inflater.inflate(R.layout.private_space_setup_success, container, false);

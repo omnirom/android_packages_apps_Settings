@@ -7,3 +7,13 @@ flag {
   description: "Gates whether to enable factory reset wizard."
   bug: "301283840"
 }
+
+flag {
+  name: "fix_factory_reset_preference_on_restriction_change"
+  namespace: "supervision"
+  description: "Enable factory reset preference to be updated when restriction changes."
+  bug: "431232987"
+  metadata {
+    purpose: PURPOSE_BUGFIX
+  }
+}

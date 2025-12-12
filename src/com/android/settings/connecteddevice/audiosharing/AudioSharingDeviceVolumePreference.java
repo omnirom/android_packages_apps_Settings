@@ -16,6 +16,8 @@
 
 package com.android.settings.connecteddevice.audiosharing;
 
+import static com.android.settings.connecteddevice.audiosharing.AudioSharingUtils.MetricKey.METRIC_KEY_DEVICE_IS_PRIMARY;
+
 import android.app.settings.SettingsEnums;
 import android.bluetooth.BluetoothCsipSetCoordinator;
 import android.bluetooth.BluetoothDevice;
@@ -55,7 +57,7 @@ public class AudioSharingDeviceVolumePreference extends SeekBarPreference {
     public AudioSharingDeviceVolumePreference(
             Context context, @NonNull CachedBluetoothDevice device) {
         super(context);
-        setLayoutResource(R.layout.preference_volume_slider);
+        setLayoutResource(R.layout.preference_volume_seekbar);
         mContext = context;
         mCachedDevice = device;
         mBtManager = Utils.getLocalBtManager(mContext);
@@ -74,6 +76,7 @@ public class AudioSharingDeviceVolumePreference extends SeekBarPreference {
     public void initialize() {
         setMax(MAX_VOLUME);
         setMin(MIN_VOLUME);
+        refreshPreference();
     }
 
     @Override
@@ -109,8 +112,7 @@ public class AudioSharingDeviceVolumePreference extends SeekBarPreference {
         if ((o == null) || !(o instanceof AudioSharingDeviceVolumePreference)) {
             return false;
         }
-        return mCachedDevice.equals(
-                ((AudioSharingDeviceVolumePreference) o).mCachedDevice);
+        return mCachedDevice.equals(((AudioSharingDeviceVolumePreference) o).mCachedDevice);
     }
 
     @Override
@@ -131,9 +133,17 @@ public class AudioSharingDeviceVolumePreference extends SeekBarPreference {
     }
 
     void onPreferenceAttributesChanged() {
+        refreshPreference();
+    }
+
+    private void refreshPreference() {
         var unused = ThreadUtils.postOnBackgroundThread(() -> {
             String name = mCachedDevice.getName();
-            AudioSharingUtils.postOnMainThread(mContext, () -> setTitle(name));
+            AudioSharingUtils.postOnMainThread(mContext, () -> {
+                setTitle(name);
+                setSeekBarContentDescription(
+                        mContext.getString(R.string.audio_sharing_device_volume_description, name));
+            });
         });
     }
 
@@ -161,14 +171,18 @@ public class AudioSharingDeviceVolumePreference extends SeekBarPreference {
             Log.d(TAG, "Skip set device volume, device is null");
             return;
         }
-        VolumeControlProfile vc = mBtManager == null ? null
-                : mBtManager.getProfileManager().getVolumeControlProfile();
+        VolumeControlProfile vc =
+                mBtManager == null
+                        ? null
+                        : mBtManager.getProfileManager().getVolumeControlProfile();
         if (vc != null) {
             vc.setDeviceVolume(device, progress, /* isGroupOp= */ true);
             mMetricsFeatureProvider.action(
-                    mContext,
+                    SettingsEnums.PAGE_UNKNOWN,
                     SettingsEnums.ACTION_AUDIO_SHARING_CHANGE_MEDIA_DEVICE_VOLUME,
-                    /* isPrimary= */ false);
+                    SettingsEnums.PAGE_UNKNOWN,
+                    String.valueOf(METRIC_KEY_DEVICE_IS_PRIMARY.getId()),
+                    /* isPrimary= */ 0);
             Log.d(
                     TAG,
                     "set device volume, device = "
@@ -190,9 +204,11 @@ public class AudioSharingDeviceVolumePreference extends SeekBarPreference {
             int volume = Math.round((float) progress * streamVolumeRange / seekbarRange);
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
             mMetricsFeatureProvider.action(
-                    mContext,
+                    SettingsEnums.PAGE_UNKNOWN,
                     SettingsEnums.ACTION_AUDIO_SHARING_CHANGE_MEDIA_DEVICE_VOLUME,
-                    /* isPrimary= */ true);
+                    SettingsEnums.PAGE_UNKNOWN,
+                    String.valueOf(METRIC_KEY_DEVICE_IS_PRIMARY.getId()),
+                    /* isPrimary= */ 1);
             Log.d(TAG, "set music stream volume, volume = " + progress);
         } catch (RuntimeException e) {
             Log.e(TAG, "Fail to setAudioManagerStreamVolumeForFallbackDevice, error = " + e);

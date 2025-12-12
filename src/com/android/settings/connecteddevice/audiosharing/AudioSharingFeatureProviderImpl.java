@@ -17,12 +17,14 @@
 package com.android.settings.connecteddevice.audiosharing;
 
 import android.annotation.IdRes;
-import androidx.annotation.NonNull;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.android.settings.R;
 
 /** Default implementation for {@link AudioSharingFeatureProvider} */
 public class AudioSharingFeatureProviderImpl implements AudioSharingFeatureProvider {
@@ -32,8 +34,10 @@ public class AudioSharingFeatureProviderImpl implements AudioSharingFeatureProvi
             @IdRes int qrCodeImageViewId,
             @NonNull Drawable drawable,
             @NonNull String qrCode) {
-        ImageView imageView = ((ImageView) qrcodeContainer.requireViewById(qrCodeImageViewId));
+        ImageView imageView = qrcodeContainer.requireViewById(qrCodeImageViewId);
         imageView.setImageDrawable(drawable);
         imageView.setVisibility(View.VISIBLE);
+        imageView.setContentDescription(
+                fragment.getContext().getString(R.string.qr_code_content_description));
     }
 }

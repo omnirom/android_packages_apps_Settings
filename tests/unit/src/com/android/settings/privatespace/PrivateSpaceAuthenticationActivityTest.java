@@ -27,9 +27,7 @@ import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Flags;
 import android.os.UserManager;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
@@ -90,8 +88,6 @@ public class PrivateSpaceAuthenticationActivityTest {
     /** Tests that when Private does not exist setup flow is started. */
     //TODO(b/307729746) Plan to add more tests for complete setup flow
     @Test
-    @RequiresFlagsEnabled({Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-            android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES})
     public void whenPrivateProfileDoesNotExist_triggersSetupFlow() {
         assumeTrue(mContext.getSystemService(UserManager.class).canAddPrivateProfile());
         when(mPrivateSpaceMaintainer.doesPrivateSpaceExist()).thenReturn(false);

@@ -48,9 +48,11 @@ class AudioStreamStateHandler {
     AudioStreamStateHandler() {}
 
     void handleStateChange(
+            @Nullable AudioStreamStateHandler prevStateHandler,
             AudioStreamPreference preference,
             AudioStreamsProgressCategoryController controller,
-            AudioStreamsHelper helper) {
+            AudioStreamsHelper helper,
+            AudioStreamScanHelper scanHelper) {
         var newState = getStateEnum();
         if (preference.getAudioStreamState() == newState) {
             return;
@@ -67,13 +69,21 @@ class AudioStreamStateHandler {
                             + " to state : "
                             + newState);
         }
+        if (prevStateHandler != null) {
+            prevStateHandler.onExit(scanHelper, newState);
+        }
+
         preference.setAudioStreamState(newState);
 
-        performAction(preference, controller, helper);
+        onEnter(preference, controller, helper, scanHelper);
 
         // Update UI
         ThreadUtils.postOnMainThread(
                 () -> {
+                    if (shouldRemovePreference()) {
+                        controller.removePreference(preference);
+                        return;
+                    }
                     String summary =
                             getSummary() != EMPTY_STRING_RES
                                     ? preference.getContext().getString(getSummary())
@@ -110,10 +120,18 @@ class AudioStreamStateHandler {
      * be optionally overridden by subclasses to provide custom behavior based on the audio stream
      * state change.
      */
-    void performAction(
+    void onEnter(
             AudioStreamPreference preference,
             AudioStreamsProgressCategoryController controller,
-            AudioStreamsHelper helper) {}
+            AudioStreamsHelper helper,
+            AudioStreamScanHelper scanHelper) {}
+
+    /**
+     * Perform action when exiting one state.
+     */
+    void onExit(AudioStreamScanHelper scanHelper,
+            AudioStreamsProgressCategoryController.AudioStreamState newState) {
+    }
 
     /**
      * The preference summary for the audio stream state (e.g, Scanning...) This method is intended
@@ -132,6 +150,13 @@ class AudioStreamStateHandler {
     Preference.OnPreferenceClickListener getOnClickListener(
             AudioStreamsProgressCategoryController controller) {
         return null;
+    }
+
+    /**
+     * Indicates if the preference should be removed from the screen when the state is reached.
+     */
+    boolean shouldRemovePreference() {
+        return false;
     }
 
     /** Subclasses should always override. */

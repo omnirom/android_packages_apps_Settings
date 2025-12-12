@@ -676,6 +676,15 @@
         <item>Long</item>
     </string-array>
 
+    <!-- Ethernet IP settings. -->
+    <!-- Note that adding/removing/moving the items will need ethernet settings code change. -->
+    <string-array name="ethernet_ip_settings">
+        <!-- Use DHCP (Dynamic Host Configuration Protocol) for obtaining IP settings [CHAR LIMIT=25] -->
+        <item>DHCP</item>
+        <!-- Use statically defined IP settings [CHAR LIMIT=25]-->
+        <item>Static</item>
+    </string-array>
+
     <!-- Values for the list of long press timeout options. -->
     <string-array name="long_press_timeout_selector_values" translatable="false">
         <item>400</item>
@@ -880,21 +889,6 @@
         <item>0</item>
     </string-array>
 
-    <!-- Titles for the accessibility button or gesture. [CHAR LIMIT=35] -->
-    <string-array name="accessibility_button_gesture_selector_titles">
-        <item>Button</item>
-        <item>Gesture</item>
-    </string-array>
-
-    <!-- Values for the accessibility button or gesture. -->
-    <!-- Should Keep in sync with Settings.Secure.ACCESSIBILITY_BUTTON_MODE_* -->
-    <string-array name="accessibility_button_gesture_selector_values" translatable="false">
-        <!-- Button -->
-        <item>1</item>
-        <!-- Gesture -->
-        <item>2</item>
-    </string-array>
-
     <!-- Titles for the accessibility button size. [CHAR LIMIT=35] -->
     <string-array name="accessibility_button_size_selector_titles">
         <item>Small</item>
@@ -1071,6 +1065,20 @@
         <item>while_charging</item>
         <item>while_charging_and_upright</item>
         <item>while_docked</item>
+    </string-array>
+
+    <string-array name="low_light_display_behavior_entries" translatable="false">
+        <item>@string/low_light_display_behavior_screen_off</item>
+        <item>@string/low_light_display_behavior_low_light_clock_dream</item>
+    </string-array>
+
+    <string-array name="low_light_display_behavior_values" translatable="false">
+        <item>low_light_display_behavior_screen_off</item>
+        <item>low_light_display_behavior_low_light_clock_dream</item>
+    </string-array>
+
+    <string-array name="low_light_display_behavior_supported_values" translatable="false">
+        <item>low_light_display_behavior_low_light_clock_dream</item>
     </string-array>
 
     <string-array name="zen_mode_contacts_calls_entries" translatable="false">
@@ -1646,5 +1654,15 @@
 
     <!-- Packages that will not show Display over other apps permission -->
     <string-array name="display_over_apps_permission_change_exempt">
+    </string-array>
+
+    <!-- Titles for Action Corner customization option. [CHAR LIMIT=35] -->
+    <string-array name="action_corner_action_titles">
+        <item>None</item>
+        <item>Home</item>
+        <item>Recent apps</item>
+        <item>Notifications</item>
+        <item>Quick settings</item>
+        <item>Lockscreen</item>
     </string-array>
 </resources>

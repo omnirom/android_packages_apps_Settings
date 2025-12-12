@@ -24,6 +24,10 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
+    <style name="Transparent.NoAnimation" parent="Transparent">
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
     <style name="Theme.Settings" parent="Theme.SettingsBase">
         <item name="android:clipToPadding">false</item>
         <item name="android:clipChildren">false</item>
@@ -35,6 +39,7 @@
 
         <item name="fingerprint_layout_theme">@style/FingerprintLayoutTheme</item>
         <item name="face_layout_theme">@style/FaceLayoutTheme</item>
+        <item name="screen_lock_layout_theme">@style/ScreenLockLayoutTheme</item>
         <item name="ic_menu_moreoverflow">@*android:drawable/ic_menu_moreoverflow_holo_dark</item>
 
         <!-- For edge-to-edge -->
@@ -248,4 +253,20 @@
     <style name="SettingsSudThemeGlif.Light" parent="@style/SudThemeGlif.Light">
         <item name="android:background">@color/settingslib_materialColorSurfaceContainerLowest</item>
     </style>
+
+    <style name="IdentityCheckPromoCardActivityTheme" parent="@style/Theme.MaterialComponents.DayNight">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+    <style name="ThemeOverlay.SafetyCenterColors.Light" parent="">
+        <item name="colorScIconInfo">@color/sc_icon_info_light</item>
+        <item name="colorScIconRecommend">@color/sc_icon_recommend_light</item>
+        <item name="colorScIconWarn">@color/sc_icon_warn_light</item>
+        <item name="colorScShieldAccent">@color/sc_shield_accent_light</item>
+    </style>
+
+    <style name="ThemeOverlay.SafetyCenterColors"
+        parent="ThemeOverlay.SafetyCenterColors.Light" />
 </resources>

@@ -22,7 +22,8 @@ import android.text.TextUtils;
 
 import com.android.settings.R;
 
-public class AlarmVolumePreferenceController extends VolumeSeekBarPreferenceController {
+// LINT.IfChange
+public class AlarmVolumePreferenceController extends VolumeSliderPreferenceController {
 
     private static final String KEY_ALARM_VOLUME = "alarm_volume";
 
@@ -66,3 +67,4 @@ public class AlarmVolumePreferenceController extends VolumeSeekBarPreferenceCont
         return com.android.internal.R.drawable.ic_audio_alarm_mute;
     }
 }
+// LINT.ThenChange(AlarmVolumePreference.kt)

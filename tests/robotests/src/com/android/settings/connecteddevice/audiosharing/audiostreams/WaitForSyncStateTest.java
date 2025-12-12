@@ -18,12 +18,14 @@ package com.android.settings.connecteddevice.audiosharing.audiostreams;
 
 import static android.app.settings.SettingsEnums.DIALOG_AUDIO_STREAM_MAIN_WAIT_FOR_SYNC_TIMEOUT;
 
+import static com.android.settings.connecteddevice.audiosharing.audiostreams.AudioStreamsProgressCategoryController.AudioStreamState.ADD_SOURCE_WAIT_FOR_RESPONSE_FROM_QR;
 import static com.android.settings.connecteddevice.audiosharing.audiostreams.AudioStreamsScanQrCodeController.REQUEST_SCAN_BT_BROADCAST_QR_CODE;
 import static com.android.settings.connecteddevice.audiosharing.audiostreams.WaitForSyncState.AUDIO_STREAM_WAIT_FOR_SYNC_STATE_SUMMARY;
 import static com.android.settings.connecteddevice.audiosharing.audiostreams.WaitForSyncState.WAIT_FOR_SYNC_TIMEOUT_MILLIS;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -36,6 +38,7 @@ import android.app.settings.SettingsEnums;
 import android.bluetooth.BluetoothLeBroadcastMetadata;
 import android.content.Context;
 import android.content.Intent;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -43,6 +46,7 @@ import com.android.settings.R;
 import com.android.settings.SettingsActivity;
 import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
+import com.android.settingslib.flags.Flags;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -60,10 +64,12 @@ import java.util.concurrent.TimeUnit;
 @RunWith(RobolectricTestRunner.class)
 public class WaitForSyncStateTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     private final Context mContext = spy(ApplicationProvider.getApplicationContext());
     @Mock private AudioStreamPreference mMockPreference;
     @Mock private AudioStreamsProgressCategoryController mMockController;
     @Mock private AudioStreamsHelper mMockHelper;
+    @Mock private AudioStreamScanHelper mScanHelper;
     @Mock private BluetoothLeBroadcastMetadata mMockMetadata;
     private FakeFeatureFactory mFeatureFactory;
     private WaitForSyncState mInstance;
@@ -101,7 +107,7 @@ public class WaitForSyncStateTest {
         when(mMockPreference.getAudioStreamState())
                 .thenReturn(AudioStreamsProgressCategoryController.AudioStreamState.UNKNOWN);
 
-        mInstance.performAction(mMockPreference, mMockController, mMockHelper);
+        mInstance.onEnter(mMockPreference, mMockController, mMockHelper, mScanHelper);
         ShadowLooper.idleMainLooper(WAIT_FOR_SYNC_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
 
         verify(mMockController, never()).handleSourceLost(anyInt());
@@ -109,6 +115,7 @@ public class WaitForSyncStateTest {
 
     @Test
     public void testPerformAction_timeout_stateMatching_sourceLost() {
+        mSetFlagsRule.enableFlags(Flags.FLAG_AUDIO_STREAM_SCAN_WITH_FILTER);
         when(mMockPreference.isShown()).thenReturn(true);
         when(mMockPreference.getAudioStreamState())
                 .thenReturn(AudioStreamsProgressCategoryController.AudioStreamState.WAIT_FOR_SYNC);
@@ -119,9 +126,10 @@ public class WaitForSyncStateTest {
                 .thenReturn(SourceOriginForLogging.BROADCAST_SEARCH);
         when(mMockController.getFragment()).thenReturn(mock(AudioStreamsDashboardFragment.class));
 
-        mInstance.performAction(mMockPreference, mMockController, mMockHelper);
+        mInstance.onEnter(mMockPreference, mMockController, mMockHelper, mScanHelper);
         ShadowLooper.idleMainLooper(WAIT_FOR_SYNC_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
 
+        verify(mScanHelper).startScanningWithFilter(any());
         verify(mMockController).handleSourceLost(1);
         verify(mFeatureFactory.metricsFeatureProvider)
                 .action(
@@ -158,5 +166,22 @@ public class WaitForSyncStateTest {
 
         int requestCode = requestCodeCaptor.getValue();
         assertThat(requestCode).isEqualTo(REQUEST_SCAN_BT_BROADCAST_QR_CODE);
+    }
+
+    @Test
+    public void testOnExit_addingSource_doNothing() {
+        mSetFlagsRule.enableFlags(Flags.FLAG_AUDIO_STREAM_SCAN_WITH_FILTER);
+        mInstance.onExit(mScanHelper, ADD_SOURCE_WAIT_FOR_RESPONSE_FROM_QR);
+
+        verify(mScanHelper, never()).restartScanningWithoutFilter();
+    }
+
+    @Test
+    public void testOnExit_restartScanWithoutFilter() {
+        mSetFlagsRule.enableFlags(Flags.FLAG_AUDIO_STREAM_SCAN_WITH_FILTER);
+        mInstance.onExit(mScanHelper,
+                AudioStreamsProgressCategoryController.AudioStreamState.SYNCED);
+
+        verify(mScanHelper).restartScanningWithoutFilter();
     }
 }

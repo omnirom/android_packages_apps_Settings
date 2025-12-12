@@ -294,7 +294,7 @@ public class BatteryTestUtils {
         return PowerAnomalyEvent.newBuilder()
                 .setEventId("AppAnomaly")
                 .setType(PowerAnomalyType.TYPE_APPS_ITEM)
-                .setKey(PowerAnomalyKey.KEY_APP_TOTAL_HIGHER_THAN_USUAL)
+                .setKey(PowerAnomalyKey.KEY_APP_THAN_USUAL)
                 .setDismissRecordKey("KEY_APP_1")
                 .setScore(2.0f)
                 .setWarningItemInfo(

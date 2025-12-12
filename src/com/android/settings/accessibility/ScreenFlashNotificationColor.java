@@ -21,7 +21,7 @@ import androidx.annotation.StringRes;
 
 import com.android.settings.R;
 
-enum ScreenFlashNotificationColor {
+public enum ScreenFlashNotificationColor {
     BLUE(0x4D0000FE, R.string.screen_flash_color_blue),
     AZURE(0x660080FF, R.string.screen_flash_color_azure),
     CYAN(0x4D00FFFF, R.string.screen_flash_color_cyan),
@@ -37,9 +37,9 @@ enum ScreenFlashNotificationColor {
 
     static final int ALPHA_MASK = 0xFF000000;
 
-    final int mColorInt;
-    final int mOpaqueColorInt;
-    final int mStringRes;
+    public final int mColorInt;
+    public final int mOpaqueColorInt;
+    public final int mStringRes;
 
     ScreenFlashNotificationColor(@ColorInt int colorInt, @StringRes int stringRes) {
         this.mColorInt = colorInt;

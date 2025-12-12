@@ -76,7 +76,7 @@ public class DefaultUsbConfigurationPreferenceControllerTest {
 
         mController.updateState(mPreference);
 
-        verify(mPreference).setDisabledByAdmin(null);
+        verify(mPreference).setDisabledByAdmin((RestrictedLockUtils.EnforcedAdmin) null);
     }
 
     @Test
@@ -97,7 +97,7 @@ public class DefaultUsbConfigurationPreferenceControllerTest {
 
         mController.onDeveloperOptionsSwitchEnabled();
 
-        verify(mPreference).setDisabledByAdmin(null);
+        verify(mPreference).setDisabledByAdmin((RestrictedLockUtils.EnforcedAdmin) null);
     }
 
     @Test

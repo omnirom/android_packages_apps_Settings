@@ -16,7 +16,6 @@
 
 package com.android.settings.notification.modes;
 
-import android.app.Flags;
 import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -35,7 +34,10 @@ import androidx.preference.Preference;
 
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
+import com.android.settings.notification.FutureUtil;
 import com.android.settingslib.Utils;
+import com.android.settingslib.widget.ButtonPreference;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -97,15 +99,19 @@ class ZenModesListAddModePreferenceController extends BasePreferenceController {
 
     @Override
     public int getAvailabilityStatus() {
-        return Flags.modesUi() ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
+        return AVAILABLE;
     }
 
     @Override
     public void updateState(Preference preference) {
-        preference.setOnPreferenceClickListener(pref -> {
-            onClickAddMode();
-            return true;
-        });
+        if (SettingsThemeHelper.isExpressiveTheme(mContext)) {
+            ((ButtonPreference) preference).setOnClickListener(v -> onClickAddMode());
+        } else {
+            preference.setOnPreferenceClickListener(pref -> {
+                onClickAddMode();
+                return true;
+            });
+        }
     }
 
     @VisibleForTesting

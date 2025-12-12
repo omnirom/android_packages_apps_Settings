@@ -18,9 +18,7 @@ import static android.content.pm.PackageManager.FEATURE_ETHERNET;
 import static android.content.pm.PackageManager.FEATURE_WIFI;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.NetworkTemplate;
@@ -38,8 +36,11 @@ import androidx.annotation.VisibleForTesting;
 
 import com.android.settings.applications.ProcStatsData;
 import com.android.settings.datausage.lib.DataUsageLib;
+import com.android.settings.msds.MSDLPlayerWrapper;
 import com.android.settings.network.MobileNetworkRepository;
 import com.android.settingslib.net.DataUsageController;
+
+import com.google.android.msdl.logging.MSDLEvent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +49,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
+import java.util.List;
 
 public class SettingsDumpService extends Service {
 
@@ -66,6 +68,8 @@ public class SettingsDumpService extends Service {
     static final String KEY_DEFAULT_BROWSER_APP = "default_browser_app";
     @VisibleForTesting
     static final String KEY_ANOMALY_DETECTION = "anomaly_detection";
+    @VisibleForTesting
+    static final String KEY_MSDL_USAGE = "msdl_usage";
     @VisibleForTesting
     static final Intent BROWSER_INTENT =
             new Intent("android.intent.action.VIEW", Uri.parse("http://"));
@@ -94,6 +98,7 @@ public class SettingsDumpService extends Service {
             pw.increaseIndent();
             try {
                 dump.put(KEY_SERVICE, "Settings State");
+                dump.put(KEY_MSDL_USAGE, dumpMsdlUsage());
                 dump.put(KEY_STORAGE, dumpStorage());
                 dump.put(KEY_DATAUSAGE, dumpDataUsage());
                 dump.put(KEY_MEMORY, dumpMemory());
@@ -161,6 +166,21 @@ public class SettingsDumpService extends Service {
         obj.put("usage", usage.usageLevel);
         obj.put("warning", usage.warningLevel);
         obj.put("limit", usage.limitLevel);
+        return obj;
+    }
+
+    private JSONObject dumpMsdlUsage() throws JSONException {
+        List<MSDLEvent> history = MSDLPlayerWrapper.INSTANCE.getHistory();
+        JSONObject obj = new JSONObject();
+        JSONArray eventsArray = new JSONArray();
+        for (MSDLEvent event : history) {
+            JSONObject eventObj = new JSONObject();
+            eventObj.put("timestamp", event.getTimeStamp());
+            eventObj.put("token_name", event.getTokenName());
+            eventObj.put("properties", event.getProperties());
+            eventsArray.put(eventObj);
+        }
+        obj.put("events", eventsArray);
         return obj;
     }
 

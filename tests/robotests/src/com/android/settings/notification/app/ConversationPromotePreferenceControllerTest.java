@@ -28,12 +28,15 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
+import android.app.Application;
 import android.app.NotificationChannel;
 import android.content.Context;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.Preference;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.notification.NotificationBackend;
@@ -70,7 +73,8 @@ public class ConversationPromotePreferenceControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        ShadowApplication shadowApplication = ShadowApplication.getInstance();
+        ShadowApplication shadowApplication =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         mContext = RuntimeEnvironment.application;
         when(mFragment.getActivity()).thenReturn(mock(FragmentActivity.class));
         mController = spy(new ConversationPromotePreferenceController(

@@ -51,6 +51,7 @@ class NearbySharePreferenceController(private val context: Context, key: String)
         }
         nearbyComponentName = ComponentName.unflattenFromString(componentString)?.also {
             intent.setComponent(it)
+            intent.putExtra(EXTRA_REDIRECT_FROM_SETTINGS, true)
             nearbyLabel = getNearbyLabel(it)
         }
     }
@@ -68,6 +69,8 @@ class NearbySharePreferenceController(private val context: Context, key: String)
 
         preference.findViewById<TextView>(R.id.nearby_sharing_suggestion_title).text =
             context.getString(R.string.bluetooth_try_nearby_share_title, nearbyLabel)
+        preference.findViewById<TextView>(R.id.nearby_sharing_suggestion_summary).text =
+            context.getString(R.string.bluetooth_try_nearby_share_summary, nearbyLabel)
         FeatureFactory.featureFactory.metricsFeatureProvider.action(
             SettingsEnums.PAGE_UNKNOWN,
             SettingsEnums.ACTION_NEARBY_SHARE_ENTRYPOINT_SHOWN,
@@ -93,4 +96,8 @@ class NearbySharePreferenceController(private val context: Context, key: String)
         } catch(_: NameNotFoundException) {
             null
         }
+
+    companion object {
+        private const val EXTRA_REDIRECT_FROM_SETTINGS = "android.intent.extra.REDIRECTED_FROM_BLUETOOTH_SHARE"
+    }
 }

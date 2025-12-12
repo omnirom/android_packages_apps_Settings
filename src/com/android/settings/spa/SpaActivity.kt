@@ -53,11 +53,15 @@ class SpaActivity : BrowseActivity() {
                 false
             }
 
-        @JvmStatic
-        fun Context.startSpaActivity(destination: String) {
-            val intent = Intent(this, SpaActivity::class.java)
-                .appendSpaParams(destination = destination)
-                .appendSpaParams(sessionName = SESSION_BROWSE)
+        @[JvmStatic JvmOverloads]
+        fun Context.startSpaActivity(destination: String, highlightItemKey: String? = null) {
+            val intent =
+                Intent(this, SpaActivity::class.java)
+                    .appendSpaParams(
+                        destination = destination,
+                        highlightItemKey = highlightItemKey,
+                        sessionName = SESSION_BROWSE,
+                    )
             startActivity(intent)
         }
     }

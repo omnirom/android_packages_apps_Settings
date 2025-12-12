@@ -18,12 +18,10 @@ package com.android.settings.network;
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.safetycenter.SafetyCenterManager;
-import android.safetycenter.SafetySourceData;
 import android.telephony.SubscriptionInfo;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -48,7 +46,6 @@ import java.util.List;
 public class CellularSecurityPreferenceController extends BasePreferenceController {
 
     private static final String LOG_TAG = "CellularSecurityPreferenceController";
-    private static final String SAFETY_SOURCE_ID = "AndroidCellularNetworkSecurity";
 
     private @Nullable TelephonyManager mTelephonyManager;
 
@@ -119,7 +116,16 @@ public class CellularSecurityPreferenceController extends BasePreferenceControll
                             + e.getMessage());
         }
 
-        if (isNullCipherDisablementAvailable || areCellSecNotificationsAvailable) {
+        boolean isRadioCapabilitySupported = false;
+        try {
+            isRadioCapabilitySupported = mTelephonyManager.isRadioInterfaceCapabilitySupported(
+                    mTelephonyManager.CAPABILITY_USES_ALLOWED_NETWORK_TYPES_BITMASK);
+        } catch (UnsupportedOperationException e) {
+            Log.e(LOG_TAG, "Radio interface capability unsupported", e);
+        }
+
+        if (isNullCipherDisablementAvailable || areCellSecNotificationsAvailable
+                || isRadioCapabilitySupported) {
             return AVAILABLE;
         } else {
             return UNSUPPORTED_ON_DEVICE;
@@ -131,39 +137,25 @@ public class CellularSecurityPreferenceController extends BasePreferenceControll
         if (!TextUtils.equals(preference.getKey(), getPreferenceKey())) {
             return super.handlePreferenceTreeClick(preference);
         }
-        if (!isSafetyCenterSupported()) {
-            // Realistically, it's unlikely to end up in handlePreferenceTreeClick with SafetyCenter
-            // being not supported on the device.
+        if (mTelephonyManager == null) {
+            Log.w(LOG_TAG, "Telephony manager not yet initialized");
             return false;
         }
-        // Need to check that both Safety Center is available on device, and also that the HALs are
-        // enabled before showing the Safety Center UI. Otherwise, we need to take them to the page
-        // where the HALs can be enabled.
-        SafetyCenterManager safetyCenterManager = mContext.getSystemService(
-                SafetyCenterManager.class);
-        SafetySourceData data = null;
-        if (safetyCenterManager.isSafetyCenterEnabled()) {
-            data = safetyCenterManager.getSafetySourceData(SAFETY_SOURCE_ID);
+        if (!isSafetyCenterSupported() && !mTelephonyManager.isRadioInterfaceCapabilitySupported(
+                mTelephonyManager.CAPABILITY_USES_ALLOWED_NETWORK_TYPES_BITMASK)) {
+            // Realistically, it's unlikely to end up in handlePreferenceTreeClick if SafetyCenter
+            // isn't supported on the device and the IRadio version is below 1.6.
+            return false;
         }
-        // Can only redirect to SafetyCenter if it has received data via the SafetySource, as
-        // SafetyCenter doesn't support redirecting to a specific page associated with a source
-        // if it hasn't received data from that source. See b/373942609 for details.
-        if (data != null && areNotificationsEnabled()) {
-            Intent safetyCenterIntent = new Intent(Intent.ACTION_SAFETY_CENTER);
-            safetyCenterIntent.putExtra(SafetyCenterManager.EXTRA_SAFETY_SOURCES_GROUP_ID,
-                    "AndroidCellularNetworkSecuritySources");
-            mContext.startActivity(safetyCenterIntent);
-        } else {
-            Log.v(LOG_TAG, "Hardware APIs not enabled, or data source is null.");
-            final Bundle bundle = new Bundle();
-            bundle.putString(CellularSecuritySettingsFragment.KEY_CELLULAR_SECURITY_PREFERENCE, "");
+        Log.v(LOG_TAG, "Load mobile network security screen.");
+        final Bundle bundle = new Bundle();
+        bundle.putString(CellularSecuritySettingsFragment.KEY_CELLULAR_SECURITY_PREFERENCE, "");
 
-            new SubSettingLauncher(mContext)
-                     .setDestination(CellularSecuritySettingsFragment.class.getName())
-                     .setArguments(bundle)
-                     .setSourceMetricsCategory(SettingsEnums.CELLULAR_SECURITY_SETTINGS)
-                     .launch();
-        }
+        new SubSettingLauncher(mContext)
+                .setDestination(CellularSecuritySettingsFragment.class.getName())
+                .setArguments(bundle)
+                .setSourceMetricsCategory(SettingsEnums.CELLULAR_SECURITY_SETTINGS)
+                .launch();
         return true;
     }
 

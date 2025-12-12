@@ -27,7 +27,7 @@ import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.preference.PreferenceScreen;
-import androidx.preference.SwitchPreference;
+import androidx.preference.SwitchPreferenceCompat;
 
 import com.android.hardware.input.Flags;
 import com.android.settings.testutils.shadow.ShadowSystemSettings;
@@ -54,7 +54,7 @@ public class TouchpadVisualizerPreferenceControllerTest {
     @Mock
     private PreferenceScreen mScreen;
     @Mock
-    private SwitchPreference mPreference;
+    private SwitchPreferenceCompat mPreference;
 
     private Context mContext;
 

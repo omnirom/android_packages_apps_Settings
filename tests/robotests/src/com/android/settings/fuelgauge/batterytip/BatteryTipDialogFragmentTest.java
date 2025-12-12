@@ -32,7 +32,6 @@ import androidx.fragment.app.FragmentActivity;
 import com.android.settings.R;
 import com.android.settings.fuelgauge.batterytip.tips.BatteryDefenderTip;
 import com.android.settings.fuelgauge.batterytip.tips.BatteryTip;
-import com.android.settings.fuelgauge.batterytip.tips.HighUsageTip;
 import com.android.settings.fuelgauge.batterytip.tips.RestrictAppTip;
 import com.android.settings.fuelgauge.batterytip.tips.UnrestrictAppTip;
 import com.android.settings.testutils.FakeFeatureFactory;
@@ -67,7 +66,6 @@ public class BatteryTipDialogFragmentTest {
 
     private BatteryTipDialogFragment mDialogFragment;
     private Context mContext;
-    private HighUsageTip mHighUsageTip;
     private RestrictAppTip mRestrictedOneAppTip;
     private RestrictAppTip mRestrictTwoAppsTip;
     private UnrestrictAppTip mUnrestrictAppTip;
@@ -102,7 +100,6 @@ public class BatteryTipDialogFragmentTest {
                         .setPackageName(PACKAGE_NAME)
                         .build();
         highUsageTips.add(mAppInfo);
-        mHighUsageTip = new HighUsageTip(SCREEN_TIME_MS, highUsageTips);
 
         final List<AppInfo> restrictApps = new ArrayList<>();
         restrictApps.add(mAppInfo);
@@ -119,27 +116,6 @@ public class BatteryTipDialogFragmentTest {
     @After
     public void tearDown() {
         mPackageManager.removePackage(PACKAGE_NAME);
-    }
-
-    @Test
-    public void testOnCreateDialog_highUsageTip_fireHighUsageDialog() {
-        Robolectric.getForegroundThreadScheduler().pause();
-
-        mDialogFragment = BatteryTipDialogFragment.newInstance(mHighUsageTip, METRICS_KEY);
-
-        FragmentController.setupFragment(
-                mDialogFragment,
-                FragmentActivity.class,
-                0 /* containerViewId */,
-                null /* bundle */);
-
-        Robolectric.getForegroundThreadScheduler().advanceToLastPostedRunnable();
-
-        final AlertDialog dialog = ShadowAlertDialogCompat.getLatestAlertDialog();
-        ShadowAlertDialogCompat shadowDialog = ShadowAlertDialogCompat.shadowOf(dialog);
-
-        assertThat(shadowDialog.getMessage())
-                .isEqualTo(mContext.getString(R.string.battery_tip_dialog_message, 1));
     }
 
     @Test

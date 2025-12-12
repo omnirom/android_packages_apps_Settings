@@ -23,6 +23,9 @@ import android.os.Bundle;
 import android.os.ServiceManager;
 import android.service.notification.ConversationChannelWrapper;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.notification.NotificationBackend;
@@ -31,6 +34,7 @@ import com.android.settingslib.core.AbstractPreferenceController;
 import java.util.ArrayList;
 import java.util.List;
 
+// LINT.IfChange
 public class ConversationListSettings extends DashboardFragment {
     private static final String TAG = "ConvoListSettings";
 
@@ -52,6 +56,11 @@ public class ConversationListSettings extends DashboardFragment {
     @Override
     public int getMetricsCategory() {
         return SettingsEnums.NOTIFICATION_CONVERSATION_LIST_SETTINGS;
+    }
+
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return ConversationListScreen.KEY;
     }
 
     @Override
@@ -107,3 +116,4 @@ public class ConversationListSettings extends DashboardFragment {
         mNoConversationsController.displayPreference(getPreferenceScreen());
     }
 }
+// LINT.ThenChange(ConversationListScreen.kt)

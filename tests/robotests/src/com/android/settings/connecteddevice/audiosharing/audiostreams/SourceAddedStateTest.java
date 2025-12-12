@@ -76,6 +76,7 @@ public class SourceAddedStateTest {
     @Mock private AudioStreamPreference mPreference;
     @Mock private AudioStreamsProgressCategoryController mController;
     @Mock private AudioStreamsHelper mHelper;
+    @Mock private AudioStreamScanHelper mScanHelper;
     @Mock private AudioStreamsRepository mRepository;
     @Mock private AudioStreamsDashboardFragment mFragment;
     @Mock private FragmentActivity mActivity;
@@ -122,7 +123,7 @@ public class SourceAddedStateTest {
         when(mPreference.getSourceOriginForLogging())
                 .thenReturn(SourceOriginForLogging.QR_CODE_SCAN_SETTINGS);
 
-        mInstance.performAction(mPreference, mController, mHelper);
+        mInstance.onEnter(mPreference, mController, mHelper, mScanHelper);
 
         verify(mRepository).saveMetadata(eq(mContext), eq(mockMetadata));
         verify(mFeatureFactory.metricsFeatureProvider)
@@ -143,7 +144,7 @@ public class SourceAddedStateTest {
         when(mPreference.getSourceOriginForLogging())
                 .thenReturn(SourceOriginForLogging.QR_CODE_SCAN_SETTINGS);
 
-        mInstance.performAction(mPreference, mController, mHelper);
+        mInstance.onEnter(mPreference, mController, mHelper, mScanHelper);
 
         verify(mRepository).saveMetadata(eq(mContext), eq(mockMetadata));
         verify(mFeatureFactory.metricsFeatureProvider)

@@ -43,12 +43,14 @@ public class MDNHandlerFragment extends Fragment implements Instrumentable {
         getActivity().getActionBar().setTitle(
                 getResources().getString(R.string.smart_forwarding_input_mdn_title));
 
-        Button processBtn = view.findViewById(R.id.process);
+        Button processBtn = view.findViewById(R.id.right_button);
+        processBtn.setText(R.string.process);
         processBtn.setOnClickListener((View v)-> {
             pressButtonOnClick();
         });
 
-        Button cancelBtn = view.findViewById(R.id.cancel);
+        Button cancelBtn = view.findViewById(R.id.left_button);
+        cancelBtn.setText(R.string.cancel);
         cancelBtn.setOnClickListener((View v)-> {
             switchToMainFragment(true);
         });

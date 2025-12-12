@@ -41,6 +41,5 @@
     <com.android.settingslib.widget.FooterPreference
         android:key="info_footer"
         android:title="@string/zen_mode_calls_footer"
-        android:selectable="false"
         settings:searchable="false"/>
 </PreferenceScreen>

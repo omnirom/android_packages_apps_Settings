@@ -37,7 +37,7 @@ public class AvailableHearingDeviceUpdater extends AvailableMediaBluetoothDevice
 
     static boolean isAvailableHearingDevice(CachedBluetoothDevice cachedDevice) {
         final BluetoothDevice device = cachedDevice.getDevice();
-        return cachedDevice.isHearingAidDevice()
+        return cachedDevice.isHearingDevice()
                 && device.getBondState() == BluetoothDevice.BOND_BONDED
                 && device.isConnected();
     }

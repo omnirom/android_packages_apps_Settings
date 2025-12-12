@@ -265,7 +265,14 @@ public class AccountTypePreferenceLoader {
         try {
             // Allows to launch only authenticator owned activities.
             ApplicationInfo authenticatorAppInf = pm.getApplicationInfo(authDesc.packageName, 0);
-            return resolvedAppInfo.uid == authenticatorAppInf.uid;
+            if (resolvedAppInfo.uid == authenticatorAppInf.uid) {
+                // Explicitly set the component to be same as authenticator to
+                // prevent launching arbitrary activities.
+                intent.setComponent(resolvedActivityInfo.getComponentName());
+                return true;
+            } else {
+                return false;
+            }
         } catch (NameNotFoundException e) {
             Log.e(TAG,
                 "Intent considered unsafe due to exception.",

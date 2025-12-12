@@ -63,9 +63,10 @@ import java.util.stream.Collectors;
 
 /**
  * {@link CustomSliceable} for Wi-Fi and mobile data connection, used by generic clients.
+ *
+ * @deprecated This is not used after V and will be removed.
  */
-// ToDo If the provider model become default design in the future, the code needs to refactor
-// the whole structure and use new "data object", and then split provider model out of old design.
+@Deprecated(forRemoval = true)
 public class ProviderModelSlice extends WifiSlice {
 
     private static final String TAG = "ProviderModelSlice";

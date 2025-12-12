@@ -21,9 +21,13 @@ import android.graphics.drawable.Drawable;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.util.AttributeSet;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceViewHolder;
 
+import com.android.settings.R;
 import com.android.settingslib.RestrictedPreference;
 
 import java.util.Comparator;
@@ -57,6 +61,8 @@ public class UserPreference extends RestrictedPreference {
     private int mSerialNumber = -1;
     private int mUserId = USERID_UNKNOWN;
 
+    @Nullable private OnClickListener mEditClickListener;
+
     public UserPreference(Context context, AttributeSet attrs) {
         this(context, attrs, USERID_UNKNOWN);
     }
@@ -77,13 +83,23 @@ public class UserPreference extends RestrictedPreference {
 
     @Override
     protected boolean shouldHideSecondTarget() {
-        return true;
+        return mEditClickListener == null;
+    }
+
+    @Override
+    protected int getSecondTargetResId() {
+        return R.layout.preference_widget_edit;
     }
 
     @Override
     public void onBindViewHolder(PreferenceViewHolder view) {
         super.onBindViewHolder(view);
         dimIcon(isDisabledByAdmin());
+
+        final ImageView editButton = (ImageView) view.findViewById(R.id.edit_button);
+        if (editButton != null) {
+            editButton.setOnClickListener(mEditClickListener);
+        }
     }
 
     private int getSerialNumber() {
@@ -102,5 +118,14 @@ public class UserPreference extends RestrictedPreference {
 
     public int getUserId() {
         return mUserId;
+    }
+
+    /**
+     * Sets the onClickListener for the edit button.
+     * @param listener the listener to be set, or null to remove the listener.
+     */
+    public void setOnEditClickListener(@Nullable OnClickListener listener) {
+        mEditClickListener = listener;
+        notifyChanged();
     }
 }

@@ -19,6 +19,7 @@ package com.android.settings.accessibility;
 import android.content.Context;
 
 /** Preference controller for ringtone vibration intensity */
+// LINT.IfChange
 public class RingVibrationIntensityPreferenceController
         extends VibrationIntensityPreferenceController {
 
@@ -37,3 +38,4 @@ public class RingVibrationIntensityPreferenceController
         return AVAILABLE;
     }
 }
+// LINT.ThenChange(RingVibrationIntensitySliderPreference.kt)

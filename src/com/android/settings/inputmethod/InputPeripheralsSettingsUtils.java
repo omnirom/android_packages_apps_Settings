@@ -58,7 +58,7 @@ public class InputPeripheralsSettingsUtils {
     /**
      * Returns whether any hard keyboard is connected.
      */
-    static boolean isHardKeyboard() {
+    public static boolean isHardKeyboard() {
         for (int deviceId : InputDevice.getDeviceIds()) {
             final InputDevice device = InputDevice.getDevice(deviceId);
             if (device == null) {
@@ -91,7 +91,7 @@ public class InputPeripheralsSettingsUtils {
     /**
      * Returns whether any mouse is connected.
      */
-    static boolean isMouse() {
+    public static boolean isMouse() {
         for (int deviceId : InputDevice.getDeviceIds()) {
             final InputDevice device = InputDevice.getDevice(deviceId);
             if (device == null) {

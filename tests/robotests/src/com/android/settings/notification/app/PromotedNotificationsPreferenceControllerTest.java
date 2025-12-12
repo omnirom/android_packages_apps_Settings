@@ -15,6 +15,8 @@
  */
 package com.android.settings.notification.app;
 
+import static android.Manifest.permission.POST_PROMOTED_NOTIFICATIONS;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -24,13 +26,17 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.robolectric.Shadows.shadowOf;
 
+import android.Manifest;
 import android.app.Flags;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 import androidx.test.core.app.ApplicationProvider;
 
@@ -52,8 +58,7 @@ public class PromotedNotificationsPreferenceControllerTest {
 
     private Context mContext;
     private NotificationBackend.AppRow mAppRow;
-    @Mock
-    private NotificationBackend mBackend;
+    @Mock private NotificationBackend mBackend;
     private RestrictedSwitchPreference mSwitch;
 
     private PromotedNotificationsPreferenceController mPrefController;
@@ -75,13 +80,36 @@ public class PromotedNotificationsPreferenceControllerTest {
     @Test
     @DisableFlags(Flags.FLAG_UI_RICH_ONGOING)
     public void testIsAvailable_flagOff() {
+        installMyPackage(new String[] { POST_PROMOTED_NOTIFICATIONS });
         assertThat(mPrefController.isAvailable()).isFalse();
     }
 
     @Test
     @EnableFlags(Flags.FLAG_UI_RICH_ONGOING)
-    public void testIsAvailable_flagOn() {
+    public void testIsAvailable_zeroPermissionsRequested_isFalse() {
+        installMyPackage(null);
+        assertThat(mPrefController.isAvailable()).isFalse();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_UI_RICH_ONGOING)
+    public void testIsAvailable_permissionNotRequested_isFalse() {
+        installMyPackage(new String[] { Manifest.permission.ACCESS_COARSE_LOCATION });
+        assertThat(mPrefController.isAvailable()).isFalse();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_UI_RICH_ONGOING)
+    public void testIsAvailable_permissionRequested_isTrue() {
+        installMyPackage(new String[] { POST_PROMOTED_NOTIFICATIONS });
         assertThat(mPrefController.isAvailable()).isTrue();
+    }
+
+    private void installMyPackage(@Nullable String[] withPermissions) {
+        PackageInfo myPackage = new PackageInfo();
+        myPackage.packageName = mAppRow.pkg;
+        myPackage.requestedPermissions = withPermissions;
+        shadowOf(mContext.getPackageManager()).installPackage(myPackage);
     }
 
     @Test

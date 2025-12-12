@@ -132,14 +132,11 @@ class ZenModeAppsLinkPreferenceController extends AbstractZenModePreferenceContr
             return;
         }
 
-        ApplicationsState.AppFilter filter = android.multiuser.Flags.enablePrivateSpaceFeatures()
-                && android.multiuser.Flags.handleInterleavedSettingsForPrivateSpace()
-                ? ApplicationsState.FILTER_ENABLED_NOT_QUIET
-                : ApplicationsState.FILTER_ALL_ENABLED;
         // We initiate a rebuild in the background here. Once the rebuild is completed,
         // the onRebuildComplete() callback will be invoked, which will trigger the summary text
         // to be initialized.
-        mAppSession.rebuild(filter, ApplicationsState.ALPHA_COMPARATOR, false);
+        mAppSession.rebuild(ApplicationsState.FILTER_ENABLED_NOT_QUIET,
+                ApplicationsState.ALPHA_COMPARATOR, false);
     }
 
     private void displayAppsBypassingDnd(List<AppEntry> allApps) {

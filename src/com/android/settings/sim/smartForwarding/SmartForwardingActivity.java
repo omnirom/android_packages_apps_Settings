@@ -37,8 +37,8 @@ import android.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.android.settings.R;
+import com.android.settings.Utils;
 import com.android.settings.core.SettingsBaseActivity;
-import com.android.settings.network.SubscriptionUtil;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -57,8 +57,8 @@ public class SmartForwardingActivity extends SettingsBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!SubscriptionUtil.isSimHardwareVisible(this)) {
-            Log.d(LOG_TAG, "Not support on device without SIM.");
+        if (!Utils.isMobileDataCapable(this) && !Utils.isVoiceCapable(this)) {
+            Log.d(LOG_TAG, "No support on device without data or voice capabilities.");
             finish();
             return;
         }

@@ -565,15 +565,11 @@ public class MobileNetworkUtils {
 
         // Overlay the two drawables
         final Drawable[] layers = {networkDrawable, signalDrawable};
-        final int iconSize =
-                context.getResources().getDimensionPixelSize(R.dimen.signal_strength_icon_size);
-
         final LayerDrawable icons = new LayerDrawable(layers);
         // Set the network type icon at the top left
         icons.setLayerGravity(0 /* index of networkDrawable */, Gravity.TOP | Gravity.LEFT);
         // Set the signal strength icon at the bottom right
         icons.setLayerGravity(1 /* index of SignalDrawable */, Gravity.BOTTOM | Gravity.RIGHT);
-        icons.setLayerSize(1 /* index of SignalDrawable */, iconSize, iconSize);
         icons.setTintList(Utils.getColorAttr(context, android.R.attr.colorControlNormal));
         return icons;
     }
@@ -732,7 +728,7 @@ public class MobileNetworkUtils {
     }
 
     public static void launchMobileNetworkSettings(Context context, SubscriptionInfo info) {
-        if (!SubscriptionUtil.isSimHardwareVisible(context)) {
+        if (!Utils.isMobileDataCapable(context) && !Utils.isVoiceCapable(context)) {
             Log.e(TAG, "launchMobileNetworkSettings fail, device without such UI.");
             return;
         }

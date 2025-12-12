@@ -28,7 +28,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
@@ -40,6 +39,7 @@ import com.android.internal.net.VpnProfile;
 import com.android.net.module.util.ProxyUtils;
 import com.android.settings.R;
 import com.android.settings.utils.AndroidKeystoreAliasLoader;
+import com.android.settings.widget.EnhancedSettingsSpinnerAdapter;
 import com.android.settings.wifi.utils.TextInputGroup;
 
 import java.util.Collection;
@@ -117,6 +117,7 @@ class ConfigDialog extends AlertDialog implements TextWatcher,
         mPasswordInput = new TextInputGroup(mView, R.id.password_layout, R.id.password,
                 R.string.vpn_field_required);
         mProxySettings = (Spinner) mView.findViewById(R.id.vpn_proxy_settings);
+        loadProxySettings(mProxySettings);
         mProxyHost = (TextView) mView.findViewById(R.id.vpn_proxy_host);
         mProxyPort = (TextView) mView.findViewById(R.id.vpn_proxy_port);
         mIpsecIdentifierInput = new TextInputGroup(mView, R.id.ipsec_identifier_layout,
@@ -149,8 +150,8 @@ class ConfigDialog extends AlertDialog implements TextWatcher,
         mIpsecSecretInput.setText(mProfile.ipsecSecret);
         final AndroidKeystoreAliasLoader androidKeystoreAliasLoader =
                 new AndroidKeystoreAliasLoader(null);
-        loadCertificates(mIpsecUserCert, androidKeystoreAliasLoader.getKeyCertAliases(), 0,
-                mProfile.ipsecUserCert);
+        loadCertificates(mIpsecUserCert, androidKeystoreAliasLoader.getKeyCertAliases(),
+                R.string.vpn_not_used, mProfile.ipsecUserCert);
         loadCertificates(mIpsecCaCert, androidKeystoreAliasLoader.getCaCertAliases(),
                 R.string.vpn_no_ca_cert, mProfile.ipsecCaCert);
         loadCertificates(mIpsecServerCert, androidKeystoreAliasLoader.getKeyCertAliases(),
@@ -450,9 +451,8 @@ class ConfigDialog extends AlertDialog implements TextWatcher,
             mProfile.type = VpnProfile.TYPE_IKEV2_IPSEC_USER_PASS;
         }
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                getContext(), android.R.layout.simple_spinner_item, types);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        EnhancedSettingsSpinnerAdapter<String> adapter =
+                new EnhancedSettingsSpinnerAdapter<>(getContext(), types);
         typeSpinner.setAdapter(adapter);
     }
 
@@ -473,9 +473,8 @@ class ConfigDialog extends AlertDialog implements TextWatcher,
             }
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                context, android.R.layout.simple_spinner_item, myChoices);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        EnhancedSettingsSpinnerAdapter<String> adapter =
+                new EnhancedSettingsSpinnerAdapter<>(context, myChoices);
         spinner.setAdapter(adapter);
 
         for (int i = 1; i < myChoices.length; ++i) {
@@ -484,6 +483,13 @@ class ConfigDialog extends AlertDialog implements TextWatcher,
                 break;
             }
         }
+    }
+
+    private void loadProxySettings(Spinner spinner) {
+        String[] types = getContext().getResources().getStringArray(R.array.vpn_proxy_settings);
+        EnhancedSettingsSpinnerAdapter<String> adapter =
+                new EnhancedSettingsSpinnerAdapter<>(getContext(), types);
+        spinner.setAdapter(adapter);
     }
 
     private void setUsernamePasswordVisibility(int type) {

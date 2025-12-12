@@ -17,7 +17,6 @@
 package com.android.settings.connecteddevice.audiosharing;
 
 import static com.android.settings.core.BasePreferenceController.AVAILABLE_UNSEARCHABLE;
-import static com.android.settings.core.BasePreferenceController.UNSUPPORTED_ON_DEVICE;
 import static com.android.settingslib.bluetooth.LocalBluetoothLeBroadcast.EXTRA_BLUETOOTH_DEVICE;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -42,7 +41,6 @@ import android.bluetooth.BluetoothStatusCodes;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Looper;
-import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -142,19 +140,7 @@ public class AudioSharingJoinHandlerControllerTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_PROMOTE_AUDIO_SHARING_FOR_SECOND_AUTO_CONNECTED_LEA_DEVICE)
-    public void onStart_flagOff_doNothing() {
-        mController.onStart(mLifecycleOwner);
-        verify(mEventManager, never()).registerCallback(any(BluetoothCallback.class));
-        verify(mDialogHandler, never()).registerCallbacks(any(Executor.class));
-        verify(mAssistant, never())
-                .registerServiceCallBack(
-                        any(Executor.class), any(BluetoothLeBroadcastAssistant.Callback.class));
-    }
-
-    @Test
-    @EnableFlags({Flags.FLAG_ENABLE_LE_AUDIO_SHARING,
-            Flags.FLAG_PROMOTE_AUDIO_SHARING_FOR_SECOND_AUTO_CONNECTED_LEA_DEVICE})
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onStart_flagOn_registerCallbacks() {
         mController.onStart(mLifecycleOwner);
         verify(mEventManager).registerCallback(any(BluetoothCallback.class));
@@ -165,18 +151,7 @@ public class AudioSharingJoinHandlerControllerTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_PROMOTE_AUDIO_SHARING_FOR_SECOND_AUTO_CONNECTED_LEA_DEVICE)
-    public void onStop_flagOff_doNothing() {
-        mController.onStop(mLifecycleOwner);
-        verify(mEventManager, never()).unregisterCallback(any(BluetoothCallback.class));
-        verify(mDialogHandler, never()).unregisterCallbacks();
-        verify(mAssistant, never())
-                .unregisterServiceCallBack(any(BluetoothLeBroadcastAssistant.Callback.class));
-    }
-
-    @Test
-    @EnableFlags({Flags.FLAG_ENABLE_LE_AUDIO_SHARING,
-            Flags.FLAG_PROMOTE_AUDIO_SHARING_FOR_SECOND_AUTO_CONNECTED_LEA_DEVICE})
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onStop_flagOn_unregisterCallbacks() {
         mController.onStop(mLifecycleOwner);
         verify(mEventManager).unregisterCallback(any(BluetoothCallback.class));
@@ -186,16 +161,9 @@ public class AudioSharingJoinHandlerControllerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_PROMOTE_AUDIO_SHARING_FOR_SECOND_AUTO_CONNECTED_LEA_DEVICE,
-            Flags.FLAG_ENABLE_LE_AUDIO_SHARING})
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void getAvailabilityStatus_flagOn() {
         assertThat(mController.getAvailabilityStatus()).isEqualTo(AVAILABLE_UNSEARCHABLE);
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_PROMOTE_AUDIO_SHARING_FOR_SECOND_AUTO_CONNECTED_LEA_DEVICE)
-    public void getAvailabilityStatus_flagOff() {
-        assertThat(mController.getAvailabilityStatus()).isEqualTo(UNSUPPORTED_ON_DEVICE);
     }
 
     @Test
@@ -209,8 +177,7 @@ public class AudioSharingJoinHandlerControllerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_ENABLE_LE_AUDIO_SHARING,
-            Flags.FLAG_PROMOTE_AUDIO_SHARING_FOR_SECOND_AUTO_CONNECTED_LEA_DEVICE})
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void displayPreference_flagOn_updateDeviceList() {
         mController.displayPreference(mScreen);
 
@@ -262,8 +229,7 @@ public class AudioSharingJoinHandlerControllerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_ENABLE_LE_AUDIO_SHARING,
-            Flags.FLAG_PROMOTE_AUDIO_SHARING_FOR_SECOND_AUTO_CONNECTED_LEA_DEVICE})
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void handleDeviceConnectedFromIntent_noDevice_doNothing() {
         Intent intent = new Intent();
         doReturn(intent).when(mActivity).getIntent();
@@ -277,8 +243,7 @@ public class AudioSharingJoinHandlerControllerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_ENABLE_LE_AUDIO_SHARING,
-            Flags.FLAG_PROMOTE_AUDIO_SHARING_FOR_SECOND_AUTO_CONNECTED_LEA_DEVICE})
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void handleDeviceClickFromIntent_handle() {
         CachedBluetoothDevice cachedDevice = mock(CachedBluetoothDevice.class);
         BluetoothDevice device = mock(BluetoothDevice.class);
@@ -295,8 +260,7 @@ public class AudioSharingJoinHandlerControllerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_ENABLE_LE_AUDIO_SHARING,
-            Flags.FLAG_PROMOTE_AUDIO_SHARING_FOR_SECOND_AUTO_CONNECTED_LEA_DEVICE})
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void handleDeviceClickFromIntent_noDialogToShow_finish() {
         CachedBluetoothDevice cachedDevice = mock(CachedBluetoothDevice.class);
         BluetoothDevice device = mock(BluetoothDevice.class);

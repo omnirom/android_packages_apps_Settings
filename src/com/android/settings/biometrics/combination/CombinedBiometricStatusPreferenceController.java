@@ -15,6 +15,7 @@
  */
 package com.android.settings.biometrics.combination;
 
+import android.app.admin.EnforcingAdmin;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
@@ -97,10 +98,31 @@ public class CombinedBiometricStatusPreferenceController extends
     }
 
     private void updateStateInternal() {
+        if (android.app.admin.flags.Flags.policyTransparencyRefactorEnabled()
+                && android.app.admin.flags.Flags.setKeyguardDisabledFeaturesCoexistence()) {
+            updateStateInternal(mCombinedBiometricStatusUtils.getEnforcingAdmin());
+            return;
+        }
         final RestrictedLockUtils.EnforcedAdmin admin =
                 mCombinedBiometricStatusUtils.getDisablingAdmin();
 
         updateStateInternal(admin);
+    }
+
+    /**
+     *   Disables the preference and shows the consent flow only if consent is required for all
+     *   modalities.
+     *
+     *   <p>Otherwise, users will not be able to enter and modify settings for modalities which have
+     *   already been consented. In any case, the controllers for the modalities which have not yet
+     *   been consented will be disabled in the combined page anyway - users can go through the
+     *   consent+enrollment flow from there.
+     */
+    @VisibleForTesting
+    void updateStateInternal(@Nullable EnforcingAdmin admin) {
+        if (mPreference != null) {
+            mPreference.setDisabledByAdmin(admin);
+        }
     }
 
     /**

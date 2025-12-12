@@ -20,44 +20,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/notification_summarization_title">
 
-    <com.android.settingslib.widget.IllustrationPreference
-        android:key="illustration"
-        settings:searchable="false"
-        android:selectable="false"
-        app:lottie_cacheComposition="false"
-        settings:dynamicColor="true"/>
-
     <com.android.settingslib.widget.TopIntroPreference
         android:key="feature_description"
         settings:searchable="false"
         android:title="@string/notification_summarization_description"/>
 
-    <com.android.settingslib.widget.MainSwitchPreference
-        android:key="global_pref"
-        android:title="@string/notification_summarization_main_control_title"
-        settings:controller="com.android.settings.notification.SummarizationGlobalPreferenceController" />
+    <com.android.settingslib.widget.IllustrationPreference
+        android:key="notification_summarization_illustration"
+        settings:searchable="false"
+        android:selectable="false"
+        app:lottie_rawRes="@raw/lottie_notification_summarization"
+        app:lottie_cacheComposition="false"
+        settings:dynamicColor="true"/>
 
     <PreferenceCategory
-        android:key="notification_summarization_excluded_apps_list"
-        android:title="@string/notification_excluded_apps"
-        settings:controller="com.android.settings.notification.AdjustmentExcludedAppsPreferenceController">
-        <com.android.settingslib.widget.TopIntroPreference
-            android:key="excluded_description"
-            android:title="@string/notification_summarization_excluded_description"/>
+        android:key="enabled_settings">
 
-        <!-- apps are added here -->
+        <com.android.settingslib.widget.MainSwitchPreference
+            android:key="global_pref"
+            android:title="@string/notification_summarization_main_control_title" />
 
-        <Preference
-            android:key="notification_summarization_manage_apps"
-            android:order="1000"
-            android:icon="@drawable/ic_chevron_right_24dp"
-            android:title="@string/notification_summarization_manage_excluded_apps"
-            settings:controller="com.android.settings.notification.SummarizationManageAppsPreferenceController"
-            android:fragment="com.android.settings.applications.manageapplications.ManageApplications">
-            <extra
-                android:name="classname"
-                android:value="com.android.settings.Settings$NotificationExcludeSummarizationActivity"/>
-        </Preference>
+        <SwitchPreferenceCompat
+            android:key="work_profile_pref"
+            android:title="@string/notification_adjustment_work_switch_title" />
+
+        <PreferenceCategory
+            android:key="notification_summarization_excluded_apps_list"
+            android:title="@string/notification_excluded_apps"
+            settings:controller="com.android.settings.notification.AdjustmentExcludedAppsPreferenceController">
+
+            <!-- apps are added here -->
+
+            <Preference
+                android:key="notification_summarization_manage_apps"
+                android:order="1000"
+                android:icon="@drawable/ic_chevron_right_24dp"
+                android:title="@string/notification_summarization_manage_excluded_apps"
+                settings:controller="com.android.settings.notification.SummarizationManageAppsPreferenceController"
+                android:fragment="com.android.settings.applications.manageapplications.ManageApplications">
+                <extra
+                    android:name="classname"
+                    android:value="com.android.settings.Settings$NotificationExcludeSummarizationActivity"/>
+            </Preference>
+        </PreferenceCategory>
+
     </PreferenceCategory>
 
 

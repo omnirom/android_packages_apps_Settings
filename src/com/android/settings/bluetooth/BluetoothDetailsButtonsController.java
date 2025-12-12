@@ -70,10 +70,12 @@ public class BluetoothDetailsButtonsController extends BluetoothDetailsControlle
             if (!mConnectButtonInitialized || !previouslyConnected) {
                 mActionButtons
                         .setButton2Text(R.string.bluetooth_device_context_disconnect)
+                        .setButton2Description(R.string.bluetooth_device_context_disconnect)
                         .setButton2Icon(R.drawable.ic_settings_close)
                         .setButton2OnClickListener(view -> {
                             mMetricsFeatureProvider.action(mContext,
                                     SettingsEnums.ACTION_SETTINGS_BLUETOOTH_DISCONNECT);
+                            mActionButtons.setButton2Description(R.string.bluetooth_disconnecting);
                             mCachedDevice.disconnect();
                         });
                 mConnectButtonInitialized = true;
@@ -82,13 +84,14 @@ public class BluetoothDetailsButtonsController extends BluetoothDetailsControlle
             if (!mConnectButtonInitialized || previouslyConnected) {
                 mActionButtons
                         .setButton2Text(R.string.bluetooth_device_context_connect)
+                        .setButton2Description(R.string.bluetooth_device_context_connect)
                         .setButton2Icon(R.drawable.ic_add_24dp)
-                        .setButton2OnClickListener(
-                                view -> {
-                                    mMetricsFeatureProvider.action(mContext,
-                                            SettingsEnums.ACTION_SETTINGS_BLUETOOTH_CONNECT);
-                                    mCachedDevice.connect();
-                                });
+                        .setButton2OnClickListener(view -> {
+                            mMetricsFeatureProvider.action(mContext,
+                                    SettingsEnums.ACTION_SETTINGS_BLUETOOTH_CONNECT);
+                            mActionButtons.setButton2Description(R.string.bluetooth_connecting);
+                            mCachedDevice.connect();
+                        });
                 mConnectButtonInitialized = true;
             }
         }

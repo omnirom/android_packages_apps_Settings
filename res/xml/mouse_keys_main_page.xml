@@ -26,6 +26,52 @@
         android:title="@string/mouse_keys_main_title"
         settings:controller="com.android.settings.inputmethod.KeyboardAccessibilityMouseKeysController"/>
 
+    <com.android.settings.accessibility.ShortcutPreference
+        android:key="mouse_keys_shortcut_preference"
+        android:title="@string/accessibility_mouse_keys_shortcut_title"
+        android:persistent="false"
+        settings:controller="com.android.settings.inputmethod.KeyboardAccessibilityMouseKeysShortcutController"/>
+
+    <com.android.settingslib.widget.SliderPreference
+        android:key="mouse_keys_acceleration_slider"
+        android:title="@string/mouse_keys_acceleration_seekbar_title"
+        android:min="0"
+        android:max="10"
+        settings:seekBarIncrement="1"
+        settings:iconEnd="@drawable/ic_add_24dp"
+        settings:iconEndContentDescription="@string/mouse_keys_acceleration_fast_icon_desc"
+        settings:iconStart="@drawable/ic_remove_24dp"
+        settings:iconStartContentDescription="@string/mouse_keys_acceleration_slow_icon_desc"
+        settings:controller="com.android.settings.inputmethod.MouseKeysAccelerationController"/>
+
+    <com.android.settingslib.widget.SliderPreference
+        android:key="mouse_keys_max_speed_slider"
+        android:title="@string/mouse_keys_max_speed_title"
+        android:min="1"
+        android:max="10"
+        settings:seekBarIncrement="1"
+        settings:iconEnd="@drawable/ic_add_24dp"
+        settings:iconEndContentDescription="@string/mouse_keys_seek_bar_increase_button_description"
+        settings:iconStart="@drawable/ic_remove_24dp"
+        settings:iconStartContentDescription="@string/mouse_keys_seek_bar_decrease_button_description"
+        settings:controller="com.android.settings.inputmethod.MouseKeysMaxSpeedController"/>
+
+    <SwitchPreferenceCompat
+        android:key="mouse_key_use_primary_key_preference"
+        android:title="@string/mouse_keys_use_primary_keys_title"
+        android:summary="@string/mouse_keys_use_primary_keys_summary"
+        android:defaultValue="true"
+        settings:controller="com.android.settings.inputmethod.MouseKeysPrimaryKeysController"/>
+
+    <com.android.settingslib.widget.ButtonPreference
+        android:key="mouse_keys_reset_button"
+        android:title="@string/mouse_keys_reset_button_label"
+        settings:buttonPreferenceSize="normal"
+        settings:buttonPreferenceType="filled"
+        android:icon="@drawable/ic_history"
+        android:persistent="false"
+        settings:controller="com.android.settings.inputmethod.MouseKeysResetController" />
+
     <com.android.settingslib.widget.LayoutPreference
         android:key="mouse_keys_list"
         android:layout="@layout/mouse_keys_image_list"/>

@@ -42,8 +42,6 @@ public class BundlePreferenceController extends BasePreferenceController {
 
     @Override
     public CharSequence getSummary() {
-        return mBackend.isNotificationBundlingEnabled(mContext)
-                ? mContext.getString(R.string.notification_bundle_on)
-                : mContext.getString(R.string.notification_bundle_off);
+        return mContext.getString(R.string.notification_bundle_summary);
     }
 }

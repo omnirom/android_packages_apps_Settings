@@ -28,6 +28,7 @@ import android.window.DesktopModeFlags.ToggleOverride;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 import androidx.preference.TwoStatePreference;
 
@@ -37,7 +38,8 @@ import com.android.settings.development.DevelopmentSettingsDashboardFragment;
 import com.android.settings.development.RebootConfirmationDialogFragment;
 import com.android.settings.development.RebootConfirmationDialogHost;
 import com.android.settingslib.development.DeveloperOptionsPreferenceController;
-import com.android.wm.shell.shared.desktopmode.DesktopModeStatus;
+import com.android.window.flags.Flags;
+import com.android.wm.shell.shared.desktopmode.DesktopState;
 
 /**
  * Preference controller to control Desktop mode features
@@ -52,16 +54,26 @@ public class DesktopModePreferenceController extends DeveloperOptionsPreferenceC
     @Nullable
     private final DevelopmentSettingsDashboardFragment mFragment;
 
-    public DesktopModePreferenceController(
-            Context context, @Nullable DevelopmentSettingsDashboardFragment fragment) {
+    private final DesktopState mDesktopState;
+
+    @VisibleForTesting
+    DesktopModePreferenceController(
+            Context context, @Nullable DevelopmentSettingsDashboardFragment fragment,
+            DesktopState desktopState) {
         super(context);
         mFragment = fragment;
+        mDesktopState = desktopState;
+    }
+
+    public DesktopModePreferenceController(
+            Context context, @Nullable DevelopmentSettingsDashboardFragment fragment) {
+        this(context, fragment, DesktopState.fromContext(context));
     }
 
     @Override
     public boolean isAvailable() {
-        return DesktopModeStatus.canShowDesktopModeDevOption(mContext)
-                && !DesktopModeStatus.canShowDesktopExperienceDevOption(mContext);
+        return mDesktopState.canShowDesktopModeDevOption()
+                && !mDesktopState.canShowDesktopExperienceDevOption();
     }
 
     @Override
@@ -92,7 +104,8 @@ public class DesktopModePreferenceController extends DeveloperOptionsPreferenceC
         final boolean shouldDevOptionBeEnabled = switch (toggleOverride) {
             case OVERRIDE_OFF -> false;
             case OVERRIDE_ON -> true;
-            case OVERRIDE_UNSET -> DesktopModeStatus.shouldDevOptionBeEnabledByDefault(mContext);
+            case OVERRIDE_UNSET -> mDesktopState.isDeviceEligibleForDesktopMode()
+                    && Flags.enableDesktopWindowingMode();
         };
         ((TwoStatePreference) mPreference).setChecked(shouldDevOptionBeEnabled);
     }

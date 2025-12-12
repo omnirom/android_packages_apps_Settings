@@ -26,19 +26,21 @@ import androidx.compose.ui.res.vectorResource
 import com.android.settings.R
 import com.android.settings.spa.SpaActivity.Companion.startSpaActivity
 import com.android.settings.spa.preference.ComposePreferenceController
+import com.android.settings.wifi.WifiUtils
 import com.android.settingslib.spa.widget.preference.Preference
 import com.android.settingslib.spa.widget.preference.PreferenceModel
 import com.android.wifi.flags.Flags
+import com.android.wifitrackerlib.WifiEntry
 
 class WifiPrivacyPreferenceController(context: Context, preferenceKey: String) :
     ComposePreferenceController(context, preferenceKey) {
 
-    private var wifiEntryKey: String? = null
+    private var wifiEntry: WifiEntry? = null
 
     var wifiManager = context.getSystemService(WifiManager::class.java)!!
 
-    fun setWifiEntryKey(key: String?) {
-        wifiEntryKey = key
+    fun setWifiEntry(entry: WifiEntry?) {
+        wifiEntry = entry
     }
 
     override fun getAvailabilityStatus() =
@@ -47,21 +49,29 @@ class WifiPrivacyPreferenceController(context: Context, preferenceKey: String) :
 
     @Composable
     override fun Content() {
-        Preference(object : PreferenceModel {
-            override val title = stringResource(R.string.wifi_privacy_settings)
-            override val icon = @Composable {
-                Icon(
-                    ImageVector.vectorResource(R.drawable.ic_wifi_privacy_24dp),
-                    contentDescription = null
-                )
-            }
-            override val onClick: () -> Unit =
-                {
-                    wifiEntryKey?.let {
+        Preference(
+            object : PreferenceModel {
+                override val title = stringResource(R.string.wifi_privacy_settings)
+                override val icon =
+                    @Composable {
+                        Icon(
+                            ImageVector.vectorResource(R.drawable.ic_wifi_privacy_24dp),
+                            contentDescription = null,
+                        )
+                    }
+                override val onClick: () -> Unit = {
+                    wifiEntry?.getKey()?.let {
                         mContext.startSpaActivity(WifiPrivacyPageProvider.getRoute(it))
                     }
                 }
-        })
+                override val enabled: () -> Boolean = {
+                    val currentWifiEntry = wifiEntry
+                    if (currentWifiEntry != null)
+                        WifiUtils.isNetworkEditable(currentWifiEntry, mContext)
+                    else true
+                }
+            }
+        )
     }
 
     companion object {
@@ -74,9 +84,7 @@ class WifiPrivacyPreferenceController(context: Context, preferenceKey: String) :
          * @param isSendDhcpHostnameEnabled determines whether device name can be sent.
          * @return index value of preference
          */
-        fun translateSendDhcpHostnameEnabledToPrefValue(
-            isSendDhcpHostnameEnabled: Boolean
-        ): Int {
+        fun translateSendDhcpHostnameEnabledToPrefValue(isSendDhcpHostnameEnabled: Boolean): Int {
             return if (isSendDhcpHostnameEnabled) PREF_SEND_DHCP_HOST_NAME_ENABLE
             else PREF_SEND_DHCP_HOST_NAME_DISABLE
         }

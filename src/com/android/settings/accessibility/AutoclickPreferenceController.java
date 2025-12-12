@@ -23,6 +23,7 @@ import android.content.Context;
 import android.provider.Settings;
 import android.view.accessibility.AccessibilityManager;
 
+import com.android.server.accessibility.Flags;
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 
@@ -57,7 +58,9 @@ public class AutoclickPreferenceController extends BasePreferenceController {
         }
         final int delayMillis = Settings.Secure.getInt(mContext.getContentResolver(),
                 Settings.Secure.ACCESSIBILITY_AUTOCLICK_DELAY,
-                AccessibilityManager.AUTOCLICK_DELAY_DEFAULT);
+                Flags.enableAutoclickIndicator()
+                ? AccessibilityManager.AUTOCLICK_DELAY_WITH_INDICATOR_DEFAULT
+                : AccessibilityManager.AUTOCLICK_DELAY_DEFAULT);
         final int summaryIndex = getAutoclickPreferenceSummaryIndex(delayMillis);
         return AutoclickUtils.getAutoclickDelaySummary(mContext,
                 AUTOCLICK_PREFERENCE_SUMMARIES[summaryIndex], delayMillis);

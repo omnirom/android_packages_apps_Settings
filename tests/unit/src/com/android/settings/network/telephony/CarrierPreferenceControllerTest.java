@@ -171,4 +171,13 @@ public class CarrierPreferenceControllerTest {
         final ArgumentCaptor<Intent> captor = ArgumentCaptor.forClass(Intent.class);
         verify(mContext, never()).startActivity(captor.capture());
     }
+
+    @Test
+    public void updateState_isAirplaneModeOn_disabled() {
+        mController.notifyAirplaneModeChanged(true);
+
+        mController.updateState(mPreference);
+
+        assertThat(mPreference.isEnabled()).isFalse();
+    }
 }

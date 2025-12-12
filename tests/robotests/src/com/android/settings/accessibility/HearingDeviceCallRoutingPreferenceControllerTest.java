@@ -24,6 +24,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.telephony.TelephonyManager;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -53,6 +54,9 @@ public class HearingDeviceCallRoutingPreferenceControllerTest {
     private final Context mContext = ApplicationProvider.getApplicationContext();
     private static final String FAKE_KEY = "fake_key";
 
+    @Spy
+    private final Resources mResources = mContext.getResources();
+
     @Mock
     private TelephonyManager mTelephonyManager;
     private HearingDeviceCallRoutingPreferenceController mController;
@@ -60,20 +64,33 @@ public class HearingDeviceCallRoutingPreferenceControllerTest {
     @Before
     public void setUp() {
         when(mContext.getSystemService(Context.TELEPHONY_SERVICE)).thenReturn(mTelephonyManager);
+        when(mContext.getResources()).thenReturn(mResources);
         mController = new HearingDeviceCallRoutingPreferenceController(mContext, FAKE_KEY);
     }
 
     @Test
-    public void getAvailabilityStatus_hasTelephonyCalling_available() {
-        when(mTelephonyManager.isVoiceCapable()).thenReturn(true);
+    public void getAvailabilityStatus_telephonyEnabled_voiceCapable_available() {
+        when(mResources.getBoolean(com.android.settings.R.bool.config_show_sim_info))
+                .thenReturn(true);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(true);
 
         assertThat(mController.getAvailabilityStatus()).isEqualTo(AVAILABLE);
     }
 
     @Test
-    public void getAvailabilityStatus_noTelephonyCalling_unsupported() {
-        when(mTelephonyManager.isVoiceCapable()).thenReturn(false);
+    public void getAvailabilityStatus_telephonyEnabled_notVoiceCapable_unsupported() {
+        when(mResources.getBoolean(com.android.settings.R.bool.config_show_sim_info))
+                .thenReturn(true);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(false);
 
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(UNSUPPORTED_ON_DEVICE);
+    }
+
+    @Test
+    public void getAvailabilityStatus_telephonyDisabled_voiceCapable_unsupported() {
+        when(mResources.getBoolean(com.android.settings.R.bool.config_show_sim_info))
+                .thenReturn(false);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(true);
 
         assertThat(mController.getAvailabilityStatus()).isEqualTo(UNSUPPORTED_ON_DEVICE);
     }

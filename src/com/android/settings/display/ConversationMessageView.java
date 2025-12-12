@@ -211,7 +211,7 @@ public class ConversationMessageView extends FrameLayout {
         // These values do not depend on whether the message includes attachments
         final int gravity = mIncoming ? (Gravity.START | Gravity.CENTER_VERTICAL) :
                 (Gravity.END | Gravity.CENTER_VERTICAL);
-        final int messageTopPadding = res.getDimensionPixelSize(
+        final int messageBottomPadding = res.getDimensionPixelSize(
                 R.dimen.message_padding_default);
         final int metadataTopPadding =  res.getDimensionPixelOffset(
                 R.dimen.message_metadata_top_padding);
@@ -240,7 +240,7 @@ public class ConversationMessageView extends FrameLayout {
         }
 
         // Update the message row and message bubble views
-        setPadding(getPaddingLeft(), messageTopPadding, getPaddingRight(), 0);
+        setPadding(getPaddingLeft(), 0, getPaddingRight(), messageBottomPadding);
         mMessageBubble.setGravity(gravity);
         mMessageBubble.setPaddingRelative(messageBubbleLeftPadding, /* top= */ 0,
                 messageBubbleRightPadding, /* bottom= */ 0);

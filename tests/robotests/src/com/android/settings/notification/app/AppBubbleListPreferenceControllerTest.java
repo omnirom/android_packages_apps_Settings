@@ -29,7 +29,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
+import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -39,6 +41,7 @@ import android.os.UserManager;
 import android.service.notification.ConversationChannelWrapper;
 
 import androidx.preference.PreferenceCategory;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.notification.AppBubbleListPreferenceController;
 import com.android.settings.notification.NotificationBackend;
@@ -54,7 +57,6 @@ import org.robolectric.shadows.ShadowApplication;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 @RunWith(RobolectricTestRunner.class)
 public class AppBubbleListPreferenceControllerTest {
@@ -73,7 +75,8 @@ public class AppBubbleListPreferenceControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        ShadowApplication shadowApplication = ShadowApplication.getInstance();
+        ShadowApplication shadowApplication =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         shadowApplication.setSystemService(Context.NOTIFICATION_SERVICE, mNm);
         shadowApplication.setSystemService(Context.USER_SERVICE, mUm);
         mContext = RuntimeEnvironment.application;

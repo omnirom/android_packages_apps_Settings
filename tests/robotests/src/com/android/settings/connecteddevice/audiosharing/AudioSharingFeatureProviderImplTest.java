@@ -18,35 +18,34 @@ package com.android.settings.connecteddevice.audiosharing;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static junit.framework.Assert.assertEquals;
-
-import static org.mockito.Mockito.verify;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.robolectric.RobolectricTestRunner;
+import static org.mockito.Mockito.when;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.android.settings.R;
-import com.android.settings.connecteddevice.audiosharing.audiostreams.AudioStreamsQrCodeFragment;
-
 import androidx.fragment.app.Fragment;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.android.settings.R;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.robolectric.RobolectricTestRunner;
+
 @RunWith(RobolectricTestRunner.class)
 public class AudioSharingFeatureProviderImplTest {
-
+    @Rule
+    public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     private AudioSharingFeatureProvider mFeatureProvider;
     @Mock private Fragment mFragment;
-    @Mock private View mockView;
     private Context mContext;
     @Mock private Drawable mDrawable;
 
@@ -54,11 +53,11 @@ public class AudioSharingFeatureProviderImplTest {
     public void setup() {
         mContext = ApplicationProvider.getApplicationContext();
         mFeatureProvider = new AudioSharingFeatureProviderImpl();
+        when(mFragment.getContext()).thenReturn(mContext);
     }
 
     @Test
     public void setQrCode_correctDialogLayout() {
-        mFragment = new AudioSharingDialogFragment();
         View view =
                 LayoutInflater.from(mContext)
                         .inflate(R.layout.dialog_custom_body_audio_sharing, null);
@@ -71,7 +70,6 @@ public class AudioSharingFeatureProviderImplTest {
 
     @Test
     public void setQrCode_correctLayout() {
-        mFragment = new AudioStreamsQrCodeFragment();
         View view =
                 LayoutInflater.from(mContext)
                         .inflate(R.layout.bluetooth_audio_streams_qr_code, null);
@@ -84,7 +82,6 @@ public class AudioSharingFeatureProviderImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void setQrCode_nonExistedViewId() {
-        mFragment = new AudioStreamsQrCodeFragment();
         View view =
                 LayoutInflater.from(mContext)
                         .inflate(R.layout.bluetooth_audio_streams_qr_code, null);

@@ -20,8 +20,11 @@ import static android.hardware.usb.UsbPortStatus.DATA_ROLE_DEVICE;
 import static android.hardware.usb.UsbPortStatus.DATA_ROLE_HOST;
 import static android.hardware.usb.UsbPortStatus.DATA_ROLE_NONE;
 
+import static java.util.Objects.requireNonNull;
+
 import android.content.Context;
 
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
 
@@ -29,28 +32,26 @@ import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settingslib.widget.SelectorWithWidgetPreference;
 
-/**
- * This class controls the radio buttons for switching between
- * USB device and host mode.
- */
+/** This class controls the radio buttons for switching between USB device and host mode. */
 public class UsbDetailsDataRoleController extends UsbDetailsController
         implements SelectorWithWidgetPreference.OnClickListener {
 
-    private PreferenceCategory mPreferenceCategory;
-    private SelectorWithWidgetPreference mDevicePref;
-    private SelectorWithWidgetPreference mHostPref;
+    @Nullable private PreferenceCategory mPreferenceCategory;
+    @Nullable private SelectorWithWidgetPreference mDevicePref;
+    @Nullable private SelectorWithWidgetPreference mHostPref;
 
-    private SelectorWithWidgetPreference mNextRolePref;
+    @Nullable private SelectorWithWidgetPreference mNextRolePref;
 
-    private final Runnable mFailureCallback = () -> {
-        if (mNextRolePref != null) {
-            mNextRolePref.setSummary(R.string.usb_switching_failed);
-            mNextRolePref = null;
-        }
-    };
+    private final Runnable mFailureCallback =
+            () -> {
+                if (mNextRolePref != null) {
+                    mNextRolePref.setSummary(R.string.usb_switching_failed);
+                    mNextRolePref = null;
+                }
+            };
 
-    public UsbDetailsDataRoleController(Context context, UsbDetailsFragment fragment,
-            UsbBackend backend) {
+    public UsbDetailsDataRoleController(
+            Context context, UsbDetailsFragment fragment, UsbBackend backend) {
         super(context, fragment, backend);
     }
 
@@ -58,28 +59,30 @@ public class UsbDetailsDataRoleController extends UsbDetailsController
     public void displayPreference(PreferenceScreen screen) {
         super.displayPreference(screen);
         mPreferenceCategory = screen.findPreference(getPreferenceKey());
-        mHostPref = makeRadioPreference(UsbBackend.dataRoleToString(DATA_ROLE_HOST),
-                R.string.usb_control_host);
-        mDevicePref = makeRadioPreference(UsbBackend.dataRoleToString(DATA_ROLE_DEVICE),
-                R.string.usb_control_device);
+        mHostPref =
+                makeRadioPreference(
+                        UsbBackend.dataRoleToString(DATA_ROLE_HOST), R.string.usb_control_host);
+        mDevicePref =
+                makeRadioPreference(
+                        UsbBackend.dataRoleToString(DATA_ROLE_DEVICE), R.string.usb_control_device);
     }
 
     @Override
     protected void refresh(boolean connected, long functions, int powerRole, int dataRole) {
         if (dataRole == DATA_ROLE_DEVICE) {
-            mDevicePref.setChecked(true);
-            mHostPref.setChecked(false);
-            mPreferenceCategory.setEnabled(true);
+            requireNonNull(mDevicePref).setChecked(true);
+            requireNonNull(mHostPref).setChecked(false);
+            requireNonNull(mPreferenceCategory).setEnabled(true);
         } else if (dataRole == DATA_ROLE_HOST) {
-            mDevicePref.setChecked(false);
-            mHostPref.setChecked(true);
-            mPreferenceCategory.setEnabled(true);
+            requireNonNull(mDevicePref).setChecked(false);
+            requireNonNull(mHostPref).setChecked(true);
+            requireNonNull(mPreferenceCategory).setEnabled(true);
         } else if (!connected || dataRole == DATA_ROLE_NONE) {
-            mPreferenceCategory.setEnabled(false);
+            requireNonNull(mPreferenceCategory).setEnabled(false);
             if (mNextRolePref == null) {
                 // Disconnected with no operation pending, so clear subtexts
-                mHostPref.setSummary("");
-                mDevicePref.setSummary("");
+                requireNonNull(mHostPref).setSummary("");
+                requireNonNull(mDevicePref).setSummary("");
             }
         }
 
@@ -98,19 +101,23 @@ public class UsbDetailsDataRoleController extends UsbDetailsController
 
     @Override
     public void onRadioButtonClicked(SelectorWithWidgetPreference preference) {
-        requireAuthAndExecute(() -> {
-            int role = UsbBackend.dataRoleFromString(preference.getKey());
-            if (role != mUsbBackend.getDataRole() && mNextRolePref == null
-                    && !Utils.isMonkeyRunning()) {
-                mUsbBackend.setDataRole(role);
-                mNextRolePref = preference;
-                preference.setSummary(R.string.usb_switching);
+        int role = UsbBackend.dataRoleFromString(preference.getKey());
+        if (role != mUsbBackend.getDataRole()
+                && mNextRolePref == null
+                && !Utils.isMonkeyRunning()) {
+            requireAuthAndExecute(
+                    () -> {
+                        mUsbBackend.setDataRole(role);
+                        mNextRolePref = preference;
+                        preference.setSummary(R.string.usb_switching);
 
-                mHandler.postDelayed(mFailureCallback,
-                        mUsbBackend.areAllRolesSupported() ? UsbBackend.PD_ROLE_SWAP_TIMEOUT_MS
-                                : UsbBackend.NONPD_ROLE_SWAP_TIMEOUT_MS);
-            }
-        });
+                        mHandler.postDelayed(
+                                mFailureCallback,
+                                mUsbBackend.areAllRolesSupported()
+                                        ? UsbBackend.PD_ROLE_SWAP_TIMEOUT_MS
+                                        : UsbBackend.NONPD_ROLE_SWAP_TIMEOUT_MS);
+                    });
+        }
     }
 
     @Override
@@ -124,12 +131,12 @@ public class UsbDetailsDataRoleController extends UsbDetailsController
     }
 
     private SelectorWithWidgetPreference makeRadioPreference(String key, int titleId) {
-        SelectorWithWidgetPreference pref = new SelectorWithWidgetPreference(
-                mPreferenceCategory.getContext());
+        SelectorWithWidgetPreference pref =
+                new SelectorWithWidgetPreference(requireNonNull(mPreferenceCategory).getContext());
         pref.setKey(key);
         pref.setTitle(titleId);
         pref.setOnClickListener(this);
-        mPreferenceCategory.addPreference(pref);
+        requireNonNull(mPreferenceCategory).addPreference(pref);
         return pref;
     }
 }

@@ -63,9 +63,7 @@ public final class BiometricsSafetySource {
             profileParentUserHandle = userHandle;
         }
         Context profileParentContext = context.createContextAsUser(profileParentUserHandle, 0);
-        if (android.os.Flags.allowPrivateProfile()
-                && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                && userManager.isPrivateProfile()) {
+        if (userManager.isPrivateProfile()) {
             // SC always expects a response from the source if the broadcast has been sent for this
             // source, therefore, we need to send a null SafetySourceData.
             sendNullData(context, safetyEvent);

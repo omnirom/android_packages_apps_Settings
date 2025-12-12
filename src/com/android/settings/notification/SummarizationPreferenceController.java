@@ -43,8 +43,6 @@ public class SummarizationPreferenceController extends BasePreferenceController 
 
     @Override
     public CharSequence getSummary() {
-        return mBackend.isNotificationSummarizationEnabled(mContext)
-                ? mContext.getString(R.string.notification_summarization_on)
-                : mContext.getString(R.string.notification_summarization_off);
+        return mContext.getString(R.string.notification_summarization_summary);
     }
 }

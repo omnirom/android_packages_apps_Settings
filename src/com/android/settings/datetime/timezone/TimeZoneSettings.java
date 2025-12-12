@@ -178,7 +178,10 @@ public class TimeZoneSettings extends DashboardFragment {
     }
 
     private void startRegionPicker() {
-        startPickerFragment(RegionSearchPicker.class, new Bundle(), REQUEST_CODE_REGION_PICKER);
+        final Bundle args = new Bundle();
+        args.putString(RegionSearchPicker.EXTRA_CURRENT_REGION_ID,
+                use(RegionPreferenceController.class).getRegionId());
+        startPickerFragment(RegionSearchPicker.class, args, REQUEST_CODE_REGION_PICKER);
     }
 
     private void onRegionZonePreferenceClicked() {

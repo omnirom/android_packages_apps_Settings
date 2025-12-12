@@ -23,10 +23,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.Settings;
 
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
+
+import com.android.systemui.Flags;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -39,6 +43,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 @RunWith(RobolectricTestRunner.class)
+@DisableFlags(Flags.FLAG_BLUR_SETTINGS_TOGGLE)
 public final class EnableBlursPreferenceControllerTest {
 
     @Mock
@@ -48,6 +53,7 @@ public final class EnableBlursPreferenceControllerTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     private Context mContext;
     private EnableBlursPreferenceController mController;

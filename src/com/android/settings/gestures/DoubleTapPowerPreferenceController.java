@@ -31,6 +31,7 @@ import androidx.preference.PreferenceScreen;
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 
+// LINT.IfChange
 public class DoubleTapPowerPreferenceController extends BasePreferenceController {
 
     public DoubleTapPowerPreferenceController(@NonNull Context context, @NonNull String key) {
@@ -103,3 +104,4 @@ public class DoubleTapPowerPreferenceController extends BasePreferenceController
         return mContext.getText(com.android.settings.R.string.gesture_setting_off);
     }
 }
+// LINT.ThenChange(DoubleTapPowerScreen.kt)

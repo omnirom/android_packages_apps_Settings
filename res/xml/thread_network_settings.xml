@@ -27,7 +27,6 @@
     <com.android.settingslib.widget.FooterPreference
         android:key="thread_network_settings_footer"
         android:title="@string/thread_network_settings_footer_title"
-        android:selectable="false"
         settings:searchable="false"
         settings:controller="com.android.settings.connecteddevice.threadnetwork.ThreadNetworkFooterController"/>
 </PreferenceScreen>

@@ -19,3 +19,6 @@ per-file Adb*=file:platform/packages/modules/adb:/OWNERS
 
 #TouchpadVisualizerPreferenceController
 per-file TouchpadVisualizerPreferenceController.java=file:platform/frameworks/base:/INPUT_OWNERS
+
+# TextCursorBlinkRatePreferenceController
+per-file TextCursorBlinkRatePreferenceController.kt=file:platform/packages/apps/Settings:/src/com/android/settings/accessibility/OWNERS

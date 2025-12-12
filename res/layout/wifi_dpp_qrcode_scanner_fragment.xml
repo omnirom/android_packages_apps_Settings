@@ -40,15 +40,31 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_max="@dimen/qrcode_preview_size">
 
-            <TextureView
-                android:id="@+id/preview_view"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/settingslib_materialColorPrimary">
 
-            <com.android.settingslib.qrcode.QrDecorateView
-                android:id="@+id/decorate_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/settingslib_materialColorPrimary">
+
+                    <TextureView
+                        android:id="@+id/preview_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                </androidx.cardview.widget.CardView>
+
+            </androidx.cardview.widget.CardView>
+
         </FrameLayout>
 
         <TextView

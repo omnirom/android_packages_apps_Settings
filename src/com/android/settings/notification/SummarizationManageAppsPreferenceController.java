@@ -16,22 +16,32 @@
 
 package com.android.settings.notification;
 
+import static android.service.notification.Adjustment.KEY_SUMMARIZATION;
+
 import android.app.Flags;
 import android.content.Context;
+import android.os.UserHandle;
+import android.os.UserManager;
 
 import androidx.annotation.NonNull;
+import androidx.preference.Preference;
 
+import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 
 public class SummarizationManageAppsPreferenceController extends
         BasePreferenceController {
 
     NotificationBackend mBackend;
+    private Context mContext;
+    private UserManager mUserManager;
 
     public SummarizationManageAppsPreferenceController(@NonNull Context context,
             @NonNull String preferenceKey) {
         super(context, preferenceKey);
+        mContext = context;
         mBackend = new NotificationBackend();
+        mUserManager = context.getSystemService(UserManager.class);
     }
 
     @Override
@@ -41,5 +51,28 @@ public class SummarizationManageAppsPreferenceController extends
             return AVAILABLE;
         }
         return CONDITIONALLY_UNAVAILABLE;
+    }
+
+    @Override
+    public void updateState(Preference preference) {
+        // If there are no apps that are currently excluded from summarization, add help text;
+        // otherwise, no summary text needed
+        super.updateState(preference);
+
+        boolean hasDeniedPackages = false;
+        for (UserHandle userHandle : mUserManager.getUserProfiles()) {
+            int userId = userHandle.getIdentifier();
+            if (!mBackend.getAdjustmentDeniedPackages(userId, KEY_SUMMARIZATION).isEmpty()) {
+                hasDeniedPackages = true;
+                break;
+            }
+        }
+
+        if (!hasDeniedPackages) {
+            preference.setSummary(
+                    mContext.getString(R.string.notification_summarization_no_apps_desc));
+        } else {
+            preference.setSummary("");
+        }
     }
 }

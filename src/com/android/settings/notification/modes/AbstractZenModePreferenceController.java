@@ -18,7 +18,6 @@ package com.android.settings.notification.modes;
 
 import static com.google.common.base.Preconditions.checkState;
 
-import android.app.Flags;
 import android.content.Context;
 import android.service.notification.ZenPolicy;
 import android.util.Log;
@@ -92,9 +91,9 @@ abstract class AbstractZenModePreferenceController extends AbstractPreferenceCon
     @Override
     public boolean isAvailable() {
         if (mZenMode != null) {
-            return Flags.modesUi() && isAvailable(mZenMode);
+            return isAvailable(mZenMode);
         } else {
-            return Flags.modesUi();
+            return true;
         }
     }
 

@@ -21,6 +21,7 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.android.settings.accessibility.AutoclickUtils.KEY_CUSTOM_DELAY_VALUE;
 import static com.android.settings.accessibility.AutoclickUtils.KEY_DELAY_MODE;
 import static com.android.settings.core.BasePreferenceController.AVAILABLE;
+import static com.android.settings.core.BasePreferenceController.CONDITIONALLY_UNAVAILABLE;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -33,6 +34,9 @@ import static org.robolectric.Shadows.shadowOf;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.Settings;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -62,6 +66,8 @@ public class ToggleAutoclickCustomSeekbarControllerTest {
 
     @Rule
     public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Mock
     private PreferenceScreen mScreen;
     @Mock
@@ -91,11 +97,19 @@ public class ToggleAutoclickCustomSeekbarControllerTest {
     }
 
     @Test
-    public void getAvailabilityStatus_available() {
+    @DisableFlags(com.android.server.accessibility.Flags.FLAG_ENABLE_AUTOCLICK_INDICATOR)
+    public void getAvailabilityStatus_available_whenFlagOff() {
         assertThat(mController.getAvailabilityStatus()).isEqualTo(AVAILABLE);
     }
 
     @Test
+    @EnableFlags(com.android.server.accessibility.Flags.FLAG_ENABLE_AUTOCLICK_INDICATOR)
+    public void getAvailabilityStatus_unavailable_whenFlagOn() {
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(CONDITIONALLY_UNAVAILABLE);
+    }
+
+    @Test
+    @DisableFlags(com.android.server.accessibility.Flags.FLAG_ENABLE_AUTOCLICK_INDICATOR)
     public void displayPreference_initSeekBar() {
         mSharedPreferences.edit().putInt(KEY_CUSTOM_DELAY_VALUE, 700).apply();
 
@@ -111,6 +125,7 @@ public class ToggleAutoclickCustomSeekbarControllerTest {
     }
 
     @Test
+    @DisableFlags(com.android.server.accessibility.Flags.FLAG_ENABLE_AUTOCLICK_INDICATOR)
     public void displayPreference_initDelayLabel() {
         mSharedPreferences.edit().putInt(KEY_CUSTOM_DELAY_VALUE, 700).apply();
 
@@ -122,6 +137,7 @@ public class ToggleAutoclickCustomSeekbarControllerTest {
     }
 
     @Test
+    @DisableFlags(com.android.server.accessibility.Flags.FLAG_ENABLE_AUTOCLICK_INDICATOR)
     public void onSharedPreferenceChanged_delayMode_updateCustomDelayValue() {
         mSharedPreferences.edit().putInt(KEY_CUSTOM_DELAY_VALUE, 700).apply();
 
@@ -140,6 +156,7 @@ public class ToggleAutoclickCustomSeekbarControllerTest {
     }
 
     @Test
+    @DisableFlags(com.android.server.accessibility.Flags.FLAG_ENABLE_AUTOCLICK_INDICATOR)
     public void onSeekBarProgressChanged_updateCustomDelayValue() {
         mSharedPreferences.edit().putInt(KEY_CUSTOM_DELAY_VALUE, 700).apply();
 
@@ -160,6 +177,7 @@ public class ToggleAutoclickCustomSeekbarControllerTest {
     }
 
     @Test
+    @DisableFlags(com.android.server.accessibility.Flags.FLAG_ENABLE_AUTOCLICK_INDICATOR)
     public void onShorterClicked_updateCustomDelayValue() {
         mSharedPreferences.edit().putInt(KEY_CUSTOM_DELAY_VALUE, 700).apply();
 
@@ -178,6 +196,7 @@ public class ToggleAutoclickCustomSeekbarControllerTest {
     }
 
     @Test
+    @DisableFlags(com.android.server.accessibility.Flags.FLAG_ENABLE_AUTOCLICK_INDICATOR)
     public void onLongerClicked_updateCustomDelayValue() {
         mSharedPreferences.edit().putInt(KEY_CUSTOM_DELAY_VALUE, 700).apply();
 

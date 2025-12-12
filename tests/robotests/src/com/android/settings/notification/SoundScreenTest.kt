@@ -15,23 +15,13 @@
  */
 package com.android.settings.notification
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.settings.flags.Flags
-import com.android.settingslib.preference.CatalystScreenTestCase
-import com.google.common.truth.Truth.assertThat
-import org.junit.Test
-import org.junit.runner.RunWith
+import com.android.settings.testutils2.SettingsCatalystTestCase
 
-@RunWith(AndroidJUnit4::class)
-class SoundScreenTest : CatalystScreenTestCase() {
+class SoundScreenTest : SettingsCatalystTestCase() {
 
     override val preferenceScreenCreator = SoundScreen()
 
     override val flagName: String
         get() = Flags.FLAG_CATALYST_SOUND_SCREEN
-
-    @Test
-    fun key() {
-        assertThat(preferenceScreenCreator.key).isEqualTo(SoundScreen.KEY)
-    }
 }

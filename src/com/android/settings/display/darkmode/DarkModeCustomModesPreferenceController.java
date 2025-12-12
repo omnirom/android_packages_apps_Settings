@@ -16,19 +16,16 @@
 
 package com.android.settings.display.darkmode;
 
-import static android.app.UiModeManager.MODE_NIGHT_CUSTOM_TYPE_BEDTIME;
 import static android.app.settings.SettingsEnums.DARK_UI_SETTINGS;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import android.app.Flags;
 import android.app.UiModeManager;
 import android.content.Context;
-import android.content.Intent;
 import android.icu.text.MessageFormat;
+import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
@@ -43,6 +40,7 @@ import java.util.Locale;
 import java.util.Map;
 
 /** Controller for the dark theme Modes / Bedtime custom footer. */
+// LINT.IfChange
 public class DarkModeCustomModesPreferenceController extends BasePreferenceController {
     private final UiModeManager mUiModeManager;
     private final BedtimeSettings mBedtimeSettings;
@@ -55,58 +53,41 @@ public class DarkModeCustomModesPreferenceController extends BasePreferenceContr
 
     @Override
     public int getAvailabilityStatus() {
-        return (Flags.modesUi() || mBedtimeSettings.getBedtimeSettingsIntent() != null)
-                ? AVAILABLE_UNSEARCHABLE
-                : UNSUPPORTED_ON_DEVICE;
+        return AVAILABLE_UNSEARCHABLE;
     }
 
     @Override
     public void displayPreference(@NonNull PreferenceScreen screen) {
         super.displayPreference(screen);
         FooterPreference footerPreference = checkNotNull(screen.findPreference(getPreferenceKey()));
-        if (Flags.modesUi()) {
-            List<String> modesUsingDarkTheme = AutoDarkTheme.getModesThatChangeDarkTheme(
-                    screen.getContext());
+        List<String> modesUsingDarkTheme = AutoDarkTheme.getModesThatChangeDarkTheme(
+                screen.getContext());
 
-            MessageFormat titleFormat = new MessageFormat(
-                    mContext.getString(R.string.dark_ui_modes_footer_summary),
-                    Locale.getDefault());
-            Map<String, Object> args = new HashMap<>();
-            args.put("count", modesUsingDarkTheme.size());
-            for (int i = 0; i < modesUsingDarkTheme.size() && i < 3; i++) {
-                args.put("mode_" + (i + 1), modesUsingDarkTheme.get(i));
-            }
-            footerPreference.setTitle(titleFormat.format(args));
-
-            footerPreference.setLearnMoreAction(
-                    v -> new SubSettingLauncher(v.getContext())
-                            .setDestination(ZenModesListFragment.class.getName())
-                            .setSourceMetricsCategory(DARK_UI_SETTINGS)
-                            .launch());
-            footerPreference.setLearnMoreText(
-                    mContext.getString(R.string.dark_ui_modes_footer_action));
-        } else {
-            footerPreference.setTitle(R.string.dark_ui_bedtime_footer_summary);
-            footerPreference.setLearnMoreAction(
-                    v -> {
-                        Intent bedtimeSettingsIntent = mBedtimeSettings.getBedtimeSettingsIntent();
-                        if (bedtimeSettingsIntent != null) {
-                            v.getContext().startActivity(bedtimeSettingsIntent);
-                        }
-                    });
-            footerPreference.setLearnMoreText(
-                    mContext.getString(R.string.dark_ui_bedtime_footer_action));
+        MessageFormat titleFormat = new MessageFormat(
+                mContext.getString(R.string.dark_ui_modes_footer_summary),
+                Locale.getDefault());
+        Map<String, Object> args = new HashMap<>();
+        args.put("count", modesUsingDarkTheme.size());
+        for (int i = 0; i < modesUsingDarkTheme.size() && i < 3; i++) {
+            args.put("mode_" + (i + 1), modesUsingDarkTheme.get(i));
         }
-    }
+        footerPreference.setTitle(titleFormat.format(args));
 
-    @Override
-    public void updateState(@NonNull Preference preference) {
-        if (!Flags.modesUi()) {
-            if (mUiModeManager.getNightModeCustomType() != MODE_NIGHT_CUSTOM_TYPE_BEDTIME) {
-                preference.setVisible(false);
-                return;
+        footerPreference.setLearnMoreAction(
+                v -> new SubSettingLauncher(v.getContext())
+                        .setDestination(ZenModesListFragment.class.getName())
+                        .setSourceMetricsCategory(DARK_UI_SETTINGS)
+                        .launch());
+        footerPreference.setLearnMoreText(
+                mContext.getString(R.string.dark_ui_modes_footer_action));
+        if (android.view.accessibility.Flags.forceInvertColor()) {
+            FooterPreference expanedDarkModeFooter = screen.findPreference(
+                    DarkModeExpandedFooterPreferenceController.DARK_MODE_EXPANDED_FOOTER_KEY);
+            if (expanedDarkModeFooter.isVisible()) {
+                footerPreference.setIconVisibility(View.GONE);
             }
-            preference.setVisible(true);
+            footerPreference.setOrder(DarkModePreferenceOrderUtil.Order.MODES_FOOTER.getValue());
         }
     }
 }
+// LINT.ThenChange(DarkModeCustomModesFooterPreference.kt)

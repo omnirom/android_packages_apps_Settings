@@ -27,6 +27,7 @@ import androidx.preference.Preference;
 
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
+import com.android.settings.wifi.WifiUtils;
 import com.android.wifi.flags.Flags;
 import com.android.wifitrackerlib.WifiEntry;
 
@@ -64,6 +65,7 @@ public class WifiPrivacyPreferenceController2 extends BasePreferenceController i
         preference.setSelectable(isSelectable);
         listPreference.setValue(Integer.toString(randomizationLevel));
         updateSummary(listPreference, randomizationLevel);
+        preference.setEnabled(WifiUtils.isNetworkEditable(mWifiEntry, mContext));
 
         // If the preference cannot be selectable, display a temporary network in the summary.
         if (!isSelectable) {

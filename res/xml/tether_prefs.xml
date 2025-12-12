@@ -51,6 +51,5 @@
     <com.android.settingslib.widget.FooterPreference
         android:key="disabled_on_data_saver"
         android:title="@string/tether_settings_disabled_on_data_saver"
-        android:selectable="false"
         settings:searchable="false"/>
 </PreferenceScreen>

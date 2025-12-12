@@ -23,7 +23,6 @@
         android:title="@string/picture_in_picture_app_detail_switch"/>
 
     <com.android.settingslib.widget.FooterPreference
-        android:title="@string/picture_in_picture_app_detail_summary"
-        android:selectable="false"/>
+        android:title="@string/picture_in_picture_app_detail_summary" />
 
 </PreferenceScreen>

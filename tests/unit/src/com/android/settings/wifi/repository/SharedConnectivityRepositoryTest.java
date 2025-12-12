@@ -21,7 +21,6 @@ import static android.app.PendingIntent.FLAG_IMMUTABLE;
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -63,34 +62,25 @@ public class SharedConnectivityRepositoryTest {
         when(mContext.getSystemService(SharedConnectivityManager.class)).thenReturn(mManager);
         when(mManager.getSettingsState()).thenReturn(mState);
 
-        mRepository = spy(new SharedConnectivityRepository(mContext, true /* isConfigEnabled */));
+        mRepository = spy(new SharedConnectivityRepository(mContext));
     }
 
     @Test
-    public void constructor_configEnabled_registerCallback() {
+    public void constructor_registerCallback() {
         verify(mManager).registerCallback(any(), any());
     }
 
     @Test
-    public void constructor_configNotEnabled_doNotRegisterCallback() {
-        SharedConnectivityManager manager = mock(SharedConnectivityManager.class);
-        when(mContext.getSystemService(SharedConnectivityManager.class)).thenReturn(manager);
-
-        mRepository = new SharedConnectivityRepository(mContext, false /* isConfigEnabled */);
-
-        verify(manager, never()).registerCallback(any(), any());
-    }
-
-    @Test
-    public void isServiceAvailable_configEnabled_returnTrue() {
-        mRepository = new SharedConnectivityRepository(mContext, true /* isConfigEnabled */);
+    public void isServiceAvailable_servicecCnfigured_returnTrue() {
+        mRepository = new SharedConnectivityRepository(mContext);
 
         assertThat(mRepository.isServiceAvailable()).isTrue();
     }
 
     @Test
-    public void isServiceAvailable_configNotEnabled_returnFalse() {
-        mRepository = new SharedConnectivityRepository(mContext, false /* isConfigEnabled */);
+    public void isServiceAvailable_serviceNotConfigured_returnFalse() {
+        when(mContext.getSystemService(SharedConnectivityManager.class)).thenReturn(null);
+        mRepository = new SharedConnectivityRepository(mContext);
 
         assertThat(mRepository.isServiceAvailable()).isFalse();
     }
@@ -103,7 +93,7 @@ public class SharedConnectivityRepositoryTest {
     @Test
     public void handleLaunchSettings_managerNull_doNothing() {
         when(mContext.getSystemService(SharedConnectivityManager.class)).thenReturn(null);
-        mRepository = spy(new SharedConnectivityRepository(mContext, true /* isConfigEnabled */));
+        mRepository = spy(new SharedConnectivityRepository(mContext));
 
         mRepository.handleLaunchSettings();
 
@@ -111,7 +101,7 @@ public class SharedConnectivityRepositoryTest {
     }
 
     @Test
-    public void handleLaunchSettings_stageNull_doNothing() {
+    public void handleLaunchSettings_stateNull_doNothing() {
         when(mManager.getSettingsState()).thenReturn(null);
 
         mRepository.handleLaunchSettings();

@@ -20,7 +20,6 @@ import static com.android.settings.network.apn.ApnEditPageProviderKt.EDIT_URL;
 
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.provider.Telephony;
 import android.telephony.SubscriptionManager;
@@ -35,7 +34,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
 import com.android.settings.R;
-import com.android.settings.flags.Flags;
 import com.android.settings.spa.SpaActivity;
 import com.android.settingslib.widget.TwoTargetPreference;
 
@@ -127,15 +125,8 @@ public class ApnPreference extends TwoTargetPreference
 
         final Uri url = ContentUris.withAppendedId(Telephony.Carriers.CONTENT_URI, pos);
 
-        if (Flags.newApnPageEnabled()) {
-            String route = ApnEditPageProvider.INSTANCE.getRoute(EDIT_URL, url, mSubId);
-            SpaActivity.startSpaActivity(context, route);
-        } else {
-            final Intent editIntent = new Intent(Intent.ACTION_EDIT, url);
-            editIntent.putExtra(ApnSettings.SUB_ID, mSubId);
-            editIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            context.startActivity(editIntent);
-        }
+        String route = ApnEditPageProvider.INSTANCE.getRoute(EDIT_URL, url, mSubId);
+        SpaActivity.startSpaActivity(context, route);
         return true;
     }
 

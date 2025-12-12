@@ -16,9 +16,6 @@
 
 package com.android.settings.enterprise;
 
-import static android.app.admin.DevicePolicyManager.DEVICE_OWNER_TYPE_DEFAULT;
-import static android.app.admin.DevicePolicyManager.DEVICE_OWNER_TYPE_FINANCED;
-
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.when;
@@ -66,11 +63,7 @@ public class PrivacyPreferenceControllerHelperTest {
                 .thenReturn(mDevicePolicyManager);
         mPrivacyPreferenceControllerHelper = new PrivacyPreferenceControllerHelper(mContext);
 
-        when(mDevicePolicyManager.isDeviceManaged()).thenReturn(true);
-        when(mDevicePolicyManager.getDeviceOwnerComponentOnAnyUser())
-                .thenReturn(DEVICE_OWNER_COMPONENT);
-        when(mDevicePolicyManager.getDeviceOwnerType(DEVICE_OWNER_COMPONENT))
-                .thenReturn(DEVICE_OWNER_TYPE_DEFAULT);
+        when(mDevicePolicyManager.isDeviceFinanced()).thenReturn(false);
     }
 
     @Test
@@ -117,22 +110,13 @@ public class PrivacyPreferenceControllerHelperTest {
     }
 
     @Test
-    public void isFinancedDevice_deviceNotManaged_returnsFalse() {
-        when(mDevicePolicyManager.isDeviceManaged()).thenReturn(false);
-
+    public void isFinancedDevice_notFinanced_returnsFalse() {
         assertThat(mPrivacyPreferenceControllerHelper.isFinancedDevice()).isFalse();
     }
 
     @Test
-    public void isFinancedDevice_deviceManaged_defaultDeviceOwnerType_returnsFalse() {
-        assertThat(mPrivacyPreferenceControllerHelper.isFinancedDevice()).isFalse();
-    }
-
-    @Test
-    public void isFinancedDevice_deviceManaged_financedDeviceOwnerType_returnsTrue() {
-        when(mDevicePolicyManager.getDeviceOwnerType(DEVICE_OWNER_COMPONENT))
-                .thenReturn(DEVICE_OWNER_TYPE_FINANCED);
-
+    public void isFinancedDevice_financed_returnsTrue() {
+        when(mDevicePolicyManager.isFinancedDevice()).thenReturn(true);
         assertThat(mPrivacyPreferenceControllerHelper.isFinancedDevice()).isTrue();
     }
 }

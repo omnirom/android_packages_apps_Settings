@@ -19,7 +19,9 @@ package com.android.settings.safetycenter;
 import static com.android.settings.biometrics.BiometricEnrollActivity.EXTRA_LAUNCH_FACE_ENROLL_FIRST;
 import static com.android.settings.safetycenter.BiometricSourcesUtils.REQUEST_CODE_FACE_SETTING;
 
+import android.app.admin.EnforcingAdmin;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.face.FaceManager;
 import android.os.Bundle;
 import android.os.Process;
@@ -54,9 +56,7 @@ public final class FaceSafetySource {
 
         // Handle private profile case
         UserManager userManager = UserManager.get(context);
-        if (android.os.Flags.allowPrivateProfile()
-                && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                && userManager.isPrivateProfile()) {
+        if (userManager.isPrivateProfile()) {
             // SC always expects a response from the source if the broadcast has been sent for this
             // source, therefore, we need to send a null SafetySourceData.
             sendNullData(context, safetyEvent);
@@ -85,7 +85,21 @@ public final class FaceSafetySource {
                 // Launch face enrollment first then fingerprint enrollment.
                 bundle.putBoolean(EXTRA_LAUNCH_FACE_ENROLL_FIRST, true);
             }
-            RestrictedLockUtils.EnforcedAdmin disablingAdmin = faceStatusUtils.getDisablingAdmin();
+            Intent biometricSettingsIntent;
+            boolean isFaceDisabledByAdmin;
+            if (android.app.admin.flags.Flags.policyTransparencyRefactorEnabled()
+                    && android.app.admin.flags.Flags.setKeyguardDisabledFeaturesCoexistence()) {
+                EnforcingAdmin admin = faceStatusUtils.getEnforcingAdmin();
+                isFaceDisabledByAdmin = admin != null;
+                biometricSettingsIntent = biometricNavigationUtils.getBiometricSettingsIntent(
+                        context, settingClassName, admin, bundle);
+            } else {
+                RestrictedLockUtils.EnforcedAdmin disablingAdmin =
+                        faceStatusUtils.getDisablingAdmin();
+                isFaceDisabledByAdmin = disablingAdmin != null;
+                biometricSettingsIntent = biometricNavigationUtils.getBiometricSettingsIntent(
+                        context, settingClassName, disablingAdmin, bundle);
+            }
             BiometricSourcesUtils.setBiometricSafetySourceData(
                     SAFETY_SOURCE_ID,
                     context,
@@ -93,15 +107,9 @@ public final class FaceSafetySource {
                     faceStatusUtils.getSummary(),
                     BiometricSourcesUtils.createPendingIntent(
                             profileParentContext,
-                            biometricNavigationUtils
-                                    .getBiometricSettingsIntent(
-                                            context,
-                                            settingClassName,
-                                            disablingAdmin,
-                                            bundle)
-                                    .setIdentifier(Integer.toString(userId)),
+                            biometricSettingsIntent.setIdentifier(Integer.toString(userId)),
                             REQUEST_CODE_FACE_SETTING),
-                    disablingAdmin == null /* enabled */,
+                    !isFaceDisabledByAdmin,
                     faceStatusUtils.hasEnrolled(),
                     safetyEvent,
                     FeatureFactory.getFeatureFactory().getBiometricsFeatureProvider()

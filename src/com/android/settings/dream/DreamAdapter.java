@@ -16,6 +16,8 @@
 
 package com.android.settings.dream;
 
+import static android.service.dreams.Flags.dreamsV2;
+
 import android.annotation.LayoutRes;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -53,7 +55,6 @@ public class DreamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         private final TextView mSummaryView;
         private final ImageView mPreviewView;
         private final ImageView mPreviewPlaceholderView;
-        private final Button mCustomizeButton;
         private final Context mContext;
         private final float mDisabledAlphaValue;
 
@@ -64,7 +65,6 @@ public class DreamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mPreviewPlaceholderView = view.findViewById(R.id.preview_placeholder);
             mTitleView = view.findViewById(R.id.title_text);
             mSummaryView = view.findViewById(R.id.summary_text);
-            mCustomizeButton = view.findViewById(R.id.customize_button);
             mDisabledAlphaValue = ColorUtil.getDisabledAlpha(context);
         }
 
@@ -89,6 +89,15 @@ public class DreamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     R.dimen.dream_item_icon_size);
             icon.setBounds(0, 0, iconSize, iconSize);
             mTitleView.setCompoundDrawablesRelative(icon, null, null, null);
+
+            if (dreamsV2()) {
+                mTitleView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+                mTitleView.setSingleLine();
+
+                final int drawablePadding = mContext.getResources().getDimensionPixelSize(
+                        R.dimen.dream_item_icon_padding_new);
+                mTitleView.setCompoundDrawablePadding(drawablePadding);
+            }
 
             itemView.setOnClickListener(v -> {
                 item.onItemClicked();
@@ -118,18 +127,58 @@ public class DreamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     mPreviewPlaceholderView.setVisibility(View.VISIBLE);
                 }
 
-                mCustomizeButton.setOnClickListener(v -> item.onCustomizeClicked());
-                mCustomizeButton.setVisibility(
-                        item.allowCustomization() && mEnabled ? View.VISIBLE : View.GONE);
-                // This must be called AFTER itemView.setSelected above, in order to keep the
-                // customize button in an unselected state.
-                mCustomizeButton.setSelected(false);
-                mCustomizeButton.setContentDescription(
-                        mContext.getResources().getString(R.string.customize_button_description,
-                                item.getTitle()));
+                configureButtons(item);
+                setEnabledStateOnViews(itemView, mEnabled);
+            }
+        }
+
+        private void configureButtons(IDreamItem item) {
+            if (dreamsV2()) {
+                configureNewPreviewButton(item);
             }
 
-            setEnabledStateOnViews(itemView, mEnabled);
+            configureCustomizeButton(item);
+        }
+
+        private void configureNewPreviewButton(IDreamItem item) {
+            final View previewButton = itemView.findViewById(R.id.preview_button);
+            if (previewButton == null) {
+                // Do nothing if the button is null (it can be null when the grid of dreams is
+                // presented during dock setup; see b/412208020 for more info).
+                return;
+            }
+
+            // Show preview button if dream is active and enabled
+            previewButton.setVisibility(
+                    item.isActive() && mEnabled ? View.VISIBLE : View.GONE);
+            previewButton.setSelected(false);
+            previewButton.setOnClickListener(v -> item.onPreviewClicked());
+        }
+
+        private void configureCustomizeButton(IDreamItem item) {
+            final int customizeButtonResId =
+                    dreamsV2() ? R.id.customize_button_new : R.id.customize_button;
+            final Button customizeButton = itemView.findViewById(customizeButtonResId);
+            if (customizeButton == null) {
+                // Do nothing if the button is null (it can be null when the grid of dreams is
+                // presented during dock setup; see b/412208020 for more info).
+                return;
+            }
+
+            if (dreamsV2()) {
+                customizeButton.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+                customizeButton.setSingleLine();
+                customizeButton.setSelected(true);
+            } else {
+                customizeButton.setSelected(false);
+            }
+            customizeButton.setVisibility(
+                    item.allowCustomization() && mEnabled ? View.VISIBLE : View.GONE);
+
+            customizeButton.setOnClickListener(v -> item.onCustomizeClicked());
+            customizeButton.setContentDescription(
+                    mContext.getResources().getString(R.string.customize_button_description,
+                            item.getTitle()));
         }
 
         /**
@@ -157,6 +206,11 @@ public class DreamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public DreamAdapter(@LayoutRes int layoutRes, List<IDreamItem> itemList) {
         mItemList = itemList;
         mLayouts.append(DreamItemViewTypes.DREAM_ITEM, layoutRes);
+    }
+
+    void setItemList(List<IDreamItem> itemList) {
+        mItemList.clear();
+        mItemList.addAll(itemList);
     }
 
     @NonNull

@@ -93,6 +93,7 @@ public class AppLocalePickerActivityTest {
     private static final Uri TEST_PACKAGE_URI = Uri.parse("package:" + TEST_PACKAGE_NAME);
     private static final String EN_CA = "en-CA";
     private static final String EN_US = "en-US";
+    private static final String FR_CA = "fr-CA";
     private static int sUid;
 
     private FakeFeatureFactory mFeatureFactory;
@@ -501,7 +502,7 @@ public class AppLocalePickerActivityTest {
     }
 
     private void initLocaleNotificationEnvironment() throws Exception {
-        LocaleList.setDefault(LocaleList.forLanguageTags(EN_CA));
+        LocaleList.setDefault(LocaleList.forLanguageTags(FR_CA));
 
         Locale locale = Locale.forLanguageTag("en-US");
         when(mLocaleInfo.getLocale()).thenReturn(locale);

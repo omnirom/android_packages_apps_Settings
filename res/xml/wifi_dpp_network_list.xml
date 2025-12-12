@@ -18,7 +18,6 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:key="access_points"
-        android:layout="@layout/preference_category_no_label"/>
+    <com.android.settingslib.widget.UntitledPreferenceCategory
+        android:key="access_points"/>
 </PreferenceScreen>

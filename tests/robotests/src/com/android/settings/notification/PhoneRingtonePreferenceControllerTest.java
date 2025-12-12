@@ -70,7 +70,22 @@ public class PhoneRingtonePreferenceControllerTest {
         when(mMockResources
                 .getBoolean(com.android.internal.R.bool.config_ringtoneVibrationSettingsSupported))
                 .thenReturn(false);
-        when(mTelephonyManager.isVoiceCapable()).thenReturn(false);
+        when(mMockResources.getBoolean(com.android.settings.R.bool.config_show_sim_info))
+                .thenReturn(true);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(false);
+
+        assertThat(mController.isAvailable()).isFalse();
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_ENABLE_RINGTONE_HAPTICS_CUSTOMIZATION)
+    public void isAvailable_telephonyDisabled_shouldReturnFalse() {
+        when(mMockResources
+                .getBoolean(com.android.internal.R.bool.config_ringtoneVibrationSettingsSupported))
+                .thenReturn(false);
+        when(mMockResources.getBoolean(com.android.settings.R.bool.config_show_sim_info))
+                .thenReturn(false);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(true);
 
         assertThat(mController.isAvailable()).isFalse();
     }
@@ -81,7 +96,9 @@ public class PhoneRingtonePreferenceControllerTest {
         when(mMockResources
                 .getBoolean(com.android.internal.R.bool.config_ringtoneVibrationSettingsSupported))
                 .thenReturn(false);
-        when(mTelephonyManager.isVoiceCapable()).thenReturn(true);
+        when(mMockResources.getBoolean(com.android.settings.R.bool.config_show_sim_info))
+                .thenReturn(true);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(true);
 
         assertThat(mController.isAvailable()).isTrue();
     }
@@ -92,7 +109,7 @@ public class PhoneRingtonePreferenceControllerTest {
         when(mMockResources
                 .getBoolean(com.android.internal.R.bool.config_ringtoneVibrationSettingsSupported))
                 .thenReturn(true);
-        when(mTelephonyManager.isVoiceCapable()).thenReturn(true);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(true);
 
         assertThat(mController.isAvailable()).isFalse();
     }

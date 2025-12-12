@@ -54,15 +54,6 @@
             settings:controller="com.android.settings.language.UserDictionaryPreferenceController" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:key="pointer_category"
-        android:layout="@layout/preference_category_no_label">
-        <com.android.settings.PointerSpeedPreference
-            android:key="pointer_speed"
-            android:title="@string/pointer_speed"
-            android:dialogTitle="@string/pointer_speed" />
-    </PreferenceCategory>
-
     <SwitchPreferenceCompat
         android:key="vibrate_input_devices"
         android:title="@string/vibrate_input_devices"

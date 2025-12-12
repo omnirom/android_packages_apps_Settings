@@ -21,8 +21,7 @@
 
   <com.android.settingslib.widget.TopIntroPreference
       android:key="key_region_picker_sub_title"
-      android:title="@string/region_picker_sub_title"
-      android:persistent="false"/>
+      android:title="@string/region_picker_sub_title" />
 
   <PreferenceCategory
       android:key="system_region_suggested_category"

@@ -29,7 +29,7 @@
         android:key="gesture_double_tap_power"
         android:title="@string/double_tap_power_for_camera_title"
         android:summary="@string/double_tap_power_for_camera_summary"
-        settings:keywords="@string/keywords_gesture"
+        settings:keywords="@string/keywords_double_tap_power"
         settings:controller="com.android.settings.gestures.DoubleTapPowerToOpenCameraPreferenceController"/>
 
 </PreferenceScreen>

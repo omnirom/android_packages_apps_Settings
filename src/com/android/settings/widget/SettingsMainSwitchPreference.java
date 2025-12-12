@@ -18,6 +18,7 @@ package com.android.settings.widget;
 
 import static com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
 
+import android.app.admin.EnforcingAdmin;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.CompoundButton;
@@ -50,7 +51,9 @@ public class SettingsMainSwitchPreference extends TwoStatePreference implements
     private final List<OnCheckedChangeListener> mSwitchChangeListeners = new ArrayList<>();
 
     private SettingsMainSwitchBar mMainSwitchBar;
+    // TODO(b/414733570): Clean-up mEnforcedAdmin when all callers are using mEnforcingAdmin.
     private EnforcedAdmin mEnforcedAdmin;
+    private EnforcingAdmin mEnforcingAdmin;
     private RestrictedPreferenceHelper mRestrictedHelper;
 
     public SettingsMainSwitchPreference(Context context) {
@@ -89,6 +92,10 @@ public class SettingsMainSwitchPreference extends TwoStatePreference implements
         if (mEnforcedAdmin == null && mRestrictedHelper != null) {
             mEnforcedAdmin = mRestrictedHelper.checkRestrictionEnforced();
         }
+        if (mEnforcingAdmin == null && mRestrictedHelper != null) {
+            mEnforcingAdmin = mRestrictedHelper.checkAdminRestrictionEnforced();
+        }
+
         mMainSwitchBar = (SettingsMainSwitchBar) holder.findViewById(R.id.main_switch_bar);
         initMainSwitchBar();
         if (isVisible()) {
@@ -236,10 +243,30 @@ public class SettingsMainSwitchPreference extends TwoStatePreference implements
         }
     }
 
+    /**
+     * If admin is not null, disables the text and switch but keeps the view clickable.
+     * Otherwise, calls setEnabled which will enables the entire view including
+     * the text and switch.
+     */
+    public void setDisabledByAdmin(EnforcingAdmin admin) {
+        mEnforcingAdmin = admin;
+        if (mMainSwitchBar != null) {
+            mMainSwitchBar.setDisabledByAdmin(mEnforcingAdmin);
+        }
+    }
+
     private void initMainSwitchBar() {
         if (mMainSwitchBar != null) {
             mMainSwitchBar.setTitle(getTitle());
-            mMainSwitchBar.setDisabledByAdmin(mEnforcedAdmin);
+            // Either mEnforcedAdmin or mEnforcingAdmin will be used for representing admin
+            // restriction.
+            if (mEnforcedAdmin != null) {
+                mMainSwitchBar.setDisabledByAdmin(mEnforcedAdmin);
+            } else if (mEnforcingAdmin != null) {
+                mMainSwitchBar.setDisabledByAdmin(mEnforcingAdmin);
+            } else {
+                mMainSwitchBar.setDisabledByAdmin((EnforcingAdmin) null);
+            }
 
             // Disable the focusability of the switch bar. The parent FrameLayout
             // will be the only focusable view for the Main Switch Bar to avoid

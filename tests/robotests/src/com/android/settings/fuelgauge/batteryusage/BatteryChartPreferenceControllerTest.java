@@ -76,6 +76,9 @@ public final class BatteryChartPreferenceControllerTest {
     @Mock private BatteryChartView mHourlyChartView;
     @Mock private ViewPropertyAnimator mViewPropertyAnimator;
     @Mock private LinearLayout.LayoutParams mLayoutParams;
+    @Mock
+    private BatteryChartPreferenceController.OnSelectedIndexUpdatedListener
+            mOnSelectedIndexUpdatedListener;
 
     private Context mContext;
     private FakeFeatureFactory mFeatureFactory;
@@ -553,6 +556,34 @@ public final class BatteryChartPreferenceControllerTest {
 
         // Only calculate the even hours.
         assertThat(totalHour).isEqualTo(59);
+    }
+
+    @Test
+    public void onHighlightSlotIndexUpdate_withSameIndex_skipsRefresh() {
+        // Set initial highlight indices.
+        mBatteryChartPreferenceController.mDailyHighlightSlotIndex = 1;
+        mBatteryChartPreferenceController.mHourlyHighlightSlotIndex = 2;
+        mBatteryChartPreferenceController.setOnSelectedIndexUpdatedListener(
+                mOnSelectedIndexUpdatedListener);
+        // Spy the controller to verify refreshUi() is not called.
+        final BatteryChartPreferenceController controller = spy(mBatteryChartPreferenceController);
+
+        // Action: Call with the same indices.
+        controller.onHighlightSlotIndexUpdate(1, 2);
+
+        // Assert: Verify that refreshUi() and the listener are not called.
+        verify(controller, never()).refreshUi();
+        verify(mOnSelectedIndexUpdatedListener, never()).onSelectedIndexUpdated();
+
+        // Action: Call with different indices.
+        controller.onHighlightSlotIndexUpdate(3, 4);
+
+        // Assert: Verify that the indices are updated.
+        assertThat(controller.mDailyHighlightSlotIndex).isEqualTo(3);
+        assertThat(controller.mHourlyHighlightSlotIndex).isEqualTo(4);
+        // Assert: Verify that refreshUi() and the listener are called.
+        verify(controller).refreshUi();
+        verify(mOnSelectedIndexUpdatedListener).onSelectedIndexUpdated();
     }
 
     private static Long generateTimestamp(int index) {

@@ -109,8 +109,13 @@ public class SetupSkipDialogTest {
         when(mFaceManager.isHardwareDetected()).thenReturn(false);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(false);
 
-        SetupSkipDialog setupSkipDialog =
-                SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PIN, false, false, false, false, true);
+        SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PIN,
+                /* isFrpSupport */ false,
+                /* forFingerprint */ false,
+                /* forFace */ false,
+                /* forBiometric */ false,
+                /* isSuw */ true,
+                /* isExpressiveStyle */ false);
         setupSkipDialog.show(mActivity.getSupportFragmentManager());
 
         ShadowAlertDialog shadowAlertDialog = getShadowAlertDialog();
@@ -125,8 +130,13 @@ public class SetupSkipDialogTest {
         when(mFaceManager.isHardwareDetected()).thenReturn(false);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(false);
 
-        SetupSkipDialog setupSkipDialog =
-                SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PIN, true, false, false, false, true);
+        SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PIN,
+                /* isFrpSupport */ true,
+                /* forFingerprint */ false,
+                /* forFace */ false,
+                /* forBiometric */ false,
+                /* isSuw */ true,
+                /* isExpressiveStyle */ false);
         setupSkipDialog.show(mActivity.getSupportFragmentManager());
 
         ShadowAlertDialog shadowAlertDialog = getShadowAlertDialog();
@@ -137,6 +147,102 @@ public class SetupSkipDialogTest {
     }
 
     @Test
+    public void dialogExpressiveStyle_whenSkipPinSetupForFace_shouldShownCorrectly() {
+        final boolean hasFace = true;
+        final boolean hasFingerprint = false;
+
+        when(mFaceManager.isHardwareDetected()).thenReturn(hasFace);
+        when(mFingerprintManager.isHardwareDetected()).thenReturn(hasFingerprint);
+
+        SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PIN,
+                /* isFrpSupport */ false,
+                /* forFingerprint */ false,
+                /* forFace */ true,
+                /* forBiometric */ false,
+                /* isSuw */ true,
+                /* isExpressiveStyle */ true);
+        setupSkipDialog.show(mActivity.getSupportFragmentManager());
+
+        ShadowAlertDialog shadowAlertDialog = getShadowAlertDialog();
+        assertThat(shadowAlertDialog.getTitle().toString()).isEqualTo(
+                getSkipSetupTitle(CREDENTIAL_TYPE_PIN, hasFingerprint, hasFace));
+        assertThat(shadowAlertDialog.getMessage().toString()).isEqualTo(
+                mActivity.getString(R.string.lock_screen_pin_skip_face_message));
+    }
+
+    @Test
+    public void dialogExpressiveStyle_whenSkipPinSetupForFingerprint_shouldShownCorrectly() {
+        final boolean hasFace = false;
+        final boolean hasFingerprint = true;
+
+        when(mFaceManager.isHardwareDetected()).thenReturn(hasFace);
+        when(mFingerprintManager.isHardwareDetected()).thenReturn(hasFingerprint);
+
+        SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PIN,
+                /* isFrpSupport */ false,
+                /* forFingerprint */ true,
+                /* forFace */ false,
+                /* forBiometric */ false,
+                /* isSuw */ true,
+                /* isExpressiveStyle */ true);
+        setupSkipDialog.show(mActivity.getSupportFragmentManager());
+
+        ShadowAlertDialog shadowAlertDialog = getShadowAlertDialog();
+        assertThat(shadowAlertDialog.getTitle().toString()).isEqualTo(
+                getSkipSetupTitle(CREDENTIAL_TYPE_PIN, hasFingerprint, hasFace));
+        assertThat(shadowAlertDialog.getMessage().toString()).isEqualTo(
+                mActivity.getString(R.string.lock_screen_pin_skip_fingerprint_message));
+    }
+
+    @Test
+    public void dialogExpressiveStyle_whenSkipPatternSetupForFace_shouldShownCorrectly() {
+        final boolean hasFace = true;
+        final boolean hasFingerprint = false;
+
+        when(mFaceManager.isHardwareDetected()).thenReturn(hasFace);
+        when(mFingerprintManager.isHardwareDetected()).thenReturn(hasFingerprint);
+
+        SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PATTERN,
+                /* isFrpSupport */ false,
+                /* forFingerprint */ false,
+                /* forFace */ true,
+                /* forBiometric */ false,
+                /* isSuw */ true,
+                /* isExpressiveStyle */ true);
+        setupSkipDialog.show(mActivity.getSupportFragmentManager());
+
+        ShadowAlertDialog shadowAlertDialog = getShadowAlertDialog();
+        assertThat(shadowAlertDialog.getTitle().toString()).isEqualTo(
+                getSkipSetupTitle(CREDENTIAL_TYPE_PATTERN, hasFingerprint, hasFace));
+        assertThat(shadowAlertDialog.getMessage().toString()).isEqualTo(
+                mActivity.getString(R.string.lock_screen_pattern_skip_face_message));
+    }
+
+    @Test
+    public void dialogExpressiveStyle_whenSkipPatternSetupForFingerprint_shouldShownCorrectly() {
+        final boolean hasFace = false;
+        final boolean hasFingerprint = true;
+
+        when(mFaceManager.isHardwareDetected()).thenReturn(hasFace);
+        when(mFingerprintManager.isHardwareDetected()).thenReturn(hasFingerprint);
+
+        SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PATTERN,
+                /* isFrpSupport */ false,
+                /* forFingerprint */ true,
+                /* forFace */ false,
+                /* forBiometric */ false,
+                /* isSuw */ true,
+                /* isExpressiveStyle */ true);
+        setupSkipDialog.show(mActivity.getSupportFragmentManager());
+
+        ShadowAlertDialog shadowAlertDialog = getShadowAlertDialog();
+        assertThat(shadowAlertDialog.getTitle().toString()).isEqualTo(
+                getSkipSetupTitle(CREDENTIAL_TYPE_PATTERN, hasFingerprint, hasFace));
+        assertThat(shadowAlertDialog.getMessage().toString()).isEqualTo(
+                mActivity.getString(R.string.lock_screen_pattern_skip_fingerprint_message));
+    }
+
+    @Test
     public void dialogMessage_whenSkipPinSetupForFace_shouldShownCorrectly() {
         final boolean hasFace = true;
         final boolean hasFingerprint = false;
@@ -144,8 +250,13 @@ public class SetupSkipDialogTest {
         when(mFaceManager.isHardwareDetected()).thenReturn(hasFace);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(hasFingerprint);
 
-        SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PIN, false,
-                false, true, false, true);
+        SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PIN,
+                /* isFrpSupport */ false,
+                /* forFingerprint */ false,
+                /* forFace */ true,
+                /* forBiometric */ false,
+                /* isSuw */ true,
+                /* isExpressiveStyle */ false);
         setupSkipDialog.show(mActivity.getSupportFragmentManager());
 
         ShadowAlertDialog shadowAlertDialog = getShadowAlertDialog();
@@ -164,7 +275,12 @@ public class SetupSkipDialogTest {
         when(mFingerprintManager.isHardwareDetected()).thenReturn(hasFingerprint);
 
         SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PASSWORD,
-                false, hasFingerprint, hasFace, false, true);
+                /* isFrpSupport */ false,
+                hasFingerprint,
+                hasFace,
+                /* forBiometric */ false,
+                /* isSuw */ true,
+                /* isExpressiveStyle */ false);
         setupSkipDialog.show(mActivity.getSupportFragmentManager());
 
         ShadowAlertDialog shadowAlertDialog = getShadowAlertDialog();
@@ -182,9 +298,13 @@ public class SetupSkipDialogTest {
         when(mFaceManager.isHardwareDetected()).thenReturn(hasFace);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(hasFingerprint);
 
-        SetupSkipDialog setupSkipDialog =
-                SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PATTERN, true, false, true, false,
-                        true);
+        SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PATTERN,
+                /* isFrpSupport */ true,
+                /* forFingerprint */ false,
+                /* forFace */ true,
+                /* forBiometric */ false,
+                /* isSuw */ true,
+                /* isExpressiveStyle */ false);
         setupSkipDialog.show(mActivity.getSupportFragmentManager());
 
         ShadowAlertDialog shadowAlertDialog = getShadowAlertDialog();
@@ -202,8 +322,13 @@ public class SetupSkipDialogTest {
         when(mFaceManager.isHardwareDetected()).thenReturn(hasFace);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(hasFingerprint);
 
-        SetupSkipDialog setupSkipDialog =
-                SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PIN, true, true, false, false, true);
+        SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PIN,
+                /* isFrpSupport */ true,
+                /* forFingerprint */ true,
+                /* forFace */ false,
+                /* forBiometric */ false,
+                /* isSuw */ true,
+                /* isExpressiveStyle */ false);
         setupSkipDialog.show(mActivity.getSupportFragmentManager());
 
         ShadowAlertDialog shadowAlertDialog = getShadowAlertDialog();
@@ -221,9 +346,13 @@ public class SetupSkipDialogTest {
         when(mFaceManager.isHardwareDetected()).thenReturn(hasFace);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(hasFingerprint);
 
-        SetupSkipDialog setupSkipDialog =
-                SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PASSWORD, true, true, false, false,
-                        true);
+        SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PASSWORD,
+                /* isFrpSupport */ true,
+                /* forFingerprint */ true,
+                /* forFace */ false,
+                /* forBiometric */ false,
+                /* isSuw */ true,
+                /* isExpressiveStyle */ false);
         setupSkipDialog.show(mActivity.getSupportFragmentManager());
 
         ShadowAlertDialog shadowAlertDialog = getShadowAlertDialog();
@@ -241,8 +370,13 @@ public class SetupSkipDialogTest {
         when(mFaceManager.isHardwareDetected()).thenReturn(hasFace);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(hasFingerprint);
 
-        SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PATTERN, true,
-                true, false, false, true);
+        SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PATTERN,
+                /* isFrpSupport */ true,
+                /* forFingerprint */ true,
+                /* forFace */ false,
+                /* forBiometric */ false,
+                /* isSuw */ true,
+                /* isExpressiveStyle */ false);
         setupSkipDialog.show(mActivity.getSupportFragmentManager());
 
         ShadowAlertDialog shadowAlertDialog = getShadowAlertDialog();
@@ -260,8 +394,13 @@ public class SetupSkipDialogTest {
         when(mFaceManager.isHardwareDetected()).thenReturn(hasFace);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(hasFingerprint);
 
-        SetupSkipDialog setupSkipDialog =
-                SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PIN, true, false, false, true, true);
+        SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PIN,
+                /* isFrpSupport */ true,
+                /* forFingerprint */ false,
+                /* forFace */ false,
+                /* forBiometric */ true,
+                /* isSuw */ true,
+                /* isExpressiveStyle */ false);
         setupSkipDialog.show(mActivity.getSupportFragmentManager());
 
         ShadowAlertDialog shadowAlertDialog = getShadowAlertDialog();
@@ -279,9 +418,13 @@ public class SetupSkipDialogTest {
         when(mFaceManager.isHardwareDetected()).thenReturn(hasFace);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(hasFingerprint);
 
-        SetupSkipDialog setupSkipDialog =
-                SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PASSWORD, true, false, false, true,
-                        true);
+        SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PASSWORD,
+                /* isFrpSupport */ true,
+                /* forFingerprint */ false,
+                /* forFace */ false,
+                /* forBiometric */ true,
+                /* isSuw */ true,
+                /* isExpressiveStyle */ false);
         setupSkipDialog.show(mActivity.getSupportFragmentManager());
 
         ShadowAlertDialog shadowAlertDialog = getShadowAlertDialog();
@@ -299,9 +442,13 @@ public class SetupSkipDialogTest {
         when(mFaceManager.isHardwareDetected()).thenReturn(hasFace);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(hasFingerprint);
 
-        SetupSkipDialog setupSkipDialog =
-                SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PATTERN, true, false, false, true,
-                        true);
+        SetupSkipDialog setupSkipDialog = SetupSkipDialog.newInstance(CREDENTIAL_TYPE_PATTERN,
+                /* isFrpSupport */ true,
+                /* forFingerprint */ false,
+                /* forFace */ false,
+                /* forBiometric */ true,
+                /* isSuw */ true,
+                /* isExpressiveStyle */ false);
         setupSkipDialog.show(mActivity.getSupportFragmentManager());
 
         ShadowAlertDialog shadowAlertDialog = getShadowAlertDialog();

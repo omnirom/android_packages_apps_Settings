@@ -30,6 +30,22 @@
     <Preference
         android:key="block_desc" />
 
+    <PreferenceCategory
+        android:key="ai_features"
+        android:title="@string/notification_ai_features_title"
+        settings:isPreferenceVisible="false">
+
+        <com.android.settingslib.PrimarySwitchPreference
+            android:key="key_summarization"
+            android:title="@string/notification_app_level_summarize_title"
+            android:summary="@string/notification_app_level_summarize_subtext" />
+
+        <com.android.settingslib.PrimarySwitchPreference
+            android:key="key_type"
+            android:title="@string/notification_app_level_bundle_title"
+            android:summary="@string/notification_app_level_bundle_subtext" />
+    </PreferenceCategory>
+
     <!-- Conversations added here -->
     <PreferenceCategory
         android:title="@string/conversations_category_title"
@@ -39,22 +55,10 @@
 
     </PreferenceCategory>
 
-    <!-- Bundles added here -->
-    <PreferenceCategory
-        android:key="bundles"
-        android:title="@string/notification_bundles"
-        android:visibility="gone"
-        android:layout="@layout/empty_view" />
-
     <!-- Channels/Channel groups added here -->
     <PreferenceCategory
         android:key="channels"
-        android:layout="@layout/empty_view" />
-
-    <Preference
-        android:key="more"
-        android:title="@string/no_recent_channels"
-        android:icon="@drawable/ic_expand"/>
+        android:title="@string/notification_channels" />
 
     <PreferenceCategory
         android:key="pre_channels_fields"
@@ -90,16 +94,6 @@
             android:summary="@string/live_notifications_desc" />
 
         <com.android.settingslib.RestrictedSwitchPreference
-            android:key="key_summarization"
-            android:title="@string/notification_app_level_summarize_title"
-            android:summary="@string/notification_app_level_summarize_subtext" />
-
-        <com.android.settingslib.RestrictedSwitchPreference
-            android:key="key_type"
-            android:title="@string/notification_app_level_bundle_title"
-            android:summary="@string/notification_app_level_bundle_subtext" />
-
-        <com.android.settingslib.RestrictedSwitchPreference
             android:key="invalid_conversation_switch"
             android:title="@string/conversation_section_switch_title" />
         <Preference
@@ -133,11 +127,6 @@
             android:icon="@drawable/ic_settings_24dp"
             android:title="@string/app_settings_link"
             android:order="1003"/>
-
-        <com.android.settingslib.widget.FooterPreference
-            android:key="deleted"
-            android:icon="@drawable/ic_trash_can"
-            android:order="8000"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

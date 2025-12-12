@@ -21,8 +21,8 @@ import static com.android.settingslib.fuelgauge.BatteryStatus.BATTERY_LEVEL_UNKN
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.eq;
@@ -119,7 +119,7 @@ public final class DataProcessorTest {
         doReturn(true).when(mUserManager).isUserUnlocked(userInfo.id);
         doReturn(mUsageEvents1)
                 .when(mUsageStatsManager)
-                .queryEventsForUser(anyLong(), anyLong(), anyInt(), anyString());
+                .queryEventsWithFilter(any(), anyString());
         doReturn(new ArrayList<>(List.of(0))).when(mUserIdsSeries).getVisibleUserIds();
 
         final Map<Long, UsageEvents> resultMap =
@@ -153,7 +153,7 @@ public final class DataProcessorTest {
         doReturn(true).when(mUserManager).isUserUnlocked(userInfo.id);
         doReturn(null)
                 .when(mUsageStatsManager)
-                .queryEventsForUser(anyLong(), anyLong(), anyInt(), anyString());
+                .queryEventsWithFilter(any(), anyString());
 
         final Map<Long, UsageEvents> resultMap =
                 DataProcessor.getAppUsageEvents(mContext, mUserIdsSeries);
@@ -167,7 +167,7 @@ public final class DataProcessorTest {
         doReturn(true).when(mUserManager).isUserUnlocked(userId);
         doReturn(mUsageEvents1)
                 .when(mUsageStatsManager)
-                .queryEventsForUser(anyLong(), anyLong(), anyInt(), anyString());
+                .queryEventsWithFilter(any(), anyString());
 
         assertThat(DataProcessor.getCurrentAppUsageEventsForUser(
                 mContext, mUserIdsSeries, userId, 0))
@@ -191,7 +191,7 @@ public final class DataProcessorTest {
         doReturn(true).when(mUserManager).isUserUnlocked(userId);
         doReturn(null)
                 .when(mUsageStatsManager)
-                .queryEventsForUser(anyLong(), anyLong(), anyInt(), anyString());
+                .queryEventsWithFilter(any(), anyString());
 
         assertThat(DataProcessor.getCurrentAppUsageEventsForUser(
                 mContext, mUserIdsSeries, userId, 0))

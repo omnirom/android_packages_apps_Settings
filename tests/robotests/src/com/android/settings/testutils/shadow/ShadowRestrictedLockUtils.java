@@ -15,6 +15,7 @@
  */
 package com.android.settings.testutils.shadow;
 
+import android.app.admin.EnforcingAdmin;
 import android.content.Context;
 
 import com.android.settingslib.RestrictedLockUtils;
@@ -30,6 +31,12 @@ public class ShadowRestrictedLockUtils {
 
     @Implementation
     protected static void sendShowAdminSupportDetailsIntent(Context context, EnforcedAdmin admin) {
+        sAdminSupportDetailsIntentLaunched = true;
+    }
+
+    @Implementation
+    protected static void sendShowAdminSupportDetailsIntent(Context context, EnforcingAdmin admin,
+            String restriction) {
         sAdminSupportDetailsIntentLaunched = true;
     }
 

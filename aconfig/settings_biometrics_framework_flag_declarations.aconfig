@@ -21,3 +21,13 @@ flag {
   description: "This flag enables the Active Unlock settings activity to finish its parent activity"
   bug: "343576960"
 }
+
+flag {
+  name: "biometric_enrollment_skip_splitscreen_checks_on_desktop"
+  namespace: "biometrics_framework"
+  description: "This flag allows enrollment in split screen mode on desktop devices"
+  bug: "419423592"
+  metadata {
+    purpose: PURPOSE_BUGFIX
+  }
+}

@@ -23,7 +23,6 @@
         android:title="@string/permit_write_settings"/>
 
     <com.android.settingslib.widget.FooterPreference
-        android:title="@string/write_settings_description"
-        android:selectable="false"/>
+        android:title="@string/write_settings_description" />
 
 </PreferenceScreen>

@@ -16,7 +16,8 @@
 
 package com.android.settings.network.telephony.satellite;
 
-import static android.telephony.CarrierConfigManager.KEY_EMERGENCY_MESSAGING_SUPPORTED_BOOL;
+import static android.telephony.CarrierConfigManager.CARRIER_ROAMING_NTN_CONNECT_AUTOMATIC;
+import static android.telephony.CarrierConfigManager.KEY_CARRIER_ROAMING_NTN_CONNECT_TYPE_INT;
 import static android.telephony.CarrierConfigManager.KEY_SATELLITE_ENTITLEMENT_SUPPORTED_BOOL;
 import static android.telephony.CarrierConfigManager.KEY_SATELLITE_INFORMATION_REDIRECT_URL_STRING;
 
@@ -89,17 +90,30 @@ public class SatelliteSettingFooterController extends TelephonyBasePreferenceCon
     }
 
     private String getFooterContent() {
+        boolean isEntitlementSupport = mConfigBundle.getBoolean(
+                KEY_SATELLITE_ENTITLEMENT_SUPPORTED_BOOL);
+        boolean isAUtoType = mConfigBundle.getInt(KEY_CARRIER_ROAMING_NTN_CONNECT_TYPE_INT)
+                == CARRIER_ROAMING_NTN_CONNECT_AUTOMATIC;
+
         String result = "";
         result = mContext.getString(R.string.satellite_footer_content_section_0) + "\n\n";
         result += getHtmlStringCombination(R.string.satellite_footer_content_section_1);
         result += getHtmlStringCombination(R.string.satellite_footer_content_section_2);
         result += getHtmlStringCombination(R.string.satellite_footer_content_section_3);
         result += getHtmlStringCombination(R.string.satellite_footer_content_section_4);
-        result += getHtmlStringCombination(R.string.satellite_footer_content_section_5);
-        if (!mConfigBundle.getBoolean(KEY_EMERGENCY_MESSAGING_SUPPORTED_BOOL)) {
-            result += getHtmlStringCombination(R.string.satellite_footer_content_section_6);
-        }
-        if (mConfigBundle.getBoolean(KEY_SATELLITE_ENTITLEMENT_SUPPORTED_BOOL)) {
+
+        if (isEntitlementSupport) {
+            if (isAUtoType) {
+                result += getHtmlStringCombination(R.string.satellite_footer_content_section_5);
+                result += getHtmlStringCombination(R.string.satellite_footer_content_section_7,
+                        mSimOperatorName);
+            }
+        } else {
+            if (isAUtoType) {
+                result += getHtmlStringCombination(R.string.satellite_footer_content_section_6);
+                result += getHtmlStringCombination(R.string.satellite_footer_content_section_5);
+                return result;
+            }
             result += getHtmlStringCombination(R.string.satellite_footer_content_section_7,
                     mSimOperatorName);
         }

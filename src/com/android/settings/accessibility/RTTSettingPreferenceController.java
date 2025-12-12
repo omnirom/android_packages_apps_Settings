@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.PersistableBundle;
-import android.provider.Settings;
 import android.telecom.PhoneAccount;
 import android.telecom.PhoneAccountHandle;
 import android.telephony.CarrierConfigManager;
@@ -43,12 +42,9 @@ import java.util.List;
 public class RTTSettingPreferenceController extends BasePreferenceController {
 
     private static final String TAG = "RTTSettingsCtr";
-
-    private static final String DIALER_RTT_CONFIGURATION = "dialer_rtt_configuration";
     private final Context mContext;
     private final PackageManager mPackageManager;
     private final CarrierConfigManager mCarrierConfigManager;
-    private final CharSequence[] mModes;
     private final String mDialerPackage;
 
     @VisibleForTesting
@@ -57,7 +53,6 @@ public class RTTSettingPreferenceController extends BasePreferenceController {
     public RTTSettingPreferenceController(Context context, String preferenceKey) {
         super(context, preferenceKey);
         mContext = context;
-        mModes = mContext.getResources().getTextArray(R.array.rtt_setting_mode);
         mDialerPackage = mContext.getString(R.string.config_rtt_setting_package_name);
         mPackageManager = mContext.getPackageManager();
         mCarrierConfigManager = mContext.getSystemService(CarrierConfigManager.class);
@@ -80,14 +75,6 @@ public class RTTSettingPreferenceController extends BasePreferenceController {
         super.displayPreference(screen);
         final Preference pref = screen.findPreference(getPreferenceKey());
         pref.setIntent(mRTTIntent);
-    }
-
-    @Override
-    public CharSequence getSummary() {
-        final int option = Settings.Secure.getInt(mContext.getContentResolver(),
-                DIALER_RTT_CONFIGURATION, 0 /* Invalid value */);
-        Log.d(TAG, "DIALER_RTT_CONFIGURATION value =  " + option);
-        return mModes[option];
     }
 
     @VisibleForTesting

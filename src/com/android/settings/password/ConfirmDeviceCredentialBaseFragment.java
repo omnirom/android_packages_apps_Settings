@@ -57,7 +57,10 @@ import com.android.internal.widget.LockscreenCredential;
 import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.core.InstrumentedFragment;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
+import com.google.android.setupcompat.template.FooterBarMixin;
+import com.google.android.setupcompat.template.FooterButton;
 import com.google.android.setupdesign.GlifLayout;
 
 /**
@@ -68,6 +71,7 @@ public abstract class ConfirmDeviceCredentialBaseFragment extends InstrumentedFr
     public static final String TITLE_TEXT = SETTINGS_PACKAGE_NAME + ".ConfirmCredentials.title";
     public static final String HEADER_TEXT = SETTINGS_PACKAGE_NAME + ".ConfirmCredentials.header";
     public static final String DETAILS_TEXT = SETTINGS_PACKAGE_NAME + ".ConfirmCredentials.details";
+    @Deprecated
     public static final String DARK_THEME = SETTINGS_PACKAGE_NAME + ".ConfirmCredentials.darkTheme";
     public static final String SHOW_CANCEL_BUTTON =
             SETTINGS_PACKAGE_NAME + ".ConfirmCredentials.showCancelButton";
@@ -87,6 +91,7 @@ public abstract class ConfirmDeviceCredentialBaseFragment extends InstrumentedFr
 
     protected static final String FRAGMENT_TAG_REMOTE_LOCKSCREEN_VALIDATION =
             "remote_lockscreen_validation";
+    protected static final String FRAGMENT_TAG_SAVE_AND_FINISH = "save_and_finish_worker";
 
     protected boolean mReturnCredentials = false;
     protected boolean mReturnGatekeeperPassword = false;
@@ -107,12 +112,15 @@ public abstract class ConfirmDeviceCredentialBaseFragment extends InstrumentedFr
     protected boolean mRemoteValidation;
     protected boolean mRequestWriteRepairModePassword;
     protected boolean mRepairMode;
+    protected boolean mExpressiveTheme;
     protected CharSequence mAlternateButtonText;
     protected BiometricManager mBiometricManager;
     @Nullable protected RemoteLockscreenValidationSession mRemoteLockscreenValidationSession;
     /** Credential saved so the credential can be set for device if remote validation passes */
     @Nullable protected RemoteLockscreenValidationClient mRemoteLockscreenValidationClient;
     protected RemoteLockscreenValidationFragment mRemoteLockscreenValidationFragment;
+    @Nullable protected SaveAndFinishWorker mSaveAndFinishWorker;
+    @Nullable protected FooterBarMixin mFooterBarMixin;
 
     private boolean isInternalActivity() {
         return (getActivity() instanceof ConfirmLockPassword.InternalActivity)
@@ -176,6 +184,9 @@ public abstract class ConfirmDeviceCredentialBaseFragment extends InstrumentedFr
                 getFragmentManager().beginTransaction().add(mRemoteLockscreenValidationFragment,
                         FRAGMENT_TAG_REMOTE_LOCKSCREEN_VALIDATION).commit();
             }
+
+            mSaveAndFinishWorker = (SaveAndFinishWorker) getFragmentManager()
+                    .findFragmentByTag(FRAGMENT_TAG_SAVE_AND_FINISH);
         }
 
         // Only take this argument into account if it belongs to the current profile.
@@ -189,29 +200,51 @@ public abstract class ConfirmDeviceCredentialBaseFragment extends InstrumentedFr
         mDevicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(
                 Context.DEVICE_POLICY_SERVICE);
         mBiometricManager = getActivity().getSystemService(BiometricManager.class);
+        mExpressiveTheme = intent.getBooleanExtra(
+                ChooseLockSettingsHelper.EXTRA_KEY_USE_EXPRESSIVE_STYLE,
+                SettingsThemeHelper.isExpressiveTheme(getActivity()));
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mCancelButton = view.findViewById(R.id.cancelButton);
-        boolean showCancelButton = mRemoteValidation || getActivity().getIntent().getBooleanExtra(
-                SHOW_CANCEL_BUTTON, false);
-        boolean hasAlternateButton = (mFrp || mRemoteValidation || mRepairMode)
-                && !TextUtils.isEmpty(mAlternateButtonText);
-        mCancelButton.setVisibility(showCancelButton || hasAlternateButton
-                ? View.VISIBLE : View.GONE);
-        if (hasAlternateButton) {
-            mCancelButton.setText(mAlternateButtonText);
-        }
-        mCancelButton.setOnClickListener(v -> {
+        boolean hasAlternateButton =
+                (mFrp || mRemoteValidation || mRepairMode)
+                        && !TextUtils.isEmpty(mAlternateButtonText);
+        boolean showCancelButton =
+                mRemoteValidation
+                        || getActivity().getIntent().getBooleanExtra(SHOW_CANCEL_BUTTON, false)
+                        || hasAlternateButton;
+        mFooterBarMixin = mGlifLayout.getMixin(FooterBarMixin.class);
+        if (mExpressiveTheme && showCancelButton && mFooterBarMixin != null && mRemoteValidation) {
+            mFooterBarMixin.setSecondaryButton(
+                    new FooterButton.Builder(getActivity())
+                        .setButtonType(FooterButton.ButtonType.CANCEL)
+                        .setText(hasAlternateButton
+                                ? mAlternateButtonText.toString()
+                                : getString(R.string.cancel))
+                        .setListener(v -> onRemoteLockscreenValidationFailure(
+                                "Forgot lockscreen credential button pressed."))
+                        .build());
+            // Remove the cancel button since the footer bar button is used instead
+            mCancelButton.setVisibility(View.GONE);
+        } else {
+            mCancelButton.setVisibility(showCancelButton ? View.VISIBLE : View.GONE);
             if (hasAlternateButton) {
-                getActivity().setResult(KeyguardManager.RESULT_ALTERNATE);
-                getActivity().finish();
-            } else if (mRemoteValidation) {
-                onRemoteLockscreenValidationFailure("Forgot lockscreen credential button pressed.");
+                mCancelButton.setText(mAlternateButtonText);
             }
-        });
+            mCancelButton.setOnClickListener(
+                    v -> {
+                        if (hasAlternateButton) {
+                            getActivity().setResult(KeyguardManager.RESULT_ALTERNATE);
+                            getActivity().finish();
+                        } else if (mRemoteValidation) {
+                            onRemoteLockscreenValidationFailure(
+                                    "Forgot lockscreen credential button pressed.");
+                        }
+                    });
+        }
         setupForgotButtonIfManagedProfile(view);
 
         mCheckBox = view.findViewById(R.id.checkbox);
@@ -436,10 +469,16 @@ public abstract class ConfirmDeviceCredentialBaseFragment extends InstrumentedFr
             return;
         }
 
-        boolean enable = mRemoteLockscreenValidationFragment.isRemoteValidationInProgress();
-        mGlifLayout.setProgressBarShown(enable);
-        mCheckBox.setEnabled(!enable);
-        mCancelButton.setEnabled(!enable);
+        boolean inProgress = mRemoteLockscreenValidationFragment.isRemoteValidationInProgress();
+        mGlifLayout.setProgressBarShown(inProgress);
+        if (mExpressiveTheme
+                && mFooterBarMixin != null
+                && mFooterBarMixin.getSecondaryButton() != null) {
+            mFooterBarMixin.getSecondaryButton().setEnabled(!inProgress);
+        } else {
+            mCancelButton.setEnabled(!inProgress);
+        }
+        mCheckBox.setEnabled(!inProgress);
     }
 
     /**

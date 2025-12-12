@@ -20,10 +20,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.view.accessibility.CaptioningManager;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 
+import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 
 import java.util.List;
@@ -55,5 +57,14 @@ public class LiveCaptionPreferenceController extends BasePreferenceController {
     public void updateState(Preference preference) {
         super.updateState(preference);
         preference.setIntent(LIVE_CAPTION_INTENT);
+    }
+
+    @Override
+    public CharSequence getSummary() {
+        CaptioningManager captioningManager = mContext.getSystemService(CaptioningManager.class);
+        if (captioningManager != null && captioningManager.isSystemAudioCaptioningEnabled()) {
+            return mContext.getText(R.string.live_caption_on_summary);
+        }
+        return mContext.getText(R.string.live_caption_off_summary);
     }
 }

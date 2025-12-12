@@ -33,6 +33,7 @@ import com.android.settings.R;
 /**
  * A collection of API making a PreferenceController "sliceable"
  */
+@Deprecated(forRemoval = true)
 public interface Sliceable {
     /**
      * @return an {@link IntentFilter} that includes all broadcasts which can affect the state of

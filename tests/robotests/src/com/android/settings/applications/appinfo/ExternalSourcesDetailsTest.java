@@ -35,6 +35,7 @@ import static org.mockito.Mockito.when;
 
 import android.app.admin.DevicePolicyManager;
 import android.app.admin.EnforcingAdmin;
+import android.app.admin.SystemAuthority;
 import android.app.admin.UnknownAuthority;
 import android.content.ComponentName;
 import android.content.Context;
@@ -355,7 +356,7 @@ public class ExternalSourcesDetailsTest {
     @Test
     public void getPreferenceSummary_restrictedGloballyByAdvancedProtection_disabledString() {
         final EnforcingAdmin advancedProtectionEnforcingAdmin = new EnforcingAdmin("test.pkg",
-                new UnknownAuthority(ADVANCED_PROTECTION_SYSTEM_ENTITY), mUserHandle,
+                new SystemAuthority(ADVANCED_PROTECTION_SYSTEM_ENTITY), mUserHandle,
                 new ComponentName("", ""));
 
         when(mDevicePolicyManager.getEnforcingAdmin(mUserHandle.getIdentifier(),

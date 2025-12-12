@@ -21,12 +21,12 @@ import static com.android.settings.inputmethod.KeyboardAccessibilityKeysDialogFr
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.app.AlertDialog;
 import android.hardware.input.InputSettings;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.RadioGroup;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.lifecycle.Lifecycle;
 import androidx.test.core.app.ApplicationProvider;

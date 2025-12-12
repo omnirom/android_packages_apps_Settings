@@ -45,13 +45,11 @@ import android.content.Intent;
 import android.content.om.OverlayInfo;
 import android.content.om.OverlayManager;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.Flags;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.RemoteException;
 import android.os.UserManager;
 import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.ArraySet;
 import android.view.View;
@@ -360,7 +358,6 @@ public class AppButtonsPreferenceControllerTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_IMPROVE_HOME_APP_BEHAVIOR)
     public void updateUninstallButton_isNotSystemAndIsCurrentHomeAndHasOneHome_setButtonDisable() {
         doReturn(false).when(mController).isSystemPackage(any(), any(), any());
         doReturn(new ComponentName(PACKAGE_NAME, "cls")).when(mPackageManager).getHomeActivities(
@@ -374,7 +371,6 @@ public class AppButtonsPreferenceControllerTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_IMPROVE_HOME_APP_BEHAVIOR)
     public void updateUninstallButton_isNotSystemAndIsCurrentHomeAndHasOtherHome_setButtonEnable() {
         doReturn(false).when(mController).isSystemPackage(any(), any(), any());
         doReturn(new ComponentName(PACKAGE_NAME, "cls")).when(mPackageManager).getHomeActivities(

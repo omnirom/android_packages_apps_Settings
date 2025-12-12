@@ -16,7 +16,6 @@
 
 package com.android.settings.enterprise;
 
-import static android.app.admin.DevicePolicyManager.DEVICE_OWNER_TYPE_FINANCED;
 import static android.app.admin.DevicePolicyResources.Strings.Settings.MANAGED_DEVICE_INFO_SUMMARY;
 import static android.app.admin.DevicePolicyResources.Strings.Settings.MANAGED_DEVICE_INFO_SUMMARY_WITH_NAME;
 
@@ -71,8 +70,6 @@ class PrivacyPreferenceControllerHelper {
     }
 
     boolean isFinancedDevice() {
-        return mDevicePolicyManager.isDeviceManaged() && mDevicePolicyManager.getDeviceOwnerType(
-                mDevicePolicyManager.getDeviceOwnerComponentOnAnyUser())
-                == DEVICE_OWNER_TYPE_FINANCED;
+        return mDevicePolicyManager.isFinancedDevice();
     }
 }

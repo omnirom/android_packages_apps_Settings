@@ -27,7 +27,6 @@ import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.pm.UserInfo;
 import android.os.Bundle;
-import android.os.Flags;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.util.Log;
@@ -244,9 +243,7 @@ public abstract class ProfileSelectFragment extends DashboardFragment {
                 return WORK_TAB;
             }
             UserInfo userInfo = UserManager.get(activity).getUserInfo(userId);
-            if (Flags.allowPrivateProfile()
-                    && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                    && userInfo != null && userInfo.isPrivateProfile()) {
+            if (userInfo != null && userInfo.isPrivateProfile()) {
                 return PRIVATE_TAB;
             }
         }
@@ -256,9 +253,7 @@ public abstract class ProfileSelectFragment extends DashboardFragment {
             return WORK_TAB;
         }
         UserInfo userInfo = UserManager.get(activity).getUserInfo(intentUser);
-        if (Flags.allowPrivateProfile()
-                && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                && userInfo != null && userInfo.isPrivateProfile()) {
+        if (userInfo != null && userInfo.isPrivateProfile()) {
             return PRIVATE_TAB;
         }
 
@@ -269,26 +264,19 @@ public abstract class ProfileSelectFragment extends DashboardFragment {
         final DevicePolicyManager devicePolicyManager =
                 getContext().getSystemService(DevicePolicyManager.class);
 
-        if (Flags.allowPrivateProfile() && android.multiuser.Flags.enablePrivateSpaceFeatures()) {
-            int tabForPosition =
-                    ((ViewPagerAdapter) mViewPager.getAdapter()).getTabForPosition(position);
+        int tabForPosition =
+                ((ViewPagerAdapter) mViewPager.getAdapter()).getTabForPosition(position);
 
-            if (tabForPosition == WORK_TAB) {
-                return devicePolicyManager.getResources().getString(WORK_CATEGORY_HEADER,
-                        () -> getContext().getString(
-                                com.android.settingslib.R.string.category_work));
-            }
-
-            if (tabForPosition == PRIVATE_TAB) {
-                return devicePolicyManager.getResources().getString(PRIVATE_CATEGORY_HEADER,
-                        () -> getContext()
-                                .getString(com.android.settingslib.R.string.category_private));
-            }
-
-        } else if (position == WORK_TAB) {
+        if (tabForPosition == WORK_TAB) {
             return devicePolicyManager.getResources().getString(WORK_CATEGORY_HEADER,
-                    () -> getContext().getString(com.android.settingslib.R.string.category_work));
+                    () -> getContext().getString(
+                            com.android.settingslib.R.string.category_work));
+        }
 
+        if (tabForPosition == PRIVATE_TAB) {
+            return devicePolicyManager.getResources().getString(PRIVATE_CATEGORY_HEADER,
+                    () -> getContext()
+                            .getString(com.android.settingslib.R.string.category_private));
         }
         return devicePolicyManager.getResources().getString(PERSONAL_CATEGORY_HEADER,
                 () -> getContext().getString(
@@ -344,9 +332,7 @@ public abstract class ProfileSelectFragment extends DashboardFragment {
                                     userInfo.id,
                                     bundle != null ? bundle.deepCopy() : new Bundle(),
                                     workFragmentConstructor));
-                } else if (Flags.allowPrivateProfile()
-                        && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                        && userInfo.isPrivateProfile()) {
+                } else if (userInfo.isPrivateProfile()) {
                     if (!privateSpaceInfoProvider.isPrivateSpaceLocked(context)) {
                         fragments.add(
                                 createAndGetFragment(

@@ -16,9 +16,6 @@
 
 package com.android.settings.enterprise;
 
-import static android.app.admin.DevicePolicyManager.DEVICE_OWNER_TYPE_DEFAULT;
-import static android.app.admin.DevicePolicyManager.DEVICE_OWNER_TYPE_FINANCED;
-
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.spy;
@@ -124,7 +121,7 @@ public class EnterprisePrivacySettingsTest extends AbsBasePrivacySettingsPrefere
     public void
             getSearchIndexProviderPreferenceControllers_returnsEnterpriseSearchIndexPreferenceControllers() {
         Context context = spy(ApplicationProvider.getApplicationContext());
-        setupPrivacyPreference(context, DEVICE_OWNER_TYPE_DEFAULT);
+        setupNonFinancedDevice(context);
 
         final List<AbstractPreferenceController> controllers =
             EnterprisePrivacySettings.SEARCH_INDEX_DATA_PROVIDER
@@ -137,7 +134,7 @@ public class EnterprisePrivacySettingsTest extends AbsBasePrivacySettingsPrefere
     public void
             getSearchIndexProviderPreferenceControllers_returnsFinancedSearchIndexPreferenceControllers() {
         Context context = spy(ApplicationProvider.getApplicationContext());
-        setupPrivacyPreference(context, DEVICE_OWNER_TYPE_FINANCED);
+        setupFinancedDevice(context);
 
         final List<AbstractPreferenceController> controllers =
                 EnterprisePrivacySettings.SEARCH_INDEX_DATA_PROVIDER
@@ -149,7 +146,7 @@ public class EnterprisePrivacySettingsTest extends AbsBasePrivacySettingsPrefere
     @Test
     public void getXmlResourcesToIndex_returnsEnterpriseXmlResources() {
         Context context = spy(ApplicationProvider.getApplicationContext());
-        setupPrivacyPreference(context, DEVICE_OWNER_TYPE_DEFAULT);
+        setupNonFinancedDevice(context);
 
         final List<SearchIndexableResource> searchIndexableResources =
                 EnterprisePrivacySettings.SEARCH_INDEX_DATA_PROVIDER
@@ -161,7 +158,7 @@ public class EnterprisePrivacySettingsTest extends AbsBasePrivacySettingsPrefere
     @Test
     public void getXmlResourcesToIndex_returnsFinancedXmlResources() {
         Context context = spy(ApplicationProvider.getApplicationContext());
-        setupPrivacyPreference(context, DEVICE_OWNER_TYPE_FINANCED);
+        setupFinancedDevice(context);
 
         final List<SearchIndexableResource> searchIndexableResources =
                 EnterprisePrivacySettings.SEARCH_INDEX_DATA_PROVIDER
@@ -188,13 +185,14 @@ public class EnterprisePrivacySettingsTest extends AbsBasePrivacySettingsPrefere
                 .isEqualTo(mContext.getText(R.string.financed_privacy_settings));
     }
 
-    private void setupPrivacyPreference(Context context, int deviceOwnerType) {
+    private void setupNonFinancedDevice(Context context) {
         when(context.getSystemService(DevicePolicyManager.class)).thenReturn(mDevicePolicyManager);
-        when(mDevicePolicyManager.isDeviceManaged()).thenReturn(true);
-        when(mDevicePolicyManager.getDeviceOwnerComponentOnAnyUser())
-                .thenReturn(DEVICE_OWNER_COMPONENT);
-        when(mDevicePolicyManager.getDeviceOwnerType(DEVICE_OWNER_COMPONENT))
-                .thenReturn(deviceOwnerType);
+        when(mDevicePolicyManager.isFinancedDevice()).thenReturn(false);
+    }
+
+    private void setupFinancedDevice(Context context) {
+        when(context.getSystemService(DevicePolicyManager.class)).thenReturn(mDevicePolicyManager);
+        when(mDevicePolicyManager.isFinancedDevice()).thenReturn(true);
     }
 
     private static final class TestActivity extends AppCompatActivity {

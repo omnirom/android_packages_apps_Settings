@@ -30,10 +30,10 @@ flag {
 }
 
 flag {
-  name: "catalyst_tether_settings_25q3"
+  name: "catalyst_tether_settings_26q1"
   namespace: "android_settings"
-  description: "Flag for widgets inside Hotspot & tethering for 25q3 release"
-  bug: "352179685"
+  description: "Flag for settings inside Hotspot & tethering for 26Q1 release"
+  bug: "441443762"
 }
 
 flag {
@@ -57,3 +57,16 @@ flag {
   bug: "323791114"
 }
 
+flag {
+  name: "deeplink_network_and_internet_25q4"
+  namespace: "android_settings"
+  description: "Flag using for all common deeplink migration in 25Q4"
+  bug: "405344827"
+}
+
+flag {
+  name: "catalyst_configure_network_settings"
+  namespace: "android_settings"
+  description: "Flag for Wi-Fi preferences migration in 25Q4"
+  bug: "405344827"
+}

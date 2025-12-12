@@ -29,6 +29,8 @@ import android.view.View;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.android.settingslib.widget.ButtonPreference;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -46,7 +48,7 @@ public class TextReadingResetControllerTest {
     private static final String RESET_KEY = "reset";
     private final Context mContext = ApplicationProvider.getApplicationContext();
     private TextReadingResetController mResetController;
-    private TextReadingResetPreference mResetPreference;
+    private ButtonPreference mResetPreference;
 
     @Rule
     public final MockitoRule mMockitoRule = MockitoJUnit.rule();
@@ -61,7 +63,7 @@ public class TextReadingResetControllerTest {
     public void setUp() {
         mResetController = new TextReadingResetController(mContext, RESET_KEY,
                 mOnResetButtonClickListener);
-        mResetPreference = spy(new TextReadingResetPreference(mContext, /* attrs= */ null));
+        mResetPreference = spy(new ButtonPreference(mContext, /* attrs= */ null));
 
         when(mPreferenceScreen.findPreference(RESET_KEY)).thenReturn(mResetPreference);
     }
@@ -70,7 +72,7 @@ public class TextReadingResetControllerTest {
     public void displayResetPreference_verifyResetClickListener() {
         mResetController.displayPreference(mPreferenceScreen);
 
-        verify(mResetPreference).setOnResetClickListener(any(View.OnClickListener.class));
+        verify(mResetPreference).setOnClickListener(any(View.OnClickListener.class));
     }
 
     @Test

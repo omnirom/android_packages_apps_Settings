@@ -16,4 +16,6 @@
 
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/when_to_auto_show_hubmode_title" />
+    xmlns:settings="http://schemas.android.com/apk/res-auto"
+    android:title="@string/when_to_auto_show_hubmode_title"
+    settings:staticPreferenceLocation="append" />

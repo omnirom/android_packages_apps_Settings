@@ -28,7 +28,6 @@ import android.net.wifi.sharedconnectivity.app.SharedConnectivityManager;
 import android.net.wifi.sharedconnectivity.app.SharedConnectivitySettingsState;
 import android.os.Bundle;
 import android.os.HandlerThread;
-import android.provider.DeviceConfig;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -47,8 +46,6 @@ import java.util.concurrent.Executor;
  */
 public class SharedConnectivityRepository {
     private static final String TAG = "SharedConnectivityRepository";
-    private static final String DEVICE_CONFIG_NAMESPACE = "wifi";
-    private static final String DEVICE_CONFIG_KEY = "shared_connectivity_enabled";
 
     private Context mAppContext;
     private SharedConnectivityManager mManager;
@@ -60,15 +57,8 @@ public class SharedConnectivityRepository {
     MutableLiveData<SharedConnectivitySettingsState> mSettingsState = new MutableLiveData<>();
 
     public SharedConnectivityRepository(@NonNull Context appContext) {
-        this(appContext, isDeviceConfigEnabled());
-    }
-
-    @VisibleForTesting
-    SharedConnectivityRepository(@NonNull Context appContext, boolean isConfigEnabled) {
         mAppContext = appContext;
-        if (!isConfigEnabled) {
-            return;
-        }
+
         mManager = mAppContext.getSystemService(SharedConnectivityManager.class);
         if (mManager == null) {
             Log.w(TAG, "Failed to get SharedConnectivityManager");
@@ -187,10 +177,8 @@ public class SharedConnectivityRepository {
         FeatureFactory.getFeatureFactory().getWifiFeatureProvider().verboseLog(TAG, msg);
     }
 
-    /**
-     * Returns true if Shared Connectivity feature is enabled.
-     */
+    /** Returns true always */
     public static boolean isDeviceConfigEnabled() {
-        return DeviceConfig.getBoolean(DEVICE_CONFIG_NAMESPACE, DEVICE_CONFIG_KEY, false);
+        return true;
     }
 }

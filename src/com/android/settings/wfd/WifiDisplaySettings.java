@@ -51,6 +51,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -68,7 +71,9 @@ import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.Indexable;
 import com.android.settingslib.search.SearchIndexable;
+import com.android.settingslib.widget.SettingsThemeHelper;
 import com.android.settingslib.widget.TwoTargetPreference;
+import com.android.settingslib.widget.ZeroStatePreference;
 
 /**
  * The Settings screen for WifiDisplay configuration and connection management.
@@ -78,6 +83,7 @@ import com.android.settingslib.widget.TwoTargetPreference;
  * on the system.  In that case, the enable option will not be shown but other
  * remote display routes will continue to be made available.
  */
+// LINT.IfChange
 @SearchIndexable(forTarget = SearchIndexable.ALL & ~SearchIndexable.ARC)
 public final class WifiDisplaySettings extends SettingsPreferenceFragment implements Indexable {
     private static final String TAG = "WifiDisplaySettings";
@@ -148,12 +154,19 @@ public final class WifiDisplaySettings extends SettingsPreferenceFragment implem
     }
 
     @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return WifiDisplayScreen.KEY;
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mEmptyView = (TextView) getView().findViewById(android.R.id.empty);
-        mEmptyView.setText(R.string.wifi_display_no_devices_found);
-        setEmptyView(mEmptyView);
+        if (!SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+            mEmptyView = (TextView) getView().findViewById(android.R.id.empty);
+            mEmptyView.setText(R.string.wifi_display_no_devices_found);
+            setEmptyView(mEmptyView);
+        }
     }
 
     @Override
@@ -266,8 +279,16 @@ public final class WifiDisplaySettings extends SettingsPreferenceFragment implem
             invalidateOptions = true;
         }
 
+        // Invalidate menu options if needed.
+        if (invalidateOptions) {
+            getActivity().invalidateOptionsMenu();
+        }
+
         // Rebuild the routes.
         final PreferenceScreen preferenceScreen = getPreferenceScreen();
+        if (preferenceScreen == null) {
+            return;
+        }
         preferenceScreen.removeAll();
 
         // Add all known remote display routes.
@@ -297,9 +318,8 @@ public final class WifiDisplaySettings extends SettingsPreferenceFragment implem
             }
         }
 
-        // Invalidate menu options if needed.
-        if (invalidateOptions) {
-            getActivity().invalidateOptionsMenu();
+        if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+            updateZeroState(requireContext(), preferenceScreen);
         }
     }
 
@@ -774,6 +794,18 @@ public final class WifiDisplaySettings extends SettingsPreferenceFragment implem
         }
     }
 
+    @VisibleForTesting
+    static void updateZeroState(@NonNull Context context, @NonNull PreferenceScreen screen) {
+        if (screen.getPreferenceCount() > 0) {
+            return;
+        }
+        ZeroStatePreference preference = new ZeroStatePreference(context);
+        preference.setTitle(R.string.wifi_display_no_devices_found);
+        preference.setIcon(R.drawable.ic_cast_24dp);
+        screen.addPreference(preference);
+    }
+
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(R.xml.wifi_display_settings);
 }
+// LINT.ThenChange(WifiDisplayScreen.kt)

@@ -16,7 +16,6 @@
 package com.android.settings.applications.specialaccess.notificationaccess;
 
 import android.app.Dialog;
-import android.app.Flags;
 import android.app.settings.SettingsEnums;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -56,10 +55,7 @@ public class FriendlyWarningDialogFragment extends InstrumentedDialogFragment {
         NotificationAccessDetails parent = (NotificationAccessDetails) getTargetFragment();
 
         final String summary = getResources().getString(
-                Flags.modesUi()
-                        ? R.string.notification_listener_disable_modes_warning_summary
-                        : R.string.notification_listener_disable_warning_summary,
-                label);
+                R.string.notification_listener_disable_modes_warning_summary, label);
         return new AlertDialog.Builder(getContext())
                 .setMessage(summary)
                 .setCancelable(true)

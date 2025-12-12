@@ -52,13 +52,16 @@ class AppDataUsageRepository(
     fun getAppPercent(carrierId: Int?, buckets: List<Bucket>): List<Pair<AppItem, Int>> {
         val knownItems = SparseArray<AppItem>()
         val profiles = context.userManager.userProfiles
-        val userManager : UserManager = context.getSystemService(Context.USER_SERVICE) as UserManager
-        val userIdToIsHiddenMap = profiles.associate { profile ->
-            profile.identifier to shouldSkipProfile(userManager, profile)
-        }
+        val userManager: UserManager = context.getSystemService(Context.USER_SERVICE) as UserManager
+        val userIdToIsHiddenMap =
+            profiles.associate { profile ->
+                profile.identifier to shouldSkipProfile(userManager, profile)
+            }
         bindStats(buckets, userIdToIsHiddenMap, knownItems)
-        val restrictedUids = context.getSystemService(NetworkPolicyManager::class.java)!!
-            .getUidsWithPolicy(NetworkPolicyManager.POLICY_REJECT_METERED_BACKGROUND)
+        val restrictedUids =
+            context
+                .getSystemService(NetworkPolicyManager::class.java)!!
+                .getUidsWithPolicy(NetworkPolicyManager.POLICY_REJECT_METERED_BACKGROUND)
         for (uid in restrictedUids) {
             // Only splice in restricted state for current user or managed users
             if (UserHandle.getUserHandleForUid(uid) !in profiles) continue
@@ -84,15 +87,17 @@ class AppDataUsageRepository(
     private fun filterItems(carrierId: Int?, items: List<AppItem>): List<AppItem> {
         // When there is no specified SubscriptionInfo, Wi-Fi data usage will be displayed.
         // In this case, the carrier service package also needs to be hidden.
-        if (carrierId != null && carrierId !in context.resources.getIntArray(
-                R.array.datausage_hiding_carrier_service_carrier_id
-            )
+        if (
+            carrierId != null &&
+                carrierId !in
+                    context.resources.getIntArray(
+                        R.array.datausage_hiding_carrier_service_carrier_id
+                    )
         ) {
             return items
         }
-        val hiddenPackageNames = context.resources.getStringArray(
-            R.array.datausage_hiding_carrier_service_package_names
-        )
+        val hiddenPackageNames =
+            context.resources.getStringArray(R.array.datausage_hiding_carrier_service_package_names)
         return items.filter { item ->
             // Do not show carrier service package in data usage list if it should be hidden for
             // the carrier.
@@ -111,7 +116,7 @@ class AppDataUsageRepository(
             val collapseKey: Int
             val category: Int
             val userId = UserHandle.getUserId(uid)
-            if(userIdToIsHiddenMap[userId] == true) {
+            if (userIdToIsHiddenMap[userId] == true) {
                 continue
             }
             if (UserHandle.isApp(uid) || Process.isSdkSandboxUid(uid)) {
@@ -138,9 +143,10 @@ class AppDataUsageRepository(
                         category = AppItem.CATEGORY_USER
                     }
                 }
-            } else if (uid == NetworkStats.Bucket.UID_REMOVED ||
-                uid == NetworkStats.Bucket.UID_TETHERING ||
-                uid == Process.OTA_UPDATE_UID
+            } else if (
+                uid == NetworkStats.Bucket.UID_REMOVED ||
+                    uid == NetworkStats.Bucket.UID_TETHERING ||
+                    uid == Process.OTA_UPDATE_UID
             ) {
                 collapseKey = uid
                 category = AppItem.CATEGORY_APP
@@ -157,24 +163,19 @@ class AppDataUsageRepository(
         }
     }
 
-    private fun shouldSkipProfile(userManager : UserManager, userHandle: UserHandle): Boolean {
-        if (android.os.Flags.allowPrivateProfile()
-                && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                && android.multiuser.Flags.handleInterleavedSettingsForPrivateSpace()) {
-            return (userManager.isQuietModeEnabled(userHandle)
-                    && userManager.getUserProperties(userHandle).showInQuietMode
-                    == UserProperties.SHOW_IN_QUIET_MODE_HIDDEN)
-        }
-        return false
+    private fun shouldSkipProfile(userManager: UserManager, userHandle: UserHandle): Boolean {
+        return (userManager.isQuietModeEnabled(userHandle) &&
+            userManager.getUserProperties(userHandle).showInQuietMode ==
+                UserProperties.SHOW_IN_QUIET_MODE_HIDDEN)
     }
 
     /**
      * Accumulate data usage of a network stats entry for the item mapped by the collapse key.
      * Creates the item if needed.
      *
-     * @param collapseKey  the collapse key used to map the item.
-     * @param knownItems   collection of known (already existing) items.
-     * @param bucket       the network stats bucket to extract data usage from.
+     * @param collapseKey the collapse key used to map the item.
+     * @param knownItems collection of known (already existing) items.
+     * @param bucket the network stats bucket to extract data usage from.
      * @param itemCategory the item is categorized on the list view by this category. Must be
      */
     private fun accumulate(

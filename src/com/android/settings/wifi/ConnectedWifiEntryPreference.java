@@ -34,7 +34,9 @@ public class ConnectedWifiEntryPreference extends LongPressWifiEntryPreference i
 
     public ConnectedWifiEntryPreference(Context context, WifiEntry wifiEntry, Fragment fragment) {
         super(context, wifiEntry, fragment);
-        setWidgetLayoutResource(R.layout.preference_widget_gear_optional_background);
+        setWidgetLayoutResource(wifiEntry.canSignIn()
+                ? R.layout.preference_widget_gear
+                : R.layout.preference_widget_gear_optional_background);
     }
 
     /**
@@ -53,9 +55,6 @@ public class ConnectedWifiEntryPreference extends LongPressWifiEntryPreference i
         gear.setOnClickListener(this);
 
         final boolean canSignIn = getWifiEntry().canSignIn();
-        holder.findViewById(R.id.settings_button_no_background).setVisibility(
-                canSignIn ? View.INVISIBLE : View.VISIBLE);
-        gear.setVisibility(canSignIn ? View.VISIBLE : View.INVISIBLE);
         holder.findViewById(com.android.settingslib.widget.preference.twotarget.R.id.two_target_divider).setVisibility(
                 canSignIn ? View.VISIBLE : View.INVISIBLE);
     }

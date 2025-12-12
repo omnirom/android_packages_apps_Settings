@@ -20,7 +20,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.robolectric.Shadows.shadowOf;
 
-import android.app.Flags;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
@@ -31,7 +30,6 @@ import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.UserHandle;
 import android.os.UserManager;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.ContactsContract;
 
@@ -56,7 +54,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 @RunWith(RobolectricTestRunner.class)
-@EnableFlags(Flags.FLAG_MODES_UI)
 public class ZenHelperBackendTest {
     @Rule
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();

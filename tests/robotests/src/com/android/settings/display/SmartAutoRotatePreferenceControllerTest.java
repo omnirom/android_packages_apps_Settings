@@ -35,6 +35,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
 import android.content.res.Resources;
+import android.hardware.devicestate.DeviceStateManager;
 import android.os.UserHandle;
 import android.provider.Settings;
 
@@ -66,6 +67,8 @@ public class SmartAutoRotatePreferenceControllerTest {
     @Mock
     private PackageManager mPackageManager;
     @Mock
+    private DeviceStateManager mDeviceStateManager;
+    @Mock
     private Resources mResources;
     private Context mContext;
     private ContentResolver mContentResolver;
@@ -81,6 +84,7 @@ public class SmartAutoRotatePreferenceControllerTest {
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
         when(mContext.getResources()).thenReturn(mResources);
         when(mContext.getContentResolver()).thenReturn(mContentResolver);
+        doReturn(mDeviceStateManager).when(mContext).getSystemService(DeviceStateManager.class);
 
         when(mResources.getBoolean(R.bool.config_auto_rotate_face_detection_available)).thenReturn(
                 true);
@@ -104,7 +108,7 @@ public class SmartAutoRotatePreferenceControllerTest {
                 new SmartAutoRotatePreferenceController(mContext, "smart_auto_rotate"));
         when(mController.isCameraLocked()).thenReturn(false);
         when(mController.isPowerSaveMode()).thenReturn(false);
-        setDeviceStateRotationLockEnabled(false, mResources);
+        setDeviceStateRotationLockEnabled(/* enable= */ false, mResources, mDeviceStateManager);
     }
 
     @Test
@@ -213,7 +217,7 @@ public class SmartAutoRotatePreferenceControllerTest {
     @Test
     public void getAvailabilityStatus_deviceStateRotationEnabled_returnsUnsupported() {
         enableAutoRotationPreference();
-        setDeviceStateRotationLockEnabled(true, mResources);
+        setDeviceStateRotationLockEnabled(/* enable= */ true, mResources, mDeviceStateManager);
 
         assertThat(mController.getAvailabilityStatus()).isEqualTo(
                 BasePreferenceController.UNSUPPORTED_ON_DEVICE);

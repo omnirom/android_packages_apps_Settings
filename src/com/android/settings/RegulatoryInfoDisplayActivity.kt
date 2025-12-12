@@ -17,6 +17,7 @@
 package com.android.settings
 
 import android.app.Activity
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.ImageView
@@ -24,6 +25,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.android.settings.deviceinfo.regulatory.RegulatoryInfo.getRegulatoryInfo
 import com.android.settings.overlay.FeatureFactory.Companion.featureFactory
+import com.android.settingslib.widget.SettingsThemeHelper.isExpressiveTheme
 
 /**
  * [Activity] that displays regulatory information for the "Regulatory information"
@@ -40,6 +42,11 @@ class RegulatoryInfoDisplayActivity : Activity() {
     /** Display the regulatory info graphic in a dialog window. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val resId = if (isExpressiveTheme(this))
+            R.style.Transparent_Expressive
+        else
+            R.style.Transparent
+        setTheme(resId)
         val builder = AlertDialog.Builder(this)
             .setTitle(R.string.regulatory_labels)
             .setOnDismissListener { finish() }  // close the activity
@@ -70,5 +77,14 @@ class RegulatoryInfoDisplayActivity : Activity() {
         val regulatoryInfoText = resources.getText(R.string.regulatory_info_text)
         if (regulatoryInfoText.isNotBlank()) return regulatoryInfoText
         return featureFactory.hardwareInfoFeatureProvider?.countryOfOriginLabel
+    }
+
+    /** Returns the current theme and checks if needing to apply expressive theme. */
+    override fun getTheme(): Resources.Theme? {
+        val theme = super.getTheme()
+        if (isExpressiveTheme(this)) {
+            theme.applyStyle(R.style.Transparent_Expressive, true)
+        }
+        return theme
     }
 }

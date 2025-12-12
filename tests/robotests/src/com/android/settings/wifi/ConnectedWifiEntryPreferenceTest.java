@@ -16,8 +16,6 @@
 
 package com.android.settings.wifi;
 
-import static com.google.common.truth.Truth.assertThat;
-
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -74,11 +72,5 @@ public class ConnectedWifiEntryPreferenceTest {
         mConnectedWifiEntryPreference.onClick(mView);
 
         verify(mOnGearClickListener, never()).onGearClick(mConnectedWifiEntryPreference);
-    }
-
-    @Test
-    public void testWidgetLayoutPreference() {
-        assertThat(mConnectedWifiEntryPreference.getWidgetLayoutResource())
-            .isEqualTo(R.layout.preference_widget_gear_optional_background);
     }
 }

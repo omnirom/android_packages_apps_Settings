@@ -16,6 +16,7 @@
 
 package com.android.settings.widget;
 
+import android.app.admin.EnforcingAdmin;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
@@ -83,5 +84,15 @@ public class MainSwitchBarController extends SwitchWidgetController implements
     @Override
     public void setDisabledByAdmin(RestrictedLockUtils.EnforcedAdmin admin) {
         mMainSwitch.setDisabledByAdmin(admin);
+    }
+
+    @Override
+    public void setDisabledByAdmin(EnforcingAdmin admin) {
+        mMainSwitch.setDisabledByAdmin(admin);
+    }
+
+    @Override
+    public void setRestriction(String restriction) {
+        mMainSwitch.setRestriction(restriction);
     }
 }

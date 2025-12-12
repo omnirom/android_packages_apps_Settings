@@ -116,7 +116,7 @@
                 android:layout_below="@id/info"
                 android:layout_alignStart="@+id/info"
                 android:paddingTop="24dp"
-                android:paddingLeft="16dp"
+                android:paddingStart="16dp"
                 android:text="@string/private_space_learn_more_text"/>
         </RelativeLayout>
     </LinearLayout>

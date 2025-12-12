@@ -18,19 +18,16 @@ package com.android.settings.location
 import android.content.Context
 import android.content.ContextWrapper
 import android.location.LocationManager
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.settings.R
 import com.android.settings.flags.Flags
-import com.android.settingslib.preference.CatalystScreenTestCase
+import com.android.settings.testutils2.SettingsCatalystTestCase
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.stub
 
-@RunWith(AndroidJUnit4::class)
-class LocationScreenTest : CatalystScreenTestCase() {
+class LocationScreenTest : SettingsCatalystTestCase() {
     override val preferenceScreenCreator = LocationScreen()
 
     override val flagName: String
@@ -48,11 +45,6 @@ class LocationScreenTest : CatalystScreenTestCase() {
             }
 
     @Test
-    fun key() {
-        assertThat(preferenceScreenCreator.key).isEqualTo(LocationScreen.KEY)
-    }
-
-    @Test
     fun getSummary_enableLocation_shouldReturnLoading() {
         mockLocationManager.stub { on { isLocationEnabled } doReturn true }
 
@@ -68,6 +60,7 @@ class LocationScreenTest : CatalystScreenTestCase() {
                 context.getString(R.string.location_settings_summary_location_off))
     }
 
+    @Test
     override fun migration() {
     }
 }

@@ -24,7 +24,6 @@ import android.os.UserHandle;
 import android.provider.Settings;
 import android.util.Log;
 
-import com.android.internal.foldables.FoldGracePeriodProvider;
 import com.android.settings.R;
 import com.android.settings.support.actionbar.HelpResourceProvider;
 import com.android.settings.utils.CandidateInfoExtra;
@@ -55,7 +54,6 @@ public class FoldLockBehaviorSettings extends RadioButtonPickerFragment implemen
                     SETTING_VALUE_SLEEP_ON_FOLD));
     private static final String SETTING_VALUE_DEFAULT = SETTING_VALUE_SELECTIVE_STAY_AWAKE;
     private Context mContext;
-    private final FoldGracePeriodProvider mFoldGracePeriodProvider = new FoldGracePeriodProvider();
 
     @Override
     public void onAttach(Context context) {
@@ -71,17 +69,10 @@ public class FoldLockBehaviorSettings extends RadioButtonPickerFragment implemen
                 resourceToString(R.string.stay_awake_on_fold_title),
                 resourceToString(R.string.stay_awake_on_fold_summary),
                 SETTING_VALUE_STAY_AWAKE_ON_FOLD, /* enabled */ true));
-        if (mFoldGracePeriodProvider.isEnabled()) {
-            candidates.add(new CandidateInfoExtra(
-                    resourceToString(R.string.stay_awake_on_lockscreen_title),
-                    resourceToString(R.string.stay_awake_on_lockscreen_summary),
-                    SETTING_VALUE_SELECTIVE_STAY_AWAKE, /* enabled */ true));
-        } else {
-            candidates.add(new CandidateInfoExtra(
-                    resourceToString(R.string.selective_stay_awake_title),
-                    resourceToString(R.string.selective_stay_awake_summary),
-                    SETTING_VALUE_SELECTIVE_STAY_AWAKE, /* enabled */ true));
-        }
+        candidates.add(new CandidateInfoExtra(
+                resourceToString(R.string.stay_awake_on_lockscreen_title),
+                resourceToString(R.string.stay_awake_on_lockscreen_summary),
+                SETTING_VALUE_SELECTIVE_STAY_AWAKE, /* enabled */ true));
         candidates.add(new CandidateInfoExtra(
                 resourceToString(R.string.sleep_on_fold_title),
                 resourceToString(R.string.sleep_on_fold_summary),
@@ -160,13 +151,8 @@ public class FoldLockBehaviorSettings extends RadioButtonPickerFragment implemen
                         IllustrationType.LOTTIE_ANIMATION);
                 break;
             case SETTING_VALUE_SELECTIVE_STAY_AWAKE:
-                if (mFoldGracePeriodProvider.isEnabled()) {
-                    setIllustration(R.raw.fold_setting_grace_period_selective_stay_awake_lottie,
-                            IllustrationType.LOTTIE_ANIMATION);
-                } else {
-                    setIllustration(R.raw.fold_setting_selective_stay_awake_lottie,
-                            IllustrationType.LOTTIE_ANIMATION);
-                }
+                setIllustration(R.raw.fold_setting_grace_period_selective_stay_awake_lottie,
+                        IllustrationType.LOTTIE_ANIMATION);
                 break;
             case SETTING_VALUE_SLEEP_ON_FOLD:
                 setIllustration(R.raw.fold_setting_sleep_on_fold_lottie,

@@ -24,7 +24,6 @@
 
     <com.android.settingslib.widget.FooterPreference
         android:key="alarms_and_reminders_description"
-        android:title="@string/alarms_and_reminders_footer_title"
-        android:selectable="false" />
+        android:title="@string/alarms_and_reminders_footer_title" />
 
 </PreferenceScreen>

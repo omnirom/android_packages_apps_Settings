@@ -26,7 +26,6 @@
         <com.android.settingslib.widget.FooterPreference
             android:key="bluetooth_always_scanning_footer"
             android:title="@string/location_scanning_bluetooth_always_scanning_description"
-            android:selectable="false"
             settings:searchable="false"/>
 
 </PreferenceScreen>

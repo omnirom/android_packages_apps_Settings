@@ -29,7 +29,7 @@
         <com.android.settingslib.widget.ButtonPreference
             android:key="assistant_gesture_navigation_tutorial"
             android:title="@string/gesture_navigation_tutorial_title"
-            android:icon="@drawable/tile_icon_show_taps"
+            android:icon="@drawable/touch_app"
             settings:buttonPreferenceSize="normal"
             settings:buttonPreferenceType="filled" />
     </PreferenceCategory>
@@ -53,16 +53,18 @@
         android:persistent="false"
         android:title="@string/back_sensitivity_dialog_title">
 
-        <com.android.settings.widget.LabeledSeekBarPreference
+        <com.android.settingslib.widget.SliderPreference
             android:key="gesture_left_back_sensitivity"
             android:title="@string/left_edge"
+            android:min="0"
             android:max="2"
             settings:textStart="@string/low_label"
             settings:textEnd="@string/high_label"/>
 
-        <com.android.settings.widget.LabeledSeekBarPreference
+        <com.android.settingslib.widget.SliderPreference
             android:key="gesture_right_back_sensitivity"
             android:title="@string/right_edge"
+            android:min="0"
             android:max="2"
             settings:textStart="@string/low_label"
             settings:textEnd="@string/high_label"/>
@@ -71,7 +73,6 @@
     <com.android.settingslib.widget.FooterPreference
         android:key="gesture_navigation_settings_footer"
         android:title="@string/back_sensitivity_dialog_message"
-        android:selectable="false"
         settings:searchable="false"/>
 </PreferenceScreen>
 

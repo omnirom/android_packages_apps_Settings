@@ -27,8 +27,6 @@
 
         <com.android.settingslib.widget.FooterPreference
             android:key="freed_bytes"
-            android:persistent="false"
-            android:selectable="false"
             settings:searchable="false"/>
 
 </PreferenceScreen>

@@ -78,8 +78,8 @@ public class DoubleTapPowerIllustrationPreferenceController extends BasePreferen
                         DoubleTapPowerSettingsUtils
                                 .isDoubleTapPowerButtonGestureForCameraLaunchEnabled(
                                         mContext)
-                                ? R.drawable.quickly_open_camera
-                                : R.drawable.double_tap_power_for_wallet);
+                                ? R.raw.gesture_double_tap_power_for_camera_lottie
+                                : R.raw.gesture_double_tap_power_for_wallet_lottie);
     }
 
     @Override

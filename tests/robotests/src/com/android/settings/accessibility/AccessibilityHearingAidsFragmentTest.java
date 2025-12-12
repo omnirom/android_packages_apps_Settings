@@ -25,8 +25,6 @@ import static org.mockito.Mockito.when;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.flag.junit.SetFlagsRule;
 import android.telephony.TelephonyManager;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -60,8 +58,6 @@ public class AccessibilityHearingAidsFragmentTest {
 
     @Rule
     public MockitoRule mMockitoRule = MockitoJUnit.rule();
-    @Rule
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Spy
     private final Context mContext = ApplicationProvider.getApplicationContext();
 
@@ -99,7 +95,6 @@ public class AccessibilityHearingAidsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
     public void deviceSupportsHearingAid_isPageSearchEnabled_returnTrue() {
         mShadowBluetoothAdapter.clearSupportedProfiles();
         mShadowBluetoothAdapter.addSupportedProfiles(BluetoothProfile.HEARING_AID);
@@ -108,7 +103,6 @@ public class AccessibilityHearingAidsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
     public void deviceDoesNotSupportHearingAid_isPageSearchEnabled_returnFalse() {
         mShadowBluetoothAdapter.clearSupportedProfiles();
         mShadowBluetoothAdapter.addSupportedProfiles(BluetoothProfile.HEADSET);

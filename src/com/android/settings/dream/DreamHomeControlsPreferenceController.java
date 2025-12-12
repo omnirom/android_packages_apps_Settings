@@ -46,8 +46,11 @@ public class DreamHomeControlsPreferenceController extends TogglePreferenceContr
                 mBackend.getSupportedComplications()
                         .contains(DreamBackend.COMPLICATION_TYPE_HOME_CONTROLS);
 
-        return controlsEnabledOnLockscreen() ? (supported ? AVAILABLE : CONDITIONALLY_UNAVAILABLE)
-                : DISABLED_DEPENDENT_SETTING;
+        if (!supported) {
+            return UNSUPPORTED_ON_DEVICE;
+        }
+
+        return controlsEnabledOnLockscreen() ? AVAILABLE : DISABLED_DEPENDENT_SETTING;
     }
 
     @Override

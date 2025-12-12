@@ -16,30 +16,33 @@
 
 package com.android.settings.sound
 
+import android.app.settings.SettingsEnums
 import android.content.Context
+import androidx.fragment.app.Fragment
 import com.android.settings.R
-import com.android.settings.flags.Flags
+import com.android.settings.Settings.MediaControlsSettingsActivity
+import com.android.settings.core.PreferenceScreenMixin
+import com.android.settings.sound.MediaControlsSwitchPreference.Companion.mediaControlsDataStore
+import com.android.settings.utils.makeLaunchIntent
 import com.android.settingslib.datastore.AbstractKeyedDataObservable
 import com.android.settingslib.datastore.HandlerExecutor
-import com.android.settingslib.datastore.KeyValueStore
-import com.android.settingslib.datastore.KeyValueStoreDelegate
 import com.android.settingslib.datastore.KeyedObserver
-import com.android.settingslib.datastore.SettingsSecureStore
 import com.android.settingslib.metadata.PreferenceChangeReason
+import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.PreferenceSummaryProvider
 import com.android.settingslib.metadata.ProvidePreferenceScreen
 import com.android.settingslib.metadata.preferenceHierarchy
-import com.android.settingslib.preference.PreferenceScreenCreator
+import kotlinx.coroutines.CoroutineScope
 
 // LINT.IfChange
 @ProvidePreferenceScreen(MediaControlsScreen.KEY)
-class MediaControlsScreen(context: Context) :
-    AbstractKeyedDataObservable<String>(), PreferenceScreenCreator, PreferenceSummaryProvider {
+open class MediaControlsScreen(context: Context) :
+    AbstractKeyedDataObservable<String>(), PreferenceScreenMixin, PreferenceSummaryProvider {
 
     private val observer =
         KeyedObserver<String> { _, _ -> notifyChange(KEY, PreferenceChangeReason.STATE) }
 
-    private val mediaControlsStore = MediaControlsStore(SettingsSecureStore.get(context))
+    private val mediaControlsStore = context.mediaControlsDataStore
 
     override val key: String
         get() = KEY
@@ -49,6 +52,11 @@ class MediaControlsScreen(context: Context) :
 
     override val keywords: Int
         get() = R.string.keywords_media_controls
+
+    override val highlightMenuKey: Int
+        get() = R.string.keywords_sounds
+
+    override fun getMetricsCategory() = SettingsEnums.MEDIA_CONTROLS_SETTINGS
 
     override fun onFirstObserverAdded() {
         mediaControlsStore.addObserver(
@@ -62,12 +70,10 @@ class MediaControlsScreen(context: Context) :
         mediaControlsStore.removeObserver(MediaControlsSwitchPreference.KEY, observer)
     }
 
-    override fun isFlagEnabled(context: Context) = Flags.catalystMediaControls()
+    override fun fragmentClass(): Class<out Fragment>? = MediaControlsSettings::class.java
 
-    override fun fragmentClass() = MediaControlsSettings::class.java
-
-    override fun getPreferenceHierarchy(context: Context) =
-        preferenceHierarchy(context, this) {
+    override fun getPreferenceHierarchy(context: Context, coroutineScope: CoroutineScope) =
+        preferenceHierarchy(context) {
             +MediaControlsSwitchPreference(mediaControlsStore)
             +MediaControlsLockscreenSwitchPreference()
         }
@@ -79,14 +85,8 @@ class MediaControlsScreen(context: Context) :
             context.getString(R.string.media_controls_show_player)
         }
 
-    @Suppress("UNCHECKED_CAST")
-    class MediaControlsStore(private val settingsStore: KeyValueStore) : KeyValueStoreDelegate {
-
-        override val keyValueStoreDelegate
-            get() = settingsStore
-
-        override fun <T : Any> getDefaultValue(key: String, valueType: Class<T>) = true as T
-    }
+    override fun getLaunchIntent(context: Context, metadata: PreferenceMetadata?) =
+        makeLaunchIntent(context, MediaControlsSettingsActivity::class.java, metadata?.key)
 
     companion object {
         const val KEY = "media_controls"

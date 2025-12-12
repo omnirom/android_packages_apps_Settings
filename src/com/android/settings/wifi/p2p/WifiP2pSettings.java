@@ -671,7 +671,7 @@ public class WifiP2pSettings extends DashboardFragment
             return true;
         }
         if (mWifiP2pManager != null) {
-            sChannel = mWifiP2pManager.initialize(getActivity().getApplicationContext(),
+            sChannel = mWifiP2pManager.initialize(getActivity(),
                     getActivity().getMainLooper(), null);
         }
         if (sChannel == null) {

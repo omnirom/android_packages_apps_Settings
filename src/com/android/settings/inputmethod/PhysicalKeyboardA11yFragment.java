@@ -27,7 +27,6 @@ import androidx.annotation.NonNull;
 import com.android.internal.util.Preconditions;
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
-import com.android.settings.keyboard.Flags;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.SearchIndexable;
 import com.android.settingslib.utils.ThreadUtils;
@@ -93,8 +92,7 @@ public class PhysicalKeyboardA11yFragment extends DashboardFragment
             new BaseSearchIndexProvider(R.xml.physical_keyboard_a11y_settings) {
                 @Override
                 protected boolean isPageSearchEnabled(Context context) {
-                    return Flags.keyboardAndTouchpadA11yNewPageEnabled()
-                            && !getHardKeyboards(context).isEmpty();
+                    return !getHardKeyboards(context).isEmpty();
                 }
             };
 

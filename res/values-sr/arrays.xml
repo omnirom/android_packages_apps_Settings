@@ -315,6 +315,10 @@
     <item msgid="7397961711906421599">"Средње"</item>
     <item msgid="4079132024502041928">"Дуго"</item>
   </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"DHCP"</item>
+    <item msgid="4425163520864432692">"Статички"</item>
+  </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"Подразумевано"</item>
     <item msgid="4234707448428002595">"Sans-serif"</item>
@@ -348,7 +352,7 @@
     <item msgid="3237802033158517495">"100%"</item>
   </string-array>
   <string-array name="captioning_preset_selector_titles">
-    <item msgid="3880932435325583041">"Подешава апликација"</item>
+    <item msgid="3880932435325583041">"Подесила апликација"</item>
     <item msgid="8719204526359229387">"Бело на црном"</item>
     <item msgid="5410164687403735103">"Црно на белом"</item>
     <item msgid="1119043472912497241">"Жуто на црном"</item>
@@ -358,10 +362,6 @@
   <string-array name="accessibility_button_location_selector_titles">
     <item msgid="6485511780196327736">"Плута преко других апликација"</item>
     <item msgid="3605616699204153590">"Трака за навигацију"</item>
-  </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"Дугме"</item>
-    <item msgid="6922258575853746220">"Покрет"</item>
   </string-array>
   <string-array name="accessibility_button_size_selector_titles">
     <item msgid="7482952318152486459">"Мала"</item>
@@ -428,7 +428,7 @@
     <item msgid="2163015208097377388">"Да"</item>
   </string-array>
   <string-array name="autofill_logging_level_entries">
-    <item msgid="2263571982739726576">"Искључи"</item>
+    <item msgid="2263571982739726576">"Искључено"</item>
     <item msgid="4295717421282345505">"Отклони грешке"</item>
     <item msgid="8657797891533816070">"Детаљно"</item>
   </string-array>
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"Сат"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"Ништа"</item>
+    <item msgid="321837941231023175">"Почетак"</item>
+    <item msgid="953234843613969792">"Недавне апликације"</item>
+    <item msgid="1713942773283586136">"Обавештења"</item>
+    <item msgid="5687603742365489342">"Брза подешавања"</item>
+    <item msgid="5454862951059393431">"Закључани екран"</item>
   </string-array>
 </resources>

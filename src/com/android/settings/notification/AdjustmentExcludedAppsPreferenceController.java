@@ -22,7 +22,10 @@ import static android.service.notification.Adjustment.KEY_TYPE;
 import android.app.Flags;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.UserHandle;
+import android.os.UserManager;
 import android.service.notification.Adjustment;
+import android.util.ArrayMap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,7 +45,9 @@ import com.android.settingslib.utils.ThreadUtils;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Adds a preference to the PreferenceCategory for every app excluded from an adjustment key
@@ -58,11 +63,18 @@ public class AdjustmentExcludedAppsPreferenceController extends BasePreferenceCo
     @VisibleForTesting Context mPrefContext;
 
     private ApplicationsState.Session mAppSession;
+    private UserManager mUserManager;
 
     public AdjustmentExcludedAppsPreferenceController(@NonNull Context context,
             @NonNull String preferenceKey) {
         super(context, preferenceKey);
         mBackend = new NotificationBackend();
+        mUserManager = context.getSystemService(UserManager.class);
+    }
+
+    @VisibleForTesting
+    void setUserManager(UserManager um) {
+        mUserManager = um;
     }
 
     protected void onAttach(@Nullable ApplicationsState appState, @Nullable Fragment host,
@@ -108,11 +120,8 @@ public class AdjustmentExcludedAppsPreferenceController extends BasePreferenceCo
             return;
         }
 
-        ApplicationsState.AppFilter filter = android.multiuser.Flags.enablePrivateSpaceFeatures()
-                && android.multiuser.Flags.handleInterleavedSettingsForPrivateSpace()
-                ? ApplicationsState.FILTER_ENABLED_NOT_QUIET
-                : ApplicationsState.FILTER_ALL_ENABLED;
-        mAppSession.rebuild(filter, ApplicationsState.ALPHA_COMPARATOR);
+        mAppSession.rebuild(ApplicationsState.FILTER_ENABLED_NOT_QUIET,
+                ApplicationsState.ALPHA_COMPARATOR);
     }
 
     // Set the icon for the given preference to the entry icon from cache if available, or look
@@ -135,18 +144,24 @@ public class AdjustmentExcludedAppsPreferenceController extends BasePreferenceCo
 
     @VisibleForTesting
     void updateAppList(List<ApplicationsState.AppEntry> apps) {
-        if (mPreferenceCategory == null || apps == null) {
+        if (mPreferenceCategory == null || mAdjustmentKey == null || apps == null) {
             return;
         }
 
-        List<String> excludedApps = List.of(mBackend.getAdjustmentDeniedPackages(mAdjustmentKey));
+        Map<Integer, List<String>> excludedAppsByUser = new ArrayMap<>();
+        for (UserHandle userHandle : mUserManager.getUserProfiles()) {
+            int userId = userHandle.getIdentifier();
+            excludedAppsByUser.put(userId,
+                    mBackend.getAdjustmentDeniedPackages(userId, mAdjustmentKey));
+        }
 
         for (ApplicationsState.AppEntry app : apps) {
             String pkg = app.info.packageName;
+            int userId = UserHandle.getUserId(app.info.uid);
             final String key = getKey(pkg, app.info.uid);
             boolean doesAppPassCriteria = false;
 
-            if (excludedApps.contains(pkg)) {
+            if (excludedAppsByUser.getOrDefault(userId, Collections.EMPTY_LIST).contains(pkg)) {
                 doesAppPassCriteria = true;
             }
             Preference pref = mPreferenceCategory.findPreference(key);
@@ -157,6 +172,7 @@ public class AdjustmentExcludedAppsPreferenceController extends BasePreferenceCo
                     pref.setKey(key);
                     pref.setTitle(BidiFormatter.getInstance().unicodeWrap(app.label));
                     updateIcon(pref, app);
+                    pref.setSelectable(false);
                     mPreferenceCategory.addPreference(pref);
                 }
             } else if (!doesAppPassCriteria) {

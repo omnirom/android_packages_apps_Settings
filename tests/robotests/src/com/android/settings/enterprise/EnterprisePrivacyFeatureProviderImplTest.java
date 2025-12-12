@@ -31,6 +31,7 @@ import static org.mockito.Mockito.when;
 
 import android.app.admin.DevicePolicyManager;
 import android.app.supervision.SupervisionManager;
+import android.app.supervision.flags.Flags;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -81,7 +82,7 @@ public class EnterprisePrivacyFeatureProviderImplTest {
     private static final String VPN_PACKAGE_ID = "com.example.vpn";
     private static final String IME_PACKAGE_ID = "com.example.ime";
     private static final String IME_PACKAGE_LABEL = "Test IME";
-    private static final String SUPERVISION_PACKAGE = "com.supervision.app";
+    private static final String SETTINGS_PACKAGE = "test.android.settings";
 
     private final ComponentName mOwner = new ComponentName("mock", "component");
     private final ComponentName mAdmin1 = new ComponentName("mock", "admin1");
@@ -449,12 +450,17 @@ public class EnterprisePrivacyFeatureProviderImplTest {
     }
 
     @Test
-    @EnableFlags(android.app.supervision.flags.Flags.FLAG_DEPRECATE_DPM_SUPERVISION_APIS)
-    public void testShowParentalControls_usingSupervisionManager() {
-        when(mSupervisionManager.getActiveSupervisionAppPackage())
-                .thenReturn(SUPERVISION_PACKAGE);
+    @EnableFlags({android.app.supervision.flags.Flags.FLAG_DEPRECATE_DPM_SUPERVISION_APIS,
+            Flags.FLAG_ENABLE_SUPERVISION_SETTINGS_SCREEN})
+    public void testShowParentalControls_usingSettingsAppToRedirect() {
+        ResolveInfo resolveInfo = new ResolveInfo();
+        resolveInfo.activityInfo = new ActivityInfo();
+        resolveInfo.activityInfo.packageName = SETTINGS_PACKAGE;
         when(mPackageManager.queryIntentActivitiesAsUser(any(Intent.class), anyInt(), anyInt()))
                 .thenReturn(ImmutableList.of(new ResolveInfo()));
+        when(mPackageManager.queryIntentActivities(any(Intent.class), anyInt()))
+                .thenReturn(ImmutableList.of(resolveInfo));
+        when(mSupervisionManager.isSupervisionEnabled()).thenReturn(true);
 
         // If the intent is resolved, then we can use it to launch the activity.
         assertThat(mProvider.showParentalControls()).isTrue();
@@ -464,7 +470,7 @@ public class EnterprisePrivacyFeatureProviderImplTest {
         verify(mContext).startActivity(captor.capture());
         Intent intent = captor.getValue();
         assertThat(intent).isNotNull();
-        assertThat(intent.getPackage()).isEqualTo(SUPERVISION_PACKAGE);
+        assertThat(intent.getPackage()).isEqualTo(SETTINGS_PACKAGE);
     }
 
     private Intent addWorkPolicyInfoIntent(

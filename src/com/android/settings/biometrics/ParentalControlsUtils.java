@@ -17,6 +17,9 @@
 package com.android.settings.biometrics;
 
 import android.app.admin.DevicePolicyManager;
+import android.app.admin.EnforcingAdmin;
+import android.app.admin.RoleAuthority;
+import android.app.role.RoleManager;
 import android.app.supervision.SupervisionManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -32,6 +35,8 @@ import androidx.annotation.Nullable;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.settingslib.RestrictedLockUtils;
 import com.android.settingslib.supervision.SupervisionRestrictionsHelper;
+
+import java.util.Set;
 
 /**
  * Utilities for things at the cross-section of biometrics and parental controls. For example,
@@ -91,6 +96,58 @@ public class ParentalControlsUtils {
                     ParentalControlsUtilsInternal.getSupervisionComponentName(dpm, userHandle);
             return new RestrictedLockUtils.EnforcedAdmin(cn, UserManager.DISALLOW_BIOMETRIC,
                     userHandle);
+        }
+    }
+
+    /**
+     * Public version that enables test paths, see
+     * {@link android.hardware.biometrics.ParentalControlsUtilsInternal#getTestComponentName}
+     * @return non-null EnforcedAdmin if parental consent is required
+     */
+    @Nullable
+    public static EnforcingAdmin getParentalSupervisionAdmin(@NonNull Context context,
+            @BiometricAuthenticator.Modality int modality) {
+
+        final int userId = UserHandle.myUserId();
+        final UserHandle userHandle = new UserHandle(userId);
+        final ComponentName testComponentName = ParentalControlsUtilsInternal.getTestComponentName(
+                context, userId);
+        if (testComponentName != null) {
+            Log.d(TAG, "Requiring consent for test flow");
+            return new EnforcingAdmin(testComponentName.getPackageName(), new RoleAuthority(Set.of(
+                    RoleManager.ROLE_SYSTEM_SUPERVISION)), userHandle, testComponentName);
+        }
+
+        return getParentalSupervisionAdminInternal(context, modality, userHandle);
+    }
+
+    /**
+     * Internal testable version.
+     * @return non-null EnforcingAdmin if parental consent is required
+     */
+    @Nullable
+    @VisibleForTesting
+    static EnforcingAdmin getParentalSupervisionAdminInternal(
+            @NonNull Context context,
+            @BiometricAuthenticator.Modality int modality,
+            @NonNull UserHandle userHandle) {
+        final DevicePolicyManager dpm = context.getSystemService(DevicePolicyManager.class);
+        final SupervisionManager sm =
+                android.app.supervision.flags.Flags.deprecateDpmSupervisionApis()
+                        ? context.getSystemService(SupervisionManager.class)
+                        : null;
+
+        if (!ParentalControlsUtilsInternal.parentConsentRequired(
+                dpm, sm, modality, userHandle)) {
+            return null;
+        }
+        if (android.app.supervision.flags.Flags.deprecateDpmSupervisionApis()) {
+            return SupervisionRestrictionsHelper.createEnforcingAdmin(context, userHandle);
+        } else {
+            final ComponentName cn =
+                    ParentalControlsUtilsInternal.getSupervisionComponentName(dpm, userHandle);
+            return new EnforcingAdmin(cn.getPackageName(),
+                    new RoleAuthority(Set.of(RoleManager.ROLE_SYSTEM_SUPERVISION)), userHandle, cn);
         }
     }
 }

@@ -39,7 +39,6 @@ import com.android.settings.R;
 import com.android.settings.applications.AppInfoBase;
 import com.android.settings.core.PreferenceControllerMixin;
 import com.android.settings.core.SubSettingLauncher;
-import com.android.settings.flags.Flags;
 import com.android.settings.notification.NotificationBackend;
 import com.android.settingslib.PrimarySwitchPreference;
 import com.android.settingslib.RestrictedSwitchPreference;
@@ -148,14 +147,12 @@ public class AppChannelsBypassingDndPreferenceController extends NotificationPre
                     for (NotificationChannel channel : channelGroup.getChannels()) {
                         if (!isConversation(channel)) {
                             newChannelList.add(channel);
-                            if (Flags.dedupeDndSettingsChannels()) {
-                                mChannelGroupNames.put(channel, channelGroup.getName().toString());
-                                // Check if channel name is unique on this page; if not, save it.
-                                if (allChannelNames.contains(channel.getName())) {
-                                    mDuplicateChannelNames.add(channel.getName().toString());
-                                } else {
-                                    allChannelNames.add(channel.getName().toString());
-                                }
+                            mChannelGroupNames.put(channel, channelGroup.getName().toString());
+                            // Check if channel name is unique on this page; if not, save it.
+                            if (allChannelNames.contains(channel.getName())) {
+                                mDuplicateChannelNames.add(channel.getName().toString());
+                            } else {
+                                allChannelNames.add(channel.getName().toString());
                             }
                         }
                     }
@@ -190,16 +187,14 @@ public class AppChannelsBypassingDndPreferenceController extends NotificationPre
                             && isChannelConfigurable(channel)
                             && showNotification(channel));
             channelPreference.setTitle(BidiFormatter.getInstance().unicodeWrap(channel.getName()));
-            if (Flags.dedupeDndSettingsChannels()) {
-                // If the channel shares its name with another channel, set group name as summary
-                // to disambiguate in the list.
-                if (mDuplicateChannelNames.contains(channel.getName().toString())
-                        && mChannelGroupNames.containsKey(channel)
-                        && mChannelGroupNames.get(channel) != null
-                        && !mChannelGroupNames.get(channel).isEmpty()) {
-                    channelPreference.setSummary(BidiFormatter.getInstance().unicodeWrap(
-                            mChannelGroupNames.get(channel)));
-                }
+            // If the channel shares its name with another channel, set group name as summary
+            // to disambiguate in the list.
+            if (mDuplicateChannelNames.contains(channel.getName().toString())
+                    && mChannelGroupNames.containsKey(channel)
+                    && mChannelGroupNames.get(channel) != null
+                    && !mChannelGroupNames.get(channel).isEmpty()) {
+                channelPreference.setSummary(BidiFormatter.getInstance().unicodeWrap(
+                        mChannelGroupNames.get(channel)));
             }
             channelPreference.setChecked(showNotificationInDnd(channel));
             channelPreference.setOnPreferenceChangeListener(
@@ -227,9 +222,7 @@ public class AppChannelsBypassingDndPreferenceController extends NotificationPre
                         .setUserHandle(UserHandle.of(mAppRow.userId))
                         .setTitleRes(com.android.settings.R.string.notification_channel_title)
                         .setSourceMetricsCategory(
-                                android.app.Flags.modesUi()
-                                    ? SettingsEnums.NOTIFICATION_ZEN_MODE_OVERRIDING_APP_CHANNELS
-                                        : SettingsEnums.DND_APPS_BYPASSING)
+                                    SettingsEnums.NOTIFICATION_ZEN_MODE_OVERRIDING_APP_CHANNELS)
                         .launch();
                 return true;
             });

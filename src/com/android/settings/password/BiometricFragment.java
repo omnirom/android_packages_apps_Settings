@@ -155,8 +155,7 @@ public class BiometricFragment extends InstrumentedFragment {
             promptBuilder.setLogoDescription(logoDescription);
         }
 
-        if (android.os.Flags.allowPrivateProfile() && Flags.enablePrivateSpaceFeatures()
-                && Flags.enableBiometricsToUnlockPrivateSpace()) {
+        if (Flags.enableBiometricsToUnlockPrivateSpace()) {
             promptBuilder = promptBuilder.setAllowBackgroundAuthentication(true /* allow */,
                     promptInfo.shouldUseParentProfileForDeviceCredential());
         } else {
@@ -168,7 +167,8 @@ public class BiometricFragment extends InstrumentedFragment {
             promptBuilder.setUseDefaultSubtitle();
         }
 
-        if ((promptInfo.getAuthenticators()
+        if (!android.hardware.biometrics.Flags.bpFallbackOptions()
+                && (promptInfo.getAuthenticators()
                 & BiometricManager.Authenticators.DEVICE_CREDENTIAL) == 0) {
             promptBuilder.setNegativeButton(promptInfo.getNegativeButtonText(),
                     getContext().getMainExecutor(),

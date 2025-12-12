@@ -53,8 +53,7 @@
 
     <com.android.settingslib.widget.FooterPreference
         android:key="wifi_hotspot_speed__footer"
-        android:title="@string/wifi_hotspot_speed_footer"
-        android:selectable="false"/>
+        android:title="@string/wifi_hotspot_speed_footer" />
 </PreferenceScreen>
 
 

@@ -21,18 +21,25 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceViewHolder;
 
 import com.android.settings.R;
 import com.android.settings.connecteddevice.audiosharing.audiostreams.AudioStreamsQrCodeFragment;
 import com.android.settings.core.SubSettingLauncher;
 import com.android.settings.widget.ValidatedEditTextPreference;
+import com.android.settingslib.Utils;
 
 public class AudioSharingNamePreference extends ValidatedEditTextPreference {
     private static final String TAG = "AudioSharingNamePreference";
     private boolean mShowQrCodeIcon = false;
+    @Nullable
+    private TextView mEditTextFormatAlert = null;
 
     public AudioSharingNamePreference(
             Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -67,6 +74,25 @@ public class AudioSharingNamePreference extends ValidatedEditTextPreference {
     }
 
     @Override
+    protected void onBindDialogView(View view) {
+        super.onBindDialogView(view);
+        EditText editText = view.findViewById(android.R.id.edit);
+        if (editText != null && editText.getParent() != null
+                && editText.getParent() instanceof ViewGroup) {
+            Context context = view.getContext();
+            mEditTextFormatAlert = new TextView(context);
+            mEditTextFormatAlert.setText(R.string.audio_streams_main_page_name_dialog_format_alert);
+            mEditTextFormatAlert.setVisibility(View.GONE);
+            mEditTextFormatAlert.setTextColor(
+                    Utils.getColorAttr(context, android.R.attr.colorError));
+            mEditTextFormatAlert.setPadding(0, 0, 0, context.getResources().getDimensionPixelSize(
+                    R.dimen.audio_sharing_name_preference_edit_text_format_alert_padding));
+            ((ViewGroup) editText.getParent()).addView(mEditTextFormatAlert,
+                    editText.getLayoutParams());
+        }
+    }
+
+    @Override
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
@@ -85,6 +111,14 @@ public class AudioSharingNamePreference extends ValidatedEditTextPreference {
         } else {
             Log.w(TAG, "onBindViewHolder() : shareButton or divider is null!");
         }
+    }
+
+    void showEditTextFormatAlert(boolean show) {
+        if (mEditTextFormatAlert == null) {
+            Log.w(TAG, "showEditTextFormatAlert() : Invalid layout");
+            return;
+        }
+        mEditTextFormatAlert.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     private void configureVisibleStateForQrCodeIcon(ImageButton shareButton, View divider) {

@@ -17,65 +17,45 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:androidprv="http://schemas.android.com/apk/prv/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clipToOutline="true"
+    android:background="@drawable/notification_history_app_row"
+    android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/app_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
-        android:layout_marginEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:paddingTop="20dp"
-        android:paddingBottom="18dp"
-        android:paddingStart="16dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:clipChildren="true">
+        android:gravity="center_vertical">
 
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:scaleType="centerInside"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_margin="16dp"
+            android:contentDescription="@null"/>
 
         <TextView
             android:id="@+id/label"
+            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
             android:ellipsize="end"
             android:lines="1"
+            android:textAlignment="viewStart"
             android:textAppearance="@*android:style/TextAppearance.DeviceDefault.Notification.Title"
-            android:textDirection="locale"
-            app:layout_constraintBottom_toTopOf="@id/count"
-            app:layout_constraintEnd_toStartOf="@id/expand_button_wrapper"
-            app:layout_constraintStart_toEndOf="@id/icon"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/count"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:paddingTop="4dp"
-            android:textAppearance="@*android:style/TextAppearance.DeviceDefault.Notification"
-            android:textDirection="locale"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/expand_button_wrapper"
-            app:layout_constraintStart_toEndOf="@id/icon"
-            app:layout_constraintTop_toBottomOf="@id/label" />
+            android:textDirection="locale"/>
 
         <FrameLayout
             android:id="@+id/expand_button_wrapper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android_layout_marginStart="8dp"
+            android:layout_alignParentEnd="true">
 
             <include
                 layout="@*android:layout/notification_expand_button"
@@ -84,14 +64,13 @@
 
         </FrameLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/notification_list_wrapper"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
-        android:layout_marginEnd="?android:attr/listPreferredItemPaddingEnd">
+        android:background="@androidprv:color/materialColorSurfaceContainer"
+        android:layout_height="wrap_content">
 
         <com.android.settings.notification.history.NotificationHistoryRecyclerView
             android:id="@+id/notification_list"
@@ -101,6 +80,7 @@
             android:clipToOutline="true"
             android:clipToPadding="true"
             android:importantForAccessibility="yes"
+            android:layout_marginTop="1dp"
             app:layout_constrainedHeight="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

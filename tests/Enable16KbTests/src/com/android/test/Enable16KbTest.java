@@ -41,15 +41,13 @@ public class Enable16KbTest extends BaseHostJUnit4Test {
 
     private static final String TEST_NAME = "Enable16KbDeviceTest";
 
-    private static final String SWITCH_TO_EXT4 = "enable16k_switchToExt4";
-
-    private static final String SWITCH_TO_16KB = "enable16k_switchTo16Kb";
-
+    private static final String ERASE_AND_SWITCH_TO_16KB = "enable16k_eraseAndSwitchTo16kb";
     private static final String SWITCH_TO_4KB = "enable16k_switchTo4Kb";
     private static final String DISABLE_DEV_OPTION = "enable16k_disableDeveloperOption";
 
     private static final int DEVICE_WAIT_TIMEOUT = 120000;
     private static final int DEVICE_UPDATE_TIMEOUT = 180000;
+    private static final int DEVICE_WIPE_AND_UPDATE_TIMEOUT = 240000;
 
     @Test
     @AppModeFull
@@ -73,21 +71,19 @@ public class Enable16KbTest extends BaseHostJUnit4Test {
 
         getDevice().executeShellCommand("am start -a com.android.setupwizard.FOUR_CORNER_EXIT");
 
-        // Enables developer option and switch to ext4
-        runTestAndWait(SWITCH_TO_EXT4);
+        // Enables developer option and switch to ext4, apply 16 KB OTA
+        runTestAndWait(ERASE_AND_SWITCH_TO_16KB, DEVICE_WIPE_AND_UPDATE_TIMEOUT);
         getDevice().executeShellCommand("am start -a com.android.setupwizard.FOUR_CORNER_EXIT");
         assertTrue(verifyExt4());
+
+        result = getDevice().executeShellCommand("getconf PAGE_SIZE");
+        assertEquals("16384", result.strip());
 
         // Device will wiped. need to install test package again.
         installTestApp();
 
-        // Enable developer option and switch to 16kb kernel and Check page size
-        runTestAndWait(SWITCH_TO_16KB);
-        result = getDevice().executeShellCommand("getconf PAGE_SIZE");
-        assertEquals("16384", result.strip());
-
         // switch back to 4kb kernel and check page size
-        runTestAndWait(SWITCH_TO_4KB);
+        runTestAndWait(SWITCH_TO_4KB, DEVICE_UPDATE_TIMEOUT);
         result = getDevice().executeShellCommand("getconf PAGE_SIZE");
         assertEquals("4096", result.strip());
 
@@ -103,11 +99,11 @@ public class Enable16KbTest extends BaseHostJUnit4Test {
         assertTrue(isPackageInstalled(APP_PACKAGE));
     }
 
-    private void runTestAndWait(String testMethodName) throws Exception {
+    private void runTestAndWait(String testMethodName, int timeout) throws Exception {
         prepareDevice();
         runDeviceTests(APP_PACKAGE, APP_PACKAGE + "." + TEST_NAME, testMethodName);
         // Device is either formatting or applying update. It usually takes 3 minutes to boot.
-        RunUtil.getDefault().sleep(DEVICE_UPDATE_TIMEOUT);
+        RunUtil.getDefault().sleep(timeout);
 
         // make sure it is available again after the test
         prepareDevice();

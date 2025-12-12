@@ -15,10 +15,11 @@
  */
 package com.android.settings.accessibility;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
@@ -26,48 +27,47 @@ import com.android.server.accessibility.Flags;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settingslib.DeviceInfoUtils;
 
-import java.lang.ref.WeakReference;
-
 /**
  * Manages the feedback flow. This class is responsible for checking feedback availability and
  * sending feedback. Uses a WeakReference to the Activity to prevent memory leaks.
  */
 public class FeedbackManager {
 
-    static final String CATEGORY_TAG = "category_tag";
-    private static final int FEEDBACK_INTENT_RESULT_CODE = 0;
-
-    private final WeakReference<Activity> mActivityWeakReference;
+    static final String CATEGORY_TAG_EXTRA = "category_tag";
+    static final String TRIGGER_ID_EXTRA = "com.android.feedback.TRIGGER_ID_EXTRA";
     @Nullable private final String mReporterPackage;
     @Nullable private final String mCategoryTag;
+    @Nullable private final String mTriggerId;
 
     /**
      * Constructs a new FeedbackManager.
      *
-     * @param activity The activity context. A WeakReference is used to prevent memory leaks.
+     * @param context The context.
      * @param pageId The unique identifier of the page associated with the feedback.
      */
-    public FeedbackManager(@Nullable Activity activity, int pageId) {
-        this(activity,
-                DeviceInfoUtils.getFeedbackReporterPackage(activity),
+    public FeedbackManager(@NonNull Context context, int pageId) {
+        this(DeviceInfoUtils.getFeedbackReporterPackage(context),
                 FeatureFactory.getFeatureFactory()
                         .getAccessibilityFeedbackFeatureProvider()
-                        .getCategory(pageId));
+                        .getCategory(pageId),
+                FeatureFactory.getFeatureFactory()
+                        .getAccessibilityFeedbackFeatureProvider()
+                        .getTriggerId(pageId));
     }
 
     /**
      * Constructs a new FeedbackManager. This constructor is visible for testing.
      *
-     * @param activity The activity context. A WeakReference is used to prevent memory leaks.
      * @param reporterPackage The package name of the feedback reporter.
      * @param category The feedback bucket ID.
+     * @param triggerId The feedback trigger ID.
      */
     @VisibleForTesting
-    public FeedbackManager(@Nullable Activity activity, @Nullable String reporterPackage,
-            @Nullable String category) {
-        this.mActivityWeakReference = new WeakReference<>(activity);
+    public FeedbackManager(@Nullable String reporterPackage,
+            @Nullable String category, @Nullable String triggerId) {
         this.mReporterPackage = reporterPackage;
         this.mCategoryTag = category;
+        this.mTriggerId = triggerId;
     }
 
     /**
@@ -81,28 +81,27 @@ public class FeedbackManager {
         }
 
         return !TextUtils.isEmpty(mReporterPackage)
-                && !TextUtils.isEmpty(mCategoryTag)
-                && mActivityWeakReference.get() != null;
+                && !TextUtils.isEmpty(mCategoryTag);
     }
 
     /**
-     * Sends feedback using the available feedback reporter. This will start the feedback
-     * activity. It is the responsibility of the calling activity to handle the result
-     * code {@link #FEEDBACK_INTENT_RESULT_CODE} if necessary.
+     * Returns an {@link Intent} designed to launch the configured feedback activity and initiate
+     * the feedback process.
      *
-     * @return {@code true} if the feedback intent was successfully started, {@code false}
-     * otherwise.
+     * @return An {@link Intent} to launch the feedback activity.
      */
-    public boolean sendFeedback() {
-        Activity activity = mActivityWeakReference.get();
-        if (!isAvailable() || activity == null) {
-            return false;
+    @NonNull
+    public Intent getFeedbackIntent() {
+        if (!isAvailable()) {
+            return new Intent();
         }
 
         final Intent intent = new Intent(Intent.ACTION_BUG_REPORT);
         intent.setPackage(mReporterPackage);
-        intent.putExtra(CATEGORY_TAG, mCategoryTag);
-        activity.startActivityForResult(intent, FEEDBACK_INTENT_RESULT_CODE);
-        return true;
+        intent.putExtra(CATEGORY_TAG_EXTRA, mCategoryTag);
+        if (!TextUtils.isEmpty(mTriggerId)) {
+            intent.putExtra(TRIGGER_ID_EXTRA, mTriggerId);
+        }
+        return intent;
     }
 }

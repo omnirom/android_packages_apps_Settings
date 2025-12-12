@@ -18,6 +18,8 @@ package com.android.settings.display.darkmode;
 
 import static android.view.accessibility.Flags.FLAG_FORCE_INVERT_COLOR;
 
+import static com.android.settings.accessibility.Flags.FLAG_CATALYST_DARK_UI_MODE;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.app.settings.SettingsEnums;
@@ -73,6 +75,7 @@ public class DarkModeSettingsFragmentTest {
 
     @Test
     @RequiresFlagsEnabled(FLAG_FORCE_INVERT_COLOR)
+    @RequiresFlagsDisabled(FLAG_CATALYST_DARK_UI_MODE)
     public void getNonIndexableKeys_forceInvertEnabled_existInXmlLayout() {
         final List<String> niks = DarkModeSettingsFragment.SEARCH_INDEX_DATA_PROVIDER
                 .getNonIndexableKeys(mContext);
@@ -85,7 +88,7 @@ public class DarkModeSettingsFragmentTest {
     }
 
     @Test
-    @RequiresFlagsDisabled(FLAG_FORCE_INVERT_COLOR)
+    @RequiresFlagsDisabled({FLAG_FORCE_INVERT_COLOR, FLAG_CATALYST_DARK_UI_MODE})
     public void getNonIndexableKeys_existInXmlLayout() {
         final List<String> niks = DarkModeSettingsFragment.SEARCH_INDEX_DATA_PROVIDER
                 .getNonIndexableKeys(mContext);

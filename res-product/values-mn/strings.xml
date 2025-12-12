@@ -164,10 +164,10 @@
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_4" product="tablet" msgid="8772005555323461143">"Та болон таны хүүхэд хүссэн үедээ Тохиргоо хэсэгт түүний хурууны хээний зураг болон загварыг устгах эсвэл Хурууны хээгээр түгжээ тайлах онцлогийг унтраах боломжтой. Хурууны хээний зураг болон загварыг устгах хүртэл таблет дээр хадгална."</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_4" product="device" msgid="7254955922685507093">"Та болон таны хүүхэд хүссэн үедээ Тохиргоо хэсэгт түүний хурууны хээний зураг болон загварыг устгах эсвэл Хурууны хээгээр түгжээ тайлах онцлогийг унтраах боломжтой. Хурууны хээний зураг болон загварыг устгах хүртэл төхөөрөмж дээр хадгална."</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_4" product="desktop" msgid="7254955922685507093">"Та болон таны хүүхэд хүссэн үедээ Тохиргоо хэсэгт түүний хурууны хээний зураг болон загварыг устгах эсвэл Хурууны хээгээр түгжээ тайлах онцлогийг унтраах боломжтой. Хурууны хээний зураг болон загварыг устгах хүртэл төхөөрөмж дээр хадгална."</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="default" msgid="6272159089589340181">"Та өөрөө утсаа нээх гээгүй ч гэсэн хэн нэгэн хуруунд тань утсыг барьж хүргэх зэргээр түгжээг нь санамсаргүйгээр тайлах боломжтой."</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="tablet" msgid="2420109998272019149">"Таны таблетыг хэн нэгэн хуруунд тань барьж хүргэх зэргээр таныг хүсээгүй байхад түгжээг нь тайлах боломжтой."</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="device" msgid="5915844445830045866">"Таны төхөөрөмжийг хэн нэгэн хуруунд тань барьж хүргэх зэргээр таныг хүсээгүй байхад түгжээг нь тайлах боломжтой."</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="desktop" msgid="5915844445830045866">"Таны төхөөрөмжийг хэн нэгэн хуруунд тань барьж хүргэх зэргээр таныг хүсээгүй байхад түгжээг нь тайлах боломжтой."</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="default" msgid="6838578698434849838">"Таны утсыг хүн хуруунд тань барьж хүргэх зэргээр таныг хүсээгүй байхад түгжээг нь тайлах боломжтой"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="tablet" msgid="7796353046744228477">"Таны таблетыг хүн хуруунд тань барьж хүргэх зэргээр таныг хүсээгүй байхад түгжээг нь тайлах боломжтой"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="device" msgid="5075445491909690772">"Таны төхөөрөмжийг хүн хуруунд тань барьж хүргэх зэргээр таныг хүсээгүй байхад түгжээг нь тайлах боломжтой"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="desktop" msgid="5075445491909690772">"Таны төхөөрөмжийг хүн хуруунд тань барьж хүргэх зэргээр таныг хүсээгүй байхад түгжээг нь тайлах боломжтой"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_5" product="default" msgid="6556725426776167791">"Таны хүүхдийн утсыг хэн нэгэн хуруунд нь барьж хүргэх зэргээр түгжээг нь санамсаргүйгээр тайлах боломжтой."</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_5" product="tablet" msgid="5156581794964551571">"Таны хүүхдийн таблетыг хэн нэгэн хуруунд нь барьж хүргэх зэргээр түгжээг нь санамсаргүйгээр тайлах боломжтой."</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_5" product="device" msgid="8309101436391515400">"Таны хүүхдийн төхөөрөмжийг хэн нэгэн хуруунд нь барьж хүргэх зэргээр түгжээг нь санамсаргүйгээр тайлах боломжтой."</string>
@@ -314,7 +314,7 @@
     <string name="auto_rotate_screen_summary" product="tablet" msgid="3163709742477804994">"Таныг таблетаа босоо болон хэвтээ байрлалд оруулж хөдөлгөхөд дэлгэцийн чиглэлийг автоматаар тохируулна"</string>
     <string name="auto_rotate_screen_summary" product="desktop" msgid="3805199344834364732">"Таныг төхөөрөмжөө босоо болон хэвтээ байрлалд оруулж хөдөлгөхөд дэлгэцийн чиглэлийг автоматаар тохируулна"</string>
     <string name="sim_lock_on" product="tablet" msgid="227481196121403470">"Таблетыг ашиглахын тулд ПИН шаардах"</string>
-    <string name="sim_lock_on" product="default" msgid="6896034657274595838">"Утсыг ашиглахын тулд ПИН шаардах"</string>
+    <string name="sim_lock_on" product="default" msgid="6896034657274595838">"Утсыг ашиглахад ПИН шаардах"</string>
     <string name="sim_lock_on" product="desktop" msgid="5734697047766184447">"Төхөөрөмжийг ашиглахын тулд ПИН шаардах"</string>
     <string name="sim_lock_off" product="tablet" msgid="4619320846576958981">"Таблетыг ашиглахын тулд ПИН шаардах"</string>
     <string name="sim_lock_off" product="default" msgid="2064502270875375541">"Утсыг ашиглахын тулд ПИН шаардах"</string>
@@ -351,8 +351,8 @@
     <string name="erase_external_storage" product="default" msgid="645024170825543458">"SD картыг арилгах"</string>
     <string name="erase_external_storage_description" product="nosdcard" msgid="6285187323873212966">"Дотоод USB сан дээрх хөгжим буюу зураг гэх мэт бүх өгөгдлийг арилгах"</string>
     <string name="erase_external_storage_description" product="default" msgid="3294267929524578503">"SD карт дээрх хөгжим, зураг гэх мэт бүх өгөгдлүүдийг арчих"</string>
-    <string name="main_clear_button_text" product="tablet" msgid="3763748694468489783">"Бүх өгөгдлийг арилгах"</string>
-    <string name="main_clear_button_text" product="default" msgid="3763748694468489783">"Бүх өгөгдлийг арилгах"</string>
+    <string name="main_clear_button_text" product="tablet" msgid="3763748694468489783">"Бүх өгөгдлийг устгах"</string>
+    <string name="main_clear_button_text" product="default" msgid="3763748694468489783">"Бүх өгөгдлийг устгах"</string>
     <string name="usb_tethering_subtext" product="default" msgid="5969806206311342779">"Утасны интернэт холболтыг USB-р хуваалцах"</string>
     <string name="usb_tethering_subtext" product="tablet" msgid="4550828946207155142">"Tаблетын интернет холболтыг USB-р хуваалцах"</string>
     <string name="usb_tethering_subtext" product="device" msgid="6586391707794559573">"Төхөөрөмжийн интернэт холболтыг USB-р хуваалцана"</string>
@@ -380,15 +380,12 @@
     <string name="testing_phone_info" product="tablet" msgid="8267746802132630741">"Таблетын мэдээлэл"</string>
     <string name="testing_phone_info" product="default" msgid="7507506297352160191">"Утасны мэдээлэл"</string>
     <string name="testing_phone_info" product="desktop" msgid="3607717850300762272">"Төхөөрөмжийн мэдээлэл"</string>
-    <string name="accessibility_text_reading_confirm_dialog_message" product="default" msgid="1773409172676594981">"Таны дэлгэцийн хэмжээ болон текстийн сонголтыг утасны эх тохиргоо руу шинэчилнэ"</string>
+    <string name="accessibility_text_reading_confirm_dialog_message" product="default" msgid="1773409172676594981">"Таны үзүүлэх хэмжээ болон текстийн сонголтыг утасны эх тохиргоо руу шинэчилнэ"</string>
     <string name="accessibility_text_reading_confirm_dialog_message" product="tablet" msgid="2547948891207211388">"Таны дэлгэцийн хэмжээ болон текстийн сонголтыг таблетын эх тохиргоо руу шинэчилнэ"</string>
     <string name="accessibility_text_reading_confirm_dialog_message" product="desktop" msgid="4248088107680338580">"Таны үзүүлэх хэмжээ болон текстийн сонголтыг төхөөрөмжийн эх тохиргоо руу шинэчилнэ"</string>
     <string name="accessibility_daltonizer_about_intro_text" product="default" msgid="5234458848997942613">"Таны утсан дээр өнгийг хэрхэн үзүүлэхийг тохируулна уу"</string>
     <string name="accessibility_daltonizer_about_intro_text" product="tablet" msgid="5300401841391736534">"Таны таблет дээр өнгийг хэрхэн үзүүлэхийг тохируулна уу"</string>
     <string name="accessibility_daltonizer_about_intro_text" product="desktop" msgid="8908526728447739478">"Таны төхөөрөмж дээр өнгийг хэрхэн үзүүлэхийг тохируулна уу"</string>
-    <string name="reduce_bright_colors_preference_summary" product="default" msgid="2025941326724094318">"Дэлгэцийг таны утасны хамгийн бага гэрэлтүүлгээс бүүдгэр болгох"</string>
-    <string name="reduce_bright_colors_preference_summary" product="tablet" msgid="3106979202311807559">"Дэлгэцийг таны таблетын хамгийн бага гэрэлтүүлгээс бүүдгэр болгох"</string>
-    <string name="reduce_bright_colors_preference_summary" product="desktop" msgid="7810358416215416035">"Дэлгэцийг таны төхөөрөмжийн хамгийн бага гэрэлтүүлгээс бүүдгэр болгох"</string>
     <string name="reduce_bright_colors_preference_subtitle" product="default" msgid="9162440023310121356">"Хэт бүүдгэр онцлог нь дараах тохиолдолд хэрэгтэй байж болно: &lt;ol&gt; &lt;li&gt; Таны утасны өгөгдмөл хамгийн бага гэрэлтүүлэг хэт тод хэвээр байх үед&lt;/li&gt; &lt;li&gt; Та шөнө, эсвэл орондоо орохоосоо өмнө харанхуй өрөөнд байх зэргээр харанхуй нөхцөл байдалд утсаа ашиглаж байгаа үед&lt;/li&gt; &lt;/ol&gt;"</string>
     <string name="reduce_bright_colors_preference_subtitle" product="tablet" msgid="5747242697890472822">"Хэт бүүдгэр онцлог нь дараах тохиолдолд хэрэгтэй байж болно: &lt;ol&gt; &lt;li&gt; Таны таблетын өгөгдмөл хамгийн бага гэрэлтүүлэг хэт тод хэвээр байх үед&lt;/li&gt; &lt;li&gt; Та шөнө, эсвэл орондоо орохоосоо өмнө харанхуй өрөөнд байх зэргээр харанхуй нөхцөл байдалд таблетаа ашиглаж байгаа үед&lt;/li&gt; &lt;/ol&gt;"</string>
     <string name="reduce_bright_colors_preference_subtitle" product="desktop" msgid="3114657547062643684">"Хэт бүүдгэр онцлог нь дараах тохиолдолд хэрэгтэй байж болно: &lt;ol&gt; &lt;li&gt; Таны төхөөрөмжийн өгөгдмөл хамгийн бага гэрэлтүүлэг хэт тод хэвээр байх үед&lt;/li&gt; &lt;li&gt; Та шөнө, эсвэл орондоо орохоосоо өмнө харанхуй өрөөнд байх зэргээр харанхуй нөхцөл байдалд таблетаа ашиглаж байгаа үед&lt;/li&gt; &lt;/ol&gt;"</string>
@@ -484,6 +481,24 @@
     <string name="lockscreen_trivial_controls_summary" product="default" msgid="42562533085885152">"Утасныхаа түгжээг тайлалгүйгээр"</string>
     <string name="lockscreen_trivial_controls_summary" product="tablet" msgid="9052068482124729345">"Таблетынхаа түгжээг тайлалгүйгээр"</string>
     <string name="lockscreen_trivial_controls_summary" product="desktop" msgid="8183513643394359332">"Төхөөрөмжийнхөө түгжээг тайлахгүйгээр"</string>
+    <string name="device_supervision_switch_title" product="default" msgid="5711051584668311080">"Энэ утасны тохиргоо"</string>
+    <string name="device_supervision_switch_title" product="tablet" msgid="5400384750840247844">"Энэ таблетын тохиргоо"</string>
+    <string name="device_supervision_switch_title" product="desktop" msgid="2140192989162020111">"Энэ төхөөрөмжийн тохиргоо"</string>
+    <string name="supervision_pin_length_message" product="default" msgid="7142997986515800901">"{count,plural, =1{Дор хаяж # оронтой ПИН оруулна уу. Та үүнийг энэ утсан дээрх тохиргоог удирдахад ашиглана.}other{Дор хаяж # оронтой ПИН оруулна уу. Та үүнийг энэ утсан дээрх тохиргоог удирдахад ашиглана.}}"</string>
+    <string name="supervision_pin_length_message" product="tablet" msgid="1772471880165492225">"{count,plural, =1{Дор хаяж # оронтой ПИН оруулна уу. Та үүнийг энэ таблет дээрх тохиргоог удирдахад ашиглана.}other{Дор хаяж # оронтой ПИН оруулна уу. Та үүнийг энэ таблет дээрх тохиргоог удирдахад ашиглана.}}"</string>
+    <string name="supervision_pin_length_message" product="desktop" msgid="7689193597679628648">"{count,plural, =1{Дор хаяж # оронтой ПИН оруулна уу. Та үүнийг энэ төхөөрөмж дээрх тохиргоог удирдахад ашиглана.}other{Дор хаяж # оронтой ПИН оруулна уу. Та үүнийг энэ төхөөрөмж дээрх тохиргоог удирдахад ашиглана.}}"</string>
+    <string name="supervision_delete_pin_supervision_enabled_message" product="default" msgid="3538726164054428290">"Таны эцэг эхийн хяналтын ПИН-г хэрэглэгчид хуваалцдаг. ПИН-ээ устгахын тулд энэ ПИН-г ашигладаг хяналтыг энэ утсан дээрх бүх хэрэглэгчийн хувьд унтраах ёстой."</string>
+    <string name="supervision_delete_pin_supervision_enabled_message" product="tablet" msgid="5923679321161365699">"Таны эцэг эхийн хяналтын ПИН-г хэрэглэгчид хуваалцдаг. ПИН-ээ устгахын тулд энэ ПИН-г ашигладаг хяналтыг энэ таблет дээрх бүх хэрэглэгчийн хувьд унтраах ёстой."</string>
+    <string name="supervision_delete_pin_supervision_enabled_message" product="desktop" msgid="4418588055965155673">"Таны эцэг эхийн хяналтын ПИН-г хэрэглэгчид хуваалцдаг. ПИН-ээ устгахын тулд энэ ПИН-г ашигладаг хяналтыг энэ төхөөрөмж дээрх бүх хэрэглэгчийн хувьд унтраах ёстой."</string>
+    <string name="supervision_delete_pin_confirm_message" product="default" msgid="4142432379507014709">"Таны эцэг эхийн хяналтын ПИН-г бүрмөсөн устгана. Таны энэ ПИН-г ашиглан энэ утсан дээрх хэрэглэгчид зориулж тохируулсан аливаа хяналтыг унтраана."</string>
+    <string name="supervision_delete_pin_confirm_message" product="tablet" msgid="3676061526109959657">"Таны эцэг эхийн хяналтын ПИН-г бүрмөсөн устгана. Таны энэ ПИН-г ашиглан энэ таблет дээрх хэрэглэгчид зориулж тохируулсан аливаа хяналтыг унтраана."</string>
+    <string name="supervision_delete_pin_confirm_message" product="desktop" msgid="9122403113168273844">"Таны эцэг эхийн хяналтын ПИН-г бүрмөсөн устгана. Таны энэ ПИН-г ашиглан энэ төхөөрөмж дээрх хэрэглэгчид зориулж тохируулсан аливаа хяналтыг унтраана."</string>
+    <string name="device_supervision_pin_management_footer" product="default" msgid="6890338658180593450">"Таны эцэг эхийн хяналтын ПИН энэ утсан дээрх бүх хэрэглэгчийн хувьд ижил байна"</string>
+    <string name="device_supervision_pin_management_footer" product="tablet" msgid="4013172842200145374">"Таны эцэг эхийн хяналтын ПИН энэ таблет дээрх бүх хэрэглэгчийн хувьд ижил байна"</string>
+    <string name="device_supervision_pin_management_footer" product="desktop" msgid="6539340160423866980">"Таны эцэг эхийн хяналтын ПИН энэ төхөөрөмж дээрх бүх хэрэглэгчийн хувьд ижил байна"</string>
+    <string name="supervision_multi_profile_error_message" product="default" msgid="4185376425933293903">"Энэ утсан дээр олон профайл байгаа тул эцэг эхийн хяналтыг асаах боломжгүй."</string>
+    <string name="supervision_multi_profile_error_message" product="tablet" msgid="5021937906206996760">"Энэ таблет дээр олон профайл байгаа тул эцэг эхийн хяналтыг асаах боломжгүй."</string>
+    <string name="supervision_multi_profile_error_message" product="desktop" msgid="7222938263475617299">"Энэ төхөөрөмж дээр олон профайл байгаа тул эцэг эхийн хяналтыг асаах боломжгүй."</string>
     <string name="auto_rotate_summary_a11y" product="default" msgid="2813368383309985185">"Таныг утсаа босоо болон хөндлөн чиглэлийн хооронд шилжүүлэх үед"</string>
     <string name="auto_rotate_summary_a11y" product="tablet" msgid="4708833814245913981">"Таныг таблетаа босоо болон хөндлөн чиглэлийн хооронд шилжүүлэх үед"</string>
     <string name="auto_rotate_summary_a11y" product="desktop" msgid="1342493478927297535">"Таныг төхөөрөмжөө босоо болон хөндлөн чиглэлийн хооронд шилжүүлэх үед"</string>
@@ -494,7 +509,7 @@
     <string name="spatial_audio_speaker" product="tablet" msgid="5452617980485166854">"Таблетын чанга яригч"</string>
     <string name="spatial_audio_speaker" product="device" msgid="6204289590128303795">"Төхөөрөмжийн чанга яригч"</string>
     <string name="spatial_audio_speaker" product="desktop" msgid="6204289590128303795">"Төхөөрөмжийн чанга яригч"</string>
-    <string name="audio_sharing_dialog_share_content" product="default" msgid="708698992481271057">"Энэ утасны хөгжим болон видеонуудыг чихэвчийн хоёр талд тоглуулна"</string>
+    <string name="audio_sharing_dialog_share_content" product="default" msgid="708698992481271057">"Энэ утасны хөгжим, видеог чихэвчийн хоёр талд тоглуулна"</string>
     <string name="audio_sharing_dialog_share_content" product="tablet" msgid="3459594795397910145">"Энэ таблетын хөгжим болон видеонуудыг чихэвчийн хоёр талд тоглуулна"</string>
     <string name="audio_sharing_dialog_share_content" product="device" msgid="1297019559878011896">"Энэ төхөөрөмжийн хөгжим болон видеонуудыг чихэвчийн хоёр талд тоглуулна"</string>
     <string name="audio_sharing_dialog_share_content" product="desktop" msgid="1297019559878011896">"Энэ төхөөрөмжийн хөгжим болон видеонуудыг чихэвчийн хоёр талд тоглуулна"</string>
@@ -518,4 +533,6 @@
     <string name="audio_sharing_confirm_dialog_content_with_link" product="tablet" msgid="282597208139437138">"Аудио хуваалцаж эхлэхийн тулд эхлээд LE Аудио чихэвчийг таблеттайгаа холбоно уу. "<annotation id="link">"Тохирох төхөөрөмжүүдийн талаар нэмэлт мэдээлэл авах"</annotation></string>
     <string name="audio_sharing_confirm_dialog_content_with_link" product="device" msgid="668964968208427465">"Аудио хуваалцаж эхлэхийн тулд эхлээд LE Аудио чихэвчийг төхөөрөмжтэйгөө холбоно уу. "<annotation id="link">"Тохирох төхөөрөмжүүдийн талаар нэмэлт мэдээлэл авах"</annotation></string>
     <string name="audio_sharing_confirm_dialog_content_with_link" product="desktop" msgid="668964968208427465">"Аудио хуваалцаж эхлэхийн тулд эхлээд LE Аудио чихэвчийг төхөөрөмжтэйгөө холбоно уу. "<annotation id="link">"Тохирох төхөөрөмжүүдийн талаар нэмэлт мэдээлэл авах"</annotation></string>
+    <string name="network_dashboard_summary_mobile" product="default" msgid="1856501121269595911">"Хөдөлгөөнт холбоо, Wi‑Fi, сүлжээний цэг"</string>
+    <string name="network_dashboard_summary_mobile" product="desktop" msgid="8770767156162473221">"Wi-Fi, хөдөлгөөнт, сүлжээний цэг"</string>
 </resources>

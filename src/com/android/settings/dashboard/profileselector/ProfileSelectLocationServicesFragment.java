@@ -22,6 +22,7 @@ import com.android.settings.R;
 import com.android.settings.location.LocationServices;
 import com.android.settings.location.LocationServicesForPrivateProfile;
 import com.android.settings.location.LocationServicesForWork;
+import static com.android.settings.flags.Flags.disableUpdateHeightProfileSelectLocationServices;
 
 /**
  * Location Services page for personal/managed profile.
@@ -45,6 +46,9 @@ public class ProfileSelectLocationServicesFragment extends ProfileSelectFragment
 
     @Override
     protected boolean forceUpdateHeight() {
+        if (disableUpdateHeightProfileSelectLocationServices()) {
+            return false;
+        }
         return true;
     }
 }

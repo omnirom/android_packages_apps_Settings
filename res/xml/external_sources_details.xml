@@ -23,7 +23,6 @@
 
     <com.android.settingslib.widget.FooterPreference
         android:key="external_sources_settings_description"
-        android:title="@string/install_all_warning"
-        android:selectable="false" />
+        android:title="@string/install_all_warning" />
 
 </PreferenceScreen>

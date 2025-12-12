@@ -125,31 +125,27 @@ public class AvailableHearingDevicePreferenceController extends
 
     @Override
     public void updateDynamicRawDataToIndex(List<SearchIndexableRaw> rawData) {
-        if (Flags.fixA11ySettingsSearch()) {
-            if (mLocalBluetoothManager == null) {
-                Log.d(TAG, "Bluetooth is not supported");
-                return;
+        if (mLocalBluetoothManager == null) {
+            Log.d(TAG, "Bluetooth is not supported");
+            return;
+        }
+
+        for (CachedBluetoothDevice cachedDevice :
+                mLocalBluetoothManager.getCachedDeviceManager().getCachedDevicesCopy()) {
+
+            if (!AvailableHearingDeviceUpdater.isAvailableHearingDevice(cachedDevice)) {
+                continue;
             }
 
-            for (CachedBluetoothDevice cachedDevice :
-                    mLocalBluetoothManager.getCachedDeviceManager().getCachedDevicesCopy()) {
-
-                if (!AvailableHearingDeviceUpdater.isAvailableHearingDevice(cachedDevice)) {
-                    continue;
-                }
-
-                SearchIndexableRaw data = new SearchIndexableRaw(mContext);
-                // Include the identity address and add prefix to ensure the key is unique and
-                // distinguish from Bluetooth's connected devices.
-                data.key = SEARCH_DATA_KEY_PREFIX
-                        + cachedDevice.getName() + cachedDevice.getIdentityAddress();
-                data.title = cachedDevice.getName();
-                data.summaryOn = mContext.getString(R.string.accessibility_hearingaid_title);
-                data.screenTitle = mContext.getString(R.string.accessibility_hearingaid_title);
-                rawData.add(data);
-            }
-        } else {
-            super.updateDynamicRawDataToIndex(rawData);
+            SearchIndexableRaw data = new SearchIndexableRaw(mContext);
+            // Include the identity address and add prefix to ensure the key is unique and
+            // distinguish from Bluetooth's connected devices.
+            data.key = SEARCH_DATA_KEY_PREFIX
+                    + cachedDevice.getName() + cachedDevice.getIdentityAddress();
+            data.title = cachedDevice.getName();
+            data.summaryOn = mContext.getString(R.string.accessibility_hearingaid_title);
+            data.screenTitle = mContext.getString(R.string.accessibility_hearingaid_title);
+            rawData.add(data);
         }
     }
 }

@@ -43,6 +43,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+// LINT.IfChange
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {ShadowInteractionJankMonitor.class})
 public class AlarmVibrationIntensityPreferenceControllerTest {
@@ -163,3 +164,4 @@ public class AlarmVibrationIntensityPreferenceControllerTest {
         return Settings.System.getInt(mContext.getContentResolver(), settingKey);
     }
 }
+// LINT.ThenChange(AlarmVibrationIntensitySliderPreferenceTest.kt)

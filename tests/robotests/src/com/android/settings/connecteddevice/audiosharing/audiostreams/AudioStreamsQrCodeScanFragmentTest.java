@@ -67,6 +67,8 @@ public class AudioStreamsQrCodeScanFragmentTest {
     private static final String VALID_METADATA =
             "BLUETOOTH:UUID:184F;BN:VGVzdA==;AT:1;AD:00A1A1A1A1A1;BI:1E240;BC:VGVzdENvZGU=;"
                     + "MD:BgNwVGVzdA==;AS:1;PI:A0;NS:1;BS:3;NB:2;SM:BQNUZXN0BARlbmc=;;";
+    private static final String INVALID_METADATA =
+            "BLUETOOTH:UUID:184F;SQ:1;AT:0;AD:AABBCC001122;AS:1;BI:DE51E9;PI:FFFF;NS:1;BS:1;;";
     private static final String DEVICE_NAME = "device_name";
     @Mock private CachedBluetoothDevice mDevice;
     @Mock private QrCamera mQrCamera;
@@ -177,7 +179,7 @@ public class AudioStreamsQrCodeScanFragmentTest {
     public void scannerCallback_isInvalid_showErrorThenHide() {
         FragmentController.setupFragment(
                 mFragment, FragmentActivity.class, /* containerViewId= */ 0, /* bundle= */ null);
-        Boolean result = mFragment.isValid("invalid");
+        Boolean result = mFragment.isValid(INVALID_METADATA);
         assertThat(result).isFalse();
 
         ShadowLooper.idleMainLooper();

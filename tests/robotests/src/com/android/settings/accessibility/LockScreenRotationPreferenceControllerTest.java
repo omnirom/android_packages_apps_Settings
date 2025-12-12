@@ -20,10 +20,12 @@ import static com.android.settings.testutils.DeviceStateAutoRotateSettingTestUti
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.hardware.devicestate.DeviceStateManager;
 import android.os.UserHandle;
 import android.provider.Settings;
 
@@ -50,6 +52,8 @@ import org.robolectric.annotation.Config;
 public class LockScreenRotationPreferenceControllerTest {
     @Mock
     private Resources mResources;
+    @Mock
+    private DeviceStateManager mDeviceStateManager;
     private Context mContext;
     private SwitchPreference mPreference;
     private LockScreenRotationPreferenceController mController;
@@ -60,6 +64,7 @@ public class LockScreenRotationPreferenceControllerTest {
         mContext = Mockito.spy(RuntimeEnvironment.application);
         mPreference = new SwitchPreference(mContext);
         when(mContext.getResources()).thenReturn(mResources);
+        doReturn(mDeviceStateManager).when(mContext).getSystemService(DeviceStateManager.class);
 
         mController = new LockScreenRotationPreferenceController(mContext, "lock_screen");
     }
@@ -68,7 +73,7 @@ public class LockScreenRotationPreferenceControllerTest {
     @Config(shadows = {ShadowRotationPolicy.class})
     public void getAvailabilityStatus_supportedRotation_shouldReturnAvailable() {
         ShadowRotationPolicy.setRotationSupported(true /* supported */);
-        setDeviceStateRotationLockEnabled(false, mResources);
+        setDeviceStateRotationLockEnabled(/* enable= */ false, mResources, mDeviceStateManager);
 
         assertThat(mController.getAvailabilityStatus()).isEqualTo(
                 BasePreferenceController.AVAILABLE);
@@ -78,7 +83,7 @@ public class LockScreenRotationPreferenceControllerTest {
     @Config(shadows = {ShadowRotationPolicy.class})
     public void getAvailabilityStatus_deviceStateRotationEnabled_returnsUnsupported() {
         ShadowRotationPolicy.setRotationSupported(true /* supported */);
-        setDeviceStateRotationLockEnabled(true, mResources);
+        setDeviceStateRotationLockEnabled(/* enable= */ true, mResources, mDeviceStateManager);
 
         assertThat(mController.getAvailabilityStatus()).isEqualTo(
                 BasePreferenceController.UNSUPPORTED_ON_DEVICE);

@@ -41,11 +41,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.settings.R;
+import com.android.settings.Utils;
 import com.android.settings.applications.AppInfoBase;
 import com.android.settings.datausage.lib.AppDataUsageDetailsRepository;
 import com.android.settings.datausage.lib.NetworkTemplates;
 import com.android.settings.fuelgauge.datasaver.DynamicDenylistManager;
-import com.android.settings.network.SubscriptionUtil;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settingslib.AppItem;
 import com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
@@ -96,10 +96,6 @@ public class AppDataUsage extends DataUsageBaseFragment implements OnPreferenceC
     private long mSelectedCycle;
     private boolean mIsLoading;
 
-    public boolean isSimHardwareVisible(Context context) {
-        return SubscriptionUtil.isSimHardwareVisible(context);
-    }
-
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -125,6 +121,7 @@ public class AppDataUsage extends DataUsageBaseFragment implements OnPreferenceC
             if (uid == -1) {
                 // TODO: Log error.
                 activity.finish();
+                return;
             } else {
                 addUid(uid);
                 mAppItem = new AppItem(uid);
@@ -142,7 +139,7 @@ public class AppDataUsage extends DataUsageBaseFragment implements OnPreferenceC
         final UidDetailProvider uidDetailProvider = getUidDetailProvider();
 
         if (mAppItem.key > 0) {
-            if ((!isSimHardwareVisible(mContext)) || !UserHandle.isApp(mAppItem.key)) {
+            if ((!Utils.isMobileDataCapable(mContext)) || !UserHandle.isApp(mAppItem.key)) {
                 final UidDetail uidDetail = uidDetailProvider.getUidDetail(mAppItem.key, true);
                 mIcon = uidDetail.icon;
                 mLabel = uidDetail.label;
@@ -280,7 +277,7 @@ public class AppDataUsage extends DataUsageBaseFragment implements OnPreferenceC
     }
 
     private void updatePrefs(boolean restrictBackground, boolean unrestrictData) {
-        if (!isSimHardwareVisible(mContext)) {
+        if (!Utils.isMobileDataCapable(mContext)) {
             return;
         }
         setBackPreferenceListAnimatorIfLoaded();
@@ -335,6 +332,9 @@ public class AppDataUsage extends DataUsageBaseFragment implements OnPreferenceC
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
+        if (super.onPreferenceTreeClick(preference)) {
+            return true;
+        }
         if (!(preference instanceof IntroPreference)) return false;
 
         String pkg = !mPackages.isEmpty() ? mPackages.valueAt(0) : null;

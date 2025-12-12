@@ -27,6 +27,7 @@ import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
 import com.android.settingslib.bluetooth.LocalBluetoothProfileManager;
+import com.android.settingslib.flags.Flags;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -118,16 +119,29 @@ public class BluetoothDetailsHearingDeviceControllerTest extends
     }
 
     @Test
-    public void initSubControllers_presetControllerExist() {
+    @RequiresFlagsEnabled(Flags.FLAG_HEARING_DEVICES_SEPARATED_PRESET_CONTROL)
+    public void initSubControllers_flagEnabled_useNewPresetPreferenceController() {
         mHearingDeviceController.initSubControllers(false);
 
+        assertThat(mHearingDeviceController.getSubControllers().stream().anyMatch(
+                c -> c instanceof BluetoothDetailsPresetPreferenceController)).isTrue();
+        assertThat(mHearingDeviceController.getSubControllers().stream().anyMatch(
+                c -> c instanceof BluetoothDetailsHearingAidsPresetsController)).isFalse();
+    }
+
+    @Test
+    @RequiresFlagsDisabled(Flags.FLAG_HEARING_DEVICES_SEPARATED_PRESET_CONTROL)
+    public void initSubControllers_flagDisabled_useOldPresetPreferenceController() {
+        mHearingDeviceController.initSubControllers(false);
+
+        assertThat(mHearingDeviceController.getSubControllers().stream().anyMatch(
+                c -> c instanceof BluetoothDetailsPresetPreferenceController)).isFalse();
         assertThat(mHearingDeviceController.getSubControllers().stream().anyMatch(
                 c -> c instanceof BluetoothDetailsHearingAidsPresetsController)).isTrue();
     }
 
     @Test
-    @RequiresFlagsEnabled(
-            com.android.settingslib.flags.Flags.FLAG_HEARING_DEVICES_AMBIENT_VOLUME_CONTROL)
+    @RequiresFlagsEnabled(Flags.FLAG_HEARING_DEVICES_AMBIENT_VOLUME_CONTROL)
     public void initSubControllers_flagEnabled_ambientVolumeControllerExist() {
         mHearingDeviceController.initSubControllers(false);
 
@@ -136,8 +150,7 @@ public class BluetoothDetailsHearingDeviceControllerTest extends
     }
 
     @Test
-    @RequiresFlagsDisabled(
-            com.android.settingslib.flags.Flags.FLAG_HEARING_DEVICES_AMBIENT_VOLUME_CONTROL)
+    @RequiresFlagsDisabled(Flags.FLAG_HEARING_DEVICES_AMBIENT_VOLUME_CONTROL)
     public void initSubControllers_flagDisabled_ambientVolumeControllerNotExist() {
         mHearingDeviceController.initSubControllers(false);
 
@@ -146,8 +159,7 @@ public class BluetoothDetailsHearingDeviceControllerTest extends
     }
 
     @Test
-    @RequiresFlagsEnabled(
-            com.android.settingslib.flags.Flags.FLAG_HEARING_DEVICES_INPUT_ROUTING_CONTROL)
+    @RequiresFlagsEnabled(Flags.FLAG_HEARING_DEVICES_INPUT_ROUTING_CONTROL)
     public void initSubControllers_flagEnabled_inputRoutingControllerExist() {
         mHearingDeviceController.initSubControllers(false);
 
@@ -156,8 +168,7 @@ public class BluetoothDetailsHearingDeviceControllerTest extends
     }
 
     @Test
-    @RequiresFlagsDisabled(
-            com.android.settingslib.flags.Flags.FLAG_HEARING_DEVICES_INPUT_ROUTING_CONTROL)
+    @RequiresFlagsDisabled(Flags.FLAG_HEARING_DEVICES_INPUT_ROUTING_CONTROL)
     public void initSubControllers_flagDisabled_inputRoutingControllerNotExist() {
         mHearingDeviceController.initSubControllers(false);
 

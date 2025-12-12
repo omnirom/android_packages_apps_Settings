@@ -54,6 +54,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadow.api.Shadow;
 import org.robolectric.shadows.ShadowApplication;
 
+import java.util.HashSet;
 import java.util.List;
 
 @RunWith(RobolectricTestRunner.class)
@@ -102,7 +103,8 @@ public class PrivateBroadcastReceiverTest {
         Intent intent = new Intent(ACTION_LE_AUDIO_PRIVATE_BROADCAST_RECEIVED);
         intent.putExtra(EXTRA_PRIVATE_BROADCAST_RECEIVE_DATA,
                 new PrivateBroadcastReceiveData(/* sink= */ null, /* sourceId= */
-                        0, /* broadcastId= */ 0, /* programInfo= */ "", /* state= */ STREAMING));
+                        0, /* broadcastId= */ 0, /* programInfo= */ "", /* state= */
+                        STREAMING, /* selectedChannelIndex= */ new HashSet<>()));
         PrivateBroadcastReceiver receiver = getPrivateBroadcastReceiver(intent);
         receiver.onReceive(mContext, intent);
 
@@ -120,7 +122,8 @@ public class PrivateBroadcastReceiverTest {
                         /* sourceId= */ 0,
                         /* broadcastId= */ 0,
                         /* programInfo= */ "",
-                        /* state= */ STREAMING));
+                        /* state= */ STREAMING,
+                        /* selectedChannelIndex= */ new HashSet<>()));
         PrivateBroadcastReceiver receiver = getPrivateBroadcastReceiver(intent);
         receiver.onReceive(mContext, intent);
 

@@ -75,6 +75,9 @@ public class DataUsagePreference extends Preference implements TemplatePreferenc
 
     @Override
     public Intent getIntent() {
+        if (mTemplate == null) {
+            mTemplate = new NetworkTemplate.Builder(NetworkTemplate.MATCH_WIFI).build();
+        }
         final Bundle args = new Bundle();
         final SubSettingLauncher launcher;
         args.putParcelable(DataUsageList.EXTRA_NETWORK_TEMPLATE, mTemplate);

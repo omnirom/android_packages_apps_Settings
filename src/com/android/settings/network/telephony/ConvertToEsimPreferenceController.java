@@ -154,6 +154,13 @@ public class ConvertToEsimPreferenceController extends TelephonyBasePreferenceCo
             return;
         }
         mPreference.setVisible(getAvailabilityStatus(mSubId) == AVAILABLE);
+        mPreference.setEnabled(!mIsAirplaneModeOn);
+    }
+
+    @Override
+    public void updateState(Preference preference) {
+        super.updateState(preference);
+        update();
     }
 
     @Override

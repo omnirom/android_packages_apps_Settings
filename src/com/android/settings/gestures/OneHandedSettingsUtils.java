@@ -307,9 +307,7 @@ public class OneHandedSettingsUtils {
             resolver.registerContentObserver(SHOW_NOTIFICATION_ENABLED_URI, true, this);
             resolver.registerContentObserver(SOFTWARE_SHORTCUT_ENABLED_URI, true, this);
             resolver.registerContentObserver(HARDWARE_SHORTCUT_ENABLED_URI, true, this);
-            if (android.view.accessibility.Flags.a11yQsShortcut()) {
-                resolver.registerContentObserver(QS_SHORTCUT_ENABLED_URI, true, this);
-            }
+            resolver.registerContentObserver(QS_SHORTCUT_ENABLED_URI, true, this);
         }
 
         @Override

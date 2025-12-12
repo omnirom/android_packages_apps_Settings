@@ -45,6 +45,7 @@ import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.display.BrightnessLevelPreferenceControllerForSetupWizard;
 import com.android.settingslib.RestrictedPreference;
 import com.android.settingslib.core.AbstractPreferenceController;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 import com.google.android.setupcompat.template.FooterBarMixin;
 import com.google.android.setupdesign.GlifPreferenceLayout;
@@ -113,7 +114,7 @@ public class AccessibilitySettingsForSetupWizard extends DashboardFragment
 
     @Override
     protected RecyclerView.Adapter onCreateAdapter(PreferenceScreen preferenceScreen) {
-        if (ThemeHelper.shouldApplyGlifExpressiveStyle(getContext())) {
+        if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
             return new PreferenceAdapterInSuw(preferenceScreen);
         }
         return super.onCreateAdapter(preferenceScreen);

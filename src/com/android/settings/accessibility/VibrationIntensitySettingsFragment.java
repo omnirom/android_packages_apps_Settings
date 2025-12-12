@@ -31,13 +31,12 @@ import androidx.annotation.VisibleForTesting;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.settings.R;
-import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.SearchIndexable;
 
 /** Accessibility settings for the vibration. */
 @SearchIndexable(forTarget = SearchIndexable.ALL & ~SearchIndexable.ARC)
-public class VibrationIntensitySettingsFragment extends DashboardFragment {
+public class VibrationIntensitySettingsFragment extends BaseSupportFragment {
 
     private static final String TAG = "VibrationIntensitySettings";
 

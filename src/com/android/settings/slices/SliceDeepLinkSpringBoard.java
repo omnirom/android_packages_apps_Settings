@@ -24,8 +24,9 @@ import android.util.EventLog;
 import android.util.Log;
 
 import com.android.settings.bluetooth.BluetoothSliceBuilder;
-import com.android.settings.notification.zen.ZenModeSliceBuilder;
+import com.android.settings.notification.modes.DndModeSliceBuilder;
 
+@Deprecated(forRemoval = true)
 public class SliceDeepLinkSpringBoard extends Activity {
 
     private static final String TAG = "DeeplinkSpringboard";
@@ -51,8 +52,9 @@ public class SliceDeepLinkSpringBoard extends Activity {
                         CustomSliceable.createInstance(getApplicationContext(),
                                 CustomSliceRegistry.getSliceClassByUri(sliceUri));
                 launchIntent = sliceable.getIntent();
-            } else if (CustomSliceRegistry.ZEN_MODE_SLICE_URI.equals(sliceUri)) {
-                launchIntent = ZenModeSliceBuilder.getIntent(this /* context */);
+            } else if (android.app.Flags.modesUiDndSlice()
+                    && CustomSliceRegistry.ZEN_MODE_SLICE_URI.equals(sliceUri)) {
+                launchIntent = DndModeSliceBuilder.getIntent(this /* context */);
             } else if (CustomSliceRegistry.BLUETOOTH_URI.equals(sliceUri)) {
                 launchIntent = BluetoothSliceBuilder.getIntent(this /* context */);
             } else {

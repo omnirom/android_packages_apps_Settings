@@ -58,9 +58,12 @@ android_robolectric_test {
         "Settings-robo-testutils",
         "Settings-testutils2",
         "SettingsLib-robo-testutils",
+        "SettingsLibIpc-testutils",
+        "SettingsLibPreference-testutils",
         "Settings_robolectric_meta_service_file",
         "aconfig_settings_flags_lib",
         "android.webkit.flags-aconfig-java",
+        "androidx.lifecycle_lifecycle-runtime-testing",
         "androidx.test.core",
         "androidx.test.espresso.core",
         "androidx.test.ext.junit",
@@ -72,12 +75,12 @@ android_robolectric_test {
         "kotlin-test",
         "mockito-robolectric-prebuilt", // mockito deps order matters!
         "mockito-kotlin2",
-        "SettingsLibPreference-testutils", // order matters because it depends on mockito-kotlin2
         "notification_flags_lib",
         "platform-test-annotations",
         "testables",
         "android.app.flags-aconfig-java",
         "com_android_systemui_flags_lib",
+        "device_policy_aconfig_flags_lib",
     ],
 
     libs: [
@@ -86,10 +89,18 @@ android_robolectric_test {
         "ims-common",
     ],
 
+    associates: [
+        "Settings-core",
+    ],
+
     java_resource_dirs: [
         "config",
         "resources",
     ],
+
+    // Required for TestParameterInjector
+    javacflags: ["-parameters"],
+    kotlincflags: ["-java-parameters"],
 
     instrumentation_for: "SettingsRoboTestStub",
 
@@ -108,6 +119,17 @@ android_robolectric_test {
 }
 
 java_library {
+    name: "DSAutoRotateSetting-testutils",
+    srcs: [
+        "src/com/android/settings/testutils/DeviceStateAutoRotateSettingTestUtils.java",
+    ],
+    libs: [
+        "mockito-target-extended",
+    ],
+    test_only: true,
+}
+
+java_library {
     name: "Settings-robo-testutils",
     srcs: [
         "testutils/**/*.java",
@@ -120,4 +142,5 @@ java_library {
         "mockito-robolectric-prebuilt",
         "truth",
     ],
+    test_only: true,
 }

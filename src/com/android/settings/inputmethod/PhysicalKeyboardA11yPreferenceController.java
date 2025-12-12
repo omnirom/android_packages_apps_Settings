@@ -16,8 +16,6 @@
 
 package com.android.settings.inputmethod;
 
-import static com.android.settings.keyboard.Flags.keyboardAndTouchpadA11yNewPageEnabled;
-
 import android.content.Context;
 import android.view.InputDevice;
 
@@ -34,8 +32,7 @@ public class PhysicalKeyboardA11yPreferenceController extends BasePreferenceCont
 
     @Override
     public int getAvailabilityStatus() {
-        return keyboardAndTouchpadA11yNewPageEnabled()
-                && isAnyHardKeyboardsExist() ? AVAILABLE : CONDITIONALLY_UNAVAILABLE;
+        return isAnyHardKeyboardsExist() ? AVAILABLE : CONDITIONALLY_UNAVAILABLE;
     }
 
     private static boolean isAnyHardKeyboardsExist() {

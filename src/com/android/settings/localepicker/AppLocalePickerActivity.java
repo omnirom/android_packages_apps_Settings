@@ -53,6 +53,8 @@ import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 @Deprecated
 public class AppLocalePickerActivity extends SettingsBaseActivity
         implements LocalePickerWithRegion.LocaleSelectedListener, MenuItem.OnActionExpandListener {
+    public static final String EXTRA_APP_LOCALE = "app_locale";
+
     private static final String TAG = AppLocalePickerActivity.class.getSimpleName();
     private static final String CHANNEL_ID_SUGGESTION = "suggestion";
     private static final String CHANNEL_ID_SUGGESTION_TO_USER = "Locale suggestion";
@@ -60,7 +62,6 @@ public class AppLocalePickerActivity extends SettingsBaseActivity
     private static final int SYSTEM_LOCALE = 1 << 1;
     private static final int APP_LOCALE = 1 << 2;
     private static final int IME_LOCALE = 1 << 3;
-    static final String EXTRA_APP_LOCALE = "app_locale";
     static final String EXTRA_NOTIFICATION_ID = "notification_id";
 
     private String mPackageName;

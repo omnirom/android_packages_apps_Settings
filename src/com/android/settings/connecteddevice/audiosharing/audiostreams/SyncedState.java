@@ -16,7 +16,6 @@
 
 package com.android.settings.connecteddevice.audiosharing.audiostreams;
 
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothLeBroadcastMetadata;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,6 +27,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 
 import com.android.settings.R;

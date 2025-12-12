@@ -17,14 +17,9 @@ package com.android.settings;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -35,7 +30,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -90,6 +84,18 @@ public class SettingsDumpServiceTest {
 
         assertThat(stringWriter.toString())
                 .contains("{\"" + SettingsDumpService.KEY_SERVICE + "\":");
+    }
+
+    @Test
+    public void testDump_printsMsdlUsage() {
+        mResolveInfo.activityInfo = new ActivityInfo();
+        mResolveInfo.activityInfo.packageName = PACKAGE_BROWSER;
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+
+        mTestService.dump(null, printWriter, null);
+
+        assertThat(stringWriter.toString()).contains(SettingsDumpService.KEY_MSDL_USAGE);
     }
 
     /**

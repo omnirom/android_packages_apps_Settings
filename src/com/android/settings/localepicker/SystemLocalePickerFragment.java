@@ -91,6 +91,7 @@ public class SystemLocalePickerFragment extends DashboardFragment implements
     private RecyclerView mRecyclerView;
     private Activity mActivity;
     private boolean mExpandSearch;
+    private boolean mIsSearchChanged;
     private CharSequence mPreviousSearch = null;
 
     @Override
@@ -170,7 +171,8 @@ public class SystemLocalePickerFragment extends DashboardFragment implements
     }
 
     private void filterSearch(@Nullable String query) {
-        if (mSystemLocaleAllListPreferenceController == null) {
+        if (mSystemLocaleAllListPreferenceController == null
+                || mSuggestedListPreferenceController == null) {
             Log.d(TAG, "filterSearch(), can not get preference.");
             return;
         }
@@ -180,6 +182,7 @@ public class SystemLocalePickerFragment extends DashboardFragment implements
         }
 
         mOriginalLocaleInfos = mSystemLocaleAllListPreferenceController.getSupportedLocaleList();
+        mOriginalLocaleInfos.addAll(mSuggestedListPreferenceController.getSuggestedLocaleList());
         // If we haven't load apps list completely, don't filter anything.
         if (mOriginalLocaleInfos == null) {
             Log.w(TAG, "Locales haven't loaded completely yet, so nothing can be filtered");
@@ -202,6 +205,7 @@ public class SystemLocalePickerFragment extends DashboardFragment implements
                 results.values = mOriginalLocaleInfos;
                 results.count = mOriginalLocaleInfos.size();
             } else {
+                mIsSearchChanged = true;
                 // TODO: decide if we should use the string's locale
                 Locale locale = Locale.getDefault();
                 String prefixString = LocaleHelper.normalizeForSearch(prefix.toString(), locale);
@@ -234,6 +238,11 @@ public class SystemLocalePickerFragment extends DashboardFragment implements
             if (mSystemLocaleAllListPreferenceController == null
                     || mSuggestedListPreferenceController == null) {
                 Log.d(TAG, "publishResults(), can not get preference.");
+                return;
+            }
+
+            if (!mIsSearchChanged) {
+                Log.d(TAG, "Do not update UI if search is not changed.");
                 return;
             }
 

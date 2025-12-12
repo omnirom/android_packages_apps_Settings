@@ -26,7 +26,7 @@ import androidx.annotation.NonNull;
 import java.util.StringJoiner;
 
 /** Provides utility methods to accessibility quick settings only. */
-final class AccessibilityQuickSettingUtils {
+public final class AccessibilityQuickSettingUtils {
 
     private static final String ACCESSIBILITY_PERF = "accessibility_prefs";
     private static final String KEY_TILE_SERVICE_SHOWN = "tile_service_shown";

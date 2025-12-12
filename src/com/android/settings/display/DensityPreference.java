@@ -44,7 +44,7 @@ public class DensityPreference extends CustomEditTextPreferenceCompat {
         super.onAttached();
         final CharSequence dpValue = BidiFormatter.getInstance()
                 .unicodeWrap(NumberFormat.getInstance().format(getCurrentSwDp()));
-        setSummary(getContext().getString(R.string.density_pixel_summary,dpValue));
+        setSummary(getContext().getString(R.string.density_pixel_summary, dpValue));
     }
 
     private int getCurrentSwDp() {

@@ -33,7 +33,7 @@ import com.android.settings.development.DevelopmentSettingsDashboardFragment;
 import com.android.settings.development.RebootConfirmationDialogFragment;
 import com.android.settings.development.RebootConfirmationDialogHost;
 import com.android.settingslib.development.DeveloperOptionsPreferenceController;
-import com.android.wm.shell.shared.desktopmode.DesktopModeStatus;
+import com.android.wm.shell.shared.desktopmode.DesktopState;
 
 /**
  * Preference controller to control Desktop mode features on secondary display
@@ -54,10 +54,20 @@ public class DesktopModeSecondaryDisplayPreferenceController extends
     @Nullable
     private final DevelopmentSettingsDashboardFragment mFragment;
 
-    public DesktopModeSecondaryDisplayPreferenceController(
-            Context context, @Nullable DevelopmentSettingsDashboardFragment fragment) {
+    private final DesktopState mDesktopState;
+
+    @VisibleForTesting
+    DesktopModeSecondaryDisplayPreferenceController(
+            Context context, @Nullable DevelopmentSettingsDashboardFragment fragment,
+            DesktopState desktopState) {
         super(context);
         mFragment = fragment;
+        mDesktopState = desktopState;
+    }
+
+    public DesktopModeSecondaryDisplayPreferenceController(
+            Context context, @Nullable DevelopmentSettingsDashboardFragment fragment) {
+        this(context, fragment, DesktopState.fromContext(context));
     }
 
     @Override
@@ -67,7 +77,7 @@ public class DesktopModeSecondaryDisplayPreferenceController extends
 
     @Override
     public boolean isAvailable() {
-        return !DesktopModeStatus.canShowDesktopExperienceDevOption(mContext);
+        return !mDesktopState.canShowDesktopExperienceDevOption();
     }
 
     @Override

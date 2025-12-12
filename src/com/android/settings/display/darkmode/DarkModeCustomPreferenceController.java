@@ -31,6 +31,7 @@ import java.time.LocalTime;
 /**
  * Controller for custom mode night mode time settings
  */
+// LINT.IfChange
 public class DarkModeCustomPreferenceController extends BasePreferenceController {
     private static final String START_TIME_KEY = "dark_theme_start_time";
     private static final String END_TIME_KEY = "dark_theme_end_time";
@@ -98,3 +99,4 @@ public class DarkModeCustomPreferenceController extends BasePreferenceController
         preference.setSummary(mFormat.of(time));
     }
 }
+// LINT.ThenChange(DarkModeCustomTimePreference.kt)

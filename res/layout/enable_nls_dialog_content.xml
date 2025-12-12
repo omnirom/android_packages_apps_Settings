@@ -136,7 +136,7 @@
 
                     <TextView
                         android:id="@+id/settings_description"
-                        android:text="@string/nls_feature_settings_summary"
+                        android:text="@string/nls_feature_modes_settings_summary"
                         style="@style/AccessibilityDialogPermissionDescription" />
 
                 </LinearLayout>
@@ -155,12 +155,20 @@
             <Button
                 android:id="@+id/allow_button"
                 android:text="@string/accessibility_dialog_button_allow"
-                style="@style/AccessibilityDialogButton" />
+                style="@style/AccessibilityDialogButton"
+                android:background="@drawable/settingslib_expressive_button_background_filled"
+                android:textColor="@color/settingslib_materialColorOnPrimary"/>
+
+            <Space
+                android:layout_height="8dp"
+                android:layout_width="0dp"/>
 
             <Button
                 android:id="@+id/deny_button"
                 android:text="@string/accessibility_dialog_button_deny"
-                style="@style/AccessibilityDialogButton" />
+                style="@style/AccessibilityDialogButton"
+                android:background="@drawable/settingslib_expressive_button_background_outline"
+                android:textColor="@color/settingslib_materialColorPrimary"/>
         </LinearLayout>
     </LinearLayout>
 

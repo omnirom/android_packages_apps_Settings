@@ -31,6 +31,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
+import com.android.settings.Utils;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.datausage.lib.DataUsageLib;
 import com.android.settings.network.ProxySubscriptionManager;
@@ -62,10 +63,6 @@ public class DataUsageSummary extends DashboardFragment {
         return R.string.help_url_data_usage;
     }
 
-    public boolean isSimHardwareVisible(Context context) {
-        return SubscriptionUtil.isSimHardwareVisible(context);
-    }
-
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -77,8 +74,9 @@ public class DataUsageSummary extends DashboardFragment {
             return;
         }
 
-        if (!isSimHardwareVisible(context) ||
-            MobileNetworkUtils.isMobileNetworkUserRestricted(context)) {
+        // Do not return early if device doesn't support mobile data. That condition
+        // is later on handled via the hasMobileData variable.
+        if (MobileNetworkUtils.isMobileNetworkUserRestricted(context)) {
             finish();
             return;
         }
@@ -128,8 +126,8 @@ public class DataUsageSummary extends DashboardFragment {
     protected List<AbstractPreferenceController> createPreferenceControllers(Context context) {
         final Activity activity = getActivity();
         final ArrayList<AbstractPreferenceController> controllers = new ArrayList<>();
-        if (!isSimHardwareVisible(context) ||
-            MobileNetworkUtils.isMobileNetworkUserRestricted(context)) {
+        if (!Utils.isMobileDataCapable(context)
+                || MobileNetworkUtils.isMobileNetworkUserRestricted(context)) {
             return controllers;
         }
         final var mSummaryController = new DataUsageSummaryPreferenceController(activity,

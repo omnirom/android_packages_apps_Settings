@@ -315,6 +315,10 @@
     <item msgid="7397961711906421599">"Sedang"</item>
     <item msgid="4079132024502041928">"Lama"</item>
   </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"DHCP"</item>
+    <item msgid="4425163520864432692">"Statis"</item>
+  </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"Default"</item>
     <item msgid="4234707448428002595">"Sans-serif"</item>
@@ -358,10 +362,6 @@
   <string-array name="accessibility_button_location_selector_titles">
     <item msgid="6485511780196327736">"Mengambang di atas aplikasi lain"</item>
     <item msgid="3605616699204153590">"Menu navigasi"</item>
-  </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"Tombol"</item>
-    <item msgid="6922258575853746220">"Gestur"</item>
   </string-array>
   <string-array name="accessibility_button_size_selector_titles">
     <item msgid="7482952318152486459">"Kecil"</item>
@@ -420,8 +420,8 @@
     <item msgid="741680937828608749">"Gunakan MAC perangkat"</item>
   </string-array>
   <string-array name="wifi_dhcp_entries">
-    <item msgid="2532836996945493932">"Kirimkan nama perangkat ke jaringan"</item>
-    <item msgid="7928900271137707489">"Jangan kirimkan nama perangkat ke jaringan"</item>
+    <item msgid="2532836996945493932">"Kirim nama perangkat ke jaringan"</item>
+    <item msgid="7928900271137707489">"Jangan kirim nama perangkat ke jaringan"</item>
   </string-array>
   <string-array name="wifi_hidden_entries">
     <item msgid="342232116597649254">"Tidak"</item>
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"Jam"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"Tidak ada"</item>
+    <item msgid="321837941231023175">"Beranda"</item>
+    <item msgid="953234843613969792">"Aplikasi terbaru"</item>
+    <item msgid="1713942773283586136">"Notifikasi"</item>
+    <item msgid="5687603742365489342">"Setelan cepat"</item>
+    <item msgid="5454862951059393431">"Layar kunci"</item>
   </string-array>
 </resources>

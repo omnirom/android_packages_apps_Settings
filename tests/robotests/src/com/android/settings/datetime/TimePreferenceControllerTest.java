@@ -26,6 +26,7 @@ import android.app.time.TimeCapabilitiesAndConfig;
 import android.app.time.TimeManager;
 import android.content.Context;
 
+import com.android.settingslib.RestrictedLockUtils;
 import com.android.settingslib.RestrictedPreference;
 
 import org.junit.Before;
@@ -61,7 +62,7 @@ public class TimePreferenceControllerTest {
     @Test
     public void updateState_dateEntryDisabled_shouldDisablePref() {
         // Make sure not disabled by admin.
-        mPreference.setDisabledByAdmin(null);
+        mPreference.setDisabledByAdmin((RestrictedLockUtils.EnforcedAdmin) null);
 
         TimeCapabilitiesAndConfig capabilitiesAndConfig =
                 DatePreferenceControllerTest.createCapabilitiesAndConfig(/* suggestManualAllowed= */
@@ -75,7 +76,7 @@ public class TimePreferenceControllerTest {
     @Test
     public void updateState_dateEntryEnabled_shouldEnablePref() {
         // Make sure not disabled by admin.
-        mPreference.setDisabledByAdmin(null);
+        mPreference.setDisabledByAdmin((RestrictedLockUtils.EnforcedAdmin) null);
 
         TimeCapabilitiesAndConfig capabilitiesAndConfig =
                 DatePreferenceControllerTest.createCapabilitiesAndConfig(/* suggestManualAllowed= */

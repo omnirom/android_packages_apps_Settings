@@ -15,6 +15,12 @@ package com.android.settings.datausage;
 
 import android.content.Context;
 import android.util.Range;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Spinner;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.settings.Utils;
 import com.android.settingslib.widget.SettingsSpinnerAdapter;
@@ -29,6 +35,15 @@ public class CycleAdapter extends SettingsSpinnerAdapter<CycleAdapter.CycleItem>
         super(context);
         mSpinner = spinner;
         mSpinner.setAdapter(this);
+    }
+
+    @Override
+    public View getDropDownView(int position, @Nullable View convertView,
+            @NonNull ViewGroup parent) {
+        if (parent instanceof Spinner) {
+            setSelectedPosition(((Spinner) parent).getSelectedItemPosition());
+        }
+        return super.getDropDownView(position, convertView, parent);
     }
 
     /**

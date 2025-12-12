@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.settings.display;
+package com.android.settings.display
 
 import android.content.Context
 import android.content.res.Resources
@@ -24,49 +24,46 @@ import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.android.internal.R
+import com.android.settings.testutils.DeviceStateAutoRotateSettingTestUtils.setAutoRotateEnabled
+import com.android.settings.testutils.DeviceStateAutoRotateSettingTestUtils.setDeviceStateAutoRotateConfig
+import com.android.settings.testutils.DeviceStateAutoRotateSettingTestUtils.setDeviceTypeFoldable
 import com.android.settingslib.devicestate.DeviceStateAutoRotateSettingManagerImpl
 import com.android.settingslib.devicestate.DeviceStateRotationLockSettingsManager
 import com.android.window.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
-import org.junit.Before
 import org.junit.Assert.assertNotSame
 import org.junit.Assert.assertSame
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.junit.MockitoJUnit
 import org.mockito.Mockito.`when` as whenever
+import org.mockito.junit.MockitoJUnit
 
 @SmallTest
 @RunWith(AndroidJUnit4::class)
 class DeviceStateAutoRotateSettingManagerProviderTest {
 
-    @get:Rule
-    val setFlagsRule: SetFlagsRule = SetFlagsRule()
-    @get:Rule
-    val rule = MockitoJUnit.rule()
+    @get:Rule val setFlagsRule: SetFlagsRule = SetFlagsRule()
+    @get:Rule val rule = MockitoJUnit.rule()
 
-    @Mock
-    private lateinit var mockContext: Context
-    @Mock
-    private lateinit var mockDeviceStateManager: DeviceStateManager
-    @Mock
-    private lateinit var mockResources: Resources
+    @Mock private lateinit var mockContext: Context
+    @Mock private lateinit var mockDeviceStateManager: DeviceStateManager
+    @Mock private lateinit var mockResources: Resources
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
     @Before
     fun setup() {
         whenever(mockContext.contentResolver).thenReturn(context.contentResolver)
-        whenever(mockContext.getSystemService(DeviceStateManager::class.java)).thenReturn(
-            mockDeviceStateManager
-        )
+        whenever(mockContext.getSystemService(DeviceStateManager::class.java))
+            .thenReturn(mockDeviceStateManager)
         whenever(mockContext.resources).thenReturn(mockResources)
-        whenever(mockResources.getStringArray(R.array.config_perDeviceStateRotationLockDefaults))
-            .thenReturn(arrayOf())
+        setAutoRotateEnabled(/* isEnabled= */ true, mockResources)
+        setDeviceStateAutoRotateConfig(/* isNonEmpty= */ true, mockResources)
+        setDeviceTypeFoldable(/* isFoldable= */ true, mockDeviceStateManager)
     }
 
     @After
@@ -80,6 +77,33 @@ class DeviceStateAutoRotateSettingManagerProviderTest {
         val manager = DeviceStateAutoRotateSettingManagerProvider.getSingletonInstance(mockContext)
 
         assertThat(manager).isInstanceOf(DeviceStateAutoRotateSettingManagerImpl::class.java)
+    }
+
+    @Test
+    fun getSingletonInstance_noFoldedDeviceStates_returnsNull() {
+        setDeviceTypeFoldable(/* isFoldable= */ false, mockDeviceStateManager)
+
+        val manager = DeviceStateAutoRotateSettingManagerProvider.getSingletonInstance(mockContext)
+
+        assertThat(manager).isNull()
+    }
+
+    @Test
+    fun getSingletonInstance_autoRotateDisabled_returnsNull() {
+        setAutoRotateEnabled(/* isEnabled= */ false, mockResources)
+
+        val manager = DeviceStateAutoRotateSettingManagerProvider.getSingletonInstance(mockContext)
+
+        assertThat(manager).isNull()
+    }
+
+    @Test
+    fun getSingletonInstance_dSAutoRotateConfigMissing_returnsNull() {
+        setDeviceStateAutoRotateConfig(/* isNonEmpty= */ false, mockResources)
+
+        val manager = DeviceStateAutoRotateSettingManagerProvider.getSingletonInstance(mockContext)
+
+        assertThat(manager).isNull()
     }
 
     @Test

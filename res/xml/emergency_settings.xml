@@ -33,9 +33,8 @@
         android:order="100"
         android:fragment="com.android.settings.emergency.EmergencyGestureSettings"
         settings:controller="com.android.settings.emergency.EmergencyGestureEntrypointPreferenceController" />
-    <PreferenceCategory
+    <com.android.settingslib.widget.UntitledPreferenceCategory
         android:order="170"
-        android:layout="@layout/preference_category_no_label"
         settings:allowDividerAbove="true"/>
     <com.android.settingslib.RestrictedPreference
         android:key="app_and_notif_cell_broadcast_settings"

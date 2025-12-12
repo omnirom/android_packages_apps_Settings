@@ -26,7 +26,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.UserHandle;
-import android.preference.SeekBarVolumizer;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -41,6 +40,8 @@ import com.android.settings.core.OnActivityResultListener;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.sound.HandsFreeProfileOutputPreferenceController;
+import com.android.settings.sound.SliderVolumizer;
+import com.android.settings.sound.VolumeSliderPreference;
 import com.android.settings.widget.PreferenceCategoryController;
 import com.android.settings.widget.UpdatableListPreferenceDialogFragment;
 import com.android.settingslib.core.AbstractPreferenceController;
@@ -48,6 +49,8 @@ import com.android.settingslib.core.instrumentation.Instrumentable;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 import com.android.settingslib.preference.UtilsKt;
 import com.android.settingslib.search.SearchIndexable;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,14 +71,15 @@ public class SoundSettings extends DashboardFragment implements OnActivityResult
     static final int STOP_SAMPLE = 1;
 
     @VisibleForTesting
-    final VolumePreferenceCallback mVolumeCallback = new VolumePreferenceCallback();
+    final VolumeSliderPreferenceCallback mVolumeSliderCallback =
+            new VolumeSliderPreferenceCallback();
     @VisibleForTesting
     final Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case STOP_SAMPLE:
-                    mVolumeCallback.stopSample();
+                    mVolumeSliderCallback.stopSample();
                     break;
             }
         }
@@ -115,8 +119,8 @@ public class SoundSettings extends DashboardFragment implements OnActivityResult
             onPreferenceTreeClick(phoneRingTonePreference);
         }
         UtilsKt.forEachRecursively(getPreferenceScreen(), preference -> {
-            if (preference instanceof VolumeSeekBarPreference) {
-                ((VolumeSeekBarPreference) preference).setCallback(mVolumeCallback);
+            if (preference instanceof VolumeSliderPreference) {
+                ((VolumeSliderPreference) preference).setCallback(mVolumeSliderCallback);
             }
             return null;
         });
@@ -130,7 +134,7 @@ public class SoundSettings extends DashboardFragment implements OnActivityResult
     @Override
     public void onPause() {
         super.onPause();
-        mVolumeCallback.stopSample();
+        mVolumeSliderCallback.stopSample();
     }
 
     @Override
@@ -207,41 +211,41 @@ public class SoundSettings extends DashboardFragment implements OnActivityResult
                 onPreferenceDataChanged(listPreference));
         mHfpOutputControllerKey =
                 use(HandsFreeProfileOutputPreferenceController.class).getPreferenceKey();
+        use(PreferenceCategoryController.class).setChildren(
+                Arrays.asList(use(WorkSoundsPreferenceController.class)));
     }
 
     // === Volumes ===
-
-    final class VolumePreferenceCallback implements VolumeSeekBarPreference.Callback {
-        private SeekBarVolumizer mCurrent;
+    final class VolumeSliderPreferenceCallback implements VolumeSliderPreference.Callback {
+        private SliderVolumizer mSliderVolumizer;
 
         @Override
-        public void onSampleStarting(SeekBarVolumizer sbv) {
-            if (mCurrent != null) {
+        public void onSampleStarting(@NotNull SliderVolumizer volumizer) {
+            if (mSliderVolumizer != null) {
                 mHandler.removeMessages(STOP_SAMPLE);
                 mHandler.sendEmptyMessageDelayed(STOP_SAMPLE, SAMPLE_CUTOFF);
             }
         }
 
         @Override
-        public void onStreamValueChanged(int stream, int progress) {
-            if (mCurrent != null) {
+        public void onStreamValueChanged(int streamType, int progress) {
+            if (mSliderVolumizer != null) {
                 mHandler.removeMessages(STOP_SAMPLE);
                 mHandler.sendEmptyMessageDelayed(STOP_SAMPLE, SAMPLE_CUTOFF);
             }
         }
 
         @Override
-        public void onStartTrackingTouch(SeekBarVolumizer sbv) {
-            // stop the ringtone when other seek bar is adjust
-            if (mCurrent != null && mCurrent != sbv) {
-                mCurrent.stopSample();
+        public void onStartTrackingTouch(@NotNull SliderVolumizer volumizer) {
+            if (mSliderVolumizer != null && mSliderVolumizer != volumizer) {
+                mSliderVolumizer.stopSample();
             }
-            mCurrent = sbv;
+            mSliderVolumizer = volumizer;
         }
 
         public void stopSample() {
-            if (mCurrent != null) {
-                mCurrent.stopSample();
+            if (mSliderVolumizer != null) {
+                mSliderVolumizer.stopSample();
             }
         }
     }
@@ -287,18 +291,6 @@ public class SoundSettings extends DashboardFragment implements OnActivityResult
         controllers.add(dockAudioMediaPreferenceController);
         controllers.add(bootSoundPreferenceController);
         controllers.add(emergencyTonePreferenceController);
-        controllers.add(new PreferenceCategoryController(context,
-                "other_sounds_and_vibrations_category").setChildren(
-                Arrays.asList(dialPadTonePreferenceController,
-                        screenLockSoundPreferenceController,
-                        chargingSoundPreferenceController,
-                        dockingSoundPreferenceController,
-                        touchSoundPreferenceController,
-                        vibrateIconPreferenceController,
-                        dockAudioMediaPreferenceController,
-                        bootSoundPreferenceController,
-                        emergencyTonePreferenceController)));
-
         return controllers;
     }
 

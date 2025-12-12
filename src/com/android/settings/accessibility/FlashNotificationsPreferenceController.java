@@ -20,6 +20,7 @@ import android.content.Context;
 import android.util.FeatureFlagUtils;
 
 import com.android.settings.R;
+import com.android.settings.accessibility.FlashNotificationsUtil.State;
 import com.android.settings.core.BasePreferenceController;
 
 /**
@@ -40,23 +41,12 @@ public class FlashNotificationsPreferenceController extends BasePreferenceContro
 
     @Override
     public CharSequence getSummary() {
-        final int res;
-
-        switch (FlashNotificationsUtil.getFlashNotificationsState(mContext)) {
-            case FlashNotificationsUtil.State.CAMERA:
-                res = R.string.flash_notifications_summary_on_camera;
-                break;
-            case FlashNotificationsUtil.State.SCREEN:
-                res = R.string.flash_notifications_summary_on_screen;
-                break;
-            case FlashNotificationsUtil.State.CAMERA_SCREEN:
-                res = R.string.flash_notifications_summary_on_camera_and_screen;
-                break;
-            case FlashNotificationsUtil.State.OFF:
-            default:
-                res = R.string.flash_notifications_summary_off;
-                break;
-        }
+        final int res = switch (FlashNotificationsUtil.getFlashNotificationsState(mContext)) {
+            case State.CAMERA, State.SCREEN, State.CAMERA_SCREEN ->
+                    R.string.flash_notifications_summary_on;
+            case State.OFF -> R.string.flash_notifications_summary_off;
+            default -> R.string.flash_notifications_summary_off;
+        };
 
         return mContext.getString(res);
     }

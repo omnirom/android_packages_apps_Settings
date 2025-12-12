@@ -21,6 +21,8 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 
+import androidx.annotation.Nullable;
+
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.CachedBluetoothDeviceManager;
 import com.android.settingslib.bluetooth.HapClientProfile;
@@ -79,9 +81,10 @@ public class HearingAidHelper {
      *
      * @return a {@link CachedBluetoothDevice} that is hearing aids device
      */
+    @Nullable
     public CachedBluetoothDevice getConnectedHearingAidDevice() {
         final List<BluetoothDevice> deviceList = getConnectedHearingAidDeviceList();
-        return deviceList.isEmpty() ? null : mCachedDeviceManager.findDevice(deviceList.get(0));
+        return deviceList.isEmpty() ? null : mCachedDeviceManager.findDevice(deviceList.getFirst());
     }
 
     /**

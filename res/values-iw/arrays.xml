@@ -66,7 +66,7 @@
     <!-- no translation found for wifi_tether_security:2 (6851763638266088835) -->
     <!-- no translation found for wifi_tether_security:3 (5512131148045414341) -->
   <string-array name="eap_ocsp_type">
-    <item msgid="8568170800958331461">"אין לאמת"</item>
+    <item msgid="8568170800958331461">"לא צריך לאמת"</item>
     <item msgid="5703177653586269306">"יש לבקש סטטוס של אישורים"</item>
     <item msgid="326388247868439528">"יש לדרוש סטטוס של אישורים"</item>
   </string-array>
@@ -132,7 +132,7 @@
   </string-array>
   <string-array name="wifi_proxy_settings">
     <item msgid="4669222334822978847">"ללא"</item>
-    <item msgid="6242198071587397280">"ידני"</item>
+    <item msgid="6242198071587397280">"הגדרה ידנית"</item>
     <item msgid="464383874780058242">"‏תצורת Proxy אוטומטית (PAC)"</item>
   </string-array>
   <string-array name="apn_auth_entries">
@@ -306,14 +306,18 @@
     <item msgid="2114661179947426734">"עוצמת קול של נגישות"</item>
   </string-array>
   <string-array name="long_press_timeout_selector_titles">
-    <item msgid="6926391290986427331">"קצר"</item>
-    <item msgid="5118829513010894576">"בינוני"</item>
-    <item msgid="6740026006576843477">"ארוך"</item>
+    <item msgid="6926391290986427331">"לחיצה קצרה מספיקה"</item>
+    <item msgid="5118829513010894576">"לא מעט מדי ולא יותר מדי"</item>
+    <item msgid="6740026006576843477">"הלחיצה צריכה להיות ארוכה"</item>
   </string-array>
   <string-array name="long_press_timeout_selector_list_titles">
-    <item msgid="8908021508913038488">"קצר"</item>
+    <item msgid="8908021508913038488">"לחיצה קצרה יחסית"</item>
     <item msgid="7397961711906421599">"בינוני"</item>
     <item msgid="4079132024502041928">"ארוך"</item>
+  </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"DHCP"</item>
+    <item msgid="4425163520864432692">"סטטי"</item>
   </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"ברירת מחדל"</item>
@@ -359,17 +363,13 @@
     <item msgid="6485511780196327736">"צף מעל אפליקציות אחרות"</item>
     <item msgid="3605616699204153590">"סרגל הניווט"</item>
   </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"כפתור"</item>
-    <item msgid="6922258575853746220">"תנועה"</item>
-  </string-array>
   <string-array name="accessibility_button_size_selector_titles">
     <item msgid="7482952318152486459">"קטן"</item>
     <item msgid="1666628329913333563">"גדול"</item>
   </string-array>
   <string-array name="vpn_proxy_settings">
     <item msgid="7165538292837266997">"אין"</item>
-    <item msgid="2397017538263427575">"ידני"</item>
+    <item msgid="2397017538263427575">"הגדרה ידנית"</item>
   </string-array>
   <string-array name="vpn_states">
     <item msgid="2262719249581510939">"מנותק"</item>
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"שעון"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"ללא"</item>
+    <item msgid="321837941231023175">"מסך הבית"</item>
+    <item msgid="953234843613969792">"האפליקציות האחרונות"</item>
+    <item msgid="1713942773283586136">"התראות"</item>
+    <item msgid="5687603742365489342">"הגדרות מהירות"</item>
+    <item msgid="5454862951059393431">"מסך הנעילה"</item>
   </string-array>
 </resources>

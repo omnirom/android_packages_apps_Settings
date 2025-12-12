@@ -18,8 +18,6 @@ package com.android.settings.bluetooth;
 import android.app.Dialog;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -41,13 +39,14 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.android.settings.R;
 import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
+import com.android.settings.flags.Flags;
 
 /**
  * A dialogFragment used by {@link BluetoothPairingDialog} to create an appropriately styled dialog
  * for the bluetooth device.
  */
 public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment implements
-        TextWatcher, OnClickListener {
+        TextWatcher {
 
     private static final String TAG = "BTPairingDialogFragment";
 
@@ -108,22 +107,19 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
     @Override
     public void afterTextChanged(Editable s) {
         // enable the positive button when we detect potentially valid input
-        Button positiveButton = mDialog.getButton(DialogInterface.BUTTON_POSITIVE);
-        if (positiveButton != null) {
-            positiveButton.setEnabled(mPairingController.isPasskeyValid(s));
-        }
+        mDialog.findViewById(R.id.positive_button).setEnabled(mPairingController.isPasskeyValid(s));
         // notify the controller about user input
         mPairingController.updateUserInput(s.toString());
     }
 
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-        if (which == DialogInterface.BUTTON_POSITIVE) {
-            mPositiveClicked = true;
-            mPairingController.onDialogPositiveClick(this);
-        } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-            mPairingController.onDialogNegativeClick(this);
-        }
+    protected void onAcceptButtonClicked() {
+        mPositiveClicked = true;
+        mPairingController.onDialogPositiveClick(this);
+        mPairingDialogActivity.dismiss();
+    }
+
+    protected void onDeclineButtonClicked() {
+        mPairingController.onDialogNegativeClick(this);
         mPairingDialogActivity.dismiss();
     }
 
@@ -224,12 +220,10 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
         mBuilder.setTitle(getString(R.string.bluetooth_pairing_request,
                 mPairingController.getDeviceName()));
         mBuilder.setView(createPinEntryView());
-        mBuilder.setPositiveButton(getString(android.R.string.ok), this);
-        mBuilder.setNegativeButton(getString(android.R.string.cancel), this);
         AlertDialog dialog = mBuilder.create();
         dialog.setOnShowListener(d -> {
             if (TextUtils.isEmpty(getPairingViewText())) {
-                mDialog.getButton(Dialog.BUTTON_POSITIVE).setEnabled(false);
+                mDialog.findViewById(R.id.positive_button).setEnabled(false);
             }
             if (mPairingView != null && mPairingView.requestFocus()) {
                 InputMethodManager imm = (InputMethodManager)
@@ -294,6 +288,11 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
         pairingView.setFilters(new InputFilter[]{
                 new LengthFilter(maxLength)});
 
+        Button negativeButton = view.findViewById(R.id.negative_button);
+        negativeButton.setOnClickListener(v -> onDeclineButtonClicked());
+        Button positiveButton = view.findViewById(R.id.positive_button);
+        positiveButton.setOnClickListener(v -> onAcceptButtonClicked());
+
         return view;
     }
 
@@ -301,13 +300,13 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
      * Creates a dialog with UI elements that allow the user to confirm a pairing request.
      */
     private AlertDialog createConfirmationDialog() {
-        mBuilder.setTitle(getString(R.string.bluetooth_pairing_request,
-                mPairingController.getDeviceName()));
+        if (mPairingController.hasPairingContent()) {
+            mBuilder.setTitle(getString(R.string.bluetooth_pairing_confirmation_title));
+        } else {
+            mBuilder.setTitle(getString(R.string.bluetooth_pairing_request,
+                    mPairingController.getDeviceName()));
+        }
         mBuilder.setView(createView());
-        mBuilder.setPositiveButton(
-                getString(com.android.settingslib.R.string.bluetooth_pairing_accept), this);
-        mBuilder.setNegativeButton(
-                getString(com.android.settingslib.R.string.bluetooth_pairing_decline), this);
         AlertDialog dialog = mBuilder.create();
         return dialog;
     }
@@ -327,7 +326,6 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
         mBuilder.setTitle(getString(R.string.bluetooth_pairing_request,
                 mPairingController.getDeviceName()));
         mBuilder.setView(createView());
-        mBuilder.setNegativeButton(getString(android.R.string.cancel), this);
         AlertDialog dialog = mBuilder.create();
 
         // Tell the controller the dialog has been created.
@@ -342,11 +340,12 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
      */
     private View createView() {
         View view = getActivity().getLayoutInflater().inflate(R.layout.bluetooth_pin_confirm, null);
+        TextView pairingConfirmationHint =
+                (TextView) view.findViewById(R.id.pairing_confirmation_hint);
         TextView pairingViewCaption = (TextView) view.findViewById(R.id.pairing_caption);
         TextView pairingViewContent = (TextView) view.findViewById(R.id.pairing_subhead);
         TextView messagePairing = (TextView) view.findViewById(R.id.pairing_code_message);
-        CompoundButton contactSharing =
-                view.findViewById(R.id.phonebook_sharing_message_confirm_pin);
+        CompoundButton contactSharing = getContactSharingSwitch(view);
         view.findViewById(R.id.phonebook_sharing).setVisibility(
                 mPairingController.isContactSharingVisible() ? View.VISIBLE : View.GONE);
         mPairingController.setContactSharingState();
@@ -356,7 +355,15 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
         messagePairing.setVisibility(mPairingController.isDisplayPairingKeyVariant()
                 ? View.VISIBLE : View.GONE);
         if (mPairingController.hasPairingContent()) {
-            pairingViewCaption.setVisibility(View.VISIBLE);
+            if (mPairingController.isDisplayPairingKeyVariant()) {
+                pairingViewCaption.setVisibility(View.VISIBLE);
+            } else {
+                pairingConfirmationHint.setText(
+                        getString(
+                                R.string.bluetooth_pairing_confirmation_msg,
+                                mPairingController.getDeviceName()));
+                pairingConfirmationHint.setVisibility(View.VISIBLE);
+            }
             pairingViewContent.setVisibility(View.VISIBLE);
             pairingViewContent.setText(mPairingController.getPairingContent());
         }
@@ -369,6 +376,32 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
             mPairingController.isCoordinatedSetMemberDevice() || mPairingController.isLateBonding();
 
         messagePairingSet.setVisibility(setPairingMessage ? View.VISIBLE : View.GONE);
+
+        Button negativeButton = view.findViewById(R.id.negative_button);
+        negativeButton.setVisibility(View.VISIBLE);
+        negativeButton.setOnClickListener(v -> onDeclineButtonClicked());
+        if (mPairingController.getDialogType() == BluetoothPairingController.CONFIRMATION_DIALOG) {
+            Button positiveButton = view.findViewById(R.id.positive_button);
+            positiveButton.setVisibility(View.VISIBLE);
+            positiveButton.setOnClickListener(v -> onAcceptButtonClicked());
+        }
+
         return view;
+    }
+
+    private CompoundButton getContactSharingSwitch(View container) {
+        CompoundButton legacySwitch =
+                container.findViewById(R.id.phonebook_sharing_message_confirm_pin);
+        CompoundButton expressiveSwitch =
+                container.findViewById(R.id.phonebook_sharing_message_confirm_pin_expressive);
+        if (Flags.enableBluetoothSettingsExpressiveDesign()) {
+            legacySwitch.setVisibility(View.GONE);
+            expressiveSwitch.setVisibility(View.VISIBLE);
+            return expressiveSwitch;
+        } else {
+            legacySwitch.setVisibility(View.VISIBLE);
+            expressiveSwitch.setVisibility(View.GONE);
+            return legacySwitch;
+        }
     }
 }

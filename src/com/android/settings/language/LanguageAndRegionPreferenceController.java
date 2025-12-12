@@ -27,6 +27,7 @@ import com.android.settings.flags.Flags;
  * This is a display controller for new language activity entry.
  * TODO(b/379962955): When new layout is on board, all old layouts should be removed.
  */
+// LINT.IfChange
 public class LanguageAndRegionPreferenceController extends BasePreferenceController {
 
     public LanguageAndRegionPreferenceController(@NonNull Context context, @NonNull String key) {
@@ -42,3 +43,4 @@ public class LanguageAndRegionPreferenceController extends BasePreferenceControl
         return AVAILABLE;
     }
 }
+// LINT.ThenChange(LanguageAndRegionScreen.kt)

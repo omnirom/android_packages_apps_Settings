@@ -17,6 +17,7 @@
 package com.android.settings.inputmethod;
 
 import static com.android.settings.inputmethod.InputPeripheralsSettingsUtils.isTouchpad;
+import static com.android.settings.flags.Flags.touchpadSettingsDesignUpdate;
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;
@@ -31,6 +32,10 @@ public class TouchpadThreeFingerTapFragment extends InputDeviceDashboardFragment
 
     private static final String TAG = "TouchpadThreeFingerTapFragment";
 
+    private static final int RES = touchpadSettingsDesignUpdate()
+            ? R.xml.input_touchpad_three_finger_tap_action :
+            R.xml.input_touchpad_three_finger_tap_customization;
+
     @Override
     public int getMetricsCategory() {
         return SettingsEnums.TOUCHPAD_THREE_FINGER_TAP;
@@ -38,7 +43,7 @@ public class TouchpadThreeFingerTapFragment extends InputDeviceDashboardFragment
 
     @Override
     protected int getPreferenceScreenResId() {
-        return R.xml.input_touchpad_three_finger_tap_customization;
+        return RES;
     }
 
     @Override
@@ -47,7 +52,7 @@ public class TouchpadThreeFingerTapFragment extends InputDeviceDashboardFragment
     }
 
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
-            new BaseSearchIndexProvider(R.xml.input_touchpad_three_finger_tap_customization) {
+            new BaseSearchIndexProvider(RES) {
                 @Override
                 protected boolean isPageSearchEnabled(Context context) {
                     return isTouchpad();

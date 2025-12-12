@@ -23,8 +23,7 @@
 
     <com.android.settingslib.widget.TopIntroPreference
         android:key="speech_settings_intro"
-        android:title="@string/speech_preference_summary"
-        android:persistent="false" />
+        android:title="@string/speech_preference_summary" />
 
     <PreferenceCategory
         android:key="speech_category">

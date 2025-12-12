@@ -16,6 +16,13 @@
 
 <resources
     xmlns:androidprv="http://schemas.android.com/apk/prv/res/android">
+
+    <style name="Transparent.Expressive">
+        <item name="alertDialogTheme">@style/Theme.AlertDialog.SettingsLib.Expressive</item>
+        <!-- For AlertDialog -->
+        <item name="android:alertDialogTheme">@style/Theme.DeviceDefault.AlertDialog.SettingsLib.Expressive</item>
+    </style>
+
     <style name="Theme.Settings.Expressive" parent="Theme.SettingsBase.Expressive">
         <item name="android:clipToPadding">false</item>
         <item name="android:clipChildren">false</item>
@@ -48,12 +55,10 @@
 
         <!-- For AndroidX AlertDialog -->
         <item name="alertDialogTheme">@style/Theme.AlertDialog.SettingsLib.Expressive</item>
+        <!-- For AlertDialog -->
+        <item name="android:alertDialogTheme">@style/Theme.DeviceDefault.AlertDialog.SettingsLib.Expressive</item>
 
-        <item name="*android:lockPatternStyle">@style/LockPatternStyle</item>
-
-        <!-- For AppBarLayout -->
-        <item name="colorPrimary">@*android:color/primary_device_default_settings_light</item>
-        <item name="colorPrimaryVariant">@android:color/white</item>
+        <item name="*android:lockPatternStyle">@style/LockPatternStyleExpressive</item>
 
         <!-- For slice view in settings -->
         <item name="sliceViewStyle">@style/Widget.SliceView.Settings</item>
@@ -76,7 +81,7 @@
         <item name="colorSurface">@color/settingslib_colorSurface</item>
     </style>
 
-    <style name="Theme.SubSettings.Expressive.Base" parent="Theme.Settings.Expressive.NoActionBar">
+    <style name="Theme.SubSettings.Expressive" parent="Theme.Settings.Expressive.NoActionBar">
         <!-- Redefine the ActionBar style for contentInsetStart -->
         <item name="android:actionBarStyle">@style/Widget.ActionBar.SubSettings</item>
 
@@ -84,5 +89,25 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="Theme.SubSettings.Expressive" parent="Theme.SubSettings.Expressive.Base"/>
+    <style name="Theme.Settings.Home.Expressive" parent="Theme.Settings.Expressive.NoActionBar">
+        <item name="android:colorBackground">@color/settingslib_materialColorSurfaceContainer</item>
+    </style>
+
+    <style name="Theme.LockSettings.Expressive" parent="Theme.SubSettings.Expressive">
+        <item name="android:alertDialogTheme">@style/Theme.Expressive.Dialog.Alert.DayNight</item>
+    </style>
+
+    <style name="Theme.Expressive.Dialog.Alert.DayNight" parent="@style/SudGlifExpressiveDialogTheme">
+        <item name="android:colorAccent">@color/settingslib_materialColorPrimary</item>
+        <item name="android:colorBackground">@color/settingslib_materialColorSurfaceContainerHigh</item>
+        <item name="android:background">@color/sud_color_surface_container_high</item>
+        <item name="android:fontFamily">@string/sudGlifExpressiveDialogFontFamily</item>
+        <item name="android:windowTitleStyle">@style/SudGlifExpressiveWindowTitleTextAppearance</item>
+        <item name="android:textColorPrimary">@color/sud_on_surface_variant</item>
+        <item name="android:dialogPreferredPadding">@dimen/settingslib_expressive_space_small4</item>
+        <item name="android:buttonBarStyle">@style/SudAppCompatButtonButtonBarAlertDialog</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/Widget.SettingsLib.DialogButton</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/Widget.SettingsLib.DialogButton</item>
+        <item name="android:buttonBarNeutralButtonStyle">@style/Widget.SettingsLib.DialogButton</item>
+    </style>
 </resources>

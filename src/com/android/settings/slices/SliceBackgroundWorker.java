@@ -52,6 +52,7 @@ import java.util.Map;
  *
  * It also stores all instances of all workers to ensure each worker is a Singleton.
  */
+@Deprecated(forRemoval = true)
 public abstract class SliceBackgroundWorker<E> implements Closeable {
 
     private static final String TAG = "SliceBackgroundWorker";

@@ -20,9 +20,9 @@ import static android.hardware.biometrics.BiometricAuthenticator.TYPE_FACE;
 
 import static com.android.settings.biometrics.BiometricEnrollBase.RESULT_SKIP;
 
+import android.annotation.Nullable;
 import android.app.Dialog;
 import android.app.settings.SettingsEnums;
-import android.content.DialogInterface;
 import android.hardware.biometrics.BiometricAuthenticator;
 import android.os.Bundle;
 
@@ -41,6 +41,8 @@ public class BiometricsSplitScreenDialog extends InstrumentedDialogFragment {
     @BiometricAuthenticator.Modality
     private int mBiometricsModality;
     private boolean mDestroyActivity;
+    @Nullable
+    private AlertDialog.OnClickListener mPositiveButtonListener;
 
     /**
      * Returns the new instance of the class
@@ -59,10 +61,15 @@ public class BiometricsSplitScreenDialog extends InstrumentedDialogFragment {
         return dialog;
     }
 
+    public void setPositiveButtonListener(AlertDialog.OnClickListener listener) {
+        mPositiveButtonListener = listener;
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         mBiometricsModality = getArguments().getInt(KEY_BIOMETRICS_MODALITY);
         mDestroyActivity = getArguments().getBoolean(KEU_DESTROY_ACTIVITY);
+
         int titleId;
         int messageId;
         switch (mBiometricsModality) {
@@ -80,13 +87,15 @@ public class BiometricsSplitScreenDialog extends InstrumentedDialogFragment {
                 .setCancelable(false)
                 .setPositiveButton(
                         R.string.biometric_settings_add_biometrics_in_split_mode_ok,
-                        (DialogInterface.OnClickListener) (dialog, which) -> {
-                            dialog.dismiss();
-                            if (mDestroyActivity) {
-                                getActivity().setResult(RESULT_SKIP);
-                                getActivity().finish();
-                            }
-                        });
+                        mPositiveButtonListener != null
+                                ? mPositiveButtonListener
+                                : (dialog, which) -> {
+                                    dialog.dismiss();
+                                    if (mDestroyActivity) {
+                                        getActivity().setResult(RESULT_SKIP);
+                                        getActivity().finish();
+                                    }
+                                });
         return builder.create();
     }
 

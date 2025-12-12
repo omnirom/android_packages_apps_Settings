@@ -80,10 +80,10 @@ public class AdbDeviceDetailsActionController extends AbstractPreferenceControll
     private void forgetDevice() {
         Intent intent = new Intent();
         intent.putExtra(
-                WirelessDebuggingFragment.PAIRED_DEVICE_REQUEST_TYPE,
-                WirelessDebuggingFragment.FORGET_ACTION);
+                AdbWirelessDebuggingFragment.PAIRED_DEVICE_REQUEST_TYPE,
+                AdbWirelessDebuggingFragment.FORGET_ACTION);
         intent.putExtra(
-                WirelessDebuggingFragment.PAIRED_DEVICE_EXTRA,
+                AdbWirelessDebuggingFragment.PAIRED_DEVICE_EXTRA,
                 mPairedDevice);
         mFragment.getActivity().setResult(Activity.RESULT_OK, intent);
         mFragment.getActivity().finish();

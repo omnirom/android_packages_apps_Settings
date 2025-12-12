@@ -15,21 +15,29 @@
  */
 package com.android.settings.deviceinfo.legal
 
+import android.app.settings.SettingsEnums
 import android.content.Context
+import androidx.fragment.app.Fragment
 import com.android.settings.R
+import com.android.settings.core.PreferenceScreenMixin
 import com.android.settingslib.metadata.PreferenceAvailabilityProvider
 import com.android.settingslib.metadata.ProvidePreferenceScreen
 import com.android.settingslib.metadata.preferenceHierarchy
-import com.android.settingslib.preference.PreferenceScreenCreator
+import kotlinx.coroutines.CoroutineScope
 
 // LINT.IfChange
 @ProvidePreferenceScreen(ModuleLicensesScreen.KEY)
-class ModuleLicensesScreen : PreferenceScreenCreator, PreferenceAvailabilityProvider {
+open class ModuleLicensesScreen : PreferenceScreenMixin, PreferenceAvailabilityProvider {
     override val key: String
         get() = KEY
 
     override val title: Int
         get() = R.string.module_license_title
+
+    override val highlightMenuKey: Int
+        get() = R.string.menu_key_about_device
+
+    override fun getMetricsCategory() = SettingsEnums.MODULE_LICENSES_DASHBOARD
 
     // We need to avoid directly assign fragment attribute in the bind() API. So we need to create
     // a screen and provide it to its parent screen LegalSettingsScreen.
@@ -37,9 +45,10 @@ class ModuleLicensesScreen : PreferenceScreenCreator, PreferenceAvailabilityProv
     // UI. The hierarchy will be added while migrating this page.
     override fun isFlagEnabled(context: Context) = false
 
-    override fun fragmentClass() = ModuleLicensesDashboard::class.java
+    override fun fragmentClass(): Class<out Fragment>? = ModuleLicensesDashboard::class.java
 
-    override fun getPreferenceHierarchy(context: Context) = preferenceHierarchy(context, this) {}
+    override fun getPreferenceHierarchy(context: Context, coroutineScope: CoroutineScope) =
+        preferenceHierarchy(context) {}
 
     override fun isAvailable(context: Context): Boolean {
         val modules = context.packageManager.getInstalledModules(/* flags= */ 0)

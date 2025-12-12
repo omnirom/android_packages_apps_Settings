@@ -203,9 +203,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
 
     private SfpsEnrollmentFeature mSfpsEnrollmentFeature;
 
-    @Nullable
-    private UdfpsEnrollCalibrator mCalibrator;
-
     @VisibleForTesting
     protected boolean shouldShowLottie() {
         DisplayDensityUtils displayDensity = new DisplayDensityUtils(getApplicationContext());
@@ -360,15 +357,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
 
         final Configuration config = getApplicationContext().getResources().getConfiguration();
         maybeHideSfpsText(config);
-
-        if (!mIsSetupWizard) {
-            mCalibrator = FeatureFactory.getFeatureFactory().getFingerprintFeatureProvider()
-                    .getUdfpsEnrollCalibrator(getApplicationContext(), null, getIntent());
-            if (mCalibrator != null) {
-                mCalibrator.onWaitingPage(getLifecycle(),
-                        getSupportFragmentManager(), null);
-            }
-        }
     }
 
     private void setHelpAnimation() {

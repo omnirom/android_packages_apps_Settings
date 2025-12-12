@@ -17,12 +17,22 @@
 package com.android.settings.wifi.details2
 
 import android.content.Context
+import android.content.ContextWrapper
+import android.net.wifi.WifiConfiguration
+import android.os.UserHandle.PER_USER_RANGE
+import android.os.UserManager
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.preference.ListPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceScreen
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.settings.R
+import com.android.settings.connectivity.Flags
 import com.android.wifitrackerlib.WifiEntry
 import com.google.common.truth.Truth.assertThat
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
@@ -36,32 +46,45 @@ import org.mockito.kotlin.whenever
 
 @RunWith(AndroidJUnit4::class)
 class WifiPrivacyPreferenceController2Test {
+    @get:Rule val setFlagsRule = SetFlagsRule()
+
     private var mockWifiEntry = mock<WifiEntry>()
 
-    private var context: Context = ApplicationProvider.getApplicationContext()
+    private var mockWifiConfiguration = mock<WifiConfiguration>()
 
-    private var controller = spy(WifiPrivacyPreferenceController2(context).apply {
-        setWifiEntry(mockWifiEntry)
-    })
+    private var mockScreen = mock<PreferenceScreen>()
 
-    private var preference = ListPreference(context).apply {
-        setEntries(R.array.wifi_privacy_entries)
-        setEntryValues(R.array.wifi_privacy_values)
-    }
+    private var mockPreference = mock<Preference>()
+
+    private var userManager: UserManager? = null
+
+    private val context: Context =
+        object : ContextWrapper(ApplicationProvider.getApplicationContext()) {
+            override fun getSystemService(name: String): Any? =
+                if (name == Context.USER_SERVICE) userManager else super.getSystemService(name)
+        }
+
+    private var controller =
+        spy(WifiPrivacyPreferenceController2(context).apply { setWifiEntry(mockWifiEntry) })
+
+    private var preference =
+        ListPreference(context).apply {
+            setEntries(R.array.wifi_privacy_entries)
+            setEntryValues(R.array.wifi_privacy_values)
+        }
 
     private var preferenceStrings = context.resources.getStringArray(R.array.wifi_privacy_entries)
 
     @Test
     fun updateState_wifiPrivacy_setCorrectValue() {
-        controller.stub {
-            doReturn(WifiEntry.PRIVACY_DEVICE_MAC).whenever(mock).randomizationValue
-        }
+        controller.stub { doReturn(WifiEntry.PRIVACY_DEVICE_MAC).whenever(mock).randomizationValue }
 
         controller.updateState(preference)
 
-        val prefValue = WifiPrivacyPreferenceController2.translateWifiEntryPrivacyToPrefValue(
-            WifiEntry.PRIVACY_DEVICE_MAC
-        )
+        val prefValue =
+            WifiPrivacyPreferenceController2.translateWifiEntryPrivacyToPrefValue(
+                WifiEntry.PRIVACY_DEVICE_MAC
+            )
         assertThat(preference.entry).isEqualTo(preferenceStrings[prefValue])
     }
 
@@ -73,9 +96,10 @@ class WifiPrivacyPreferenceController2Test {
 
         controller.updateState(preference)
 
-        val prefValue = WifiPrivacyPreferenceController2.translateWifiEntryPrivacyToPrefValue(
-            WifiEntry.PRIVACY_RANDOMIZED_MAC
-        )
+        val prefValue =
+            WifiPrivacyPreferenceController2.translateWifiEntryPrivacyToPrefValue(
+                WifiEntry.PRIVACY_RANDOMIZED_MAC
+            )
         assertThat(preference.entry).isEqualTo(preferenceStrings[prefValue])
     }
 
@@ -139,5 +163,50 @@ class WifiPrivacyPreferenceController2Test {
         verify(mockWifiEntry).privacy = 1
         verify(mockWifiEntry).disconnect(null)
         verify(mockWifiEntry).connect(null)
+    }
+
+    @Test
+    fun displayPreference_flagDisabled() {
+        controller.updateState(preference)
+
+        assertThat(preference.isEnabled()).isTrue()
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_WIFI_MULTIUSER)
+    fun displayPreference_networkOwned() {
+        if (UserManager.isHeadlessSystemUserMode()) {
+            mockWifiEntry.stub { on { getWifiConfiguration() } doReturn mockWifiConfiguration }
+            mockWifiConfiguration.creatorUid = PER_USER_RANGE * 10
+            userManager = mock { on { getUserCount() } doReturn 3 }
+
+            controller.updateState(preference)
+
+            assertThat(preference.isEnabled()).isTrue()
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_WIFI_MULTIUSER)
+    fun displayPreference_networkNotOwned_singleUser() {
+        mockWifiEntry.stub { on { getWifiConfiguration() } doReturn mockWifiConfiguration }
+        mockWifiConfiguration.creatorUid = Integer.MAX_VALUE
+        userManager = mock { on { getUserCount() } doReturn 1 }
+
+        controller.updateState(preference)
+
+        assertThat(preference.isEnabled()).isTrue()
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_WIFI_MULTIUSER)
+    fun displayPreference_networkNotOwned() {
+        mockWifiEntry.stub { on { getWifiConfiguration() } doReturn mockWifiConfiguration }
+        mockWifiConfiguration.creatorUid = Integer.MAX_VALUE
+        userManager = mock { on { getUserCount() } doReturn 3 }
+
+        controller.updateState(preference)
+
+        assertThat(preference.isEnabled()).isFalse()
     }
 }

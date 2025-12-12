@@ -16,62 +16,73 @@
 
 package com.android.settings.accessibility
 
+import android.app.settings.SettingsEnums
 import android.content.Context
 import android.hardware.display.ColorDisplayManager
+import androidx.fragment.app.Fragment
 import com.android.settings.R
 import com.android.settings.Settings.ColorAndMotionActivity
-import com.android.settings.display.darkmode.DarkModeScreen
-import com.android.settings.flags.Flags
+import com.android.settings.accessibility.colorcorrection.ui.ColorCorrectionScreen
+import com.android.settings.accessibility.colorinversion.ui.ColorInversionScreen
+import com.android.settings.accessibility.shared.ui.FeedbackButtonPreference
+import com.android.settings.core.PreferenceScreenMixin
+import com.android.settings.display.darkmode.DarkModeScreenOnAccessibility
 import com.android.settings.utils.makeLaunchIntent
 import com.android.settingslib.metadata.PreferenceCategory
-import com.android.settingslib.metadata.PreferenceGroup
-import com.android.settingslib.metadata.PreferenceHierarchy
 import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.ProvidePreferenceScreen
 import com.android.settingslib.metadata.preferenceHierarchy
-import com.android.settingslib.preference.PreferenceScreenCreator
+import kotlinx.coroutines.CoroutineScope
 
 @ProvidePreferenceScreen(ColorAndMotionScreen.KEY)
-class ColorAndMotionScreen : PreferenceScreenCreator {
+open class ColorAndMotionScreen : PreferenceScreenMixin {
     override val key: String
         get() = KEY
 
     override val title: Int
         get() = R.string.accessibility_color_and_motion_title
 
+    override val summary: Int
+        get() = R.string.accessibility_color_and_motion_subtext
+
     override val icon: Int
         get() = R.drawable.ic_color_and_motion
 
-    override fun isFlagEnabled(context: Context) = Flags.catalystAccessibilityColorAndMotion()
+    override val indexable
+        get() = true
 
-    override fun hasCompleteHierarchy(): Boolean = true
+    override fun getMetricsCategory() = SettingsEnums.ACCESSIBILITY_COLOR_AND_MOTION
 
-    override fun fragmentClass() = ColorAndMotionFragment::class.java
+    override val highlightMenuKey
+        get() = R.string.menu_key_accessibility
 
-    override fun getPreferenceHierarchy(context: Context): PreferenceHierarchy {
-        // LINT.IfChange(ui_hierarchy)
-        if (ColorDisplayManager.isColorTransformAccelerated(context)) {
-            return preferenceHierarchy(context, this) {
-                +DaltonizerPreference()
-                +ColorInversionPreference()
-                +DarkModeScreen.KEY
+    override fun fragmentClass(): Class<out Fragment>? = ColorAndMotionFragment::class.java
+
+    override fun getPreferenceHierarchy(context: Context, coroutineScope: CoroutineScope) =
+        preferenceHierarchy(context) {
+            // LINT.IfChange(ui_hierarchy)
+            if (ColorDisplayManager.isColorTransformAccelerated(context)) {
+                +ColorCorrectionScreen.KEY
+                +ColorInversionScreen.KEY
+                +DarkModeScreenOnAccessibility.KEY
+                +BlurSwitchPreference()
                 +RemoveAnimationsPreference()
-            }
-        } else {
-            return preferenceHierarchy(context, this) {
-                +ColorInversionPreference()
-                +DarkModeScreen.KEY
+            } else {
+                +ColorInversionScreen.KEY
+                +DarkModeScreenOnAccessibility.KEY
+                +BlurSwitchPreference()
                 +PreferenceCategory(
                     "experimental_category",
-                    R.string.experimental_category_title
-                ) += {
-                    +DaltonizerPreference()
-                    +RemoveAnimationsPreference()
-                }
+                    R.string.experimental_category_title,
+                ) +=
+                    {
+                        +ColorCorrectionScreen.KEY
+                        +RemoveAnimationsPreference()
+                    }
             }
+            +FeedbackButtonPreference { FeedbackManager(context, metricsCategory) }
+            // LINT.ThenChange(/res/xml/accessibility_color_and_motion.xml)
         }
-        // LINT.ThenChange(/res/xml/accessibility_color_and_motion.xml, /src/com/android/settings/accessibility/ColorAndMotionFragment.java:ui_hierarchy)
-    }
 
     override fun getLaunchIntent(context: Context, metadata: PreferenceMetadata?) =
         makeLaunchIntent(context, ColorAndMotionActivity::class.java, metadata?.key)

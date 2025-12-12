@@ -45,8 +45,8 @@ import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.testutils.shadow.ShadowBluetoothAdapter;
 import com.android.settings.testutils.shadow.ShadowInteractionJankMonitor;
-import com.android.settings.widget.SeekBarPreference;
 import com.android.settingslib.media.LocalMediaManager;
+import com.android.settingslib.widget.SliderPreference;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -155,7 +155,7 @@ public class RemoteVolumeGroupControllerTest {
     }
 
     @Test
-    public void displayPreference_withActiveSession_checkSeekBarTitle() {
+    public void displayPreference_withActiveSession_checkSliderTitle() {
         mController.displayPreference(mScreen);
         final Preference preference = mPreferenceCategory.findPreference(TEST_SESSION_1_ID);
 
@@ -164,19 +164,19 @@ public class RemoteVolumeGroupControllerTest {
     }
 
     @Test
-    public void displayPreference_withActiveSession_checkSeekBarMaxVolume() {
+    public void displayPreference_withActiveSession_checkSliderMaxVolume() {
         mController.displayPreference(mScreen);
-        final SeekBarPreference preference = mPreferenceCategory.findPreference(TEST_SESSION_1_ID);
+        final SliderPreference preference = mPreferenceCategory.findPreference(TEST_SESSION_1_ID);
 
         assertThat(preference.getMax()).isEqualTo(MAX_VOLUME);
     }
 
     @Test
-    public void displayPreference_withActiveSession_checkSeekBarCurrentVolume() {
+    public void displayPreference_withActiveSession_checkSliderCurrentVolume() {
         mController.displayPreference(mScreen);
-        final SeekBarPreference preference = mPreferenceCategory.findPreference(TEST_SESSION_1_ID);
+        final SliderPreference preference = mPreferenceCategory.findPreference(TEST_SESSION_1_ID);
 
-        assertThat(preference.getProgress()).isEqualTo(CURRENT_VOLUME);
+        assertThat(preference.getValue()).isEqualTo(CURRENT_VOLUME);
     }
 
     @Test

@@ -28,6 +28,7 @@ import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -38,6 +39,7 @@ import android.view.Display;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
 import com.android.settings.core.SettingsBaseActivity;
@@ -53,7 +55,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadow.api.Shadow;
 import org.robolectric.shadows.ShadowActivity;
-import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowContentResolver;
 
 /**
@@ -85,8 +86,8 @@ public class BrightnessLevelPreferenceControllerTest {
                 PowerManager.BRIGHTNESS_CONSTRAINT_TYPE_MINIMUM)).thenReturn(0.0f);
         when(mPowerManager.getBrightnessConstraint(
                 PowerManager.BRIGHTNESS_CONSTRAINT_TYPE_MAXIMUM)).thenReturn(1.0f);
-        ShadowApplication.getInstance().setSystemService(POWER_SERVICE,
-                mPowerManager);
+        shadowOf((Application) ApplicationProvider.getApplicationContext())
+                .setSystemService(POWER_SERVICE, mPowerManager);
         when(mScreen.findPreference(anyString())).thenReturn(mPreference);
         doReturn(mDisplay).when(mContext).getDisplay();
         mController = spy(new BrightnessLevelPreferenceController(mContext, /* lifecycle= */ null));

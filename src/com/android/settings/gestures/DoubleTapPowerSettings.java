@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import android.provider.SearchIndexableResource;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
@@ -32,6 +33,7 @@ import com.android.settingslib.search.SearchIndexable;
 
 import java.util.List;
 
+// LINT.IfChange
 @SearchIndexable
 public class DoubleTapPowerSettings extends DashboardFragment {
 
@@ -87,4 +89,10 @@ public class DoubleTapPowerSettings extends DashboardFragment {
                     return List.of(sir);
                 }
             };
+
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return DoubleTapPowerScreen.KEY;
+    }
 }
+// LINT.ThenChange(DoubleTapPowerScreen.kt)

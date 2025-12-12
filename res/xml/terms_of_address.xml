@@ -21,8 +21,7 @@
     android:key="terms_of_address">
 
     <com.android.settingslib.widget.TopIntroPreference
-        android:title="@string/terms_of_address_intro_title"
-        android:persistent="false"/>
+        android:title="@string/terms_of_address_intro_title" />
 
     <com.android.settingslib.widget.SelectorWithWidgetPreference
         android:key="key_terms_of_address_not_specified"

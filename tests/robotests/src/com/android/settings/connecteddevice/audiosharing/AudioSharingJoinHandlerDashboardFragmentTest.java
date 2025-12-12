@@ -21,6 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import android.app.settings.SettingsEnums;
 import android.content.Intent;
 
 import com.android.settings.R;
@@ -58,7 +59,8 @@ public class AudioSharingJoinHandlerDashboardFragmentTest {
 
     @Test
     public void getMetricsCategory_returnsCorrectCategory() {
-        assertThat(mFragment.getMetricsCategory()).isEqualTo(0);
+        assertThat(mFragment.getMetricsCategory()).isEqualTo(
+                SettingsEnums.AUDIO_SHARING_JOIN_HANDLER);
     }
 
     @Test

@@ -9,6 +9,7 @@ import com.android.settings.wifi.calling.WifiCallingSliceHelper;
 /**
  * Manages Slices in Settings.
  */
+@Deprecated(forRemoval = true)
 public interface SlicesFeatureProvider {
 
     boolean DEBUG = false;

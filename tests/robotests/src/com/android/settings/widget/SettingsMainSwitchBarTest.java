@@ -52,7 +52,7 @@ public class SettingsMainSwitchBarTest {
 
     @Test
     public void disabledByAdmin_setNull_shouldBeEnabled() {
-        mMainSwitchBar.setDisabledByAdmin(null);
+        mMainSwitchBar.setDisabledByAdmin((RestrictedLockUtils.EnforcedAdmin) null);
 
         assertThat(mTitle.isEnabled()).isTrue();
         assertThat(mSwitchWidget.isEnabled()).isTrue();

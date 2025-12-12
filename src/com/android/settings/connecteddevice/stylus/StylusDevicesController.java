@@ -35,6 +35,7 @@ import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
@@ -86,13 +87,15 @@ public class StylusDevicesController extends AbstractPreferenceController implem
     private final CachedBluetoothDevice mCachedBluetoothDevice;
 
     @VisibleForTesting
+    @Nullable
     PreferenceCategory mPreferencesContainer;
 
     @VisibleForTesting
+    @Nullable
     Dialog mDialog;
 
-    public StylusDevicesController(Context context, InputDevice inputDevice,
-            CachedBluetoothDevice cachedBluetoothDevice, Lifecycle lifecycle) {
+    public StylusDevicesController(@NonNull Context context, @Nullable InputDevice inputDevice,
+            @Nullable CachedBluetoothDevice cachedBluetoothDevice, @NonNull Lifecycle lifecycle) {
         super(context);
         mInputDevice = inputDevice;
         mCachedBluetoothDevice = cachedBluetoothDevice;

@@ -24,6 +24,7 @@ import android.text.TextUtils;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
+import com.android.settings.Utils;
 import com.android.settings.core.PreferenceControllerMixin;
 import com.android.settingslib.core.AbstractPreferenceController;
 import com.android.settingslib.core.lifecycle.Lifecycle;
@@ -83,8 +84,12 @@ public class ResetAppPrefPreferenceController extends AbstractPreferenceControll
     }
 
     boolean isInCallState() {
+        if (!Utils.isVoiceCapable(mContext)) {
+            return false;
+        }
         TelephonyManager telephonyManager = mContext.getSystemService(TelephonyManager.class);
-        return telephonyManager.getCallState(telephonyManager.getSubscriptionId())
-                != TelephonyManager.CALL_STATE_IDLE;
+        return telephonyManager != null
+                && telephonyManager.getCallState(telephonyManager.getSubscriptionId())
+                        != TelephonyManager.CALL_STATE_IDLE;
     }
 }

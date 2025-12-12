@@ -36,7 +36,9 @@ import com.google.common.annotations.VisibleForTesting;
 
 import java.util.Locale;
 
-/** Helper class for caption. */
+/**
+ * Helper class for caption.
+ */
 public class CaptionHelper {
 
     /* WebVtt specifies line height as 5.3% of the viewport height. */
@@ -79,9 +81,9 @@ public class CaptionHelper {
     /**
      * Updates font style of captioning properties for preview screen.
      *
-     * @param previewText preview text
+     * @param previewText   preview text
      * @param previewWindow preview window
-     * @param styleId font style id
+     * @param styleId       font style id
      */
     public void applyCaptionProperties(SubtitleView previewText, View previewWindow,
             int styleId) {
@@ -119,7 +121,9 @@ public class CaptionHelper {
                 Settings.Secure.ACCESSIBILITY_CAPTIONING_BACKGROUND_COLOR, color);
     }
 
-    /** Returns the captioning background color.*/
+    /**
+     * Returns the captioning background color.
+     */
     public int getBackgroundColor() {
         final CaptionStyle attrs = CaptionStyle.getCustomStyle(mContentResolver);
         return attrs.hasBackgroundColor() ? attrs.backgroundColor : CaptionStyle.COLOR_UNSPECIFIED;
@@ -135,7 +139,9 @@ public class CaptionHelper {
                 Settings.Secure.ACCESSIBILITY_CAPTIONING_FOREGROUND_COLOR, color);
     }
 
-    /** Returns the captioning foreground color.*/
+    /**
+     * Returns the captioning foreground color.
+     */
     public int getForegroundColor() {
         final CaptionStyle attrs = CaptionStyle.getCustomStyle(mContentResolver);
         return attrs.hasForegroundColor() ? attrs.foregroundColor : CaptionStyle.COLOR_UNSPECIFIED;
@@ -151,7 +157,9 @@ public class CaptionHelper {
                 Settings.Secure.ACCESSIBILITY_CAPTIONING_WINDOW_COLOR, color);
     }
 
-    /** Returns the captioning window color.*/
+    /**
+     * Returns the captioning window color.
+     */
     public int getWindowColor() {
         final CaptionStyle attrs = CaptionStyle.getCustomStyle(mContentResolver);
         return attrs.hasWindowColor() ? attrs.windowColor : CaptionStyle.COLOR_UNSPECIFIED;
@@ -167,7 +175,9 @@ public class CaptionHelper {
                 Settings.Secure.ACCESSIBILITY_CAPTIONING_EDGE_COLOR, color);
     }
 
-    /** Returns the captioning edge color.*/
+    /**
+     * Returns the captioning edge color.
+     */
     public int getEdgeColor() {
         final CaptionStyle attrs = CaptionStyle.getCustomStyle(mContentResolver);
         return attrs.edgeColor;
@@ -183,7 +193,9 @@ public class CaptionHelper {
                 Settings.Secure.ACCESSIBILITY_CAPTIONING_EDGE_TYPE, type);
     }
 
-    /** Returns the captioning edge type.*/
+    /**
+     * Returns the captioning edge type.
+     */
     public int getEdgeType() {
         final CaptionStyle attrs = CaptionStyle.getCustomStyle(mContentResolver);
         return attrs.edgeType;
@@ -199,28 +211,32 @@ public class CaptionHelper {
                 Settings.Secure.ACCESSIBILITY_CAPTIONING_PRESET, type);
     }
 
-    /** Returns the captioning raw preset number.*/
+    /**
+     * Returns the captioning raw preset number.
+     */
     public int getRawUserStyle() {
         return mCaptioningManager.getRawUserStyle();
     }
 
-    /** Returns the captioning visual properties.*/
+    /**
+     * Returns the captioning visual properties.
+     */
     public CaptionStyle getUserStyle() {
         return mCaptioningManager.getUserStyle();
     }
 
-    /** Returns the captioning locale language.*/
+    /**
+     * Returns the captioning locale language.
+     */
     public Locale getLocale() {
         return mCaptioningManager.getLocale();
     }
 
-    /** Returns availability for custom caption preferences, depending on current user style. */
+    /**
+     * Returns availability for custom caption preferences, depending on current user style.
+     */
     public int getCustomCaptionAvailability() {
-        if (com.android.settings.accessibility.Flags.fixA11ySettingsSearch()) {
-            return (getRawUserStyle() == CaptionStyle.PRESET_CUSTOM)
-                    ? AVAILABLE : AVAILABLE_UNSEARCHABLE;
-        } else {
-            return AVAILABLE;
-        }
+        return (getRawUserStyle() == CaptionStyle.PRESET_CUSTOM)
+                ? AVAILABLE : AVAILABLE_UNSEARCHABLE;
     }
 }

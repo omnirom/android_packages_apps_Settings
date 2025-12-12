@@ -33,6 +33,7 @@ import com.android.settingslib.widget.SliderPreference;
  * Abstract preference controller for a vibration intensity setting, that displays multiple
  * intensity levels to the user as a slider.
  */
+// LINT.IfChange
 public abstract class VibrationIntensityPreferenceController extends SliderPreferenceController
         implements LifecycleObserver, OnStart, OnStop {
 
@@ -76,6 +77,7 @@ public abstract class VibrationIntensityPreferenceController extends SliderPrefe
         preference.setMin(getMin());
         preference.setMax(getMax());
         preference.setSliderIncrement(1); // Discrete slider
+        preference.setTickVisible(true); // Show ticks on slider
         // Haptics previews played by the Settings app don't bypass user settings to be played.
         // The sliders continuously updates the intensity value so the previews can apply them.
         preference.setUpdatesContinuously(true);
@@ -139,3 +141,4 @@ public abstract class VibrationIntensityPreferenceController extends SliderPrefe
         return position;
     }
 }
+// LINT.ThenChange(VibrationIntensitySliderPreference.kt)

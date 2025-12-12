@@ -16,17 +16,20 @@
 
 package com.android.settings.testutils.shadow;
 
+import static com.android.internal.accessibility.common.ShortcutConstants.USER_SHORTCUT_TYPES;
+
 import static com.google.common.truth.Truth.assertThat;
 
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.accessibilityservice.AccessibilityShortcutInfo;
 import android.annotation.NonNull;
 import android.annotation.UserIdInt;
 import android.content.ComponentName;
 import android.content.Context;
 import android.util.ArrayMap;
+import android.util.ArraySet;
 import android.view.accessibility.AccessibilityManager;
 
-import com.android.internal.accessibility.common.ShortcutConstants;
 import com.android.internal.accessibility.common.ShortcutConstants.UserShortcutType;
 
 import org.robolectric.annotation.Implementation;
@@ -35,6 +38,7 @@ import org.robolectric.annotation.Implements;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Shadow of {@link AccessibilityManager} with the hidden methods
@@ -43,7 +47,9 @@ import java.util.Map;
 public class ShadowAccessibilityManager extends org.robolectric.shadows.ShadowAccessibilityManager {
     private Map<ComponentName, ComponentName> mA11yFeatureToTileMap = new ArrayMap<>();
     private List<AccessibilityShortcutInfo> mInstalledAccessibilityShortcutList = List.of();
-    private Map<Integer, List<String>> mShortcutTargets = new ArrayMap<>();
+    private final Map<Integer, List<String>> mShortcutTargets = new ArrayMap<>();
+
+    private final Set<ComponentName> mServiceInfoWarningExempted = new ArraySet<>();
 
     /**
      * Implements a hidden method {@link AccessibilityManager#getA11yFeatureToTileMap}
@@ -98,9 +104,48 @@ public class ShadowAccessibilityManager extends org.robolectric.shadows.ShadowAc
      * Used by tests to easily write directly to a shortcut targets value
      */
     public void setAccessibilityShortcutTargets(int shortcutTypes, List<String> targets) {
-        for (int type : ShortcutConstants.USER_SHORTCUT_TYPES) {
+        for (int type : USER_SHORTCUT_TYPES) {
             if ((type & shortcutTypes) == type) {
                 mShortcutTargets.put(type, List.copyOf(targets));
+            }
+        }
+    }
+
+    /**
+     * Implements the hidden method isAccessibilityServiceWarningRequired
+     */
+    @Implementation
+    public boolean isAccessibilityServiceWarningRequired(
+            @NonNull AccessibilityServiceInfo serviceInfo) {
+        ComponentName componentName = serviceInfo.getComponentName();
+        return !mServiceInfoWarningExempted.contains(componentName);
+    }
+
+    /**
+     * Sets what accessibility service is exempted from showing the accessibility service warning
+     * dialog
+     */
+    public void setAccessibilityServiceWarningExempted(@NonNull ComponentName componentName) {
+        mServiceInfoWarningExempted.add(componentName);
+    }
+
+    /**
+     * Implements the hidden method
+     * {@link AccessibilityManager#enableShortcutsForTargets(boolean, int, Set, int)}.
+     */
+    @Implementation
+    public void enableShortcutsForTargets(boolean enable, @UserShortcutType int shortcutTypes,
+            @NonNull Set<String> targets, @UserIdInt int userId) {
+        if (enable) {
+            setAccessibilityShortcutTargets(shortcutTypes, targets.stream().toList());
+        } else {
+            for (int type : USER_SHORTCUT_TYPES) {
+                if ((type & shortcutTypes) == type) {
+                    List<String> modifiedTargets = mShortcutTargets.containsKey(type)
+                            ? new ArrayList<>(mShortcutTargets.get(type)) : new ArrayList<>();
+                    modifiedTargets.removeAll(targets);
+                    mShortcutTargets.put(type, List.copyOf(modifiedTargets));
+                }
             }
         }
     }

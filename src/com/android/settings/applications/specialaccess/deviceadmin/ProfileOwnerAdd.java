@@ -17,15 +17,21 @@
 package com.android.settings.applications.specialaccess.deviceadmin;
 
 import android.os.Bundle;
+import com.android.settingslib.widget.ExpressiveDesignEnabledProvider;
 
 /**
  * ProfileOwnerAdd uses the DeviceAdminAdd logic to handle SET_PROFILE_OWNER intents
  *
  * TODO(b/131713071): Move profile owner add logic from DeviceAdminAdd to here
  */
-public class ProfileOwnerAdd extends DeviceAdminAdd {
+public class ProfileOwnerAdd extends DeviceAdminAdd implements ExpressiveDesignEnabledProvider {
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+    }
+
+    @Override
+    public boolean isExpressiveDesignEnabled() {
+        return false;
     }
 }

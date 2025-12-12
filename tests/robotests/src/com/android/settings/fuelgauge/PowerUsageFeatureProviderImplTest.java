@@ -26,6 +26,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Process;
 
+import com.android.settings.fuelgauge.batteryusage.DataProcessor;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -95,6 +97,14 @@ public class PowerUsageFeatureProviderImplTest {
     @Test
     public void getBatteryUsageListConsumePowerThreshold_return0() {
         assertThat(mPowerFeatureProvider.getBatteryUsageListConsumePowerThreshold()).isEqualTo(0.0);
+    }
+
+    @Test
+    public void getBatteryUsageStatsMaxAgeMs_returnUnsetValue() {
+        assertThat(mPowerFeatureProvider.getBatteryUsageStatsMaxAgeMs(/* isFromPeriodJob= */true))
+                .isEqualTo(DataProcessor.BATTERY_STATS_MAX_AGE_UNSET);
+        assertThat(mPowerFeatureProvider.getBatteryUsageStatsMaxAgeMs(/* isFromPeriodJob= */false))
+                .isEqualTo(DataProcessor.BATTERY_STATS_MAX_AGE_UNSET);
     }
 
     @Test

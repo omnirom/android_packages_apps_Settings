@@ -42,6 +42,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowSystemProperties;
 
+// LINT.IfChange
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {ShadowSystemProperties.class})
 public class HardwareRevisionPreferenceControllerTest {
@@ -77,3 +78,4 @@ public class HardwareRevisionPreferenceControllerTest {
         assertThat(mController.getAvailabilityStatus()).isEqualTo(UNSUPPORTED_ON_DEVICE);
     }
 }
+// LINT.ThenChange(HardwareVersionPreferenceTest.kt)

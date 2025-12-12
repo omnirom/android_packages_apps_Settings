@@ -28,6 +28,7 @@ import java.lang.annotation.RetentionPolicy;
  * Data class representing a slice stored by {@link SlicesIndexer}.
  * Note that {@link #mKey} is treated as a primary key for this class and determines equality.
  */
+@Deprecated(forRemoval = true)
 public class SliceData {
     /**
      * Flags indicating the UI type of the Slice.

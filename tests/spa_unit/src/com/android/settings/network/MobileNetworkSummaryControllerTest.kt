@@ -25,7 +25,6 @@ import com.android.settings.R
 import com.android.settingslib.RestrictedPreference
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -44,14 +43,12 @@ class MobileNetworkSummaryControllerTest {
     private val preferenceScreen = PreferenceManager(context).createPreferenceScreen(context)
 
     private val mockMobileNetworkSummaryRepository = mock<MobileNetworkSummaryRepository>()
-    private val airplaneModeOnFlow = MutableStateFlow(false)
 
     private val controller =
         MobileNetworkSummaryController(
             context = context,
             preferenceKey = KEY,
             repository = mockMobileNetworkSummaryRepository,
-            airplaneModeOnFlow = airplaneModeOnFlow,
         )
 
     @Before
@@ -109,39 +106,6 @@ class MobileNetworkSummaryControllerTest {
         assertThat(preference.isEnabled).isTrue()
         assertThat(preference.fragment).isNotNull()
     }
-
-    @Test
-    fun onViewCreated_addNetworkAndAirplaneModeOn(): Unit = runBlocking {
-        mockMobileNetworkSummaryRepository.stub {
-            on { subscriptionsStateFlow() } doReturn
-                flowOf(MobileNetworkSummaryRepository.AddNetwork)
-        }
-        airplaneModeOnFlow.value = true
-
-        controller.onViewCreated(TestLifecycleOwner())
-        delay(100)
-
-        assertThat(preference.isEnabled).isFalse()
-    }
-
-    @Test
-    fun onViewCreated_hasSubscriptionsAndAirplaneModeOn(): Unit = runBlocking {
-        mockMobileNetworkSummaryRepository.stub {
-            on { subscriptionsStateFlow() } doReturn
-                flowOf(
-                    MobileNetworkSummaryRepository.HasSubscriptions(
-                        displayNames = listOf(DISPLAY_NAME_1, DISPLAY_NAME_2)
-                    )
-                )
-        }
-        airplaneModeOnFlow.value = true
-
-        controller.onViewCreated(TestLifecycleOwner())
-        delay(100)
-
-        assertThat(preference.isEnabled).isFalse()
-    }
-
 
     private companion object {
         const val KEY = "test_key"

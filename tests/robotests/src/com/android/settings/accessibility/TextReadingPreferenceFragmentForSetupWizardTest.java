@@ -17,7 +17,6 @@
 package com.android.settings.accessibility;
 
 import static com.android.settings.accessibility.TextReadingPreferenceFragment.PREVIEW_KEY;
-import static com.android.settings.accessibility.TextReadingPreferenceFragment.RESET_KEY;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -31,12 +30,10 @@ import static org.mockito.Mockito.verify;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
-import com.android.settingslib.widget.LayoutPreference;
 
 import com.google.android.setupcompat.template.FooterBarMixin;
 import com.google.android.setupdesign.GlifPreferenceLayout;
@@ -65,9 +62,6 @@ public class TextReadingPreferenceFragmentForSetupWizardTest {
     private FooterBarMixin mFooterBarMixin;
 
     @Mock
-    private FragmentActivity mActivity;
-
-    @Mock
     private TextReadingPreviewPreference mPreviewPreference;
 
     @Spy
@@ -77,11 +71,8 @@ public class TextReadingPreferenceFragmentForSetupWizardTest {
     @Before
     public void setUp() {
         mFragment = spy(new TextReadingPreferenceFragmentForSetupWizard());
-        final LayoutPreference resetPreference =
-                new LayoutPreference(mContext, R.layout.accessibility_text_reading_reset_button);
         doReturn(mContext).when(mFragment).getContext();
         doReturn(mock(LifecycleOwner.class)).when(mFragment).getViewLifecycleOwner();
-        doReturn(resetPreference).when(mFragment).findPreference(RESET_KEY);
         doReturn(mPreviewPreference).when(mFragment).findPreference(PREVIEW_KEY);
         doReturn(mFooterBarMixin).when(mGlifLayoutView).getMixin(FooterBarMixin.class);
     }

@@ -21,48 +21,61 @@ import android.content.Context
 import android.os.Build
 import android.os.UserManager
 import android.provider.Settings
-import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.LifecycleOwner
 import com.android.settings.R
 import com.android.settings.core.SubSettingLauncher
 import com.android.settings.development.DevelopmentSettingsDashboardFragment
 import com.android.settings.spa.preference.ComposePreferenceController
+import com.android.settingslib.spa.framework.util.collectLatestWithLifecycle
 import com.android.settingslib.spa.widget.preference.PreferenceModel
 import com.android.settingslib.spa.widget.ui.SettingsIcon
 import com.android.settingslib.spaprivileged.framework.common.userManager
 import com.android.settingslib.spaprivileged.model.enterprise.Restrictions
 import com.android.settingslib.spaprivileged.settingsprovider.settingsGlobalBooleanFlow
 import com.android.settingslib.spaprivileged.template.preference.RestrictedPreference
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
-class DeveloperOptionsController(context: Context, preferenceKey: String) :
-    ComposePreferenceController(context, preferenceKey) {
+class DeveloperOptionsController
+@JvmOverloads
+constructor(
+    context: Context,
+    preferenceKey: String,
+    val isDevelopmentSettingsEnabledFlow: Flow<Boolean> =
+        context.settingsGlobalBooleanFlow(
+            name = Settings.Global.DEVELOPMENT_SETTINGS_ENABLED,
+            defaultValue = Build.IS_ENG,
+        ),
+) : ComposePreferenceController(context, preferenceKey) {
 
-    override fun getAvailabilityStatus() =
-        if (mContext.userManager.isAdminUser) AVAILABLE
-        else DISABLED_FOR_USER
+    // Initialize as unavailable to prevent ANR; the status will be updated asynchronously.
+    private var availabilityStatus = CONDITIONALLY_UNAVAILABLE
 
-    private val isDevelopmentSettingsEnabledFlow = context.settingsGlobalBooleanFlow(
-        name = Settings.Global.DEVELOPMENT_SETTINGS_ENABLED,
-        defaultValue = Build.IS_ENG,
-    )
+    override fun getAvailabilityStatus() = availabilityStatus
 
-    @Composable
-    override fun Content() {
-        val isDevelopmentSettingsEnabled by isDevelopmentSettingsEnabledFlow
-            .collectAsStateWithLifecycle(initialValue = false)
-        if (isDevelopmentSettingsEnabled) {
-            DeveloperOptionsPreference()
+    override fun onViewCreated(viewLifecycleOwner: LifecycleOwner) {
+        isDevelopmentSettingsEnabledFlow.collectLatestWithLifecycle(viewLifecycleOwner) {
+            isDevelopmentSettingsEnabled ->
+            availabilityStatus =
+                when {
+                    !isDevelopmentSettingsEnabled -> CONDITIONALLY_UNAVAILABLE
+                    !isAdminUser() -> DISABLED_FOR_USER
+                    else -> AVAILABLE
+                }
+            preference.isVisible = availabilityStatus == AVAILABLE
         }
     }
 
-    @VisibleForTesting
+    private suspend fun isAdminUser(): Boolean =
+        withContext(Dispatchers.Default) { mContext.userManager.isAdminUser }
+
     @Composable
-    fun DeveloperOptionsPreference() {
+    override fun Content() {
         RestrictedPreference(
             model = object : PreferenceModel {
                 override val title =

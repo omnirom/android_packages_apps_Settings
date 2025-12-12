@@ -154,8 +154,7 @@ class BrightnessLevelPreference :
             context.displayManager.registerDisplayListener(
                 this,
                 HandlerExecutor.main,
-                /* eventFilter= */ 0,
-                DisplayManager.PRIVATE_EVENT_TYPE_DISPLAY_BRIGHTNESS,
+                DisplayManager.EVENT_TYPE_DISPLAY_BRIGHTNESS,
             )
         }
 

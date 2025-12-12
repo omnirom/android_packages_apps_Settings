@@ -17,9 +17,9 @@
 package com.android.settings.deviceinfo.firmwareversion
 
 import com.android.settings.flags.Flags
-import com.android.settingslib.preference.CatalystScreenTestCase
+import com.android.settings.testutils2.SettingsCatalystTestCase
 
-class FirmwareVersionScreenTest : CatalystScreenTestCase() {
+class FirmwareVersionScreenTest : SettingsCatalystTestCase() {
 
     override val preferenceScreenCreator = FirmwareVersionScreen()
 

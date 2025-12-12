@@ -70,7 +70,8 @@ public class CdmaSystemSelectPreferenceController extends CdmaBasePreferenceCont
                                     TelephonyManager.ALLOWED_NETWORK_TYPES_REASON_USER))
                             : NETWORK_MODE_UNKNOWN;
             final boolean enableList = settingsNetworkMode != NETWORK_MODE_LTE_GSM_WCDMA
-                    && settingsNetworkMode != NETWORK_MODE_NR_LTE_GSM_WCDMA;
+                    && settingsNetworkMode != NETWORK_MODE_NR_LTE_GSM_WCDMA
+                    && !mIsAirplaneModeOn;
             listPreference.setEnabled(enableList);
         } catch (Exception exception) {
             Log.e(TAG, "Fail to access framework API", exception);

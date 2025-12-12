@@ -35,7 +35,7 @@ public class CameraExtensionsFallbackPreferenceController extends TogglePreferen
     @Override
     public boolean isChecked() {
         int val = Settings.Secure.getInt(mContext.getContentResolver(),
-                CAMERA_EXTENSIONS_FALLBACK, 1);
+                CAMERA_EXTENSIONS_FALLBACK, 0);
         return val == 1;
     }
 

@@ -20,12 +20,17 @@ import static com.android.settings.support.SupportDashboardActivity.ACTION_SUPPO
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 import com.android.settings.R;
+import com.android.settings.overlay.SupportFeatureProvider;
+import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settingslib.search.SearchIndexableRaw;
 
 import org.junit.Before;
@@ -34,6 +39,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.util.ReflectionHelpers;
 
 import java.util.List;
 
@@ -41,10 +47,12 @@ import java.util.List;
 public class SupportDashboardActivityTest {
 
     private Context mContext;
+    private FakeFeatureFactory mFeatureFactory;
 
     @Before
     public void setUp() {
         mContext = RuntimeEnvironment.application;
+        mFeatureFactory = FakeFeatureFactory.setupForTest();
     }
 
     @Test
@@ -63,6 +71,40 @@ public class SupportDashboardActivityTest {
         assertThat(value.intentTargetPackage).isEqualTo(mContext.getPackageName());
         assertThat(value.intentTargetClass).isEqualTo(SupportDashboardActivity.class.getName());
         assertThat(value.intentAction).isEqualTo(ACTION_SUPPORT_SETTINGS);
+    }
+
+    @Test
+    public void getRawDataToIndex_handlesNullSupportFeatureProvider() {
+        ReflectionHelpers.setField(mFeatureFactory, "supportFeatureProvider", null);
+        final List<SearchIndexableRaw> indexables =
+                SupportDashboardActivity.SEARCH_INDEX_DATA_PROVIDER.getRawDataToIndex(
+                        mContext, true /* enabled */);
+
+        assertThat(indexables).hasSize(1);
+
+        final SearchIndexableRaw value = indexables.get(0);
+
+        assertThat(value.title).isEqualTo(mContext.getString(R.string.page_tab_title_support));
+        assertThat(value.screenTitle)
+                .isEqualTo(mContext.getString(R.string.page_tab_title_support));
+        assertThat(value.intentTargetPackage).isEqualTo(mContext.getPackageName());
+        assertThat(value.intentTargetClass).isEqualTo(SupportDashboardActivity.class.getName());
+        assertThat(value.intentAction).isEqualTo(ACTION_SUPPORT_SETTINGS);
+    }
+
+    @Test
+    public void getRawDataToIndex_callsSupportFeatureProviderApplyOverrides() {
+        final List<SearchIndexableRaw> indexables =
+                SupportDashboardActivity.SEARCH_INDEX_DATA_PROVIDER.getRawDataToIndex(
+                        mContext, true /* enabled */);
+
+        assertThat(indexables).hasSize(1);
+
+        final SearchIndexableRaw value = indexables.get(0);
+        final SupportFeatureProvider supportFeatureProvider =
+                mFeatureFactory.getSupportFeatureProvider();
+
+        verify(supportFeatureProvider).applyOverrides(eq(mContext), eq(value));
     }
 
     @Ignore("b/314927625")

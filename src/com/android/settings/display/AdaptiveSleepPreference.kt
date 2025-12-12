@@ -66,12 +66,13 @@ class AdaptiveSleepPreference :
     override val summary: Int
         get() = R.string.adaptive_sleep_description
 
+    override val indexable
+        get() = false
+
     override val preferenceActionMetrics: Int
         get() = ACTION_SCREEN_ATTENTION_CHANGED
 
     override fun tags(context: Context) = arrayOf(KEY_SCREEN_ATTENTION)
-
-    override fun isIndexable(context: Context) = false
 
     override fun isEnabled(context: Context) =
         super<PreferenceRestrictionMixin>.isEnabled(context) && context.canBeEnabled()

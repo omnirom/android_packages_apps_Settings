@@ -51,6 +51,7 @@ public class NfcPaymentPreferenceController extends BasePreferenceController imp
     private static final String TAG = "NfcPaymentController";
 
     private final NfcPaymentAdapter mAdapter;
+    private final UserManager mUserManager;
     private PaymentBackend mPaymentBackend;
     private NfcPaymentPreference mPreference;
     private ImageView mSettingsButtonView;
@@ -58,6 +59,7 @@ public class NfcPaymentPreferenceController extends BasePreferenceController imp
     public NfcPaymentPreferenceController(Context context, String key) {
         super(context, key);
         mAdapter = new NfcPaymentAdapter(context);
+        mUserManager = context.getSystemService(UserManager.class);
     }
 
     public void setPaymentBackend(PaymentBackend backend) {
@@ -78,6 +80,11 @@ public class NfcPaymentPreferenceController extends BasePreferenceController imp
         }
     }
 
+    private boolean isNfcUserRestricted() {
+        return mUserManager.getUserRestrictions().getBoolean(
+                UserManager.DISALLOW_NEAR_FIELD_COMMUNICATION_RADIO);
+    }
+
     @Override
     public int getAvailabilityStatus() {
         final PackageManager pm = mContext.getPackageManager();
@@ -86,6 +93,9 @@ public class NfcPaymentPreferenceController extends BasePreferenceController imp
         }
         if (NfcAdapter.getDefaultAdapter(mContext) == null) {
             return UNSUPPORTED_ON_DEVICE;
+        }
+        if (isNfcUserRestricted()) {
+            return DISABLED_FOR_USER;
         }
         if (mPaymentBackend == null) {
             mPaymentBackend = new PaymentBackend(mContext);

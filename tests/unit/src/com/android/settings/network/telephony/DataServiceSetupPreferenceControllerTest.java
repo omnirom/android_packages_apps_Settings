@@ -23,7 +23,9 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
@@ -97,6 +99,30 @@ public class DataServiceSetupPreferenceControllerTest {
                 false);
 
         assertThat(mController.getAvailabilityStatus()).isEqualTo(AVAILABLE);
+    }
+
+    @Test
+    public void notifyAirplaneModeChanged_isAirplaneModeOff_setEnableTrue() {
+        Preference testPreference = mock(Preference.class);
+
+        mController.notifyAirplaneModeChanged(false);
+        mController.updateState(testPreference);
+
+
+        assertThat(mController.mIsAirplaneModeOn).isFalse();
+        verify(testPreference).setEnabled(true);
+    }
+
+    @Test
+    public void notifyAirplaneModeChanged_isAirplaneModeOn_setEnableFalse() {
+        Preference testPreference = mock(Preference.class);
+
+        mController.notifyAirplaneModeChanged(true);
+        mController.updateState(testPreference);
+
+
+        assertThat(mController.mIsAirplaneModeOn).isTrue();
+        verify(testPreference).setEnabled(false);
     }
 
     @Test

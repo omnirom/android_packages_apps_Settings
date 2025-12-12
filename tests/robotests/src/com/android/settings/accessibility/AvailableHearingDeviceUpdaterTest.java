@@ -79,7 +79,7 @@ public class AvailableHearingDeviceUpdaterTest {
     @Test
     public void isFilterMatch_connectedHearingDevice_returnTrue() {
         CachedBluetoothDevice connectedHearingDevice = mCachedBluetoothDevice;
-        when(connectedHearingDevice.isHearingAidDevice()).thenReturn(true);
+        when(connectedHearingDevice.isHearingDevice()).thenReturn(true);
         when(mBluetoothDevice.isConnected()).thenReturn(true);
         when(mBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_BONDED);
         when(mCachedDeviceManager.getCachedDevicesCopy()).thenReturn(
@@ -91,7 +91,7 @@ public class AvailableHearingDeviceUpdaterTest {
     @Test
     public void isFilterMatch_nonConnectedHearingDevice_returnFalse() {
         CachedBluetoothDevice nonConnectedHearingDevice = mCachedBluetoothDevice;
-        when(nonConnectedHearingDevice.isHearingAidDevice()).thenReturn(true);
+        when(nonConnectedHearingDevice.isHearingDevice()).thenReturn(true);
         when(mBluetoothDevice.isConnected()).thenReturn(false);
         when(mBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_BONDED);
         when(mCachedDeviceManager.getCachedDevicesCopy()).thenReturn(
@@ -102,8 +102,9 @@ public class AvailableHearingDeviceUpdaterTest {
 
     @Test
     public void isFilterMatch_connectedBondingHearingDevice_returnFalse() {
+
         CachedBluetoothDevice connectedBondingHearingDevice = mCachedBluetoothDevice;
-        when(connectedBondingHearingDevice.isHearingAidDevice()).thenReturn(true);
+        when(connectedBondingHearingDevice.isHearingDevice()).thenReturn(true);
         when(mBluetoothDevice.isConnected()).thenReturn(true);
         when(mBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_BONDING);
         when(mCachedDeviceManager.getCachedDevicesCopy()).thenReturn(
@@ -115,7 +116,7 @@ public class AvailableHearingDeviceUpdaterTest {
     @Test
     public void isFilterMatch_hearingDeviceNotInCachedDevicesList_returnFalse() {
         CachedBluetoothDevice notInCachedDevicesListDevice = mCachedBluetoothDevice;
-        when(notInCachedDevicesListDevice.isHearingAidDevice()).thenReturn(true);
+        when(notInCachedDevicesListDevice.isHearingDevice()).thenReturn(true);
         when(mBluetoothDevice.isConnected()).thenReturn(true);
         when(mBluetoothDevice.getBondState()).thenReturn(BluetoothDevice.BOND_BONDED);
         when(mCachedDeviceManager.getCachedDevicesCopy()).thenReturn(new ArrayList<>());

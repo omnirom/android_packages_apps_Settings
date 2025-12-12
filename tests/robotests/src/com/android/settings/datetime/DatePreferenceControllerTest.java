@@ -35,6 +35,7 @@ import android.app.timedetector.TimeDetectorHelper;
 import android.content.Context;
 import android.os.UserHandle;
 
+import com.android.settingslib.RestrictedLockUtils;
 import com.android.settingslib.RestrictedPreference;
 
 import org.junit.Before;
@@ -87,7 +88,7 @@ public class DatePreferenceControllerTest {
     @Test
     public void updateState_autoTimeEnabled_shouldDisablePref() {
         // Make sure not disabled by admin.
-        mPreference.setDisabledByAdmin(null);
+        mPreference.setDisabledByAdmin((RestrictedLockUtils.EnforcedAdmin) null);
 
         TimeCapabilitiesAndConfig capabilitiesAndConfig = createCapabilitiesAndConfig(
                 /* suggestManualAllowed= */false);
@@ -100,7 +101,7 @@ public class DatePreferenceControllerTest {
     @Test
     public void updateState_autoTimeDisabled_shouldEnablePref() {
         // Make sure not disabled by admin.
-        mPreference.setDisabledByAdmin(null);
+        mPreference.setDisabledByAdmin((RestrictedLockUtils.EnforcedAdmin) null);
 
         TimeCapabilitiesAndConfig capabilitiesAndConfig = createCapabilitiesAndConfig(
                 /* suggestManualAllowed= */true);

@@ -21,6 +21,7 @@ import static android.net.ConnectivitySettingsManager.PRIVATE_DNS_MODE_PROVIDER_
 
 import static com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
 
+import android.app.Dialog;
 import android.app.settings.SettingsEnums;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -273,6 +274,9 @@ public class PrivateDnsModeDialogPreference extends CustomDialogPreferenceCompat
 
         FeatureFactory.getFeatureFactory().getMetricsFeatureProvider()
                 .action(context, SettingsEnums.ACTION_PRIVATE_DNS_MODE, mMode);
-        getDialog().dismiss();
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.dismiss();
+        }
     }
 }

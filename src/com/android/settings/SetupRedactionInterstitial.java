@@ -23,7 +23,9 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.android.settings.notification.RedactionInterstitial;
+import com.android.settings.notification.SetupRedactionInterstitialFragment;
 
+import com.google.android.setupdesign.util.ThemeHelper;
 import com.google.android.setupcompat.util.WizardManagerHelper;
 
 /**
@@ -34,6 +36,8 @@ import com.google.android.setupcompat.util.WizardManagerHelper;
  * inherit those changes.
  */
 public class SetupRedactionInterstitial extends RedactionInterstitial {
+
+    private String targetFragmentName = RedactionInterstitialFragment.class.getName();
 
     /**
      * Set the enabled state of SetupRedactionInterstitial activity to configure whether it is shown
@@ -55,24 +59,22 @@ public class SetupRedactionInterstitial extends RedactionInterstitial {
         if (!WizardManagerHelper.isAnySetupWizard(getIntent())) {
             finish();
         }
+        if (ThemeHelper.shouldApplyGlifExpressiveStyle(this)) {
+            targetFragmentName = SetupRedactionInterstitialFragment.class.getName();
+        }
+        ThemeHelper.trySetSuwTheme(this);
         super.onCreate(savedInstance);
     }
 
     @Override
     public Intent getIntent() {
         Intent modIntent = new Intent(super.getIntent());
-        modIntent.putExtra(EXTRA_SHOW_FRAGMENT,
-                SetupRedactionInterstitialFragment.class.getName());
+        modIntent.putExtra(EXTRA_SHOW_FRAGMENT, targetFragmentName);
         return modIntent;
     }
 
     @Override
     protected boolean isValidFragment(String fragmentName) {
-        return SetupRedactionInterstitialFragment.class.getName().equals(fragmentName);
-    }
-
-    public static class SetupRedactionInterstitialFragment extends RedactionInterstitialFragment {
-
-        // Setup wizard specific UI customizations can be done here
+        return targetFragmentName.equals(fragmentName);
     }
 }

@@ -38,6 +38,7 @@ import com.android.settings.R;
 import com.android.settings.core.InstrumentedFragment;
 import com.android.settings.datetime.timezone.model.TimeZoneData;
 import com.android.settings.datetime.timezone.model.TimeZoneDataLoader;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 import com.google.android.material.appbar.AppBarLayout;
 
@@ -147,10 +148,11 @@ public abstract class BaseTimeZonePicker extends InstrumentedFragment
             }
 
             // Set zero margin and padding to align with the text horizontally in the preference
-            final TextView searchViewView = (TextView) mSearchView.findViewById(
+            final TextView searchViewTextView = (TextView) mSearchView.findViewById(
                     com.android.internal.R.id.search_src_text);
-            searchViewView.setPadding(0, searchViewView.getPaddingTop(), 0,
-                    searchViewView.getPaddingBottom());
+            searchViewTextView.setPadding(0, searchViewTextView.getPaddingTop(), 0,
+                    searchViewTextView.getPaddingBottom());
+            searchViewTextView.setTextAppearance(R.style.TextAppearance_SearchBar);
             final View editFrame = mSearchView.findViewById(
                     com.android.internal.R.id.search_edit_frame);
             final LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) editFrame
@@ -211,6 +213,9 @@ public abstract class BaseTimeZonePicker extends InstrumentedFragment
                 new AppBarLayout.Behavior.DragCallback() {
                     @Override
                     public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                        if (SettingsThemeHelper.isExpressiveTheme(appBarLayout.getContext())) {
+                            return false;
+                        }
                         return appBarLayout.getResources().getConfiguration().orientation
                                 == Configuration.ORIENTATION_LANDSCAPE;
                     }

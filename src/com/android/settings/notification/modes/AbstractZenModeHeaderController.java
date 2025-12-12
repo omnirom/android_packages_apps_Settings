@@ -17,7 +17,6 @@ package com.android.settings.notification.modes;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import android.app.Flags;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
+import com.android.settings.notification.FutureUtil;
 import com.android.settings.widget.EntityHeaderController;
 import com.android.settingslib.notification.modes.ZenIcon;
 import com.android.settingslib.notification.modes.ZenIconLoader;
@@ -55,11 +55,6 @@ abstract class AbstractZenModeHeaderController extends AbstractZenModePreference
         super(context, key);
         mFragment = fragment;
         mIconLoader = iconLoader;
-    }
-
-    @Override
-    public boolean isAvailable() {
-        return Flags.modesUi();
     }
 
     protected void setUpHeader(PreferenceScreen screen, int iconSizePx) {

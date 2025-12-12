@@ -15,9 +15,12 @@
  */
 package com.android.settings.network
 
+import android.app.settings.SettingsEnums.SETTINGS_NETWORK_CATEGORY
 import android.content.Context
+import androidx.fragment.app.Fragment
 import com.android.settings.R
 import com.android.settings.Settings.NetworkDashboardActivity
+import com.android.settings.core.PreferenceScreenMixin
 import com.android.settings.datausage.DataSaverScreen
 import com.android.settings.flags.Flags
 import com.android.settings.utils.makeLaunchIntent
@@ -25,11 +28,11 @@ import com.android.settingslib.metadata.PreferenceIconProvider
 import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.ProvidePreferenceScreen
 import com.android.settingslib.metadata.preferenceHierarchy
-import com.android.settingslib.preference.PreferenceScreenCreator
 import com.android.settingslib.widget.SettingsThemeHelper.isExpressiveTheme
+import kotlinx.coroutines.CoroutineScope
 
 @ProvidePreferenceScreen(NetworkDashboardScreen.KEY)
-class NetworkDashboardScreen : PreferenceScreenCreator, PreferenceIconProvider {
+open class NetworkDashboardScreen : PreferenceScreenMixin, PreferenceIconProvider {
     override val key: String
         get() = KEY
 
@@ -39,24 +42,28 @@ class NetworkDashboardScreen : PreferenceScreenCreator, PreferenceIconProvider {
     override fun getIcon(context: Context) =
         when {
             isExpressiveTheme(context) -> R.drawable.ic_homepage_network
-            Flags.homepageRevamp() -> R.drawable.ic_settings_wireless_filled
-            else -> R.drawable.ic_settings_wireless
+            else -> R.drawable.ic_settings_wireless_filled
         }
 
     override fun isFlagEnabled(context: Context) = Flags.catalystNetworkProviderAndInternetScreen()
 
     override fun hasCompleteHierarchy() = false
 
-    override fun fragmentClass() = NetworkDashboardFragment::class.java
+    override fun fragmentClass(): Class<out Fragment>? = NetworkDashboardFragment::class.java
+
+    override fun getMetricsCategory() = SETTINGS_NETWORK_CATEGORY
+
+    override val highlightMenuKey: Int
+        get() = R.string.menu_key_network
 
     override fun getLaunchIntent(context: Context, metadata: PreferenceMetadata?) =
         makeLaunchIntent(context, NetworkDashboardActivity::class.java, metadata?.key)
 
-    override fun getPreferenceHierarchy(context: Context) =
-        preferenceHierarchy(context, this) {
-            +MobileNetworkListScreen.KEY order -15
+    override fun getPreferenceHierarchy(context: Context, coroutineScope: CoroutineScope) =
+        preferenceHierarchy(context) {
+            if (Flags.catalystMobileNetworkList()) +MobileNetworkListScreen.KEY order -15
             +AirplaneModePreference() order -5
-            +DataSaverScreen.KEY order 10
+            if (Flags.catalystRestrictBackgroundParentEntry()) +DataSaverScreen.KEY order 10
         }
 
     companion object {

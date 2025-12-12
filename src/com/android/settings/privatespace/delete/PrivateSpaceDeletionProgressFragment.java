@@ -63,10 +63,7 @@ public class PrivateSpaceDeletionProgressFragment extends InstrumentedFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        if (android.os.Flags.allowPrivateProfile()
-                && android.multiuser.Flags.enablePrivateSpaceFeatures()) {
-            super.onCreate(savedInstanceState);
-        }
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -143,13 +140,18 @@ public class PrivateSpaceDeletionProgressFragment extends InstrumentedFragment {
     }
 
     private void showToastWithCustomIcon(int stringRes) {
-        Drawable drawable = getContext().getDrawable(R.drawable.ic_private_space_icon);
-        Toast.makeCustomToastWithIcon(
-                        getContext(),
-                        null /* looper */ ,
-                        getContext().getString(stringRes),
-                        Toast.LENGTH_SHORT,
-                        drawable)
-                .show();
+        try {
+            Context context = getActivity().getApplicationContext();
+            Drawable drawable = context.getDrawable(R.drawable.ic_private_space_icon);
+            Toast.makeCustomToastWithIcon(
+                            context,
+                            null /* looper */,
+                            context.getString(stringRes),
+                            Toast.LENGTH_SHORT,
+                            drawable)
+                    .show();
+        } catch (NullPointerException npe) {
+            Log.w(TAG, "Couldn't display Toast");
+        }
     }
 }

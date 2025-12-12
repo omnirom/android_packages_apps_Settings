@@ -302,7 +302,7 @@ public class ScreenLockPreferenceDetailsUtilsTest {
     }
 
     @Test
-    public void isLockPatternSecure_noLockPatterUtils_shouldReturnFalse() {
+    public void isLockPatternSecure_noLockPatternUtils_shouldReturnFalse() {
         when(mFeatureFactory.securityFeatureProvider.getLockPatternUtils(mContext))
                 .thenReturn(null);
         mScreenLockPreferenceDetailsUtils = new ScreenLockPreferenceDetailsUtils(mContext);

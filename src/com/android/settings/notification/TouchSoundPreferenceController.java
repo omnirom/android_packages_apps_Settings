@@ -16,26 +16,26 @@
 
 package com.android.settings.notification;
 
+import static android.provider.Settings.System.SOUND_EFFECTS_ENABLED;
+
 import static com.android.settings.notification.SettingPref.TYPE_SYSTEM;
 
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.AsyncTask;
-import android.provider.Settings.System;
 
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 
+// LINT.IfChange
 public class TouchSoundPreferenceController extends SettingPrefController {
-
-    private static final String KEY_TOUCH_SOUNDS = "touch_sounds";
 
     public TouchSoundPreferenceController(Context context, SettingsPreferenceFragment parent,
             Lifecycle lifecycle) {
         super(context, parent, lifecycle);
         mPreference = new SettingPref(
-            TYPE_SYSTEM, KEY_TOUCH_SOUNDS, System.SOUND_EFFECTS_ENABLED, DEFAULT_ON) {
+            TYPE_SYSTEM, SOUND_EFFECTS_ENABLED, SOUND_EFFECTS_ENABLED, DEFAULT_ON) {
             @Override
             protected boolean setSetting(final Context context, final int value) {
                 AsyncTask.execute(new Runnable() {
@@ -60,3 +60,4 @@ public class TouchSoundPreferenceController extends SettingPrefController {
         return mContext.getResources().getBoolean(R.bool.config_show_touch_sounds);
     }
 }
+// LINT.ThenChange(TouchSoundPreference.kt)

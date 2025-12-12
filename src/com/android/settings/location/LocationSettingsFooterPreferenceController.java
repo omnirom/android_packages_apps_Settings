@@ -31,6 +31,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
+import com.android.settings.Utils;
 import com.android.settingslib.HelpUtils;
 import com.android.settingslib.widget.FooterPreference;
 
@@ -93,19 +94,28 @@ public class LocationSettingsFooterPreferenceController extends LocationBasePref
     }
 
     private void updateFooterPreference() {
-        String footerString = mContext.getString(R.string.location_settings_footer_general);
+        StringBuilder footerString = new StringBuilder();
         if (mLocationEnabled) {
             if (!TextUtils.isEmpty(mInjectedFooterString)) {
-                footerString = Html.escapeHtml(mInjectedFooterString) + PARAGRAPH_SEPARATOR
-                        + footerString;
+                footerString.append(Html.escapeHtml(mInjectedFooterString) + PARAGRAPH_SEPARATOR);
             }
         } else {
-            footerString = mContext.getString(R.string.location_settings_footer_location_off)
-                    + PARAGRAPH_SEPARATOR
-                    + footerString;
+            if (Utils.isVoiceCapable(mContext) || Utils.isSmsMessagingCapable(mContext)) {
+                footerString.append(
+                        mContext.getString(
+                                R.string.location_settings_footer_location_off_with_telephony));
+            } else {
+                footerString.append(
+                        mContext.getString(
+                                R.string.location_settings_footer_location_off_no_telephony));
+            }
+            footerString.append(PARAGRAPH_SEPARATOR);
         }
+
+        footerString.append(mContext.getString(R.string.location_settings_footer_general));
+
         if (mFooterPreference != null) {
-            mFooterPreference.setTitle(Html.fromHtml(footerString));
+            mFooterPreference.setTitle(Html.fromHtml(footerString.toString()));
             mFooterPreference.setLearnMoreAction(v -> openLocationLearnMoreLink());
             mFooterPreference.setLearnMoreText(mContext.getString(
                     R.string.location_settings_footer_learn_more_content_description));

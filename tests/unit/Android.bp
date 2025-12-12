@@ -31,6 +31,8 @@ android_test {
         "mockito-target-minus-junit4",
         "platform-test-annotations",
         "platform-test-rules",
+        "platform-parametric-runner-lib-no-robo",
+        "device_policy_aconfig_flags_lib",
         "testables",
         "truth",
         "kotlinx_coroutines_test",

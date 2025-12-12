@@ -297,7 +297,8 @@ public class AudioStreamButtonControllerTest {
                 mock(BluetoothDevice.class), /* sourceId= */ 0, state);
 
         verify(mFeatureFactory.metricsFeatureProvider)
-                .action(any(), eq(SettingsEnums.ACTION_AUDIO_STREAM_JOIN_SUCCEED), anyInt());
+                .action(any(), eq(SettingsEnums.ACTION_AUDIO_STREAM_JOIN_PRESENT_SUCCEED),
+                        anyInt());
 
         // Called twice, once in displayPreference, the other one in callback
         verify(mPreference, times(2)).setButton1Enabled(true);

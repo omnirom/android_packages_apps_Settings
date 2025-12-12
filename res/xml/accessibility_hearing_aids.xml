@@ -56,6 +56,12 @@
             android:fragment="com.android.settings.accessibility.AccessibilityAudioRoutingFragment"
             settings:controller="com.android.settings.accessibility.HearingAidAudioRoutingPreferenceController"/>
 
+        <com.android.settings.accessibility.ShortcutPreference
+            android:key="hearing_aids_shortcut_preference"
+            android:title="@string/accessibility_hearing_device_shortcut_title"
+            android:persistent="false"
+            settings:controller="com.android.settings.accessibility.ToggleShortcutPreferenceController"/>
+
         <SwitchPreferenceCompat
             android:key="hearing_aid_compatibility"
             android:order="30"
@@ -70,4 +76,13 @@
         android:selectable="false"
         settings:searchable="false"
         settings:controller="com.android.settings.accessibility.HearingDeviceFooterPreferenceController"/>
+
+    <com.android.settingslib.widget.ButtonPreference
+        android:key="feedback"
+        android:title="@string/accessibility_send_feedback_title"
+        android:icon="@drawable/ic_feedback"
+        settings:searchable="false"
+        settings:buttonPreferenceSize="normal"
+        settings:buttonPreferenceType="tonal"
+        settings:controller="com.android.settings.accessibility.HearingDevicesFeedbackButtonPreferenceController" />
 </PreferenceScreen>

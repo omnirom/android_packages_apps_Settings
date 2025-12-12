@@ -23,7 +23,6 @@ import android.os.UserManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
@@ -51,7 +50,10 @@ public class AddWifiNetworkPreference extends RestrictedPreference {
 
     public AddWifiNetworkPreference(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        setLayoutResource(com.android.settingslib.R.layout.preference_access_point);
+        int layoutResId = SettingsThemeHelper.isExpressiveTheme(getContext())
+                ? com.android.settingslib.R.layout.preference_access_point_expressive
+                : com.android.settingslib.R.layout.preference_access_point;
+        setLayoutResource(layoutResId);
         setWidgetLayoutResource(R.layout.wifi_button_preference_widget);
         setIcon(R.drawable.ic_add_24dp);
         setTitle(R.string.wifi_add_network);
@@ -63,20 +65,6 @@ public class AddWifiNetworkPreference extends RestrictedPreference {
     @Override
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
-
-        // Set padding to expressive style
-        if (SettingsThemeHelper.isExpressiveTheme(getContext())) {
-            final int paddingStart = getContext().getResources().getDimensionPixelSize(
-                    com.android.settingslib.widget.theme
-                            .R.dimen.settingslib_expressive_space_extrasmall4);
-            final int paddingEnd = getContext().getResources().getDimensionPixelSize(
-                    com.android.settingslib.widget.theme
-                            .R.dimen.settingslib_expressive_space_small3);
-            LinearLayout iconFrame = (LinearLayout) holder.findViewById(
-                    com.android.settingslib.R.id.icon_frame);
-            iconFrame.setPaddingRelative(paddingStart, iconFrame.getPaddingTop(),
-                    paddingEnd, iconFrame.getPaddingBottom());
-        }
 
         final ImageButton scanButton = (ImageButton) holder.findViewById(R.id.button_icon);
         scanButton.setImageDrawable(mScanIconDrawable);

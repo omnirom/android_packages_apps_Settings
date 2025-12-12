@@ -36,6 +36,7 @@ import android.util.ArraySet;
 import android.util.Log;
 import android.util.Pair;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.drawable.IconCompat;
 import androidx.slice.Slice;
@@ -67,6 +68,7 @@ import java.util.stream.Collectors;
  * Utility class to build Slices objects and Preference Controllers based on the Database managed
  * by {@link SlicesDatabaseHelper}
  */
+@Deprecated(forRemoval = true)
 public class SliceBuilderUtils {
 
     private static final String TAG = "SliceBuilder";
@@ -209,6 +211,13 @@ public class SliceBuilderUtils {
 
     public static Intent buildSearchResultPageIntent(Context context, String className, String key,
             String screenTitle, int sourceMetricsCategory, int highlightMenuRes) {
+        return buildSearchResultPageIntent(context, className, key, /* extraArguments= */ null,
+                screenTitle, sourceMetricsCategory, highlightMenuRes);
+    }
+
+    public static Intent buildSearchResultPageIntent(Context context, String className, String key,
+            @Nullable Bundle extraArguments, String screenTitle, int sourceMetricsCategory,
+            int highlightMenuRes) {
         final Bundle args = new Bundle();
         String highlightMenuKey = null;
         if (highlightMenuRes != 0) {
@@ -218,6 +227,9 @@ public class SliceBuilderUtils {
             }
         }
         args.putString(SettingsActivity.EXTRA_FRAGMENT_ARG_KEY, key);
+        if (extraArguments != null) {
+            args.putAll(extraArguments);
+        }
         final Intent searchDestination = new SubSettingLauncher(context)
                 .setDestination(className)
                 .setArguments(args)

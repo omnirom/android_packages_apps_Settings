@@ -152,7 +152,7 @@ public class UsbAudioRoutingPreferenceControllerTest {
 
         mController.onDeveloperOptionsSwitchEnabled();
 
-        verify(mPreference).setDisabledByAdmin(null);
+        verify(mPreference).setDisabledByAdmin((RestrictedLockUtils.EnforcedAdmin) null);
     }
 
     @Test

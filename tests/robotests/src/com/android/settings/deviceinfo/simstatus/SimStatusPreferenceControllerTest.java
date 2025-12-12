@@ -117,6 +117,7 @@ public class SimStatusPreferenceControllerTest {
         // Availability defaults
         when(mResources.getBoolean(R.bool.config_show_sim_info)).thenReturn(true);
         when(mTelephonyManager.isDataCapable()).thenReturn(true);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(true);
         when(mUserManager.isAdminUser()).thenReturn(true);
 
         when(mScreen.getContext()).thenReturn(mContext);
@@ -215,7 +216,7 @@ public class SimStatusPreferenceControllerTest {
     }
 
     @Test
-    public void getAvailabilityStatus_showSimInfo_telephonyDataCapable_userAdmindisplayed() {
+    public void getAvailabilityStatus_default_displayed() {
         SlotSimStatus slotSimStatus = new TestSlotSimStatus(mContext);
         mController.init(mFragment, slotSimStatus);
 
@@ -225,7 +226,7 @@ public class SimStatusPreferenceControllerTest {
     }
 
     @Test
-    public void getAvailabilityStatus_notShowSimInfo_telephonyDataCapable_userAdmin_notDisplayed() {
+    public void getAvailabilityStatus_notShowSimInfo_notDisplayed() {
         SlotSimStatus slotSimStatus = new TestSlotSimStatus(mContext);
         mController.init(mFragment, slotSimStatus);
 
@@ -235,17 +236,40 @@ public class SimStatusPreferenceControllerTest {
     }
 
     @Test
-    public void getAvailabilityStatus_showSimInfo_notTelephonyDataCapable_userAdmin_notDisplayed() {
+    public void getAvailabilityStatus_voiceCapable_notDataCapable_displayed() {
         SlotSimStatus slotSimStatus = new TestSlotSimStatus(mContext);
         mController.init(mFragment, slotSimStatus);
 
         when(mTelephonyManager.isDataCapable()).thenReturn(false);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(true);
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(
+                BasePreferenceController.AVAILABLE);
+    }
+
+    @Test
+    public void getAvailabilityStatus_notVoiceCapable_dataCapable_displayed() {
+        SlotSimStatus slotSimStatus = new TestSlotSimStatus(mContext);
+        mController.init(mFragment, slotSimStatus);
+
+        when(mTelephonyManager.isDataCapable()).thenReturn(true);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(false);
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(
+                BasePreferenceController.AVAILABLE);
+    }
+
+    @Test
+    public void getAvailabilityStatus_notVoiceCapable_notDataCapable_notDisplayed() {
+        SlotSimStatus slotSimStatus = new TestSlotSimStatus(mContext);
+        mController.init(mFragment, slotSimStatus);
+
+        when(mTelephonyManager.isDataCapable()).thenReturn(false);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(false);
         assertThat(mController.getAvailabilityStatus()).isEqualTo(
                 BasePreferenceController.UNSUPPORTED_ON_DEVICE);
     }
 
     @Test
-    public void getAvailabilityStatus_showSimInfo_telephonyDataCapable_notUserAdmin_notDisplayed() {
+    public void getAvailabilityStatus_notUserAdmin_notDisplayed() {
         SlotSimStatus slotSimStatus = new TestSlotSimStatus(mContext);
         mController.init(mFragment, slotSimStatus);
 

@@ -22,6 +22,7 @@ import static android.app.admin.DevicePolicyResources.Strings.Settings.WORK_PROF
 
 import android.app.Dialog;
 import android.app.admin.DevicePolicyManager;
+import android.app.admin.flags.Flags;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
@@ -69,8 +70,12 @@ public final class UserDialogs {
             if (view != null) {
                 builder.setView(view);
             } else {
+                final int defaultWorkProfileConfirmRemoveMessageResourceId =
+                        Flags.removeManagedEsimOnWorkProfileDeletion()
+                                ? R.string.work_profile_confirm_remove_message_with_esim
+                                : R.string.work_profile_confirm_remove_message;
                 builder.setMessage(dpm.getResources().getString(WORK_PROFILE_CONFIRM_REMOVE_MESSAGE,
-                        () -> context.getString(R.string.work_profile_confirm_remove_message)));
+                        () -> context.getString(defaultWorkProfileConfirmRemoveMessageResourceId)));
             }
         } else if (UserHandle.myUserId() == removingUserId) {
             builder.setTitle(R.string.user_confirm_remove_self_title);
@@ -113,9 +118,14 @@ public final class UserDialogs {
                         R.string.opening_paragraph_delete_profile_unknown_company)));
         TextView closingParagraph = (TextView)
                 view.findViewById(R.id.delete_managed_profile_closing_paragraph);
+
+        final int defaultWorkProfileConfirmRemoveMessageResourceId =
+                Flags.removeManagedEsimOnWorkProfileDeletion()
+                        ? R.string.work_profile_confirm_remove_message_with_esim
+                        : R.string.work_profile_confirm_remove_message;
         closingParagraph.setText(devicePolicyManager.getResources().getString(
                 WORK_PROFILE_CONFIRM_REMOVE_MESSAGE,
-                () -> context.getString(R.string.work_profile_confirm_remove_message)));
+                () -> context.getString(defaultWorkProfileConfirmRemoveMessageResourceId)));
 
         CharSequence appLabel = packageManager.getApplicationLabel(mdmApplicationInfo);
         CharSequence badgedAppLabel = packageManager.getUserBadgedLabel(appLabel,

@@ -31,7 +31,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
@@ -46,9 +45,9 @@ import com.android.settings.R;
 import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
 import com.android.settings.datausage.lib.DataUsageFormatter;
 import com.android.settings.datausage.lib.NetworkTemplates;
-import com.android.settings.network.SubscriptionUtil;
 import com.android.settings.network.telephony.MobileNetworkUtils;
 import com.android.settings.search.BaseSearchIndexProvider;
+import com.android.settings.widget.EnhancedSettingsSpinnerAdapter;
 import com.android.settingslib.NetworkPolicyEditor;
 import com.android.settingslib.net.DataUsageController;
 import com.android.settingslib.search.SearchIndexable;
@@ -109,7 +108,7 @@ public class BillingCycleSettings extends DataUsageBaseFragment implements
         super.onCreate(icicle);
 
         final Context context = getContext();
-        if (!SubscriptionUtil.isSimHardwareVisible(context)) {
+        if (!DataUsageUtils.hasMobileData(context)) {
             finish();
             return;
         }
@@ -327,8 +326,9 @@ public class BillingCycleSettings extends DataUsageBaseFragment implements
                     DataUsageFormatter.Companion.getBytesDisplayUnit(getResources(), MIB_IN_BYTES),
                     DataUsageFormatter.Companion.getBytesDisplayUnit(getResources(), GIB_IN_BYTES),
             };
-            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                    getContext(), android.R.layout.simple_spinner_item, unitNames);
+            EnhancedSettingsSpinnerAdapter.adjustDropDownOffset(type);
+            EnhancedSettingsSpinnerAdapter<String> adapter =
+                    new EnhancedSettingsSpinnerAdapter<>(getContext(), unitNames);
             type.setAdapter(adapter);
 
             final boolean unitInGigaBytes = (bytes > 1.5f * GIB_IN_BYTES);
@@ -529,7 +529,6 @@ public class BillingCycleSettings extends DataUsageBaseFragment implements
                 @Override
                 protected boolean isPageSearchEnabled(Context context) {
                     return (!MobileNetworkUtils.isMobileNetworkUserRestricted(context))
-                            && SubscriptionUtil.isSimHardwareVisible(context)
                             && DataUsageUtils.hasMobileData(context);
                 }
             };

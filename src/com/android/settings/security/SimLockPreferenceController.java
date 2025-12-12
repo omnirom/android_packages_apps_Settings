@@ -27,8 +27,8 @@ import android.telephony.TelephonyManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
+import com.android.settings.Utils;
 import com.android.settings.core.BasePreferenceController;
-import com.android.settings.network.SubscriptionUtil;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class SimLockPreferenceController extends BasePreferenceController {
 
     @Override
     public int getAvailabilityStatus() {
-        if (!SubscriptionUtil.isSimHardwareVisible(mContext)) {
+        if (!Utils.isMobileDataCapable(mContext) && !Utils.isVoiceCapable(mContext)) {
             return UNSUPPORTED_ON_DEVICE;
         }
 

@@ -21,6 +21,7 @@ import static android.telephony.UiccSlotInfo.CARD_STATE_INFO_PRESENT;
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -622,7 +623,6 @@ public class UiccSlotUtilTest {
     }
 
 
-
     @Test
     public void performSwitchToSlot_setSimSlotMapping() throws UiccSlotsException {
         Collection<UiccSlotMapping> uiccSlotMappings = createUiccSlotMappingDualPortsBNoOrding();
@@ -630,6 +630,28 @@ public class UiccSlotUtilTest {
         UiccSlotUtil.performSwitchToSlot(mTelephonyManager, uiccSlotMappings, mContext);
 
         verify(mTelephonyManager).setSimSlotMapping(any());
+    }
+
+    @Test
+    public void performSwitchToSlot_failedByIllegalState_noCrash()
+            throws UiccSlotsException {
+        Collection<UiccSlotMapping> uiccSlotMappings = createUiccSlotMappingDualPortsBNoOrding();
+        doThrow(IllegalStateException.class).when(
+                mTelephonyManager).setSimSlotMapping(any());
+
+        UiccSlotUtil.performSwitchToSlot(mTelephonyManager, uiccSlotMappings, mContext);
+        // No crash
+    }
+
+    @Test
+    public void performSwitchToSlot_failedByIllegalArgument_noCrash()
+            throws UiccSlotsException {
+        Collection<UiccSlotMapping> uiccSlotMappings = createUiccSlotMappingDualPortsBNoOrding();
+        doThrow(IllegalArgumentException.class).when(
+                mTelephonyManager).setSimSlotMapping(any());
+
+        UiccSlotUtil.performSwitchToSlot(mTelephonyManager, uiccSlotMappings, mContext);
+        // No crash
     }
 
     @Test

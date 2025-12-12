@@ -27,6 +27,7 @@ import androidx.preference.Preference;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 
+// LINT.IfChange
 public class BluetoothDeviceRenamePreferenceController extends
         BluetoothDeviceNamePreferenceController {
 
@@ -80,3 +81,4 @@ public class BluetoothDeviceRenamePreferenceController extends
         return false;
     }
 }
+// LINT.ThenChange(BluetoothDeviceRenamePreference.kt)

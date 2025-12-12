@@ -15,25 +15,33 @@
  */
 package com.android.settings.display
 
+import android.app.settings.SettingsEnums
 import android.content.Context
+import androidx.fragment.app.Fragment
 import com.android.settings.DisplaySettings
 import com.android.settings.R
 import com.android.settings.Settings.DisplaySettingsActivity
+import com.android.settings.accessibility.Flags as AccessibilityFlags
+import com.android.settings.accessibility.textreading.ui.TextReadingScreen
+import com.android.settings.core.PreferenceScreenMixin
 import com.android.settings.display.darkmode.DarkModeScreen
+import com.android.settings.dream.ScreensaverScreen
 import com.android.settings.flags.Flags
 import com.android.settings.security.LockScreenPreferenceScreen
 import com.android.settings.utils.makeLaunchIntent
 import com.android.settingslib.metadata.PreferenceAvailabilityProvider
+import com.android.settingslib.metadata.PreferenceCategory as Category
 import com.android.settingslib.metadata.PreferenceIconProvider
 import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.ProvidePreferenceScreen
 import com.android.settingslib.metadata.preferenceHierarchy
-import com.android.settingslib.preference.PreferenceScreenCreator
 import com.android.settingslib.widget.SettingsThemeHelper.isExpressiveTheme
+import com.android.systemui.shared.Flags.ambientAod
+import kotlinx.coroutines.CoroutineScope
 
 @ProvidePreferenceScreen(DisplayScreen.KEY)
 open class DisplayScreen :
-    PreferenceScreenCreator, PreferenceAvailabilityProvider, PreferenceIconProvider {
+    PreferenceScreenMixin, PreferenceAvailabilityProvider, PreferenceIconProvider {
     override val key: String
         get() = KEY
 
@@ -43,23 +51,38 @@ open class DisplayScreen :
     override fun getIcon(context: Context) =
         when {
             isExpressiveTheme(context) -> R.drawable.ic_homepage_display
-            Flags.homepageRevamp() -> R.drawable.ic_settings_display_filled
-            else -> R.drawable.ic_settings_display_white
+            else -> R.drawable.ic_settings_display_filled
         }
+
+    override val highlightMenuKey: Int
+        get() = R.string.menu_key_display
+
+    override fun getMetricsCategory() = SettingsEnums.DISPLAY
 
     override fun isFlagEnabled(context: Context) = Flags.catalystDisplaySettingsScreen()
 
     override fun hasCompleteHierarchy() = false
 
-    override fun fragmentClass() = DisplaySettings::class.java
+    override fun fragmentClass(): Class<out Fragment>? = DisplaySettings::class.java
 
-    override fun getPreferenceHierarchy(context: Context) =
-        preferenceHierarchy(context, this) {
-            +BrightnessLevelPreference()
-            +AutoBrightnessScreen.KEY
-            +LockScreenPreferenceScreen.KEY
-            +DarkModeScreen.KEY
-            +PeakRefreshRateSwitchPreference()
+    override fun getPreferenceHierarchy(context: Context, coroutineScope: CoroutineScope) =
+        preferenceHierarchy(context) {
+            +Category("category_brightness", R.string.category_name_brightness) order -200 += {
+                +BrightnessLevelPreference()
+                if (Flags.catalystScreenBrightnessMode()) +AutoBrightnessScreen.KEY
+            }
+            +Category("category_lock_display", R.string.category_name_lock_display) order -190 += {
+                if (Flags.catalystLockscreenFromDisplaySettings()) +LockScreenPreferenceScreen.KEY
+                if (ambientAod()) +AmbientDisplayAlwaysOnPreferenceScreen.KEY
+            }
+            +Category("category_key_appearance", R.string.category_name_appearance) order -180 += {
+                if (AccessibilityFlags.catalystDarkUiMode()) +DarkModeScreen.KEY
+                if (Flags.catalystTextReadingScreen()) +TextReadingScreen.KEY
+            }
+            +Category("category_other", R.string.category_name_display_controls) order -150 += {
+                +PeakRefreshRateSwitchPreference()
+                if (Flags.catalystScreensaver()) +ScreensaverScreen.KEY
+            }
         }
 
     override fun getLaunchIntent(context: Context, metadata: PreferenceMetadata?) =

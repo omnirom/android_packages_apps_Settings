@@ -1,6 +1,2 @@
-# Default reviewers for this and subdirectories.
-alisher@google.com
-jackcwyu@google.com
-georgekgchang@google.com
-
-# Emergency approvers in case the above are not available
+# Bug component: 48448
+include platform/packages/modules/Nfc:/OWNERS

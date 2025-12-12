@@ -38,6 +38,7 @@ import com.android.settingslib.core.lifecycle.events.OnStop;
  * Default {@link BasePreferenceController} for {@link SliceView}. It will take {@link Uri} for
  * Slice and display what's inside this {@link Uri}
  */
+@Deprecated(forRemoval = true)
 public class SlicePreferenceController extends BasePreferenceController implements
         LifecycleObserver, OnStart, OnStop, Observer<Slice> {
     private static final String TAG = "SlicePreferenceController";

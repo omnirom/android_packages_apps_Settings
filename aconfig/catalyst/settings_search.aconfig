@@ -1,0 +1,9 @@
+package: "com.android.settings.flags"
+container: "system_ext"
+
+flag {
+  name: "catalyst_settings_search"
+  namespace: "android_settings"
+  description: "Settings search support for Catalyst"
+  bug: "418983717"
+}

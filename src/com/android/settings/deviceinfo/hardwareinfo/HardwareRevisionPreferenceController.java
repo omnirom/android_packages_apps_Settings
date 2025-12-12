@@ -23,6 +23,7 @@ import android.text.TextUtils;
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 
+// LINT.IfChange
 public class HardwareRevisionPreferenceController extends BasePreferenceController {
 
     public HardwareRevisionPreferenceController(Context context, String preferenceKey) {
@@ -45,3 +46,4 @@ public class HardwareRevisionPreferenceController extends BasePreferenceControll
         return SystemProperties.get("ro.boot.hardware.revision");
     }
 }
+// LINT.ThenChange(HardwareVersionPreference.kt)

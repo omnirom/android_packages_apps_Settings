@@ -17,7 +17,9 @@
 package com.android.settings.network.ethernet
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.EthernetManager
+import android.net.EthernetNetworkUpdateRequest
 import android.net.IpConfiguration
 import android.net.LinkProperties
 import android.net.StaticIpConfiguration
@@ -40,6 +42,7 @@ class EthernetInterfaceDetailsController(
     private val lifecycle: Lifecycle,
 ) :
     AbstractPreferenceController(context),
+    EthernetDialog.EthernetDialogListener,
     EthernetInterface.EthernetInterfaceStateListener,
     LifecycleEventObserver {
     private val KEY_HEADER = "ethernet_details"
@@ -49,6 +52,9 @@ class EthernetInterfaceDetailsController(
         EthernetTrackerImpl.getInstance(context).getInterface(preferenceId)
 
     private lateinit var entityHeaderController: EntityHeaderController
+
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences("ethernet_preferences", Context.MODE_PRIVATE)
 
     private var ipAddressPref: Preference? = null
 
@@ -78,6 +84,30 @@ class EthernetInterfaceDetailsController(
         }
     }
 
+    override fun onSubmit(dialog: EthernetDialog) {
+        val ipConfiguration = dialog.getController().getConfig()
+
+        val staticIp = ipConfiguration.getStaticIpConfiguration()
+
+        val updateRequest: EthernetNetworkUpdateRequest =
+            EthernetNetworkUpdateRequest.Builder().setIpConfiguration(ipConfiguration).build()
+
+        ethernetManager.updateConfiguration(
+            preferenceId,
+            updateRequest,
+            /* executor */ null,
+            /* callback */ null,
+        )
+
+        val interfaceName = dialog.getController().getInterfaceName()
+        if (interfaceName != null && !interfaceName.isEmpty()) {
+            val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            editor.putString(preferenceId, interfaceName)
+            editor.apply()
+            entityHeaderController?.setLabel(interfaceName)?.done(true)
+        }
+    }
+
     override fun displayPreference(screen: PreferenceScreen) {
         val headerPref: LayoutPreference? = screen.findPreference(KEY_HEADER)
 
@@ -93,8 +123,12 @@ class EthernetInterfaceDetailsController(
         iconView?.setScaleType(ImageView.ScaleType.CENTER_INSIDE)
 
         if (entityHeaderController != null) {
+            var interfaceName: String? = sharedPreferences.getString(preferenceId, null)
+            if (interfaceName == null) {
+                interfaceName = "Ethernet"
+            }
             entityHeaderController
-                .setLabel("Ethernet")
+                .setLabel(interfaceName)
                 .setSummary(
                     if (ethernetInterface?.getInterfaceState() == EthernetManager.STATE_LINK_UP) {
                         mContext.getString(R.string.network_connected)
@@ -131,10 +165,14 @@ class EthernetInterfaceDetailsController(
 
         if (ipConfiguration?.getIpAssignment() == IpConfiguration.IpAssignment.STATIC) {
             val staticIp: StaticIpConfiguration? = ipConfiguration?.getStaticIpConfiguration()
-            ipAddressPref?.setSummary(staticIp?.getIpAddress().toString())
+            ipAddressPref?.setSummary(staticIp?.getIpAddress()?.getAddress()?.getHostAddress())
         } else {
             val addresses = linkProperties?.getAddresses()
-            ipAddressPref?.setSummary(addresses?.first().toString())
+            if (addresses != null && addresses.size > 0) {
+                ipAddressPref?.setSummary(addresses?.first()?.getHostAddress())
+            } else {
+                ipAddressPref?.setSummary("")
+            }
         }
     }
 }

@@ -49,11 +49,6 @@ public class SetupFingerprintEnrollFindSensor extends FingerprintEnrollFindSenso
         }
         BiometricUtils.copyMultiBiometricExtras(getIntent(), intent);
         SetupWizardUtils.copySetupExtras(getIntent(), intent);
-        if (Flags.udfpsEnrollCalibration()) {
-            if (mCalibrator != null) {
-                intent.putExtras(mCalibrator.getExtrasForNextIntent());
-            }
-        }
         return intent;
     }
 
@@ -83,11 +78,17 @@ public class SetupFingerprintEnrollFindSensor extends FingerprintEnrollFindSenso
 
         @NonNull
         public AlertDialog.Builder onCreateDialogBuilder() {
-            return new AlertDialog.Builder(getActivity(), R.style.Theme_AlertDialog)
-                    .setTitle(R.string.setup_fingerprint_enroll_skip_title)
+            AlertDialog.Builder builder;
+            if (Flags.setupfingerprintenrollfindsensorSkipdialogTheme()) {
+                builder = new AlertDialog.Builder(getActivity());
+            } else {
+                builder = new AlertDialog.Builder(getActivity(), R.style.Theme_AlertDialog);
+            }
+            builder.setTitle(R.string.setup_fingerprint_enroll_skip_title)
                     .setPositiveButton(R.string.skip_anyway_button_label, this)
                     .setNegativeButton(R.string.go_back_button_label, this)
                     .setMessage(R.string.setup_fingerprint_enroll_skip_after_adding_lock_text);
+            return builder;
         }
 
         @Override

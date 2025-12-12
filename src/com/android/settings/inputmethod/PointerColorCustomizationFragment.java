@@ -16,6 +16,7 @@
 
 package com.android.settings.inputmethod;
 
+import static com.android.settings.flags.Flags.touchpadSettingsDesignUpdate;
 import static com.android.settings.inputmethod.InputPeripheralsSettingsUtils.isMouse;
 import static com.android.settings.inputmethod.InputPeripheralsSettingsUtils.isTouchpad;
 
@@ -32,6 +33,10 @@ public class PointerColorCustomizationFragment extends InputDeviceDashboardFragm
 
     private static final String TAG = "PointerColorCustomizationFragment";
 
+    private static final int RES = touchpadSettingsDesignUpdate()
+            ? R.xml.accessibility_pointer_fill_and_stroke_customization :
+            R.xml.accessibility_pointer_color_customization;
+
     @Override
     public int getMetricsCategory() {
         return SettingsEnums.ACCESSIBILITY_POINTER_COLOR_CUSTOMIZATION;
@@ -39,7 +44,7 @@ public class PointerColorCustomizationFragment extends InputDeviceDashboardFragm
 
     @Override
     protected int getPreferenceScreenResId() {
-        return R.xml.accessibility_pointer_color_customization;
+        return RES;
     }
 
     @Override
@@ -49,7 +54,7 @@ public class PointerColorCustomizationFragment extends InputDeviceDashboardFragm
 
 
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
-            new BaseSearchIndexProvider(R.xml.accessibility_pointer_color_customization) {
+            new BaseSearchIndexProvider(RES) {
                 @Override
                 protected boolean isPageSearchEnabled(Context context) {
                     return isTouchpad() || isMouse();

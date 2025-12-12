@@ -30,6 +30,7 @@ import com.android.settings.nfc.NfcPreferenceController;
 /**
  * Controller that used to show which component is available
  */
+// LINT.IfChange
 public class AdvancedConnectedDeviceController extends BasePreferenceController {
 
     private static final String DRIVING_MODE_SETTINGS_ENABLED =
@@ -125,3 +126,4 @@ public class AdvancedConnectedDeviceController extends BasePreferenceController 
         return resId;
     }
 }
+// LINT.ThenChange(AdvancedConnectedDeviceScreen.kt)

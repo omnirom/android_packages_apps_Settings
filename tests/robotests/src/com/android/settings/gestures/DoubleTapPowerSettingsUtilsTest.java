@@ -23,10 +23,14 @@ import static com.android.settings.gestures.DoubleTapPowerSettingsUtils.ON;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.content.res.Resources;
 import android.provider.Settings;
@@ -35,6 +39,7 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.internal.R;
+import com.android.settings.testutils.FakeFeatureFactory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -49,11 +54,14 @@ public class DoubleTapPowerSettingsUtilsTest {
     private Context mContext;
     private Resources mResources;
 
+    private FakeFeatureFactory mFeatureFactory;
+
     @Before
     public void setUp() {
         mContext = spy(ApplicationProvider.getApplicationContext());
         mResources = mock(Resources.class);
         when(mContext.getResources()).thenReturn(mResources);
+        mFeatureFactory = FakeFeatureFactory.setupForTest();
     }
 
     @Test
@@ -114,6 +122,8 @@ public class DoubleTapPowerSettingsUtilsTest {
                         Settings.Secure.DOUBLE_TAP_POWER_BUTTON_GESTURE_ENABLED,
                         OFF))
                 .isEqualTo(ON);
+        verify(mFeatureFactory.metricsFeatureProvider).action(any(),
+                eq(SettingsEnums.ACTION_DOUBLE_TAP_POWER_ENABLED), eq(true));
     }
 
     @Test
@@ -126,6 +136,8 @@ public class DoubleTapPowerSettingsUtilsTest {
                         Settings.Secure.DOUBLE_TAP_POWER_BUTTON_GESTURE_ENABLED,
                         ON))
                 .isEqualTo(OFF);
+        verify(mFeatureFactory.metricsFeatureProvider).action(any(),
+                eq(SettingsEnums.ACTION_DOUBLE_TAP_POWER_ENABLED), eq(false));
     }
 
     @Test
@@ -191,6 +203,9 @@ public class DoubleTapPowerSettingsUtilsTest {
                         Settings.Secure.DOUBLE_TAP_POWER_BUTTON_GESTURE,
                         DOUBLE_TAP_POWER_BUTTON_WALLET_LAUNCH_VALUE))
                 .isEqualTo(DOUBLE_TAP_POWER_BUTTON_CAMERA_LAUNCH_VALUE);
+        verify(mFeatureFactory.metricsFeatureProvider).action(any(),
+                eq(SettingsEnums.ACTION_DOUBLE_TAP_POWER_BUTTON_BEHAVIOR),
+                eq(DOUBLE_TAP_POWER_BUTTON_CAMERA_LAUNCH_VALUE));
     }
 
     @Test
@@ -205,5 +220,8 @@ public class DoubleTapPowerSettingsUtilsTest {
                         Settings.Secure.DOUBLE_TAP_POWER_BUTTON_GESTURE,
                         DOUBLE_TAP_POWER_BUTTON_CAMERA_LAUNCH_VALUE))
                 .isEqualTo(DOUBLE_TAP_POWER_BUTTON_WALLET_LAUNCH_VALUE);
+        verify(mFeatureFactory.metricsFeatureProvider).action(any(),
+                eq(SettingsEnums.ACTION_DOUBLE_TAP_POWER_BUTTON_BEHAVIOR),
+                eq(DOUBLE_TAP_POWER_BUTTON_WALLET_LAUNCH_VALUE));
     }
 }

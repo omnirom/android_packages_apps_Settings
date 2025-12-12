@@ -21,6 +21,7 @@ import android.content.Context;
 import com.android.settings.accessibility.AlarmVibrationIntensityPreferenceController.AlarmVibrationPreferenceConfig;
 
 /** Preference controller for alarm vibration with only a toggle for on/off states. */
+// LINT.IfChange
 public class AlarmVibrationTogglePreferenceController extends VibrationTogglePreferenceController {
 
     public AlarmVibrationTogglePreferenceController(Context context, String preferenceKey) {
@@ -32,3 +33,4 @@ public class AlarmVibrationTogglePreferenceController extends VibrationTogglePre
         return AVAILABLE;
     }
 }
+// LINT.ThenChange(AlarmVibrationIntensitySwitchPreference.kt)

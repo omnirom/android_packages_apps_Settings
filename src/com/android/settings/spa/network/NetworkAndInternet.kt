@@ -27,8 +27,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import com.android.settings.R
+import com.android.settings.Utils
 import com.android.settingslib.RestrictedLockUtilsInternal
-import com.android.settingslib.Utils
 import com.android.settingslib.spa.framework.common.SettingsEntryBuilder
 import com.android.settingslib.spa.framework.common.SettingsPageProvider
 import com.android.settingslib.spa.framework.common.SpaEnvironmentFactory
@@ -84,7 +84,7 @@ object NetworkAndInternetPageProvider : SettingsPageProvider {
 
     private fun isMobileAvailable(): Boolean {
         val context = SpaEnvironmentFactory.instance.appContext
-        return !isUserRestricted(context) && !Utils.isWifiOnly(context)
+        return !isUserRestricted(context) && Utils.isMobileDataCapable(context)
     }
 
     private fun isUserRestricted(context: Context): Boolean {

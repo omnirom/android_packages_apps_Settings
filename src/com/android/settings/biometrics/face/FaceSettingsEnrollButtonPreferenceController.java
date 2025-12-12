@@ -19,6 +19,7 @@ package com.android.settings.biometrics.face;
 import static com.android.settings.Utils.SETTINGS_PACKAGE_NAME;
 
 import android.app.admin.DevicePolicyManager;
+import android.app.admin.PolicyEnforcementInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -67,12 +68,10 @@ public class FaceSettingsEnrollButtonPreferenceController extends BasePreference
     @Override
     public void updateState(@NonNull Preference preference) {
         super.updateState(preference);
-        final boolean isDeviceOwnerBlockingAuth =
-                RestrictedLockUtilsInternal.checkIfKeyguardFeaturesDisabled(
-                        mContext, DevicePolicyManager.KEYGUARD_DISABLE_FACE, mUserId) != null;
+        final boolean isAdminBlockingAuth = isAdminRestricted();
 
         if (Flags.biometricsOnboardingEducation()) {
-            preference.setEnabled(!isDeviceOwnerBlockingAuth);
+            preference.setEnabled(!isAdminBlockingAuth);
         } else {
             mButton = ((LayoutPreference) preference).findViewById(
                     R.id.security_settings_face_settings_enroll_button);
@@ -82,7 +81,7 @@ public class FaceSettingsEnrollButtonPreferenceController extends BasePreference
             }
 
             mButton.setOnClickListener(this);
-            mButton.setEnabled(!isDeviceOwnerBlockingAuth);
+            mButton.setEnabled(!isAdminBlockingAuth);
         }
     }
 
@@ -108,6 +107,18 @@ public class FaceSettingsEnrollButtonPreferenceController extends BasePreference
         } else {
             mContext.startActivity(intent);
         }
+    }
+
+    private boolean isAdminRestricted() {
+        if (android.app.admin.flags.Flags.policyTransparencyRefactorEnabled()
+                && android.app.admin.flags.Flags.setKeyguardDisabledFeaturesCoexistence()) {
+            final PolicyEnforcementInfo info =
+                    RestrictedLockUtilsInternal.getEnforcingAdminsForKeyguardFeatures(mContext,
+                            DevicePolicyManager.KEYGUARD_DISABLE_FACE, mUserId);
+            return info != null && info.getMostImportantEnforcingAdmin() != null;
+        }
+        return RestrictedLockUtilsInternal.checkIfKeyguardFeaturesDisabled(
+                mContext, DevicePolicyManager.KEYGUARD_DISABLE_FACE, mUserId) != null;
     }
 
     @Override

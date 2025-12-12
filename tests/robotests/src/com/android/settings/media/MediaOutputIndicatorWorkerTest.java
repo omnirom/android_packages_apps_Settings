@@ -24,7 +24,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -37,6 +39,8 @@ import android.media.session.MediaController;
 import android.media.session.MediaSessionManager;
 import android.media.session.PlaybackState;
 import android.net.Uri;
+
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.bluetooth.Utils;
 import com.android.settings.slices.ShadowSliceBackgroundWorker;
@@ -96,7 +100,7 @@ public class MediaOutputIndicatorWorkerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        mShadowApplication = ShadowApplication.getInstance();
+        mShadowApplication = shadowOf((Application) ApplicationProvider.getApplicationContext());
         mContext = spy(RuntimeEnvironment.application);
         ShadowBluetoothUtils.sLocalBluetoothManager = mLocalBtManager;
         mLocalBluetoothManager = Utils.getLocalBtManager(mContext);
@@ -294,37 +298,5 @@ public class MediaOutputIndicatorWorkerTest {
         when(remoteMediaController.getPlaybackState()).thenReturn(playbackState);
 
         assertThat(mMediaOutputIndicatorWorker.getActiveLocalMediaController()).isNull();
-    }
-
-    @Test
-    public void isBroadcastSupported_leAudioBroadcastProfileIsNull_returnFalse() {
-        mMediaOutputIndicatorWorker.mLocalMediaManager = mLocalMediaManager;
-        mMediaOutputIndicatorWorker.onSlicePinned();
-
-        assertThat(mMediaOutputIndicatorWorker.isBroadcastSupported()).isFalse();
-    }
-
-    @Test
-    public void isBroadcastSupported_leAudioBroadcastProfileNotNull_returnTrue() {
-        mMediaOutputIndicatorWorker.mLocalMediaManager = mLocalMediaManager;
-        mMediaOutputIndicatorWorker.onSlicePinned();
-        when(mLocalBluetoothProfileManager.getLeAudioBroadcastProfile())
-                .thenReturn(mLeAudioBroadcastProfile);
-
-        assertThat(mMediaOutputIndicatorWorker.isBroadcastSupported()).isTrue();
-    }
-
-    @Test
-    public void isBroadcastSupported_noLocalMediaManager_returnFalse() {
-        mMediaOutputIndicatorWorker.mLocalMediaManager = null;
-
-        assertThat(mMediaOutputIndicatorWorker.isBroadcastSupported()).isFalse();
-    }
-
-    @Test
-    public void isDeviceBroadcasting_noLocalMediaManager_returnFalse() {
-        mMediaOutputIndicatorWorker.mLocalMediaManager = null;
-
-        assertThat(mMediaOutputIndicatorWorker.isDeviceBroadcasting()).isFalse();
     }
 }

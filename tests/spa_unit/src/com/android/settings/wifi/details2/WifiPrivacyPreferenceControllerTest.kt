@@ -25,11 +25,11 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.core.os.bundleOf
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.settings.R
 import com.android.settingslib.spa.framework.util.KEY_DESTINATION
+import com.android.wifitrackerlib.WifiEntry
 import com.google.common.truth.Truth
 import org.junit.Rule
 import org.junit.Test
@@ -45,29 +45,29 @@ import org.mockito.kotlin.whenever
 
 @RunWith(AndroidJUnit4::class)
 class WifiPrivacyPreferenceControllerTest {
-    @get:Rule
-    val composeTestRule = createComposeRule()
+    @get:Rule val composeTestRule = createComposeRule()
 
-    private val mockWifiManager = mock<WifiManager> {
-        on { isConnectedMacRandomizationSupported } doReturn true
-    }
+    private val mockWifiManager =
+        mock<WifiManager> { on { isConnectedMacRandomizationSupported } doReturn true }
 
-    private val context: Context = spy(ApplicationProvider.getApplicationContext()) {
-        on { getSystemService(WifiManager::class.java) } doReturn mockWifiManager
-        doNothing().whenever(mock).startActivity(any())
-    }
+    private val context: Context =
+        spy(ApplicationProvider.getApplicationContext()) {
+            on { getSystemService(WifiManager::class.java) } doReturn mockWifiManager
+            doNothing().whenever(mock).startActivity(any())
+        }
+
+    private val mockWifiEntry = mock<WifiEntry> { on { getKey() } doReturn "" }
 
     private val controller = WifiPrivacyPreferenceController(context, TEST_KEY)
 
     @Test
     fun title_isDisplayed() {
         composeTestRule.setContent {
-            CompositionLocalProvider(LocalContext provides context) {
-                controller.Content()
-            }
+            CompositionLocalProvider(LocalContext provides context) { controller.Content() }
         }
 
-        composeTestRule.onNodeWithText(context.getString(R.string.wifi_privacy_settings))
+        composeTestRule
+            .onNodeWithText(context.getString(R.string.wifi_privacy_settings))
             .assertIsDisplayed()
     }
 
@@ -75,17 +75,16 @@ class WifiPrivacyPreferenceControllerTest {
     fun onClick_startWifiPrivacyPage() {
         composeTestRule.setContent {
             CompositionLocalProvider(LocalContext provides context) {
-                controller.setWifiEntryKey("")
+                controller.setWifiEntry(mockWifiEntry)
                 controller.Content()
             }
         }
 
-        composeTestRule.onNodeWithText(context.getString(R.string.wifi_privacy_settings))
+        composeTestRule
+            .onNodeWithText(context.getString(R.string.wifi_privacy_settings))
             .performClick()
 
-        val intent = argumentCaptor<Intent> {
-            verify(context).startActivity(capture())
-        }.firstValue
+        val intent = argumentCaptor<Intent> { verify(context).startActivity(capture()) }.firstValue
         Truth.assertThat(intent.getStringExtra(KEY_DESTINATION))
             .isEqualTo(WifiPrivacyPageProvider.getRoute(""))
     }

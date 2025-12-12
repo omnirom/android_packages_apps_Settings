@@ -51,6 +51,7 @@ import com.android.settingslib.spa.framework.util.formatString
 import com.android.settingslib.spa.widget.preference.Preference
 import com.android.settingslib.spa.widget.preference.PreferenceModel
 import com.android.settingslib.spa.widget.ui.SettingsBody
+import com.android.settingslib.spa.widget.ui.SettingsIntro
 import com.android.settingslib.spaprivileged.model.app.AppEntry
 import com.android.settingslib.spaprivileged.model.app.AppListModel
 import com.android.settingslib.spaprivileged.model.app.AppRecord
@@ -148,7 +149,7 @@ fun BackgroundInstalledAppList(
             appList = appList,
             header = {
                 Box(Modifier.padding(SettingsDimension.itemPadding)) {
-                    SettingsBody(stringResource(R.string.background_install_summary))
+                    SettingsIntro(stringResource(R.string.background_install_summary))
                 }
             }
     )

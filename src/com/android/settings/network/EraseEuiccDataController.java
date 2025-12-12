@@ -64,7 +64,7 @@ public class EraseEuiccDataController extends BasePreferenceController {
                 && !MobileNetworkUtils.isMobileNetworkUserRestricted(mContext);
         boolean hasEuiccFeature = mContext.getPackageManager().hasSystemFeature(
                 PackageManager.FEATURE_TELEPHONY_EUICC);
-        return SubscriptionUtil.isSimHardwareVisible(mContext)
+        return (Utils.isMobileDataCapable(mContext) || Utils.isVoiceCapable(mContext))
                 && isAllowedUser
                 && hasEuiccFeature ? AVAILABLE_UNSEARCHABLE : UNSUPPORTED_ON_DEVICE;
     }

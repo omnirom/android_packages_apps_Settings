@@ -24,7 +24,6 @@
 
   <com.android.settingslib.widget.FooterPreference
       android:key="app_ops_settings_preference"
-      android:title="@string/change_wifi_state_app_detail_summary"
-      android:selectable="false"/>
+      android:title="@string/change_wifi_state_app_detail_summary" />
 
 </PreferenceScreen>

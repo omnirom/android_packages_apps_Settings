@@ -46,11 +46,7 @@ public class AutoLockSettingsFragment extends RadioButtonPickerFragment {
 
     @Override
     public void onCreate(@NonNull Bundle icicle) {
-        if (android.os.Flags.allowPrivateProfile()
-                && android.multiuser.Flags.supportAutolockForPrivateSpace()
-                && android.multiuser.Flags.enablePrivateSpaceFeatures()) {
-            super.onCreate(icicle);
-        }
+        super.onCreate(icicle);
     }
 
     @Override

@@ -30,6 +30,7 @@ import com.android.settings.core.SubSettingLauncher;
 import com.android.settings.search.actionbar.SearchMenuController;
 import com.android.settings.support.actionbar.HelpResourceProvider;
 import com.android.settingslib.core.instrumentation.Instrumentable;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 import com.google.android.setupcompat.util.WizardManagerHelper;
 import com.google.android.setupdesign.util.ThemeHelper;
@@ -89,15 +90,21 @@ public class AccessibilitySettingsForSetupWizardActivity extends SettingsActivit
 
     @Override
     protected void onCreate(Bundle savedState) {
-        super.onCreate(savedState);
+        // Custom theme needs to be set before any view is inflated, so that the theme would
+        // apply correctly including when the configuration changes.
         applyTheme();
+        super.onCreate(savedState);
         findViewById(R.id.content_parent).setFitsSystemWindows(false);
     }
 
     private void applyTheme() {
         final boolean isAnySetupWizard = WizardManagerHelper.isAnySetupWizard(getIntent());
         if (isAnySetupWizard) {
-            setTheme(R.style.SettingsPreferenceTheme_SetupWizard);
+            if (SettingsThemeHelper.isExpressiveTheme(this)) {
+                setTheme(R.style.SettingsPreferenceTheme_SetupWizard_Expressive);
+            } else {
+                setTheme(R.style.SettingsPreferenceTheme_SetupWizard);
+            }
             ThemeHelper.trySetSuwTheme(this);
         }
     }

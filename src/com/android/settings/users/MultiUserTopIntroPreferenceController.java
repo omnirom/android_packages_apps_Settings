@@ -47,10 +47,6 @@ public class MultiUserTopIntroPreferenceController extends BasePreferenceControl
     @Override
     public void updateState(Preference preference) {
         mUserCaps.updateAddUserCapabilities(mContext);
-        if (android.multiuser.Flags.newMultiuserSettingsUx()) {
-            preference.setVisible(!mUserCaps.mIsGuest);
-        } else {
-            preference.setVisible(isAvailable());
-        }
+        preference.setVisible(!mUserCaps.mIsGuest);
     }
 }

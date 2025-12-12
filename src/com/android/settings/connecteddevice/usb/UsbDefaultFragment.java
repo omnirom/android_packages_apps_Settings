@@ -35,9 +35,9 @@ import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.development.DeveloperOptionAwareMixin;
 import com.android.settings.widget.RadioButtonPickerFragment;
+import com.android.settingslib.RestrictedSelectorWithWidgetPreference;
 import com.android.settingslib.widget.CandidateInfo;
 import com.android.settingslib.widget.FooterPreference;
-import com.android.settingslib.widget.SelectorWithWidgetPreference;
 
 import com.google.android.collect.Lists;
 
@@ -220,11 +220,15 @@ public class UsbDefaultFragment extends RadioButtonPickerFragment implements
     private void refresh(long functions) {
         final PreferenceScreen screen = getPreferenceScreen();
         for (long option : UsbDetailsFunctionsController.FUNCTIONS_MAP.keySet()) {
-            final SelectorWithWidgetPreference pref =
+            final RestrictedSelectorWithWidgetPreference pref =
                     screen.findPreference(UsbBackend.usbFunctionsToString(option));
             if (pref != null) {
                 final boolean isSupported = mUsbBackend.areFunctionsSupported(option);
                 pref.setEnabled(isSupported);
+                String userRestriction = UsbBackend.maybeGetUserRestriction(option);
+                if (userRestriction != null) {
+                    pref.checkRestrictionAndSetDisabled(userRestriction);
+                }
                 if (isSupported) {
                     if (functions == UsbManager.FUNCTION_NCM) {
                         pref.setChecked(UsbManager.FUNCTION_RNDIS == option);

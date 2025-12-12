@@ -45,7 +45,7 @@ public class NotificationControllerTest {
         mContext = RuntimeEnvironment.application;
         mNotificationController = NotificationController.getInstance(mContext);
         mDataManager = mNotificationController.getDataManager();
-        LocaleList.setDefault(LocaleList.forLanguageTags("en-CA"));
+        LocaleList.setDefault(LocaleList.forLanguageTags("fr-CA"));
     }
 
     @After
@@ -87,20 +87,14 @@ public class NotificationControllerTest {
     @Test
     public void testShouldTriggerNotification_inSystemLocale_returnFalse() throws Exception {
         int uid = 102;
-        // As checking whether app's locales exist in system locales, both app locales and system
-        // locales have to remove the u extension first when doing the comparison. The following
-        // three locales are all in the system locale after removing the u extension so it's
-        // unnecessary to trigger a notification for the suggestion.
-        String locale1 = "en-CA";
-        String locale2 = "ar-JO-u-nu-latn";
-        String locale3 = "ar-JO";
+        String locale1 = "en-US";
+        String locale2 = "ar-DJ";
 
         LocaleList.setDefault(
                 LocaleList.forLanguageTags("en-CA-u-mu-fahrenhe,ar-JO-u-mu-fahrenhe-nu-latn"));
 
         assertThat(mNotificationController.shouldTriggerNotification(uid, locale1)).isFalse();
         assertThat(mNotificationController.shouldTriggerNotification(uid, locale2)).isFalse();
-        assertThat(mNotificationController.shouldTriggerNotification(uid, locale3)).isFalse();
     }
 
     @Test

@@ -24,6 +24,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.UserHandle;
 import android.text.TextUtils;
@@ -44,6 +45,8 @@ public final class BluetoothKeyMissingReceiver extends BroadcastReceiver {
     private static final String TAG = "BtKeyMissingReceiver";
     private static final String CHANNEL_ID = "bluetooth_notification_channel";
     private static final int NOTIFICATION_ID = android.R.drawable.stat_sys_data_bluetooth;
+    private static final String DEVICE_DETAILS_ACTION =
+            "com.android.settings.BLUETOOTH_DEVICE_DETAIL_SETTINGS";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -76,9 +79,9 @@ public final class BluetoothKeyMissingReceiver extends BroadcastReceiver {
             boolean keyMissingFirstTime = keyMissingCount == null || keyMissingCount == 1;
             if (shouldShowDialog(context, device, powerManager)) {
                 if (keyMissingFirstTime) {
-                    Intent pairingIntent = getKeyMissingDialogIntent(context, device);
+                    Intent dialogIntent = getKeyMissingDialogIntent(context, device);
                     Log.d(TAG, "Show key missing dialog:" + device);
-                    context.startActivityAsUser(pairingIntent, UserHandle.CURRENT);
+                    context.startActivityAsUser(dialogIntent, UserHandle.CURRENT);
                 } else {
                     Log.d(TAG, "Show key missing toast:" + device);
                     Toast.makeText(
@@ -120,11 +123,11 @@ public final class BluetoothKeyMissingReceiver extends BroadcastReceiver {
                         NotificationManager.IMPORTANCE_HIGH);
         nm.createNotificationChannel(notificationChannel);
 
-        PendingIntent pairIntent =
+        PendingIntent deviceDetailsIntent =
                 PendingIntent.getActivity(
                         context,
                         0,
-                        getKeyMissingDialogIntent(context, bluetoothDevice),
+                        getDeviceDetailsIntent(bluetoothDevice.getAddress()),
                         PendingIntent.FLAG_ONE_SHOT
                                 | PendingIntent.FLAG_UPDATE_CURRENT
                                 | PendingIntent.FLAG_IMMUTABLE);
@@ -138,7 +141,7 @@ public final class BluetoothKeyMissingReceiver extends BroadcastReceiver {
                         context.getString(
                                 R.string.bluetooth_key_missing_title, bluetoothDevice.getAlias()))
                 .setContentText(context.getString(R.string.bluetooth_key_missing_message))
-                .setContentIntent(pairIntent)
+                .setContentIntent(deviceDetailsIntent)
                 .setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_SOUND)
                 .setColor(
@@ -146,5 +149,15 @@ public final class BluetoothKeyMissingReceiver extends BroadcastReceiver {
                                 com.android.internal.R.color.system_notification_accent_color));
 
         nm.notify(NOTIFICATION_ID, builder.build());
+    }
+
+    private Intent getDeviceDetailsIntent(String address) {
+        Bundle args = new Bundle();
+        args.putString("device_address", address);
+        Intent intent = new Intent(DEVICE_DETAILS_ACTION);
+        intent.putExtra(":settings:show_fragment_args", args);
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intent;
     }
 }

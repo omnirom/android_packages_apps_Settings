@@ -15,6 +15,9 @@
  */
 package com.android.settings.network;
 
+import static android.platform.test.flag.junit.SetFlagsRule.DefaultInitValueType.DEVICE_DEFAULT;
+
+import static com.android.settings.flags.Flags.FLAG_CATALYST_INTERNET_SETTINGS;
 import static com.android.settings.network.NetworkProviderSettings.MENU_FIX_CONNECTIVITY;
 import static com.android.settings.network.NetworkProviderSettings.MENU_ID_DISCONNECT;
 import static com.android.settings.network.NetworkProviderSettings.MENU_ID_FORGET;
@@ -54,6 +57,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.UserManager;
+import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.Settings;
 import android.telephony.SubscriptionManager;
 import android.view.ContextMenu;
@@ -115,6 +119,9 @@ import java.util.List;
 })
 public class NetworkProviderSettingsTest {
 
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule(DEVICE_DEFAULT);
+
     private static final int XML_RES = R.xml.wifi_tether_settings;
     private static final int NUM_NETWORKS = 4;
     private static final String FAKE_URI_STRING = "fakeuri";
@@ -158,10 +165,6 @@ public class NetworkProviderSettingsTest {
     @Mock
     InternetUpdater mInternetUpdater;
     @Mock
-    PreferenceCategory mConnectedWifiEntryPreferenceCategory;
-    @Mock
-    PreferenceCategory mFirstWifiEntryPreferenceCategory;
-    @Mock
     NetworkProviderSettings.WifiRestriction mWifiRestriction;
     @Mock
     EthernetManager mEtherentManager;
@@ -174,6 +177,7 @@ public class NetworkProviderSettingsTest {
 
     @Before
     public void setUp() {
+        mSetFlagsRule.disableFlags(FLAG_CATALYST_INTERNET_SETTINGS);
         when(mFragmentActivity.getApplicationContext()).thenReturn(mContext);
         when(mMenu.add(anyInt(), anyInt(), anyInt(), anyInt())).thenReturn(mMenuItem);
 
@@ -205,14 +209,6 @@ public class NetworkProviderSettingsTest {
         mNetworkProviderSettings.mInternetUpdater = mInternetUpdater;
         mNetworkProviderSettings.mEthernetTracker = mEthernetTracker;
         mNetworkProviderSettings.mWifiStatusMessagePreference = new FooterPreference(mContext);
-        doReturn(NetworkProviderSettings.PREF_KEY_CONNECTED_ACCESS_POINTS)
-                .when(mConnectedWifiEntryPreferenceCategory).getKey();
-        mNetworkProviderSettings.mConnectedWifiEntryPreferenceCategory =
-                mConnectedWifiEntryPreferenceCategory;
-        doReturn(NetworkProviderSettings.PREF_KEY_FIRST_ACCESS_POINTS)
-                .when(mFirstWifiEntryPreferenceCategory).getKey();
-        mNetworkProviderSettings.mFirstWifiEntryPreferenceCategory =
-                mFirstWifiEntryPreferenceCategory;
         mNetworkProviderSettings.mEthernetPreferenceCategory = mEthernetPreferenceCategory;
 
         ReflectionHelpers.setField(mNetworkProviderSettings, "mDashboardFeatureProvider",
@@ -607,24 +603,6 @@ public class NetworkProviderSettingsTest {
     }
 
     @Test
-    public void getConnectedWifiPreferenceCategory_internetWiFi_getConnectedAccessPoints() {
-        doReturn(InternetUpdater.INTERNET_WIFI).when(mInternetUpdater).getInternetType();
-
-        final PreferenceCategory pc = mNetworkProviderSettings.getConnectedWifiPreferenceCategory();
-
-        assertThat(pc.getKey()).isEqualTo(NetworkProviderSettings.PREF_KEY_CONNECTED_ACCESS_POINTS);
-    }
-
-    @Test
-    public void getConnectedWifiPreferenceCategory_internetCellular_getFirstAccessPoints() {
-        doReturn(InternetUpdater.INTERNET_CELLULAR).when(mInternetUpdater).getInternetType();
-
-        final PreferenceCategory pc = mNetworkProviderSettings.getConnectedWifiPreferenceCategory();
-
-        assertThat(pc.getKey()).isEqualTo(NetworkProviderSettings.PREF_KEY_FIRST_ACCESS_POINTS);
-    }
-
-    @Test
     public void createConnectedWifiEntryPreference_internetWiFi_createConnectedPreference() {
         doReturn(InternetUpdater.INTERNET_WIFI).when(mInternetUpdater).getInternetType();
 
@@ -963,11 +941,11 @@ public class NetworkProviderSettingsTest {
 
         verify(mEthernetPreferenceCategory).removeAll();
         verify(mEthernetPreferenceCategory).setVisible(true);
-        verify(mEthernetPreferenceCategory).addPreference(arg.capture());
+        verify(mEthernetPreferenceCategory, times(2)).addPreference(arg.capture());
 
-        Preference pref = arg.getValue();
-        assertThat(pref.getKey()).isEqualTo("eth0");
-        assertThat(pref.getSummary()).isEqualTo("Connected");
+        List<Preference> prefs = arg.getAllValues();
+        assertThat(prefs.get(1).getKey()).isEqualTo("eth0");
+        assertThat(prefs.get(1).getSummary()).isEqualTo("Connected");
     }
 
     @Test
@@ -983,10 +961,10 @@ public class NetworkProviderSettingsTest {
 
         ArgumentCaptor<Preference> arg = ArgumentCaptor.forClass(Preference.class);
 
-        verify(mEthernetPreferenceCategory).addPreference(arg.capture());
+        verify(mEthernetPreferenceCategory, times(2)).addPreference(arg.capture());
 
-        Preference pref = arg.getValue();
-        assertThat(pref.getSummary()).isEqualTo("Disconnected");
+        List<Preference> prefs = arg.getAllValues();
+        assertThat(prefs.get(1).getSummary()).isEqualTo("Disconnected");
     }
 
     @Implements(PreferenceFragmentCompat.class)

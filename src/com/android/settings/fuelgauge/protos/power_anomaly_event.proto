@@ -17,35 +17,45 @@ message PowerAnomalyEvent {
   oneof info {
     WarningBannerInfo warning_banner_info = 6;
     WarningItemInfo warning_item_info = 7;
+    BatteryTipInfo battery_tip_info = 9;
   }
   optional string dismiss_record_key = 8;
 }
 
-// Next id: 2
-enum PowerAnomalyType{
+// Next id: 3
+enum PowerAnomalyType {
   TYPE_SETTINGS_BANNER = 0;
   TYPE_APPS_ITEM = 1;
+  TYPE_BATTERY_TIP = 2;
 }
 
-// Next id: 8
-enum PowerAnomalyKey{
+// Next id: 14
+enum PowerAnomalyKey {
   KEY_BRIGHTNESS = 0;
   KEY_SCREEN_TIMEOUT = 1;
-  KEY_APP_TOTAL_ALWAYS_HIGH = 2;
-  KEY_APP_TOTAL_HIGHER_THAN_USUAL = 3;
+  KEY_APP_ALWAYS_HIGH = 2;
+  KEY_APP_THAN_USUAL = 3;
   KEY_APP_BACKGROUND_ALWAYS_HIGH = 4;
-  KEY_APP_BACKGROUND_HIGHER_THAN_USUAL = 5;
+  KEY_APP_BACKGROUND_THAN_USUAL = 5;
   KEY_APP_FOREGROUND_ALWAYS_HIGH = 6;
-  KEY_APP_FOREGROUND_HIGHER_THAN_USUAL = 7;
+  KEY_APP_FOREGROUND_THAN_USUAL = 7;
+  KEY_APP_FOREGROUND_SERVICE_ALWAYS_HIGH = 8;
+  KEY_APP_FOREGROUND_SERVICE_THAN_USUAL = 9;
+  KEY_WAKELOCK_BACKGROUND_HOLDING_DURATION_LONG = 10;
+  KEY_WAKELOCK_BACKGROUND_HOLD_RATIO_HIGH = 11;
+  KEY_WAKELOCK_TOTAL_HOLD_RATIO_HIGH = 12;
+  KEY_UNRESTRICTED_MODE_LONG_DURATION_HIGH_BACKGROUND = 13;
 }
 
 // Next id: 3
-enum DetectRequestSourceType{
+enum DetectRequestSourceType {
   TYPE_UNKNOWN_SOURCE = 0;
   TYPE_USAGE_UI = 1;
   TYPE_DATA_LOADER = 2;
+  TYPE_BATTERY_UI = 3;
 }
 
+// Next id: 10
 message WarningBannerInfo {
   optional string title_string = 1;
   optional string description_string = 2;
@@ -61,6 +71,7 @@ message WarningBannerInfo {
   optional int32 main_button_config_settings_value = 9;
 }
 
+// Next id: 11
 message WarningItemInfo {
   optional int64 start_timestamp = 1;
   optional int64 end_timestamp = 2;
@@ -72,4 +83,38 @@ message WarningItemInfo {
   optional string item_key = 8;
   optional string warning_info_string = 9;
   optional string anomaly_hint_pref_key = 10;
+}
+
+// Next id: 8
+message BatteryTipInfo {
+  optional string title_string = 1;
+  optional string description_string = 2;
+  optional BannerButtonInfo positive_button = 3;
+  optional BannerButtonInfo negative_button = 4;
+  optional bool hide_dismiss_button = 5;
+  optional int32 uid = 6;
+  optional string package_name = 7;
+}
+
+// Next id: 4
+message BannerButtonInfo {
+  optional string text = 1;
+  oneof action_info {
+    ViewSettings view_settings = 2;
+    UpdateOptimizationMode update_optimization_mode = 3;
+  }
+}
+
+// Next id: 6
+message ViewSettings {
+  optional string settings_destination = 1;
+  optional int32 source_metrics_category = 2;
+  optional string source_highlight_key = 3;
+  optional string hint_pref_key = 4;
+  optional string hint_text = 5;
+}
+
+// Next id: 2
+message UpdateOptimizationMode {
+  optional string feedback_string = 1;
 }

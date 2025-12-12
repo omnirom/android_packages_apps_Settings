@@ -16,6 +16,8 @@
 
 package com.android.settings.fuelgauge.batteryusage;
 
+import static com.android.settings.fuelgauge.utils.LifecycleAwareExecutorFactory.newSingleThreadExecutor;
+
 import android.app.usage.UsageEvents;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -32,6 +34,7 @@ import com.android.settings.overlay.FeatureFactory;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.function.Supplier;
 
 /** Load battery usage data in the background. */
@@ -57,7 +60,8 @@ public final class BatteryUsageDataLoader {
     static void loadBatteryStatsData(final Context context, final boolean isFullChargeStart) {
         BatteryUsageLogUtils.writeLog(context, Action.FETCH_USAGE_DATA, "");
         final long currentTime = System.currentTimeMillis();
-        try (BatteryUsageStats batteryUsageStats = DataProcessor.getBatteryUsageStats(context)) {
+        try (BatteryUsageStats batteryUsageStats = DataProcessor.getBatteryUsageStats(
+                context, /* isFromPeriodJob= */ true)) {
             final List<BatteryEntry> batteryEntryList =
                     sFakeBatteryEntryListSupplier != null
                             ? sFakeBatteryEntryListSupplier.get()
@@ -125,29 +129,12 @@ public final class BatteryUsageDataLoader {
                         userIdsSeries,
                         /* isFromPeriodJob= */ true,
                         batteryDiffDataMap -> {
-                            final PowerUsageFeatureProvider featureProvider =
-                                    FeatureFactory.getFeatureFactory()
-                                            .getPowerUsageFeatureProvider();
-                            DatabaseUtils.sendBatteryUsageSlotData(
-                                    context,
-                                    ConvertUtils.convertToBatteryUsageSlotList(
-                                            context,
-                                            batteryDiffDataMap,
-                                            featureProvider.isAppOptimizationModeLogged()));
-                            if (batteryDiffDataMap.values().stream()
-                                    .anyMatch(
-                                            data ->
-                                                    data != null
-                                                            && (!data.getSystemDiffEntryList()
-                                                                            .isEmpty()
-                                                                    || !data.getAppDiffEntryList()
-                                                                            .isEmpty()))) {
-                                featureProvider.detectPowerAnomaly(
-                                        context,
-                                        /* displayDrain= */ 0,
-                                        DetectRequestSourceType.TYPE_DATA_LOADER);
-                            }
-                        });
+                            ExecutorService executor = newSingleThreadExecutor(null);
+                            executor.execute(
+                                    () -> onBatteryDiffDataMapUpdate(context, batteryDiffDataMap));
+                            executor.shutdown();
+                        }
+                );
         if (batteryLevelData == null) {
             Log.d(TAG, "preprocessBatteryUsageSlots() no new battery usage data.");
             return;
@@ -160,6 +147,30 @@ public final class BatteryUsageDataLoader {
                 String.format(
                         "preprocessBatteryUsageSlots() batteryLevelData=%s in %d/ms",
                         batteryLevelData, System.currentTimeMillis() - start));
+    }
+
+    private static void onBatteryDiffDataMapUpdate(
+            Context context, Map<Long, BatteryDiffData> batteryDiffDataMap) {
+        final PowerUsageFeatureProvider featureProvider =
+                FeatureFactory.getFeatureFactory().getPowerUsageFeatureProvider();
+        DatabaseUtils.sendBatteryUsageSlotData(
+                context,
+                ConvertUtils.convertToBatteryUsageSlotList(
+                        context,
+                        batteryDiffDataMap,
+                        featureProvider.isAppOptimizationModeLogged()));
+        if (batteryDiffDataMap.values().stream().anyMatch(BatteryUsageDataLoader::hasValidData)) {
+            featureProvider.detectPowerAnomaly(
+                    context, /* displayDrain= */ 0, DetectRequestSourceType.TYPE_DATA_LOADER);
+        }
+    }
+
+    private static boolean hasValidData(BatteryDiffData batteryDiffData) {
+        if (batteryDiffData == null) {
+            return false;
+        }
+        return !batteryDiffData.getSystemDiffEntryList().isEmpty()
+                || !batteryDiffData.getAppDiffEntryList().isEmpty();
     }
 
     private static void loadUsageDataSafely(

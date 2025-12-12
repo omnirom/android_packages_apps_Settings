@@ -55,4 +55,14 @@
         <item name="colorPrimary">@*android:color/primary_dark_device_default_settings</item>
         <item name="colorAccent">@*android:color/accent_device_default_dark</item>
     </style>
+
+    <style name="ThemeOverlay.SafetyCenterColors.Dark" parent="">
+        <item name="colorScIconInfo">@color/sc_icon_info_dark</item>
+        <item name="colorScIconRecommend">@color/sc_icon_recommend_dark</item>
+        <item name="colorScIconWarn">@color/sc_icon_warn_dark</item>
+        <item name="colorScShieldAccent">@color/sc_shield_accent_dark</item>
+    </style>
+
+    <style name="ThemeOverlay.SafetyCenterColors"
+        parent="ThemeOverlay.SafetyCenterColors.Dark" />
 </resources>

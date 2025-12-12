@@ -61,10 +61,11 @@ public class FixedOffsetPicker extends BaseTimeZoneInfoPicker {
         final TimeZoneInfo.Formatter formatter = new TimeZoneInfo.Formatter(getLocale(),
                 new Date());
         final List<TimeZoneInfo> timeZoneInfos = new ArrayList<>();
-        timeZoneInfos.add(formatter.format(TimeZone.getFrozenTimeZone("Etc/UTC")));
+        // GMT+0 is handled here so it shows up as the first item in the list.
+        timeZoneInfos.add(formatter.format(TimeZone.getFrozenTimeZone("Etc/GMT+0")));
         for (int hoursOffset = MAX_HOURS_OFFSET; hoursOffset >= MIN_HOURS_OFFSET; --hoursOffset) {
             if (hoursOffset == 0) {
-                // UTC is handled above, so don't add GMT +/-0 again.
+                // GMT+0 is handled above, so don't add GMT +/-0 again.
                 continue;
             }
             final String id = String.format(Locale.US, "Etc/GMT%+d", hoursOffset);

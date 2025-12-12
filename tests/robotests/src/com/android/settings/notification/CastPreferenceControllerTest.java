@@ -18,8 +18,13 @@ package com.android.settings.notification;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.robolectric.Shadows.shadowOf;
+
+import android.app.Application;
 import android.content.Context;
 import android.telephony.TelephonyManager;
+
+import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +49,8 @@ public class CastPreferenceControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        ShadowApplication shadowContext = ShadowApplication.getInstance();
+        ShadowApplication shadowContext =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         shadowContext.setSystemService(Context.TELEPHONY_SERVICE, mTelephonyManager);
         mController = new CastPreferenceController(RuntimeEnvironment.application);
     }

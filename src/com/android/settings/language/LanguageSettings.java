@@ -68,11 +68,6 @@ public class LanguageSettings extends DashboardFragment {
     }
 
     @Override
-    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
-        return LanguageSettingScreen.KEY;
-    }
-
-    @Override
     protected int getPreferenceScreenResId() {
         return R.xml.language_settings;
     }

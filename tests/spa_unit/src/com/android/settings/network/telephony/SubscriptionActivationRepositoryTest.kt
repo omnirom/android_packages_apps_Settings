@@ -17,8 +17,10 @@
 package com.android.settings.network.telephony
 
 import android.content.Context
-import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.UserHandle
+import android.os.UserManager
+import android.provider.Settings
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
 import android.telephony.TelephonyManager.ACTION_SHOW_NOTICE_ECM_BLOCK_OTHERS
@@ -27,9 +29,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.settings.network.SatelliteRepository
 import com.android.settings.network.SimOnboardingActivity
 import com.android.settingslib.spa.testutils.firstWithTimeoutOrNull
+import com.android.settingslib.spaprivileged.framework.common.userManager
+import com.android.settingslib.spaprivileged.settingsprovider.settingsGlobalBoolean
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
@@ -47,14 +52,26 @@ import org.mockito.kotlin.whenever
 @RunWith(AndroidJUnit4::class)
 class SubscriptionActivationRepositoryTest {
 
-    private val mockTelephonyManager = mock<TelephonyManager> {
-        on { createForSubscriptionId(SUB_ID) } doReturn mock
-    }
+    private val mockPackageManager =
+        mock<PackageManager> {
+            on { hasSystemFeature(PackageManager.FEATURE_TELEPHONY) } doReturn true
+        }
 
-    private val context: Context = spy(ApplicationProvider.getApplicationContext()) {
-        doNothing().whenever(mock).startActivity(any())
-        on { getSystemService(TelephonyManager::class.java) } doReturn mockTelephonyManager
-    }
+    private val mockTelephonyManager =
+        mock<TelephonyManager> { on { createForSubscriptionId(SUB_ID) } doReturn mock }
+    private val mockUserManager =
+        mock<UserManager> {
+            on { isAdminUser } doReturn true
+            on { hasUserRestriction(UserManager.DISALLOW_CONFIG_MOBILE_NETWORKS) } doReturn false
+        }
+
+    private val context: Context =
+        spy(ApplicationProvider.getApplicationContext()) {
+            doNothing().whenever(mock).startActivity(any())
+            on { getSystemService(TelephonyManager::class.java) } doReturn mockTelephonyManager
+            on { packageManager } doReturn mockPackageManager
+            on { userManager } doReturn mockUserManager
+        }
 
     private val mockCallStateRepository = mock<CallStateRepository>()
     private val mockSatelliteRepository = mock<SatelliteRepository>()
@@ -62,14 +79,47 @@ class SubscriptionActivationRepositoryTest {
     private val repository =
         SubscriptionActivationRepository(context, mockCallStateRepository, mockSatelliteRepository)
 
+    var isAirplaneModeOn by context.settingsGlobalBoolean(Settings.Global.AIRPLANE_MODE_ON)
+
+    @Before
+    fun setup() {
+        isAirplaneModeOn = false
+    }
+
+    @Test
+    fun isActivationChangeableFlow_airplaneModeOn_notChangeable() = runBlocking {
+        mockCallStateRepository.stub {
+            on { isInCallFlow() } doReturn flowOf(false)
+            on { isInEmergencyCallFlow() } doReturn flowOf(false)
+        }
+        mockSatelliteRepository.stub { on { getIsSessionStartedFlow() } doReturn flowOf(false) }
+        isAirplaneModeOn = true
+
+        val changeable = repository.isActivationChangeableFlow().firstWithTimeoutOrNull()
+
+        assertThat(changeable).isFalse()
+    }
+
+    @Test
+    fun isActivationChangeableFlow_airplaneModeOff_changeable() = runBlocking {
+        mockCallStateRepository.stub {
+            on { isInCallFlow() } doReturn flowOf(false)
+            on { isInEmergencyCallFlow() } doReturn flowOf(false)
+        }
+        mockSatelliteRepository.stub { on { getIsSessionStartedFlow() } doReturn flowOf(false) }
+
+        val changeable = repository.isActivationChangeableFlow().firstWithTimeoutOrNull()
+
+        assertThat(changeable).isTrue()
+    }
+
     @Test
     fun isActivationChangeableFlow_changeable() = runBlocking {
         mockCallStateRepository.stub {
             on { isInCallFlow() } doReturn flowOf(false)
+            on { isInEmergencyCallFlow() } doReturn flowOf(false)
         }
-        mockSatelliteRepository.stub {
-            on { getIsSessionStartedFlow() } doReturn flowOf(false)
-        }
+        mockSatelliteRepository.stub { on { getIsSessionStartedFlow() } doReturn flowOf(false) }
 
         val changeable = repository.isActivationChangeableFlow().firstWithTimeoutOrNull()
 
@@ -80,10 +130,9 @@ class SubscriptionActivationRepositoryTest {
     fun isActivationChangeableFlow_inCall_notChangeable() = runBlocking {
         mockCallStateRepository.stub {
             on { isInCallFlow() } doReturn flowOf(true)
+            on { isInEmergencyCallFlow() } doReturn flowOf(false)
         }
-        mockSatelliteRepository.stub {
-            on { getIsSessionStartedFlow() } doReturn flowOf(false)
-        }
+        mockSatelliteRepository.stub { on { getIsSessionStartedFlow() } doReturn flowOf(false) }
 
         val changeable = repository.isActivationChangeableFlow().firstWithTimeoutOrNull()
 
@@ -94,10 +143,22 @@ class SubscriptionActivationRepositoryTest {
     fun isActivationChangeableFlow_satelliteSessionStarted_notChangeable() = runBlocking {
         mockCallStateRepository.stub {
             on { isInCallFlow() } doReturn flowOf(false)
+            on { isInEmergencyCallFlow() } doReturn flowOf(false)
         }
-        mockSatelliteRepository.stub {
-            on { getIsSessionStartedFlow() } doReturn flowOf(true)
+        mockSatelliteRepository.stub { on { getIsSessionStartedFlow() } doReturn flowOf(true) }
+
+        val changeable = repository.isActivationChangeableFlow().firstWithTimeoutOrNull()
+
+        assertThat(changeable).isFalse()
+    }
+
+    @Test
+    fun isActivationChangeableFlow_inEmergencyCall_notChangeable() = runBlocking {
+        mockCallStateRepository.stub {
+            on { isInCallFlow() } doReturn flowOf(false)
+            on { isInEmergencyCallFlow() } doReturn flowOf(true)
         }
+        mockSatelliteRepository.stub { on { getIsSessionStartedFlow() } doReturn flowOf(false) }
 
         val changeable = repository.isActivationChangeableFlow().firstWithTimeoutOrNull()
 
@@ -113,9 +174,7 @@ class SubscriptionActivationRepositoryTest {
 
     @Test
     fun setActive_turnOnAndIsEmergencyCallbackMode() = runBlocking {
-        mockTelephonyManager.stub {
-            on { emergencyCallbackMode } doReturn true
-        }
+        mockTelephonyManager.stub { on { emergencyCallbackMode } doReturn true }
 
         repository.setActive(subId = SUB_ID, active = true)
 
@@ -124,9 +183,7 @@ class SubscriptionActivationRepositoryTest {
 
     @Test
     fun setActive_turnOffAndIsEmergencyCallbackMode() = runBlocking {
-        mockTelephonyManager.stub {
-            on { emergencyCallbackMode } doReturn true
-        }
+        mockTelephonyManager.stub { on { emergencyCallbackMode } doReturn true }
 
         repository.setActive(subId = SUB_ID, active = false)
 
@@ -135,28 +192,30 @@ class SubscriptionActivationRepositoryTest {
 
     @Test
     fun setActive_turnOffAndNotEmergencyCallbackMode() = runBlocking {
-        mockTelephonyManager.stub {
-            on { emergencyCallbackMode } doReturn false
-        }
+        mockTelephonyManager.stub { on { emergencyCallbackMode } doReturn false }
 
         repository.setActive(subId = SUB_ID, active = false)
 
-        verify(context).startActivity(argThat {
-            component?.className == ToggleSubscriptionDialogActivity::class.qualifiedName
-        })
+        verify(context)
+            .startActivity(
+                argThat {
+                    component?.className == ToggleSubscriptionDialogActivity::class.qualifiedName
+                }
+            )
     }
 
     @Test
     fun setActive_turnOnAndNotEmergencyCallbackMode() = runBlocking {
-        mockTelephonyManager.stub {
-            on { emergencyCallbackMode } doReturn false
-        }
+        mockTelephonyManager.stub { on { emergencyCallbackMode } doReturn false }
+        isAirplaneModeOn = false
 
         repository.setActive(subId = SUB_ID, active = true)
 
-        verify(context).startActivityAsUser(argThat {
-            component?.className == SimOnboardingActivity::class.qualifiedName
-        }, eq(UserHandle.CURRENT))
+        verify(context)
+            .startActivityAsUser(
+                argThat { component?.className == SimOnboardingActivity::class.qualifiedName },
+                eq(UserHandle.CURRENT),
+            )
     }
 
     private companion object {

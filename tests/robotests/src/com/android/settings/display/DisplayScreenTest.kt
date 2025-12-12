@@ -17,23 +17,22 @@ package com.android.settings.display
 
 import android.content.ContextWrapper
 import android.content.res.Resources
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import android.platform.test.annotations.DisableFlags
 import com.android.internal.widget.LockPatternUtils
 import com.android.settings.flags.Flags
 import com.android.settings.testutils.FakeFeatureFactory
+import com.android.settings.testutils2.SettingsCatalystTestCase
 import com.android.settings.testutils.SystemProperty
-import com.android.settingslib.preference.CatalystScreenTestCase
+import com.android.systemui.shared.Flags as SharedFlags
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.stub
 
-@RunWith(AndroidJUnit4::class)
-class DisplayScreenTest : CatalystScreenTestCase() {
+class DisplayScreenTest : SettingsCatalystTestCase() {
 
     override val preferenceScreenCreator = DisplayScreen()
 
@@ -46,11 +45,6 @@ class DisplayScreenTest : CatalystScreenTestCase() {
         object : ContextWrapper(appContext) {
             override fun getResources(): Resources = mockResources
         }
-
-    @Test
-    fun key() {
-        assertThat(preferenceScreenCreator.key).isEqualTo(DisplayScreen.KEY)
-    }
 
     @Test
     fun isAvailable_configTrue_shouldReturnTrue() {
@@ -66,6 +60,8 @@ class DisplayScreenTest : CatalystScreenTestCase() {
         assertThat(preferenceScreenCreator.isAvailable(context)).isFalse()
     }
 
+    @Test
+    @DisableFlags(SharedFlags.FLAG_AMBIENT_AOD)
     override fun migration() {
         // avoid UnsupportedOperationException when getDisplay from context
         SystemProperty("robolectric.createActivityContexts", "true").use {

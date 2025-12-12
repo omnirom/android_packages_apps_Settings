@@ -26,4 +26,8 @@
         <item name="twoStateButtonPreferenceStyle">@style/TwoStateButtonPreference</item>
         <item name="preferenceFragmentCompatStyle">@style/SettingsPreferenceFragmentStyle</item>
     </style>
+
+    <style name="SyncSwitchPreference.Expressive" parent="@style/SettingsLibPreference.SwitchPreferenceCompat.Expressive">
+        <item name="android:widgetLayout">@layout/preference_widget_sync_toggle_expreesive</item>
+    </style>
 </resources>

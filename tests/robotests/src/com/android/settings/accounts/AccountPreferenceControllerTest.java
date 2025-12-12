@@ -28,10 +28,12 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AuthenticatorDescription;
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.UserInfo;
 import android.os.UserHandle;
@@ -42,6 +44,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.AccessiblePreferenceCategory;
 import com.android.settings.R;
@@ -90,7 +93,8 @@ public class AccountPreferenceControllerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mContext = RuntimeEnvironment.application;
-        final ShadowApplication shadowApp = ShadowApplication.getInstance();
+        final ShadowApplication shadowApp =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         shadowApp.setSystemService(Context.USER_SERVICE, mUserManager);
         shadowApp.setSystemService(Context.ACCOUNT_SERVICE, mAccountManager);
 

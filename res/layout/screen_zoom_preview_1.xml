@@ -13,41 +13,52 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:contentDescription="@string/preview_pager_message_content_description">
-
-    <view class="com.android.settings.TouchBlockingFrameLayout"
-        android:id="@+id/frame"
+    android:orientation="vertical"
+    android:contentDescription="@string/preview_pager_message_title"
+    android:clipChildren="true">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/preview_pager_message_title"
+        android:importantForAccessibility="noHideDescendants"
+        style="@style/AccessibilityTextReadingPreviewPageTitle" />
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:importantForAccessibility="noHideDescendants">
+        android:importantForAccessibility="noHideDescendants"
+        android:fillViewport="true">
 
-        <LinearLayout
+        <view class="com.android.settings.TouchBlockingFrameLayout"
+            android:id="@+id/frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="@dimen/conversation_message_list_padding"
-            android:paddingStart="@dimen/conversation_message_list_padding"
-            android:paddingEnd="@dimen/conversation_message_list_padding"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <com.android.settings.display.ConversationMessageView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:incoming="true"
-                app:messageText="@string/accessibility_text_reading_conversation_message_1"
-                app:iconBackgroundColor="@color/message_icon_background_incoming" />
+                android:layout_height="match_parent"
+                android:paddingTop="@dimen/settingslib_expressive_space_extrasmall3"
+                android:paddingStart="@dimen/conversation_message_list_padding"
+                android:paddingEnd="@dimen/conversation_message_list_padding"
+                android:orientation="vertical">
 
-            <com.android.settings.display.ConversationMessageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:incoming="false"
-                app:messageText="@string/accessibility_text_reading_conversation_message_2"
-                app:iconBackgroundColor="@color/message_icon_background_outgoing" />
-        </LinearLayout>
-    </view>
-</androidx.core.widget.NestedScrollView>
+                <com.android.settings.display.ConversationMessageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:incoming="true"
+                    app:messageText="@string/accessibility_text_reading_conversation_message_1"
+                    app:iconBackgroundColor="@color/message_icon_background_incoming" />
+
+                <com.android.settings.display.ConversationMessageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:incoming="false"
+                    app:messageText="@string/accessibility_text_reading_conversation_message_2"
+                    app:iconBackgroundColor="@color/message_icon_background_outgoing" />
+            </LinearLayout>
+        </view>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

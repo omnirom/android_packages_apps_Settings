@@ -26,4 +26,10 @@ public class AccessibilityFeedbackFeatureProviderImpl implements
     public String getCategory(int pageId) {
         return null;
     }
+
+    @Override
+    @Nullable
+    public String getTriggerId(int pageId) {
+        return null;
+    }
 }

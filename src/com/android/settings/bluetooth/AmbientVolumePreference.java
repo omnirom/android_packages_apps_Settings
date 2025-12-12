@@ -16,6 +16,9 @@
 
 package com.android.settings.bluetooth;
 
+import static android.bluetooth.AudioInputControl.MUTE_DISABLED;
+import static android.bluetooth.AudioInputControl.MUTE_MUTED;
+import static android.bluetooth.AudioInputControl.MUTE_NOT_MUTED;
 import static android.view.View.GONE;
 import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_NO;
 import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_YES;
@@ -25,8 +28,8 @@ import static com.android.settings.bluetooth.BluetoothDetailsAmbientVolumePrefer
 import static com.android.settingslib.bluetooth.HearingAidInfo.DeviceSide.SIDE_LEFT;
 import static com.android.settingslib.bluetooth.HearingAidInfo.DeviceSide.SIDE_RIGHT;
 
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.util.ArrayMap;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -38,7 +41,8 @@ import androidx.preference.PreferenceViewHolder;
 
 import com.android.settings.R;
 import com.android.settings.overlay.FeatureFactory;
-import com.android.settingslib.bluetooth.AmbientVolumeUi;
+import com.android.settingslib.bluetooth.hearingdevices.ui.AmbientVolumeUi;
+import com.android.settingslib.widget.Expandable;
 import com.android.settingslib.widget.SettingsThemeHelper;
 import com.android.settingslib.widget.SliderPreference;
 
@@ -47,6 +51,7 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.primitives.Ints;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A preference group of ambient volume controls.
@@ -55,7 +60,8 @@ import java.util.Map;
  * separated control for devices in the same set. Toggle the expand icon will make the UI switch
  * between unified and separated control.
  */
-public class AmbientVolumePreference extends PreferenceGroup implements AmbientVolumeUi {
+public class AmbientVolumePreference extends PreferenceGroup implements AmbientVolumeUi,
+        Expandable {
 
     private static final int ORDER_AMBIENT_VOLUME_CONTROL_UNIFIED = 0;
     private static final int ORDER_AMBIENT_VOLUME_CONTROL_SEPARATED = 1;
@@ -72,13 +78,12 @@ public class AmbientVolumePreference extends PreferenceGroup implements AmbientV
     private View mVolumeIconFrame;
     @Nullable
     private ImageView mVolumeIcon;
+
+    private final BiMap<Integer, SliderPreference> mSideToSliderMap = HashBiMap.create();
+    private final Map<Integer, Integer> mSideToMuteStateMap = new ArrayMap<>();
     private boolean mExpandable = true;
     private boolean mExpanded = false;
-    private boolean mMutable = false;
-    private boolean mMuted = false;
-    private final BiMap<Integer, SliderPreference> mSideToSliderMap = HashBiMap.create();
     private int mVolumeLevel = AMBIENT_VOLUME_LEVEL_DEFAULT;
-
     private int mMetricsCategory;
 
     private final OnPreferenceChangeListener mPreferenceChangeListener =
@@ -98,10 +103,14 @@ public class AmbientVolumePreference extends PreferenceGroup implements AmbientV
 
     public AmbientVolumePreference(@NonNull Context context) {
         super(context, null);
-        int resId = SettingsThemeHelper.isExpressiveTheme(context)
-                ? R.layout.preference_ambient_volume_expressive
-                : R.layout.preference_ambient_volume;
-        setLayoutResource(resId);
+        if (SettingsThemeHelper.isExpressiveTheme(context)) {
+            setLayoutResource(com.android.settingslib.widget.theme
+                    .R.layout.settingslib_expressive_preference);
+            setWidgetLayoutResource(com.android.settingslib.widget.preference.expandable
+                    .R.layout.settingslib_widget_expandable_icon);
+        } else {
+            setLayoutResource(R.layout.preference_ambient_volume);
+        }
         setIcon(com.android.settingslib.R.drawable.ic_ambient_volume);
         setTitle(R.string.bluetooth_ambient_volume_control);
         setSelectable(false);
@@ -122,11 +131,12 @@ public class AmbientVolumePreference extends PreferenceGroup implements AmbientV
                 : R.drawable.ambient_icon_background;
         mVolumeIconFrame.setBackgroundResource(volumeIconBackgroundResId);
         mVolumeIconFrame.setOnClickListener(v -> {
-            if (!mMutable) {
+            if (!isMutable()) {
                 return;
             }
-            setMuted(!mMuted);
-            logMetrics(METRIC_KEY_AMBIENT_MUTE, mMuted ? 1 : 0);
+            int updatedMuteState = isMuted() ? MUTE_NOT_MUTED : MUTE_MUTED;
+            setSliderMuteState(SIDE_UNIFIED, updatedMuteState);
+            logMetrics(METRIC_KEY_AMBIENT_MUTE, isMuted() ? 1 : 0);
             if (mListener != null) {
                 mListener.onAmbientVolumeIconClick();
             }
@@ -135,7 +145,10 @@ public class AmbientVolumePreference extends PreferenceGroup implements AmbientV
 
         mExpandIcon = holder.itemView.requireViewById(R.id.expand_icon);
         mExpandIcon.setOnClickListener(v -> {
-            setExpanded(!mExpanded);
+            if (!isControlExpandable()) {
+                return;
+            }
+            setControlExpanded(!mExpanded);
             logMetrics(METRIC_KEY_AMBIENT_EXPAND, mExpanded ? 1 : 0);
             if (mListener != null) {
                 mListener.onExpandIconClick();
@@ -145,66 +158,81 @@ public class AmbientVolumePreference extends PreferenceGroup implements AmbientV
     }
 
     @Override
-    public void setExpandable(boolean expandable) {
-        mExpandable = expandable;
-        if (!mExpandable) {
-            setExpanded(false);
+    public void setControlExpandable(boolean expandable) {
+        if (mExpandable != expandable) {
+            mExpandable = expandable;
+            if (!mExpandable) {
+                setControlExpanded(false);
+            }
+            updateExpandIcon();
         }
-        updateExpandIcon();
     }
 
     @Override
-    public boolean isExpandable() {
+    public boolean isControlExpandable() {
         return mExpandable;
     }
 
     @Override
-    public void setExpanded(boolean expanded) {
-        if (!mExpandable && expanded) {
-            return;
+    public void setControlExpanded(boolean expanded) {
+        if (mExpanded != expanded) {
+            mExpanded = expanded;
+            updateExpandIcon();
+            updateLayout();
         }
-        mExpanded = expanded;
-        updateExpandIcon();
-        updateLayout();
     }
 
     @Override
-    public boolean isExpanded() {
+    public boolean isControlExpanded() {
         return mExpanded;
     }
 
     @Override
-    public void setMutable(boolean mutable) {
-        mMutable = mutable;
-        if (!mMutable) {
-            mVolumeLevel = AMBIENT_VOLUME_LEVEL_DEFAULT;
-            setMuted(false);
-        }
-        updateVolumeIcon();
-    }
-
-    @Override
     public boolean isMutable() {
-        return mMutable;
-    }
-
-    @Override
-    public void setMuted(boolean muted) {
-        if (!mMutable && muted) {
-            return;
-        }
-        mMuted = muted;
-        if (mMutable && mMuted) {
-            for (SliderPreference slider : mSideToSliderMap.values()) {
-                slider.setValue(slider.getMin());
-            }
-        }
-        updateVolumeIcon();
+        return mSideToMuteStateMap.values().stream().anyMatch(mute -> mute != MUTE_DISABLED);
     }
 
     @Override
     public boolean isMuted() {
-        return mMuted;
+        return mSideToMuteStateMap.values().stream().allMatch(mute -> mute == MUTE_MUTED);
+    }
+
+    @Override
+    public void setSliderMuteState(int side, int muteState) {
+        if (side == SIDE_UNIFIED) {
+            // propagate the mute state to all other sliders
+            mSideToSliderMap.keySet().forEach(s -> {
+                if (s != SIDE_UNIFIED) {
+                    setSliderMuteState(s, muteState);
+                }
+            });
+        } else {
+            SliderPreference slider = mSideToSliderMap.get(side);
+            if (slider != null) {
+                mSideToMuteStateMap.put(side, muteState);
+                if (muteState == MUTE_MUTED) {
+                    slider.setValue(slider.getMin());
+                }
+                SliderPreference unifiedSlider = mSideToSliderMap.get(SIDE_UNIFIED);
+                if (isMuted() && unifiedSlider != null) {
+                    unifiedSlider.setValue(unifiedSlider.getMin());
+                }
+                updateVolumeLevel();
+            }
+        }
+    }
+
+    @Override
+    public int getSliderMuteState(int side) {
+        if (side == SIDE_UNIFIED) {
+            if (!isMutable()) {
+                return MUTE_DISABLED;
+            } else {
+                return isMuted() ? MUTE_MUTED : MUTE_NOT_MUTED;
+            }
+        } else {
+            return mSideToMuteStateMap.getOrDefault(side, MUTE_DISABLED);
+        }
     }
 
     @Override
@@ -213,9 +241,8 @@ public class AmbientVolumePreference extends PreferenceGroup implements AmbientV
     }
 
     @Override
-    public void setupSliders(@NonNull Map<Integer, BluetoothDevice> sideToDeviceMap) {
-        sideToDeviceMap.forEach((side, device) ->
-                createSlider(side, ORDER_AMBIENT_VOLUME_CONTROL_SEPARATED + side));
+    public void setupSliders(@NonNull Set<Integer> sides) {
+        sides.forEach(side -> createSlider(side, ORDER_AMBIENT_VOLUME_CONTROL_SEPARATED + side));
         createSlider(SIDE_UNIFIED, ORDER_AMBIENT_VOLUME_CONTROL_UNIFIED);
 
         if (!mSideToSliderMap.isEmpty()) {
@@ -232,9 +259,12 @@ public class AmbientVolumePreference extends PreferenceGroup implements AmbientV
     @Override
     public void setSliderEnabled(int side, boolean enabled) {
         SliderPreference slider = mSideToSliderMap.get(side);
-        if (slider != null && slider.isEnabled() != enabled) {
+        if (slider != null) {
             slider.setEnabled(enabled);
-            updateLayout();
+            if (!enabled) {
+                slider.setValue(slider.getMin());
+            }
+            updateVolumeLevel();
         }
     }
 
@@ -256,16 +286,12 @@ public class AmbientVolumePreference extends PreferenceGroup implements AmbientV
         }
     }
 
-    @Override
-    public void updateLayout() {
+    private void updateLayout() {
         mSideToSliderMap.forEach((side, slider) -> {
             if (side == SIDE_UNIFIED) {
                 slider.setVisible(!mExpanded);
             } else {
                 slider.setVisible(mExpanded);
-            }
-            if (!slider.isEnabled()) {
-                slider.setValue(slider.getMin());
             }
         });
         updateVolumeLevel();
@@ -282,7 +308,7 @@ public class AmbientVolumePreference extends PreferenceGroup implements AmbientV
 
     private void updateVolumeLevel() {
         int leftLevel, rightLevel;
-        if (mExpanded) {
+        if (isControlExpanded()) {
             leftLevel = getVolumeLevel(SIDE_LEFT);
             rightLevel = getVolumeLevel(SIDE_RIGHT);
         } else {
@@ -311,10 +337,11 @@ public class AmbientVolumePreference extends PreferenceGroup implements AmbientV
         if (mExpandIcon == null) {
             return;
         }
-        mExpandIcon.setVisibility(mExpandable ? VISIBLE : GONE);
-        mExpandIcon.setRotation(mExpanded ? ROTATION_EXPANDED : ROTATION_COLLAPSED);
-        if (mExpandable) {
-            final int stringRes = mExpanded ? R.string.bluetooth_ambient_volume_control_collapse
+        mExpandIcon.setVisibility(isControlExpandable() ? VISIBLE : GONE);
+        mExpandIcon.setRotation(isControlExpanded() ? ROTATION_EXPANDED : ROTATION_COLLAPSED);
+        if (isControlExpandable()) {
+            final int stringRes = isControlExpanded()
+                    ? R.string.bluetooth_ambient_volume_control_collapse
                     : R.string.bluetooth_ambient_volume_control_expand;
             mExpandIcon.setContentDescription(getContext().getString(stringRes));
         } else {
@@ -326,9 +353,9 @@ public class AmbientVolumePreference extends PreferenceGroup implements AmbientV
         if (mVolumeIcon == null || mVolumeIconFrame == null) {
             return;
         }
-        mVolumeIcon.setImageLevel(mMuted ? 0 : mVolumeLevel);
-        if (mMutable) {
-            final int stringRes = mMuted ? R.string.bluetooth_ambient_volume_unmute
+        mVolumeIcon.setImageLevel(mVolumeLevel);
+        if (isMutable()) {
+            final int stringRes = isMuted() ? R.string.bluetooth_ambient_volume_unmute
                     : R.string.bluetooth_ambient_volume_mute;
             mVolumeIcon.setContentDescription(getContext().getString(stringRes));
             mVolumeIconFrame.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);
@@ -371,5 +398,14 @@ public class AmbientVolumePreference extends PreferenceGroup implements AmbientV
     private void logMetrics(String key, int value) {
         FeatureFactory.getFeatureFactory().getMetricsFeatureProvider().changed(
                 getMetricsCategory(), key, value);
+    }
+
+    @Override
+    public boolean isExpanded() {
+        // isExpanded() is different from isControlExpanded(), this is at the point of view if a
+        // preference group shows any of its child preference.
+        // Should always return true for AmbientVolumePreference as it always shows at least one
+        // child preference no matter in collapsed or expanded mode.
+        return true;
     }
 }

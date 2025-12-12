@@ -62,6 +62,7 @@ import com.android.settings.network.telephony.wificalling.IWifiCallingRepository
 import com.android.settings.testutils.shadow.ShadowFragment;
 import com.android.settings.widget.SettingsMainSwitchBar;
 import com.android.settings.widget.SettingsMainSwitchPreference;
+import com.android.settingslib.widget.TopIntroPreference;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -86,8 +87,8 @@ public class WifiCallingSettingsForSubTest {
 
     private static final String SWITCH_BAR = "wifi_calling_switch_bar";
     private static final String BUTTON_WFC_MODE = "wifi_calling_mode";
-    private static final String BUTTON_WFC_ROAMING_MODE = "wifi_calling_roaming_mode";
     private static final String PREFERENCE_NO_OPTIONS_DESC = "no_options_description";
+    private static final String BUTTON_WFC_ROAMING_MODE = "wifi_calling_roaming_mode";
     private static final String TEST_EMERGENCY_ADDRESS_CARRIER_APP =
             "com.android.settings/.wifi.calling.TestEmergencyAddressCarrierApp";
     private static final String PREFERENCE_EMERGENCY_ADDRESS = "emergency_address_key";
@@ -116,7 +117,7 @@ public class WifiCallingSettingsForSubTest {
     @Mock
     private SettingsMainSwitchPreference mSwitchBarPreference;
     @Mock
-    private LinkifyDescriptionPreference mDescriptionView;
+    private TopIntroPreference mDescriptionView;
     @Mock
     private ListWithEntrySummaryPreference mButtonWfcMode;
     @Mock

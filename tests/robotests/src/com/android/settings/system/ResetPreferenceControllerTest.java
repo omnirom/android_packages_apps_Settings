@@ -26,6 +26,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+// LINT.IfChange
 @RunWith(RobolectricTestRunner.class)
 public class ResetPreferenceControllerTest {
 
@@ -51,3 +52,4 @@ public class ResetPreferenceControllerTest {
         assertThat(mController.isAvailable()).isFalse();
     }
 }
+// LINT.ThenChange(ResetDashboardScreenTest.kt)

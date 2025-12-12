@@ -30,6 +30,7 @@ import androidx.preference.SwitchPreferenceCompat;
 
 import com.android.settings.R;
 import com.android.settingslib.widget.AnimatedImageView;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 public class SyncStateSwitchPreference extends SwitchPreferenceCompat {
 
@@ -48,7 +49,8 @@ public class SyncStateSwitchPreference extends SwitchPreferenceCompat {
     private boolean mOneTimeSyncMode = false;
 
     public SyncStateSwitchPreference(Context context, AttributeSet attrs) {
-        super(context, attrs, 0, R.style.SyncSwitchPreference);
+        super(context, attrs, 0, SettingsThemeHelper.isExpressiveTheme(context)
+                ? R.style.SyncSwitchPreference_Expressive : R.style.SyncSwitchPreference);
         mAccount = null;
         mAuthority = null;
         mPackageName = null;
@@ -57,7 +59,8 @@ public class SyncStateSwitchPreference extends SwitchPreferenceCompat {
 
     public SyncStateSwitchPreference(Context context, Account account, String authority,
             String packageName, int uid) {
-        super(context, null, 0, R.style.SyncSwitchPreference);
+        super(context, null, 0, SettingsThemeHelper.isExpressiveTheme(context)
+                ? R.style.SyncSwitchPreference_Expressive : R.style.SyncSwitchPreference);
         setup(account, authority, packageName, uid);
     }
 

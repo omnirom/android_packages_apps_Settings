@@ -27,13 +27,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import android.app.Flags;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import com.android.settings.Settings;
@@ -77,9 +74,9 @@ public class ShortcutsUpdaterTest {
         final List<ShortcutInfo> pinnedShortcuts = Arrays.asList(
                 makeShortcut("d1"),
                 makeShortcut("d2"),
-                makeShortcut(Settings.ManageApplicationsActivity.class),
+                makeActivityShortcut(Settings.ManageApplicationsActivity.class),
                 makeShortcut("d3"),
-                makeShortcut(Settings.SoundSettingsActivity.class));
+                makeActivityShortcut(Settings.SoundSettingsActivity.class));
         when(mShortcutManager.getPinnedShortcuts()).thenReturn(pinnedShortcuts);
 
         ShortcutsUpdater.updatePinnedShortcuts(mContext);
@@ -96,10 +93,9 @@ public class ShortcutsUpdaterTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
-    public void updatePinnedShortcuts_withModesFlag_replacesDndByModes() {
+    public void updatePinnedShortcuts_replacesDndByModes() {
         List<ShortcutInfo> shortcuts = List.of(
-                makeShortcut(Settings.ZenModeSettingsActivity.class));
+                makeActivityShortcut("com.android.settings.Settings$ZenModeSettingsActivity"));
         when(mShortcutManager.getPinnedShortcuts()).thenReturn(shortcuts);
 
         ShortcutsUpdater.updatePinnedShortcuts(mContext);
@@ -109,7 +105,8 @@ public class ShortcutsUpdaterTest {
         assertThat(updates).hasSize(1);
 
         // Id hasn't changed, but intent and label has.
-        ComponentName zenCn = new ComponentName(mContext, Settings.ZenModeSettingsActivity.class);
+        ComponentName zenCn = new ComponentName(mContext,
+                "com.android.settings.Settings$ZenModeSettingsActivity");
         ComponentName modesCn = new ComponentName(mContext, Settings.ModesSettingsActivity.class);
         assertThat(updates.get(0).getId()).isEqualTo(
                 SHORTCUT_ID_PREFIX + zenCn.flattenToShortString());
@@ -117,30 +114,13 @@ public class ShortcutsUpdaterTest {
         assertThat(updates.get(0).getShortLabel().toString()).isEqualTo("Modes");
     }
 
-    @Test
-    @DisableFlags(Flags.FLAG_MODES_UI)
-    public void updatePinnedShortcuts_withoutModesFlag_leavesDndAlone() {
-        List<ShortcutInfo> shortcuts = List.of(
-                makeShortcut(Settings.ZenModeSettingsActivity.class));
-        when(mShortcutManager.getPinnedShortcuts()).thenReturn(shortcuts);
-
-        ShortcutsUpdater.updatePinnedShortcuts(mContext);
-
-        verify(mShortcutManager, times(1)).updateShortcuts(mListCaptor.capture());
-        final List<ShortcutInfo> updates = mListCaptor.getValue();
-        assertThat(updates).hasSize(1);
-
-        // Nothing has changed.
-        ComponentName zenCn = new ComponentName(mContext, Settings.ZenModeSettingsActivity.class);
-        assertThat(updates.get(0).getId()).isEqualTo(
-                SHORTCUT_ID_PREFIX + zenCn.flattenToShortString());
-        assertThat(updates.get(0).getIntent().getComponent()).isEqualTo(zenCn);
-        assertThat(updates.get(0).getShortLabel().toString()).isEqualTo("Do Not Disturb");
-
+    private ShortcutInfo makeActivityShortcut(Class<?> activityClass) {
+        ComponentName cn = new ComponentName(mContext, activityClass);
+        return makeShortcut(SHORTCUT_ID_PREFIX + cn.flattenToShortString());
     }
 
-    private ShortcutInfo makeShortcut(Class<?> className) {
-        ComponentName cn = new ComponentName(mContext, className);
+    private ShortcutInfo makeActivityShortcut(String activityClassName) {
+        ComponentName cn = new ComponentName(mContext, activityClassName);
         return makeShortcut(SHORTCUT_ID_PREFIX + cn.flattenToShortString());
     }
 

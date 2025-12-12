@@ -37,7 +37,7 @@ import com.android.settings.notification.MediaVolumePreferenceController;
 import com.android.settings.notification.NotificationVolumePreferenceController;
 import com.android.settings.notification.RingVolumePreferenceController;
 import com.android.settings.notification.SeparateRingVolumePreferenceController;
-import com.android.settings.notification.VolumeSeekBarPreferenceController;
+import com.android.settings.notification.VolumeSliderPreferenceController;
 import com.android.settingslib.SliceBroadcastRelay;
 
 import org.junit.After;
@@ -62,10 +62,10 @@ public class VolumeSliceHelperTest {
 
     private Context mContext;
     private Intent mIntent;
-    private VolumeSeekBarPreferenceController mMediaController;
-    private VolumeSeekBarPreferenceController mRingController;
-    private VolumeSeekBarPreferenceController mSeparateRingController;
-    private VolumeSeekBarPreferenceController mNotificationController;
+    private VolumeSliderPreferenceController mMediaController;
+    private VolumeSliderPreferenceController mRingController;
+    private VolumeSliderPreferenceController mSeparateRingController;
+    private VolumeSliderPreferenceController mNotificationController;
 
     @Before
     public void setUp() {
@@ -299,7 +299,7 @@ public class VolumeSliceHelperTest {
         verify(mResolver).notifyChange(mRingController.getSliceUri(), null);
     }
 
-    private void registerIntentToUri(VolumeSeekBarPreferenceController controller) {
+    private void registerIntentToUri(VolumeSliderPreferenceController controller) {
         VolumeSliceHelper.registerIntentToUri(mContext, controller.getIntentFilter(),
                 controller.getSliceUri(), controller.getAudioStream());
     }

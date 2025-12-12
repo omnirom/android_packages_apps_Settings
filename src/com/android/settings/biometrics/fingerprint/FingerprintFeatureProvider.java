@@ -26,7 +26,6 @@ import androidx.annotation.Nullable;
 import com.android.settings.biometrics.fingerprint.feature.ChallengeGeneratedInvoker;
 import com.android.settings.biometrics.fingerprint.feature.FingerprintExtPreferencesProvider;
 import com.android.settings.biometrics.fingerprint.feature.SfpsEnrollmentFeature;
-import com.android.settings.biometrics.fingerprint.feature.SfpsRestToUnlockFeature;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,13 +48,6 @@ public interface FingerprintFeatureProvider {
             @Nullable Bundle activitySavedInstanceState, @Nullable Intent activityIntent) {
         return null;
     }
-
-    /**
-     * Gets the feature implementation of SFPS rest to unlock.
-     * @param context context
-     * @return the feature implementation
-     */
-    SfpsRestToUnlockFeature getSfpsRestToUnlockFeature(@NonNull Context context);
 
     /**
      * Gets the provider for current fingerprint enrollment activity classes
@@ -89,4 +81,12 @@ public interface FingerprintFeatureProvider {
     default List<ChallengeGeneratedInvoker> getChallengeGeneratedInvokers() {
         return Collections.emptyList();
     }
+
+    /** Returns the parental consent page. */
+    @NonNull
+    Class<? extends FingerprintEnrollParentalConsent> getParentalConsentPage();
+
+    /** Returns the string resources of the parental consent page. */
+    @NonNull
+    int[] getParentalConsentStringRes();
 }

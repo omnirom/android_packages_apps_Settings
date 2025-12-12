@@ -31,7 +31,7 @@
         settings:controller="com.android.settings.display.ContrastSelectorPreferenceController" />
 
     <SwitchPreferenceCompat
-        android:key="toggle_high_text_contrast_preference"
+        android:key="high_text_contrast_enabled"
         android:persistent="false"
         android:title="@string/accessibility_toggle_maximize_text_contrast_preference_title"
         android:summary="@string/accessibility_toggle_maximize_text_contrast_preference_summary"

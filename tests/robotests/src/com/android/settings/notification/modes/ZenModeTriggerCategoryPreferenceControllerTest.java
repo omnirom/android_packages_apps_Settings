@@ -22,9 +22,7 @@ import static android.platform.test.flag.junit.SetFlagsRule.DefaultInitValueType
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.app.Flags;
 import android.content.Context;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.service.notification.SystemZenRules;
 import android.service.notification.ZenModeConfig;
@@ -49,7 +47,6 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
 @RunWith(RobolectricTestRunner.class)
-@EnableFlags(Flags.FLAG_MODES_UI)
 public class ZenModeTriggerCategoryPreferenceControllerTest {
 
     @Rule

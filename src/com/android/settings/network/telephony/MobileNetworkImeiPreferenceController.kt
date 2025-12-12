@@ -29,21 +29,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import com.android.settings.R
+import com.android.settings.Utils
 import com.android.settings.deviceinfo.imei.ImeiInfoDialogFragment
 import com.android.settings.flags.Flags
 import com.android.settings.network.SubscriptionInfoListViewModel
-import com.android.settings.network.SubscriptionUtil
-import com.android.settingslib.Utils
 import com.android.settingslib.spa.framework.util.collectLatestWithLifecycle
 import com.android.settingslib.spaprivileged.framework.common.userManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
-/**
- * Preference controller for "IMEI"
- */
+// LINT.IfChange
+/** Preference controller for "IMEI" */
 class MobileNetworkImeiPreferenceController(context: Context, key: String) :
     TelephonyBasePreferenceController(context, key) {
 
@@ -64,11 +61,11 @@ class MobileNetworkImeiPreferenceController(context: Context, key: String) :
     }
 
     override fun getAvailabilityStatus(subId: Int): Int = when {
-        !SubscriptionUtil.isSimHardwareVisible(mContext)
-            || Utils.isWifiOnly(mContext) -> UNSUPPORTED_ON_DEVICE
+        !Utils.isMobileDataCapable(mContext)
+            && !Utils.isVoiceCapable(mContext) -> UNSUPPORTED_ON_DEVICE
+        !mContext.userManager.isAdminUser -> DISABLED_FOR_USER
         !Flags.isDualSimOnboardingEnabled()
             || !SubscriptionManager.isValidSubscriptionId(subId) -> CONDITIONALLY_UNAVAILABLE
-        !mContext.userManager.isAdminUser -> DISABLED_FOR_USER
         else -> AVAILABLE
     }
 
@@ -175,3 +172,4 @@ class MobileNetworkImeiPreferenceController(context: Context, key: String) :
         private const val TAG = "MobileNetworkImeiPreferenceController"
     }
 }
+// LINT.ThenChange(MobileNetworkImeiPreference.kt)

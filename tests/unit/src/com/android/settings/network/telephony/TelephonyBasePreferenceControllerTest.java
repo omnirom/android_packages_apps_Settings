@@ -80,6 +80,13 @@ public class TelephonyBasePreferenceControllerTest {
         assertThat(mPreferenceController.isAvailable()).isFalse();
     }
 
+    @Test
+    public void notifyAirplaneModeChanged_isAirplaneModeChanged_getTrue() {
+        mPreferenceController.notifyAirplaneModeChanged(true);
+
+        assertThat(mPreferenceController.mIsAirplaneModeOn).isTrue();
+    }
+
     /**
      * Test preference controller for {@link TelephonyBasePreferenceController}
      */

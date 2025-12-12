@@ -154,7 +154,7 @@ public class DeviceStateAutoRotateDetailsFragmentTest {
         when(mContext.getResources()).thenReturn(mResources);
     }
 
-    // Sets up posture mappings for PosturesHelper
+    // Sets up posture mappings for PostureDeviceStateConverter
     private void setUpPostureMappings() {
         when(mResources.getIntArray(
                 com.android.internal.R.array.config_foldedDeviceStates)).thenReturn(

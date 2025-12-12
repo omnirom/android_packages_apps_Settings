@@ -21,8 +21,8 @@ import android.telephony.TelephonyManager
 import androidx.preference.PreferenceManager
 import androidx.preference.PreferenceScreen
 import androidx.test.core.app.ApplicationProvider
-import com.android.settings.R
 import com.android.settings.network.telephony.satellite.SatelliteSettingAboutContentController.Companion.PREF_KEY_ABOUT_SATELLITE_CONNECTIVITY
+import com.android.settings.testutils.ResourcesUtils
 import com.android.settingslib.widget.TopIntroPreference
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
@@ -62,10 +62,13 @@ class SatelliteSettingAboutContentControllerTest {
 
         controller.displayPreference(screen)
 
-        assertThat(preference.title).isEqualTo(
-            "You can send and receive text messages and use some apps by satellite with an eligible Test Carrier account"
+        assertThat(preference.title.toString()).isEqualTo(
+            ResourcesUtils.getResourcesString(
+                context,
+                "description_about_satellite_setting",
+                TEST_SIM_OPERATOR_NAME
             )
-
+        )
     }
 
     private companion object {

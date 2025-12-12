@@ -35,7 +35,6 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.spy
@@ -43,31 +42,37 @@ import org.mockito.kotlin.spy
 @RunWith(AndroidJUnit4::class)
 class OpenNetworkSelectPagePreferenceControllerTest {
 
-    private val subscriptionInfo = mock<SubscriptionInfo> {
-        on { subscriptionId } doReturn SUB_ID
-        on { carrierName } doReturn OPERATOR_NAME
-    }
+    private val subscriptionInfo =
+        mock<SubscriptionInfo> {
+            on { subscriptionId } doReturn SUB_ID
+            on { carrierName } doReturn OPERATOR_NAME
+        }
 
-    private val mockSubscriptionManager = mock<SubscriptionManager> {
-        on { createForAllUserProfiles() } doReturn mock
-        on { getActiveSubscriptionInfo(SUB_ID) } doReturn subscriptionInfo
-    }
+    private val mockSubscriptionManager =
+        mock<SubscriptionManager> {
+            on { createForAllUserProfiles() } doReturn mock
+            on { getActiveSubscriptionInfo(SUB_ID) } doReturn subscriptionInfo
+        }
 
-    private val context: Context = spy(ApplicationProvider.getApplicationContext()) {
-        on { getSystemService(SubscriptionManager::class.java) } doReturn mockSubscriptionManager
-    }
+    private val context: Context =
+        spy(ApplicationProvider.getApplicationContext()) {
+            on { getSystemService(SubscriptionManager::class.java) } doReturn
+                mockSubscriptionManager
+        }
 
     private val preference = Preference(context).apply { key = TEST_KEY }
     private val preferenceScreen = PreferenceManager(context).createPreferenceScreen(context)
 
     private val serviceState = ServiceState()
 
-    private val controller = OpenNetworkSelectPagePreferenceController(
-        context = context,
-        key = TEST_KEY,
-        allowedNetworkTypesFlowFactory = { emptyFlow() },
-        serviceStateFlowFactory = { flowOf(serviceState) },
-    ).init(subId = SUB_ID)
+    private val controller =
+        OpenNetworkSelectPagePreferenceController(
+                context = context,
+                key = TEST_KEY,
+                allowedNetworkTypesFlowFactory = { emptyFlow() },
+                serviceStateFlowFactory = { flowOf(serviceState) },
+            )
+            .init(subId = SUB_ID)
 
     @Before
     fun setUp() {
@@ -85,6 +90,22 @@ class OpenNetworkSelectPagePreferenceControllerTest {
     @Test
     fun isEnabled_modeAuto_disabled() {
         controller.onNetworkSelectModeUpdated(TelephonyManager.NETWORK_SELECTION_MODE_AUTO)
+
+        assertThat(preference.isEnabled).isFalse()
+    }
+
+    @Test
+    fun isEnabled_modeManualAndIsAirplaneModeOff_enabled() {
+        controller.notifyAirplaneModeChanged(false)
+        controller.onNetworkSelectModeUpdated(TelephonyManager.NETWORK_SELECTION_MODE_MANUAL)
+
+        assertThat(preference.isEnabled).isTrue()
+    }
+
+    @Test
+    fun isEnabled_modeManualAndIsAirplaneModeOn_disable() {
+        controller.notifyAirplaneModeChanged(true)
+        controller.onNetworkSelectModeUpdated(TelephonyManager.NETWORK_SELECTION_MODE_MANUAL)
 
         assertThat(preference.isEnabled).isFalse()
     }

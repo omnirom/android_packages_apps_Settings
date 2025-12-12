@@ -20,10 +20,14 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.face.FaceManager;
+
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
@@ -43,7 +47,6 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowApplication;
 
 @Ignore("b/295325503")
 @RunWith(RobolectricTestRunner.class)
@@ -68,7 +71,8 @@ public class FaceSettingsRemoveButtonPreferenceControllerTest {
         mContext = spy(RuntimeEnvironment.application);
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
         when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_FACE)).thenReturn(true);
-        ShadowApplication.getInstance().setSystemService(Context.FACE_SERVICE, mFaceManager);
+        shadowOf((Application) ApplicationProvider.getApplicationContext())
+                .setSystemService(Context.FACE_SERVICE, mFaceManager);
 
         mPreference = new LayoutPreference(mContext, R.layout.face_remove_button);
         mController = new FaceSettingsRemoveButtonPreferenceController(mContext, TEST_PREF_KEY);

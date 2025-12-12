@@ -17,7 +17,6 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:androidprv="http://schemas.android.com/apk/prv/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart"
@@ -64,8 +63,7 @@
             android:textAlignment="viewStart"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceListItem"
-            android:hyphenationFrequency="normalFast"
-            android:lineBreakWordStyle="phrase"
+            android:textColor="@color/settingslib_text_color_primary"
             android:ellipsize="marquee"/>
 
         <TextView
@@ -77,10 +75,57 @@
             android:layout_gravity="start"
             android:textAlignment="viewStart"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@androidprv:color/materialColorOnSurfaceVariant"
+            android:textColor="@color/settingslib_text_color_secondary"
             android:maxLines="4"
-            android:hyphenationFrequency="normalFast"
-            android:lineBreakWordStyle="phrase"
             style="@style/PreferenceSummaryTextStyle"/>
     </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/alert_frame"
+        android:minHeight="40dp"
+        android:minWidth="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center|end"
+        android:layout_marginEnd="16dp">
+
+        <ImageView
+            android:id="@+id/alert_unnumbered"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:src="@drawable/circle"
+            android:contentDescription="@null"
+            android:tint="@color/settingslib_materialColorPrimary"/>
+
+        <FrameLayout
+            android:id="@+id/alert_numbered_frame"
+            android:minHeight="24dp"
+            android:minWidth="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/alert_number_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                android:src="@drawable/circle"
+                android:contentDescription="@null"
+                android:tint="@color/settingslib_materialColorSecondaryContainer"/>
+
+            <TextView
+                android:id="@+id/alert_number_fg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/settingslib_materialColorOnSecondaryContainer"
+                style="@style/TextAppearance.SettingsLib.TitleMedium" />
+        </FrameLayout>
+
+    </FrameLayout>
 </LinearLayout>

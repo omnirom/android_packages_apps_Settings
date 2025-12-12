@@ -25,8 +25,6 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Pair;
 import android.view.KeyEvent;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -36,7 +34,6 @@ import androidx.preference.PreferenceScreen;
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.overlay.FeatureFactory;
-import com.android.settingslib.widget.LayoutPreference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -134,31 +131,15 @@ public class ModifierKeysPreferenceController extends BasePreferenceController {
 
     private void initDefaultKeysName() {
         for (Pair<String, Integer> key : mKeys) {
-            LayoutPreference layoutPreference = mScreen.findPreference(key.first);
-            TextView title = layoutPreference.findViewById(R.id.title);
-            TextView summary = layoutPreference.findViewById(R.id.summary);
-            title.setText(key.second);
-            summary.setText(R.string.modifier_keys_default_summary);
-
-            if (key.first.equals(KEY_PREFERENCE_META) && mDrawable != null) {
-                setActionKeyIcon(layoutPreference, mDrawable);
-            }
+            Preference preference = mScreen.findPreference(key.first);
+            preference.setTitle(key.second);
+            preference.setSummary(R.string.modifier_keys_default_summary);
         }
     }
 
-    private static void setActionKeyIcon(LayoutPreference preference, Drawable drawable) {
-        TextView leftBracket = preference.findViewById(R.id.modifier_key_left_bracket);
-        TextView rightBracket = preference.findViewById(R.id.modifier_key_right_bracket);
-        ImageView actionKeyIcon = preference.findViewById(R.id.modifier_key_action_key_icon);
-        leftBracket.setText("(");
-        rightBracket.setText(")");
-        actionKeyIcon.setImageDrawable(drawable);
-    }
-
     private void setSummaryColor(String key, int targetIndex) {
-        LayoutPreference layoutPreference = mScreen.findPreference(key);
-        TextView summary = layoutPreference.findViewById(R.id.summary);
-        summary.setText(changeSummaryColor(mKeyNames[targetIndex]));
+        Preference preference = mScreen.findPreference(key);
+        preference.setSummary(changeSummaryColor(mKeyNames[targetIndex]));
     }
 
     @Override
@@ -180,14 +161,12 @@ public class ModifierKeysPreferenceController extends BasePreferenceController {
         ModifierKeysPickerDialogFragment fragment = new ModifierKeysPickerDialogFragment();
         fragment.setTargetFragment(mParent, 0);
         Bundle bundle = new Bundle();
-        TextView title = ((LayoutPreference) preference).findViewById(R.id.title);
-        TextView summary = ((LayoutPreference) preference).findViewById(R.id.summary);
         bundle.putString(
                 ModifierKeysPickerDialogFragment.DEFAULT_KEY,
-                title.getText().toString());
+                preference.getTitle().toString());
         bundle.putString(
                 ModifierKeysPickerDialogFragment.SELECTION_KEY,
-                summary.getText().toString());
+                preference.getSummary().toString());
         fragment.setArguments(bundle);
         fragment.show(mFragmentManager, KEY_TAG);
     }

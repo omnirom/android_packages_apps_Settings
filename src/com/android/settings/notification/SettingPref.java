@@ -68,7 +68,7 @@ public class SettingPref {
         final Context context = settings.getActivity();
         Preference p = settings.getPreferenceScreen().findPreference(mKey);
         if (p != null && !isApplicable(context)) {
-            settings.getPreferenceScreen().removePreference(p);
+            p.setVisible(false);
             p = null;
         }
         if (p instanceof TwoStatePreference) {

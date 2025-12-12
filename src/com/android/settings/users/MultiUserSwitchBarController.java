@@ -16,8 +16,8 @@
 
 package com.android.settings.users;
 
+import android.app.admin.flags.Flags;
 import android.content.Context;
-import android.multiuser.Flags;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.provider.Settings;
@@ -61,7 +61,20 @@ public class MultiUserSwitchBarController implements SwitchWidgetController.OnSw
         mUserCapabilities.updateAddUserCapabilities(mContext);
         mSwitchBar.setChecked(mUserCapabilities.mUserSwitcherEnabled);
 
-        if (Flags.fixDisablingOfMuToggleWhenRestrictionApplied()) {
+        if (Flags.policyTransparencyRefactorEnabled()) {
+            if (!mUserCapabilities.mDisallowSwitchUser && mUserCapabilities.mIsMain) {
+                mSwitchBar.setEnabled(true);
+            } else if (mUserCapabilities.mDisallowSwitchUser
+                    && !mUserCapabilities.mDisallowSwitchUserRestrictionEnforcementInfo
+                    .isOnlyEnforcedBySystem()) {
+                mSwitchBar.setRestriction(UserManager.DISALLOW_USER_SWITCH);
+                mSwitchBar.setDisabledByAdmin(
+                        mUserCapabilities.mDisallowSwitchUserRestrictionEnforcementInfo
+                                .getMostImportantEnforcingAdmin());
+            } else {
+                mSwitchBar.setEnabled(false);
+            }
+        } else {
             RestrictedLockUtils.EnforcedAdmin enforcedAdmin = RestrictedLockUtilsInternal
                     .checkIfRestrictionEnforced(mContext, UserManager.DISALLOW_USER_SWITCH,
                             UserHandle.myUserId());
@@ -71,15 +84,9 @@ public class MultiUserSwitchBarController implements SwitchWidgetController.OnSw
                 mSwitchBar.setEnabled(mUserCapabilities.mIsMain
                         && !mUserCapabilities.mDisallowSwitchUser);
             }
-        } else {
-            if (mUserCapabilities.mDisallowSwitchUser) {
-                mSwitchBar.setDisabledByAdmin(RestrictedLockUtilsInternal
-                        .checkIfRestrictionEnforced(mContext, UserManager.DISALLOW_USER_SWITCH,
-                                UserHandle.myUserId()));
-            } else {
-                mSwitchBar.setEnabled(mUserCapabilities.mIsMain);
-            }
         }
+
+
     }
 
     @Override
@@ -97,9 +104,6 @@ public class MultiUserSwitchBarController implements SwitchWidgetController.OnSw
         Log.d(TAG, "Toggling multi-user feature enabled state to: " + isChecked);
         final boolean success = Settings.Global.putInt(mContext.getContentResolver(),
                 Settings.Global.USER_SWITCHER_ENABLED, isChecked ? 1 : 0);
-        if (success && mListener != null && !Flags.newMultiuserSettingsUx()) {
-            mListener.onMultiUserSwitchChanged(isChecked);
-        }
         return success;
     }
 }

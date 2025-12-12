@@ -17,6 +17,7 @@
 package com.android.settings.spa.system
 
 import android.os.Bundle
+import android.util.FeatureFlagUtils
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -24,12 +25,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.android.settings.R
 import com.android.settingslib.spa.framework.common.SettingsPageProvider
+import com.android.settingslib.spa.framework.common.SpaEnvironmentFactory
 import com.android.settingslib.spa.framework.compose.navigator
 import com.android.settingslib.spa.framework.compose.rememberContext
 import com.android.settingslib.spa.framework.theme.SettingsDimension
 import com.android.settingslib.spa.widget.preference.Preference
 import com.android.settingslib.spa.widget.preference.PreferenceModel
 import com.android.settingslib.spa.widget.ui.SettingsBody
+import com.android.settingslib.spa.widget.ui.SettingsIntro
 import com.android.settingslib.spaprivileged.template.app.AppListPage
 
 object AppLanguagesPageProvider : SettingsPageProvider {
@@ -42,8 +45,19 @@ object AppLanguagesPageProvider : SettingsPageProvider {
             listModel = rememberContext(::AppLanguagesListModel),
             noMoreOptions = true,
             header = {
-                Box(Modifier.padding(SettingsDimension.itemPadding)) {
-                    SettingsBody(stringResource(R.string.desc_app_locale_selection_supported))
+                Box(Modifier.padding(vertical = SettingsDimension.itemPaddingVertical)) {
+                    // if the feature is in opt-out mode, show the disclaimer.
+                    val titleId =
+                        if (FeatureFlagUtils.isEnabled(
+                                SpaEnvironmentFactory.instance.appContext,
+                                FeatureFlagUtils.SETTINGS_APP_LOCALE_OPT_IN_ENABLED
+                            )
+                        ) {
+                            R.string.desc_app_locale_selection_supported
+                        } else {
+                            R.string.desc_app_locale_selection_supported_with_disclaimer
+                        }
+                    SettingsIntro(stringResource(titleId))
                 }
             },
         )

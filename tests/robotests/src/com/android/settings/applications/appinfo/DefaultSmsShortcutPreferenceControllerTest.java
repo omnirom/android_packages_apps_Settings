@@ -18,8 +18,13 @@ package com.android.settings.applications.appinfo;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.robolectric.Shadows.shadowOf;
+
+import android.app.Application;
 import android.app.role.RoleManager;
 import android.content.Context;
+
+import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +49,8 @@ public class DefaultSmsShortcutPreferenceControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        final ShadowApplication shadowApplication = ShadowApplication.getInstance();
+        final ShadowApplication shadowApplication =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         shadowApplication.setSystemService(Context.ROLE_SERVICE, mRoleManager);
         mController = new DefaultSmsShortcutPreferenceController(RuntimeEnvironment.application,
                 TEST_PACKAGE_NAME);

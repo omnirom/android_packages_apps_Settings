@@ -86,28 +86,7 @@ class AirplaneModePreference :
     override val preferenceActionMetrics: Int
         get() = ACTION_AIRPLANE_TOGGLE
 
-    override fun storage(context: Context): KeyValueStore = AirplaneModeStorage(context)
-
-    @Suppress("UNCHECKED_CAST")
-    private class AirplaneModeStorage(
-        private val context: Context,
-        private val settingsStore: KeyValueStore = SettingsGlobalStore.get(context),
-    ) : KeyValueStoreDelegate {
-
-        override val keyValueStoreDelegate
-            get() = settingsStore
-
-        override fun <T : Any> getDefaultValue(key: String, valueType: Class<T>) =
-            DEFAULT_VALUE as T
-
-        override fun <T : Any> setValue(key: String, valueType: Class<T>, value: T?) {
-            settingsStore.setValue(key, valueType, value)
-
-            val intent = Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED)
-            intent.putExtra("state", getBoolean(KEY)!!)
-            context.sendBroadcastAsUser(intent, UserHandle.ALL)
-        }
-    }
+    override fun storage(context: Context) = createDataStore(context)
 
     override fun onCreate(context: PreferenceLifecycleContext) {
         context.requirePreference<RestrictedSwitchPreference>(KEY).onPreferenceChangeListener =
@@ -164,7 +143,25 @@ class AirplaneModePreference :
         const val DEFAULT_VALUE = false
         const val REQUEST_CODE_EXIT_ECM = 1
 
-        fun Context.isAirplaneModeOn() = AirplaneModeStorage(this).getBoolean(KEY) == true
+        fun createDataStore(context: Context): KeyValueStore = AirplaneModeStorage(context)
+
+        @Suppress("UNCHECKED_CAST")
+        private class AirplaneModeStorage(private val context: Context) : KeyValueStoreDelegate {
+
+            private val settingsStore =
+                SettingsGlobalStore.get(context).apply { setDefaultValue(KEY, DEFAULT_VALUE) }
+
+            override val keyValueStoreDelegate
+                get() = settingsStore
+
+            override fun <T : Any> setValue(key: String, valueType: Class<T>, value: T?) {
+                settingsStore.setValue(key, valueType, value)
+
+                val intent = Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+                intent.putExtra("state", getBoolean(KEY)!!)
+                context.sendBroadcastAsUser(intent, UserHandle.ALL)
+            }
+        }
     }
 }
 // LINT.ThenChange(AirplaneModePreferenceController.java)

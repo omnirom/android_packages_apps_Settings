@@ -16,24 +16,24 @@
 
 package com.android.settings.notification;
 
+import static android.provider.Settings.Secure.CHARGING_SOUNDS_ENABLED;
+
 import static com.android.settings.notification.SettingPref.TYPE_SECURE;
 
 import android.content.Context;
-import android.provider.Settings.Secure;
 
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 
+// LINT.IfChange
 public class ChargingSoundPreferenceController extends SettingPrefController {
-
-    private static final String KEY_CHARGING_SOUNDS = "charging_sounds";
 
     public ChargingSoundPreferenceController(Context context, SettingsPreferenceFragment parent,
             Lifecycle lifecycle) {
         super(context, parent, lifecycle);
         mPreference = new SettingPref(
-            TYPE_SECURE, KEY_CHARGING_SOUNDS, Secure.CHARGING_SOUNDS_ENABLED, DEFAULT_ON);
+                TYPE_SECURE, CHARGING_SOUNDS_ENABLED, CHARGING_SOUNDS_ENABLED, DEFAULT_ON);
     }
 
     @Override
@@ -41,3 +41,4 @@ public class ChargingSoundPreferenceController extends SettingPrefController {
         return mContext.getResources().getBoolean(R.bool.config_show_charging_sounds);
     }
 }
+// LINT.ThenChange(ChargingSoundPreference.kt)

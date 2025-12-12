@@ -47,9 +47,7 @@ public class UsbBackend {
     static final int PD_ROLE_SWAP_TIMEOUT_MS = 4000;
     static final int NONPD_ROLE_SWAP_TIMEOUT_MS = 15000;
 
-    private final boolean mFileTransferRestricted;
     private final boolean mFileTransferRestrictedBySystem;
-    private final boolean mTetheringRestricted;
     private final boolean mTetheringRestrictedBySystem;
     private final boolean mMidiSupported;
     private final boolean mTetheringSupported;
@@ -71,9 +69,7 @@ public class UsbBackend {
     public UsbBackend(Context context, UserManager userManager) {
         mUsbManager = context.getSystemService(UsbManager.class);
 
-        mFileTransferRestricted = isUsbFileTransferRestricted(userManager);
         mFileTransferRestrictedBySystem = isUsbFileTransferRestrictedBySystem(userManager);
-        mTetheringRestricted = isUsbTetheringRestricted(userManager);
         mTetheringRestrictedBySystem = isUsbTetheringRestrictedBySystem(userManager);
         mUVCEnabled = isUvcEnabled();
         mIsAdminUser = userManager.isAdminUser();
@@ -105,7 +101,7 @@ public class UsbBackend {
                 || (!mTetheringSupported && (functions & UsbManager.FUNCTION_RNDIS) != 0)) {
             return false;
         }
-        return !(areFunctionDisallowed(functions) || areFunctionsDisallowedBySystem(functions)
+        return !(areFunctionsDisallowedBySystem(functions)
                 || areFunctionsDisallowedByNonAdminUser(functions));
     }
 
@@ -183,12 +179,23 @@ public class UsbBackend {
         return Integer.parseInt(role);
     }
 
-    private static boolean isUsbFileTransferRestricted(UserManager userManager) {
-        return userManager.hasUserRestriction(UserManager.DISALLOW_USB_FILE_TRANSFER);
-    }
-
-    private static boolean isUsbTetheringRestricted(UserManager userManager) {
-        return userManager.hasUserRestriction(UserManager.DISALLOW_CONFIG_TETHERING);
+    /**
+     * Returns the user restriction that's applied to {@code function} if it exists. Returns null if
+     * there isn't a user restriction associated.
+     *
+     * @param function the USB function to check restriction for
+     * @return user restriction that's associated withe the function
+     */
+    @Nullable
+    public static String maybeGetUserRestriction(long function) {
+        if ((function & UsbManager.FUNCTION_MTP) != 0
+                || (function & UsbManager.FUNCTION_PTP) != 0) {
+            return UserManager.DISALLOW_USB_FILE_TRANSFER;
+        }
+        if ((function & UsbManager.FUNCTION_RNDIS) != 0) {
+            return UserManager.DISALLOW_CONFIG_TETHERING;
+        }
+        return null;
     }
 
     private static boolean isUsbFileTransferRestrictedBySystem(UserManager userManager) {
@@ -203,12 +210,6 @@ public class UsbBackend {
 
     private static boolean isUvcEnabled() {
         return UsbManager.isUvcSupportEnabled();
-    }
-
-    private boolean areFunctionDisallowed(long functions) {
-        return (mFileTransferRestricted && ((functions & UsbManager.FUNCTION_MTP) != 0
-                || (functions & UsbManager.FUNCTION_PTP) != 0))
-                || (mTetheringRestricted && ((functions & UsbManager.FUNCTION_RNDIS) != 0));
     }
 
     private boolean areFunctionsDisallowedBySystem(long functions) {

@@ -38,7 +38,7 @@ public class SavedHearingDeviceUpdater extends SavedBluetoothDeviceUpdater {
 
     static boolean isSavedHearingAidDevice(CachedBluetoothDevice cachedDevice) {
         final BluetoothDevice device = cachedDevice.getDevice();
-        return cachedDevice.isHearingAidDevice()
+        return cachedDevice.isHearingDevice()
                 && device.getBondState() == BluetoothDevice.BOND_BONDED
                 && !device.isConnected();
     }

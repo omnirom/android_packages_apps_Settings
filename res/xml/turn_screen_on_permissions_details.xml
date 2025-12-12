@@ -23,7 +23,6 @@
         android:title="@string/allow_turn_screen_on"/>
 
     <com.android.settingslib.widget.FooterPreference
-        android:title="@string/allow_turn_screen_on_description"
-        android:selectable="false"/>
+        android:title="@string/allow_turn_screen_on_description" />
 
 </PreferenceScreen>

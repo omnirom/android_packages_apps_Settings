@@ -1,0 +1,9 @@
+package: "com.android.settings.flags"
+container: "system_ext"
+
+flag {
+  name: "enable_satellite_tile"
+  namespace: "settings_experience"
+  description: "Enable satellite quick settings tile."
+  bug: "434793872"
+}

@@ -117,6 +117,7 @@ public class ContentProtectionPreferenceFragmentTest {
                 List.of(
                         "content_protection_preference_top_intro",
                         "content_protection_preference_subpage_illustration",
+                        "content_protection_preference_subpage_illustration_expressive",
                         "content_protection_preference_user_consent_work_profile_switch");
 
         assertThat(allKeys).containsAtLeastElementsIn(nonIndexableKeys);

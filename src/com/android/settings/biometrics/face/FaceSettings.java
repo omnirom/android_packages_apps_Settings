@@ -19,14 +19,18 @@ package com.android.settings.biometrics.face;
 import static android.app.Activity.RESULT_OK;
 import static android.app.admin.DevicePolicyResources.Strings.Settings.FACE_SETTINGS_FOR_WORK_TITLE;
 
+import static com.android.settings.Utils.SETTINGS_PACKAGE_NAME;
 import static com.android.settings.Utils.isPrivateProfile;
 import static com.android.settings.biometrics.BiometricEnrollBase.BIOMETRIC_AUTH_REQUEST;
+import static com.android.settings.biometrics.BiometricEnrollBase.CHOOSE_LOCK_GENERIC_REQUEST;
 import static com.android.settings.biometrics.BiometricEnrollBase.CONFIRM_REQUEST;
 import static com.android.settings.biometrics.BiometricEnrollBase.ENROLL_REQUEST;
+import static com.android.settings.biometrics.BiometricEnrollBase.EXTRA_KEY_CHALLENGE;
 import static com.android.settings.biometrics.BiometricEnrollBase.RESULT_FINISHED;
 import static com.android.settings.biometrics.BiometricEnrollBase.RESULT_TIMEOUT;
 
 import android.app.admin.DevicePolicyManager;
+import android.app.admin.PolicyEnforcementInfo;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.content.Intent;
@@ -46,16 +50,20 @@ import com.android.settings.SettingsActivity;
 import com.android.settings.Utils;
 import com.android.settings.biometrics.BiometricEnrollBase;
 import com.android.settings.biometrics.BiometricUtils;
+import com.android.settings.biometrics.GatekeeperPasswordProvider;
 import com.android.settings.biometrics.IdentityCheckBiometricErrorDialog;
+import com.android.settings.core.SettingsBaseActivity;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.flags.Flags;
 import com.android.settings.overlay.FeatureFactory;
+import com.android.settings.password.ChooseLockGeneric;
 import com.android.settings.password.ChooseLockSettingsHelper;
 import com.android.settings.password.ConfirmDeviceCredentialActivity;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.RestrictedLockUtilsInternal;
 import com.android.settingslib.core.AbstractPreferenceController;
 import com.android.settingslib.search.SearchIndexable;
+import com.android.settingslib.transition.SettingsTransitionHelper;
 import com.android.settingslib.widget.LayoutPreference;
 
 import java.util.ArrayList;
@@ -91,12 +99,14 @@ public class FaceSettings extends DashboardFragment {
     public static final String SECURITY_SETTINGS_FACE_MANAGE_CATEGORY =
             "security_settings_face_manage_category";
 
+    private static final int AUTO_ADD_FACE_REQUEST = 11;
+
     private UserManager mUserManager;
     private FaceManager mFaceManager;
     private DevicePolicyManager mDevicePolicyManager;
     private int mUserId;
-    private int mSensorId;
-    private long mChallenge;
+    private int mSensorId = -1;
+    private long mChallenge = 0;
     private byte[] mToken;
     private FaceSettingsAttentionPreferenceController mAttentionController;
     private FaceSettingsRemoveButtonPreferenceController mRemoveController;
@@ -181,12 +191,19 @@ public class FaceSettings extends DashboardFragment {
         mUserManager = context.getSystemService(UserManager.class);
         mFaceManager = context.getSystemService(FaceManager.class);
         mDevicePolicyManager = context.getSystemService(DevicePolicyManager.class);
-        mToken = getIntent().getByteArrayExtra(KEY_TOKEN);
-        mSensorId = getIntent().getIntExtra(BiometricEnrollBase.EXTRA_KEY_SENSOR_ID, -1);
-        mChallenge = getIntent().getLongExtra(BiometricEnrollBase.EXTRA_KEY_CHALLENGE, 0L);
 
-        mUserId = getActivity().getIntent().getIntExtra(
-                Intent.EXTRA_USER_ID, UserHandle.myUserId());
+        final SettingsActivity activity = (SettingsActivity) requireActivity();
+        final String callingPackage = activity.getInitialCallingPackage();
+        if (callingPackage == null || !callingPackage.equals(activity.getPackageName())) {
+            mUserId = UserHandle.myUserId();
+        } else {
+            // only allow these extras when called internally by Settings
+            mToken = getIntent().getByteArrayExtra(KEY_TOKEN);
+            mSensorId = getIntent().getIntExtra(BiometricEnrollBase.EXTRA_KEY_SENSOR_ID, -1);
+            mChallenge = getIntent().getLongExtra(BiometricEnrollBase.EXTRA_KEY_CHALLENGE, 0L);
+            mUserId = getIntent().getIntExtra(Intent.EXTRA_USER_ID, UserHandle.myUserId());
+        }
+
         mFaceFeatureProvider = FeatureFactory.getFeatureFactory().getFaceFeatureProvider();
 
         if (mUserManager.getUserInfo(mUserId).isManagedProfile()) {
@@ -239,8 +256,7 @@ public class FaceSettings extends DashboardFragment {
             }
         }
 
-        if (RestrictedLockUtilsInternal.checkIfKeyguardFeaturesDisabled(
-                getContext(), DevicePolicyManager.KEYGUARD_DISABLE_FACE, mUserId) != null) {
+        if (isDisabledByAdmin()) {
             managePref.setTitle(getString(
                     com.android.settingslib.widget.restricted.R.string.disabled_by_admin));
         } else {
@@ -294,7 +310,11 @@ public class FaceSettings extends DashboardFragment {
                     findPreference(PREF_KEY_USE_FACE_TO_CATEGORY);
             category.setVisible(true);
             use(FaceSettingsKeyguardUnlockPreferenceController.class).setUserId(mUserId);
+            use(FaceSettingsKeyguardUnlockPreferenceController.class)
+                    .displayPreference(getPreferenceScreen());
             use(FaceSettingsAppsPreferenceController.class).setUserId(mUserId);
+            use(FaceSettingsAppsPreferenceController.class)
+                    .displayPreference(getPreferenceScreen());
         }
     }
 
@@ -342,8 +362,14 @@ public class FaceSettings extends DashboardFragment {
 
             mConfirmingPassword = true;
             if (!launched) {
-                Log.e(TAG, "Password not set");
-                finish();
+                final Intent intent = new Intent();
+                intent.setClassName(SETTINGS_PACKAGE_NAME, ChooseLockGeneric.class.getName());
+                intent.putExtra(ChooseLockGeneric.ChooseLockGenericFragment.HIDE_INSECURE_OPTIONS,
+                        true);
+                intent.putExtra(Intent.EXTRA_USER_ID, mUserId);
+                intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_REQUEST_GK_PW_HANDLE, true);
+                intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_FOR_FINGERPRINT, true);
+                startActivityForResult(intent, CHOOSE_LOCK_GENERIC_REQUEST);
             }
         } else {
             mAttentionController.setToken(mToken);
@@ -359,32 +385,25 @@ public class FaceSettings extends DashboardFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (mToken == null && !BiometricUtils.containsGatekeeperPasswordHandle(data)) {
-            Log.e(TAG, "No credential");
-            finish();
-        }
-
-        if (requestCode == CONFIRM_REQUEST) {
+        if (requestCode == CONFIRM_REQUEST || requestCode == CHOOSE_LOCK_GENERIC_REQUEST) {
+            if (mToken == null && !BiometricUtils.containsGatekeeperPasswordHandle(data)) {
+                Log.e(TAG, "No credential");
+                finish();
+            }
             if (resultCode == RESULT_FINISHED || resultCode == RESULT_OK) {
-                // The pin/pattern/password was set.
-                mFaceManager.generateChallenge(mUserId, (sensorId, userId, challenge) -> {
-                    mToken = BiometricUtils.requestGatekeeperHat(getPrefContext(), data, mUserId,
-                            challenge);
-                    mSensorId = sensorId;
-                    mChallenge = challenge;
-                    BiometricUtils.removeGatekeeperPasswordHandle(getPrefContext(), data);
-                    mAttentionController.setToken(mToken);
-                    mEnrollController.setToken(mToken);
-                    mConfirmingPassword = false;
-                });
-
-                final boolean hasEnrolled = mFaceManager.hasEnrolledTemplates(mUserId);
-                updateFaceAddAndRemovePreference(hasEnrolled);
                 final Utils.BiometricStatus biometricAuthStatus =
                         Utils.requestBiometricAuthenticationForMandatoryBiometrics(getActivity(),
                                 mBiometricsAuthenticationRequested,
                                 mUserId);
-                if (biometricAuthStatus == Utils.BiometricStatus.OK) {
+                if (android.hardware.biometrics.Flags.bpFallbackOptions()) {
+                    if (biometricAuthStatus != Utils.BiometricStatus.NOT_ACTIVE) {
+                        Utils.launchBiometricPromptForMandatoryBiometrics(this,
+                                BIOMETRIC_AUTH_REQUEST,
+                                mUserId, true /* hideBackground */);
+                    } else {
+                        enrollFaceIfNeeded(data);
+                    }
+                } else if (biometricAuthStatus == Utils.BiometricStatus.OK) {
                     Utils.launchBiometricPromptForMandatoryBiometrics(this,
                             BIOMETRIC_AUTH_REQUEST,
                             mUserId, true /* hideBackground */);
@@ -392,6 +411,8 @@ public class FaceSettings extends DashboardFragment {
                     IdentityCheckBiometricErrorDialog
                             .showBiometricErrorDialogAndFinishActivityOnDismiss(getActivity(),
                                     biometricAuthStatus);
+                } else {
+                    enrollFaceIfNeeded(data);
                 }
             }
         } else if (requestCode == ENROLL_REQUEST) {
@@ -410,6 +431,75 @@ public class FaceSettings extends DashboardFragment {
                     finish();
                 }
             }
+        } else if (requestCode == AUTO_ADD_FACE_REQUEST) {
+            if (mToken == null && data != null) {
+                mToken = data.getByteArrayExtra(
+                        ChooseLockSettingsHelper.EXTRA_KEY_CHALLENGE_TOKEN);
+            }
+            if (mToken == null) {
+                Log.w(TAG, "Add face, null token");
+                finish();
+                return;
+            }
+
+            if (mChallenge == -1L && data != null) {
+                mChallenge = data.getLongExtra(EXTRA_KEY_CHALLENGE, -1L);
+            }
+            if (mChallenge == -1L) {
+                Log.w(TAG, "Add face, invalid challenge");
+                finish();
+                return;
+            }
+
+            if (mSensorId == -1 && data != null) {
+                mSensorId = data.getIntExtra(BiometricEnrollBase.EXTRA_KEY_SENSOR_ID, -1);
+            }
+            if (mSensorId == -1) {
+                Log.w(TAG, "Add face, invalid sensor id");
+                finish();
+                return;
+            }
+
+            final boolean hasEnrolled = mFaceManager.hasEnrolledTemplates(mUserId);
+            updateFaceAddAndRemovePreference(hasEnrolled);
+        }
+    }
+
+    private void enrollFaceIfNeeded(Intent data) {
+        final boolean hasEnrolled = mFaceManager.hasEnrolledTemplates(mUserId);
+        if (hasEnrolled) {
+            updateFaceAddAndRemovePreference(true);
+            mFaceManager.generateChallenge(mUserId, (sensorId, userId, challenge) -> {
+                mToken = BiometricUtils.requestGatekeeperHat(getPrefContext(), data,
+                        mUserId,
+                        challenge);
+                mSensorId = sensorId;
+                mChallenge = challenge;
+                BiometricUtils.removeGatekeeperPasswordHandle(getPrefContext(), data);
+                mAttentionController.setToken(mToken);
+                mEnrollController.setToken(mToken);
+                mConfirmingPassword = false;
+            });
+        } else {
+            if (!GatekeeperPasswordProvider.containsGatekeeperPasswordHandle(data)) {
+                Log.d(TAG, "Data null or GK PW missing");
+                finish();
+            }
+            Intent intent = new Intent();
+            intent.setClassName(SETTINGS_PACKAGE_NAME, FaceEnroll.class.getName());
+            intent.putExtra(SettingsBaseActivity.EXTRA_PAGE_TRANSITION_TYPE,
+                    SettingsTransitionHelper.TransitionType.TRANSITION_SLIDE);
+
+            intent.putExtra(Intent.EXTRA_USER_ID, mUserId);
+            final Long gkPwHandle = GatekeeperPasswordProvider.getGatekeeperPasswordHandle(data);
+            if (gkPwHandle != null) {
+                intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_GK_PW_HANDLE,
+                        gkPwHandle.longValue());
+            } else {
+                intent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_CHALLENGE_TOKEN, mToken);
+                intent.putExtra(BiometricEnrollBase.EXTRA_KEY_CHALLENGE, mChallenge);
+            }
+            startActivityForResult(intent, AUTO_ADD_FACE_REQUEST);
         }
     }
 
@@ -467,6 +557,18 @@ public class FaceSettings extends DashboardFragment {
             mEnrollButton.setVisible(!hasEnrolled);
             mRemoveButton.setVisible(hasEnrolled);
         }
+    }
+
+    private boolean isDisabledByAdmin() {
+        if (android.app.admin.flags.Flags.policyTransparencyRefactorEnabled()
+                && android.app.admin.flags.Flags.setKeyguardDisabledFeaturesCoexistence()) {
+            PolicyEnforcementInfo info =
+                    RestrictedLockUtilsInternal.getEnforcingAdminsForKeyguardFeatures(getContext(),
+                            DevicePolicyManager.KEYGUARD_DISABLE_FACE, mUserId);
+            return info != null && info.getMostImportantEnforcingAdmin() != null;
+        }
+        return RestrictedLockUtilsInternal.checkIfKeyguardFeaturesDisabled(
+                getContext(), DevicePolicyManager.KEYGUARD_DISABLE_FACE, mUserId) != null;
     }
 
     private static List<AbstractPreferenceController> buildPreferenceControllers(Context context) {

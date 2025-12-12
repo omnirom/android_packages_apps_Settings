@@ -19,12 +19,11 @@ package com.android.settings.network
 import android.app.settings.SettingsEnums
 import android.content.Context
 import android.os.Bundle
-import android.provider.Settings
 import android.view.View
 import androidx.annotation.VisibleForTesting
 import androidx.preference.Preference
 import com.android.settings.R
-import com.android.settings.SettingsPreferenceFragment
+import com.android.settings.SettingsActivity.EXTRA_FRAGMENT_ARG_KEY
 import com.android.settings.dashboard.DashboardFragment
 import com.android.settings.flags.Flags
 import com.android.settings.network.telephony.SimRepository
@@ -33,21 +32,21 @@ import com.android.settings.search.BaseSearchIndexProvider
 import com.android.settings.spa.SpaActivity.Companion.startSpaActivity
 import com.android.settings.spa.network.NetworkCellularGroupProvider
 import com.android.settingslib.search.SearchIndexable
-import com.android.settingslib.spa.framework.util.collectLatestWithLifecycle
-import com.android.settingslib.spaprivileged.settingsprovider.settingsGlobalBooleanFlow
 
 @SearchIndexable(forTarget = SearchIndexable.ALL and SearchIndexable.ARC.inv())
 class MobileNetworkListFragment : DashboardFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        collectAirplaneModeAndFinishIfOn()
     }
 
     override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
 
         if (Flags.isDualSimOnboardingEnabled()) {
-            context?.startSpaActivity(NetworkCellularGroupProvider.fileName)
+            context?.startSpaActivity(
+                destination = NetworkCellularGroupProvider.fileName,
+                highlightItemKey = arguments?.getString(EXTRA_FRAGMENT_ARG_KEY),
+            )
             finish()
         }
     }
@@ -71,18 +70,7 @@ class MobileNetworkListFragment : DashboardFragment() {
         private const val LOG_TAG = "NetworkListFragment"
         private const val KEY_ADD_SIM = "add_sim"
 
-        @JvmStatic
-        fun SettingsPreferenceFragment.collectAirplaneModeAndFinishIfOn() {
-            requireContext().settingsGlobalBooleanFlow(Settings.Global.AIRPLANE_MODE_ON)
-                .collectLatestWithLifecycle(viewLifecycleOwner) { isAirplaneModeOn ->
-                    if (isAirplaneModeOn) {
-                        finish()
-                    }
-                }
-        }
-
-        @JvmField
-        val SEARCH_INDEX_DATA_PROVIDER = SearchIndexProvider()
+        @JvmField val SEARCH_INDEX_DATA_PROVIDER = SearchIndexProvider()
 
         @VisibleForTesting
         class SearchIndexProvider(

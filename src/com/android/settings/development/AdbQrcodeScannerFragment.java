@@ -97,15 +97,15 @@ public class AdbQrcodeScannerFragment extends WifiDppQrCodeBaseFragment implemen
                 if (res.equals(AdbManager.WIRELESS_STATUS_SUCCESS)) {
                     Intent i = new Intent();
                     i.putExtra(
-                            WirelessDebuggingFragment.PAIRING_DEVICE_REQUEST_TYPE,
-                            WirelessDebuggingFragment.SUCCESS_ACTION);
+                            AdbWirelessDebuggingFragment.PAIRING_DEVICE_REQUEST_TYPE,
+                            AdbWirelessDebuggingFragment.SUCCESS_ACTION);
                     getActivity().setResult(Activity.RESULT_OK, i);
                     getActivity().finish();
                 } else if (res.equals(AdbManager.WIRELESS_STATUS_FAIL)) {
                     Intent i = new Intent();
                     i.putExtra(
-                            WirelessDebuggingFragment.PAIRING_DEVICE_REQUEST_TYPE,
-                            WirelessDebuggingFragment.FAIL_ACTION);
+                            AdbWirelessDebuggingFragment.PAIRING_DEVICE_REQUEST_TYPE,
+                            AdbWirelessDebuggingFragment.FAIL_ACTION);
                     getActivity().setResult(Activity.RESULT_OK, i);
                     getActivity().finish();
                 } else if (res.equals(AdbManager.WIRELESS_STATUS_CONNECTED)) {

@@ -23,16 +23,25 @@
         android:fragment="com.android.settings.connecteddevice.BluetoothDashboardFragment"
         android:icon="@*android:drawable/ic_settings_bluetooth"
         android:key="bluetooth_switchbar_screen"
-        android:order="-10"
+        android:order="-11"
         android:title="@string/bluetooth_settings_title" />
 
     <Preference
         android:fragment="com.android.settings.connecteddevice.audiosharing.AudioSharingDashboardFragment"
         android:icon="@drawable/ic_bt_le_audio_sharing"
         android:key="audio_sharing_settings"
-        android:order="-9"
+        android:order="-10"
         android:title="@string/audio_sharing_title"
         settings:controller="com.android.settings.connecteddevice.audiosharing.AudioSharingPreferenceController"
+        settings:searchable="true" />
+
+    <Preference
+        android:fragment="com.android.settings.connecteddevice.audiosharing.audiostreams.AudioStreamsDashboardFragment"
+        android:icon="@drawable/ic_bt_le_audio_sharing"
+        android:key="audio_streams_settings"
+        android:order="-9"
+        android:title="@string/audio_streams_pref_title"
+        settings:controller="com.android.settings.connecteddevice.audiosharing.audiostreams.AudioStreamsCategoryController"
         settings:searchable="true" />
 
     <com.android.settingslib.RestrictedPreference
@@ -74,9 +83,8 @@
         android:summary="@string/summary_placeholder"
         android:title="@string/print_settings" />
 
-    <PreferenceCategory
+    <com.android.settingslib.widget.UntitledPreferenceCategory
         android:key="virtual_device_list"
-        android:layout="@layout/preference_category_no_label"
         android:order="99"
         settings:controller="com.android.settings.connecteddevice.virtual.VirtualDeviceListController"
         settings:searchable="true"/>

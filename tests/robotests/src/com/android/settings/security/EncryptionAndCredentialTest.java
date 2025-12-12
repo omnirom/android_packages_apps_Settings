@@ -18,6 +18,9 @@ package com.android.settings.security;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.robolectric.Shadows.shadowOf;
+
+import android.app.Application;
 import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -25,6 +28,7 @@ import android.os.UserManager;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 
@@ -51,7 +55,8 @@ public class EncryptionAndCredentialTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        ShadowApplication application = ShadowApplication.getInstance();
+        ShadowApplication application =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         application.setSystemService(Context.DEVICE_POLICY_SERVICE, mDevicePolicyManager);
         application.setSystemService(Context.USER_SERVICE, mUserManager);
         mContext = RuntimeEnvironment.application;

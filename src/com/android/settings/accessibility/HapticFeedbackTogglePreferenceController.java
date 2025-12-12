@@ -21,6 +21,7 @@ import android.content.Context;
 import com.android.settings.accessibility.HapticFeedbackIntensityPreferenceController.HapticFeedbackVibrationPreferenceConfig;
 
 /** Preference controller for haptic feedback with only a toggle for on/off states. */
+// LINT.IfChange
 public class HapticFeedbackTogglePreferenceController extends VibrationTogglePreferenceController {
 
     public HapticFeedbackTogglePreferenceController(Context context, String preferenceKey) {
@@ -32,3 +33,4 @@ public class HapticFeedbackTogglePreferenceController extends VibrationTogglePre
         return AVAILABLE;
     }
 }
+// LINT.ThenChange(TouchVibrationIntensitySwitchPreference.kt)

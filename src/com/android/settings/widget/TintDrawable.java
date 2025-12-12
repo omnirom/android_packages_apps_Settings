@@ -54,7 +54,7 @@ public class TintDrawable extends DrawableWrapper {
     public void inflate(@NonNull Resources r, @NonNull XmlPullParser parser,
             @NonNull AttributeSet attrs, @Nullable Theme theme)
             throws XmlPullParserException, IOException {
-        final TypedArray a = obtainAttributes(r, theme, attrs, R.styleable.TintDrawable);
+        final TypedArray a = obtainAttributes(r, theme, attrs);
 
         super.inflate(r, parser, attrs, theme);
 
@@ -98,5 +98,15 @@ public class TintDrawable extends DrawableWrapper {
         if (getDrawable() != null && mTint != null) {
             getDrawable().mutate().setTintList(mTint);
         }
+    }
+
+    private static @NonNull TypedArray obtainAttributes(@NonNull Resources res,
+            @Nullable Theme theme, @NonNull AttributeSet set) {
+        // Don't depend on Drawable.obtainAttributes, which is @hide, thus cannot be accessed by
+        // Settings search
+        if (theme == null) {
+            return res.obtainAttributes(set, R.styleable.TintDrawable);
+        }
+        return theme.obtainStyledAttributes(set, R.styleable.TintDrawable, 0, 0);
     }
 }

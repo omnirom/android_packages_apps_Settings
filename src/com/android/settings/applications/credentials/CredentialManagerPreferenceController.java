@@ -32,7 +32,6 @@ import android.content.res.Resources;
 import android.credentials.CredentialManager;
 import android.credentials.CredentialProviderInfo;
 import android.credentials.SetEnabledProvidersException;
-import android.credentials.flags.Flags;
 import android.database.ContentObserver;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -69,9 +68,10 @@ import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.dashboard.DashboardFragment;
+import com.android.settingslib.PrimarySwitchPreference;
 import com.android.settingslib.RestrictedLockUtils;
-import com.android.settingslib.RestrictedPreference;
 import com.android.settingslib.utils.ThreadUtils;
+import com.android.settingslib.widget.TwoTargetPreference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -726,13 +726,10 @@ public class CredentialManagerPreferenceController extends BasePreferenceControl
         final CombiPreference pref =
                 new CombiPreference(prefContext, mEnabledPackageNames.contains(packageName));
         pref.setTitle(title);
-        pref.setLayoutResource(R.layout.preference_icon_credman);
 
-        if (Flags.newSettingsUi()) {
-            pref.setIcon(processIcon(icon));
-        } else if (icon != null) {
-            pref.setIcon(icon);
-        }
+        pref.setIcon(processIcon(icon));
+
+        pref.setIconSize(TwoTargetPreference.ICON_SIZE_MEDIUM);
 
         if (subtitle != null) {
             pref.setSummary(subtitle);
@@ -974,16 +971,10 @@ public class CredentialManagerPreferenceController extends BasePreferenceControl
             return new AlertDialog.Builder(getActivity())
                     .setTitle(
                             getContext()
-                                    .getString(
-                                            Flags.newSettingsUi()
-                                                    ? R.string.credman_limit_error_msg_title
-                                                    : R.string.credman_error_message_title))
+                                    .getString(R.string.credman_limit_error_msg_title))
                     .setMessage(
                             getContext()
-                                    .getString(
-                                            Flags.newSettingsUi()
-                                                    ? R.string.credman_limit_error_msg
-                                                    : R.string.credman_error_message))
+                                    .getString(R.string.credman_limit_error_msg))
                     .setPositiveButton(android.R.string.ok, this)
                     .create();
         }
@@ -1071,7 +1062,7 @@ public class CredentialManagerPreferenceController extends BasePreferenceControl
     }
 
     /** CombiPreference is a combination of RestrictedPreference and SwitchPreference. */
-    public static class CombiPreference extends RestrictedPreference {
+    public static class CombiPreference extends PrimarySwitchPreference {
 
         private final Listener mListener = new Listener();
 
@@ -1150,11 +1141,6 @@ public class CredentialManagerPreferenceController extends BasePreferenceControl
 
         public void setPreferenceListener(OnCombiPreferenceClickListener onClickListener) {
             mOnClickListener = onClickListener;
-        }
-
-        @Override
-        protected int getSecondTargetResId() {
-            return com.android.settingslib.R.layout.preference_widget_primary_switch;
         }
 
         @Override

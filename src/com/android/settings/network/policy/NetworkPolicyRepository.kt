@@ -25,13 +25,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-class NetworkPolicyRepository(context: Context) {
+open class NetworkPolicyRepository(context: Context) {
     private val networkPolicyManager = context.getSystemService(NetworkPolicyManager::class.java)!!
 
     fun getNetworkPolicy(networkTemplate: NetworkTemplate): NetworkPolicy? =
         networkPolicyManager.networkPolicies.find { policy -> policy.template == networkTemplate }
 
-    fun networkPolicyFlow(networkTemplate: NetworkTemplate): Flow<NetworkPolicy?> = flow {
-        emit(getNetworkPolicy(networkTemplate))
-    }.flowOn(Dispatchers.Default)
+    fun networkPolicyFlow(networkTemplate: NetworkTemplate): Flow<NetworkPolicy?> =
+        flow { emit(getNetworkPolicy(networkTemplate)) }.flowOn(Dispatchers.Default)
 }

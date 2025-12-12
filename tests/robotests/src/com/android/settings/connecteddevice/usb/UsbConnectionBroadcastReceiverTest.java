@@ -25,11 +25,15 @@ import static android.hardware.usb.UsbPortStatus.POWER_ROLE_SINK;
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.verify;
+import static org.robolectric.Shadows.shadowOf;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.usb.UsbManager;
 import android.hardware.usb.UsbPortStatus;
+
+import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +42,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowApplication.Wrapper;
 
 @RunWith(RobolectricTestRunner.class)
@@ -164,7 +167,9 @@ public class UsbConnectionBroadcastReceiverTest {
 
     private int countUsbConnectionBroadcastReceivers() {
         int count = 0;
-        for (Wrapper wrapper : ShadowApplication.getInstance().getRegisteredReceivers()) {
+        for (Wrapper wrapper :
+                shadowOf((Application) ApplicationProvider.getApplicationContext())
+                        .getRegisteredReceivers()) {
             if (wrapper.getBroadcastReceiver() instanceof UsbConnectionBroadcastReceiver) {
                 count++;
             }

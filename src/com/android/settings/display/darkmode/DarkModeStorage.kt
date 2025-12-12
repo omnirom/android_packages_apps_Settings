@@ -16,6 +16,7 @@
 
 package com.android.settings.display.darkmode
 
+import android.Manifest
 import android.app.UiModeManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -25,6 +26,7 @@ import android.content.res.Configuration
 import android.os.PowerManager
 import com.android.settingslib.datastore.AbstractKeyedDataObservable
 import com.android.settingslib.datastore.KeyValueStore
+import com.android.settingslib.datastore.Permissions
 import com.android.settingslib.metadata.PreferenceChangeReason
 
 /**
@@ -34,7 +36,7 @@ import com.android.settingslib.metadata.PreferenceChangeReason
  * details.
  */
 @Suppress("UNCHECKED_CAST")
-internal class DarkModeStorage(private val context: Context) :
+class DarkModeStorage(private val context: Context) :
     AbstractKeyedDataObservable<String>(), KeyValueStore {
     private lateinit var broadcastReceiver: BroadcastReceiver
     private lateinit var darkModeObserver: DarkModeObserver
@@ -69,5 +71,11 @@ internal class DarkModeStorage(private val context: Context) :
     override fun onLastObserverRemoved() {
         context.unregisterReceiver(broadcastReceiver)
         darkModeObserver.unsubscribe()
+    }
+
+    companion object {
+        fun getReadPermissions() = Permissions.EMPTY
+
+        fun getWritePermissions() = Permissions.allOf(Manifest.permission.MODIFY_DAY_NIGHT_MODE)
     }
 }

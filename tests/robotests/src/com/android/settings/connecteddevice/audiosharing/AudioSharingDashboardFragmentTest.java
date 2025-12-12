@@ -47,7 +47,6 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
-import com.android.settings.connecteddevice.audiosharing.audiostreams.AudioStreamsCategoryController;
 import com.android.settings.testutils.shadow.ShadowBluetoothAdapter;
 import com.android.settings.testutils.shadow.ShadowFragment;
 import com.android.settings.widget.SettingsMainSwitchBar;
@@ -78,7 +77,6 @@ public class AudioSharingDashboardFragmentTest {
     @Mock private AudioSharingDeviceVolumeGroupController mVolumeGroupController;
     @Mock private AudioSharingCallAudioPreferenceController mCallAudioController;
     @Mock private AudioSharingPlaySoundPreferenceController mPlaySoundController;
-    @Mock private AudioStreamsCategoryController mStreamsCategoryController;
     @Mock private AudioSharingSwitchBarController mSwitchBarController;
     private final Context mContext = ApplicationProvider.getApplicationContext();
     private AudioSharingDashboardFragment mFragment;
@@ -170,7 +168,6 @@ public class AudioSharingDashboardFragmentTest {
                 mVolumeGroupController,
                 mCallAudioController,
                 mPlaySoundController,
-                mStreamsCategoryController,
                 mSwitchBarController);
         Intent data = new Intent();
         Bundle extras = new Bundle();
@@ -190,7 +187,6 @@ public class AudioSharingDashboardFragmentTest {
                 mVolumeGroupController,
                 mCallAudioController,
                 mPlaySoundController,
-                mStreamsCategoryController,
                 mSwitchBarController);
         Intent data = new Intent();
         Bundle extras = new Bundle();
@@ -209,7 +205,6 @@ public class AudioSharingDashboardFragmentTest {
                 mVolumeGroupController,
                 mCallAudioController,
                 mPlaySoundController,
-                mStreamsCategoryController,
                 mSwitchBarController);
         Intent data = new Intent();
         Bundle extras = new Bundle();
@@ -228,13 +223,11 @@ public class AudioSharingDashboardFragmentTest {
                 mVolumeGroupController,
                 mCallAudioController,
                 mPlaySoundController,
-                mStreamsCategoryController,
                 mSwitchBarController);
         mFragment.onAudioSharingStateChanged();
         verify(mVolumeGroupController).updateVisibility();
         verify(mCallAudioController).updateVisibility();
         verify(mPlaySoundController).updateVisibility();
-        verify(mStreamsCategoryController).updateVisibility();
     }
 
     @Test
@@ -243,7 +236,6 @@ public class AudioSharingDashboardFragmentTest {
                 mVolumeGroupController,
                 mCallAudioController,
                 mPlaySoundController,
-                mStreamsCategoryController,
                 mSwitchBarController);
         mFragment.onAudioSharingProfilesConnected();
         verify(mVolumeGroupController).onAudioSharingProfilesConnected();

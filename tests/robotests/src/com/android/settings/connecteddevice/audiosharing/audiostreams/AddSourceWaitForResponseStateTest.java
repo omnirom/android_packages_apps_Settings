@@ -30,14 +30,20 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.app.settings.SettingsEnums;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothLeBroadcastMetadata;
 import android.content.Context;
 
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
+import com.android.settings.bluetooth.Utils;
+import com.android.settings.connecteddevice.audiosharing.audiostreams.testshadows.ShadowAudioStreamsHelper;
 import com.android.settings.testutils.FakeFeatureFactory;
+import com.android.settings.testutils.shadow.ShadowBluetoothUtils;
+import com.android.settingslib.bluetooth.LocalBluetoothManager;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -56,26 +62,42 @@ import java.util.concurrent.TimeUnit;
 @Config(
         shadows = {
             ShadowAlertDialog.class,
+                ShadowAudioStreamsHelper.class,
+                ShadowBluetoothUtils.class,
         })
 public class AddSourceWaitForResponseStateTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     private static final int BROADCAST_ID = 1;
+    private static final String ALIAS = "device name";
     private final Context mContext = spy(ApplicationProvider.getApplicationContext());
     @Mock private AudioStreamPreference mMockPreference;
     @Mock private AudioStreamsProgressCategoryController mMockController;
     @Mock private AudioStreamsHelper mMockHelper;
+    @Mock private AudioStreamScanHelper mScanHelper;
     @Mock private BluetoothLeBroadcastMetadata mMockMetadata;
     @Mock private AudioStreamsRepository mMockRepository;
+    @Mock
+    private LocalBluetoothManager mLocalBluetoothManager;
+    @Mock
+    private BluetoothDevice mBluetoothDevice;
     private FakeFeatureFactory mFeatureFactory;
     private AddSourceWaitForResponseState mInstance;
 
     @Before
     public void setUp() {
+        ShadowBluetoothUtils.sLocalBluetoothManager = mLocalBluetoothManager;
+        mLocalBluetoothManager = Utils.getLocalBtManager(mContext);
         mFeatureFactory = FakeFeatureFactory.setupForTest();
         mInstance = new AddSourceWaitForResponseState();
         when(mMockPreference.getContext()).thenReturn(mContext);
         when(mMockPreference.getSourceOriginForLogging())
                 .thenReturn(SourceOriginForLogging.QR_CODE_SCAN_SETTINGS);
+    }
+
+    @After
+    public void tearDown() {
+        ShadowAudioStreamsHelper.reset();
+        ShadowBluetoothUtils.reset();
     }
 
     @Test
@@ -108,7 +130,7 @@ public class AddSourceWaitForResponseStateTest {
     public void testPerformAction_metadataIsNull_doNothing() {
         when(mMockPreference.getAudioStreamMetadata()).thenReturn(null);
 
-        mInstance.performAction(mMockPreference, mMockController, mMockHelper);
+        mInstance.onEnter(mMockPreference, mMockController, mMockHelper, mScanHelper);
 
         verify(mMockHelper, never()).addSource(any());
     }
@@ -120,7 +142,7 @@ public class AddSourceWaitForResponseStateTest {
                 .thenReturn(SourceOriginForLogging.QR_CODE_SCAN_SETTINGS);
         mInstance.setAudioStreamsRepositoryForTesting(mMockRepository);
 
-        mInstance.performAction(mMockPreference, mMockController, mMockHelper);
+        mInstance.onEnter(mMockPreference, mMockController, mMockHelper, mScanHelper);
 
         verify(mMockHelper).addSource(mMockMetadata);
         verify(mFeatureFactory.metricsFeatureProvider)
@@ -134,6 +156,8 @@ public class AddSourceWaitForResponseStateTest {
 
     @Test
     public void testPerformAction_timeout_addSource_sourceFailedToConnect() {
+        ShadowAudioStreamsHelper.setConnectedBluetoothDevice(mBluetoothDevice);
+        when(mBluetoothDevice.getAlias()).thenReturn(ALIAS);
         when(mMockPreference.getAudioStreamMetadata()).thenReturn(mMockMetadata);
         when(mMockPreference.isShown()).thenReturn(true);
         when(mMockPreference.getAudioStreamState()).thenReturn(mInstance.getStateEnum());
@@ -143,7 +167,7 @@ public class AddSourceWaitForResponseStateTest {
         when(mMockController.getFragment()).thenReturn(mock(AudioStreamsDashboardFragment.class));
         mInstance.setAudioStreamsRepositoryForTesting(mMockRepository);
 
-        mInstance.performAction(mMockPreference, mMockController, mMockHelper);
+        mInstance.onEnter(mMockPreference, mMockController, mMockHelper, mScanHelper);
         ShadowLooper.idleMainLooper(ADD_SOURCE_WAIT_FOR_RESPONSE_TIMEOUT_MILLIS, TimeUnit.SECONDS);
 
         verify(mMockHelper).addSource(mMockMetadata);
@@ -159,8 +183,8 @@ public class AddSourceWaitForResponseStateTest {
                         eq(mContext),
                         eq(SettingsEnums.ACTION_AUDIO_STREAM_JOIN_FAILED_TIMEOUT),
                         eq(SourceOriginForLogging.QR_CODE_SCAN_SETTINGS.ordinal()));
-        verify(mContext).getString(R.string.audio_streams_dialog_stream_is_not_available);
-        verify(mContext).getString(R.string.audio_streams_is_not_playing);
+        verify(mContext).getString(R.string.audio_streams_dialog_failed_to_join);
+        verify(mContext).getString(R.string.audio_streams_dialog_failed_to_join_detail, ALIAS);
         verify(mContext).getString(R.string.audio_streams_dialog_close);
     }
 }

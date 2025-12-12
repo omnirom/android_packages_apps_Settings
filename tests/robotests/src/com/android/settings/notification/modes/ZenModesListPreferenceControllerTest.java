@@ -25,11 +25,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 import android.app.AutomaticZenRule;
-import android.app.Flags;
 import android.content.Context;
 import android.net.Uri;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.service.notification.ZenPolicy;
 
@@ -102,7 +99,6 @@ public class ZenModesListPreferenceControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
     public void updateState_addsPreferences() {
         ImmutableList<ZenMode> modes = ImmutableList.of(newMode("One"), newMode("Two"),
                 newMode("Three"), newMode("Four"), newMode("Five"));
@@ -118,7 +114,6 @@ public class ZenModesListPreferenceControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
     public void updateState_secondTime_updatesPreferences() {
         ImmutableList<ZenMode> modes = ImmutableList.of(newMode("One"), newMode("Two"),
                 newMode("Three"), newMode("Four"), newMode("Five"));
@@ -147,19 +142,6 @@ public class ZenModesListPreferenceControllerTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_MODES_UI)
-    public void testModesUiOff_notAvailableAndNoSearchData() {
-        // There exist modes
-        when(mBackend.getModes()).thenReturn(List.of(MANUAL_DND, TEST_MODE));
-
-        assertThat(mPrefController.isAvailable()).isFalse();
-        List<SearchIndexableRaw> data = new ArrayList<>();
-        mPrefController.updateDynamicRawDataToIndex(data);
-        assertThat(data).isEmpty();  // despite existence of modes
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
     public void testUpdateDynamicRawDataToIndex_empty() {
         // Case of no modes.
         when(mBackend.getModes()).thenReturn(new ArrayList<>());
@@ -170,7 +152,6 @@ public class ZenModesListPreferenceControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
     public void testUpdateDynamicRawDataToIndex_oneMode() {
         // One mode present, confirm it's the correct one
         when(mBackend.getModes()).thenReturn(List.of(TEST_MODE));
@@ -196,7 +177,6 @@ public class ZenModesListPreferenceControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
     public void testUpdateDynamicRawDataToIndex_multipleModes() {
         when(mBackend.getModes()).thenReturn(List.of(MANUAL_DND, TEST_MODE));
 

@@ -35,6 +35,8 @@ import android.provider.Settings;
 import android.service.rotationresolver.RotationResolverService;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.preference.Preference;
@@ -74,19 +76,27 @@ public class SmartAutoRotateController extends TogglePreferenceController implem
                 }
             };
 
+    @Nullable
     private final DeviceStateAutoRotateSettingManager mDeviceStateAutoRotateSettingsManager;
     private final DeviceStateAutoRotateSettingManager.DeviceStateAutoRotateSettingListener
             mDeviceStateAutoRotateSettingListener = () -> updateState(mPreference);
     private RotationPolicy.RotationPolicyListener mRotationPolicyListener;
 
     public SmartAutoRotateController(Context context, String preferenceKey) {
+        this(context, preferenceKey,
+                DeviceStateAutoRotateSettingManagerProvider.getSingletonInstance(context));
+    }
+
+    @VisibleForTesting
+    public SmartAutoRotateController(
+            @NonNull Context context,
+            @NonNull String preferenceKey,
+            @Nullable DeviceStateAutoRotateSettingManager deviceStateAutoRotateSettingManager) {
         super(context, preferenceKey);
         mMetricsFeatureProvider = FeatureFactory.getFeatureFactory().getMetricsFeatureProvider();
         mPrivacyManager = SensorPrivacyManager.getInstance(context);
         mPowerManager = context.getSystemService(PowerManager.class);
-        mDeviceStateAutoRotateSettingsManager =
-                DeviceStateAutoRotateSettingManagerProvider.getSingletonInstance(
-                        context);
+        mDeviceStateAutoRotateSettingsManager = deviceStateAutoRotateSettingManager;
     }
 
     @Override
@@ -99,8 +109,14 @@ public class SmartAutoRotateController extends TogglePreferenceController implem
     }
 
     protected boolean isRotationLocked() {
-        if (DeviceStateAutoRotationHelper.isDeviceStateRotationEnabled(mContext)) {
-            return mDeviceStateAutoRotateSettingsManager.isRotationLockedForAllStates();
+        if (DeviceStateAutoRotationHelper.isDeviceStateRotationEnabled(mContext)
+                && mDeviceStateAutoRotateSettingsManager != null) {
+            // It is highly unlikely to receive null value here. In the improbable event of null, a
+            // non-null update will follow shortly, and the users will potentially see incorrect
+            // state for a short time.
+            final Boolean isRotationLockedForAllStates =
+                    mDeviceStateAutoRotateSettingsManager.isRotationLockedForAllStates();
+            return isRotationLockedForAllStates == null || isRotationLockedForAllStates;
         }
         return RotationPolicy.isRotationLocked(mContext);
     }
@@ -140,8 +156,10 @@ public class SmartAutoRotateController extends TogglePreferenceController implem
             };
         }
         RotationPolicy.registerRotationPolicyListener(mContext, mRotationPolicyListener);
-        mDeviceStateAutoRotateSettingsManager.registerListener(
-                mDeviceStateAutoRotateSettingListener);
+        if (mDeviceStateAutoRotateSettingsManager != null) {
+            mDeviceStateAutoRotateSettingsManager.registerListener(
+                    mDeviceStateAutoRotateSettingListener);
+        }
         mPrivacyManager.addSensorPrivacyListener(CAMERA, mPrivacyChangedListener);
     }
 
@@ -152,8 +170,10 @@ public class SmartAutoRotateController extends TogglePreferenceController implem
             RotationPolicy.unregisterRotationPolicyListener(mContext, mRotationPolicyListener);
             mRotationPolicyListener = null;
         }
-        mDeviceStateAutoRotateSettingsManager.unregisterListener(
-                mDeviceStateAutoRotateSettingListener);
+        if (mDeviceStateAutoRotateSettingsManager != null) {
+            mDeviceStateAutoRotateSettingsManager.unregisterListener(
+                    mDeviceStateAutoRotateSettingListener);
+        }
         mPrivacyManager.removeSensorPrivacyListener(CAMERA, mPrivacyChangedListener);
     }
 

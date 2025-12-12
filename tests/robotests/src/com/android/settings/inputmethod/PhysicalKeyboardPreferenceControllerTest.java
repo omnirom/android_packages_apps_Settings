@@ -107,7 +107,6 @@ public class PhysicalKeyboardPreferenceControllerTest {
     @Test
     @Config(shadows = ShadowInputDevice.class)
     public void updateState_noKeyboard_setPreferenceVisibleFalse() {
-        ShadowInputDevice.sDeviceIds = new int[0];
         mController.updateState(mPreference);
 
         verify(mPreference).setVisible(false);
@@ -120,7 +119,6 @@ public class PhysicalKeyboardPreferenceControllerTest {
         when(device.isVirtual()).thenReturn(false);
         when(device.isFullKeyboard()).thenReturn(true);
         when(device.getName()).thenReturn("test_keyboard");
-        ShadowInputDevice.sDeviceIds = new int[]{0};
         ShadowInputDevice.addDevice(0, device);
 
         mController.updateState(mPreference);

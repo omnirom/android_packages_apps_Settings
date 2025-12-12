@@ -28,7 +28,9 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.UserInfo;
@@ -36,6 +38,7 @@ import android.hardware.fingerprint.FingerprintManager;
 import android.os.UserManager;
 
 import androidx.lifecycle.LifecycleOwner;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.internal.widget.LockPatternUtils;
 import com.android.settings.testutils.FakeFeatureFactory;
@@ -78,7 +81,8 @@ public class VisiblePatternProfilePreferenceControllerTest {
         mContext = spy(RuntimeEnvironment.application);
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
         when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)).thenReturn(true);
-        final ShadowApplication application = ShadowApplication.getInstance();
+        final ShadowApplication application =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         application.setSystemService(Context.FINGERPRINT_SERVICE, mFingerprintManager);
         application.setSystemService(Context.USER_SERVICE, mUm);
 

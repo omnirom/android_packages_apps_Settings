@@ -74,7 +74,8 @@
             android:layout_marginTop="4dp"
             android:textColor="?androidprv:attr/textColorOnAccent"
             android:background="@drawable/audio_sharing_rounded_bg_ripple_top"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:featureFlag="!com.android.settings.flags.enable_bluetooth_settings_expressive_design_read_only" />
 
         <Button
             android:id="@+id/negative_btn"
@@ -85,6 +86,29 @@
             android:layout_marginTop="4dp"
             android:textColor="?androidprv:attr/textColorOnAccent"
             android:background="@drawable/audio_sharing_rounded_bg_ripple_bottom"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:featureFlag="!com.android.settings.flags.enable_bluetooth_settings_expressive_design_read_only" />
+
+        <Button
+            android:id="@+id/positive_btn"
+            style="@style/Widget.SettingsLib.DialogButton.Filled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="0dp"
+            android:visibility="gone"
+            android:featureFlag="com.android.settings.flags.enable_bluetooth_settings_expressive_design_read_only" />
+
+        <Button
+            android:id="@+id/negative_btn"
+            style="@style/Widget.SettingsLib.DialogButton.Outline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="0dp"
+            android:visibility="gone"
+            android:featureFlag="com.android.settings.flags.enable_bluetooth_settings_expressive_design_read_only" />
     </LinearLayout>
 </ScrollView>

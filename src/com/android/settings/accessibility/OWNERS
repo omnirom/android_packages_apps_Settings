@@ -17,3 +17,6 @@ cipson@google.com #{LAST_RESORT_SUGGESTION}
 # Partner-team files
 per-file *Haptic* = file:platform/frameworks/base:/services/core/java/com/android/server/vibrator/OWNERS
 per-file *Vibrat* = file:platform/frameworks/base:/services/core/java/com/android/server/vibrator/OWNERS
+
+# Catalyst migration
+per-file *Screen.kt = file:platform/packages/apps/Settings:/OWNERS

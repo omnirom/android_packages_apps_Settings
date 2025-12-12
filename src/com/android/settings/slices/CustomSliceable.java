@@ -51,6 +51,7 @@ import java.lang.reflect.InvocationTargetException;
  * <p>
  *     If you implement this interface, you should add your Slice to {@link CustomSliceManager}.
  */
+@Deprecated(forRemoval = true)
 public interface CustomSliceable extends Sliceable {
 
     /**

@@ -315,6 +315,10 @@
     <item msgid="7397961711906421599">"ਦਰਮਿਆਨੇ ਸਮੇਂ ਲਈ"</item>
     <item msgid="4079132024502041928">"ਲੰਬੇ ਸਮੇਂ ਲਈ"</item>
   </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"DHCP"</item>
+    <item msgid="4425163520864432692">"ਸਥਿਰ"</item>
+  </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"ਪੂਰਵ-ਨਿਰਧਾਰਿਤ"</item>
     <item msgid="4234707448428002595">"Sans-serif"</item>
@@ -348,7 +352,7 @@
     <item msgid="3237802033158517495">"100%"</item>
   </string-array>
   <string-array name="captioning_preset_selector_titles">
-    <item msgid="3880932435325583041">"ਐਪ ਵੱਲੋਂ ਸੈੱਟ ਕੀਤਾ ਗਿਆ"</item>
+    <item msgid="3880932435325583041">"ਐਪ ਵੱਲੋਂ ਸੈੱਟ ਕੀਤੀ ਗਈ ਸ਼ੈਲੀ"</item>
     <item msgid="8719204526359229387">"ਕਾਲੇ \'ਤੇ ਸਫ਼ੈਦ"</item>
     <item msgid="5410164687403735103">"ਸਫ਼ੈਦ \'ਤੇ ਕਾਲਾ"</item>
     <item msgid="1119043472912497241">"ਕਾਲੇ \'ਤੇ ਪੀਲਾ"</item>
@@ -358,10 +362,6 @@
   <string-array name="accessibility_button_location_selector_titles">
     <item msgid="6485511780196327736">"ਦੂਜੀਆਂ ਐਪਾਂ \'ਤੇ ਫ਼ਲੋਟ ਕਰਨਾ"</item>
     <item msgid="3605616699204153590">"ਨੈਵੀਗੇਸ਼ਨ ਵਾਲੀ ਪੱਟੀ"</item>
-  </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"ਬਟਨ"</item>
-    <item msgid="6922258575853746220">"ਇਸ਼ਾਰਾ"</item>
   </string-array>
   <string-array name="accessibility_button_size_selector_titles">
     <item msgid="7482952318152486459">"ਛੋਟਾ"</item>
@@ -392,7 +392,7 @@
     <item msgid="7582717864806562725">"?"</item>
   </string-array>
   <string-array name="color_picker">
-    <item msgid="7216413848731287689">"ਹਰਾ ਨੀਲਾ"</item>
+    <item msgid="7216413848731287689">"ਸੀਆਨ"</item>
     <item msgid="5661027589207588703">"ਨੀਲਾ"</item>
     <item msgid="1219738214736244749">"ਹਰਾ"</item>
     <item msgid="6331809026622602308">"ਜਾਮਨੀ"</item>
@@ -416,7 +416,7 @@
     <item msgid="2047166446768045816">"ਗੈਰ-ਮੀਟਰਬੱਧ ਮੰਨੋ"</item>
   </string-array>
   <string-array name="wifi_privacy_entries">
-    <item msgid="91222619458919148">"ਬੇਤਰਤੀਬੇ MAC ਦੀ ਵਰਤੋਂ ਕਰੋ"</item>
+    <item msgid="91222619458919148">"ਬੇਤਰਤੀਬ MAC ਦੀ ਵਰਤੋਂ ਕਰੋ"</item>
     <item msgid="741680937828608749">"ਡੀਵਾਈਸ MAC ਵਰਤੋ"</item>
   </string-array>
   <string-array name="wifi_dhcp_entries">
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"ਘੜੀ"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"ਕੋਈ ਨਹੀਂ"</item>
+    <item msgid="321837941231023175">"ਘਰ"</item>
+    <item msgid="953234843613969792">"ਹਾਲੀਆ ਐਪਾਂ"</item>
+    <item msgid="1713942773283586136">"ਸੂਚਨਾਵਾਂ"</item>
+    <item msgid="5687603742365489342">"ਤਤਕਾਲ ਸੈਟਿੰਗਾਂ"</item>
+    <item msgid="5454862951059393431">"ਲਾਕ ਸਕ੍ਰੀਨ"</item>
   </string-array>
 </resources>

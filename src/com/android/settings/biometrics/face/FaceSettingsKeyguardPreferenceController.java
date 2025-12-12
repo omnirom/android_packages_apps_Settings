@@ -25,7 +25,6 @@ import android.provider.Settings;
 import androidx.preference.Preference;
 
 import com.android.settings.Utils;
-import com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
 import com.android.settingslib.RestrictedSwitchPreference;
 
 /**
@@ -55,7 +54,7 @@ public class FaceSettingsKeyguardPreferenceController extends FaceSettingsPrefer
     public boolean isChecked() {
         if (!FaceSettings.isFaceHardwareDetected(mContext)) {
             return false;
-        } else if (getRestrictingAdmin() != null) {
+        } else if (isRestrictedByAdmin()) {
             return false;
         }
         return Settings.Secure.getIntForUser(mContext.getContentResolver(),
@@ -76,16 +75,28 @@ public class FaceSettingsKeyguardPreferenceController extends FaceSettingsPrefer
 
     @Override
     public void updateState(Preference preference) {
-        EnforcedAdmin admin;
         super.updateState(preference);
         if (!FaceSettings.isFaceHardwareDetected(mContext)) {
             preference.setEnabled(false);
-        } else if ((admin = getRestrictingAdmin()) != null) {
-            ((RestrictedSwitchPreference) preference).setDisabledByAdmin(admin);
+        } else if (isRestrictedByAdmin()) {
+            if (android.app.admin.flags.Flags.policyTransparencyRefactorEnabled()
+                    && android.app.admin.flags.Flags.setKeyguardDisabledFeaturesCoexistence()) {
+                ((RestrictedSwitchPreference) preference).setDisabledByAdmin(getEnforcingAdmin());
+            } else {
+                ((RestrictedSwitchPreference) preference).setDisabledByAdmin(getRestrictingAdmin());
+            }
         } else if (!mFaceManager.hasEnrolledTemplates(getUserId())) {
             preference.setEnabled(false);
         } else {
             preference.setEnabled(true);
         }
+    }
+
+    private boolean isRestrictedByAdmin() {
+        if (android.app.admin.flags.Flags.policyTransparencyRefactorEnabled()
+                && android.app.admin.flags.Flags.setKeyguardDisabledFeaturesCoexistence()) {
+            return getEnforcingAdmin() != null;
+        }
+        return getRestrictingAdmin() != null;
     }
 }

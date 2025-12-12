@@ -140,9 +140,16 @@ public class MultiBiometricEnrollHelperTest {
         final ShadowPackageManager shadowPackageManager = shadowOf(mContext.getPackageManager());
         shadowPackageManager.setSystemFeature(PackageManager.FEATURE_FACE, true);
         ShadowUtils.setFaceManager(mFaceManager);
-        ActivityController.of(new FaceEnrollIntroduction(), mFaceIntent)
+        ActivityController.of(new TestFaceEnrollIntroduction(), mFaceIntent)
                 .create(mFaceIntent.getExtras()).get();
 
         verify(mFaceManager).generateChallenge(eq(mUserId), any());
+    }
+
+    private static class TestFaceEnrollIntroduction extends FaceEnrollIntroduction {
+        @Override
+        public String getLaunchedFromPackage() {
+            return getPackageName();
+        }
     }
 }

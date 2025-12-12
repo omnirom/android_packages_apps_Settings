@@ -19,6 +19,7 @@ package com.android.settings.development;
 import static com.android.settings.development.DevelopmentOptionsActivityRequestCodes.REQUEST_CODE_ENABLE_OEM_UNLOCK;
 
 import android.app.Activity;
+import android.app.admin.EnforcingAdmin;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -113,7 +114,7 @@ public class OemUnlockPreferenceController extends DeveloperOptionsPreferenceCon
         mPreference.setChecked(isOemUnlockedAllowed());
         updateOemUnlockSettingDescription();
         // Showing mEnableOemUnlock preference as device has persistent data block.
-        mPreference.setDisabledByAdmin(null);
+        mPreference.setDisabledByAdmin((EnforcingAdmin) null);
         mPreference.setEnabled(enableOemUnlockPreference());
         if (mPreference.isEnabled()) {
             // Check restriction, disable mEnableOemUnlock and apply policy transparency.

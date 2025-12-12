@@ -25,6 +25,7 @@ import androidx.preference.PreferenceScreen;
 
 import com.android.settingslib.mobile.dataservice.SubscriptionInfoEntity;
 
+@Deprecated
 public class TransferEsimPreferenceController extends TelephonyBasePreferenceController {
 
     private Preference mPreference;

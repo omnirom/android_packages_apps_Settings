@@ -200,7 +200,6 @@ public class BluetoothDevicePairingDetailBaseTest {
 
     @Test
     @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
-    @DisableFlags(Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI)
     public void onDeviceBondStateChanged_bonded_notPairInSharing_finish() {
         when(mCachedBluetoothDevice.getDevice()).thenReturn(mBluetoothDevice);
         mFragment.mSelectedList.add(mBluetoothDevice);
@@ -213,7 +212,6 @@ public class BluetoothDevicePairingDetailBaseTest {
     @Test
     @Config(shadows = ShadowDialogFragment.class)
     @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
-    @DisableFlags(Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI)
     public void onDeviceBondStateChanged_bonded_shareThenPair_handle() {
         ShadowDialogFragment.reset();
         when(mCachedBluetoothDevice.getDevice()).thenReturn(mBluetoothDevice);
@@ -236,7 +234,6 @@ public class BluetoothDevicePairingDetailBaseTest {
 
     @Test
     @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
-    @DisableFlags(Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI)
     public void onDeviceBondStateChanged_bonding_notPairInSharing_doNothing() {
         when(mCachedBluetoothDevice.getDevice()).thenReturn(mBluetoothDevice);
         mFragment.mSelectedList.add(mBluetoothDevice);
@@ -249,7 +246,6 @@ public class BluetoothDevicePairingDetailBaseTest {
 
     @Test
     @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
-    @DisableFlags(Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI)
     public void onDeviceBondStateChanged_bonding_shareThenPair_addListener() {
         when(mCachedBluetoothDevice.getDevice()).thenReturn(mBluetoothDevice);
         mFragment.mSelectedList.add(mBluetoothDevice);
@@ -262,7 +258,7 @@ public class BluetoothDevicePairingDetailBaseTest {
     }
 
     @Test
-    @DisableFlags({Flags.FLAG_ENABLE_LE_AUDIO_SHARING, Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI})
+    @DisableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onDeviceBondStateChanged_unbonded_notPairInSharing_doNothing() {
         when(mCachedBluetoothDevice.getDevice()).thenReturn(mBluetoothDevice);
         mFragment.mSelectedList.add(mBluetoothDevice);
@@ -274,7 +270,6 @@ public class BluetoothDevicePairingDetailBaseTest {
 
     @Test
     @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
-    @DisableFlags(Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI)
     public void onDeviceBondStateChanged_unbonded_shareThenPair_removeListener() {
         when(mCachedBluetoothDevice.getDevice()).thenReturn(mBluetoothDevice);
         mFragment.mSelectedList.add(mBluetoothDevice);
@@ -287,7 +282,7 @@ public class BluetoothDevicePairingDetailBaseTest {
     }
 
     @Test
-    @DisableFlags({Flags.FLAG_ENABLE_LE_AUDIO_SHARING, Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI})
+    @DisableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void
             onProfileConnectionStateChanged_deviceInSelectedListAndConnected_notInSharing_finish() {
         final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(TEST_DEVICE_ADDRESS_B);
@@ -306,7 +301,7 @@ public class BluetoothDevicePairingDetailBaseTest {
 
     @Test
     @Config(shadows = ShadowDialogFragment.class)
-    @EnableFlags({Flags.FLAG_ENABLE_LE_AUDIO_SHARING, Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI})
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void
             onProfileConnectionStateChanged_inSelectedListAndConnected_shareThenPair_handle() {
         ShadowDialogFragment.reset();
@@ -342,7 +337,7 @@ public class BluetoothDevicePairingDetailBaseTest {
     }
 
     @Test
-    @DisableFlags({Flags.FLAG_ENABLE_LE_AUDIO_SHARING, Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI})
+    @DisableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onProfileConnectionStateChanged_deviceNotInSelectedList_doNothing() {
         final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(TEST_DEVICE_ADDRESS_B);
         mFragment.mSelectedList.add(device);
@@ -357,7 +352,7 @@ public class BluetoothDevicePairingDetailBaseTest {
     }
 
     @Test
-    @DisableFlags({Flags.FLAG_ENABLE_LE_AUDIO_SHARING, Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI})
+    @DisableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onProfileConnectionStateChanged_deviceDisconnected_doNothing() {
         final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(TEST_DEVICE_ADDRESS_B);
         mFragment.mSelectedList.add(mBluetoothDevice);
@@ -373,7 +368,7 @@ public class BluetoothDevicePairingDetailBaseTest {
     }
 
     @Test
-    @DisableFlags({Flags.FLAG_ENABLE_LE_AUDIO_SHARING, Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI})
+    @DisableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onProfileConnectionStateChanged_deviceInPreferenceMapAndConnected_removed() {
         final BluetoothDevicePreference preference =
                 new BluetoothDevicePreference(mContext, mCachedBluetoothDevice,
@@ -391,7 +386,7 @@ public class BluetoothDevicePairingDetailBaseTest {
     }
 
     @Test
-    @DisableFlags({Flags.FLAG_ENABLE_LE_AUDIO_SHARING, Flags.FLAG_ENABLE_TEMPORARY_BOND_DEVICES_UI})
+    @DisableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void onProfileConnectionStateChanged_deviceNotInPreferenceMap_doNothing() {
         final CachedBluetoothDevice cachedDevice = mock(CachedBluetoothDevice.class);
         final BluetoothDevicePreference preference =

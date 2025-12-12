@@ -9,27 +9,10 @@ flag {
 }
 
 flag {
-  name: "udfps_enroll_calibration"
-  namespace: "biometrics_integration"
-  description: "This flag controls whether the fps enroll calibration feature should be enabled"
-  bug: "301226085"
-}
-
-flag {
   name: "enroll_layout_truncate_improvement"
   namespace: "biometrics_integration"
   description: "This flag controls whether the enroll layout truncate improvement feature should be enabled"
   bug: "359149850"
-  metadata {
-      purpose: PURPOSE_BUGFIX
-  }
-}
-
-flag {
-  name: "screen_off_unlock_power_optimization"
-  namespace: "biometrics_integration"
-  description: "This flag controls Whether to gate fp unlock when screen turns off feature before AOC optimized"
-  bug: "368465560"
   metadata {
       purpose: PURPOSE_BUGFIX
   }
@@ -52,3 +35,22 @@ flag {
   }
 }
 
+flag {
+  name: "msdl_feedback"
+  namespace: "biometrics_integration"
+  description: "This flag controls whether MSDL haptic feedback is delivered in Settings, especially for the bouncer pattern"
+  bug: "406774575"
+  metadata {
+      purpose: PURPOSE_BUGFIX
+  }
+}
+
+flag {
+  name: "remove_protection_layout"
+  namespace: "biometrics_integration"
+  description: "This flag controls whether remove protection layout in biometrics settings"
+  bug: "440023111"
+  metadata {
+      purpose: PURPOSE_BUGFIX
+  }
+}

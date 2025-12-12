@@ -22,9 +22,11 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.UserHandle;
+import android.util.IconDrawableFactory;
 import android.util.Slog;
 
 import com.android.settings.notification.NotificationBackend;
+import com.android.settingslib.Utils;
 import com.android.settingslib.utils.ThreadUtils;
 
 import java.util.ArrayList;
@@ -78,8 +80,7 @@ public class HistoryLoader {
                                 UserHandle.getUserId(nhp.uid));
                         if (info != null) {
                             nhp.label = String.valueOf(mPm.getApplicationLabel(info));
-                            nhp.icon = mPm.getUserBadgedIcon(mPm.getApplicationIcon(info),
-                                    UserHandle.of(UserHandle.getUserId(nhp.uid)));
+                            nhp.icon = Utils.getBadgedIcon(mContext, info);
                         }
                     } catch (PackageManager.NameNotFoundException e) {
                         // app is gone, just show package name and generic icon

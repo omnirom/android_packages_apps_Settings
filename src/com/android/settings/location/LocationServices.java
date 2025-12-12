@@ -19,6 +19,9 @@ package com.android.settings.location;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
@@ -28,6 +31,7 @@ import com.android.settingslib.search.SearchIndexable;
  * A page that configures the Location Services settings including Wi-Fi scanning, Bluetooth
  * scanning, and injected location services.
  */
+// LINT.IfChange
 @SearchIndexable(forTarget = SearchIndexable.ALL & ~SearchIndexable.ARC)
 public class LocationServices extends DashboardFragment {
     private static final String TAG = "LocationServicesSettings";
@@ -54,9 +58,14 @@ public class LocationServices extends DashboardFragment {
         use(LocationInjectedServicesPreferenceController.class).init(this);
     }
 
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return LocationServicesScreen.KEY;
+    }
     /**
      * For Search.
      */
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(R.xml.location_services);
 }
+// LINT.ThenChange(LocationServicesScreen.kt)

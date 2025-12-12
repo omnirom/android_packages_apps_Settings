@@ -16,6 +16,8 @@
 
 package com.android.settings.wifi;
 
+import static com.android.wifitrackerlib.WifiEntry.CONNECTED_STATE_CONNECTED;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.settings.SettingsEnums;
@@ -80,6 +82,14 @@ public class ConfigureWifiEntryFragment extends InstrumentedFragment implements 
 
         setupNetworkDetailsTracker();
         mWifiEntry = mNetworkDetailsTracker.getWifiEntry();
+        mWifiEntry.setListener(new WifiEntry.WifiEntryCallback() {
+            @Override
+            public void onUpdated() {
+                if (mWifiEntry.getConnectedState() == CONNECTED_STATE_CONNECTED) {
+                    getActivity().finish();
+                }
+            }
+        });
     }
 
     @Override
@@ -136,7 +146,7 @@ public class ConfigureWifiEntryFragment extends InstrumentedFragment implements 
     public void onResume() {
         super.onResume();
         mUiController.showSecurityFields(
-            /* refreshEapMethods */ false, /* refreshCertificates */ true);
+                /* refreshEapMethods */ false, /* refreshCertificates */ true);
     }
 
     @Override

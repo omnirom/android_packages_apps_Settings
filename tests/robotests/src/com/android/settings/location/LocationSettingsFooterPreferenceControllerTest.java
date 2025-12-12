@@ -36,12 +36,14 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.text.Html;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
+import com.android.settings.testutils.shadow.SettingsShadowResources;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 import com.android.settingslib.widget.FooterPreference;
 
@@ -53,11 +55,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(shadows = {SettingsShadowResources.class})
 public class LocationSettingsFooterPreferenceControllerTest {
 
     private static final int TEST_RES_ID = 1234;
@@ -75,6 +79,8 @@ public class LocationSettingsFooterPreferenceControllerTest {
     @Mock
     private PackageManager mPackageManager;
     @Mock
+    private TelephonyManager mTelephonyManager;
+    @Mock
     private Resources mResources;
 
     @Before
@@ -82,6 +88,12 @@ public class LocationSettingsFooterPreferenceControllerTest {
         MockitoAnnotations.initMocks(this);
         mContext = spy(RuntimeEnvironment.application);
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
+
+        // Telephony features are enabled by default.
+        mockTelephonyService();
+        when(mTelephonyManager.isDeviceSmsCapable()).thenReturn(true);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(true);
+        setConfigShowSimInfo(true);
 
         LifecycleOwner lifecycleOwner = () -> mLifecycle;
         mLifecycle = new Lifecycle(lifecycleOwner);
@@ -100,12 +112,7 @@ public class LocationSettingsFooterPreferenceControllerTest {
 
     @Test
     public void isAvailable_hasValidFooter_returnsTrue() {
-        final List<ResolveInfo> testResolveInfos = new ArrayList<>();
-        testResolveInfos.add(
-                getTestResolveInfo(/*isSystemApp*/ true, /*hasRequiredMetadata*/ true));
-        when(mPackageManager.queryBroadcastReceivers(any(Intent.class), anyInt()))
-                .thenReturn(testResolveInfos);
-
+        setUpFooterPreference(/*isSystemApp*/ true, /*hasRequiredMetaData*/ true);
         assertThat(mController.isAvailable()).isTrue();
     }
 
@@ -114,11 +121,7 @@ public class LocationSettingsFooterPreferenceControllerTest {
      */
     @Test
     public void isAvailable_noSystemApp_returnsTrue() {
-        final List<ResolveInfo> testResolveInfos = new ArrayList<>();
-        testResolveInfos.add(
-                getTestResolveInfo(/*isSystemApp*/ false, /*hasRequiredMetadata*/ true));
-        when(mPackageManager.queryBroadcastReceivers(any(Intent.class), anyInt()))
-                .thenReturn(testResolveInfos);
+        setUpFooterPreference(/*isSystemApp*/ false, /*hasRequiredMetaData*/ true);
         assertThat(mController.isAvailable()).isTrue();
     }
 
@@ -127,69 +130,101 @@ public class LocationSettingsFooterPreferenceControllerTest {
      */
     @Test
     public void isAvailable_noRequiredMetadata_returnsTrue() {
-        final List<ResolveInfo> testResolveInfos = new ArrayList<>();
-        testResolveInfos.add(
-                getTestResolveInfo(/*isSystemApp*/ true, /*hasRequiredMetadata*/ false));
-        when(mPackageManager.queryBroadcastReceivers(any(Intent.class), anyInt()))
-                .thenReturn(testResolveInfos);
+        setUpFooterPreference(/*isSystemApp*/ true, /*hasRequiredMetaData*/ false);
         assertThat(mController.isAvailable()).isTrue();
     }
 
     @Test
     public void updateState_setTitle() {
-        final List<ResolveInfo> testResolveInfos = new ArrayList<>();
-        testResolveInfos.add(
-                getTestResolveInfo(/*isSystemApp*/ true, /*hasRequiredMetadata*/ true));
-        when(mPackageManager.queryBroadcastReceivers(any(Intent.class), anyInt()))
-                .thenReturn(testResolveInfos);
+        setUpFooterPreference(/*isSystemApp*/ true, /*hasRequiredMetaData*/ true);
         mController.updateState(mFooterPreference);
+
         ArgumentCaptor<CharSequence> title = ArgumentCaptor.forClass(CharSequence.class);
         verify(mFooterPreference).setTitle(title.capture());
         assertThat(title.getValue()).isNotNull();
     }
 
     @Test
-    public void onLocationModeChanged_off_setTitle() {
-        final List<ResolveInfo> testResolveInfos = new ArrayList<>();
-        testResolveInfos.add(
-                getTestResolveInfo(/*isSystemApp*/ true, /*hasRequiredMetadata*/ true));
-        when(mPackageManager.queryBroadcastReceivers(any(Intent.class), anyInt()))
-                .thenReturn(testResolveInfos);
-        mController.updateState(mFooterPreference);
-        verify(mFooterPreference).setTitle(any());
-        mController.onLocationModeChanged(/* mode= */ 0, /* restricted= */ false);
-        ArgumentCaptor<CharSequence> title = ArgumentCaptor.forClass(CharSequence.class);
-        verify(mFooterPreference, times(2)).setTitle(title.capture());
+    public void onLocationModeChanged_off_telephonyEnabled_setTitle() {
+        // Calling and SMS messaging capabilities are enabled by default in test setup.
+        setUpFooterPreference(/*isSystemApp*/ true, /*hasRequiredMetaData*/ true);
+        setUpLocationModeChanged(/*locationEnabled*/ false, /*shouldFooterTitleChange*/ true);
+        assertLocationFooter(R.string.location_settings_footer_location_off_with_telephony);
+    }
 
-        assertThat(title.getValue().toString()).contains(
-                Html.fromHtml(mContext.getString(
-                        R.string.location_settings_footer_location_off)).toString());
+    /**
+     * Test that the correct footer string shows when location is off and telephony is disabled by
+     * the config boolean.
+     */
+    @Test
+    public void onLocationModeChanged_off_telephonyDisabled_setTitle() {
+        setConfigShowSimInfo(false);
+
+        setUpFooterPreference(/*isSystemApp*/ true, /*hasRequiredMetaData*/ true);
+        setUpLocationModeChanged(/*locationEnabled*/ false, /*shouldFooterTitleChange*/ true);
+        assertLocationFooter(R.string.location_settings_footer_location_off_no_telephony);
+    }
+
+    @Test
+    public void onLocationModeChanged_off_noSmsMessaging_setTitle() {
+        when(mTelephonyManager.isDeviceSmsCapable()).thenReturn(false);
+
+        setUpFooterPreference(/*isSystemApp*/ true, /*hasRequiredMetaData*/ true);
+        setUpLocationModeChanged(/*locationEnabled*/ false, /*shouldFooterTitleChange*/ true);
+        assertLocationFooter(R.string.location_settings_footer_location_off_with_telephony);
+    }
+
+    @Test
+    public void onLocationModeChanged_off_noCalling_setTitle() {
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(false);
+
+        setUpFooterPreference(/*isSystemApp*/ true, /*hasRequiredMetaData*/ true);
+        setUpLocationModeChanged(/*locationEnabled*/ false, /*shouldFooterTitleChange*/ true);
+        assertLocationFooter(R.string.location_settings_footer_location_off_with_telephony);
+    }
+
+    @Test
+    public void onLocationModeChanged_off_noCallingOrMessaging_setTitle() {
+        when(mTelephonyManager.isDeviceSmsCapable()).thenReturn(false);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(false);
+
+        setUpFooterPreference(/*isSystemApp*/ true, /*hasRequiredMetaData*/ true);
+        setUpLocationModeChanged(/*locationEnabled*/ false, /*shouldFooterTitleChange*/ true);
+        assertLocationFooter(R.string.location_settings_footer_location_off_no_telephony);
     }
 
     @Test
     public void onLocationModeChanged_on_setTitle() {
-        final List<ResolveInfo> testResolveInfos = new ArrayList<>();
-        testResolveInfos.add(
-                getTestResolveInfo(/*isSystemApp*/ true, /*hasRequiredMetadata*/ true));
-        when(mPackageManager.queryBroadcastReceivers(any(Intent.class), anyInt()))
-                .thenReturn(testResolveInfos);
-        mController.updateState(mFooterPreference);
-        verify(mFooterPreference).setTitle(any());
-        mController.onLocationModeChanged(/* mode= */ 1, /* restricted= */ false);
+        setUpFooterPreference(/*isSystemApp*/ true, /*hasRequiredMetaData*/ true);
+        setUpLocationModeChanged(/*locationEnabled*/ true, /*shouldFooterTitleChange*/ true);
+
         ArgumentCaptor<CharSequence> title = ArgumentCaptor.forClass(CharSequence.class);
         verify(mFooterPreference, times(2)).setTitle(title.capture());
+
         assertThat(title.getValue().toString()).doesNotContain(
                 Html.fromHtml(mContext.getString(
-                        R.string.location_settings_footer_location_off)).toString());
+                        R.string.location_settings_footer_location_off_with_telephony)).toString());
+        assertThat(title.getValue().toString()).doesNotContain(
+                Html.fromHtml(mContext.getString(
+                        R.string.location_settings_footer_location_off_no_telephony)).toString());
+    }
+
+    @Test
+    public void onLocationModeChanged_on_withoutInjectedString_setTitle() {
+        setUpFooterPreference(/*isSystemApp*/ false, /*hasRequiredMetaData*/ true);
+        setUpLocationModeChanged(/*locationEnabled*/ true, /*shouldFooterTitleChange*/ false);
+
+        ArgumentCaptor<CharSequence> title = ArgumentCaptor.forClass(CharSequence.class);
+        verify(mFooterPreference, times(1)).setTitle(title.capture());
+        assertThat(title.getValue().toString())
+                .isEqualTo(
+                        Html.fromHtml(mContext.getString(R.string.location_settings_footer_general))
+                                .toString());
     }
 
     @Test
     public void updateState_notSystemApp_ignore() {
-        final List<ResolveInfo> testResolveInfos = new ArrayList<>();
-        testResolveInfos.add(
-                getTestResolveInfo(/*isSystemApp*/ false, /*hasRequiredMetadata*/ true));
-        when(mPackageManager.queryBroadcastReceivers(any(Intent.class), anyInt()))
-                .thenReturn(testResolveInfos);
+        setUpFooterPreference(/*isSystemApp*/ false, /*hasRequiredMetaData*/ true);
         mController.updateState(mFooterPreference);
         verify(mFooterPreference, never()).setTitle(anyChar());
     }
@@ -217,5 +252,59 @@ public class LocationSettingsFooterPreferenceControllerTest {
         }
         testResolveInfo.activityInfo = testActivityInfo;
         return testResolveInfo;
+    }
+
+    /**
+     * Sets up the footer preference.
+     *
+     * @param isSystemApp If true, the application is a system app.
+     * @param hasRequiredMetaData If true, the broadcast receiver has a valid value for
+     *                            {@link LocationManager#METADATA_SETTINGS_FOOTER_STRING}
+     */
+    private void setUpFooterPreference(boolean isSystemApp, boolean hasRequiredMetaData) {
+        final List<ResolveInfo> testResolveInfos = new ArrayList<>();
+        testResolveInfos.add(getTestResolveInfo(isSystemApp, hasRequiredMetaData));
+        when(mPackageManager.queryBroadcastReceivers(any(Intent.class), anyInt()))
+                .thenReturn(testResolveInfos);
+    }
+
+    /**
+     * Sets up the location mode to the given status.
+     *
+     * @param locationEnabled Whether the location mode is on or off.
+     * @param shouldFooterTitleChange Whether the footer title should change.
+     */
+    private void setUpLocationModeChanged(
+            boolean locationEnabled, boolean shouldFooterTitleChange) {
+        assertThat(mController.isAvailable()).isTrue();
+        mController.updateState(mFooterPreference);
+        if (shouldFooterTitleChange) {
+            verify(mFooterPreference).setTitle(any());
+        }
+        mController.onLocationModeChanged(locationEnabled ? 1 : 0, /*restricted*/ false);
+    }
+
+    /**
+     * Asserts that the location footer exists and is equal to the expected string.
+     * @param footerStringId The string resource id to assert.
+     */
+    private void assertLocationFooter(int footerStringId) {
+        ArgumentCaptor<CharSequence> title = ArgumentCaptor.forClass(CharSequence.class);
+        verify(mFooterPreference, times(2)).setTitle(title.capture());
+        assertThat(title.getValue().toString())
+                .isEqualTo(
+                        Html.fromHtml(mContext.getString(footerStringId)).toString()
+                                + "\n\n"
+                                + mContext.getString(R.string.location_settings_footer_general));
+    }
+
+    private void mockTelephonyService() {
+        when(mContext.getSystemServiceName(TelephonyManager.class))
+                .thenReturn(Context.TELEPHONY_SERVICE);
+        when(mContext.getSystemService(Context.TELEPHONY_SERVICE)).thenReturn(mTelephonyManager);
+    }
+
+    private void setConfigShowSimInfo(boolean enabled) {
+        SettingsShadowResources.overrideResource(R.bool.config_show_sim_info, enabled);
     }
 }

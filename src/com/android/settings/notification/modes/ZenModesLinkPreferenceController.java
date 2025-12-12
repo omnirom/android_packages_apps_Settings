@@ -16,7 +16,6 @@
 
 package com.android.settings.notification.modes;
 
-import android.app.Flags;
 import android.content.Context;
 import android.util.Log;
 
@@ -49,7 +48,7 @@ public class ZenModesLinkPreferenceController extends BasePreferenceController
     @Override
     @AvailabilityStatus
     public int getAvailabilityStatus() {
-        return Flags.modesUi() ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
+        return AVAILABLE;
     }
 
     @Override

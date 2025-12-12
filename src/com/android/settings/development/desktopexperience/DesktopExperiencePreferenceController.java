@@ -28,16 +28,18 @@ import android.window.DesktopModeFlags;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 import androidx.preference.TwoStatePreference;
 
+import com.android.server.display.feature.flags.Flags;
 import com.android.settings.R;
 import com.android.settings.core.PreferenceControllerMixin;
 import com.android.settings.development.DevelopmentSettingsDashboardFragment;
 import com.android.settings.development.RebootConfirmationDialogFragment;
 import com.android.settings.development.RebootConfirmationDialogHost;
 import com.android.settingslib.development.DeveloperOptionsPreferenceController;
-import com.android.wm.shell.shared.desktopmode.DesktopModeStatus;
+import com.android.wm.shell.shared.desktopmode.DesktopState;
 
 public class DesktopExperiencePreferenceController extends DeveloperOptionsPreferenceController
         implements Preference.OnPreferenceChangeListener,
@@ -48,15 +50,24 @@ public class DesktopExperiencePreferenceController extends DeveloperOptionsPrefe
     @Nullable
     private final DevelopmentSettingsDashboardFragment mFragment;
 
-    public DesktopExperiencePreferenceController(
-            Context context, @Nullable DevelopmentSettingsDashboardFragment fragment) {
+    private final DesktopState mDesktopState;
+
+    @VisibleForTesting
+    DesktopExperiencePreferenceController(Context context,
+            @Nullable DevelopmentSettingsDashboardFragment fragment, DesktopState desktopState) {
         super(context);
         mFragment = fragment;
+        mDesktopState = desktopState;
+    }
+
+    public DesktopExperiencePreferenceController(
+            Context context, @Nullable DevelopmentSettingsDashboardFragment fragment) {
+        this(context, fragment, DesktopState.fromContext(context));
     }
 
     @Override
     public boolean isAvailable() {
-        return DesktopModeStatus.canShowDesktopExperienceDevOption(mContext);
+        return mDesktopState.canShowDesktopExperienceDevOption();
     }
 
     @Override
@@ -80,6 +91,12 @@ public class DesktopExperiencePreferenceController extends DeveloperOptionsPrefe
     @Override
     public void updateState(Preference preference) {
         super.updateState(preference);
+        if (shouldDisableToggle()) {
+            ((TwoStatePreference) preference).setChecked(true);
+            preference.setEnabled(false);
+            return;
+        }
+        preference.setEnabled(true);
         // Use overridden state, if not present, then use default state
         final int overrideInt = Settings.Global.getInt(mContext.getContentResolver(),
                 DEVELOPMENT_OVERRIDE_DESKTOP_EXPERIENCE_FEATURES, OVERRIDE_UNSET.getSetting());
@@ -89,7 +106,19 @@ public class DesktopExperiencePreferenceController extends DeveloperOptionsPrefe
             case OVERRIDE_OFF, OVERRIDE_UNSET -> false;
             case OVERRIDE_ON -> true;
         };
-        ((TwoStatePreference) mPreference).setChecked(shouldDevOptionBeEnabled);
+        ((TwoStatePreference) preference).setChecked(shouldDevOptionBeEnabled);
+    }
+
+    private boolean shouldDisableToggle() {
+        // If a device can show desktop mode dev option, which checks for a config value under the
+        // hood, the toggle should not be disabled even if display content mode management is
+        // enabled. The reasoning behind is that the devices that only support desktop mode as part
+        // of dev options, should be able to toggle it on and off.
+        if (mDesktopState.canShowDesktopModeDevOption()) {
+            return false;
+        }
+
+        return Flags.enableDisplayContentModeManagement();
     }
 
     @Override
@@ -101,7 +130,7 @@ public class DesktopExperiencePreferenceController extends DeveloperOptionsPrefe
 
     @Override
     public CharSequence getSummary() {
-        if (DesktopModeStatus.isDeviceEligibleForDesktopMode(mContext)
+        if (mDesktopState.isDeviceEligibleForDesktopMode()
                 && !DesktopModeFlags.ENABLE_DESKTOP_WINDOWING_MODE.isTrue()) {
             return mContext.getString(
                     R.string.enable_desktop_experience_features_summary_with_desktop);

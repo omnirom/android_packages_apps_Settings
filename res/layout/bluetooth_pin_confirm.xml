@@ -19,6 +19,7 @@
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:paddingTop="@dimen/bluetooth_dialog_padding_top">
@@ -28,6 +29,18 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/pairing_confirmation_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/bluetooth_dialog_padding"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="@dimen/bluetooth_dialog_padding"
+            android:layout_marginEnd="@dimen/bluetooth_dialog_padding"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            android:textAppearance="@*android:style/TextAppearance.DeviceDefault.Body1" />
 
         <TextView
             android:id="@+id/pairing_caption"
@@ -109,7 +122,45 @@
                 android:gravity="center_vertical"
                 android:contentDescription="@string/bluetooth_pairing_phonebook_toggle_text"
                 android:switchMinWidth="48dp" />
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:theme="@style/Theme.Material3.DynamicColors.DayNight"
+                android:id="@+id/phonebook_sharing_message_confirm_pin_expressive"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center_vertical"
+                android:contentDescription="@string/bluetooth_pairing_phonebook_toggle_text"
+                android:switchMinWidth="48dp"
+                android:focusable="true"
+                android:clickable="true"
+                style="@style/SettingslibSwitchStyle.Expressive" />
         </LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="@dimen/bluetooth_dialog_padding"
+            android:layout_marginEnd="@dimen/bluetooth_dialog_padding">
+            <Button
+                android:id="@+id/negative_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/bluetooth_pairing_decline"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/Widget.SettingsLib.DialogButton.Outline"/>
+            <Button
+                android:id="@+id/positive_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/bluetooth_pairing_accept"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/Widget.SettingsLib.DialogButton.Outline"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
-
 </ScrollView>

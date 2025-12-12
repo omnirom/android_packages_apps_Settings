@@ -20,17 +20,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/notification_bundle_title">
 
-    <com.android.settingslib.widget.IllustrationPreference
-        android:key="illustration"
-        settings:searchable="false"
-        android:selectable="false"
-        app:lottie_cacheComposition="false"
-        settings:dynamicColor="true"/>
-
     <com.android.settingslib.widget.TopIntroPreference
         android:key="feature_description"
         settings:searchable="false"
         android:title="@string/notification_bundle_description"/>
+
+    <com.android.settingslib.widget.IllustrationPreference
+        android:key="notification_organizer_illustration"
+        settings:searchable="false"
+        android:selectable="false"
+        app:lottie_rawRes="@raw/lottie_notification_organizer"
+        app:lottie_cacheComposition="false"
+        settings:dynamicColor="true"/>
 
     <PreferenceCategory
         android:key="enabled_settings">
@@ -39,43 +40,63 @@
             android:key="global_pref"
             android:title="@string/notification_bundle_main_control_title" />
 
-        <CheckBoxPreference
-            android:key="promotions"
-            android:title="@*android:string/promotional_notification_channel_label"/>
+        <com.android.settingslib.widget.UntitledPreferenceCategory
+            android:key="enabled_classification_types">
 
-        <CheckBoxPreference
-            android:key="news"
-            android:title="@*android:string/news_notification_channel_label"/>
+            <CheckBoxPreference
+                  android:key="promotions"
+                  android:title="@*android:string/promotional_notification_channel_label"
+                  android:summary="@string/notification_bundle_promotions_summary"/>
 
-        <CheckBoxPreference
-            android:key="social"
-            android:title="@*android:string/social_notification_channel_label"/>
+            <CheckBoxPreference
+                android:key="news"
+                android:title="@*android:string/news_notification_channel_label"
+                android:summary="@string/notification_bundle_news_summary"/>
 
-        <CheckBoxPreference
-            android:key="recs"
-            android:title="@*android:string/recs_notification_channel_label" />
+            <CheckBoxPreference
+                android:key="social"
+                android:title="@*android:string/social_notification_channel_label"
+                android:summary="@string/notification_bundle_social_summary"/>
+
+            <CheckBoxPreference
+                android:key="recs"
+                android:title="@*android:string/recs_notification_channel_label"
+                android:summary="@string/notification_bundle_recs_summary"/>
+        </com.android.settingslib.widget.UntitledPreferenceCategory>
+
+        <com.android.settingslib.widget.UntitledPreferenceCategory>
+            <SwitchPreferenceCompat
+                android:key="work_profile_pref"
+                android:title="@string/notification_adjustment_work_switch_title" />
+        </com.android.settingslib.widget.UntitledPreferenceCategory>
+
+        <com.android.settingslib.widget.UntitledPreferenceCategory>
+            <SwitchPreferenceCompat
+                android:key="always_expand_pref"
+                android:title="@string/notification_bundle_expand_always_title"/>
+        </com.android.settingslib.widget.UntitledPreferenceCategory>
+
+        <PreferenceCategory
+            android:key="notification_bundle_excluded_apps_list"
+            android:title="@string/notification_excluded_apps"
+            settings:controller="com.android.settings.notification.AdjustmentExcludedAppsPreferenceController">
+
+            <!-- apps are added here -->
+
+            <Preference
+                android:key="notification_bundle_manage_apps"
+                android:order="1000"
+                android:icon="@drawable/ic_chevron_right_24dp"
+                android:title="@string/notification_summarization_manage_excluded_apps"
+                settings:controller="com.android.settings.notification.BundleManageAppsPreferenceController"
+                android:fragment="com.android.settings.applications.manageapplications.ManageApplications">
+                <extra
+                    android:name="classname"
+                    android:value="com.android.settings.Settings$NotificationExcludeClassificationActivity"/>
+            </Preference>
+        </PreferenceCategory>
+
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:key="notification_bundle_excluded_apps_list"
-        android:title="@string/notification_excluded_apps"
-        settings:controller="com.android.settings.notification.AdjustmentExcludedAppsPreferenceController">
-        <com.android.settingslib.widget.TopIntroPreference
-            android:key="excluded_description"
-            android:title="@string/notification_bundle_excluded_description"/>
 
-        <!-- apps are added here -->
-
-        <Preference
-            android:key="notification_bundle_manage_apps"
-            android:order="1000"
-            android:icon="@drawable/ic_chevron_right_24dp"
-            android:title="@string/notification_summarization_manage_excluded_apps"
-            settings:controller="com.android.settings.notification.BundleManageAppsPreferenceController"
-            android:fragment="com.android.settings.applications.manageapplications.ManageApplications">
-            <extra
-                android:name="classname"
-                android:value="com.android.settings.Settings$NotificationExcludeClassificationActivity"/>
-        </Preference>
-    </PreferenceCategory>
 </PreferenceScreen>

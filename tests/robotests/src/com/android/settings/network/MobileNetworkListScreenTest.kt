@@ -15,22 +15,39 @@
  */
 package com.android.settings.network
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import android.content.pm.PackageManager.FEATURE_TELEPHONY
+import android.platform.test.annotations.DisableFlags
+import android.telephony.SubscriptionInfo
+import android.telephony.SubscriptionManager
 import com.android.settings.flags.Flags
-import com.android.settingslib.preference.CatalystScreenTestCase
-import com.google.common.truth.Truth.assertThat
+import com.android.settings.testutils2.SettingsCatalystTestCase
+import org.junit.Ignore
 import org.junit.Test
-import org.junit.runner.RunWith
+import org.mockito.kotlin.mock
+import org.robolectric.Shadows.shadowOf
+import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowSubscriptionManager
 
-@RunWith(AndroidJUnit4::class)
-class MobileNetworkListScreenTest : CatalystScreenTestCase() {
-    override val preferenceScreenCreator = MobileNetworkListScreen()
+class MobileNetworkListScreenTest : SettingsCatalystTestCase() {
+    override val preferenceScreenCreator = MobileNetworkListScreen(appContext)
 
     override val flagName: String
         get() = Flags.FLAG_CATALYST_MOBILE_NETWORK_LIST
 
+    @DisableFlags(
+        Flags.FLAG_IS_DUAL_SIM_ONBOARDING_ENABLED,
+        Flags.FLAG_DEEPLINK_NETWORK_AND_INTERNET_25Q4,
+    )
+    @Ignore("UI of MobileNetworkListScreen is replaced by SPA now.")
+    @Config(shadows = [ShadowSubscriptionManager::class])
     @Test
-    fun key() {
-        assertThat(preferenceScreenCreator.key).isEqualTo(MobileNetworkListScreen.KEY)
+    override fun migration() {
+        val subscriptionManager =
+            shadowOf(appContext.getSystemService(SubscriptionManager::class.java))
+        val subscriptionInfo: SubscriptionInfo = mock()
+        subscriptionManager.setAvailableSubscriptionInfos(subscriptionInfo)
+        // make screen available
+        shadowOf(appContext.packageManager).setSystemFeature(FEATURE_TELEPHONY, true)
+        super.migration()
     }
 }

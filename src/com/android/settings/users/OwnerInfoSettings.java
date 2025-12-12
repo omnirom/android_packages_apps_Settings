@@ -56,7 +56,8 @@ public class OwnerInfoSettings extends InstrumentedDialogFragment implements OnC
         mView = LayoutInflater.from(getActivity()).inflate(R.layout.ownerinfo, null);
         initView();
         return new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.owner_info_settings_title)
+                .setCustomTitle(LayoutInflater.from(
+                        getActivity()).inflate(R.layout.ownerinfo_title, null))
                 .setView(mView)
                 .setPositiveButton(R.string.save, this)
                 .setNegativeButton(R.string.cancel, this)

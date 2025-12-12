@@ -16,12 +16,10 @@
 
 package com.android.settings.notification;
 
-import static android.service.notification.Adjustment.KEY_IMPORTANCE;
 import static android.service.notification.Adjustment.KEY_TYPE;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import android.app.Flags;
@@ -78,14 +76,5 @@ public class BundlePreferenceControllerTest {
     public void isAvailable_flagDisabledNasSupports_shouldReturnFalse() {
         mSetFlagsRule.disableFlags(Flags.FLAG_NOTIFICATION_CLASSIFICATION_UI);
         assertThat(mController.isAvailable()).isFalse();
-    }
-
-    @Test
-    public void getSummary() throws Exception {
-        when(mInm.getAllowedAssistantAdjustments(any())).thenReturn(List.of(KEY_TYPE));
-        assertThat(mController.getSummary()).isEqualTo("On");
-
-        when(mInm.getAllowedAssistantAdjustments(any())).thenReturn(List.of(KEY_IMPORTANCE));
-        assertThat(mController.getSummary()).isEqualTo("Off");
     }
 }

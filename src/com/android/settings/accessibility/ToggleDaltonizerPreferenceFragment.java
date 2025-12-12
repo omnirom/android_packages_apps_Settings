@@ -17,78 +17,48 @@
 package com.android.settings.accessibility;
 
 import static com.android.internal.accessibility.AccessibilityShortcutController.DALTONIZER_COMPONENT_NAME;
-import static com.android.internal.accessibility.AccessibilityShortcutController.DALTONIZER_TILE_COMPONENT_NAME;
-import static com.android.settings.accessibility.AccessibilityStatsLogUtils.logAccessibilityServiceEnabled;
-import static com.android.settings.accessibility.AccessibilityUtil.State.OFF;
-import static com.android.settings.accessibility.AccessibilityUtil.State.ON;
-import static com.android.settings.accessibility.DaltonizerPreferenceUtil.isSecureAccessibilityDaltonizerEnabled;
 
 import android.app.settings.SettingsEnums;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.settings.R;
+import com.android.settings.accessibility.colorcorrection.ui.ColorCorrectionScreen;
 import com.android.settings.search.BaseSearchIndexProvider;
-import com.android.settings.widget.SettingsMainSwitchPreference;
 import com.android.settingslib.search.SearchIndexable;
-import com.android.settingslib.search.SearchIndexableRaw;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /** Settings for daltonizer. */
 @SearchIndexable(forTarget = SearchIndexable.ALL & ~SearchIndexable.ARC)
-public class ToggleDaltonizerPreferenceFragment extends ToggleFeaturePreferenceFragment {
+public class ToggleDaltonizerPreferenceFragment extends BaseSupportFragment {
 
     private static final String TAG = "ToggleDaltonizerPreferenceFragment";
-    private static final String ENABLED = Settings.Secure.ACCESSIBILITY_DISPLAY_DALTONIZER_ENABLED;
-    private static final String KEY_PREVIEW = "daltonizer_preview";
-    private static final String KEY_DEUTERANOMALY = "daltonizer_mode_deuteranomaly";
-    private static final String KEY_PROTANOMALY = "daltonizer_mode_protanomaly";
-    private static final String KEY_TRITANOMEALY = "daltonizer_mode_tritanomaly";
-    private static final String KEY_GRAYSCALE = "daltonizer_mode_grayscale";
-
-    @VisibleForTesting
-    static final String KEY_SHORTCUT_PREFERENCE = "daltonizer_shortcut_key";
-    @VisibleForTesting
-    static final String KEY_SWITCH_PREFERENCE = "daltonizer_switch_preference_key";
-    @VisibleForTesting
-    static final String KEY_SATURATION = "daltonizer_saturation";
 
     @Override
-    protected void registerKeysToObserverCallback(
-            AccessibilitySettingsContentObserver contentObserver) {
-        super.registerKeysToObserverCallback(contentObserver);
-
-        final List<String> enableServiceFeatureKeys = new ArrayList<>(/* initialCapacity= */ 1);
-        enableServiceFeatureKeys.add(ENABLED);
-        contentObserver.registerKeysToObserverCallback(enableServiceFeatureKeys,
-                key -> updateSwitchBarToggleSwitch());
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (!Flags.catalystDaltonizer()) {
+            ToggleShortcutPreferenceController shortcutPreferenceController =
+                    use(ToggleShortcutPreferenceController.class);
+            if (shortcutPreferenceController != null) {
+                shortcutPreferenceController.initialize(
+                        getFeatureComponentName(),
+                        getChildFragmentManager(),
+                        getFeatureName(),
+                        getMetricsCategory()
+                );
+            }
+            use(FeedbackButtonPreferenceController.class).initialize(
+                    new FeedbackManager(context, getMetricsCategory()));
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        mComponentName = DALTONIZER_COMPONENT_NAME;
-        mFeatureName = getText(com.android.settingslib.R
-                .string.accessibility_display_daltonizer_preference_title);
-        mHtmlDescription = getText(com.android.settingslib.R
-                .string.accessibility_display_daltonizer_preference_subtitle);
-        mTopIntroTitle = getText(R.string.accessibility_daltonizer_about_intro_text);
-        final View view = super.onCreateView(inflater, container, savedInstanceState);
-        updateFooterPreference();
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final View rootView = getActivity().getWindow().peekDecorView();
         if (rootView != null) {
@@ -97,37 +67,15 @@ public class ToggleDaltonizerPreferenceFragment extends ToggleFeaturePreferenceF
         }
     }
 
-    private void updateFooterPreference() {
-        final String title = getPrefContext()
-                .getString(R.string.accessibility_daltonizer_about_title);
-        final String learnMoreText = getPrefContext()
-                .getString(R.string.accessibility_daltonizer_footer_learn_more_content_description);
-        mFooterPreferenceController.setIntroductionTitle(title);
-        mFooterPreferenceController.setupHelpLink(getHelpResource(), learnMoreText);
-        mFooterPreferenceController.displayPreference(getPreferenceScreen());
+    @NonNull
+    private CharSequence getFeatureName() {
+        return getText(com.android.settingslib.R
+                .string.accessibility_display_daltonizer_preference_title);
     }
 
-    /** Customizes the order by preference key. */
-    protected List<String> getPreferenceOrderList() {
-        final List<String> lists = new ArrayList<>();
-        lists.add(KEY_TOP_INTRO_PREFERENCE);
-        lists.add(KEY_PREVIEW);
-        lists.add(getUseServicePreferenceKey());
-        // Putting saturation level close to the preview so users can see what is changing.
-        lists.add(KEY_SATURATION);
-        lists.add(KEY_DEUTERANOMALY);
-        lists.add(KEY_PROTANOMALY);
-        lists.add(KEY_TRITANOMEALY);
-        lists.add(KEY_GRAYSCALE);
-        lists.add(KEY_GENERAL_CATEGORY);
-        lists.add(KEY_HTML_DESCRIPTION_PREFERENCE);
-        return lists;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateSwitchBarToggleSwitch();
+    @NonNull
+    private ComponentName getFeatureComponentName() {
+        return DALTONIZER_COMPONENT_NAME;
     }
 
     @Override
@@ -151,79 +99,14 @@ public class ToggleDaltonizerPreferenceFragment extends ToggleFeaturePreferenceF
     }
 
     @Override
-    protected void onPreferenceToggled(String preferenceKey, boolean enabled) {
-        final boolean isEnabled =
-                isSecureAccessibilityDaltonizerEnabled(getContentResolver());
-        if (enabled == isEnabled) {
-            return;
-        }
-        logAccessibilityServiceEnabled(mComponentName, enabled);
-        Settings.Secure.putInt(getContentResolver(), ENABLED, enabled ? ON : OFF);
-    }
-
-    @Override
-    protected void onRemoveSwitchPreferenceToggleSwitch() {
-        super.onRemoveSwitchPreferenceToggleSwitch();
-        mToggleServiceSwitchPreference.setOnPreferenceClickListener(null);
-    }
-
-    @Override
-    protected void updateToggleServiceTitle(SettingsMainSwitchPreference switchPreference) {
-        switchPreference.setTitle(R.string.accessibility_daltonizer_primary_switch_title);
-    }
-
-    @Override
-    protected String getUseServicePreferenceKey() {
-        return KEY_SWITCH_PREFERENCE;
-    }
-
-    @Override
-    protected CharSequence getShortcutTitle() {
-        return getText(R.string.accessibility_daltonizer_shortcut_title);
-    }
-
-    @Override
-    int getUserShortcutTypes() {
-        return AccessibilityUtil.getUserShortcutTypesFromSettings(getPrefContext(),
-                mComponentName);
-    }
-
-    @Override
-    ComponentName getTileComponentName() {
-        return DALTONIZER_TILE_COMPONENT_NAME;
-    }
-
-    @Override
-    protected void updateSwitchBarToggleSwitch() {
-        final boolean checked = Settings.Secure.getInt(getContentResolver(), ENABLED, OFF) == ON;
-        if (mToggleServiceSwitchPreference.isChecked() == checked) {
-            return;
-        }
-        mToggleServiceSwitchPreference.setChecked(checked);
+    public @Nullable String getPreferenceScreenBindingKey(
+            @NonNull Context context) {
+        return ColorCorrectionScreen.KEY;
     }
 
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
-            new BaseSearchIndexProvider(R.xml.accessibility_daltonizer_settings) {
-                @Override
-                public List<SearchIndexableRaw> getRawDataToIndex(Context context,
-                        boolean enabled) {
-                    final List<SearchIndexableRaw> rawData =
-                            super.getRawDataToIndex(context, enabled);
-
-                    if (Flags.fixA11ySettingsSearch()) {
-                        SearchIndexableRaw shortcutRaw = new SearchIndexableRaw(context);
-                        shortcutRaw.key = KEY_SHORTCUT_PREFERENCE;
-                        shortcutRaw.title = context.getString(
-                                R.string.accessibility_daltonizer_shortcut_title);
-                        rawData.add(shortcutRaw);
-
-                        SearchIndexableRaw mainSwitchRaw = new SearchIndexableRaw(context);
-                        mainSwitchRaw.key = KEY_SWITCH_PREFERENCE;
-                        mainSwitchRaw.title = context.getString(
-                                R.string.accessibility_daltonizer_primary_switch_title);
-                        rawData.add(mainSwitchRaw);
-                    }
-                    return rawData;
-                }
-            };
+            new BaseSearchIndexProvider(
+                    Flags.catalystDaltonizer()
+                            && com.android.settings.flags.Flags.catalystSettingsSearch() ? 0 :
+                            R.xml.accessibility_daltonizer_settings);
 }

@@ -21,6 +21,7 @@ import android.content.Context
 import androidx.preference.SwitchPreferenceCompat
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.android.settings.sound.MediaControlsSwitchPreference.Companion.mediaControlsDataStore
 
 import com.android.settingslib.datastore.SettingsSecureStore
 import com.android.settingslib.preference.createAndBindWidget
@@ -36,7 +37,7 @@ import org.junit.runner.RunWith
 class MediaControlsSwitchPreferenceTest {
     private val appContext: Context = ApplicationProvider.getApplicationContext()
     private var originalValue: Boolean? = null
-    private val store = MediaControlsScreen.MediaControlsStore(SettingsSecureStore.get(appContext))
+    private val store = appContext.mediaControlsDataStore
     private val key = MediaControlsSwitchPreference.KEY
 
     private val preference = MediaControlsSwitchPreference(store)

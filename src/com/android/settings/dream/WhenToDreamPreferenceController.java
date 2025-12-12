@@ -16,6 +16,8 @@
 
 package com.android.settings.dream;
 
+import static android.service.dreams.Flags.dreamsV2;
+
 import android.annotation.StringRes;
 import android.content.Context;
 
@@ -35,6 +37,7 @@ public class WhenToDreamPreferenceController extends BasePreferenceController im
     private final DreamBackend mBackend;
     private final boolean mDreamsDisabledByAmbientModeSuppression;
     private final boolean mDreamsEnabledOnBattery;
+    private final boolean mDreamsShowWhenToDreamSetting;
 
     public WhenToDreamPreferenceController(Context context) {
         this(context, DEFAULT_PREF_KEY);
@@ -44,7 +47,9 @@ public class WhenToDreamPreferenceController extends BasePreferenceController im
         this(context, preferenceKey, context.getResources().getBoolean(
                 com.android.internal.R.bool.config_dreamsDisabledByAmbientModeSuppressionConfig),
                 context.getResources().getBoolean(
-                        com.android.internal.R.bool.config_dreamsEnabledOnBattery));
+                        com.android.internal.R.bool.config_dreamsEnabledOnBattery),
+                context.getResources().getBoolean(
+                    com.android.internal.R.bool.config_dreamsShowWhenToDreamSetting));
     }
 
     @VisibleForTesting
@@ -52,12 +57,14 @@ public class WhenToDreamPreferenceController extends BasePreferenceController im
             Context context,
             String preferenceKey,
             boolean dreamsDisabledByAmbientModeSuppression,
-            boolean dreamsEnabledOnBattery) {
+            boolean dreamsEnabledOnBattery,
+            boolean dreamsShowWhenToDreamSetting) {
         super(context, preferenceKey);
 
         mBackend = DreamBackend.getInstance(context);
         mDreamsDisabledByAmbientModeSuppression = dreamsDisabledByAmbientModeSuppression;
         mDreamsEnabledOnBattery = dreamsEnabledOnBattery;
+        mDreamsShowWhenToDreamSetting = dreamsShowWhenToDreamSetting;
     }
 
     @Override
@@ -65,11 +72,15 @@ public class WhenToDreamPreferenceController extends BasePreferenceController im
         super.updateState(preference);
 
         preference.setSummary(getSummaryResId());
+        if (dreamsV2()) {
+            // Move the pref to the top (under the main switch).
+            preference.setOrder(50);
+        }
     }
 
     @Override
     public int getAvailabilityStatus() {
-        return AVAILABLE;
+        return mDreamsShowWhenToDreamSetting ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
     }
 
     @Override
@@ -80,7 +91,7 @@ public class WhenToDreamPreferenceController extends BasePreferenceController im
     private @StringRes int getSummaryResId() {
         if (mDreamsDisabledByAmbientModeSuppression
                 && AmbientDisplayAlwaysOnPreferenceController.isAodSuppressedByBedtime(mContext)) {
-            return R.string.screensaver_settings_when_to_dream_bedtime;
+            return R.string.screensaver_unavailable_due_to_mode;
         } else {
             final int resId = DreamSettings.getDreamSettingDescriptionResId(
                     mBackend.getWhenToDreamSetting(), mDreamsEnabledOnBattery);

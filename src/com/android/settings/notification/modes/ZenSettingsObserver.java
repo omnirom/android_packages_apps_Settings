@@ -16,7 +16,6 @@
 
 package com.android.settings.notification.modes;
 
-import android.app.Flags;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.net.Uri;
@@ -43,17 +42,13 @@ class ZenSettingsObserver extends ContentObserver {
     }
 
     void register() {
-        if (Flags.modesUi()) {
-            mContext.getContentResolver().registerContentObserver(ZEN_MODE_URI, false, this);
-            mContext.getContentResolver().registerContentObserver(ZEN_MODE_CONFIG_ETAG_URI, false,
-                    this);
-        }
+        mContext.getContentResolver().registerContentObserver(ZEN_MODE_URI, false, this);
+        mContext.getContentResolver().registerContentObserver(ZEN_MODE_CONFIG_ETAG_URI, false,
+                this);
     }
 
     void unregister() {
-        if (Flags.modesUi()) {
-            mContext.getContentResolver().unregisterContentObserver(this);
-        }
+        mContext.getContentResolver().unregisterContentObserver(this);
     }
 
     void setOnChangeListener(@Nullable Runnable callback) {

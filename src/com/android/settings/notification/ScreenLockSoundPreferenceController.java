@@ -16,24 +16,24 @@
 
 package com.android.settings.notification;
 
+import static android.provider.Settings.System.LOCKSCREEN_SOUNDS_ENABLED;
+
 import static com.android.settings.notification.SettingPref.TYPE_SYSTEM;
 
 import android.content.Context;
-import android.provider.Settings.System;
 
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 
+// LINT.IfChange
 public class ScreenLockSoundPreferenceController extends SettingPrefController {
-
-    private static final String KEY_SCREEN_LOCKING_SOUNDS = "screen_locking_sounds";
 
     public ScreenLockSoundPreferenceController(Context context, SettingsPreferenceFragment parent,
             Lifecycle lifecycle) {
         super(context, parent, lifecycle);
         mPreference = new SettingPref(
-            TYPE_SYSTEM, KEY_SCREEN_LOCKING_SOUNDS, System.LOCKSCREEN_SOUNDS_ENABLED, DEFAULT_ON);
+                TYPE_SYSTEM, LOCKSCREEN_SOUNDS_ENABLED, LOCKSCREEN_SOUNDS_ENABLED, DEFAULT_ON);
     }
 
     @Override
@@ -41,3 +41,4 @@ public class ScreenLockSoundPreferenceController extends SettingPrefController {
         return mContext.getResources().getBoolean(R.bool.config_show_screen_locking_sounds);
     }
 }
+// LINT.ThenChange(ScreenLockSoundPreference.kt)

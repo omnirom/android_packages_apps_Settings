@@ -58,7 +58,7 @@ public class BluetoothDetailsHearingDeviceSettingsControllerTest extends
         FakeFeatureFactory.setupForTest();
         mController = new BluetoothDetailsHearingDeviceSettingsController(mActivity, mFragment,
                 mCachedDevice, mLifecycle);
-        when(mCachedDevice.isHearingAidDevice()).thenReturn(true);
+        when(mCachedDevice.isHearingDevice()).thenReturn(true);
     }
 
     @Test

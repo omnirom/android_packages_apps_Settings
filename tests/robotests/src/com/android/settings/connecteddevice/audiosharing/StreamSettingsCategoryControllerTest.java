@@ -48,6 +48,7 @@ import androidx.test.core.app.ApplicationProvider;
 import com.android.settings.bluetooth.Utils;
 import com.android.settings.testutils.shadow.ShadowBluetoothAdapter;
 import com.android.settings.testutils.shadow.ShadowBluetoothUtils;
+import com.android.settingslib.bluetooth.LeAudioProfile;
 import com.android.settingslib.bluetooth.LocalBluetoothLeBroadcast;
 import com.android.settingslib.bluetooth.LocalBluetoothLeBroadcastAssistant;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
@@ -84,6 +85,7 @@ public class StreamSettingsCategoryControllerTest {
     @Spy Context mContext = ApplicationProvider.getApplicationContext();
     @Mock private LocalBluetoothManager mLocalBtManager;
     @Mock private LocalBluetoothProfileManager mBtProfileManager;
+    @Mock private LeAudioProfile mLeAudio;
     @Mock private LocalBluetoothLeBroadcast mBroadcast;
     @Mock private LocalBluetoothLeBroadcastAssistant mAssistant;
     @Mock private VolumeControlProfile mVolumeControl;
@@ -108,10 +110,12 @@ public class StreamSettingsCategoryControllerTest {
         mLifecycle = new Lifecycle(mLifecycleOwner);
         ShadowBluetoothUtils.sLocalBluetoothManager = mLocalBtManager;
         mLocalBluetoothManager = Utils.getLocalBtManager(mContext);
+        when(mBtProfileManager.getLeAudioProfile()).thenReturn(mLeAudio);
         when(mLocalBluetoothManager.getProfileManager()).thenReturn(mBtProfileManager);
         when(mBtProfileManager.getLeAudioBroadcastProfile()).thenReturn(mBroadcast);
         when(mBtProfileManager.getLeAudioBroadcastAssistantProfile()).thenReturn(mAssistant);
         when(mBtProfileManager.getVolumeControlProfile()).thenReturn(mVolumeControl);
+        when(mLeAudio.isProfileReady()).thenReturn(true);
         when(mBroadcast.isProfileReady()).thenReturn(true);
         when(mAssistant.isProfileReady()).thenReturn(true);
         when(mVolumeControl.isProfileReady()).thenReturn(true);

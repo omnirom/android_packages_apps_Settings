@@ -55,9 +55,6 @@ public class CaptioningMoreOptionsFragment extends DashboardFragment {
             new BaseSearchIndexProvider(R.xml.captioning_more_options) {
                 @Override
                 protected boolean isPageSearchEnabled(Context context) {
-                    if (!Flags.fixA11ySettingsSearch()) {
-                        return super.isPageSearchEnabled(context);
-                    }
                     // CaptioningMoreOptions is only searchable if captions are enabled, so that we
                     // don't show search results for settings that will cause no change to the user.
                     return Settings.Secure.getInt(context.getContentResolver(),

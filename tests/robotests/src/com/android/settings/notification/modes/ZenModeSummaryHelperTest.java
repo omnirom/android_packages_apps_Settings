@@ -29,13 +29,11 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.robolectric.Shadows.shadowOf;
 
-import android.app.Flags;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.UserInfo;
 import android.os.UserHandle;
 import android.os.UserManager;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.service.notification.ZenDeviceEffects;
 import android.service.notification.ZenPolicy;
@@ -57,7 +55,6 @@ import org.robolectric.RuntimeEnvironment;
 import java.util.Random;
 
 @RunWith(RobolectricTestRunner.class)
-@EnableFlags(Flags.FLAG_MODES_UI)
 public class ZenModeSummaryHelperTest {
     private static final int WORK_PROFILE_ID = 3;
 

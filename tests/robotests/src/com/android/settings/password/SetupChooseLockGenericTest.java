@@ -28,11 +28,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.robolectric.RuntimeEnvironment.application;
 
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.face.FaceManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -44,6 +46,7 @@ import com.android.settings.testutils.shadow.ShadowLockPatternUtils;
 import com.android.settings.testutils.shadow.ShadowPasswordUtils;
 import com.android.settings.testutils.shadow.ShadowUserManager;
 import com.android.settings.testutils.shadow.ShadowUtils;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 import com.google.android.setupdesign.GlifPreferenceLayout;
 
@@ -59,6 +62,8 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
+import org.robolectric.annotation.Implementation;
+import org.robolectric.annotation.Implements;
 
 import java.util.List;
 
@@ -67,6 +72,7 @@ import java.util.List;
         ShadowUserManager.class,
         ShadowUtils.class,
         ShadowLockPatternUtils.class,
+        SetupChooseLockGenericTest.ShadowSettingsThemeHelper.class,
 })
 public class SetupChooseLockGenericTest {
 
@@ -83,6 +89,7 @@ public class SetupChooseLockGenericTest {
     public void setUp() {
         ShadowUtils.setFingerprintManager(mFingerprintManager);
         ShadowUtils.setFaceManager(mFaceManager);
+        ShadowSettingsThemeHelper.setExpressiveTheme(false);
         mFakeFeatureFactory = FakeFeatureFactory.setupForTest();
 
         Settings.Global.putInt(application.getContentResolver(), Settings.Global.DEVICE_PROVISIONED,
@@ -99,6 +106,18 @@ public class SetupChooseLockGenericTest {
 
     @Test
     public void setupChooseLockGenericPasswordComplexityExtraWithoutPermission() {
+        Intent intent = new Intent("com.android.settings.SETUP_LOCK_SCREEN");
+        intent.putExtra(EXTRA_IS_SETUP_FLOW, true);
+        intent.putExtra(EXTRA_KEY_REQUESTED_MIN_COMPLEXITY, PASSWORD_COMPLEXITY_HIGH);
+        SetupChooseLockGeneric activity =
+                Robolectric.buildActivity(SetupChooseLockGeneric.class, intent).create().get();
+
+        assertThat(activity.isFinishing()).isTrue();
+    }
+
+    @Test
+    public void setupChooseLockGenericPasswordComplexityExtraWithoutPermissionExpressive() {
+        ShadowSettingsThemeHelper.setExpressiveTheme(true);
         Intent intent = new Intent("com.android.settings.SETUP_LOCK_SCREEN");
         intent.putExtra(EXTRA_IS_SETUP_FLOW, true);
         intent.putExtra(EXTRA_KEY_REQUESTED_MIN_COMPLEXITY, PASSWORD_COMPLEXITY_HIGH);
@@ -192,6 +211,32 @@ public class SetupChooseLockGenericTest {
                 supportFace);
     }
 
+    @Test
+    public void setupChooseLockGenericAddGlifLayoutForExpressive() {
+        ShadowSettingsThemeHelper.setExpressiveTheme(true);
+        Intent intent = new Intent("com.android.settings.SETUP_LOCK_SCREEN");
+        intent.putExtra(EXTRA_IS_SETUP_FLOW, true);
+        intent.putExtra(EXTRA_KEY_REQUESTED_MIN_COMPLEXITY, PASSWORD_COMPLEXITY_HIGH);
+        SetupChooseLockGeneric activity =
+                Robolectric.buildActivity(SetupChooseLockGeneric.class, intent).create().get();
+
+        final FrameLayout glifLayout = (FrameLayout) activity.findViewById(R.id.main_content);
+        assertThat(glifLayout).isNotNull();
+    }
+
+    @Test
+    public void setupChooseLockGenericAddGlifLayoutForNonExpressive() {
+        ShadowSettingsThemeHelper.setExpressiveTheme(false);
+        Intent intent = new Intent("com.android.settings.SETUP_LOCK_SCREEN");
+        intent.putExtra(EXTRA_IS_SETUP_FLOW, true);
+        intent.putExtra(EXTRA_KEY_REQUESTED_MIN_COMPLEXITY, PASSWORD_COMPLEXITY_HIGH);
+        SetupChooseLockGeneric activity =
+                Robolectric.buildActivity(SetupChooseLockGeneric.class, intent).create().get();
+
+        final FrameLayout glifLayout = (FrameLayout) activity.findViewById(R.id.main_content);
+        assertThat(glifLayout).isNotNull();
+    }
+
     private SetupChooseLockGenericFragment getFragmentOfSetupChooseLockGeneric(
             boolean forFingerprint, boolean forFace, boolean forBiometric) {
         ShadowPasswordUtils.addGrantedPermission(REQUEST_PASSWORD_COMPLEXITY);
@@ -222,5 +267,20 @@ public class SetupChooseLockGenericTest {
 
     private static String capitalize(final String input) {
         return Character.toUpperCase(input.charAt(0)) + input.substring(1);
+    }
+
+    @Implements(SettingsThemeHelper.class)
+    public static class ShadowSettingsThemeHelper {
+        private static boolean sIsExpressiveTheme;
+
+        /** Shadow implementation of isExpressiveTheme */
+        @Implementation
+        public static boolean isExpressiveTheme(@NonNull Context context) {
+            return sIsExpressiveTheme;
+        }
+
+        static void setExpressiveTheme(boolean isExpressiveTheme) {
+            sIsExpressiveTheme = isExpressiveTheme;
+        }
     }
 }

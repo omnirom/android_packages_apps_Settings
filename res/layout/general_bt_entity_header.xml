@@ -31,7 +31,8 @@
     <ImageView
         android:id="@+id/bt_header_icon"
         android:importantForAccessibility="no"
-        style="@style/SettingsLibEntityHeaderIcon"/>
+        style="@style/SettingsLibEntityHeaderIcon"
+        android:featureFlag="!com.android.settings.flags.enable_bluetooth_settings_expressive_design_read_only"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -77,4 +78,11 @@
         android:layout_marginTop="2dp"
         android:singleLine="false"
         android:textAlignment="center"/>
+
+    <ImageView
+        android:id="@+id/bt_header_icon"
+        android:importantForAccessibility="no"
+        style="@style/SettingsLibEntityHeaderIcon"
+        android:layout_marginTop="16dp"
+        android:featureFlag="com.android.settings.flags.enable_bluetooth_settings_expressive_design_read_only"/>
 </LinearLayout>

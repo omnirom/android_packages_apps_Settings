@@ -20,6 +20,7 @@ import static com.android.settings.accessibility.AccessibilityUtil.State.OFF;
 import static com.android.settings.accessibility.AccessibilityUtil.State.ON;
 import static com.android.settings.accessibility.AutoclickUtils.KEY_DELAY_MODE;
 import static com.android.settings.core.BasePreferenceController.AVAILABLE;
+import static com.android.settings.core.BasePreferenceController.CONDITIONALLY_UNAVAILABLE;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -34,6 +35,9 @@ import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.Settings.Secure;
 
 import androidx.preference.PreferenceScreen;
@@ -61,6 +65,8 @@ public class ToggleAutoclickPreferenceControllerTest {
     private static final String KEY_CUSTOM_SEEKBAR = "autoclick_custom_seekbar";
 
     @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule
     public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Mock
     private PreferenceScreen mScreen;
@@ -75,11 +81,21 @@ public class ToggleAutoclickPreferenceControllerTest {
     private ToggleAutoclickPreferenceController mController;
 
     @Test
-    public void getAvailabilityStatus_available() {
+    @DisableFlags(com.android.server.accessibility.Flags.FLAG_ENABLE_AUTOCLICK_INDICATOR)
+    public void getAvailabilityStatus_available_whenFlagOFF() {
         setUpController(KEY_PREF_DEFAULT);
 
         assertThat(mController.getAvailabilityStatus()).isEqualTo(AVAILABLE);
     }
+
+    @Test
+    @EnableFlags(com.android.server.accessibility.Flags.FLAG_ENABLE_AUTOCLICK_INDICATOR)
+    public void getAvailabilityStatus_unavailable_whenFlagOn() {
+        setUpController(KEY_PREF_DEFAULT);
+
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(CONDITIONALLY_UNAVAILABLE);
+    }
+
 
     @Test
     public void setClickListenerOnDelayModePref_whenDisplay_success() {
@@ -139,6 +155,7 @@ public class ToggleAutoclickPreferenceControllerTest {
     }
 
     @Test
+    @DisableFlags(com.android.server.accessibility.Flags.FLAG_ENABLE_AUTOCLICK_INDICATOR)
     public void onSharedPreferenceChanged_customMode_shouldShowCustomSeekbar() {
         setUpController(KEY_PREF_CUSTOM);
         mController.displayPreference(mScreen);

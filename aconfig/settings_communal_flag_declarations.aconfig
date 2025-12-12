@@ -2,8 +2,11 @@ package: "com.android.settings.flags"
 container: "system_ext"
 
 flag {
-  name: "enable_hub_mode_settings_on_mobile"
+  name: "resolve_missing_when_to_dream"
   namespace: "systemui"
-  description: "This flag controls whether hub mode settings should be enabled on mobile"
-  bug: "389782624"
+  description: "This flag controls settings app correcting for missing dream option"
+  metadata {
+    purpose: PURPOSE_BUGFIX
+  }
+  bug: "419323985"
 }

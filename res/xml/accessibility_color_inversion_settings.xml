@@ -14,8 +14,50 @@
      limitations under the License.
 -->
 
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:persistent="false"
     android:title="@string/accessibility_display_inversion_preference_title">
+
+    <com.android.settingslib.widget.TopIntroPreference
+        android:key="top_intro"
+        android:title="@string/accessibility_display_inversion_preference_intro_text"
+        app:searchable="false" />
+
+    <com.android.settingslib.widget.IllustrationPreference
+        android:key="animated_image"
+        app:controller="com.android.settings.accessibility.ColorInversionIllustrationPreferenceController"
+        app:searchable="false" />
+
+    <com.android.settingslib.widget.MainSwitchPreference
+        android:key="accessibility_display_inversion_enabled"
+        android:title="@string/accessibility_display_inversion_switch_title"
+        app:controller="com.android.settings.accessibility.ColorInversionMainSwitchPreferenceController" />
+
+    <PreferenceCategory
+        android:key="general_categories"
+        android:title="@string/accessibility_screen_option"
+        app:searchable="false">
+        <com.android.settings.accessibility.ShortcutPreference
+            android:key="color_inversion_shortcut_key"
+            android:persistent="true"
+            android:title="@string/accessibility_display_inversion_shortcut_title"
+            app:controller="com.android.settings.accessibility.ToggleShortcutPreferenceController" />
+    </PreferenceCategory>
+
+    <com.android.settings.accessibility.AccessibilityFooterPreference
+        android:key="html_description"
+        android:persistent="false"
+        app:controller="com.android.settings.accessibility.ColorInversionFooterPreferenceController"
+        app:searchable="false" />
+
+    <com.android.settingslib.widget.ButtonPreference
+        android:key="feedback"
+        android:title="@string/accessibility_send_feedback_title"
+        android:icon="@drawable/ic_feedback"
+        android:persistent="false"
+        app:searchable="false"
+        app:buttonPreferenceSize="normal"
+        app:buttonPreferenceType="tonal"
+        app:controller="com.android.settings.accessibility.FeedbackButtonPreferenceController" />
 </PreferenceScreen>

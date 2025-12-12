@@ -42,9 +42,18 @@
             settings:userRestriction="no_config_brightness"
             settings:controller="com.android.settings.display.AutoBrightnessPreferenceController" />
 
+        <com.android.settingslib.PrimarySwitchPreference
+            android:fragment="com.android.settings.display.HdrBrightnessSettings"
+            android:key="hdr_preference"
+            android:persistent="false"
+            android:title="@string/hdr_brightness_title"
+            settings:keywords="@string/keywords_display_hdr_brightness"
+            settings:controller="com.android.settings.display.HdrBrightnessPreferenceController"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="category_lock_display"
         android:title="@string/category_name_lock_display"
         android:order="-190">
 
@@ -54,6 +63,15 @@
             android:fragment="com.android.settings.security.LockscreenDashboardFragment"
             settings:keywords="@string/keywords_ambient_display_screen"
             settings:controller="com.android.settings.security.screenlock.LockScreenPreferenceController"/>
+
+        <com.android.settingslib.PrimarySwitchPreference
+            android:key="ambient_display_always_on_screen"
+            android:title="@string/doze_always_on_title"
+            android:summary="@string/doze_always_on_summary"
+            android:fragment="com.android.settings.display.AmbientPreferenceFragment"
+            settings:keywords="@string/keywords_always_show_time_info"
+            settings:controller="com.android.settings.display.AmbientDisplayAlwaysOnPreferenceScreenController"
+            settings:userRestriction="no_ambient_display" />
 
         <com.android.settingslib.RestrictedPreference
             android:fragment="com.android.settings.display.FoldLockBehaviorSettings"
@@ -71,6 +89,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="category_key_appearance"
         android:title="@string/category_name_appearance"
         android:order="-180">
 
@@ -89,12 +108,6 @@
             android:persistent="false"
             android:title="@string/accessibility_text_reading_options_title"
             settings:controller="com.android.settings.accessibility.TextReadingFragmentForDisplaySettingsController"/>
-
-        <Preference
-            android:key="widgets_on_lockscreen"
-            android:title="@string/widgets_on_lockscreen_title"
-            android:fragment="com.android.settings.communal.WidgetsOnLockscreenFragment"
-            settings:controller="com.android.settings.display.WidgetsOnLockscreenPreferenceController"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -125,6 +138,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="category_other"
         android:title="@string/category_name_display_controls"
         android:order="-150">
 

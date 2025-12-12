@@ -95,8 +95,8 @@ public class HearingAidCompatibilityPreferenceControllerTest {
 
     @Test
     public void isChecked_enabledHac_shouldReturnTrue() {
-        Settings.System.putInt(mContext.getContentResolver(), Settings.System.HEARING_AID,
-                HAC_ENABLED);
+        Settings.System.putInt(mContext.getContentResolver(),
+                Settings.System.HEARING_AID_COMPATIBILITY, HAC_ENABLED);
         mController.updateState(mPreference);
 
         assertThat(mController.isChecked()).isTrue();
@@ -105,8 +105,8 @@ public class HearingAidCompatibilityPreferenceControllerTest {
 
     @Test
     public void isChecked_disabledHac_shouldReturnFalse() {
-        Settings.System.putInt(mContext.getContentResolver(), Settings.System.HEARING_AID,
-                HAC_DISABLED);
+        Settings.System.putInt(mContext.getContentResolver(),
+                Settings.System.HEARING_AID_COMPATIBILITY, HAC_DISABLED);
         mController.updateState(mPreference);
 
         assertThat(mController.isChecked()).isFalse();
@@ -118,7 +118,7 @@ public class HearingAidCompatibilityPreferenceControllerTest {
         mController.setChecked(true);
 
         assertThat(Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.HEARING_AID, HAC_DISABLED)).isEqualTo(HAC_ENABLED);
+                Settings.System.HEARING_AID_COMPATIBILITY, HAC_DISABLED)).isEqualTo(HAC_ENABLED);
         verify(mAudioManager).setParameters("HACSetting=ON;");
     }
 
@@ -127,7 +127,7 @@ public class HearingAidCompatibilityPreferenceControllerTest {
         mController.setChecked(false);
 
         assertThat(Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.HEARING_AID, HAC_DISABLED)).isEqualTo(HAC_DISABLED);
+                Settings.System.HEARING_AID_COMPATIBILITY, HAC_DISABLED)).isEqualTo(HAC_DISABLED);
         verify(mAudioManager).setParameters("HACSetting=OFF;");
     }
 

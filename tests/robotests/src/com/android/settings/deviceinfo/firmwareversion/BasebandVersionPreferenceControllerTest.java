@@ -25,8 +25,11 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.sysprop.TelephonyProperties;
 import android.telephony.TelephonyManager;
+
+import com.android.settings.R;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,27 +49,57 @@ public class BasebandVersionPreferenceControllerTest {
     private BasebandVersionPreferenceController mController;
     @Mock
     private TelephonyManager mTelephonyManager;
+    @Mock
+    private Resources mResources;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         mContext = spy(RuntimeEnvironment.application);
-        mController = new BasebandVersionPreferenceController(mContext, "key");
         when(mContext.getSystemService(TelephonyManager.class)).thenReturn(mTelephonyManager);
+        when(mContext.getSystemService(Context.TELEPHONY_SERVICE)).thenReturn(mTelephonyManager);
+        when(mContext.getResources()).thenReturn(mResources);
+
+        // By default, available
+        when(mResources.getBoolean(R.bool.config_show_sim_info)).thenReturn(true);
+        when(mTelephonyManager.isDataCapable()).thenReturn(true);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(true);
+
+        mController = new BasebandVersionPreferenceController(mContext, "key");
     }
 
     @Test
-    public void getAvailability_wifiOnly_unavailable() {
-        when(mTelephonyManager.isDataCapable()).thenReturn(false);
+    public void getAvailability_default_available() {
+        final String text = "test";
+        TelephonyProperties.baseband_version(Arrays.asList(new String[]{text}));
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(AVAILABLE);
+    }
+
+    @Test
+    public void getAvailability_notShowSimInfo_unavailable() {
+        when(mResources.getBoolean(R.bool.config_show_sim_info)).thenReturn(false);
         assertThat(mController.getAvailabilityStatus()).isEqualTo(UNSUPPORTED_ON_DEVICE);
     }
 
     @Test
-    public void getAvailability_hasMobile_available() {
-        final String text = "test";
-        TelephonyProperties.baseband_version(Arrays.asList(new String[]{text}));
-        when(mTelephonyManager.isDataCapable()).thenReturn(true);
+    public void getAvailability_voiceCapable_notDataCapable_available() {
+        when(mTelephonyManager.isDataCapable()).thenReturn(false);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(true);
         assertThat(mController.getAvailabilityStatus()).isEqualTo(AVAILABLE);
+    }
+
+    @Test
+    public void getAvailability_notVoiceCapable_dataCapable_available() {
+        when(mTelephonyManager.isDataCapable()).thenReturn(true);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(false);
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(AVAILABLE);
+    }
+
+    @Test
+    public void getAvailability_notVoiceCapable_notDataCapable_unavailable() {
+        when(mTelephonyManager.isDataCapable()).thenReturn(false);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(false);
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(UNSUPPORTED_ON_DEVICE);
     }
 }
 // LINT.ThenChange(BasebandVersionPreferenceTest.kt)

@@ -3,7 +3,7 @@ container: "system_ext"
 
 flag {
   name: "ethernet_settings"
-  namespace: "connectivity"
+  namespace: "desktop_connectivity"
   description: "Flag for Ethernet settings"
   bug: "372928532"
 }

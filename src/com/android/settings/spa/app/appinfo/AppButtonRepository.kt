@@ -21,7 +21,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.om.OverlayManager
 import android.content.pm.ApplicationInfo
-import android.content.pm.Flags
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.util.Log
@@ -124,13 +123,8 @@ class AppButtonRepository(private val context: Context) {
             homePackageInfo.homePackages.size == 1 -> true
 
             packageName == homePackageInfo.currentDefaultHome?.packageName -> {
-                if (Flags.improveHomeAppBehavior()) {
-                    // Disallow the uninstallation of the current home app if it is a system app.
-                    return applicationInfo.isSystemApp()
-                } else {
-                    // Disallow if this is the explicit default home app.
-                    return true
-                }
+                // Disallow the uninstallation of the current home app if it is a system app.
+                return applicationInfo.isSystemApp()
             }
 
             else -> false

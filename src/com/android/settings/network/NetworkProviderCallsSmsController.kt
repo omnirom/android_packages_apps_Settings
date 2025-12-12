@@ -27,10 +27,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.preference.PreferenceScreen
 import com.android.settings.R
+import com.android.settings.Utils
 import com.android.settings.core.BasePreferenceController
 import com.android.settings.flags.Flags
 import com.android.settingslib.RestrictedPreference
-import com.android.settingslib.Utils
+import com.android.settingslib.Utils as LibUtils
 import com.android.settingslib.spa.framework.util.collectLatestWithLifecycle
 import com.android.settingslib.spaprivileged.framework.common.broadcastReceiverFlow
 import com.android.settingslib.spaprivileged.framework.common.userManager
@@ -64,7 +65,7 @@ open class NetworkProviderCallsSmsController @JvmOverloads constructor(
 
     override fun getAvailabilityStatus() = when {
         Flags.isDualSimOnboardingEnabled() -> UNSUPPORTED_ON_DEVICE
-        !SubscriptionUtil.isSimHardwareVisible(mContext) -> UNSUPPORTED_ON_DEVICE
+        !Utils.isVoiceCapable(mContext) -> UNSUPPORTED_ON_DEVICE
         !mContext.userManager.isAdminUser -> DISABLED_FOR_USER
         else -> AVAILABLE
     }
@@ -176,6 +177,6 @@ private class IsInServiceImpl(context: Context) {
         if (!SubscriptionManager.isValidSubscriptionId(subId)) return false
 
         val serviceState = telephonyManager.createForSubscriptionId(subId).serviceState
-        return Utils.isInService(serviceState)
+        return LibUtils.isInService(serviceState)
     }
 }

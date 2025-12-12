@@ -40,10 +40,11 @@ class AddSourceFailedState extends SyncedState {
     }
 
     @Override
-    void performAction(
+    void onEnter(
             AudioStreamPreference preference,
             AudioStreamsProgressCategoryController controller,
-            AudioStreamsHelper helper) {
+            AudioStreamsHelper helper,
+            AudioStreamScanHelper scanHelper) {
         mMetricsFeatureProvider.action(
                 preference.getContext(),
                 SettingsEnums.ACTION_AUDIO_STREAM_JOIN_FAILED_OTHER,

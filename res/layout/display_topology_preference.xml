@@ -21,23 +21,19 @@
      switch to the correct final color. -->
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:androidprv="http://schemas.android.com/apk/prv/res/android"
     android:id="@+id/display_topology_pane_holder"
     android:importantForAccessibility="no"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:layout_marginVertical="@dimen/display_topology_pane_vertical_margin"
-    android:layout_marginHorizontal="@dimen/display_topology_pane_margin"
     android:orientation="horizontal">
-    <ImageView
-        android:importantForAccessibility="no"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:src="@drawable/display_topology_background"/>
     <FrameLayout
         android:id="@+id/display_topology_pane_content"
         android:clipToOutline="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:background="@drawable/display_topology_background"/>
 
     <!-- Give the textview a solid-color background (the same as the pane) in
          order to make the text clear when a DisplayBlock is drawn under it as
@@ -52,11 +48,12 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_gravity="top|center_horizontal"
-        android:paddingVertical="10dp">
+        android:paddingTop="16dp">
         <TextView
             android:id="@+id/topology_hint"
             android:background="@drawable/display_topology_background"
             android:paddingHorizontal="5dp"
+            android:textColor="@androidprv:color/materialColorOnPrimaryContainer"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content" />
     </FrameLayout>

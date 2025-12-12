@@ -20,8 +20,6 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.android.settings.keyboard.Flags;
-
 public class TouchpadSettingsController extends InputDeviceSettingsController {
     public TouchpadSettingsController(@NonNull Context context, @NonNull String key) {
         super(context, key);
@@ -29,9 +27,8 @@ public class TouchpadSettingsController extends InputDeviceSettingsController {
 
     @Override
     public int getAvailabilityStatus() {
-        boolean isFeatureOn = Flags.keyboardAndTouchpadA11yNewPageEnabled();
         boolean isTouchpad = InputPeripheralsSettingsUtils.isTouchpad();
-        return (isFeatureOn && isTouchpad) ? AVAILABLE
+        return isTouchpad ? AVAILABLE
                 : CONDITIONALLY_UNAVAILABLE;
     }
 }

@@ -29,6 +29,7 @@ import java.util.Locale;
 /**
  * Defines the schema for the Slices database.
  */
+@Deprecated(forRemoval = true)
 public class SlicesDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "SlicesDatabaseHelper";

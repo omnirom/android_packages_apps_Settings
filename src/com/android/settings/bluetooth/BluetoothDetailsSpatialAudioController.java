@@ -19,7 +19,6 @@ package com.android.settings.bluetooth;
 import static android.media.Spatializer.SPATIALIZER_IMMERSIVE_LEVEL_NONE;
 
 import android.app.settings.SettingsEnums;
-import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.media.AudioDeviceAttributes;
 import android.media.AudioDeviceInfo;
@@ -45,9 +44,6 @@ import com.android.settingslib.core.lifecycle.Lifecycle;
 import com.android.settingslib.flags.Flags;
 import com.android.settingslib.utils.ThreadUtils;
 
-import com.google.common.collect.ImmutableSet;
-
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -58,6 +54,7 @@ public class BluetoothDetailsSpatialAudioController extends BluetoothDetailsCont
 
     private static final String TAG = "BluetoothSpatialAudioController";
     private static final String KEY_SPATIAL_AUDIO_GROUP = "spatial_audio_group";
+    private static final String KEY_PROFILES_GROUP = "bluetooth_profiles";
     private static final String KEY_SPATIAL_AUDIO = "spatial_audio";
     private static final String KEY_HEAD_TRACKING = "head_tracking";
 
@@ -70,10 +67,6 @@ public class BluetoothDetailsSpatialAudioController extends BluetoothDetailsCont
 
     AtomicBoolean mHasHeadTracker = new AtomicBoolean(false);
     AtomicBoolean mInitialRefresh = new AtomicBoolean(true);
-
-    public static final Set<Integer> SA_PROFILES =
-            ImmutableSet.of(
-                    BluetoothProfile.A2DP, BluetoothProfile.LE_AUDIO, BluetoothProfile.HEARING_AID);
 
     public BluetoothDetailsSpatialAudioController(
             Context context,
@@ -144,13 +137,21 @@ public class BluetoothDetailsSpatialAudioController extends BluetoothDetailsCont
 
     @Override
     public String getPreferenceKey() {
-        return KEY_SPATIAL_AUDIO_GROUP;
+        if (com.android.settings.flags.Flags.enableBluetoothSettingsExpressiveDesignReadOnly()) {
+            return KEY_PROFILES_GROUP;
+        } else {
+            return KEY_SPATIAL_AUDIO_GROUP;
+        }
     }
 
     @Override
     protected void init(PreferenceScreen screen) {
         mProfilesContainer = screen.findPreference(getPreferenceKey());
-        if (com.android.settings.flags.Flags.enableBluetoothDeviceDetailsPolish()) {
+        if (com.android.settings.flags.Flags.enableBluetoothSettingsExpressiveDesignReadOnly()) {
+            mProfilesContainer.setLayoutResource(
+                    com.android.settingslib.widget.category.R.layout
+                            .settingslib_expressive_untitled_preference_category);
+        } else {
             mProfilesContainer.setLayoutResource(R.layout.preference_category_bluetooth_no_padding);
         }
         refresh();
@@ -239,6 +240,7 @@ public class BluetoothDetailsSpatialAudioController extends BluetoothDetailsCont
         pref.setTitle(context.getString(R.string.bluetooth_details_spatial_audio_title));
         pref.setSummary(context.getString(R.string.bluetooth_details_spatial_audio_summary));
         pref.setOnPreferenceClickListener(this);
+        pref.setOrder(-2);
         return pref;
     }
 
@@ -249,6 +251,7 @@ public class BluetoothDetailsSpatialAudioController extends BluetoothDetailsCont
         pref.setTitle(context.getString(R.string.bluetooth_details_head_tracking_title));
         pref.setSummary(context.getString(R.string.bluetooth_details_head_tracking_summary));
         pref.setOnPreferenceClickListener(this);
+        pref.setOrder(-1);
         return pref;
     }
 
@@ -269,10 +272,6 @@ public class BluetoothDetailsSpatialAudioController extends BluetoothDetailsCont
                 AudioDeviceAttributes.ROLE_OUTPUT,
                 AudioDeviceInfo.TYPE_BLE_BROADCAST,
                 mCachedDevice.getAddress());
-        AudioDeviceAttributes hearingAidDevice = new AudioDeviceAttributes(
-                AudioDeviceAttributes.ROLE_OUTPUT,
-                AudioDeviceInfo.TYPE_HEARING_AID,
-                mCachedDevice.getAddress());
 
         if (mSpatializer.isAvailableForDevice(bleHeadsetDevice)) {
             mAudioDevice = bleHeadsetDevice;
@@ -282,8 +281,6 @@ public class BluetoothDetailsSpatialAudioController extends BluetoothDetailsCont
             mAudioDevice = bleBroadcastDevice;
         } else if (mSpatializer.isAvailableForDevice(a2dpDevice)) {
             mAudioDevice = a2dpDevice;
-        } else if (mSpatializer.isAvailableForDevice(hearingAidDevice)) {
-            mAudioDevice = hearingAidDevice;
         } else {
             mAudioDevice = null;
         }

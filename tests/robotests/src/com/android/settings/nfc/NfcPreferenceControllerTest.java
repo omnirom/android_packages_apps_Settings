@@ -37,6 +37,7 @@ import com.android.settings.testutils.shadow.ShadowNfcAdapter;
 import com.android.settingslib.widget.MainSwitchPreference;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -99,6 +100,7 @@ public class NfcPreferenceControllerTest {
                 .isEqualTo(NfcPreferenceController.UNSUPPORTED_ON_DEVICE);
     }
 
+    @Ignore("b/424065209")
     @Test
     public void isNfcEnable_nfcStateNotTurning_shouldReturnTrue() {
         mNfcController.displayPreference(mScreen);
@@ -111,6 +113,7 @@ public class NfcPreferenceControllerTest {
         assertThat(mNfcPreference.isEnabled()).isTrue();
     }
 
+    @Ignore("b/424065209")
     @Test
     public void isNfcEnable_nfcStateTurning_shouldReturnFalse() {
         mNfcController.displayPreference(mScreen);
@@ -123,6 +126,7 @@ public class NfcPreferenceControllerTest {
         assertThat(mNfcPreference.isEnabled()).isFalse();
     }
 
+    @Ignore("b/424065209")
     @Test
     public void isNfcChecked_nfcStateOn_shouldReturnTrue() {
         mNfcController.displayPreference(mScreen);

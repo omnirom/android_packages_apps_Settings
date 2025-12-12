@@ -69,7 +69,7 @@ public class AdbQrCodePreferenceController extends BasePreferenceController {
 
         final Intent intent = new Intent(mContext, AdbQrCodeActivity.class);
         mParentFragment.startActivityForResult(intent,
-                WirelessDebuggingFragment.PAIRING_DEVICE_REQUEST);
+                AdbWirelessDebuggingFragment.PAIRING_DEVICE_REQUEST);
         return true;
     }
 }

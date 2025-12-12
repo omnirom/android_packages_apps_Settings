@@ -17,6 +17,7 @@ package com.android.settings.notification
 
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.res.Resources
 import android.provider.Settings.System.DTMF_TONE_WHEN_DIALING
 import android.telephony.TelephonyManager
 import androidx.preference.SwitchPreferenceCompat
@@ -35,6 +36,8 @@ import org.mockito.kotlin.mock
 class DialPadTonePreferenceTest {
     private var telephonyManager: TelephonyManager? = null
 
+    private var mockResources: Resources? = null
+
     private val context =
         object : ContextWrapper(ApplicationProvider.getApplicationContext()) {
             override fun getSystemService(name: String): Any? =
@@ -42,20 +45,31 @@ class DialPadTonePreferenceTest {
                     Context.TELEPHONY_SERVICE -> telephonyManager
                     else -> super.getSystemService(name)
                 }
+            override fun getResources(): Resources = mockResources ?: super.getResources()
         }
 
     private val dialPadTonePreference = DialPadTonePreference()
 
     @Test
     fun isAvailable_voiceCapable_shouldReturnTrue() {
-        telephonyManager = mock { on { isVoiceCapable } doReturn true }
+        mockResources = mock { on { getBoolean(com.android.settings.R.bool.config_show_sim_info) } doReturn true }
+        telephonyManager = mock { on { isDeviceVoiceCapable } doReturn true }
 
         assertThat(dialPadTonePreference.isAvailable(context)).isTrue()
     }
 
     @Test
-    fun isAvailable_noVoicCapable_shouldReturnFalse() {
-        telephonyManager = mock { on { isVoiceCapable } doReturn false }
+    fun isAvailable_noVoiceCapable_shouldReturnFalse() {
+        mockResources = mock { on { getBoolean(com.android.settings.R.bool.config_show_sim_info) } doReturn true }
+        telephonyManager = mock { on { isDeviceVoiceCapable } doReturn false }
+
+        assertThat(dialPadTonePreference.isAvailable(context)).isFalse()
+    }
+
+    @Test
+    fun isAvailable_telephonyDisabled_shouldReturnFalse() {
+        mockResources = mock { on { getBoolean(com.android.settings.R.bool.config_show_sim_info) } doReturn false }
+        telephonyManager = mock { on { isDeviceVoiceCapable } doReturn true }
 
         assertThat(dialPadTonePreference.isAvailable(context)).isFalse()
     }

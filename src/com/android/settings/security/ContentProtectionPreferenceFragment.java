@@ -21,15 +21,22 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.VisibleForTesting;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.SearchIndexable;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 @SearchIndexable
 public class ContentProtectionPreferenceFragment extends DashboardFragment {
     private static final String TAG = "ContentProtectionPreferenceFragment";
+    private static final String ILLUSTRATION_KEY =
+            "content_protection_preference_subpage_illustration";
+    private static final String EXPRESSIVE_ILLUSTRATION_KEY =
+            "content_protection_preference_subpage_illustration_expressive";
 
     // Required by @SearchIndexable to make the fragment and preferences to be indexed.
     // Do not rename.
@@ -61,6 +68,20 @@ public class ContentProtectionPreferenceFragment extends DashboardFragment {
     @Override
     protected String getLogTag() {
         return TAG;
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        super.onCreatePreferences(savedInstanceState, rootKey);
+
+        final PreferenceScreen preferenceScreen = getPreferenceScreen();
+        final String unusedIllustrationPreferenceKey = SettingsThemeHelper.isExpressiveTheme(
+                requireContext()) ? ILLUSTRATION_KEY : EXPRESSIVE_ILLUSTRATION_KEY;
+        final Preference unusedIllustrationPreference = preferenceScreen.findPreference(
+                unusedIllustrationPreferenceKey);
+        if (unusedIllustrationPreference != null) {
+            preferenceScreen.removePreference(unusedIllustrationPreference);
+        }
     }
 
     public static class ContentProtectionSearchIndexProvider extends BaseSearchIndexProvider {

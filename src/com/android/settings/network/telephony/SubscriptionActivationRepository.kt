@@ -34,16 +34,21 @@ class SubscriptionActivationRepository(
     private val context: Context,
     private val callStateRepository: CallStateRepository = CallStateRepository(context),
     private val satelliteRepository: SatelliteRepository = SatelliteRepository(context),
+    private val airplaneModeRepository: AirplaneModeRepository = AirplaneModeRepository(context),
 ) {
-    fun isActivationChangeableFlow(): Flow<Boolean> = combine(
-        callStateRepository.isInCallFlow(),
-        satelliteRepository.getIsSessionStartedFlow()
-    ) { isInCall, isSatelliteModemEnabled ->
-        !isInCall && !isSatelliteModemEnabled
-    }
+    fun isActivationChangeableFlow(): Flow<Boolean> =
+        combine(
+            callStateRepository.isInCallFlow(),
+            callStateRepository.isInEmergencyCallFlow(),
+            satelliteRepository.getIsSessionStartedFlow(),
+            airplaneModeRepository.airplaneModeChangedFlow(),
+        ) { isInCall, isInEmergencyCallFlow, isSatelliteModemEnabled, isAirplaneModeOn ->
+            !isInCall && !isInEmergencyCallFlow && !isSatelliteModemEnabled && !isAirplaneModeOn
+        }
 
     /**
      * Starts a dialog activity to handle SIM enabling / disabling.
+     *
      * @param subId The id of subscription need to be enabled or disabled.
      * @param active Whether the subscription with [subId] should be enabled or disabled.
      */
@@ -53,9 +58,10 @@ class SubscriptionActivationRepository(
             return
         }
         if (isEmergencyCallbackMode(subId)) {
-            val intent = Intent(ACTION_SHOW_NOTICE_ECM_BLOCK_OTHERS).apply {
-                setPackage(Utils.PHONE_PACKAGE_NAME)
-            }
+            val intent =
+                Intent(ACTION_SHOW_NOTICE_ECM_BLOCK_OTHERS).apply {
+                    setPackage(Utils.PHONE_PACKAGE_NAME)
+                }
             context.startActivity(intent)
             return
         }
@@ -66,9 +72,8 @@ class SubscriptionActivationRepository(
         context.startActivity(ToggleSubscriptionDialogActivity.getIntent(context, subId, active))
     }
 
-    private suspend fun isEmergencyCallbackMode(subId: Int) = withContext(Dispatchers.Default) {
-        context.telephonyManager(subId).emergencyCallbackMode
-    }
+    private suspend fun isEmergencyCallbackMode(subId: Int) =
+        withContext(Dispatchers.Default) { context.telephonyManager(subId).emergencyCallbackMode }
 
     private companion object {
         private const val TAG = "SubscriptionActivationR"

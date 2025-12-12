@@ -80,7 +80,7 @@ public class AccessibilityButtonPreviewPreferenceControllerTest {
 
         ShadowDrawable drawable = shadowOf(mController.mIllustrationPreference.getImageDrawable());
         assertThat(drawable.getCreatedFromResId())
-                .isEqualTo(R.drawable.accessibility_shortcut_type_navbar);
+                .isEqualTo(R.drawable.accessibility_shortcut_type_navbar_preview);
     }
 
     @Test

@@ -55,8 +55,8 @@ import com.android.settingslib.bluetooth.BluetoothCallback;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.CachedBluetoothDeviceManager;
 import com.android.settingslib.bluetooth.HearingAidInfo;
-import com.android.settingslib.bluetooth.HearingAidStatsLogUtils;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
+import com.android.settingslib.bluetooth.hearingdevices.metrics.HearingDeviceStatsLogUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -208,7 +208,7 @@ public class HearingDevicePairingFragment extends RestrictedDashboardFragment im
                     .getAttribution(getActivity());
             final int bondEntry = AccessibilityStatsLogUtils.convertToHearingAidInfoBondEntry(
                     pageId);
-            HearingAidStatsLogUtils.setBondEntryForDevice(bondEntry, cachedDevice);
+            HearingDeviceStatsLogUtils.setBondEntryForDevice(bondEntry, cachedDevice);
         }
         if (mSelectedDevice != null) {
             BluetoothDevice device = cachedDevice.getDevice();

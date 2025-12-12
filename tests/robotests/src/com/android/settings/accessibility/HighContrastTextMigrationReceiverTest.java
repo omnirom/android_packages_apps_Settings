@@ -211,7 +211,7 @@ public class HighContrastTextMigrationReceiverTest {
         Bundle fragmentArgs = startedActivitie.getBundleExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS);
         assertThat(fragmentArgs).isNotNull();
         assertThat(fragmentArgs.getString(EXTRA_FRAGMENT_ARG_KEY))
-                .isEqualTo(TextReadingPreferenceFragment.HIGH_TEXT_CONTRAST_KEY);
+                .isEqualTo(Settings.Secure.ACCESSIBILITY_HIGH_TEXT_CONTRAST_ENABLED);
 
         Notification notification = mShadowNotificationManager.getNotification(NOTIFICATION_ID);
         assertThat(notification).isNull();

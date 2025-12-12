@@ -17,25 +17,31 @@ package com.android.settings.fuelgauge.batterytip.tips;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;
+import android.text.SpannableString;
 import android.util.Log;
 
 import androidx.preference.Preference;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
+import com.android.settings.Utils;
 import com.android.settings.testutils.FakeFeatureFactory;
-import com.android.settings.widget.TipCardPreference;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
+import com.android.settingslib.widget.BannerMessagePreference;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -49,7 +55,7 @@ public class BatteryDefenderTipTest {
     private FakeFeatureFactory mFeatureFactory;
     private BatteryDefenderTip mBatteryDefenderTip;
     private MetricsFeatureProvider mMetricsFeatureProvider;
-    private TipCardPreference mCardPreference;
+    private BannerMessagePreference mCardPreference;
 
     @Rule public MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Mock private BatteryTip mBatteryTip;
@@ -62,7 +68,7 @@ public class BatteryDefenderTipTest {
         mMetricsFeatureProvider = mFeatureFactory.metricsFeatureProvider;
         mBatteryDefenderTip =
                 new BatteryDefenderTip(BatteryTip.StateType.NEW, /* isPluggedIn= */ false);
-        mCardPreference = new TipCardPreference(mContext);
+        mCardPreference = spy(new BannerMessagePreference(mContext));
 
         when(mPreference.getContext()).thenReturn(mContext);
     }
@@ -102,45 +108,52 @@ public class BatteryDefenderTipTest {
     }
 
     @Test
-    public void updatePreference_shouldSetPrimaryButtonText() {
-        String expectedText = mContext.getString(R.string.learn_more);
+    public void updatePreference_shouldSetNegativeButtonText() {
+        SpannableString expectedText =
+                Utils.createAccessibleSequence(
+                        mContext.getString(R.string.learn_more),
+                        mContext.getString(R.string
+                                .battery_tip_limited_temporarily_sec_button_content_description));
+        ArgumentCaptor<CharSequence> captor = ArgumentCaptor.forClass(CharSequence.class);
 
         mBatteryDefenderTip.updatePreference(mCardPreference);
 
-        assertThat(mCardPreference.getPrimaryButtonText()).isEqualTo(expectedText);
+        verify(mCardPreference).setNegativeButtonText(captor.capture());
+        assertThat(captor.getValue().toString()).isEqualTo(expectedText.toString());
     }
 
     @Test
-    public void updatePreference_shouldSetSecondaryButtonText() {
+    public void updatePreference_shouldSetPositiveButtonText() {
         String expected = mContext.getString(R.string.battery_tip_charge_to_full_button);
 
         mBatteryDefenderTip.updatePreference(mCardPreference);
 
-        assertThat(mCardPreference.getSecondaryButtonText()).isEqualTo(expected);
+        verify(mCardPreference).setPositiveButtonText(eq(expected));
     }
 
     @Test
-    public void updatePreference_shouldSetPrimaryButtonVisible() {
+    public void updatePreference_shouldSetNegativeButtonVisible() {
         mBatteryDefenderTip.updatePreference(mCardPreference);
 
-        assertThat(mCardPreference.getPrimaryButtonVisibility()).isTrue();
+        verify(mCardPreference).setNegativeButtonVisible(true);
     }
 
     @Test
-    public void updatePreference_whenCharging_setPrimaryButtonVisibleToBeTrue() {
+    public void updatePreference_whenCharging_SetNegativeButtonVisibleToBeTrue() {
         mBatteryDefenderTip =
                 new BatteryDefenderTip(BatteryTip.StateType.NEW, /* isPluggedIn= */ true);
 
         mBatteryDefenderTip.updatePreference(mCardPreference);
 
-        assertThat(mCardPreference.getPrimaryButtonVisibility()).isTrue();
+        verify(mCardPreference).setNegativeButtonVisible(true);
     }
 
     @Test
-    public void updatePreference_whenNotCharging_setSecondaryButtonVisibleToBeFalse() {
+    public void updatePreference_whenNotCharging_SetPositiveButtonVisibleToBeFalse() {
         mBatteryDefenderTip.updatePreference(mCardPreference);
 
-        assertThat(mCardPreference.getSecondaryButtonVisibility()).isFalse();
+        // Once for init, once for update
+        verify(mCardPreference, times(2)).setPositiveButtonVisible(false);
     }
 
     private String getLastErrorLog() {

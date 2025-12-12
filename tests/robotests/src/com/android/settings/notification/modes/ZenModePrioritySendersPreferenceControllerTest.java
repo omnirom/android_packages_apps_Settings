@@ -43,7 +43,6 @@ import static org.robolectric.Shadows.shadowOf;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.Flags;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -52,7 +51,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.UserInfo;
 import android.os.UserHandle;
 import android.os.UserManager;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.Contacts;
 import android.service.notification.ZenPolicy;
@@ -96,7 +94,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @RunWith(RobolectricTestRunner.class)
-@EnableFlags(Flags.FLAG_MODES_UI)
 public final class ZenModePrioritySendersPreferenceControllerTest {
 
     private ZenModePrioritySendersPreferenceController mCallsController;

@@ -67,11 +67,7 @@ public class AccessibilityAudioRoutingFragment extends RestrictedDashboardFragme
             new BaseSearchIndexProvider(R.xml.accessibility_audio_routing_fragment) {
                 @Override
                 protected boolean isPageSearchEnabled(Context context) {
-                    if (Flags.fixA11ySettingsSearch()) {
-                        return AccessibilityAudioRoutingFragment.isPageSearchEnabled(context);
-                    } else {
-                        return super.isPageSearchEnabled(context);
-                    }
+                    return AccessibilityAudioRoutingFragment.isPageSearchEnabled(context);
                 }
             };
 }

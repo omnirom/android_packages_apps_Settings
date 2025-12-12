@@ -1,0 +1,117 @@
+syntax = "proto2";
+
+package com.android.settings.biometrics;
+option java_package = "com.android.settings.biometrics";
+option java_outer_classname = "BiometricsOnboardingProto";
+
+/**
+ * Logs when a biometric onboarding flow happens.
+ *
+ * Logged from:
+ *   packages/apps/Settings/
+ *
+ * Keep in sync with settings_extension_atoms.proto & settings_enums.proto in frameworks
+ */
+message SettingsBiometricsOnboarding {
+  // Face or fingerprint
+  optional Modality modality = 1;
+
+  // From SUW/Settings/SafetyCenter...
+  optional FromSource from_source = 2;
+
+  // The associated user. Eg: 0 for owners, 10+ for others.
+  optional int32 user = 3;
+
+  // The enrolled count during this onboarding flow.
+  optional int32 enrolled_count = 4;
+
+  // Duration of the onboarding flow in millis.
+  optional int64 duration_millis = 5;
+
+  // The capybara status.
+  optional int32 capybara_status = 6;
+
+  // The result code of the onboarding flow
+  optional OnboardingResult result_code = 7;
+
+  // The error code
+  optional int32 error_code = 8;
+
+  // All screen infos that a user navigates through the onboarding flow.
+  optional RepeatedOnboardingScreenInfo onboarding_screen_info_list = 9;
+}
+
+message RepeatedSettingsBiometricsOnboarding {
+  repeated SettingsBiometricsOnboarding repeated_biometrics_onboarding = 1;
+}
+
+message OnboardingScreenInfo {
+  // The onboarding screen
+  optional OnboardingScreen onboarding_screen = 1;
+  // The actions that user performs on this screen
+  repeated OnboardingAction onboarding_actions = 2;
+  // The time in ms that user stays on this screen
+  optional int64 dwell_time_millis = 3;
+}
+
+message RepeatedOnboardingScreenInfo {
+  // The onboarding screen info list
+  repeated OnboardingScreenInfo info_list = 1;
+}
+
+// The biometrics modality
+enum Modality {
+  MODALITY_UNKNOWN = 0;
+  MODALITY_FINGERPRINT = 1;
+  MODALITY_FACE = 2;
+}
+
+// The source that trigger the biometrics onboarding flow
+enum FromSource {
+  FROM_UNKNOWN = 0;
+  FROM_SUW = 1;
+  FROM_SETTINGS = 2;
+  FROM_SAFETY_ISSUE = 3;
+  FROM_FRR_NOTIFICATION = 4;
+}
+
+// The result code of the onboarding flow
+enum OnboardingResult {
+  RESULT_UNKNOWN = 0;
+  RESULT_COMPLETED = 1;
+  RESULT_SKIP = 2;
+  RESULT_TIMEOUT = 3;
+  RESULT_CANCEL = 4;
+}
+
+// Screens during the biometric onboarding flow
+enum OnboardingScreen {
+  SCREEN_UNKNOWN = 0;
+  SCREEN_INTRO = 1;
+  SCREEN_EDUCATION = 2;
+  SCREEN_ENROLLING = 3;
+  SCREEN_CONFIRMATION = 4;
+  SCREEN_CAPYBARA_EDUCATION = 5;
+  SCREEN_CAPYBARA_SCANNER = 6;
+}
+
+// Actions during the biometrics onboarding flow
+enum OnboardingAction {
+  ACTION_ONBOARDING_UNKNOWN = 0;
+  ACTION_NEXT = 1;
+  ACTION_SKIP = 2;
+  ACTION_CANCEL = 3;
+  ACTION_ADD_ANOTHER_FINGERPRINT = 4;
+  ACTION_SETUP_CAPYBARA = 5;
+  ACTION_CAPYBARA_SCAN = 6;
+  ACTION_CAPYBARA_NO_SCAN = 7;
+  ACTION_SETUP_FOR_FACE_A11Y = 8;
+  ACTION_FACE_A11Y_ON = 9;
+  ACTION_FACE_A11Y_OFF = 10;
+  ACTION_FACE_GAZE_ON = 11;
+  ACTION_FACE_GAZE_OFF = 12;
+  ACTION_FACE_SKIP_LOCK_SCREEN_ON = 13;
+  ACTION_FACE_SKIP_LOCK_SCREEN_OFF = 14;
+  ACTION_FACE_ENROLL_TRY_AGAIN = 15;
+  ACTION_FACE_TRY_FAST_ENROLL = 16;
+}

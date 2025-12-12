@@ -54,6 +54,7 @@ import com.google.android.setupcompat.util.WizardManagerHelper;
 import com.google.android.setupdesign.GlifLayout;
 import com.google.android.setupdesign.util.ThemeHelper;
 
+// TODO: b/417603276 - Decouple this class from SettingsActivity.
 public class RedactionInterstitial extends SettingsActivity {
 
     @Override

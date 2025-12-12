@@ -70,24 +70,6 @@ public class AccessibilityDialogUtils {
         int DISABLE_WARNING_FROM_TOGGLE = 1005;
 
         /**
-         * OPEN: Settings > Accessibility > Magnification > Toggle user service in button
-         * navigation.
-         */
-        int ACCESSIBILITY_BUTTON_TUTORIAL = 1006;
-
-        /**
-         * OPEN: Settings > Accessibility > Magnification > Toggle user service in gesture
-         * navigation.
-         */
-        int GESTURE_NAVIGATION_TUTORIAL = 1007;
-
-        /**
-         * OPEN: Settings > Accessibility > Downloaded toggle service > Toggle user service > Show
-         * launch tutorial.
-         */
-        int LAUNCH_ACCESSIBILITY_TUTORIAL = 1008;
-
-        /**
          * OPEN: Settings > Accessibility > Display size and text > Click 'Reset settings' button.
          */
         int DIALOG_RESET_SETTINGS = 1009;

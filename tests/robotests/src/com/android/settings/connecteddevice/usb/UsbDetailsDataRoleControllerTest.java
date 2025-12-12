@@ -33,7 +33,6 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.hardware.usb.UsbManager;
 import android.os.Handler;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceCategory;
@@ -41,7 +40,6 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
-import com.android.settings.flags.Flags;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 import com.android.settingslib.widget.SelectorWithWidgetPreference;
 
@@ -57,9 +55,10 @@ import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(shadows = {
-        com.android.settings.testutils.shadow.ShadowFragment.class,
-})
+@Config(
+        shadows = {
+            com.android.settings.testutils.shadow.ShadowFragment.class,
+        })
 public class UsbDetailsDataRoleControllerTest {
 
     private UsbDetailsDataRoleController mDetailsDataRoleController;
@@ -70,12 +69,9 @@ public class UsbDetailsDataRoleControllerTest {
     private PreferenceScreen mScreen;
     private UsbDetailsFragment mFragment;
 
-    @Mock
-    private UsbBackend mUsbBackend;
-    @Mock
-    private FragmentActivity mActivity;
-    @Mock
-    private Handler mHandler;
+    @Mock private UsbBackend mUsbBackend;
+    @Mock private FragmentActivity mActivity;
+    @Mock private Handler mHandler;
 
     @Before
     public void setUp() {
@@ -92,8 +88,8 @@ public class UsbDetailsDataRoleControllerTest {
         when(mFragment.getPreferenceManager()).thenReturn(mPreferenceManager);
         when(mFragment.getPreferenceScreen()).thenReturn(mScreen);
 
-        mDetailsDataRoleController = new UsbDetailsDataRoleController(mContext, mFragment,
-                mUsbBackend);
+        mDetailsDataRoleController =
+                new UsbDetailsDataRoleController(mContext, mFragment, mUsbBackend);
         mPreference = new PreferenceCategory(mContext);
         mPreference.setKey(mDetailsDataRoleController.getPreferenceKey());
         mScreen.addPreference(mPreference);
@@ -105,8 +101,8 @@ public class UsbDetailsDataRoleControllerTest {
 
     @Test
     public void displayRefresh_deviceRole_shouldCheckDevice() {
-        mDetailsDataRoleController.refresh(true, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK,
-                DATA_ROLE_DEVICE);
+        mDetailsDataRoleController.refresh(
+                true, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
 
         final SelectorWithWidgetPreference devicePref = getRadioPreference(DATA_ROLE_DEVICE);
         final SelectorWithWidgetPreference hostPref = getRadioPreference(DATA_ROLE_HOST);
@@ -116,8 +112,8 @@ public class UsbDetailsDataRoleControllerTest {
 
     @Test
     public void displayRefresh_hostRole_shouldCheckHost() {
-        mDetailsDataRoleController.refresh(true, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK,
-                DATA_ROLE_HOST);
+        mDetailsDataRoleController.refresh(
+                true, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK, DATA_ROLE_HOST);
 
         final SelectorWithWidgetPreference devicePref = getRadioPreference(DATA_ROLE_DEVICE);
         final SelectorWithWidgetPreference hostPref = getRadioPreference(DATA_ROLE_HOST);
@@ -127,8 +123,8 @@ public class UsbDetailsDataRoleControllerTest {
 
     @Test
     public void displayRefresh_disconnected_shouldDisable() {
-        mDetailsDataRoleController.refresh(false, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK,
-                DATA_ROLE_DEVICE);
+        mDetailsDataRoleController.refresh(
+                false, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
 
         assertThat(mPreference.isEnabled()).isFalse();
     }
@@ -141,8 +137,7 @@ public class UsbDetailsDataRoleControllerTest {
         devicePref.performClick();
 
         verify(mUsbBackend).setDataRole(DATA_ROLE_DEVICE);
-        assertThat(devicePref.getSummary())
-                .isEqualTo(mContext.getString(R.string.usb_switching));
+        assertThat(devicePref.getSummary()).isEqualTo(mContext.getString(R.string.usb_switching));
     }
 
     @Test
@@ -152,8 +147,7 @@ public class UsbDetailsDataRoleControllerTest {
         final SelectorWithWidgetPreference devicePref = getRadioPreference(DATA_ROLE_DEVICE);
         devicePref.performClick();
 
-        assertThat(devicePref.getSummary())
-                .isEqualTo(mContext.getString(R.string.usb_switching));
+        assertThat(devicePref.getSummary()).isEqualTo(mContext.getString(R.string.usb_switching));
         devicePref.performClick();
         verify(mUsbBackend).setDataRole(DATA_ROLE_DEVICE);
     }
@@ -166,12 +160,11 @@ public class UsbDetailsDataRoleControllerTest {
         devicePref.performClick();
 
         verify(mUsbBackend).setDataRole(DATA_ROLE_DEVICE);
-        assertThat(devicePref.getSummary())
-                .isEqualTo(mContext.getString(R.string.usb_switching));
-        mDetailsDataRoleController.refresh(false /* connected */, UsbManager.FUNCTION_NONE,
-                POWER_ROLE_NONE, DATA_ROLE_NONE);
-        mDetailsDataRoleController.refresh(true /* connected */, UsbManager.FUNCTION_NONE,
-                POWER_ROLE_SINK, DATA_ROLE_DEVICE);
+        assertThat(devicePref.getSummary()).isEqualTo(mContext.getString(R.string.usb_switching));
+        mDetailsDataRoleController.refresh(
+                false /* connected */, UsbManager.FUNCTION_NONE, POWER_ROLE_NONE, DATA_ROLE_NONE);
+        mDetailsDataRoleController.refresh(
+                true /* connected */, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK, DATA_ROLE_DEVICE);
         assertThat(devicePref.getSummary()).isEqualTo("");
     }
 
@@ -183,12 +176,11 @@ public class UsbDetailsDataRoleControllerTest {
         devicePref.performClick();
 
         verify(mUsbBackend).setDataRole(DATA_ROLE_DEVICE);
-        assertThat(devicePref.getSummary())
-                .isEqualTo(mContext.getString(R.string.usb_switching));
-        mDetailsDataRoleController.refresh(false /* connected */, UsbManager.FUNCTION_NONE,
-                POWER_ROLE_NONE, DATA_ROLE_NONE);
-        mDetailsDataRoleController.refresh(true /* connected */, UsbManager.FUNCTION_NONE,
-                POWER_ROLE_SINK, DATA_ROLE_HOST);
+        assertThat(devicePref.getSummary()).isEqualTo(mContext.getString(R.string.usb_switching));
+        mDetailsDataRoleController.refresh(
+                false /* connected */, UsbManager.FUNCTION_NONE, POWER_ROLE_NONE, DATA_ROLE_NONE);
+        mDetailsDataRoleController.refresh(
+                true /* connected */, UsbManager.FUNCTION_NONE, POWER_ROLE_SINK, DATA_ROLE_HOST);
         assertThat(devicePref.getSummary())
                 .isEqualTo(mContext.getString(R.string.usb_switching_failed));
     }
@@ -203,10 +195,9 @@ public class UsbDetailsDataRoleControllerTest {
         verify(mUsbBackend).setDataRole(DATA_ROLE_DEVICE);
         ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
         verify(mHandler).postDelayed(captor.capture(), anyLong());
-        assertThat(devicePref.getSummary())
-                .isEqualTo(mContext.getString(R.string.usb_switching));
-        mDetailsDataRoleController.refresh(false /* connected */, UsbManager.FUNCTION_NONE,
-                POWER_ROLE_NONE, DATA_ROLE_NONE);
+        assertThat(devicePref.getSummary()).isEqualTo(mContext.getString(R.string.usb_switching));
+        mDetailsDataRoleController.refresh(
+                false /* connected */, UsbManager.FUNCTION_NONE, POWER_ROLE_NONE, DATA_ROLE_NONE);
         captor.getValue().run();
 
         assertThat(devicePref.getSummary())
@@ -214,14 +205,25 @@ public class UsbDetailsDataRoleControllerTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_ENABLE_AUTH_CHALLENGE_FOR_USB_PREFERENCES)
     public void onRadioButtonClicked_userAuthenticated() {
+        when(mUsbBackend.getDataRole()).thenReturn(DATA_ROLE_HOST);
         SelectorWithWidgetPreference preference = getRadioPreference(DATA_ROLE_DEVICE);
         setAuthPassesAutomatically();
 
         mDetailsDataRoleController.onRadioButtonClicked(preference);
 
         assertThat(mFragment.isUserAuthenticated()).isTrue();
+    }
+
+    @Test
+    public void onRadioButtonClicked_whenSameSetting_userNotAuthenticated() {
+        when(mUsbBackend.getDataRole()).thenReturn(DATA_ROLE_DEVICE);
+        SelectorWithWidgetPreference preference = getRadioPreference(DATA_ROLE_DEVICE);
+        setAuthPassesAutomatically();
+
+        mDetailsDataRoleController.onRadioButtonClicked(preference);
+
+        assertThat(mFragment.isUserAuthenticated()).isFalse();
     }
 
     private void setAuthPassesAutomatically() {

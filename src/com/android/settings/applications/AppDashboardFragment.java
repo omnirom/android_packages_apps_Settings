@@ -20,6 +20,9 @@ import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.provider.SearchIndexableResource;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.settings.R;
 import com.android.settings.applications.appcompat.UserAspectRatioAppsPreferenceController;
@@ -34,6 +37,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /** Settings page for apps. */
+// LINT.IfChange
 @SearchIndexable
 public class AppDashboardFragment extends DashboardFragment {
 
@@ -52,13 +56,17 @@ public class AppDashboardFragment extends DashboardFragment {
                 new AdvancedAppsPreferenceCategoryController(context, ADVANCED_CATEGORY_KEY);
         advancedCategoryController.setChildren(List.of(aspectRatioAppsPreferenceController));
         controllers.add(advancedCategoryController);
-
         return controllers;
     }
 
     @Override
     public int getMetricsCategory() {
         return SettingsEnums.MANAGE_APPLICATIONS;
+    }
+
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return AppDashboardScreen.KEY;
     }
 
     @Override
@@ -115,3 +123,4 @@ public class AppDashboardFragment extends DashboardFragment {
                 }
             };
 }
+// LINT.ThenChange(AppDashboardScreen.kt)

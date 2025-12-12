@@ -28,6 +28,8 @@
         <com.android.settingslib.widget.MainSwitchBar
             android:id="@+id/main_switch_bar"
             android:visibility="invisible"
+            android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
+            android:layout_marginEnd="?android:attr/listPreferredItemPaddingEnd"
             android:layout_height="wrap_content"
             android:layout_width="match_parent" />
 
@@ -38,16 +40,26 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="164dp"
             android:orientation="vertical">
-
-            <ImageView
+            <FrameLayout
                 android:id="@+id/history_image"
-                android:layout_width="67dp"
-                android:layout_height="67dp"
-                android:layout_gravity="center_horizontal"
-                android:scaleType="fitCenter"
-                android:focusable="false"
-                android:tint="?android:attr/colorControlNormal"
-                android:src="@drawable/ic_history" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/settingslib_expressive_zero_state_background_size"
+                    android:layout_height="@dimen/settingslib_expressive_zero_state_background_size"
+                    android:src="@drawable/settingslib_expressive_zerostate_background"/>
+
+                <ImageView
+                    android:id="@android:id/icon"
+                    android:layout_width="@dimen/settingslib_expressive_space_large3"
+                    android:layout_height="@dimen/settingslib_expressive_space_large3"
+                    android:layout_gravity="center"
+                    android:focusable="false"
+                    android:tint="?android:attr/colorControlNormal"
+                    android:src="@drawable/ic_history"/>
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/history_off_title"
@@ -86,15 +98,26 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="164dp"
             android:orientation="vertical">
-            <ImageView
+            <FrameLayout
                 android:id="@+id/history_image_on"
-                android:layout_width="67dp"
-                android:layout_height="67dp"
-                android:layout_gravity="center_horizontal"
-                android:scaleType="fitCenter"
-                android:focusable="false"
-                android:tint="?android:attr/colorControlNormal"
-                android:src="@drawable/ic_history" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/settingslib_expressive_zero_state_background_size"
+                    android:layout_height="@dimen/settingslib_expressive_zero_state_background_size"
+                    android:src="@drawable/settingslib_expressive_zerostate_background"/>
+
+                <ImageView
+                    android:id="@android:id/icon"
+                    android:layout_width="@dimen/settingslib_expressive_space_large3"
+                    android:layout_height="@dimen/settingslib_expressive_space_large3"
+                    android:layout_gravity="center"
+                    android:focusable="false"
+                    android:tint="?android:attr/colorControlNormal"
+                    android:src="@drawable/ic_history"/>
+            </FrameLayout>
             <TextView
                 android:id="@+id/history_toggled_on_title"
                 android:layout_width="wrap_content"
@@ -139,13 +162,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
+                android:layout_marginEnd="?android:attr/listPreferredItemPaddingEnd"
                 android:layout_marginBottom="28dp">
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="@string/notification_history_snooze"
                     android:textColor="?android:attr/textColorPrimary"
-                    android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
                     android:textAppearance="@style/TextAppearance.HomepageCardTitle"
                     android:paddingBottom="16dp" />
 
@@ -162,6 +186,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
+                android:layout_marginEnd="?android:attr/listPreferredItemPaddingEnd"
                 android:layout_marginBottom="28dp">
 
                 <TextView
@@ -170,7 +196,6 @@
                     android:text="@string/notification_history_dismiss"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textAppearance="@style/TextAppearance.HomepageCardTitle"
-                    android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
                     android:paddingBottom="16dp" />
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/notification_list"
@@ -184,6 +209,8 @@
                 android:id="@+id/today_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
+                android:layout_marginEnd="?android:attr/listPreferredItemPaddingEnd"
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/today_header"
@@ -191,7 +218,6 @@
                     android:layout_width="wrap_content"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textAppearance="@style/TextAppearance.HomepageCardTitle"
-                    android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
                     android:paddingBottom="16dp" />
                 <LinearLayout
                     android:id="@+id/apps"

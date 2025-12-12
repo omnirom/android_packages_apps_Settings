@@ -45,14 +45,22 @@ import java.util.TreeSet;
  * Given a region, render a list of time zone {@class TimeZoneInfo} into a list view.
  */
 public class RegionZonePicker extends BaseTimeZoneInfoPicker {
-
-    public static final String EXTRA_REGION_ID =
+    /**
+     * The extra key for the region ID.
+     *
+     * <p>This extra is used to pass the region ID to the {@link RegionZonePicker} fragment.
+     */
+    /* package-private */ static final String EXTRA_REGION_ID =
             "com.android.settings.datetime.timezone.region_id";
 
     private @Nullable String mRegionName;
 
     public RegionZonePicker() {
-        super(R.string.date_time_set_timezone_title, R.string.search_settings, true, false);
+        super(
+                R.string.date_time_set_timezone_title,
+                R.string.date_time_search_time_zone,
+                true,
+                false);
     }
 
     @Override

@@ -30,7 +30,9 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.face.Face;
@@ -42,6 +44,7 @@ import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.preference.Preference;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.internal.widget.LockPatternUtils;
 import com.android.settings.R;
@@ -61,7 +64,6 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowApplication;
 
 import java.util.Collections;
 
@@ -97,8 +99,10 @@ public class FaceStatusPreferenceControllerTest {
         mLifecycle = new Lifecycle(mLifecycleOwner);
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
         when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_FACE)).thenReturn(true);
-        ShadowApplication.getInstance().setSystemService(Context.FACE_SERVICE, mFaceManager);
-        ShadowApplication.getInstance().setSystemService(Context.USER_SERVICE, mUm);
+        shadowOf((Application) ApplicationProvider.getApplicationContext())
+                .setSystemService(Context.FACE_SERVICE, mFaceManager);
+        shadowOf((Application) ApplicationProvider.getApplicationContext())
+                .setSystemService(Context.USER_SERVICE, mUm);
         mPreference = new Preference(mContext);
         mFeatureFactory = FakeFeatureFactory.setupForTest();
         when(mFeatureFactory.securityFeatureProvider.getLockPatternUtils(mContext))
@@ -184,6 +188,7 @@ public class FaceStatusPreferenceControllerTest {
         reset(admin);
 
         mController.updateStateInternal(null /* enforcedAdmin */);
-        verify(restrictedPreference, never()).setDisabledByAdmin(any());
+        verify(restrictedPreference, never())
+                .setDisabledByAdmin((RestrictedLockUtils.EnforcedAdmin) any());
     }
 }

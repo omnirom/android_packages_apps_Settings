@@ -65,8 +65,8 @@ public class ZenModeVoiceActivity extends VoiceSettingsActivity {
             if (audioManager != null) {
                 // Show the current Zen Mode setting.
                 audioManager.adjustStreamVolume(AudioManager.STREAM_NOTIFICATION,
-                         AudioManager.ADJUST_SAME,
-                         AudioManager.FLAG_SHOW_UI);
+                        AudioManager.ADJUST_SAME,
+                        AudioManager.FLAG_SHOW_UI);
             }
             notifySuccess(getChangeSummary(mode, minutes));
         } else {
@@ -82,7 +82,7 @@ public class ZenModeVoiceActivity extends VoiceSettingsActivity {
         } else {
             NotificationManager.from(this).setZenMode(mode, null, TAG);
         }
-     }
+    }
 
     /**
      * Produce a summary of the Zen mode change to be read aloud as TTS.

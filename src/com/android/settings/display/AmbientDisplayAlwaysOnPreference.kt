@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.android.settings.display
 
 import android.app.settings.SettingsEnums.ACTION_AMBIENT_DISPLAY_ALWAYS_ON
@@ -22,18 +21,14 @@ import android.hardware.display.AmbientDisplayConfiguration
 import android.os.SystemProperties
 import android.os.UserHandle
 import android.os.UserManager
-import android.provider.Settings.Secure.DOZE_ALWAYS_ON
 import com.android.settings.R
 import com.android.settings.contract.KEY_AMBIENT_DISPLAY_ALWAYS_ON
 import com.android.settings.display.AmbientDisplayAlwaysOnPreferenceController.isAodSuppressedByBedtime
+import com.android.settings.display.ambient.AmbientDisplayStorage
 import com.android.settings.metrics.PreferenceActionMetricsProvider
 import com.android.settings.restriction.PreferenceRestrictionMixin
-import com.android.settingslib.datastore.AbstractKeyedDataObservable
-import com.android.settingslib.datastore.HandlerExecutor
 import com.android.settingslib.datastore.KeyValueStore
-import com.android.settingslib.datastore.KeyedObserver
 import com.android.settingslib.datastore.SettingsSecureStore
-import com.android.settingslib.datastore.SettingsStore
 import com.android.settingslib.metadata.PreferenceAvailabilityProvider
 import com.android.settingslib.metadata.PreferenceSummaryProvider
 import com.android.settingslib.metadata.ReadWritePermit
@@ -41,6 +36,10 @@ import com.android.settingslib.metadata.SensitivityLevel
 import com.android.settingslib.metadata.SwitchPreference
 
 // LINT.IfChange
+/**
+ * Contains the SwitchPreference for use on the Lock screen page. It is being migrated to
+ * [AmbientDisplayAlwaysOnPreferenceScreen].
+ */
 class AmbientDisplayAlwaysOnPreference :
     SwitchPreference(KEY, R.string.doze_always_on_title, R.string.doze_always_on_summary),
     PreferenceActionMetricsProvider,
@@ -73,7 +72,7 @@ class AmbientDisplayAlwaysOnPreference :
             }
         )
 
-    override fun storage(context: Context): KeyValueStore = Storage(context)
+    override fun storage(context: Context): KeyValueStore = AmbientDisplayStorage(context)
 
     override fun getReadPermissions(context: Context) = SettingsSecureStore.getReadPermissions()
 
@@ -82,58 +81,16 @@ class AmbientDisplayAlwaysOnPreference :
     override fun getReadPermit(context: Context, callingPid: Int, callingUid: Int) =
         ReadWritePermit.ALLOW
 
-    override fun getWritePermit(
-        context: Context,
-        value: Boolean?,
-        callingPid: Int,
-        callingUid: Int,
-    ) = ReadWritePermit.ALLOW
+    override fun getWritePermit(context: Context, callingPid: Int, callingUid: Int) =
+        ReadWritePermit.ALLOW
 
     override val sensitivityLevel
         get() = SensitivityLevel.NO_SENSITIVITY
 
-    /**
-     * Datastore of the preference.
-     *
-     * The preference key and underlying storage key are the different, leverage
-     * [AbstractKeyedDataObservable] to redirect data change event.
-     */
-    @Suppress("UNCHECKED_CAST")
-    class Storage(
-        private val context: Context,
-        private val settingsStore: SettingsStore = SettingsSecureStore.get(context),
-    ) : AbstractKeyedDataObservable<String>(), KeyedObserver<String>, KeyValueStore {
-
-        override fun contains(key: String) = settingsStore.contains(DOZE_ALWAYS_ON)
-
-        override fun <T : Any> getDefaultValue(key: String, valueType: Class<T>) =
-            context.resources.getBoolean(com.android.internal.R.bool.config_dozeAlwaysOnEnabled)
-                as T
-
-        override fun <T : Any> getValue(key: String, valueType: Class<T>) =
-            settingsStore.getValue(DOZE_ALWAYS_ON, valueType) ?: getDefaultValue(key, valueType)
-
-        override fun <T : Any> setValue(key: String, valueType: Class<T>, value: T?) =
-            settingsStore.setValue(DOZE_ALWAYS_ON, valueType, value)
-
-        override fun onFirstObserverAdded() {
-            // observe the underlying storage key
-            settingsStore.addObserver(DOZE_ALWAYS_ON, this, HandlerExecutor.main)
-        }
-
-        override fun onKeyChanged(key: String, reason: Int) {
-            // forward data change to preference hierarchy key
-            notifyChange(KEY, reason)
-        }
-
-        override fun onLastObserverRemoved() {
-            settingsStore.removeObserver(DOZE_ALWAYS_ON, this)
-        }
-    }
-
     companion object {
         const val KEY = KEY_AMBIENT_DISPLAY_ALWAYS_ON
-        private const val PROP_AWARE_AVAILABLE = "ro.vendor.aware_available"
+        const val PROP_AWARE_AVAILABLE = "ro.vendor.aware_available"
     }
 }
+
 // LINT.ThenChange(AmbientDisplayAlwaysOnPreferenceController.java)

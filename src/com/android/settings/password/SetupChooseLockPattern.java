@@ -32,8 +32,11 @@ import androidx.fragment.app.Fragment;
 
 import com.android.settings.R;
 import com.android.settings.SetupRedactionInterstitial;
+import com.android.settingslib.widget.theme.R.style;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.setupcompat.util.WizardManagerHelper;
+import com.google.android.setupdesign.util.ThemeHelper;
 
 /**
  * Setup Wizard's version of ChooseLockPattern screen. It inherits the logic and basic structure
@@ -46,6 +49,8 @@ public class SetupChooseLockPattern extends ChooseLockPattern {
 
     public static Intent modifyIntentForSetup(Context context, Intent chooseLockPatternIntent) {
         chooseLockPatternIntent.setClass(context, SetupChooseLockPattern.class);
+        chooseLockPatternIntent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_USE_EXPRESSIVE_STYLE,
+                ThemeHelper.shouldApplyGlifExpressiveStyle(context));
         return chooseLockPatternIntent;
     }
 
@@ -81,11 +86,19 @@ public class SetupChooseLockPattern extends ChooseLockPattern {
         public View onCreateView(
                 LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View view = super.onCreateView(inflater, container, savedInstanceState);
+            final boolean isExpressiveStyle = ThemeHelper.shouldApplyGlifExpressiveStyle(
+                    getContext());
             if (!getResources().getBoolean(R.bool.config_lock_pattern_minimal_ui)) {
-                mOptionsButton = new Button(new ContextThemeWrapper(getActivity(),
-                        com.google.android.setupdesign.R.style.SudGlifButton_Tertiary));
+                if (isExpressiveStyle) {
+                    mOptionsButton = new MaterialButton(new ContextThemeWrapper(getActivity(),
+                            style.SettingslibTextButtonStyle_Expressive));
+                } else {
+                    mOptionsButton = new Button(new ContextThemeWrapper(getActivity(),
+                            com.google.android.setupdesign.R.style.SudGlifButton_Tertiary));
+                }
                 mOptionsButton.setId(R.id.screen_lock_options);
-                PasswordUtils.setupScreenLockOptionsButton(getActivity(), view, mOptionsButton);
+                PasswordUtils.setupScreenLockOptionsButton(getActivity(), view, mOptionsButton,
+                        isExpressiveStyle);
                 mOptionsButton.setOnClickListener((btn) ->
                         ChooseLockTypeDialogFragment.newInstance(mUserId)
                                 .show(getChildFragmentManager(), TAG_SKIP_SCREEN_LOCK_DIALOG));
@@ -107,13 +120,17 @@ public class SetupChooseLockPattern extends ChooseLockPattern {
                         .getBooleanExtra(ChooseLockSettingsHelper.EXTRA_KEY_FOR_FACE, false);
                 final boolean forBiometrics = intent
                         .getBooleanExtra(ChooseLockSettingsHelper.EXTRA_KEY_FOR_BIOMETRICS, false);
+                final boolean isExpressiveStyle = intent
+                        .getBooleanExtra(ChooseLockSettingsHelper.EXTRA_KEY_USE_EXPRESSIVE_STYLE,
+                                false);
                 final SetupSkipDialog dialog = SetupSkipDialog.newInstance(
                         CREDENTIAL_TYPE_PATTERN,
                         frpSupported,
                         forFingerprint,
                         forFace,
                         forBiometrics,
-                        WizardManagerHelper.isAnySetupWizard(intent));
+                        WizardManagerHelper.isAnySetupWizard(intent),
+                        isExpressiveStyle);
                 dialog.show(getFragmentManager());
                 return;
             }

@@ -25,6 +25,7 @@ import com.android.settings.core.BasePreferenceController.AVAILABLE
 import com.android.settings.core.BasePreferenceController.CONDITIONALLY_UNAVAILABLE
 import com.android.settings.core.BasePreferenceController.UNSUPPORTED_ON_DEVICE
 import com.android.settings.flags.Flags
+import com.android.settings.testutils.FakeFeatureFactory
 import com.google.common.truth.Truth.assertThat
 import com.google.common.util.concurrent.MoreExecutors
 import org.junit.Before
@@ -33,6 +34,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
+import org.mockito.kotlin.whenever
 import java.util.concurrent.Executor
 import org.junit.Ignore
 
@@ -43,6 +45,8 @@ class ThreadNetworkFragmentControllerTest {
     val mSetFlagsRule = SetFlagsRule()
     private lateinit var context: Context
     private lateinit var executor: Executor
+    private lateinit var fakeFeatureFactory: FakeFeatureFactory
+    private lateinit var mockFeatureProvider: ThreadNetworkFeatureProvider
     private lateinit var controller: ThreadNetworkFragmentController
     private lateinit var fakeThreadNetworkController: FakeThreadNetworkController
 
@@ -51,6 +55,11 @@ class ThreadNetworkFragmentControllerTest {
         mSetFlagsRule.enableFlags(Flags.FLAG_THREAD_SETTINGS_ENABLED)
         context = spy(ApplicationProvider.getApplicationContext<Context>())
         executor = MoreExecutors.directExecutor()
+
+        fakeFeatureFactory = FakeFeatureFactory.setupForTest()
+        mockFeatureProvider = fakeFeatureFactory.threadNetworkFeatureProvider
+        whenever(mockFeatureProvider.isThreadVisible()).thenReturn(true)
+
         fakeThreadNetworkController = FakeThreadNetworkController()
         controller = newControllerWithThreadFeatureSupported(true)
     }
@@ -64,6 +73,12 @@ class ThreadNetworkFragmentControllerTest {
             executor,
             if (present) fakeThreadNetworkController else null
         )
+    }
+
+    @Test
+    fun availabilityStatus_threadSetInvisible_returnsConditionallyUnavailable() {
+        whenever(mockFeatureProvider.isThreadVisible()).thenReturn(false)
+        assertThat(controller.availabilityStatus).isEqualTo(CONDITIONALLY_UNAVAILABLE)
     }
 
     @Test

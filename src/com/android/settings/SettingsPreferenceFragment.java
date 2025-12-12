@@ -57,6 +57,7 @@ import com.android.settings.widget.LoadingViewController;
 import com.android.settingslib.CustomDialogPreferenceCompat;
 import com.android.settingslib.CustomEditTextPreferenceCompat;
 import com.android.settingslib.core.instrumentation.Instrumentable;
+import com.android.settingslib.metadata.PreferenceSearchIndexablesProvider;
 import com.android.settingslib.preference.PreferenceScreenBindingHelper;
 import com.android.settingslib.preference.PreferenceScreenCreator;
 import com.android.settingslib.search.Indexable;
@@ -156,8 +157,7 @@ public abstract class SettingsPreferenceFragment extends InstrumentedPreferenceF
         if (isCatalystEnabled()) {
             PreferenceScreenBindingHelper helper = getPreferenceScreenBindingHelper();
             if (helper != null) {
-                mUserRestrictionBindingHelper = new UserRestrictionBindingHelper(requireContext(),
-                        helper);
+                mUserRestrictionBindingHelper = new UserRestrictionBindingHelper(this, helper);
             }
         }
     }
@@ -409,6 +409,7 @@ public abstract class SettingsPreferenceFragment extends InstrumentedPreferenceF
             Intent intent = activity != null ? activity.getIntent() : null;
             key = intent != null ? intent.getStringExtra(EXTRA_FRAGMENT_ARG_KEY) : null;
         }
+        key = PreferenceSearchIndexablesProvider.Companion.getHighlightKey(key);
         mAdapter = new HighlightablePreferenceGroupAdapter(preferenceScreen, key,
                 mPreferenceHighlighted);
         return mAdapter;
@@ -475,7 +476,9 @@ public abstract class SettingsPreferenceFragment extends InstrumentedPreferenceF
      * users won't misunderstand its meaning.
      */
     public final void finishFragment() {
-        getActivity().onBackPressed();
+        if (getActivity() != null) {
+            getActivity().onBackPressed();
+        }
     }
 
     // Some helpers for functions used by the settings fragments when they were activities

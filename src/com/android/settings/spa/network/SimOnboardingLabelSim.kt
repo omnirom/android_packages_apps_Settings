@@ -40,7 +40,8 @@ import com.android.settingslib.spa.widget.editor.SettingsOutlinedTextField
 import com.android.settingslib.spa.widget.preference.Preference
 import com.android.settingslib.spa.widget.preference.PreferenceModel
 import com.android.settingslib.spa.widget.scaffold.BottomAppBarButton
-import com.android.settingslib.spa.widget.scaffold.SuwScaffold
+import com.android.settingslib.spa.widget.scaffold.GlifScaffold
+import com.android.settingslib.spa.widget.ui.Category
 
 /**
  * the sim onboarding label compose
@@ -51,9 +52,10 @@ fun SimOnboardingLabelSimImpl(
     cancelAction: () -> Unit,
     onboardingService: SimOnboardingService
 ) {
-    SuwScaffold(
+    GlifScaffold(
         imageVector = Icons.Outlined.SignalCellularAlt,
         title = stringResource(R.string.sim_onboarding_label_sim_title),
+        description = stringResource(R.string.sim_onboarding_label_sim_msg),
         actionButton = BottomAppBarButton(
             text = stringResource(R.string.sim_onboarding_next),
             onClick = nextAction
@@ -63,14 +65,12 @@ fun SimOnboardingLabelSimImpl(
             onClick = cancelAction
         ),
     ) {
-        LabelSimBody(onboardingService)
+        Category { LabelSimBody(onboardingService) }
     }
 }
 
 @Composable
 private fun LabelSimBody(onboardingService: SimOnboardingService) {
-    SimOnboardingMessage(stringResource(R.string.sim_onboarding_label_sim_msg))
-
     for (subInfo in onboardingService.getSelectableSubscriptionInfoList()) {
         LabelSimPreference(onboardingService, subInfo)
     }

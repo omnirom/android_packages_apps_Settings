@@ -26,10 +26,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.preference.Preference;
 
 import com.android.settings.R;
+import com.android.settings.Utils;
 import com.android.settingslib.HelpUtils;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
-
-import kotlin.Unit;
 
 /** Tip to show incompatible charger state */
 public final class IncompatibleChargerTip extends BatteryTip {
@@ -73,18 +72,20 @@ public final class IncompatibleChargerTip extends BatteryTip {
     public void updatePreference(Preference preference) {
         super.updatePreference(preference);
         final Context context = preference.getContext();
-        final var cardPreference = castToTipCardPreferenceSafely(preference);
+        final var cardPreference = castToBannerMassagePreferenceSafely(preference);
         if (cardPreference == null) {
             Log.e(TAG, "cast Preference to CardPreference failed");
             return;
         }
 
         cardPreference.setSelectable(false);
-        cardPreference.enableDismiss(false);
-        cardPreference.setIconResId(getIconId());
-        cardPreference.setPrimaryButtonText(context.getString(R.string.learn_more));
-        cardPreference.setPrimaryButtonAction(
-                () -> {
+        cardPreference.setNegativeButtonText(
+                Utils.createAccessibleSequence(
+                        context.getString(R.string.learn_more),
+                        context.getString(
+                                R.string.battery_tip_incompatible_charging_content_description)));
+        cardPreference.setNegativeButtonOnClickListener(
+                unused -> {
                     var helpIntent =
                             HelpUtils.getHelpIntent(
                                     context,
@@ -95,13 +96,8 @@ public final class IncompatibleChargerTip extends BatteryTip {
                             helpIntent,
                             /* requestCode= */ 0,
                             /* options= */ null);
-
-                    return Unit.INSTANCE;
                 });
-        cardPreference.setPrimaryButtonVisibility(true);
-        cardPreference.setPrimaryButtonContentDescription(
-                context.getString(R.string.battery_tip_incompatible_charging_content_description));
-        cardPreference.buildContent();
+        cardPreference.setNegativeButtonVisible(true);
     }
 
     public static final Creator CREATOR =

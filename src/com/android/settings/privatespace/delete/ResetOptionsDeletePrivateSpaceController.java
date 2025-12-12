@@ -38,6 +38,7 @@ import androidx.preference.Preference;
 
 import com.android.internal.annotations.Initializer;
 import com.android.internal.app.SetScreenLockDialogActivity;
+import com.android.internal.app.SetScreenLockDialogContract;
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
@@ -63,9 +64,7 @@ public class ResetOptionsDeletePrivateSpaceController extends BasePreferenceCont
 
     @Override
     public int getAvailabilityStatus() {
-        return android.multiuser.Flags.enablePrivateSpaceFeatures()
-                        && android.multiuser.Flags.deletePrivateSpaceFromReset()
-                        && isPrivateSpaceEntryPointEnabled()
+        return isPrivateSpaceEntryPointEnabled()
                 ? AVAILABLE
                 : UNSUPPORTED_ON_DEVICE;
     }
@@ -164,8 +163,16 @@ public class ResetOptionsDeletePrivateSpaceController extends BasePreferenceCont
     }
 
     private void promptToSetDeviceLock() {
-        Intent setScreenLockPromptIntent = SetScreenLockDialogActivity.createBaseIntent(
-                LAUNCH_REASON_RESET_PRIVATE_SPACE_SETTINGS_ACCESS);
+        Intent setScreenLockPromptIntent;
+        if (android.multiuser.Flags.moveSetScreenLockDialogToSettingsApp()) {
+            setScreenLockPromptIntent =
+                    SetScreenLockDialogContract
+                            .createDialogIntent(LAUNCH_REASON_RESET_PRIVATE_SPACE_SETTINGS_ACCESS);
+        } else {
+            setScreenLockPromptIntent =
+                    SetScreenLockDialogActivity
+                            .createBaseIntent(LAUNCH_REASON_RESET_PRIVATE_SPACE_SETTINGS_ACCESS);
+        }
         mContext.startActivity(setScreenLockPromptIntent);
     }
 }

@@ -131,8 +131,10 @@ public abstract class AppInfoBase extends SettingsPreferenceFragment
     protected String retrieveAppEntry() {
         final Bundle args = getArguments();
         mPackageName = (args != null) ? args.getString(ARG_PACKAGE_NAME) : null;
-        Intent intent = (args == null) ?
-                getIntent() : (Intent) args.getParcelable("intent");
+        Intent intent = args != null ? args.getParcelable("intent", Intent.class) : null;
+        if (intent == null) {
+            intent = getIntent();
+        }
         if (mPackageName == null) {
             if (intent != null && intent.getData() != null) {
                 mPackageName = intent.getData().getSchemeSpecificPart();

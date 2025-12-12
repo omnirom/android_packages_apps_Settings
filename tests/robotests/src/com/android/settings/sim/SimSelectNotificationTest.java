@@ -144,6 +144,8 @@ public class SimSelectNotificationTest {
 
         when(mTelephonyManager.createForSubscriptionId(anyInt())).thenReturn(mTelephonyManager);
         when(mTelephonyManager.isDataEnabledForApn(TYPE_MMS)).thenReturn(false);
+        when(mTelephonyManager.isDataCapable()).thenReturn(true);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(true);
         SubscriptionUtil.setAvailableSubscriptionsForTesting(Arrays.asList(mSubInfo));
         SubscriptionUtil.setActiveSubscriptionsForTesting(Arrays.asList(mSubInfo));
         when(mSubscriptionManager.isActiveSubscriptionId(mSubId)).thenReturn(true);

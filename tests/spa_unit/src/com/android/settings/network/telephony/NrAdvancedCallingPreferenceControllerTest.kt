@@ -17,6 +17,7 @@
 package com.android.settings.network.telephony
 
 import android.content.Context
+import android.provider.Settings
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsOff
@@ -28,8 +29,10 @@ import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.settings.R
+import com.android.settingslib.spaprivileged.settingsprovider.settingsGlobalBoolean
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -59,6 +62,12 @@ class NrAdvancedCallingPreferenceControllerTest {
                 callStateRepository = callStateRepository,
             )
             .apply { init(SUB_ID) }
+    var isAirplaneModeOn by context.settingsGlobalBoolean(Settings.Global.AIRPLANE_MODE_ON)
+
+    @Before
+    fun setup() {
+        isAirplaneModeOn = false
+    }
 
     @Test
     fun isChecked_voNrEnabled_on() {
@@ -91,6 +100,18 @@ class NrAdvancedCallingPreferenceControllerTest {
         composeTestRule
             .onNodeWithText(context.getString(R.string.nr_advanced_calling_title))
             .assertIsEnabled()
+    }
+
+    @Test
+    fun isChangeable_isAirplaneModeOn_notChangeable() {
+        callStateRepository.stub { on { isInCallFlow() } doReturn flowOf(false) }
+        isAirplaneModeOn = true
+
+        composeTestRule.setContent { controller.Content() }
+
+        composeTestRule
+            .onNodeWithText(context.getString(R.string.nr_advanced_calling_title))
+            .assertIsNotEnabled()
     }
 
     @Test

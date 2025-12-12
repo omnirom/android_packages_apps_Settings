@@ -29,6 +29,7 @@ import androidx.preference.PreferenceViewHolder;
 
 import com.android.settings.R;
 import com.android.settingslib.RestrictedPreference;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 import com.google.common.base.Equivalence;
 
@@ -58,7 +59,11 @@ public class CircularIconsPreference extends RestrictedPreference {
     }
 
     private void init() {
-        setLayoutResource(R.layout.preference_circular_icons);
+        if (SettingsThemeHelper.isExpressiveTheme(getContext())) {
+            setLayoutResource(R.layout.expressive_preference_circular_icons);
+        } else {
+            setLayoutResource(R.layout.preference_circular_icons);
+        }
     }
 
     <T> void setIcons(CircularIconSet<T> iconSet) {

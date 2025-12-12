@@ -25,19 +25,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.settings.R;
+import com.android.settings.accessibility.detail.a11yservice.A11yServicePreferenceFragment;
+import com.android.settings.accessibility.detail.a11yservice.ui.A11yServiceShortcutPreference;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 import com.google.android.setupcompat.template.FooterBarMixin;
 import com.google.android.setupdesign.GlifPreferenceLayout;
-import com.google.android.setupdesign.util.ThemeHelper;
 
 public class ToggleSelectToSpeakPreferenceFragmentForSetupWizard
-        extends InvisibleToggleAccessibilityServicePreferenceFragment {
+        extends A11yServicePreferenceFragment {
 
     private boolean mToggleSwitchWasInitiallyChecked;
+    private final String mMainActionPrefKey = A11yServiceShortcutPreference.KEY;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -59,15 +64,14 @@ public class ToggleSelectToSpeakPreferenceFragmentForSetupWizard
                     });
         }
 
-        mToggleSwitchWasInitiallyChecked = mToggleServiceSwitchPreference.isChecked();
-        if (mTopIntroPreference != null) {
-            mTopIntroPreference.setVisible(false);
-        }
+        ShortcutPreference preference = findPreference(mMainActionPrefKey);
+        mToggleSwitchWasInitiallyChecked = preference.isChecked();
     }
 
+    @NonNull
     @Override
-    public RecyclerView onCreateRecyclerView(LayoutInflater inflater, ViewGroup parent,
-            Bundle savedInstanceState) {
+    public RecyclerView onCreateRecyclerView(@NonNull LayoutInflater inflater,
+            @NonNull ViewGroup parent, @Nullable Bundle savedInstanceState) {
         if (parent instanceof GlifPreferenceLayout) {
             final GlifPreferenceLayout layout = (GlifPreferenceLayout) parent;
             return AccessibilityFragmentUtils.addCollectionInfoToAccessibilityDelegate(
@@ -78,7 +82,7 @@ public class ToggleSelectToSpeakPreferenceFragmentForSetupWizard
 
     @Override
     protected RecyclerView.Adapter onCreateAdapter(PreferenceScreen preferenceScreen) {
-        if (ThemeHelper.shouldApplyGlifExpressiveStyle(getContext())) {
+        if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
             return new PreferenceAdapterInSuw(preferenceScreen);
         }
         return super.onCreateAdapter(preferenceScreen);
@@ -90,18 +94,13 @@ public class ToggleSelectToSpeakPreferenceFragmentForSetupWizard
     }
 
     @Override
-    public int getFeedbackCategory() {
-        // The feedback options should not be displayed on the setup wizard page.
-        return SettingsEnums.PAGE_UNKNOWN;
-    }
-
-    @Override
     public void onStop() {
         // Log the final choice in value if it's different from the previous value.
-        if (mToggleServiceSwitchPreference.isChecked() != mToggleSwitchWasInitiallyChecked) {
+        ShortcutPreference preference = findPreference(mMainActionPrefKey);
+        if (preference.isChecked() != mToggleSwitchWasInitiallyChecked) {
             mMetricsFeatureProvider.action(getContext(),
                     SettingsEnums.SUW_ACCESSIBILITY_TOGGLE_SELECT_TO_SPEAK,
-                    mToggleServiceSwitchPreference.isChecked());
+                    preference.isChecked());
         }
 
         super.onStop();

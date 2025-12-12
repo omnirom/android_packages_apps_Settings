@@ -30,6 +30,7 @@ import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnStart;
 import com.android.settingslib.core.lifecycle.events.OnStop;
 
+// LINT.IfChange
 public class WifiDisplayPreferenceController extends BasePreferenceController implements
         LifecycleObserver, OnStart, OnStop {
 
@@ -109,3 +110,4 @@ public class WifiDisplayPreferenceController extends BasePreferenceController im
         mRouter.removeCallback(mRouterCallback);
     }
 }
+// LINT.ThenChange(WifiDisplayScreen.kt)

@@ -18,12 +18,10 @@ package com.android.settings.display.darkmode;
 
 import static android.app.UiModeManager.MODE_ATTENTION_THEME_OVERLAY_NIGHT;
 import static android.app.UiModeManager.MODE_NIGHT_AUTO;
-import static android.app.UiModeManager.MODE_NIGHT_CUSTOM_TYPE_BEDTIME;
 import static android.app.UiModeManager.MODE_NIGHT_CUSTOM_TYPE_SCHEDULE;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import android.app.Flags;
 import android.app.UiModeManager;
 import android.content.Context;
 
@@ -46,30 +44,23 @@ class AutoDarkTheme {
                     : R.string.dark_ui_summary_off_auto_mode_auto);
         }
 
-        if (Flags.modesUi()) {
-            if (active && uiModeManager.getAttentionModeThemeOverlay()
-                    == MODE_ATTENTION_THEME_OVERLAY_NIGHT) {
-                List<String> modes = getActiveModesThatChangeDarkTheme(context);
-                if (!modes.isEmpty()) {
-                    return context.getString(R.string.dark_ui_summary_on_auto_mode_modes,
-                            modes.get(0));
-                }
-            } else if (!active) {
-                List<String> modes = getModesThatChangeDarkTheme(context);
-                if (!modes.isEmpty()) {
-                    return context.getString(R.string.dark_ui_summary_off_auto_mode_modes,
-                            modes.get(0));
-                }
+        if (active && uiModeManager.getAttentionModeThemeOverlay()
+                == MODE_ATTENTION_THEME_OVERLAY_NIGHT) {
+            List<String> modes = getActiveModesThatChangeDarkTheme(context);
+            if (!modes.isEmpty()) {
+                return context.getString(R.string.dark_ui_summary_on_auto_mode_modes,
+                        modes.get(0));
+            }
+        } else if (!active) {
+            List<String> modes = getModesThatChangeDarkTheme(context);
+            if (!modes.isEmpty()) {
+                return context.getString(R.string.dark_ui_summary_off_auto_mode_modes,
+                        modes.get(0));
             }
         }
 
         if (mode == UiModeManager.MODE_NIGHT_CUSTOM) {
             int modeCustomType = uiModeManager.getNightModeCustomType();
-            if (!Flags.modesUi() && modeCustomType == MODE_NIGHT_CUSTOM_TYPE_BEDTIME) {
-                return context.getString(active
-                        ? R.string.dark_ui_summary_on_auto_mode_custom_bedtime
-                        : R.string.dark_ui_summary_off_auto_mode_custom_bedtime);
-            }
             if (modeCustomType == MODE_NIGHT_CUSTOM_TYPE_SCHEDULE) {
                 final LocalTime time = active
                         ? uiModeManager.getCustomNightModeEnd()

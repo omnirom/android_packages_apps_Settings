@@ -51,10 +51,6 @@ public class PrivateSpaceEducation extends InstrumentedFragment {
             LayoutInflater inflater,
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        if (!android.os.Flags.allowPrivateProfile()
-                || !android.multiuser.Flags.enablePrivateSpaceFeatures()) {
-            return null;
-        }
         GlifLayout rootView =
                 (GlifLayout)
                         inflater.inflate(R.layout.private_space_education_screen, container, false);

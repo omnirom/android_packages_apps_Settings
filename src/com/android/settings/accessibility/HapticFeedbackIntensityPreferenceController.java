@@ -25,6 +25,7 @@ import android.os.Vibrator;
 import android.provider.Settings;
 
 /** Preference controller for haptic feedback intensity */
+// LINT.IfChange
 public class HapticFeedbackIntensityPreferenceController
         extends VibrationIntensityPreferenceController {
 
@@ -85,3 +86,4 @@ public class HapticFeedbackIntensityPreferenceController
         return AVAILABLE;
     }
 }
+// LINT.ThenChange(TouchVibrationIntensitySliderPreference.kt)

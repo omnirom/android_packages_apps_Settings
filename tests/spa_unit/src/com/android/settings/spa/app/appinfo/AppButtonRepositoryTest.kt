@@ -21,10 +21,8 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.pm.ApplicationInfo
-import android.content.pm.Flags
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
-import android.platform.test.annotations.RequiresFlagsEnabled
 import androidx.core.os.bundleOf
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -130,7 +128,6 @@ class AppButtonRepositoryTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_IMPROVE_HOME_APP_BEHAVIOR)
     fun uninstallDisallowedDueToHomeApp_isNotSystemAndIsCurrentHomeAndHasOnlyOneHomeApp() {
         val app = ApplicationInfo().apply {
             packageName = PACKAGE_NAME
@@ -147,7 +144,6 @@ class AppButtonRepositoryTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_IMPROVE_HOME_APP_BEHAVIOR)
     fun uninstallDisallowedDueToHomeApp_isNotSystemAndIsCurrentHomeAndHasOtherHomeApps() {
         val app = ApplicationInfo().apply {
             packageName = PACKAGE_NAME
@@ -164,7 +160,6 @@ class AppButtonRepositoryTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_IMPROVE_HOME_APP_BEHAVIOR)
     fun uninstallDisallowedDueToHomeApp_isSystemAndIsCurrentHomeAndHasOtherHomeApps() {
         val app = ApplicationInfo().apply {
             packageName = PACKAGE_NAME

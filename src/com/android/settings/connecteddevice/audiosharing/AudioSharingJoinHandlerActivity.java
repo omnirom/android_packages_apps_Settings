@@ -17,12 +17,14 @@
 package com.android.settings.connecteddevice.audiosharing;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.android.settings.R;
 import com.android.settings.SettingsActivity;
 import com.android.settingslib.bluetooth.BluetoothUtils;
-import com.android.settingslib.flags.Flags;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 public class AudioSharingJoinHandlerActivity extends SettingsActivity {
     private static final String TAG = "AudioSharingJoinHandlerActivity";
@@ -30,8 +32,7 @@ public class AudioSharingJoinHandlerActivity extends SettingsActivity {
     @Override
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);
-        if (!Flags.promoteAudioSharingForSecondAutoConnectedLeaDevice()
-                || !BluetoothUtils.isAudioSharingUIAvailable(this)) {
+        if (!BluetoothUtils.isAudioSharingUIAvailable(this)) {
             finish();
         }
     }
@@ -39,8 +40,7 @@ public class AudioSharingJoinHandlerActivity extends SettingsActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (!Flags.promoteAudioSharingForSecondAutoConnectedLeaDevice()
-                || !BluetoothUtils.isAudioSharingUIAvailable(this)) {
+        if (!BluetoothUtils.isAudioSharingUIAvailable(this)) {
             finish();
         }
         if (intent != null) {
@@ -51,6 +51,15 @@ public class AudioSharingJoinHandlerActivity extends SettingsActivity {
                             frag -> ((AudioSharingJoinHandlerDashboardFragment) frag)
                                     .handleDeviceConnectedFromIntent(intent));
         }
+    }
+
+    @Override
+    public Resources.Theme getTheme() {
+        var theme = super.getTheme();
+        theme.applyStyle(
+                SettingsThemeHelper.isExpressiveTheme(this)
+                        ? R.style.Transparent_Expressive : R.style.Transparent, true);
+        return theme;
     }
 
     @Override

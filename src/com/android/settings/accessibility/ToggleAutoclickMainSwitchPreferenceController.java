@@ -16,11 +16,14 @@
 
 package com.android.settings.accessibility;
 
+import static android.provider.Settings.Secure.NAVIGATION_MODE;
+
 import static com.android.settings.accessibility.AccessibilityUtil.State.OFF;
 import static com.android.settings.accessibility.AccessibilityUtil.State.ON;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Handler;
@@ -30,6 +33,8 @@ import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.preference.Preference;
@@ -47,6 +52,7 @@ public class ToggleAutoclickMainSwitchPreferenceController
             Settings.Secure.getUriFor(Settings.Secure.ACCESSIBILITY_AUTOCLICK_ENABLED);
     private final ContentResolver mContentResolver;
     private @Nullable Preference mPreference;
+    private @Nullable FragmentManager mFragmentManager;
 
     @VisibleForTesting
     final ContentObserver mSettingsObserver =
@@ -64,6 +70,10 @@ public class ToggleAutoclickMainSwitchPreferenceController
             @NonNull Context context, @NonNull String preferenceKey) {
         super(context, preferenceKey);
         mContentResolver = context.getContentResolver();
+    }
+
+    public void setFragment(@NonNull Fragment fragment) {
+        mFragmentManager = fragment.getChildFragmentManager();
     }
 
     @Override
@@ -89,6 +99,11 @@ public class ToggleAutoclickMainSwitchPreferenceController
                 Settings.Secure.ACCESSIBILITY_AUTOCLICK_ENABLED,
                 isChecked ? ON : OFF);
 
+        // Show navigation suggestion dialog when enabling.
+        if (isChecked && isGestureNavigationEnabled() && !isLaptopDevice()) {
+            showNavigationSuggestion();
+        }
+
         return true;
     }
 
@@ -108,5 +123,39 @@ public class ToggleAutoclickMainSwitchPreferenceController
     @Override
     public int getSliceHighlightMenuRes() {
         return R.string.menu_key_system;
+    }
+
+    /**
+     * Shows navigation suggestion dialog when autoclick is enabled.
+     */
+    private void showNavigationSuggestion() {
+        if (mFragmentManager == null) {
+            return;
+        }
+
+        // Show the navigation suggestion dialog.
+        AutoclickNavigationSuggestionDialogFragment.newInstance()
+                .show(mFragmentManager,
+                        AutoclickNavigationSuggestionDialogFragment.class.getName());
+    }
+
+    /*
+     * Navigation bar modes:
+     *  0 - 3-button navigation
+     *  1 - 2-button navigation (deprecated on newer Android versions)
+     *  2 - Gesture navigation (no visible buttons)
+     *
+     * Returns true if the current navigation mode is gesture-based.
+     */
+    private boolean isGestureNavigationEnabled() {
+        int navigationMode = Settings.Secure.getInt(mContentResolver, NAVIGATION_MODE, -1);
+        return navigationMode == 2;
+    }
+
+    /**
+     * Checks if the current device is a laptop device.
+     */
+    private boolean isLaptopDevice() {
+        return mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_PC);
     }
 }

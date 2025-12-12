@@ -27,6 +27,7 @@ import com.android.settingslib.SliceBroadcastRelay;
 /**
  * Receives broadcasts to notify that Settings Slices are potentially stale.
  */
+@Deprecated(forRemoval = true)
 public class SliceRelayReceiver extends BroadcastReceiver {
 
     @Override

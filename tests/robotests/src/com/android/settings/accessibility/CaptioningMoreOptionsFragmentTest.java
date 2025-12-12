@@ -20,8 +20,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.Settings;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -30,7 +28,6 @@ import com.android.settings.R;
 import com.android.settings.testutils.XmlTestUtils;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -44,9 +41,6 @@ import java.util.stream.Collectors;
 public class CaptioningMoreOptionsFragmentTest {
     // Language/locale preference key, from captioning_more_options.xml
     private static final String CAPTIONING_LOCALE_KEY = "captioning_locale";
-
-    @Rule
-    public final SetFlagsRule mSetFlagRule = new SetFlagsRule();
 
     private final Context mContext = ApplicationProvider.getApplicationContext();
     private CaptioningMoreOptionsFragment mFragment;
@@ -85,7 +79,6 @@ public class CaptioningMoreOptionsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
     public void getNonIndexableKeys_captioningEnabled_localeIsSearchable() {
         setCaptioningEnabled(true);
 
@@ -97,7 +90,6 @@ public class CaptioningMoreOptionsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
     public void getNonIndexableKeys_captioningDisabled_localeIsNotSearchable() {
         setCaptioningEnabled(false);
 

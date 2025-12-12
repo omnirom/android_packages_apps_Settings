@@ -16,7 +16,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:settings="http://schemas.android.com/apk/res-auto"
-                  android:key="location_services"
+                  android:key="location_services_screen"
                   android:title="@string/location_services_preference_title"
                   settings:controller="com.android.settings.location.LocationInjectedServicesPreferenceController">
 

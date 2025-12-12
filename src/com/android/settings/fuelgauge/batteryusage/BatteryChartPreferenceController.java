@@ -236,6 +236,10 @@ public class BatteryChartPreferenceController extends AbstractPreferenceControll
     }
 
     void onHighlightSlotIndexUpdate(int dailyHighlightSlotIndex, int hourlyHighlightSlotIndex) {
+        if (dailyHighlightSlotIndex == mDailyHighlightSlotIndex
+                && hourlyHighlightSlotIndex == mHourlyHighlightSlotIndex) {
+            return;
+        }
         mDailyHighlightSlotIndex = dailyHighlightSlotIndex;
         mHourlyHighlightSlotIndex = hourlyHighlightSlotIndex;
         refreshUi();

@@ -22,6 +22,8 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 
+import com.android.settingslib.search.SearchIndexableRaw;
+
 /**
  * Feature provider for support tab.
  */
@@ -41,5 +43,14 @@ public interface SupportFeatureProvider {
      * @param pref The support preference.
      */
     default void applyOverrides(@NonNull Context context, @NonNull Preference pref) {
+    }
+
+    /**
+     * Applies overrides to the support search indexable, if needed.
+     *
+     * @param context support dashboard activity context.
+     * @param data The support search indexable.
+     */
+    default void applyOverrides(@NonNull Context context, @NonNull SearchIndexableRaw data) {
     }
 }

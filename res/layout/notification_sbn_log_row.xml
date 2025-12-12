@@ -16,15 +16,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:minHeight="48dp"
-              android:orientation="vertical"
-              android:background="?android:attr/selectableItemBackground">
+              android:orientation="horizontal"
+              android:clipToOutline="true"
+              android:background="@drawable/notification_history_app_row"
+              android:foreground="?android:attr/selectableItemBackground">
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="centerInside"
+        android:layout_margin="16dp"
+        android:contentDescription="@null"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
-        android:layout_marginEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:paddingStart="16dp"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
@@ -35,18 +40,7 @@
             android:layout_height="wrap_content"
             android:minHeight="@*android:dimen/status_bar_icon_size"
             android:gravity="center_vertical"
-            android:layout_marginBottom="11dp">
-
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_height="24dp"
-                android:layout_width="24dp"
-                android:padding="4dp"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="14dp"
-                android:contentDescription="@null"
-                android:scaleType="centerInside" />
-
+            android:layout_marginBottom="6dp">
             <TextView
                 android:id="@+id/pkgname"
                 android:layout_weight="1"
@@ -97,14 +91,6 @@
                 />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="38dp"
-            android:orientation="vertical"
-            android:layout_marginBottom="6dp"
-            >
-
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
@@ -122,13 +108,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
                 android:ellipsize="end"
-                android:paddingTop="4dp"
+                android:layout_marginTop="8dp"
                 android:maxLines="7"
                 android:textColor="?android:attr/textColorSecondary"
                 android:textAppearance="@*android:style/TextAppearance.DeviceDefault.Notification"
                 android:textAlignment="viewStart"
             />
 
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

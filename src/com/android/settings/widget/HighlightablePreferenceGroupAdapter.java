@@ -20,9 +20,10 @@ import static com.android.settings.SettingsActivity.EXTRA_FRAGMENT_ARG_KEY;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,6 +34,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.content.ContextCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceScreen;
@@ -55,8 +57,8 @@ public class HighlightablePreferenceGroupAdapter extends SettingsPreferenceGroup
     @VisibleForTesting static final long DELAY_HIGHLIGHT_DURATION_MILLIS = 600L;
     @VisibleForTesting static final long DELAY_HIGHLIGHT_DURATION_MILLIS_A11Y = 300L;
     private static final long HIGHLIGHT_DURATION = 15000L;
-    private static final long HIGHLIGHT_FADE_OUT_DURATION = 500L;
-    private static final long HIGHLIGHT_FADE_IN_DURATION = 200L;
+    private static final int HIGHLIGHT_FADE_OUT_DURATION = 500;
+    private static final int HIGHLIGHT_FADE_IN_DURATION = 200;
 
     @VisibleForTesting @DrawableRes final int mHighlightBackgroundRes;
     @VisibleForTesting boolean mFadeInAnimated;
@@ -233,65 +235,185 @@ public class HighlightablePreferenceGroupAdapter extends SettingsPreferenceGroup
     private void addHighlightBackground(
             PreferenceViewHolder holder, boolean animate, int position) {
         final View v = holder.itemView;
-        v.setTag(R.id.preference_highlighted, true);
+        final Context context = v.getContext();
+        if (context == null) {
+            return;
+        }
+
         final int backgroundFrom = getBackgroundRes(position, false);
         final int backgroundTo = getBackgroundRes(position, true);
 
-        if (!animate) {
+        Object oldAnimatorTag = v.getTag(R.id.active_background_animator);
+        if (oldAnimatorTag instanceof ValueAnimator) {
+            ((ValueAnimator) oldAnimatorTag).cancel();
+        }
+
+        v.setTag(R.id.active_background_animator, null);
+        v.setTag(R.id.preference_highlighted, true);
+
+        Drawable backgroundFromDrawable = ContextCompat.getDrawable(context, backgroundFrom);
+        Drawable backgroundToDrawable = ContextCompat.getDrawable(context, backgroundTo);
+
+        if (!animate || backgroundFromDrawable == null || backgroundToDrawable == null) {
+            // Fallback
             v.setBackgroundResource(backgroundTo);
             Log.d(TAG, "AddHighlight: Not animation requested - setting highlight background");
+            holder.setIsRecyclable(false);
             requestRemoveHighlightDelayed(holder, position);
             return;
         }
         mFadeInAnimated = true;
 
-        // TODO(b/377561018): Fix fade-in animation
+        TransitionDrawable transitionDrawable = new TransitionDrawable(
+                new Drawable[]{backgroundFromDrawable, backgroundToDrawable});
+        v.setBackground(transitionDrawable);
+
         final ValueAnimator fadeInLoop =
-                ValueAnimator.ofObject(new ArgbEvaluator(), backgroundFrom, backgroundTo);
+                ValueAnimator.ofInt(0, 1);
         fadeInLoop.setDuration(HIGHLIGHT_FADE_IN_DURATION);
-        fadeInLoop.addUpdateListener(
-                animator -> v.setBackgroundResource((int) animator.getAnimatedValue()));
         fadeInLoop.setRepeatMode(ValueAnimator.REVERSE);
         fadeInLoop.setRepeatCount(4);
+        v.setTag(R.id.active_background_animator, fadeInLoop);
+
+        holder.setIsRecyclable(false);
+
+        fadeInLoop.addListener(new AnimatorListenerAdapter() {
+            private boolean mIsReversedForNext = false;
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                transitionDrawable.startTransition(HIGHLIGHT_FADE_IN_DURATION);
+                mIsReversedForNext = true;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                super.onAnimationRepeat(animation);
+                if (mIsReversedForNext) {
+                    transitionDrawable.reverseTransition(HIGHLIGHT_FADE_IN_DURATION);
+                } else {
+                    transitionDrawable.startTransition(HIGHLIGHT_FADE_IN_DURATION);
+                }
+                mIsReversedForNext = !mIsReversedForNext;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+
+                mFadeInAnimated = false;
+                if (v.getTag(R.id.active_background_animator) == fadeInLoop) {
+                    v.setTag(R.id.active_background_animator, null);
+                }
+
+                v.setBackgroundResource(backgroundTo);
+
+                if (Boolean.TRUE.equals(v.getTag(R.id.preference_highlighted))) {
+                    requestRemoveHighlightDelayed(holder, position);
+                } else {
+                    holder.setIsRecyclable(true);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                super.onAnimationCancel(animation);
+                mFadeInAnimated = false;
+
+                if (v.getTag(R.id.active_background_animator) == fadeInLoop) {
+                    v.setTag(R.id.active_background_animator, null);
+                }
+
+                if (Boolean.TRUE.equals(v.getTag(R.id.preference_highlighted))) {
+                    v.setBackgroundResource(backgroundTo);
+                    requestRemoveHighlightDelayed(holder, position);
+                } else {
+                    v.setBackgroundResource(backgroundFrom);
+                    holder.setIsRecyclable(true);
+                }
+            }
+        });
+
         fadeInLoop.start();
         Log.d(TAG, "AddHighlight: starting fade in animation");
-        holder.setIsRecyclable(false);
-        requestRemoveHighlightDelayed(holder, position);
     }
 
     private void removeHighlightBackground(
             PreferenceViewHolder holder, boolean animate, int position) {
         final View v = holder.itemView;
+        final Context context = v.getContext();
+
         int backgroundFrom = getBackgroundRes(position, true);
         int backgroundTo = getBackgroundRes(position, false);
 
-        if (!animate) {
-            v.setTag(R.id.preference_highlighted, false);
+        Object oldAnimatorTag = v.getTag(R.id.active_background_animator);
+        if (oldAnimatorTag instanceof ValueAnimator) {
+            ((ValueAnimator) oldAnimatorTag).cancel();
+        }
+        Drawable backgroundFromDrawable = ContextCompat.getDrawable(context, backgroundFrom);
+        Drawable backgroundToDrawable = ContextCompat.getDrawable(context, backgroundTo);
+
+        if (!animate || backgroundFromDrawable == null || backgroundToDrawable == null) {
             v.setBackgroundResource(backgroundTo);
+            v.setTag(R.id.preference_highlighted, false);
+            holder.setIsRecyclable(true);
             Log.d(TAG, "RemoveHighlight: No animation requested - setting normal background");
             return;
         }
 
+        v.setTag(R.id.active_background_animator, null);
+
         if (!Boolean.TRUE.equals(v.getTag(R.id.preference_highlighted))) {
             // Not highlighted, no-op
             Log.d(TAG, "RemoveHighlight: Not highlighted - skipping");
+            holder.setIsRecyclable(true);
             return;
         }
 
         v.setTag(R.id.preference_highlighted, false);
-        // TODO(b/377561018): Fix fade-out animation
+
+        TransitionDrawable transitionDrawable = new TransitionDrawable(
+                new Drawable[]{backgroundFromDrawable, backgroundToDrawable});
+        v.setBackground(transitionDrawable);
+
         final ValueAnimator colorAnimation =
-                ValueAnimator.ofObject(new ArgbEvaluator(), backgroundFrom, backgroundTo);
+                ValueAnimator.ofInt(0, 1);
         colorAnimation.setDuration(HIGHLIGHT_FADE_OUT_DURATION);
-        colorAnimation.addUpdateListener(
-                animator -> v.setBackgroundResource((int) animator.getAnimatedValue()));
+        v.setTag(R.id.active_background_animator, colorAnimation);
+        holder.setIsRecyclable(false);
+
         colorAnimation.addListener(
                 new AnimatorListenerAdapter() {
                     @Override
+                    public void onAnimationStart(Animator animation) {
+                        super.onAnimationStart(animation);
+                        transitionDrawable.startTransition(HIGHLIGHT_FADE_OUT_DURATION);
+                    }
+
+                    @Override
                     public void onAnimationEnd(@NonNull Animator animation) {
-                        // Animation complete - the background needs to be the target background.
+                        super.onAnimationEnd(animation);
                         v.setBackgroundResource(backgroundTo);
+
+                        v.setTag(R.id.preference_highlighted, false);
                         holder.setIsRecyclable(true);
+
+                        if (v.getTag(R.id.active_background_animator) == colorAnimation) {
+                            v.setTag(R.id.active_background_animator, null);
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationCancel(@NonNull Animator animation) {
+                        super.onAnimationCancel(animation);
+                        v.setBackgroundResource(backgroundTo);
+                        v.setTag(R.id.preference_highlighted, false);
+                        holder.setIsRecyclable(true);
+
+                        if (v.getTag(R.id.active_background_animator) == colorAnimation) {
+                            v.setTag(R.id.active_background_animator, null);
+                        }
                     }
                 });
         colorAnimation.start();
@@ -299,11 +421,14 @@ public class HighlightablePreferenceGroupAdapter extends SettingsPreferenceGroup
     }
 
     private @DrawableRes int getBackgroundRes(int position, boolean isHighlighted) {
+        int backgroundRes = (isHighlighted) ? mHighlightBackgroundRes : mNormalBackgroundRes;
         if (SettingsThemeHelper.isExpressiveTheme(mContext)) {
             Log.d(TAG, "[Expressive Theme] get rounded background, highlight = " + isHighlighted);
-            return getRoundCornerDrawableRes(position, false, isHighlighted);
-        } else {
-            return (isHighlighted) ? mHighlightBackgroundRes : mNormalBackgroundRes;
+            int roundCornerResId = getRoundCornerDrawableRes(position, false, isHighlighted);
+            if (roundCornerResId != 0) {
+                return roundCornerResId;
+            }
         }
+        return backgroundRes;
     }
 }

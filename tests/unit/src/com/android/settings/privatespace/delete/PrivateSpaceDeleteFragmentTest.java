@@ -21,26 +21,20 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.spy;
 
 import android.app.settings.SettingsEnums;
-import android.os.Flags;
-import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.annotation.UiThreadTest;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 public class PrivateSpaceDeleteFragmentTest {
-    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     private PrivateSpaceDeleteFragment mFragment;
 
     @Test
     @UiThreadTest
     public void verifyMetricsConstant() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
         mFragment = spy(new PrivateSpaceDeleteFragment());
         assertThat(mFragment.getMetricsCategory()).isEqualTo(SettingsEnums.PRIVATE_SPACE_SETTINGS);
     }

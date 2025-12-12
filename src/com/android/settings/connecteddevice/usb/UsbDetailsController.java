@@ -23,7 +23,6 @@ import androidx.annotation.UiThread;
 import androidx.annotation.VisibleForTesting;
 
 import com.android.settings.core.PreferenceControllerMixin;
-import com.android.settings.flags.Flags;
 import com.android.settings.wifi.dpp.WifiDppUtils;
 import com.android.settingslib.core.AbstractPreferenceController;
 
@@ -66,7 +65,7 @@ public abstract class UsbDetailsController extends AbstractPreferenceController
 
     /** Protects given action with an auth challenge. */
     protected final void requireAuthAndExecute(Runnable action) {
-        if (Flags.enableAuthChallengeForUsbPreferences() && !mFragment.isUserAuthenticated()) {
+        if (!mFragment.isUserAuthenticated()) {
             WifiDppUtils.showLockScreen(mContext, () -> {
                 mFragment.setUserAuthenticated(true);
                 action.run();

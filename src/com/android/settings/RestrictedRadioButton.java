@@ -18,6 +18,7 @@ package com.android.settings;
 
 import static com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
 
+import android.app.admin.EnforcingAdmin;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RadioButton;
@@ -31,6 +32,8 @@ public class RestrictedRadioButton extends RadioButton {
     private Context mContext;
     private boolean mDisabledByAdmin;
     private EnforcedAdmin mEnforcedAdmin;
+    private EnforcingAdmin mEnforcingAdmin;
+    private String mRestriction;
 
     public RestrictedRadioButton(Context context) {
         this(context, null);
@@ -53,15 +56,40 @@ public class RestrictedRadioButton extends RadioButton {
     @Override
     public boolean performClick() {
         if (mDisabledByAdmin) {
-            RestrictedLockUtils.sendShowAdminSupportDetailsIntent(mContext, mEnforcedAdmin);
+            // Either the enforcing admin or the enforced admin should be set, but not both.
+            if (mEnforcingAdmin != null) {
+                RestrictedLockUtils.sendShowAdminSupportDetailsIntent(
+                        mContext, mEnforcingAdmin, mRestriction);
+            } else if (mEnforcedAdmin != null) {
+                RestrictedLockUtils.sendShowAdminSupportDetailsIntent(mContext, mEnforcedAdmin);
+            }
             return true;
         }
         return super.performClick();
     }
 
+    @Deprecated
     public void setDisabledByAdmin(EnforcedAdmin admin) {
-        final boolean disabled = (admin != null);
         mEnforcedAdmin = admin;
+        updateDisabledState((admin != null));
+    }
+
+    /**
+     * Sets the admin that disabled this radio button. Note that restriction must be set separately
+     * with {@link #setRestriction(String)}.
+     *
+     * @param admin The admin that disabled this radio button.
+     */
+    public void setDisabledByAdmin(EnforcingAdmin admin) {
+        mEnforcingAdmin = admin;
+        updateDisabledState((admin != null));
+    }
+
+    public void setRestriction(String restriction) {
+        mRestriction = restriction;
+    }
+
+    private void updateDisabledState(boolean disabled) {
         if (mDisabledByAdmin != disabled) {
             mDisabledByAdmin = disabled;
             RestrictedLockUtilsInternal.setTextViewAsDisabledByAdmin(mContext,

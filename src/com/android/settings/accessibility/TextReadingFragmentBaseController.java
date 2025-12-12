@@ -23,6 +23,7 @@ import android.os.Bundle;
 
 import androidx.preference.Preference;
 
+import com.android.settings.R;
 import com.android.settings.accessibility.TextReadingPreferenceFragment.EntryPoint;
 import com.android.settings.core.BasePreferenceController;
 
@@ -45,7 +46,7 @@ public class TextReadingFragmentBaseController extends BasePreferenceController 
 
     @Override
     public int getAvailabilityStatus() {
-        return AVAILABLE;
+        return AVAILABLE_UNSEARCHABLE;
     }
 
     @Override
@@ -56,5 +57,10 @@ public class TextReadingFragmentBaseController extends BasePreferenceController 
         }
 
         return super.handlePreferenceTreeClick(preference);
+    }
+
+    @Override
+    public CharSequence getSummary() {
+        return mContext.getString(R.string.accessibility_text_reading_options_subtext);
     }
 }

@@ -35,32 +35,28 @@ import com.android.settingslib.spa.widget.preference.ListPreference
 import com.android.settingslib.spa.widget.preference.ListPreferenceModel
 import com.android.settingslib.spa.widget.preference.ListPreferenceOption
 import com.android.settingslib.spa.widget.scaffold.BottomAppBarButton
-import com.android.settingslib.spa.widget.scaffold.SuwScaffold
+import com.android.settingslib.spa.widget.scaffold.GlifScaffold
+import com.android.settingslib.spa.widget.ui.Category
 import com.android.settingslib.spa.widget.ui.SettingsIcon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-/**
- * the sim onboarding primary sim compose
- */
+/** the sim onboarding primary sim compose */
 @Composable
 fun SimOnboardingPrimarySimImpl(
     nextAction: () -> Unit,
     cancelAction: () -> Unit,
-    onboardingService: SimOnboardingService
+    onboardingService: SimOnboardingService,
 ) {
-    SuwScaffold(
+    GlifScaffold(
         imageVector = Icons.Outlined.SignalCellularAlt,
         title = stringResource(id = R.string.sim_onboarding_primary_sim_title),
-        actionButton = BottomAppBarButton(
-            text = stringResource(id = R.string.done),
-            onClick = nextAction
-        ),
-        dismissButton = BottomAppBarButton(
-            text = stringResource(id = R.string.cancel),
-            onClick = cancelAction
-        ),
+        description = stringResource(id = R.string.sim_onboarding_primary_sim_msg),
+        actionButton =
+            BottomAppBarButton(text = stringResource(id = R.string.done), onClick = nextAction),
+        dismissButton =
+            BottomAppBarButton(text = stringResource(id = R.string.cancel), onClick = cancelAction),
     ) {
         val callsSelectedId = rememberSaveable {
             mutableIntStateOf(SubscriptionManager.INVALID_SUBSCRIPTION_ID)
@@ -72,61 +68,93 @@ fun SimOnboardingPrimarySimImpl(
             mutableIntStateOf(SubscriptionManager.INVALID_SUBSCRIPTION_ID)
         }
 
-        SimOnboardingMessage(stringResource(id = R.string.sim_onboarding_primary_sim_msg))
-
         val context = LocalContext.current
-        val primarySimInfo = remember {
-            flow {
-                val selectableSubInfoList =
-                    onboardingService.getSelectedSubscriptionInfoListWithRenaming()
-                emit(PrimarySimRepository(context).getPrimarySimInfo(selectableSubInfoList))
-            }.flowOn(Dispatchers.Default)
-        }.collectAsStateWithLifecycle(initialValue = null).value ?: return@SuwScaffold
+        val primarySimInfo =
+            remember {
+                    flow {
+                            val selectableSubInfoList =
+                                onboardingService.getSelectedSubscriptionInfoListWithRenaming()
+                            emit(
+                                PrimarySimRepository(context)
+                                    .getPrimarySimInfo(selectableSubInfoList)
+                            )
+                        }
+                        .flowOn(Dispatchers.Default)
+                }
+                .collectAsStateWithLifecycle(initialValue = null)
+                .value ?: return@GlifScaffold
+
+        if (
+            !primarySimInfo.callsList.any { it.id == onboardingService.targetPrimarySimCalls } &&
+                primarySimInfo.callsList.isNotEmpty()
+        ) {
+            onboardingService.targetPrimarySimCalls = primarySimInfo.callsList[0].id
+        }
+        if (
+            !primarySimInfo.smsList.any { it.id == onboardingService.targetPrimarySimTexts } &&
+                primarySimInfo.smsList.isNotEmpty()
+        ) {
+            onboardingService.targetPrimarySimTexts = primarySimInfo.smsList[0].id
+        }
+        if (
+            !primarySimInfo.dataList.any {
+                it.id == onboardingService.targetPrimarySimMobileData
+            } && primarySimInfo.dataList.isNotEmpty()
+        ) {
+            onboardingService.targetPrimarySimMobileData = primarySimInfo.dataList[0].id
+        }
         callsSelectedId.intValue = onboardingService.targetPrimarySimCalls
         textsSelectedId.intValue = onboardingService.targetPrimarySimTexts
         mobileDataSelectedId.intValue = onboardingService.targetPrimarySimMobileData
         val isAutoDataEnabled by
-            onboardingService.targetPrimarySimAutoDataSwitch
-                .collectAsStateWithLifecycle(initialValue = null)
-        PrimarySimImpl(
-            primarySimInfo = primarySimInfo,
-            callsSelectedId = callsSelectedId,
-            textsSelectedId = textsSelectedId,
-            mobileDataSelectedId = mobileDataSelectedId,
-            actionSetCalls = {
-                callsSelectedId.intValue = it
-                onboardingService.targetPrimarySimCalls = it
-            },
-            actionSetTexts = {
-                textsSelectedId.intValue = it
-                onboardingService.targetPrimarySimTexts = it
-            },
-            actionSetMobileData = {
-                mobileDataSelectedId.intValue = it
-                onboardingService.targetPrimarySimMobileData = it
-            }
-        )
-        AutomaticDataSwitchingPreference(isAutoDataEnabled = { isAutoDataEnabled },
-            setAutoDataEnabled = { newEnabled ->
-                onboardingService.targetPrimarySimAutoDataSwitch.value = newEnabled
-            })
+            onboardingService.targetPrimarySimAutoDataSwitch.collectAsStateWithLifecycle(
+                initialValue = null
+            )
+        Category {
+            PrimarySimImpl(
+                primarySimInfo = primarySimInfo,
+                callsSelectedId = callsSelectedId,
+                textsSelectedId = textsSelectedId,
+                mobileDataSelectedId = mobileDataSelectedId,
+                actionSetCalls = {
+                    callsSelectedId.intValue = it
+                    onboardingService.targetPrimarySimCalls = it
+                },
+                actionSetTexts = {
+                    textsSelectedId.intValue = it
+                    onboardingService.targetPrimarySimTexts = it
+                },
+                actionSetMobileData = {
+                    mobileDataSelectedId.intValue = it
+                    onboardingService.targetPrimarySimMobileData = it
+                },
+            )
+        }
+        Category {
+            AutomaticDataSwitchingPreference(
+                isAutoDataEnabled = { isAutoDataEnabled },
+                setAutoDataEnabled = { newEnabled ->
+                    onboardingService.targetPrimarySimAutoDataSwitch.value = newEnabled
+                },
+            )
+        }
     }
 }
 
 @Composable
 fun CreatePrimarySimListPreference(
-        title: String,
-        list: List<ListPreferenceOption>,
-        selectedId: MutableIntState,
-        icon: ImageVector,
-        onIdSelected: (id: Int) -> Unit
-) = ListPreference(
-    object : ListPreferenceModel {
-        override val title = title
-        override val options = list
-        override val selectedId = selectedId
-        override val onIdSelected = onIdSelected
-        override val icon = @Composable {
-            SettingsIcon(icon)
+    title: String,
+    list: List<ListPreferenceOption>,
+    selectedId: MutableIntState,
+    icon: ImageVector,
+    onIdSelected: (id: Int) -> Unit,
+) =
+    ListPreference(
+        object : ListPreferenceModel {
+            override val title = title
+            override val options = list
+            override val selectedId = selectedId
+            override val onIdSelected = onIdSelected
+            override val icon = @Composable { SettingsIcon(icon) }
         }
-})
+    )

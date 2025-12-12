@@ -27,35 +27,20 @@ import com.android.settingslib.datastore.SettingsStore
 /** Datastore of the safe sites preference. */
 @Suppress("UNCHECKED_CAST")
 class SupervisionSafeSitesDataStore(
-    private val context: Context,
+    context: Context,
     private val settingsStore: SettingsStore = SettingsSecureStore.get(context),
 ) : AbstractKeyedDataObservable<String>(), KeyedObserver<String>, KeyValueStore {
 
-    override fun contains(key: String) =
-        key == SupervisionBlockExplicitSitesPreference.KEY ||
-            key == SupervisionAllowAllSitesPreference.KEY
+    override fun contains(key: String) = settingsStore.contains(BROWSER_CONTENT_FILTERS_ENABLED)
 
     override fun <T : Any> getValue(key: String, valueType: Class<T>): T? {
-        val settingValue = (settingsStore.getBoolean(BROWSER_CONTENT_FILTERS_ENABLED) == true)
-        return when (key) {
-            SupervisionAllowAllSitesPreference.KEY -> !settingValue
-
-            SupervisionBlockExplicitSitesPreference.KEY -> settingValue
-
-            else -> null
-        }
-            as T?
+        val settingValue: Int? = settingsStore.getInt(BROWSER_CONTENT_FILTERS_ENABLED)
+        return (settingValue != null && (settingValue > 0)) as T?
     }
 
     override fun <T : Any> setValue(key: String, valueType: Class<T>, value: T?) {
         if (value !is Boolean) return
-        when (key) {
-            SupervisionAllowAllSitesPreference.KEY ->
-                settingsStore.setBoolean(BROWSER_CONTENT_FILTERS_ENABLED, !value)
-
-            SupervisionBlockExplicitSitesPreference.KEY ->
-                settingsStore.setBoolean(BROWSER_CONTENT_FILTERS_ENABLED, value)
-        }
+        settingsStore.setBoolean(BROWSER_CONTENT_FILTERS_ENABLED, value)
     }
 
     override fun onFirstObserverAdded() {
@@ -65,8 +50,7 @@ class SupervisionSafeSitesDataStore(
 
     override fun onKeyChanged(key: String, reason: Int) {
         // forward data change to preference hierarchy key
-        notifyChange(SupervisionBlockExplicitSitesPreference.KEY, reason)
-        notifyChange(SupervisionAllowAllSitesPreference.KEY, reason)
+        notifyChange(SupervisionSafeSitesSwitchPreference.KEY, reason)
     }
 
     override fun onLastObserverRemoved() {

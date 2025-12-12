@@ -60,20 +60,20 @@ sealed class StorageAppListPageProvider(private val type: StorageType) : Setting
 
 sealed class StorageType(
     @StringRes val titleResource: Int,
-    val filter: (AppRecordWithSize) -> Boolean
+    val filter: (ApplicationInfo) -> Boolean
 ) {
     object Apps : StorageType(
         titleResource = R.string.apps_storage,
         filter = {
-            (it.app.flags and ApplicationInfo.FLAG_IS_GAME) == 0 &&
-            it.app.category != ApplicationInfo.CATEGORY_GAME
+            (it.flags and ApplicationInfo.FLAG_IS_GAME) == 0 &&
+            it.category != ApplicationInfo.CATEGORY_GAME
         }
     )
     object Games : StorageType(
         titleResource = R.string.game_storage_settings,
         filter = {
-            (it.app.flags and ApplicationInfo.FLAG_IS_GAME) != 0 ||
-                it.app.category == ApplicationInfo.CATEGORY_GAME
+            (it.flags and ApplicationInfo.FLAG_IS_GAME) != 0 ||
+                it.category == ApplicationInfo.CATEGORY_GAME
         }
     )
 }
@@ -120,7 +120,7 @@ class StorageAppListModel(
         userIdFlow: Flow<Int>,
         option: Int,
         recordListFlow: Flow<List<AppRecordWithSize>>
-    ): Flow<List<AppRecordWithSize>> = recordListFlow.filterItem { type.filter(it) }
+    ): Flow<List<AppRecordWithSize>> = recordListFlow.filterItem { type.filter(it.app) }
 
     @Composable
     override fun getSummary(option: Int, record: AppRecordWithSize): () -> String {

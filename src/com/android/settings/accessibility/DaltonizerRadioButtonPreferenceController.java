@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /** Controller class that control radio button of accessibility daltonizer settings. */
+// LINT.IfChange
 public class DaltonizerRadioButtonPreferenceController extends BasePreferenceController implements
         DefaultLifecycleObserver, SelectorWithWidgetPreference.OnClickListener {
     private static final String DALTONIZER_TYPE_SETTINGS_KEY =
@@ -136,3 +137,4 @@ public class DaltonizerRadioButtonPreferenceController extends BasePreferenceCon
         mContentResolver.unregisterContentObserver(mSettingsContentObserver);
     }
 }
+// LINT.ThenChange(colorcorrection/ui/ModePreference.kt)

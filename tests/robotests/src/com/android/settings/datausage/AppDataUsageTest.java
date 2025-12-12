@@ -38,11 +38,13 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Resources;
 import android.net.NetworkPolicyManager;
 import android.net.NetworkTemplate;
 import android.os.Bundle;
 import android.os.Process;
 import android.telephony.SubscriptionManager;
+import android.telephony.TelephonyManager;
 import android.util.ArraySet;
 import android.util.FeatureFlagUtils;
 
@@ -50,7 +52,9 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.annotation.UiThreadTest;
 
+import com.android.settings.R;
 import com.android.settings.applications.AppInfoBase;
 import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settings.testutils.shadow.ShadowDataUsageUtils;
@@ -60,6 +64,7 @@ import com.android.settingslib.AppItem;
 import com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
 import com.android.settingslib.RestrictedSwitchPreference;
 import com.android.settingslib.core.AbstractPreferenceController;
+import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 import com.android.settingslib.net.UidDetail;
 import com.android.settingslib.net.UidDetailProvider;
 import com.android.settingslib.widget.IntroPreference;
@@ -80,23 +85,35 @@ import org.robolectric.util.ReflectionHelpers;
 import java.util.List;
 
 @RunWith(RobolectricTestRunner.class)
+@UiThreadTest
 @Config(shadows = {ShadowRestrictedLockUtilsInternal.class})
 public class AppDataUsageTest {
 
     @Mock
     private PackageManager mPackageManager;
+    @Mock
+    private TelephonyManager mTelephonyManager;
+    @Mock
+    private MetricsFeatureProvider mMetricsFeatureProvider;
 
     private IntroPreference mIntroPreference;
 
     private AppDataUsage mFragment;
 
     private Context mContext;
+    private Resources mResources;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         mContext = spy(RuntimeEnvironment.application);
+        when(mContext.getSystemService(TelephonyManager.class)).thenReturn(mTelephonyManager);
+        when(mTelephonyManager.isDataCapable()).thenReturn(true);
+
+        mResources = spy(mContext.getResources());
+        when(mResources.getBoolean(R.bool.config_show_sim_info)).thenReturn(true);
+
         mIntroPreference = new IntroPreference(mContext);
         FeatureFlagUtils.setEnabled(mContext, FeatureFlagUtils.SETTINGS_ENABLE_SPA, true);
     }
@@ -163,7 +180,7 @@ public class AppDataUsageTest {
     @Config(shadows = ShadowFragment.class)
     public void bindAppHeader_allWorkApps_shouldNotShowAppInfoLink() {
         mFragment = spy(new TestFragment());
-
+        ReflectionHelpers.setField(mFragment, "mMetricsFeatureProvider", mMetricsFeatureProvider);
         when(mFragment.getPreferenceManager())
                 .thenReturn(mock(PreferenceManager.class, RETURNS_DEEP_STUBS));
         doReturn(mock(PreferenceScreen.class)).when(mFragment).getPreferenceScreen();
@@ -188,6 +205,7 @@ public class AppDataUsageTest {
         final int fakeUserId = 100;
 
         mFragment = spy(new TestFragment());
+        ReflectionHelpers.setField(mFragment, "mMetricsFeatureProvider", mMetricsFeatureProvider);
         final ArraySet<String> packages = new ArraySet<>();
         packages.add("pkg");
         final AppItem appItem = new AppItem(123456789);
@@ -296,11 +314,6 @@ public class AppDataUsageTest {
 
         @Override
         void initCycle(List<Integer> uidList) {
-        }
-
-        @Override
-        public boolean isSimHardwareVisible(Context context) {
-            return true;
         }
     }
 }

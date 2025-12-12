@@ -23,11 +23,20 @@ import androidx.annotation.Nullable;
 public interface AccessibilityFeedbackFeatureProvider {
 
     /**
-     * Returns value according to the {@code pageId}.
+     * Returns feedback bucket ID according to the {@code pageId}.
      *
      * @param pageId The unique identifier of the page.
      * @return Feedback bucket ID associated with the page, or {@code null} if is not found.
      */
     @Nullable
     String getCategory(int pageId);
+
+    /**
+     * Returns feedback trigger ID value according to the {@code pageId}.
+     *
+     * @param pageId The unique identifier of the page.
+     * @return Feedback trigger ID associated with the page, or {@code null} if is not found.
+     */
+    @Nullable
+    String getTriggerId(int pageId);
 }

@@ -147,43 +147,41 @@
         settings:keywords="@string/content_protection_preference_title"
         settings:controller="com.android.settings.security.ContentProtectionPreferenceController" />
 
-    <PreferenceCategory
-        android:order="240"
-        android:key="security_settings_device_admin_category"
-        android:layout="@layout/preference_category_no_label">
+    <Preference
+        android:order="241"
+        android:key="manage_device_admin"
+        android:title="@string/manage_device_admin"
+        android:summary="@string/summary_placeholder"
+        android:fragment=
+            "com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminSettings"
+        settings:controller=
+            "com.android.settings.enterprise.ManageDeviceAdminPreferenceController" />
 
-        <Preference
-            android:key="manage_device_admin"
-            android:title="@string/manage_device_admin"
-            android:summary="@string/summary_placeholder"
-            android:fragment=
-                "com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminSettings"
-            settings:controller=
-                "com.android.settings.enterprise.ManageDeviceAdminPreferenceController" />
+    <Preference
+        android:order="242"
+        android:key="enterprise_privacy"
+        android:title="@string/enterprise_privacy_settings"
+        android:summary="@string/summary_placeholder"
+        android:fragment="com.android.settings.enterprise.EnterprisePrivacySettings"
+        settings:controller="com.android.settings.enterprise.EnterprisePrivacyPreferenceController"/>
 
-        <Preference
-            android:key="enterprise_privacy"
-            android:title="@string/enterprise_privacy_settings"
-            android:summary="@string/summary_placeholder"
-            android:fragment="com.android.settings.enterprise.EnterprisePrivacySettings"
-            settings:controller="com.android.settings.enterprise.EnterprisePrivacyPreferenceController"/>
+    <Preference
+        android:order="243"
+        android:key="financed_privacy"
+        android:title="@string/financed_privacy_settings"
+        android:summary="@string/summary_placeholder"
+        android:fragment="com.android.settings.enterprise.EnterprisePrivacySettings"
+        settings:controller="com.android.settings.enterprise.FinancedPrivacyPreferenceController"/>
 
-        <Preference
-            android:key="financed_privacy"
-            android:title="@string/financed_privacy_settings"
-            android:summary="@string/summary_placeholder"
-            android:fragment="com.android.settings.enterprise.EnterprisePrivacySettings"
-            settings:controller="com.android.settings.enterprise.FinancedPrivacyPreferenceController"/>
-
-        <Preference
-            android:key="financed_device_info"
-            android:title="@string/financed_device_info"
-            android:summary="@string/summary_placeholder"
-            settings:controller="com.android.settings.devicelock.DeviceLockPreferenceController">
-            <intent android:action="com.android.devicelockcontroller.action.DEVICE_INFO_SETTINGS"
-                    android:targetPackage="@string/config_device_lock_controller_package_name"/>
-        </Preference>
-    </PreferenceCategory>
+    <Preference
+        android:order="244"
+        android:key="financed_device_info"
+        android:title="@string/financed_device_info"
+        android:summary="@string/summary_placeholder"
+        settings:controller="com.android.settings.devicelock.DeviceLockPreferenceController">
+        <intent android:action="com.android.devicelockcontroller.action.DEVICE_INFO_SETTINGS"
+                android:targetPackage="@string/config_device_lock_controller_package_name"/>
+    </Preference>
 
     <Preference
         android:order="250"

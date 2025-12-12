@@ -33,22 +33,32 @@
     <com.android.settingslib.widget.BannerMessagePreference
         android:key="dark_ui_location_off"
         android:title="@string/twilight_mode_location_off_dialog_message"
+        android:persistent="false"
         settings:controller="com.android.settings.display.TwilightLocationPreferenceController"/>
 
     <PreferenceCategory
+        android:key="dark_theme_group"
+        android:title="@string/dark_theme_version_category"
+        settings:controller="com.android.settings.accessibility.ForceInvertPreferenceController">
+        <com.android.settingslib.widget.SelectorWithWidgetPreference
+            android:key="standard_dark_theme"
+            android:summary="@string/accessibility_standard_dark_theme_summary"
+            settings:searchable="true"/>
+
+        <com.android.settingslib.widget.SelectorWithWidgetPreference
+            android:key="expanded_dark_theme"
+            android:summary="@string/accessibility_expanded_dark_theme_summary"
+            settings:searchable="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="display_category"
-        android:title="@string/accessibility_screen_option">
-
-        <SwitchPreferenceCompat
-            android:key="toggle_force_invert"
-            android:summary="@string/accessibility_force_invert_summary"
-            android:title="@string/accessibility_force_invert_title"
-            settings:controller="com.android.settings.accessibility.ToggleForceInvertPreferenceController"/>
-
+        android:title="@string/dark_theme_timing_category">
         <DropDownPreference
             android:key="dark_ui_auto_mode"
             android:title="@string/dark_ui_auto_mode_title"
             android:summary="%s"
+            android:persistent="false"
             android:entries="@array/dark_ui_scheduler_preference_titles"
             android:entryValues="@array/dark_ui_scheduler_preference_titles"
             settings:controller="com.android.settings.display.darkmode.DarkModeScheduleSelectorController"
@@ -68,15 +78,37 @@
     <com.android.settingslib.widget.FooterPreference
         android:key="dark_theme_connection_footer"
         android:title= "@string/twilight_mode_pending_location"
-        android:selectable="false"
         settings:searchable="false"
         settings:controller="com.android.settings.display.darkmode.DarkModePendingLocationPreferenceController" />
 
     <com.android.settingslib.widget.FooterPreference
+        android:key="dark_theme_expanded_footer"
+        settings:searchable="false"
+        settings:controller="com.android.settings.display.darkmode.DarkModeExpandedFooterPreferenceController" />
+
+    <com.android.settingslib.widget.FooterPreference
         android:key="dark_theme_custom_bedtime_footer"
         android:title="@string/dark_ui_bedtime_footer_summary"
-        android:selectable="false"
         settings:searchable="false"
         settings:controller="com.android.settings.display.darkmode.DarkModeCustomModesPreferenceController" />
 
+    <com.android.settingslib.widget.ButtonPreference
+        android:key="feedback"
+        android:title="@string/accessibility_send_feedback_title"
+        android:icon="@drawable/ic_feedback"
+        settings:searchable="false"
+        android:persistent="false"
+        settings:buttonPreferenceSize="normal"
+        settings:buttonPreferenceType="tonal"
+        settings:controller="com.android.settings.accessibility.FeedbackButtonPreferenceController" />
+
+    <com.android.settingslib.widget.ButtonPreference
+        android:key="survey"
+        android:title="@string/accessibility_send_survey_title"
+        android:icon="@drawable/ic_rate_review"
+        settings:searchable="false"
+        android:persistent="false"
+        settings:buttonPreferenceSize="normal"
+        settings:buttonPreferenceType="tonal"
+        settings:controller="com.android.settings.accessibility.ForceInvertSurveyButtonPreferenceController" />
 </PreferenceScreen>

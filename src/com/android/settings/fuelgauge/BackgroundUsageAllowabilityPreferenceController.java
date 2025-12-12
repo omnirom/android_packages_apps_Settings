@@ -17,6 +17,7 @@
 package com.android.settings.fuelgauge;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.core.PreferenceControllerMixin;
 import com.android.settings.dashboard.DashboardFragment;
+import com.android.settings.fuelgauge.PowerBackgroundUsageDetail.LaunchSourceType;
 import com.android.settingslib.PrimarySwitchPreference;
 
 /** Controller to update the manage battery usage preference in App Battery Usage page */
@@ -103,8 +105,12 @@ public class BackgroundUsageAllowabilityPreferenceController extends BasePrefere
         if (isPreferenceEnabled) {
             mBackgroundUsageAllowabilityPreference.setOnPreferenceClickListener(
                     preference -> {
+                        Bundle arguments = mDashboardFragment.getArguments();
+                        arguments.putString(
+                                PowerBackgroundUsageDetail.EXTRA_LAUNCH_SOURCE,
+                                LaunchSourceType.APP_BATTERY_USAGE_PAGE.name());
                         PowerBackgroundUsageDetail.startPowerBackgroundUsageDetailPage(
-                                mContext, mDashboardFragment.getArguments());
+                                mContext, arguments);
                         return true;
                     });
             mBackgroundUsageAllowabilityPreference.setOnPreferenceChangeListener(

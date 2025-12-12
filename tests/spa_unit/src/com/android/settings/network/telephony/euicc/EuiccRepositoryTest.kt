@@ -47,6 +47,7 @@ class EuiccRepositoryTest {
         spy(ApplicationProvider.getApplicationContext()) {
             on { getSystemService(EuiccManager::class.java) } doReturn mockEuiccManager
             on { getSystemService(TelephonyManager::class.java) } doReturn mockTelephonyManager
+            on { getSystemService(Context.TELEPHONY_SERVICE) } doReturn mockTelephonyManager
         }
 
     private val resources =
@@ -64,11 +65,67 @@ class EuiccRepositoryTest {
     @Before
     fun setUp() {
         context.stub { on { resources } doReturn resources }
+
+	// By default visible
+        resources.stub { on { getBoolean(R.bool.config_show_sim_info) } doReturn true }
+        mockTelephonyManager.stub {
+            on { isDataCapable } doReturn true
+            on { isDeviceVoiceCapable } doReturn true
+	}
     }
 
     @Test
-    fun showEuiccSettings_noSim_returnFalse() {
+    fun showEuiccSettings_euiccProvisioned_returnTrue() {
+        euiccProvisioned = true
+
+        val showEuiccSettings = repository.showEuiccSettings()
+
+        assertThat(showEuiccSettings).isTrue()
+    }
+
+    @Test
+    fun showEuiccSettings_noShowSimInfo_returnFalse() {
+        euiccProvisioned = true
         resources.stub { on { getBoolean(R.bool.config_show_sim_info) } doReturn false }
+
+        val showEuiccSettings = repository.showEuiccSettings()
+
+        assertThat(showEuiccSettings).isFalse()
+    }
+
+    @Test
+    fun showEuiccSettings_voiceCapable_noDataCapable_returnTrue() {
+        euiccProvisioned = true
+        mockTelephonyManager.stub {
+            on { isDataCapable } doReturn false
+            on { isDeviceVoiceCapable } doReturn true
+	}
+
+        val showEuiccSettings = repository.showEuiccSettings()
+
+        assertThat(showEuiccSettings).isTrue()
+    }
+
+    @Test
+    fun showEuiccSettings_noVoiceCapable_dataCapable_returnTrue() {
+        euiccProvisioned = true
+        mockTelephonyManager.stub {
+            on { isDataCapable } doReturn true
+            on { isDeviceVoiceCapable } doReturn false
+	}
+
+        val showEuiccSettings = repository.showEuiccSettings()
+
+        assertThat(showEuiccSettings).isTrue()
+    }
+
+    @Test
+    fun showEuiccSettings_noVoiceCapable_noDataCapable_returnFalse() {
+        euiccProvisioned = true
+        mockTelephonyManager.stub {
+            on { isDataCapable } doReturn false
+            on { isDeviceVoiceCapable } doReturn false
+	}
 
         val showEuiccSettings = repository.showEuiccSettings()
 
@@ -85,15 +142,6 @@ class EuiccRepositoryTest {
     }
 
     @Test
-    fun showEuiccSettings_euiccProvisioned_returnTrue() {
-        euiccProvisioned = true
-
-        val showEuiccSettings = repository.showEuiccSettings()
-
-        assertThat(showEuiccSettings).isTrue()
-    }
-
-    @Test
     fun showEuiccSettings_countryNotSupported_returnFalse() {
         mockEuiccManager.stub { on { isSupportedCountry(COUNTRY_CODE) } doReturn false }
 
@@ -105,7 +153,6 @@ class EuiccRepositoryTest {
     @Test
     fun showEuiccSettings_countrySupported_returnTrue() {
         mockEuiccManager.stub { on { isSupportedCountry(COUNTRY_CODE) } doReturn true }
-
         val showEuiccSettings = repository.showEuiccSettings()
 
         assertThat(showEuiccSettings).isTrue()

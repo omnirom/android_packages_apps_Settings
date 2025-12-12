@@ -20,23 +20,24 @@
     android:title="@string/accessibility_vibration_settings_title">
 
     <com.android.settingslib.widget.MainSwitchPreference
-        android:key="vibrate_on"
+        android:key="toggle_vibrate_on"
         android:title="@string/accessibility_vibration_primary_switch_title"
         app:keywords="@string/keywords_accessibility_vibration_primary_switch"
         app:controller="com.android.settings.accessibility.VibrationMainSwitchPreferenceController"/>
 
     <PreferenceCategory
-        android:key="vibration_category_call"
-        android:title="@string/accessibility_call_vibration_category_title">
+        android:key="toggle_vibration_category_call"
+        android:title="@string/accessibility_call_vibration_category_title"
+        android:persistent="false">
 
         <SwitchPreferenceCompat
-            android:key="vibration_preference_ring"
+            android:key="toggle_ring_vibration_intensity"
             android:title="@string/accessibility_ring_vibration_title"
             app:keywords="@string/keywords_ring_vibration"
             app:controller="com.android.settings.accessibility.RingVibrationTogglePreferenceController" />
 
         <SwitchPreferenceCompat
-            android:key="vibration_preference_ramping_ringer"
+            android:key="toggle_apply_ramping_ringer"
             android:title="@string/vibrate_when_ringing_option_ramping_ringer"
             app:keywords="@string/keywords_ramping_ringer_vibration"
             app:controller="com.android.settings.accessibility.VibrationRampingRingerTogglePreferenceController"/>
@@ -44,17 +45,18 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="vibration_category_notification_alarm"
-        android:title="@string/accessibility_notification_alarm_vibration_category_title">
+        android:key="toggle_vibration_category_notification_alarm"
+        android:title="@string/accessibility_notification_alarm_vibration_category_title"
+        android:persistent="false">
 
         <SwitchPreferenceCompat
-            android:key="vibration_preference_notification"
+            android:key="toggle_notification_vibration_intensity"
             android:title="@string/accessibility_notification_vibration_title"
             app:keywords="@string/keywords_notification_vibration"
             app:controller="com.android.settings.accessibility.NotificationVibrationTogglePreferenceController" />
 
         <SwitchPreferenceCompat
-            android:key="vibration_preference_alarm"
+            android:key="toggle_alarm_vibration_intensity"
             android:title="@string/accessibility_alarm_vibration_title"
             app:keywords="@string/keywords_alarm_vibration"
             app:controller="com.android.settings.accessibility.AlarmVibrationTogglePreferenceController" />
@@ -62,23 +64,24 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="vibration_category_haptics"
-        android:title="@string/accessibility_interactive_haptics_category_title">
+        android:key="toggle_vibration_category_haptics"
+        android:title="@string/accessibility_interactive_haptics_category_title"
+        android:persistent="false">
 
         <SwitchPreferenceCompat
-            android:key="vibration_preference_touch"
+            android:key="toggle_haptic_feedback_intensity"
             android:title="@string/accessibility_touch_vibration_title"
             app:keywords="@string/keywords_touch_vibration"
             app:controller="com.android.settings.accessibility.HapticFeedbackTogglePreferenceController" />
 
         <SwitchPreferenceCompat
-            android:key="vibration_preference_media"
+            android:key="toggle_media_vibration_intensity"
             android:title="@string/accessibility_media_vibration_title"
             app:keywords="@string/keywords_media_vibration"
             app:controller="com.android.settings.accessibility.MediaVibrationTogglePreferenceController" />
 
         <SwitchPreferenceCompat
-            android:key="vibration_preference_keyboard"
+            android:key="toggle_keyboard_vibration_enabled"
             android:title="@string/accessibility_keyboard_vibration_title"
             app:keywords="@string/keywords_keyboard_vibration"
             app:controller="com.android.settings.accessibility.KeyboardVibrationTogglePreferenceController"/>

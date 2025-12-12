@@ -18,6 +18,8 @@ package com.android.settings;
 
 import static android.content.Intent.EXTRA_USER;
 import static android.content.Intent.EXTRA_USER_ID;
+import static android.hardware.devicestate.DeviceState.PROPERTY_FOLDABLE_DISPLAY_CONFIGURATION_INNER_PRIMARY;
+import static android.hardware.devicestate.DeviceState.PROPERTY_FOLDABLE_DISPLAY_CONFIGURATION_OUTER_PRIMARY;
 import static android.os.UserManager.USER_TYPE_FULL_SYSTEM;
 import static android.os.UserManager.USER_TYPE_PROFILE_MANAGED;
 import static android.os.UserManager.USER_TYPE_PROFILE_PRIVATE;
@@ -61,6 +63,8 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 import android.hardware.biometrics.BiometricManager;
 import android.hardware.biometrics.SensorProperties;
+import android.hardware.devicestate.DeviceState;
+import android.hardware.devicestate.DeviceStateManager;
 import android.hardware.face.Face;
 import android.hardware.face.FaceManager;
 import android.hardware.face.FaceSensorPropertiesInternal;
@@ -75,7 +79,6 @@ import android.os.BatteryManager;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Flags;
 import android.os.IBinder;
 import android.os.INetworkManagementService;
 import android.os.RemoteException;
@@ -165,11 +168,6 @@ public final class Utils extends com.android.settingslib.Utils {
             "device_identifier_access_restrictions_disabled";
 
     /**
-     * Whether to show location indicators.
-     */
-    public static final String PROPERTY_LOCATION_INDICATORS_ENABLED = "location_indicators_enabled";
-
-    /**
      * Whether to show location indicator settings in developer options.
      */
     public static final String PROPERTY_LOCATION_INDICATOR_SETTINGS_ENABLED =
@@ -214,9 +212,36 @@ public final class Utils extends com.android.settingslib.Utils {
      * Returns whether the device is voice-capable (meaning, it is also a phone).
      */
     public static boolean isVoiceCapable(Context context) {
+        if (isTelephonyDisabled(context)) return false;
         final TelephonyManager telephony =
                 (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        return telephony != null && telephony.isVoiceCapable();
+        return telephony != null && telephony.isDeviceVoiceCapable();
+    }
+
+    /**
+     * Returns whether the device is mobile data capable.
+     */
+    public static boolean isMobileDataCapable(Context context) {
+        if (isTelephonyDisabled(context)) return false;
+        final TelephonyManager telephony = context.getSystemService(TelephonyManager.class);
+        return telephony != null && telephony.isDataCapable();
+    }
+
+    /**
+     * Returns whether the device is SMS capable.
+     */
+    public static boolean isSmsMessagingCapable(@NonNull Context context) {
+        if (isTelephonyDisabled(context)) return false;
+        final TelephonyManager telephony = context.getSystemService(TelephonyManager.class);
+        return telephony != null && telephony.isDeviceSmsCapable();
+    }
+
+    /**
+     * Returns whether telephony features are completely disabled in the app, regardless
+     * of the TelephonyManager reported capabilities or the PackageManager flags declared.
+     */
+    private static boolean isTelephonyDisabled(Context context) {
+        return !context.getResources().getBoolean(R.bool.config_show_sim_info);
     }
 
     /**
@@ -425,10 +450,6 @@ public final class Utils extends com.android.settingslib.Utils {
         final List<UserHandle> userProfiles = userManager.getUserProfiles();
         String umUserType = getUmUserType(userType);
         for (UserHandle profile : userProfiles) {
-            if (!com.android.settings.flags.Flags.utilsReturnUserHandleForCurrentUserId()
-                    && profile.getIdentifier() == UserHandle.myUserId()) {
-                continue;
-            }
             final UserInfo userInfo = userManager.getUserInfo(profile.getIdentifier());
             if (Objects.equals(umUserType, userInfo.userType)) {
                 return profile;
@@ -593,14 +614,20 @@ public final class Utils extends com.android.settingslib.Utils {
         return null;
     }
 
-   /**
-    * Returns true if the user provided is in the same profiles group as the current user.
-    */
-   private static boolean isProfileOf(UserManager um, UserHandle otherUser) {
-       if (um == null || otherUser == null) return false;
-       return (UserHandle.myUserId() == otherUser.getIdentifier())
-               || um.getUserProfiles().contains(otherUser);
-   }
+    /** Returns true if the user provided is in the same profiles group as the current user. */
+    private static boolean isProfileOf(UserManager um, UserHandle otherUser) {
+        if (um == null || otherUser == null) return false;
+        // The supervising profile is a parentless profile which is considered a valid profile
+        // for all full users.
+        final boolean isSupervisingProfile =
+                android.multiuser.Flags.allowSupervisingProfile()
+                        && um.getUserInfo(otherUser.getIdentifier())
+                                .userType
+                                .equals(UserManager.USER_TYPE_PROFILE_SUPERVISING);
+        return (UserHandle.myUserId() == otherUser.getIdentifier())
+                || um.getUserProfiles().contains(otherUser)
+                || isSupervisingProfile;
+    }
 
     /**
      * Queries for the UserInfo of a user. Returns null if the user doesn't exist (was removed).
@@ -776,6 +803,16 @@ public final class Utils extends com.android.settingslib.Utils {
         final int[] profileIds = um.getProfileIdsWithDisabled(UserHandle.myUserId());
         if (ArrayUtils.contains(profileIds, userId)) {
             return userId;
+        }
+        if (android.multiuser.Flags.allowSupervisingProfile()) {
+            for (UserInfo info : um.getUsers()) {
+                // The supervising profile is a parentless profile, and is therefore considered a
+                // valid profile for any full user.
+                if (info.id == userId
+                        && info.userType.equals(UserManager.USER_TYPE_PROFILE_SUPERVISING)) {
+                    return userId;
+                }
+            }
         }
         throw new SecurityException("Given user id " + userId + " does not belong to user "
                 + UserHandle.myUserId());
@@ -962,6 +999,62 @@ public final class Utils extends com.android.settingslib.Utils {
             }
         }
         return false;
+    }
+
+    /**
+     * Returns {@code true} if the device is potentially a foldable device, {@code false} otherwise.
+     * Note: Relies on device state properties (newer APIs) or internal resources (older fallback,
+     * less reliable).
+     *
+     * @param context The application or activity context.
+     * @return {@code true} if the device appears to be foldable, {@code false} otherwise.
+     */
+    public static boolean isDeviceFoldable(@NonNull Context context) {
+        if (android.hardware.devicestate.feature.flags.Flags.deviceStatePropertyMigration()) {
+            return isDeviceFoldablePostMigration(context);
+        } else {
+            return isDeviceFoldableLegacy(context);
+        }
+    }
+
+    private static boolean isDeviceFoldablePostMigration(Context context) {
+        DeviceStateManager deviceStateManager = context.getSystemService(DeviceStateManager.class);
+        if (deviceStateManager == null) {
+            Log.w(TAG, "DeviceStateManager is not available.");
+            return false;
+        }
+
+        List<DeviceState> supportedStates = deviceStateManager.getSupportedDeviceStates();
+        if (supportedStates == null) {
+            Log.w(TAG, "getSupportedDeviceStates returned null.");
+            return false; // Should not happen, but defensive check
+        }
+
+        for (DeviceState state : supportedStates) {
+            boolean hasOuterProperty =
+                    state.hasProperty(PROPERTY_FOLDABLE_DISPLAY_CONFIGURATION_OUTER_PRIMARY);
+            boolean hasInnerProperty =
+                    state.hasProperty(PROPERTY_FOLDABLE_DISPLAY_CONFIGURATION_INNER_PRIMARY);
+
+            if (hasOuterProperty || hasInnerProperty) {
+                return true;
+            }
+        }
+
+        return false; // No foldable state properties found
+    }
+
+    private static boolean isDeviceFoldableLegacy(Context context) {
+        try {
+            return context.getResources().getIntArray(
+                    com.android.internal.R.array.config_foldedDeviceStates).length > 0;
+        } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "Error accessing internal resource config_foldedDeviceStates.", e);
+            return false;
+        } catch (Exception e) {
+            Log.e(TAG, "Unexpected error checking legacy foldable state.", e);
+            return false;
+        }
     }
 
     /**
@@ -1270,9 +1363,7 @@ public final class Utils extends com.android.settingslib.Utils {
         for (UserHandle userHandle : profiles) {
             UserProperties userProperties = userManager.getUserProperties(userHandle);
             if (userProperties.getShowInSettings() == UserProperties.SHOW_IN_SETTINGS_SEPARATE) {
-                if (Flags.allowPrivateProfile()
-                        && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                        && userProperties.getShowInQuietMode()
+                if (userProperties.getShowInQuietMode()
                         == UserProperties.SHOW_IN_QUIET_MODE_HIDDEN) {
                     if (!userManager.isQuietModeEnabled(userHandle)) {
                         return true;
@@ -1423,8 +1514,20 @@ public final class Utils extends com.android.settingslib.Utils {
     public static boolean isPrivateProfile(int userId, @NonNull Context context) {
         final UserManager userManager = context.getSystemService(UserManager.class);
         UserInfo userInfo = userManager.getUserInfo(userId);
-        return Flags.allowPrivateProfile() && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                && userInfo.isPrivateProfile();
+        return !Objects.isNull(userInfo) && userInfo.isPrivateProfile();
+    }
+
+    /**
+     * Returns true if the userId is the supervising profile, false otherwise.
+     */
+    public static boolean isSupervisingProfile(int userId, @NonNull Context context) {
+        if (!android.multiuser.Flags.allowSupervisingProfile()) {
+            return false;
+        }
+        final UserManager userManager = context.getSystemService(UserManager.class);
+        UserInfo userInfo = userManager.getUserInfo(userId);
+        return !Objects.isNull(userInfo)
+                && userInfo.userType.equals(UserManager.USER_TYPE_PROFILE_SUPERVISING);
     }
 
     /**
@@ -1513,8 +1616,7 @@ public final class Utils extends com.android.settingslib.Utils {
             Log.e(TAG, "Biometric Manager is null.");
             return BiometricStatus.NOT_ACTIVE;
         }
-        if (android.hardware.biometrics.Flags.mandatoryBiometrics()
-                && !biometricsAuthenticationRequested) {
+        if (!biometricsAuthenticationRequested) {
             final UserManager userManager = context.getSystemService(
                     UserManager.class);
             final int status = biometricManager.canAuthenticate(getEffectiveUserId(
@@ -1604,10 +1706,8 @@ public final class Utils extends com.android.settingslib.Utils {
     private static Intent getIntentForBiometricAuthentication(Resources resources,
             int effectiveUserId, boolean hideBackground, @Nullable Intent data) {
         final Intent intent = new Intent();
-        if (android.hardware.biometrics.Flags.mandatoryBiometrics()) {
-            intent.putExtra(BIOMETRIC_PROMPT_AUTHENTICATORS,
-                    BiometricManager.Authenticators.IDENTITY_CHECK);
-        }
+        intent.putExtra(BIOMETRIC_PROMPT_AUTHENTICATORS,
+                BiometricManager.Authenticators.IDENTITY_CHECK);
         intent.putExtra(BIOMETRIC_PROMPT_NEGATIVE_BUTTON_TEXT,
                 resources.getString(R.string.cancel));
         intent.putExtra(KeyguardManager.EXTRA_DESCRIPTION,

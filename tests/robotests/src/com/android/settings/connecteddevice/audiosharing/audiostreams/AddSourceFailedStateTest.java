@@ -47,6 +47,7 @@ public class AddSourceFailedStateTest {
     @Mock private AudioStreamPreference mPreference;
     @Mock private AudioStreamsProgressCategoryController mController;
     @Mock private AudioStreamsHelper mHelper;
+    @Mock private AudioStreamScanHelper mScanHelper;
     private FakeFeatureFactory mFeatureFactory;
     private AddSourceFailedState mInstance;
 
@@ -84,7 +85,7 @@ public class AddSourceFailedStateTest {
         when(mPreference.getSourceOriginForLogging())
                 .thenReturn(SourceOriginForLogging.QR_CODE_SCAN_SETTINGS);
 
-        mInstance.performAction(mPreference, mController, mHelper);
+        mInstance.onEnter(mPreference, mController, mHelper, mScanHelper);
 
         verify(mFeatureFactory.metricsFeatureProvider)
                 .action(

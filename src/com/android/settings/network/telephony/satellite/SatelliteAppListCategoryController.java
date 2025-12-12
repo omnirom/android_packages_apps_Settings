@@ -19,6 +19,8 @@ package com.android.settings.network.telephony.satellite;
 import static android.telephony.CarrierConfigManager.CARRIER_ROAMING_NTN_CONNECT_MANUAL;
 import static android.telephony.CarrierConfigManager.KEY_CARRIER_ROAMING_NTN_CONNECT_TYPE_INT;
 import static android.telephony.CarrierConfigManager.KEY_SATELLITE_ENTITLEMENT_SUPPORTED_BOOL;
+import static android.telephony.CarrierConfigManager.SATELLITE_DATA_SUPPORT_BANDWIDTH_CONSTRAINED;
+import static android.telephony.CarrierConfigManager.SATELLITE_DATA_SUPPORT_ONLY_RESTRICTED;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -49,6 +51,7 @@ public class SatelliteAppListCategoryController extends TelephonyBasePreferenceC
     private boolean mIsSmsAvailable;
     private boolean mIsDataAvailable;
     private boolean mIsSatelliteEligible;
+    private int mDataMode = SATELLITE_DATA_SUPPORT_ONLY_RESTRICTED;
     private PersistableBundle mConfigBundle = new PersistableBundle();
 
     public SatelliteAppListCategoryController(
@@ -58,13 +61,17 @@ public class SatelliteAppListCategoryController extends TelephonyBasePreferenceC
     }
 
     /** Initialize the necessary applications' data */
-    public void init(int subId, @NonNull PersistableBundle configBundle, boolean isSmsAvailable,
-            boolean isDataAvailable) {
+    public void init(int subId, @NonNull PersistableBundle configBundle) {
         mSubId = subId;
         mConfigBundle = configBundle;
+        mPackageNameList = getSatelliteDataOptimizedApps();
+    }
+
+    void setCarrierRoamingNtnAvailability(boolean isSmsAvailable, boolean isDataAvailable,
+            int dataMode) {
         mIsSmsAvailable = isSmsAvailable;
         mIsDataAvailable = isDataAvailable;
-        mPackageNameList = getSatelliteDataOptimizedApps();
+        mDataMode = dataMode;
         mIsSatelliteEligible = isSatelliteEligible();
     }
 
@@ -95,9 +102,9 @@ public class SatelliteAppListCategoryController extends TelephonyBasePreferenceC
         }
         Log.d(TAG, "Supported apps have " + mPackageNameList.size());
 
-        return mIsDataAvailable && !mPackageNameList.isEmpty()
-                ? AVAILABLE_UNSEARCHABLE
-                : CONDITIONALLY_UNAVAILABLE;
+        return mIsDataAvailable
+                && mDataMode == SATELLITE_DATA_SUPPORT_BANDWIDTH_CONSTRAINED
+                && !mPackageNameList.isEmpty() ? AVAILABLE_UNSEARCHABLE : CONDITIONALLY_UNAVAILABLE;
     }
 
     @VisibleForTesting

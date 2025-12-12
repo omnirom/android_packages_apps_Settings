@@ -47,9 +47,6 @@ public class AccessibilityFragmentUtils {
      * is not intended for use with generic {@link RecyclerView}s.
      */
     public static RecyclerView addCollectionInfoToAccessibilityDelegate(RecyclerView recyclerView) {
-        if (!Flags.toggleFeatureFragmentCollectionInfo()) {
-            return recyclerView;
-        }
         final RecyclerViewAccessibilityDelegate delegate =
                 recyclerView.getCompatAccessibilityDelegate();
         if (delegate == null) {

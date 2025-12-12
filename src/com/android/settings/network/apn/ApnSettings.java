@@ -48,7 +48,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
 
 import com.android.settings.R;
-import com.android.settings.RestrictedSettingsFragment;
+import com.android.settings.dashboard.RestrictedDashboardFragment;
 import com.android.settings.network.telephony.SubscriptionRepository;
 import com.android.settings.spa.SpaActivity;
 import com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
@@ -59,7 +59,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Handle each different apn setting. */
-public class ApnSettings extends RestrictedSettingsFragment
+// LINT.IfChange
+public class ApnSettings extends RestrictedDashboardFragment
         implements Preference.OnPreferenceChangeListener {
     static final String TAG = "ApnSettings";
 
@@ -113,8 +114,7 @@ public class ApnSettings extends RestrictedSettingsFragment
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         final Activity activity = getActivity();
-        mSubId = activity.getIntent().getIntExtra(SUB_ID,
-                SubscriptionManager.INVALID_SUBSCRIPTION_ID);
+        mSubId = activity.getIntent().getIntExtra(SUB_ID, getSubIdFromBindingArgs());
         mPreferredApnRepository = new PreferredApnRepository(activity, mSubId);
 
         setIfOnlyAvailableForAdmins(true);
@@ -137,18 +137,22 @@ public class ApnSettings extends RestrictedSettingsFragment
     }
 
     @Override
+    protected int getPreferenceScreenResId() {
+        return R.xml.apn_settings;
+    }
+
+    @Override
+    protected String getLogTag() {
+        return TAG;
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         getEmptyTextView().setText(com.android.settingslib.R.string.apn_settings_not_available);
         mUnavailable = isUiRestricted();
         setHasOptionsMenu(!mUnavailable);
-        if (mUnavailable) {
-            addPreferencesFromResource(R.xml.placeholder_prefs);
-            return;
-        }
-
-        addPreferencesFromResource(R.xml.apn_settings);
     }
 
     @Override
@@ -167,7 +171,7 @@ public class ApnSettings extends RestrictedSettingsFragment
 
         mPreferredApnRepository.collectPreferredApn(viewLifecycleOwner, (preferredApn) -> {
             mPreferredApnKey = preferredApn;
-            final PreferenceGroup apnPreferenceList = findPreference(APN_LIST);
+            final PreferenceGroup apnPreferenceList = getPreferenceScreen();
             for (int i = 0; i < apnPreferenceList.getPreferenceCount(); i++) {
                 ApnPreference apnPreference = (ApnPreference) apnPreferenceList.getPreference(i);
                 apnPreference.setIsChecked(apnPreference.getKey().equals(preferredApn));
@@ -200,6 +204,19 @@ public class ApnSettings extends RestrictedSettingsFragment
         return null;
     }
 
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return ApnSettingsScreen.KEY;
+    }
+
+    private int getSubIdFromBindingArgs() {
+        final Bundle args = getPreferenceScreenBindingArgs(requireContext());
+        if (args == null) {
+            return SubscriptionManager.INVALID_SUBSCRIPTION_ID;
+        }
+        return args.getInt(SUB_ID, SubscriptionManager.INVALID_SUBSCRIPTION_ID);
+    }
+
     private void fillList() {
         final Uri simApnUri = Uri.withAppendedPath(Telephony.Carriers.SIM_APN_URI,
                 String.valueOf(mSubId));
@@ -218,7 +235,7 @@ public class ApnSettings extends RestrictedSettingsFragment
                 Telephony.Carriers.DEFAULT_SORT_ORDER);
 
         if (cursor != null) {
-            final PreferenceGroup apnPrefList = findPreference(APN_LIST);
+            final PreferenceGroup apnPrefList = getPreferenceScreen();
             apnPrefList.removeAll();
 
             final ArrayList<ApnPreference> apnList = new ArrayList<ApnPreference>();
@@ -364,3 +381,4 @@ public class ApnSettings extends RestrictedSettingsFragment
         return 0;
     }
 }
+// LINT.ThenChange(ApnSettingsScreen.kt)

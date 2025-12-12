@@ -16,19 +16,20 @@
 
 package com.android.settings.accessibility;
 
-import static com.google.common.truth.Truth.assertThat;
-
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
+import android.view.View;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
+import androidx.preference.PreferenceViewHolder;
 import androidx.test.core.app.ApplicationProvider;
+
+import com.android.settingslib.widget.ButtonPreference;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -52,7 +53,6 @@ public class ViewAllBluetoothDevicesPreferenceControllerTest {
     @Rule
     public MockitoRule mocks = MockitoJUnit.rule();
     private final Context mContext = ApplicationProvider.getApplicationContext();
-    private final Preference mPreference = new Preference(mContext);
     private final String TEST_KEY = "test_key";
 
     @Spy
@@ -61,12 +61,18 @@ public class ViewAllBluetoothDevicesPreferenceControllerTest {
     @Mock
     private PreferenceScreen mScreen;
     private ViewAllBluetoothDevicesPreferenceController mController;
+    private ButtonPreference mPreference = new ButtonPreference(mContext);
+
 
     @Before
     public void setUp() {
         mActivity = Robolectric.setupActivity(FragmentActivity.class);
         when(mFragment.getContext()).thenReturn(mContext);
         when(mFragment.getActivity()).thenReturn(mActivity);
+        View rootView = View.inflate(mContext, mPreference.getLayoutResource(), null);
+        mPreference.setKey(TEST_KEY);
+        mPreference.onBindViewHolder(PreferenceViewHolder.createInstanceForTests(rootView));
+        when(mScreen.findPreference(TEST_KEY)).thenReturn(mPreference);
 
         mController = spy(new ViewAllBluetoothDevicesPreferenceController(mActivity, TEST_KEY));
         mController.init(mFragment);
@@ -74,13 +80,11 @@ public class ViewAllBluetoothDevicesPreferenceControllerTest {
     }
 
     @Test
-    public void handlePreferenceTreeClick_expectedPreference_launchConnectedDevicePage() {
+    public void buttonPreferenceOnClick_launchConnectedDevicePage() {
         doNothing().when(mController).launchConnectedDevicePage();
-        mPreference.setKey(TEST_KEY);
 
-        boolean status = mController.handlePreferenceTreeClick(mPreference);
+        mPreference.getButton().callOnClick();
 
         verify(mController).launchConnectedDevicePage();
-        assertThat(status).isTrue();
     }
 }

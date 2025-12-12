@@ -120,4 +120,13 @@ public class CdmaSubscriptionPreferenceControllerTest {
         doReturn("").when(mController).getRilSubscriptionTypes();
         assertThat(mController.deviceSupportsNvAndRuim()).isFalse();
     }
+
+    @Test
+    public void updateState_isAirplaneModeOn_disabled() {
+        mController.notifyAirplaneModeChanged(true);
+
+        mController.updateState(mPreference);
+
+        assertThat(mPreference.isEnabled()).isFalse();
+    }
 }

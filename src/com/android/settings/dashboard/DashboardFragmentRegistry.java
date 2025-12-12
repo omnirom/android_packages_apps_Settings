@@ -41,12 +41,13 @@ import com.android.settings.homepage.TopLevelSettings;
 import com.android.settings.network.NetworkDashboardFragment;
 import com.android.settings.notification.ConfigureNotificationSettings;
 import com.android.settings.notification.SoundSettings;
-import com.android.settings.notification.zen.ZenModeSettings;
 import com.android.settings.privacy.PrivacyDashboardFragment;
 import com.android.settings.safetycenter.MoreSecurityPrivacyFragment;
+import com.android.settings.safetycenter.ui.PrivacyControlsFragment;
 import com.android.settings.security.LockscreenDashboardFragment;
 import com.android.settings.security.SecurityAdvancedSettings;
 import com.android.settings.security.SecuritySettings;
+import com.android.settings.sound.MediaControlsSettings;
 import com.android.settings.supervision.SupervisionDashboardFragment;
 import com.android.settings.system.SystemDashboardFragment;
 import com.android.settingslib.drawer.CategoryKey;
@@ -109,8 +110,6 @@ public class DashboardFragmentRegistry {
                 CategoryKey.CATEGORY_NOTIFICATIONS);
         PARENT_TO_CATEGORY_KEY_MAP.put(LockscreenDashboardFragment.class.getName(),
                 CategoryKey.CATEGORY_SECURITY_LOCKSCREEN);
-        PARENT_TO_CATEGORY_KEY_MAP.put(ZenModeSettings.class.getName(),
-                CategoryKey.CATEGORY_DO_NOT_DISTURB);
         PARENT_TO_CATEGORY_KEY_MAP.put(GestureSettings.class.getName(),
                 CategoryKey.CATEGORY_GESTURES);
         PARENT_TO_CATEGORY_KEY_MAP.put(NightDisplaySettings.class.getName(),
@@ -135,6 +134,10 @@ public class DashboardFragmentRegistry {
                 CategoryKey.CATEGORY_MORE_SECURITY_PRIVACY_SETTINGS);
         PARENT_TO_CATEGORY_KEY_MAP.put(SupervisionDashboardFragment.class.getName(),
                 CategoryKey.CATEGORY_SUPERVISION);
+        PARENT_TO_CATEGORY_KEY_MAP.put(MediaControlsSettings.class.getName(),
+                CategoryKey.CATEGORY_MEDIA_CONTROLS_SETTINGS);
+        PARENT_TO_CATEGORY_KEY_MAP.put(PrivacyControlsFragment.class.getName(),
+                CategoryKey.CATEGORY_PRIVACY_CONTROLS);
 
         CATEGORY_KEY_TO_PARENT_MAP = new ArrayMap<>(PARENT_TO_CATEGORY_KEY_MAP.size());
 

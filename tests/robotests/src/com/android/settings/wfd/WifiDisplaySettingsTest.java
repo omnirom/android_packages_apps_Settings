@@ -18,7 +18,10 @@ package com.android.settings.wfd;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.app.Activity;
@@ -28,12 +31,15 @@ import android.hardware.display.DisplayManager;
 import android.media.MediaRouter;
 import android.net.wifi.p2p.WifiP2pManager;
 
+import androidx.preference.PreferenceScreen;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 
 @RunWith(RobolectricTestRunner.class)
 public class WifiDisplaySettingsTest {
@@ -44,10 +50,15 @@ public class WifiDisplaySettingsTest {
     private MediaRouter mMediaRouter;
     @Mock
     private PackageManager mPackageManager;
+    @Mock
+    private PreferenceScreen mPreferenceScreen;
+
+    private Context mContext;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        mContext = RuntimeEnvironment.application;
         when(mActivity.getSystemService(Context.MEDIA_ROUTER_SERVICE)).thenReturn(mMediaRouter);
         when(mActivity.getPackageManager()).thenReturn(mPackageManager);
         when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_WIFI_DIRECT)).thenReturn(true);
@@ -74,5 +85,23 @@ public class WifiDisplaySettingsTest {
             .thenReturn(mock(WifiP2pManager.class));
 
         assertThat(WifiDisplaySettings.isAvailable(mActivity)).isTrue();
+    }
+
+    @Test
+    public void updateZeroState_noPreference_addZeroStage() {
+        when(mPreferenceScreen.getPreferenceCount()).thenReturn(0);
+
+        WifiDisplaySettings.updateZeroState(mContext, mPreferenceScreen);
+
+        verify(mPreferenceScreen).addPreference(any());
+    }
+
+    @Test
+    public void updateZeroState_hasPreference_neverAddZeroStage() {
+        when(mPreferenceScreen.getPreferenceCount()).thenReturn(1);
+
+        WifiDisplaySettings.updateZeroState(mContext, mPreferenceScreen);
+
+        verify(mPreferenceScreen, never()).addPreference(any());
     }
 }

@@ -185,7 +185,7 @@
                     android:title="@string/clear_adb_keys" />
 
         <com.android.settingslib.PrimarySwitchPreference
-            android:fragment="com.android.settings.development.WirelessDebuggingFragment"
+            android:fragment="com.android.settings.development.AdbWirelessDebuggingFragment"
             android:key="toggle_adb_wireless"
             android:title="@string/enable_adb_wireless"
             android:summary="@string/enable_adb_wireless_summary"
@@ -216,6 +216,11 @@
             android:key="enable_verbose_vendor_logging"
             android:title="@string/enable_verbose_vendor_logging"
             android:summary="@string/enable_verbose_vendor_logging_summary" />
+
+        <SwitchPreferenceCompat
+            android:key="verbose_printer_logging"
+            android:summary="@string/verbose_printer_logging_summary"
+            android:title="@string/verbose_printer_logging_title" />
 
         <SwitchPreferenceCompat
             android:key="automatic_system_server_heap_dumps"
@@ -397,11 +402,6 @@
             android:entryValues="@array/bluetooth_leaudio_mode_values"/>
 
         <SwitchPreferenceCompat
-            android:key="bluetooth_leaudio_broadcast_ui"
-            android:title="@string/bluetooth_leaudio_broadcast_ui"
-            android:summary="@string/bluetooth_leaudio_broadcast_ui_summary"/>
-
-        <SwitchPreferenceCompat
             android:key="bluetooth_show_leaudio_device_details"
             android:title="@string/bluetooth_show_leaudio_device_details"/>
 
@@ -512,7 +512,7 @@
             android:title="@string/show_key_presses"
             android:summary="@string/show_key_presses_summary" />
 
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:key="touchpad_visualizer"
             android:title="@string/touchpad_visualizer"
             android:summary="@string/touchpad_visualizer_summary" />
@@ -551,8 +551,14 @@
             android:entries="@array/transition_animation_scale_entries"
             android:entryValues="@array/transition_animation_scale_values" />
 
+        <!--
+            RemoveAnimationsPreference uses the same pref key.
+            To prevent the search indexes overwritten by developer options,
+            change the one in developer options as the key in developer settings doesn't need to
+            tie to a SettingsProvider key.
+        -->
         <ListPreference
-            android:key="animator_duration_scale"
+            android:key="animator_duration_scale_pref_key"
             android:title="@string/animator_duration_scale_title"
             android:entries="@array/animator_duration_scale_entries"
             android:entryValues="@array/animator_duration_scale_values" />
@@ -583,6 +589,11 @@
             android:key="transparent_navigation_bar"
             android:title="@string/transparent_navigation_bar"
             android:summary="@string/transparent_navigation_bar_summary" />
+
+        <com.android.settings.accessibility.TextCursorBlinkRateSliderPreference
+            android:key="accessibility_text_cursor_blink_interval_ms"
+            android:title="@string/accessibility_text_cursor_blink_rate_title"
+            android:summary="@string/accessibility_text_cursor_blink_rate_summary" />
 
     </PreferenceCategory>
 
@@ -744,11 +755,6 @@
             android:title="@string/force_allow_on_external"
             android:summary="@string/force_allow_on_external_summary" />
 
-        <SwitchPreferenceCompat
-            android:key="back_navigation_animation"
-            android:title="@string/back_navigation_animation"
-            android:summary="@string/back_navigation_animation_summary" />
-
         <Preference
             android:key="reset_shortcut_manager_throttling"
             android:title="@string/reset_shortcut_manager_throttling" />
@@ -852,13 +858,6 @@
             android:key="enable_gnss_raw_meas_full_tracking"
             android:title="@string/enable_gnss_raw_meas_full_tracking"
             android:summary="@string/enable_gnss_raw_meas_full_tracking_summary" />
-
-        <SwitchPreferenceCompat
-            android:title="@string/location_indicator_settings_title"
-            android:summary="@string/location_indicator_settings_description"
-            android:defaultValue="true"
-            android:key="location_indicator_settings"
-            settings:controller="com.android.settings.location.LocationIndicatorsPreferenceController"/>
     </PreferenceCategory>
 
     <PreferenceCategory

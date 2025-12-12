@@ -100,23 +100,11 @@ public class BluetoothDetailsCompanionAppsControllerTest extends
         setupFakeLabelAndInfo(packageName, appName);
 
         final int associationId = mAssociations.size() + 1;
-        final AssociationInfo association = new AssociationInfo(
-                associationId,
-                /* userId */ 0,
-                packageName,
-                MacAddress.fromString(mCachedDevice.getAddress()),
-                /* displayName */ null,
-                /* deviceProfile */ "",
-                /* associatedDevice */ null,
-                /* selfManaged */ false,
-                /* notifyOnDeviceNearby */ true,
-                /* revoked */ false,
-                /* pending */ false,
-                /* timeApprovedMs */ System.currentTimeMillis(),
-                /* lastTimeConnected */ Long.MAX_VALUE,
-                /* systemDataSyncFlags */ -1,
-                /* deviceIcon */ null,
-                /* deviceId */ null);
+        final AssociationInfo association =
+                new AssociationInfo.Builder(associationId, /* userId */ 0, packageName)
+                        .setDeviceMacAddress(MacAddress.fromString(mCachedDevice.getAddress()))
+                        .setNotifyOnDeviceNearby(true)
+                        .build();
 
         mAssociations.add(association);
         showScreen(mController);

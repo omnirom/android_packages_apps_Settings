@@ -20,9 +20,7 @@ import static com.android.settingslib.flags.Flags.FLAG_AUDIO_SHARING_HYSTERESIS_
 import static com.android.settingslib.flags.Flags.FLAG_ENABLE_LE_AUDIO_SHARING;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.never;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -61,7 +59,8 @@ public class AudioStreamsProgressCategoryCallbackTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     private final Context mContext = ApplicationProvider.getApplicationContext();
-    @Mock private AudioStreamsProgressCategoryController mController;
+    @Mock private AudioStreamsProgressCategoryCallback.SourceStateListener mSourceStateListener;
+    @Mock private AudioStreamsProgressCategoryCallback.ScanStateListener mScanStateListener;
     @Mock private BluetoothDevice mDevice;
     @Mock private BluetoothLeBroadcastReceiveState mState;
     @Mock private BluetoothLeBroadcastMetadata mMetadata;
@@ -78,7 +77,9 @@ public class AudioStreamsProgressCategoryCallbackTest {
                 BluetoothStatusCodes.FEATURE_SUPPORTED);
         shadowBluetoothAdapter.setIsLeAudioBroadcastAssistantSupported(
                 BluetoothStatusCodes.FEATURE_SUPPORTED);
-        mCallback = new AudioStreamsProgressCategoryCallback(mController);
+        mCallback = new AudioStreamsProgressCategoryCallback();
+        mCallback.setSourceStateListener(mSourceStateListener);
+        mCallback.setScanStateListener(mScanStateListener);
     }
 
     @Test
@@ -88,7 +89,7 @@ public class AudioStreamsProgressCategoryCallbackTest {
         when(mState.getBisSyncState()).thenReturn(bisSyncState);
         mCallback.onReceiveStateChanged(mDevice, /* sourceId= */ 0, mState);
 
-        verify(mController).handleSourceStreaming(any(), any());
+        verify(mSourceStateListener).handleSourceStreaming(any(), any());
     }
 
     @Test
@@ -103,7 +104,7 @@ public class AudioStreamsProgressCategoryCallbackTest {
         when(mSourceDevice.getAddress()).thenReturn(address);
         mCallback.onReceiveStateChanged(mDevice, /* sourceId= */ 0, mState);
 
-        verify(mController).handleSourcePaused(any(), any());
+        verify(mSourceStateListener).handleSourcePaused(any(), any());
     }
 
     @Test
@@ -114,53 +115,35 @@ public class AudioStreamsProgressCategoryCallbackTest {
                 .thenReturn(BluetoothLeBroadcastReceiveState.BIG_ENCRYPTION_STATE_BAD_CODE);
         mCallback.onReceiveStateChanged(mDevice, /* sourceId= */ 0, mState);
 
-        verify(mController).handleSourceConnectBadCode(any());
+        verify(mSourceStateListener).handleSourceConnectBadCode(any());
     }
 
     @Test
     public void testOnSearchStartFailed() {
         mCallback.onSearchStartFailed(/* reason= */ 0);
 
-        verify(mController).showToast(anyString());
-        verify(mController).setScanning(anyBoolean());
-    }
-
-    @Test
-    public void testOnSearchStartFailed_ignoreAlreadyInTargetState() {
-        mCallback.onSearchStartFailed(/* reason= */
-                BluetoothStatusCodes.ERROR_ALREADY_IN_TARGET_STATE);
-
-        verify(mController, never()).showToast(anyString());
-        verify(mController, never()).setScanning(anyBoolean());
+        verify(mScanStateListener).scanningStartFailed(eq(0));
     }
 
     @Test
     public void testOnSearchStarted() {
         mCallback.onSearchStarted(/* reason= */ 0);
 
-        verify(mController).setScanning(anyBoolean());
+        verify(mScanStateListener).scanningStarted();
     }
 
     @Test
     public void testOnSearchStopFailed() {
         mCallback.onSearchStopFailed(/* reason= */ 0);
 
-        verify(mController).showToast(anyString());
-    }
-
-    @Test
-    public void testOnSearchStopFailed_ignoreAlreadyInTargetState() {
-        mCallback.onSearchStopFailed(/* reason= */
-                BluetoothStatusCodes.ERROR_ALREADY_IN_TARGET_STATE);
-
-        verify(mController, never()).showToast(anyString());
+        verify(mScanStateListener).scanningStopFailed(eq(0));
     }
 
     @Test
     public void testOnSearchStopped() {
         mCallback.onSearchStopped(/* reason= */ 0);
 
-        verify(mController).setScanning(anyBoolean());
+        verify(mScanStateListener).scanningStopped();
     }
 
     @Test
@@ -168,34 +151,27 @@ public class AudioStreamsProgressCategoryCallbackTest {
         when(mMetadata.getBroadcastId()).thenReturn(1);
         mCallback.onSourceAddFailed(mDevice, mMetadata, /* reason= */ 0);
 
-        verify(mController).handleSourceFailedToConnect(1);
+        verify(mSourceStateListener).handleSourceFailedToConnect(1);
     }
 
     @Test
     public void testOnSourceFound() {
         mCallback.onSourceFound(mMetadata);
 
-        verify(mController).handleSourceFound(mMetadata);
+        verify(mSourceStateListener).handleSourceFound(mMetadata);
     }
 
     @Test
     public void testOnSourceLost() {
         mCallback.onSourceLost(/* broadcastId= */ 1);
 
-        verify(mController).handleSourceLost(1);
-    }
-
-    @Test
-    public void testOnSourceRemoveFailed() {
-        mCallback.onSourceRemoveFailed(mDevice, /* sourceId= */ 0, /* reason= */ 0);
-
-        verify(mController).showToast(anyString());
+        verify(mSourceStateListener).handleSourceLost(1);
     }
 
     @Test
     public void testOnSourceRemoved() {
         mCallback.onSourceRemoved(mDevice, /* sourceId= */ 0, /* reason= */ 0);
 
-        verify(mController).handleSourceRemoved();
+        verify(mSourceStateListener).handleSourceRemoved();
     }
 }

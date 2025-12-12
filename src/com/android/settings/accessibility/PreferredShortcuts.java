@@ -17,7 +17,6 @@
 package com.android.settings.accessibility;
 
 import static com.android.internal.accessibility.common.ShortcutConstants.UserShortcutType.DEFAULT;
-import static com.android.internal.accessibility.common.ShortcutConstants.UserShortcutType.SOFTWARE;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -40,23 +39,6 @@ public final class PreferredShortcuts {
 
     private static final String ACCESSIBILITY_PERF = "accessibility_prefs";
     private static final String USER_SHORTCUT_TYPE = "user_shortcut_type";
-
-    /**
-     * Retrieves the user preferred shortcut types for the given {@code componentName} from
-     * SharedPreferences. If the user doesn't have a preferred shortcut,
-     * {@link SOFTWARE} is returned.
-     *
-     * @param context       {@link Context} to access the {@link SharedPreferences}
-     * @param componentName Name of the service or activity, should be the format of {@link
-     *                      ComponentName#flattenToString()}.
-     * @return {@link UserShortcutType}
-     */
-    @UserShortcutType
-    public static int retrieveUserShortcutType(
-            @NonNull Context context, @NonNull String componentName) {
-        return retrieveUserShortcutType(
-                context, componentName, SOFTWARE);
-    }
 
     /**
      * Retrieves the user preferred shortcut types for the given {@code componentName} from

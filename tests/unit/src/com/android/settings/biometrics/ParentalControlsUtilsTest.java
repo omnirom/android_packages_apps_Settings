@@ -31,10 +31,10 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import android.app.admin.DevicePolicyManager;
+import android.app.admin.EnforcingAdmin;
 import android.app.supervision.SupervisionManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.hardware.biometrics.BiometricAuthenticator;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.platform.test.annotations.RequiresFlagsDisabled;
@@ -44,7 +44,6 @@ import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import androidx.annotation.Nullable;
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.settingslib.RestrictedLockUtils;
 
@@ -56,12 +55,35 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-@RunWith(AndroidJUnit4.class)
+import java.util.Arrays;
+import java.util.Collection;
+
+import platform.test.runner.parameterized.Parameter;
+import platform.test.runner.parameterized.ParameterizedAndroidJunit4;
+import platform.test.runner.parameterized.Parameters;
+
+@RunWith(ParameterizedAndroidJunit4.class)
 public class ParentalControlsUtilsTest {
     @Rule
     public final CheckFlagsRule checkFlags = DeviceFlagsValueProvider.createCheckFlagsRule();
     @Rule
     public final MockitoRule mocks = MockitoJUnit.rule();
+
+    @Parameter(0)
+    public int modality;
+    @Parameter(1)
+    public int keyguardDisabledFeature;
+
+    /**
+     * @return a collection of test parameters
+     */
+    @Parameters(name = "modality={0}, keyguardDisabledFeature={1}")
+    public static Collection<Object[]> data() {
+        return Arrays.asList(
+                new Object[][]{{TYPE_FINGERPRINT, DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT},
+                        {TYPE_FACE, DevicePolicyManager.KEYGUARD_DISABLE_FACE},
+                        {TYPE_IRIS, DevicePolicyManager.KEYGUARD_DISABLE_IRIS}});
+    }
 
     private Context mContext;
     @Mock
@@ -79,97 +101,120 @@ public class ParentalControlsUtilsTest {
     }
 
     /**
-     * Helper that sets the appropriate mocks and testing behavior before returning the actual
-     * EnforcedAdmin from ParentalControlsUtils.
+     * Helper that sets the appropriate mocks and testing behavior for legacy behaviour of
+     * supervision with PO/DO admin.
      */
-    @Nullable
-    private RestrictedLockUtils.EnforcedAdmin getEnforcedAdminForCombination(
-            @Nullable ComponentName supervisionComponentName,
-            @BiometricAuthenticator.Modality int modality, int keyguardDisabledFlags) {
-        when(mDpm.getProfileOwnerOrDeviceOwnerSupervisionComponent(any(UserHandle.class)))
-                .thenReturn(supervisionComponentName);
-        when(mDpm.getKeyguardDisabledFeatures(eq(supervisionComponentName)))
-                .thenReturn(keyguardDisabledFlags);
-
-        return ParentalControlsUtils.parentConsentRequiredInternal(
-                mContext, modality, new UserHandle(UserHandle.myUserId()));
+    private void setUpMockSupervisionLegacy(@Nullable ComponentName supervisionComponentName,
+            int keyguardDisabledFlags) {
+        when(mDpm.getProfileOwnerOrDeviceOwnerSupervisionComponent(
+                any(UserHandle.class))).thenReturn(supervisionComponentName);
+        when(mDpm.getKeyguardDisabledFeatures(eq(supervisionComponentName))).thenReturn(
+                keyguardDisabledFlags);
     }
 
     /**
-     * Helper that sets the appropriate mocks and testing behavior before returning the actual
-     * EnforcedAdmin from ParentalControlsUtils.
+     * Helper that sets the appropriate mocks and testing behavior with SupervisionManager.
      */
-    @Nullable
-    private RestrictedLockUtils.EnforcedAdmin getEnforcedAdminForSupervision(
-            boolean supervisionEnabled,
-            @BiometricAuthenticator.Modality int modality,
-            int keyguardDisabledFlags) {
+    private void setUpMockSupervision(boolean supervisionEnabled, int keyguardDisabledFlags) {
         when(mDpm.getKeyguardDisabledFeatures(eq(null))).thenReturn(keyguardDisabledFlags);
         when(mSm.isSupervisionEnabledForUser(anyInt())).thenReturn(supervisionEnabled);
         when(mSm.getActiveSupervisionAppPackage()).thenReturn(
                 supervisionEnabled ? mSupervisionComponent.getPackageName() : null);
-
-        return ParentalControlsUtils.parentConsentRequiredInternal(
-                mContext, modality, new UserHandle(UserHandle.myUserId()));
     }
 
     @Test
     @RequiresFlagsDisabled(android.app.supervision.flags.Flags.FLAG_DEPRECATE_DPM_SUPERVISION_APIS)
     public void testEnforcedAdmin_whenDpmDisablesBiometricsAndSupervisionComponentExists() {
-        int[][] tests = {
-                {TYPE_FINGERPRINT, DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT},
-                {TYPE_FACE, DevicePolicyManager.KEYGUARD_DISABLE_FACE},
-                {TYPE_IRIS, DevicePolicyManager.KEYGUARD_DISABLE_IRIS},
-        };
+        setUpMockSupervisionLegacy(mSupervisionComponent, keyguardDisabledFeature);
 
-        for (int i = 0; i < tests.length; i++) {
-            RestrictedLockUtils.EnforcedAdmin admin = getEnforcedAdminForCombination(
-                    mSupervisionComponent, tests[i][0] /* modality */,
-                    tests[i][1] /* keyguardDisableFlags */);
-            assertNotNull(admin);
-            assertEquals(UserManager.DISALLOW_BIOMETRIC, admin.enforcedRestriction);
-            assertEquals(mSupervisionComponent, admin.component);
-        }
+        RestrictedLockUtils.EnforcedAdmin admin =
+                ParentalControlsUtils.parentConsentRequiredInternal(mContext, modality,
+                        new UserHandle(UserHandle.myUserId()));
+
+        assertNotNull(admin);
+        assertEquals(UserManager.DISALLOW_BIOMETRIC, admin.enforcedRestriction);
+        assertEquals(mSupervisionComponent, admin.component);
     }
 
     @Test
     @RequiresFlagsEnabled(android.app.supervision.flags.Flags.FLAG_DEPRECATE_DPM_SUPERVISION_APIS)
     public void testEnforcedAdmin_whenDpmDisablesBiometricsAndSupervisionIsEnabled() {
-        int[][] tests = {
-                {TYPE_FINGERPRINT, DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT},
-                {TYPE_FACE, DevicePolicyManager.KEYGUARD_DISABLE_FACE},
-                {TYPE_IRIS, DevicePolicyManager.KEYGUARD_DISABLE_IRIS},
-        };
+        setUpMockSupervision(/* supervisionEnabled= */ true, keyguardDisabledFeature);
 
-        for (int i = 0; i < tests.length; i++) {
-            RestrictedLockUtils.EnforcedAdmin admin = getEnforcedAdminForSupervision(
-                    /* supervisionEnabled= */ true,
-                    /* modality= */ tests[i][0],
-                    /* keyguardDisableFlags= */ tests[i][1]);
+        RestrictedLockUtils.EnforcedAdmin admin =
+                ParentalControlsUtils.parentConsentRequiredInternal(mContext, modality,
+                        new UserHandle(UserHandle.myUserId()));
 
-            assertNotNull(admin);
-            assertEquals(UserManager.DISALLOW_BIOMETRIC, admin.enforcedRestriction);
-            assertNull(admin.component);
-        }
+        assertNotNull(admin);
+        assertEquals(UserManager.DISALLOW_BIOMETRIC, admin.enforcedRestriction);
+        assertNull(admin.component);
     }
 
     @Test
     @RequiresFlagsDisabled(android.app.supervision.flags.Flags.FLAG_DEPRECATE_DPM_SUPERVISION_APIS)
     public void testNoEnforcedAdmin_whenNoSupervisionComponent() {
         // Even if DPM flag exists, returns null EnforcedAdmin when no supervision component exists
-        RestrictedLockUtils.EnforcedAdmin admin = getEnforcedAdminForCombination(
-                null /* supervisionComponentName */, TYPE_FINGERPRINT,
-                DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT);
+        setUpMockSupervisionLegacy(/*supervisionComponentName=*/null, keyguardDisabledFeature);
+
+        RestrictedLockUtils.EnforcedAdmin admin =
+                ParentalControlsUtils.parentConsentRequiredInternal(mContext, modality,
+                        new UserHandle(UserHandle.myUserId()));
         assertNull(admin);
     }
 
     @Test
     @RequiresFlagsEnabled(android.app.supervision.flags.Flags.FLAG_DEPRECATE_DPM_SUPERVISION_APIS)
     public void testNoEnforcedAdmin_whenSupervisionIsDisabled() {
-        RestrictedLockUtils.EnforcedAdmin admin = getEnforcedAdminForSupervision(
-                /* supervisionEnabled= */ false,
-                TYPE_FINGERPRINT,
-                DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT);
+        setUpMockSupervision(/* supervisionEnabled= */ false, keyguardDisabledFeature);
+
+        RestrictedLockUtils.EnforcedAdmin admin =
+                ParentalControlsUtils.parentConsentRequiredInternal(mContext, modality,
+                        new UserHandle(UserHandle.myUserId()));
+
+        assertNull(admin);
+    }
+
+    @Test
+    @RequiresFlagsDisabled(android.app.supervision.flags.Flags.FLAG_DEPRECATE_DPM_SUPERVISION_APIS)
+    public void testEnforcingAdmin_whenDpmDisablesBiometricsAndSupervisionComponentExists() {
+        setUpMockSupervisionLegacy(mSupervisionComponent, keyguardDisabledFeature);
+
+        EnforcingAdmin admin = ParentalControlsUtils.getParentalSupervisionAdminInternal(mContext,
+                modality, new UserHandle(UserHandle.myUserId()));
+        assertNotNull(admin);
+        assertEquals(mSupervisionComponent, admin.getComponentName());
+    }
+
+    @Test
+    @RequiresFlagsEnabled(android.app.supervision.flags.Flags.FLAG_DEPRECATE_DPM_SUPERVISION_APIS)
+    public void testEnforcingAdmin_whenDpmDisablesBiometricsAndSupervisionIsEnabled() {
+        setUpMockSupervision(/* supervisionEnabled= */true, keyguardDisabledFeature);
+
+        EnforcingAdmin admin = ParentalControlsUtils.getParentalSupervisionAdminInternal(mContext,
+                modality, new UserHandle(UserHandle.myUserId()));
+        assertNotNull(admin);
+        assertNull(admin.getComponentName());
+    }
+
+    @Test
+    @RequiresFlagsDisabled(android.app.supervision.flags.Flags.FLAG_DEPRECATE_DPM_SUPERVISION_APIS)
+    public void testNoEnforcingAdmin_whenNoSupervisionComponent() {
+        // Even if DPM flag exists, returns null EnforcedAdmin when no supervision component exists
+        setUpMockSupervisionLegacy(/*supervisionComponentName=*/null, keyguardDisabledFeature);
+
+        EnforcingAdmin admin = ParentalControlsUtils.getParentalSupervisionAdminInternal(mContext,
+                modality, new UserHandle(UserHandle.myUserId()));
+
+        assertNull(admin);
+    }
+
+    @Test
+    @RequiresFlagsEnabled(android.app.supervision.flags.Flags.FLAG_DEPRECATE_DPM_SUPERVISION_APIS)
+    public void testNoEnforcingAdmin_whenSupervisionIsDisabled() {
+        setUpMockSupervision(/* supervisionEnabled= */false, keyguardDisabledFeature);
+
+        EnforcingAdmin admin = ParentalControlsUtils.getParentalSupervisionAdminInternal(mContext,
+                modality, new UserHandle(UserHandle.myUserId()));
 
         assertNull(admin);
     }

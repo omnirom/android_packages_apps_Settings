@@ -22,11 +22,11 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.os.UserManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
@@ -84,8 +84,9 @@ public class WifiEntryPreference extends RestrictedPreference implements
     WifiEntryPreference(@NonNull Context context, @NonNull WifiEntry wifiEntry,
             @NonNull WifiUtils.InternetIconInjector iconInjector) {
         super(context);
-
-        setLayoutResource(R.layout.preference_access_point);
+        int layoutResId = SettingsThemeHelper.isExpressiveTheme(getContext())
+                ? R.layout.preference_access_point_expressive : R.layout.preference_access_point;
+        setLayoutResource(layoutResId);
         mFrictionSld = getFrictionStateListDrawable();
         mIconInjector = iconInjector;
         setWifiEntry(wifiEntry);
@@ -126,20 +127,6 @@ public class WifiEntryPreference extends RestrictedPreference implements
         view.findViewById(com.android.settingslib.widget.preference.twotarget.R.id.two_target_divider)
                 .setVisibility(View.INVISIBLE);
 
-        // Set padding to expressive style
-        if (SettingsThemeHelper.isExpressiveTheme(getContext())) {
-            final int paddingStart = getContext().getResources().getDimensionPixelSize(
-                    com.android.settingslib.widget.theme
-                            .R.dimen.settingslib_expressive_space_extrasmall4);
-            final int paddingEnd = getContext().getResources().getDimensionPixelSize(
-                    com.android.settingslib.widget.theme
-                            .R.dimen.settingslib_expressive_space_small3);
-            LinearLayout iconFrame = (LinearLayout) view.findViewById(
-                    com.android.settingslib.R.id.icon_frame);
-            iconFrame.setPaddingRelative(paddingStart, iconFrame.getPaddingTop(),
-                    paddingEnd, iconFrame.getPaddingBottom());
-        }
-
         // Enable the icon button when the help string in this WifiEntry is not null.
         final ImageButton imageButton = (ImageButton) view.findViewById(R.id.icon_button);
         final ImageView frictionImageView = (ImageView) view.findViewById(
@@ -158,6 +145,20 @@ public class WifiEntryPreference extends RestrictedPreference implements
             if (frictionImageView != null) {
                 frictionImageView.setVisibility(View.GONE);
             }
+        } else if (displaySharedIcon()) {
+            if (frictionImageView != null) {
+                frictionImageView.setVisibility(View.VISIBLE);
+                final Drawable drawableShared =
+                        getDrawable(com.android.settings.R.drawable.ic_share);
+                drawableShared.setTintList(
+                        Utils.getColorAttr(getContext(), android.R.attr.colorControlNormal));
+                ((ImageView) frictionImageView).setImageDrawable(drawableShared);
+            }
+
+            if (imageButton != null) {
+                imageButton.setVisibility(View.VISIBLE);
+                bindFrictionImage(imageButton);
+            }
         } else {
             imageButton.setVisibility(View.GONE);
 
@@ -166,6 +167,21 @@ public class WifiEntryPreference extends RestrictedPreference implements
                 bindFrictionImage(frictionImageView);
             }
         }
+    }
+
+    private boolean displaySharedIcon() {
+        if (!com.android.settings.connectivity.Flags.wifiMultiuser()
+                || mWifiEntry.getConnectedState() == WifiEntry.CONNECTED_STATE_CONNECTED) {
+            return false;
+        }
+
+        UserManager userManager = getContext().getSystemService(UserManager.class);
+        if (userManager.getUserCount() <= 1) {
+            return false;
+        }
+
+        return (mWifiEntry.getWifiConfiguration() == null)
+                ? false : mWifiEntry.getWifiConfiguration().shared;
     }
 
     /**

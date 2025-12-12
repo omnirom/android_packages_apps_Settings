@@ -19,6 +19,7 @@
     <string name="show_dev_countdown" msgid="2936506773086395069">"{count,plural, =1{Ti manca # passaggio per diventare sviluppatore.}other{Ti mancano # passaggi per diventare sviluppatore.}}"</string>
     <string name="show_dev_on" msgid="2840850085134853754">"Ora sei uno sviluppatore."</string>
     <string name="show_dev_already" msgid="7041756429707644630">"Non è necessario, sei già uno sviluppatore."</string>
+    <string name="wifi_conflict_dialog_message" msgid="3192435395074097168">"Al momento sei connesso a una rete <xliff:g id="SHARED_0">%1$s</xliff:g> con lo stesso nome. Quando fai il cambio, ti disconnetterai da <xliff:g id="SHARED_1">%2$s</xliff:g> per poi riconnetterti alla rete <xliff:g id="PRIVATE">%3$s</xliff:g>. Potresti rimanere temporaneamente senza connessione a internet."</string>
     <string name="language_empty_list_user_restricted" msgid="8050367405839231863">"Non sei autorizzato a modificare la lingua del dispositivo."</string>
     <string name="credentials_settings_not_available" msgid="7433088409177429600">"Le credenziali non sono disponibili per questo utente"</string>
     <string name="vpn_replace_always_on_vpn_disable_message" msgid="4299175336198481106">"Sei già connesso a una rete VPN sempre attiva. Se ti connetti a un\'altra rete, la rete VPN attuale verrà sostituita e la modalità sempre attiva verrà disattivata."</string>

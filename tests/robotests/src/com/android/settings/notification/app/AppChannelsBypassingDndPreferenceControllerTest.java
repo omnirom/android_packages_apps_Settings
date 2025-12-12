@@ -170,7 +170,6 @@ public class AppChannelsBypassingDndPreferenceControllerTest {
 
     @Test
     public void displayPreference_duplicateChannelName_AddsGroupNameAsSummary() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_DEDUPE_DND_SETTINGS_CHANNELS);
         NotificationChannelGroup group1 = new NotificationChannelGroup("group1_id", "Group1");
         NotificationChannelGroup group2 = new NotificationChannelGroup("group2_id", "Group2");
 

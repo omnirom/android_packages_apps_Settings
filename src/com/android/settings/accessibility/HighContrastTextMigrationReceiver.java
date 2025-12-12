@@ -193,7 +193,7 @@ public class HighContrastTextMigrationReceiver extends BroadcastReceiver {
         settingsIntent.setPackage(context.getPackageName());
         Bundle fragmentArgs = new Bundle();
         fragmentArgs.putString(EXTRA_FRAGMENT_ARG_KEY,
-                TextReadingPreferenceFragment.HIGH_TEXT_CONTRAST_KEY);
+                Settings.Secure.ACCESSIBILITY_HIGH_TEXT_CONTRAST_ENABLED);
         fragmentArgs.putInt(TextReadingPreferenceFragment.EXTRA_LAUNCHED_FROM,
                 TextReadingPreferenceFragment.EntryPoint.HIGH_CONTRAST_TEXT_NOTIFICATION);
         settingsIntent.putExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS, fragmentArgs);

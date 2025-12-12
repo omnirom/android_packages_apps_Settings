@@ -1,0 +1,5 @@
+include /OWNERS
+
+# Settings for locale and language
+per-file Language*.java = file:/src/com/android/settings/localepicker/OWNERS
+per-file UserPreferredLocale*.java = file:/src/com/android/settings/localepicker/OWNERS

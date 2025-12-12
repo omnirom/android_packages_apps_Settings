@@ -41,7 +41,8 @@
             android:layout_centerHorizontal="true"
             android:textSize="18sp"
             android:textColor="@android:color/white"
-            android:text="@string/fingerprint_check_enroll_touch_sensor"/>
+            android:text="@string/fingerprint_check_enroll_touch_sensor"
+            android:accessibilityLiveRegion="assertive"/>
 
     </com.android.settings.biometrics.fingerprint.UdfpsCheckEnrolledView>
 </RelativeLayout>

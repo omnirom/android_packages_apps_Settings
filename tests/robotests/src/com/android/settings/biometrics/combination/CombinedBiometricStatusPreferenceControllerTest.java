@@ -16,21 +16,32 @@
 
 package com.android.settings.biometrics.combination;
 
+import static android.app.admin.UnknownAuthority.UNKNOWN_AUTHORITY;
+
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
+import android.app.Application;
+import android.app.admin.EnforcingAdmin;
+import android.app.admin.flags.Flags;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.face.FaceManager;
 import android.hardware.fingerprint.FingerprintManager;
+import android.os.UserHandle;
 import android.os.UserManager;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.preference.Preference;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.internal.widget.LockPatternUtils;
 import com.android.settings.testutils.FakeFeatureFactory;
@@ -39,6 +50,7 @@ import com.android.settingslib.RestrictedPreference;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -51,6 +63,9 @@ import org.robolectric.shadows.ShadowApplication;
 public class CombinedBiometricStatusPreferenceControllerTest {
 
     private static final String TEST_PREF_KEY = "foo";
+
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Mock
     private LockPatternUtils mLockPatternUtils;
@@ -79,10 +94,12 @@ public class CombinedBiometricStatusPreferenceControllerTest {
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
         when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)).thenReturn(true);
         when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_FACE)).thenReturn(true);
-        ShadowApplication.getInstance().setSystemService(Context.FINGERPRINT_SERVICE,
-                mFingerprintManager);
-        ShadowApplication.getInstance().setSystemService(Context.FACE_SERVICE, mFaceManager);
-        ShadowApplication.getInstance().setSystemService(Context.USER_SERVICE, mUm);
+        shadowOf((Application) ApplicationProvider.getApplicationContext())
+                .setSystemService(Context.FINGERPRINT_SERVICE, mFingerprintManager);
+        shadowOf((Application) ApplicationProvider.getApplicationContext())
+                .setSystemService(Context.FACE_SERVICE, mFaceManager);
+        shadowOf((Application) ApplicationProvider.getApplicationContext())
+                .setSystemService(Context.USER_SERVICE, mUm);
         mPreference = new Preference(mContext);
         mFeatureFactory = FakeFeatureFactory.setupForTest();
         when(mFeatureFactory.securityFeatureProvider.getLockPatternUtils(mContext))
@@ -93,6 +110,7 @@ public class CombinedBiometricStatusPreferenceControllerTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_POLICY_TRANSPARENCY_REFACTOR_ENABLED)
     public void updateState_parentalConsentRequired_preferenceDisabled() {
         when(mFaceManager.isHardwareDetected()).thenReturn(true);
         when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
@@ -104,7 +122,25 @@ public class CombinedBiometricStatusPreferenceControllerTest {
         mController.updateStateInternal(admin);
         verify(restrictedPreference).setDisabledByAdmin(eq(admin));
 
-        mController.updateStateInternal(null);
-        verify(restrictedPreference).setDisabledByAdmin(eq(null));
+        mController.updateStateInternal((RestrictedLockUtils.EnforcedAdmin) null);
+        verify(restrictedPreference)
+                .setDisabledByAdmin(eq((RestrictedLockUtils.EnforcedAdmin) null));
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_POLICY_TRANSPARENCY_REFACTOR_ENABLED,
+            Flags.FLAG_SET_KEYGUARD_DISABLED_FEATURES_COEXISTENCE})
+    public void updateState_dpmFlagEnabled_parentalConsentRequired_preferenceDisabled() {
+        when(mFaceManager.isHardwareDetected()).thenReturn(true);
+        when(mFingerprintManager.isHardwareDetected()).thenReturn(true);
+        RestrictedPreference restrictedPreference = mock(RestrictedPreference.class);
+        EnforcingAdmin admin = new EnforcingAdmin("package", UNKNOWN_AUTHORITY, UserHandle.CURRENT);
+
+        mController.mPreference = restrictedPreference;
+        mController.updateStateInternal(admin);
+        verify(restrictedPreference).setDisabledByAdmin(eq(admin));
+
+        mController.updateStateInternal((EnforcingAdmin) null);
+        verify(restrictedPreference).setDisabledByAdmin(eq((EnforcingAdmin) null));
     }
 }

@@ -26,11 +26,8 @@ import static org.mockito.Mockito.verify;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.hardware.usb.UsbPortStatus;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
-
-import com.android.settings.flags.Flags;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -83,7 +80,6 @@ public class UsbDetailsControllerTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_ENABLE_AUTH_CHALLENGE_FOR_USB_PREFERENCES)
     public void requireAuthAndExecute_whenAlreadyAuthenticated_executes() {
         mUsbDetailsFragment.setUserAuthenticated(true);
         Runnable action = () -> mUsbBackend.setDataRole(UsbPortStatus.DATA_ROLE_HOST);
@@ -94,7 +90,6 @@ public class UsbDetailsControllerTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_ENABLE_AUTH_CHALLENGE_FOR_USB_PREFERENCES)
     public void requireAuthAndExecute_authenticatesAndExecutes() {
         mUsbDetailsFragment.setUserAuthenticated(false);
         setAuthPassesAutomatically();

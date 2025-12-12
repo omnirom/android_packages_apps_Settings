@@ -23,6 +23,8 @@ import static com.android.settings.applications.AppStateNotificationBridge.FILTE
 import static com.android.settings.applications.AppStateNotificationBridge.FILTER_APP_NOTIFICATION_RECENCY;
 import static com.android.settings.applications.AppStateNotificationBridge.FREQUENCY_NOTIFICATION_COMPARATOR;
 import static com.android.settings.applications.AppStateNotificationBridge.RECENT_NOTIFICATION_COMPARATOR;
+import static com.android.settingslib.metadata.BundlesKt.marshallParcel;
+import static com.android.settingslib.metadata.BundlesKt.unmarshallParcel;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -44,7 +46,6 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.UserInfo;
 import android.os.Looper;
-import android.os.Parcel;
 import android.os.RemoteException;
 import android.os.UserHandle;
 import android.os.UserManager;
@@ -113,11 +114,8 @@ public class AppStateNotificationBridgeTest {
 
     private UsageEvents getUsageEvents(List<Event> events) {
         UsageEvents usageEvents = new UsageEvents(events, new String[] {PKG1, PKG2});
-        Parcel parcel = Parcel.obtain();
-        parcel.setDataPosition(0);
-        usageEvents.writeToParcel(parcel, 0);
-        parcel.setDataPosition(0);
-        return UsageEvents.CREATOR.createFromParcel(parcel);
+        byte[] bytes = marshallParcel(usageEvents);
+        return unmarshallParcel(bytes, UsageEvents.CREATOR);
     }
 
     @Test

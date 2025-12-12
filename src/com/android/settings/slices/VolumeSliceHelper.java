@@ -36,6 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * This helper is to handle the broadcasts of volume slices
  */
+@Deprecated(forRemoval = true)
 public class VolumeSliceHelper {
 
     private static final String TAG = "VolumeSliceHelper";

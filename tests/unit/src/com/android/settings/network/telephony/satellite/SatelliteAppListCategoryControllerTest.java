@@ -19,6 +19,9 @@ package com.android.settings.network.telephony.satellite;
 import static android.telephony.CarrierConfigManager.CARRIER_ROAMING_NTN_CONNECT_MANUAL;
 import static android.telephony.CarrierConfigManager.KEY_CARRIER_ROAMING_NTN_CONNECT_TYPE_INT;
 import static android.telephony.CarrierConfigManager.KEY_SATELLITE_ENTITLEMENT_SUPPORTED_BOOL;
+import static android.telephony.CarrierConfigManager.SATELLITE_DATA_SUPPORT_ALL;
+import static android.telephony.CarrierConfigManager.SATELLITE_DATA_SUPPORT_BANDWIDTH_CONSTRAINED;
+import static android.telephony.CarrierConfigManager.SATELLITE_DATA_SUPPORT_ONLY_RESTRICTED;
 
 import static com.android.settings.core.BasePreferenceController.AVAILABLE_UNSEARCHABLE;
 import static com.android.settings.core.BasePreferenceController.CONDITIONALLY_UNAVAILABLE;
@@ -98,7 +101,9 @@ public class SatelliteAppListCategoryControllerTest {
                 return PACKAGE_NAMES;
             }
         };
-        mController.init(TEST_SUB_ID, mPersistableBundle, true, true);
+        mController.init(TEST_SUB_ID, mPersistableBundle);
+        mController.setCarrierRoamingNtnAvailability(true, true,
+                SATELLITE_DATA_SUPPORT_BANDWIDTH_CONSTRAINED);
         PreferenceManager preferenceManager = new PreferenceManager(mContext);
         PreferenceScreen preferenceScreen = preferenceManager.createPreferenceScreen(mContext);
         PreferenceCategory category = new PreferenceCategory(mContext);
@@ -109,7 +114,6 @@ public class SatelliteAppListCategoryControllerTest {
 
         assertThat(category.getPreferenceCount() == MAXIMUM_OF_PREFERENCE_AMOUNT).isTrue();
     }
-
 
     @Test
     @EnableFlags(Flags.FLAG_SATELLITE_25Q4_APIS)
@@ -125,7 +129,9 @@ public class SatelliteAppListCategoryControllerTest {
                 return PACKAGE_NAMES;
             }
         };
-        mController.init(TEST_SUB_ID, mPersistableBundle, true, true);
+        mController.init(TEST_SUB_ID, mPersistableBundle);
+        mController.setCarrierRoamingNtnAvailability(true, true,
+                SATELLITE_DATA_SUPPORT_BANDWIDTH_CONSTRAINED);
 
         int result = mController.getAvailabilityStatus(TEST_SUB_ID);
 
@@ -146,7 +152,9 @@ public class SatelliteAppListCategoryControllerTest {
                 return List.of();
             }
         };
-        mController.init(TEST_SUB_ID, mPersistableBundle, true, true);
+        mController.init(TEST_SUB_ID, mPersistableBundle);
+        mController.setCarrierRoamingNtnAvailability(true, true,
+                SATELLITE_DATA_SUPPORT_BANDWIDTH_CONSTRAINED);
 
         int result = mController.getAvailabilityStatus(TEST_SUB_ID);
 
@@ -167,7 +175,8 @@ public class SatelliteAppListCategoryControllerTest {
                 return PACKAGE_NAMES;
             }
         };
-        mController.init(TEST_SUB_ID, mPersistableBundle, true, false);
+        mController.init(TEST_SUB_ID, mPersistableBundle);
+        mController.setCarrierRoamingNtnAvailability(true, false, -1);
 
         int result = mController.getAvailabilityStatus(TEST_SUB_ID);
 
@@ -189,7 +198,9 @@ public class SatelliteAppListCategoryControllerTest {
                 return PACKAGE_NAMES;
             }
         };
-        mController.init(TEST_SUB_ID, mPersistableBundle, true, true);
+        mController.init(TEST_SUB_ID, mPersistableBundle);
+        mController.setCarrierRoamingNtnAvailability(true, true,
+                SATELLITE_DATA_SUPPORT_BANDWIDTH_CONSTRAINED);
 
         int result = mController.getAvailabilityStatus(TEST_SUB_ID);
 
@@ -211,10 +222,60 @@ public class SatelliteAppListCategoryControllerTest {
                 return PACKAGE_NAMES;
             }
         };
-        mController.init(TEST_SUB_ID, mPersistableBundle, true, true);
+        mController.init(TEST_SUB_ID, mPersistableBundle);
+        mController.setCarrierRoamingNtnAvailability(true, true,
+                SATELLITE_DATA_SUPPORT_BANDWIDTH_CONSTRAINED);
 
         int result = mController.getAvailabilityStatus(TEST_SUB_ID);
 
         assertThat(result).isEqualTo(AVAILABLE_UNSEARCHABLE);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_SATELLITE_25Q4_APIS)
+    public void getAvailabilityStatus_conditionAllowedButDataUnconstrained_returnUnavailable() {
+        mPersistableBundle.putBoolean(KEY_SATELLITE_ENTITLEMENT_SUPPORTED_BOOL, true);
+        mController = new SatelliteAppListCategoryController(mContext, KEY) {
+            @Override
+            protected boolean isSatelliteEligible() {
+                return true;
+            }
+
+            @Override
+            protected List<String> getSatelliteDataOptimizedApps() {
+                return PACKAGE_NAMES;
+            }
+        };
+        mController.init(TEST_SUB_ID, mPersistableBundle);
+        mController.setCarrierRoamingNtnAvailability(true, true,
+                SATELLITE_DATA_SUPPORT_ALL);
+
+        int result = mController.getAvailabilityStatus(TEST_SUB_ID);
+
+        assertThat(result).isEqualTo(CONDITIONALLY_UNAVAILABLE);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_SATELLITE_25Q4_APIS)
+    public void getAvailabilityStatus_conditionAllowedButDataRestricted_returnUnavailable() {
+        mPersistableBundle.putBoolean(KEY_SATELLITE_ENTITLEMENT_SUPPORTED_BOOL, true);
+        mController = new SatelliteAppListCategoryController(mContext, KEY) {
+            @Override
+            protected boolean isSatelliteEligible() {
+                return true;
+            }
+
+            @Override
+            protected List<String> getSatelliteDataOptimizedApps() {
+                return PACKAGE_NAMES;
+            }
+        };
+        mController.init(TEST_SUB_ID, mPersistableBundle);
+        mController.setCarrierRoamingNtnAvailability(true, true,
+                SATELLITE_DATA_SUPPORT_ONLY_RESTRICTED);
+
+        int result = mController.getAvailabilityStatus(TEST_SUB_ID);
+
+        assertThat(result).isEqualTo(CONDITIONALLY_UNAVAILABLE);
     }
 }

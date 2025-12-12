@@ -63,11 +63,7 @@ public class UserAdapter extends BaseAdapter {
             UserInfo userInfo = um.getUserInfo(mUserHandle.getIdentifier());
             int tintColor = context.getColor(com.android.internal.R.color.materialColorPrimary);
 
-            if (userInfo.isManagedProfile()
-                    || (android.os.Flags.allowPrivateProfile()
-                        && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                        && android.multiuser.Flags.handleInterleavedSettingsForPrivateSpace()
-                        && userInfo.isPrivateProfile())) {
+            if (userInfo.isManagedProfile() || userInfo.isPrivateProfile()) {
                 mIcon = context.getPackageManager().getUserBadgeForDensityNoBackground(
                         userHandle, /* density= */ 0);
                 if (mIcon != null) {
@@ -91,10 +87,7 @@ public class UserAdapter extends BaseAdapter {
             } else if (mUserManager.isManagedProfile(userId)) {
                 return resources.getString(WORK_CATEGORY_HEADER,
                         () -> context.getString(com.android.settingslib.R.string.category_work));
-            } else if (android.os.Flags.allowPrivateProfile()
-                    && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                    && android.multiuser.Flags.handleInterleavedSettingsForPrivateSpace()
-                    && mUserManager.getUserInfo(userId).isPrivateProfile()) {
+            } else if (mUserManager.getUserInfo(userId).isPrivateProfile()) {
                 return resources.getString(PRIVATE_CATEGORY_HEADER,
                         () -> context.getString(com.android.settingslib.R.string.category_private));
             }

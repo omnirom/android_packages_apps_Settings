@@ -107,49 +107,57 @@ public class ConnectedBluetoothDeviceUpdaterTest {
     }
 
     @Test
-    public void onAudioModeChanged_hfpDeviceConnected_notInCall_addPreference() {
-        setUpDeviceUpdaterWithAudioMode(AudioManager.MODE_NORMAL);
+    public void setIsOngoingCall_hfpDeviceConnected_notInCall_addPreference() {
+        setUpDeviceUpdaterWithAudioMode(AudioManager.MODE_RINGTONE);
+        // setIsOngoingCall will override the audio mode
+        mBluetoothDeviceUpdater.setIsOngoingCall(false);
         when(mBluetoothDeviceUpdater.
                 isDeviceConnected(any(CachedBluetoothDevice.class))).thenReturn(true);
         when(mCachedBluetoothDevice.isConnectedHfpDevice()).thenReturn(true);
 
-        mBluetoothDeviceUpdater.onAudioModeChanged();
+        mBluetoothDeviceUpdater.forceUpdate();
 
         verify(mBluetoothDeviceUpdater).addPreference(mCachedBluetoothDevice);
     }
 
     @Test
-    public void onAudioModeChanged_hfpDeviceConnected_inCall_removePreference() {
-        setUpDeviceUpdaterWithAudioMode(AudioManager.MODE_IN_CALL);
+    public void setIsOngoingCall_hfpDeviceConnected_inCall_removePreference() {
+        setUpDeviceUpdaterWithAudioMode(AudioManager.MODE_NORMAL);
+        // setIsOngoingCall will override the audio mode
+        mBluetoothDeviceUpdater.setIsOngoingCall(true);
         when(mBluetoothDeviceUpdater.
                 isDeviceConnected(any(CachedBluetoothDevice.class))).thenReturn(true);
         when(mCachedBluetoothDevice.isConnectedHfpDevice()).thenReturn(true);
 
-        mBluetoothDeviceUpdater.onAudioModeChanged();
+        mBluetoothDeviceUpdater.forceUpdate();
 
         verify(mBluetoothDeviceUpdater).removePreference(mCachedBluetoothDevice);
     }
 
     @Test
-    public void onAudioModeChanged_a2dpDeviceConnected_notInCall_removePreference() {
-        setUpDeviceUpdaterWithAudioMode(AudioManager.MODE_NORMAL);
-        when(mBluetoothDeviceUpdater.
-                isDeviceConnected(any(CachedBluetoothDevice.class))).thenReturn(true);
-        when(mCachedBluetoothDevice.isConnectedA2dpDevice()).thenReturn(true);
-
-        mBluetoothDeviceUpdater.onAudioModeChanged();
-
-        verify(mBluetoothDeviceUpdater).removePreference(mCachedBluetoothDevice);
-    }
-
-    @Test
-    public void onAudioModeChanged_a2dpDeviceConnected_inCall_addPreference() {
+    public void setIsOngoingCall_a2dpDeviceConnected_notInCall_removePreference() {
         setUpDeviceUpdaterWithAudioMode(AudioManager.MODE_IN_CALL);
+        // setIsOngoingCall will override the audio mode
+        mBluetoothDeviceUpdater.setIsOngoingCall(false);
         when(mBluetoothDeviceUpdater.
                 isDeviceConnected(any(CachedBluetoothDevice.class))).thenReturn(true);
         when(mCachedBluetoothDevice.isConnectedA2dpDevice()).thenReturn(true);
 
-        mBluetoothDeviceUpdater.onAudioModeChanged();
+        mBluetoothDeviceUpdater.forceUpdate();
+
+        verify(mBluetoothDeviceUpdater).removePreference(mCachedBluetoothDevice);
+    }
+
+    @Test
+    public void setIsOngoingCall_a2dpDeviceConnected_inCall_addPreference() {
+        setUpDeviceUpdaterWithAudioMode(AudioManager.MODE_NORMAL);
+        // setIsOngoingCall will override the audio mode
+        mBluetoothDeviceUpdater.setIsOngoingCall(true);
+        when(mBluetoothDeviceUpdater.
+                isDeviceConnected(any(CachedBluetoothDevice.class))).thenReturn(true);
+        when(mCachedBluetoothDevice.isConnectedA2dpDevice()).thenReturn(true);
+
+        mBluetoothDeviceUpdater.forceUpdate();
 
         verify(mBluetoothDeviceUpdater).addPreference(mCachedBluetoothDevice);
     }

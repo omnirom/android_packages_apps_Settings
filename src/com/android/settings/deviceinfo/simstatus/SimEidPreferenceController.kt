@@ -28,11 +28,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import com.android.settings.R
+import com.android.settings.Utils
 import com.android.settings.core.BasePreferenceController
 import com.android.settings.deviceinfo.PhoneNumberUtil
-import com.android.settings.network.SubscriptionUtil
 import com.android.settingslib.CustomDialogPreferenceCompat
-import com.android.settingslib.Utils
 import com.android.settingslib.qrcode.QrCodeGenerator
 import com.android.settingslib.spaprivileged.framework.common.userManager
 import kotlinx.coroutines.CoroutineScope
@@ -45,6 +44,7 @@ import kotlinx.coroutines.withContext
  *
  * @param preferenceKey is the key for Preference
  */
+// LINT.IfChange
 class SimEidPreferenceController(context: Context, preferenceKey: String) :
     BasePreferenceController(context, preferenceKey) {
     private var slotSimStatus: SlotSimStatus? = null
@@ -64,12 +64,13 @@ class SimEidPreferenceController(context: Context, preferenceKey: String) :
      * Also check [getIsAvailableAndUpdateEid] for other availability check which retrieved
      * asynchronously later.
      */
-    override fun getAvailabilityStatus() = when {
-        !SubscriptionUtil.isSimHardwareVisible(mContext)
-            || Utils.isWifiOnly(mContext) -> UNSUPPORTED_ON_DEVICE
-        !mContext.userManager.isAdminUser -> DISABLED_FOR_USER
-        else -> AVAILABLE
-    }
+    override fun getAvailabilityStatus() =
+        when {
+            !Utils.isMobileDataCapable(mContext) && !Utils.isVoiceCapable(mContext) ->
+                UNSUPPORTED_ON_DEVICE
+            !mContext.userManager.isAdminUser -> DISABLED_FOR_USER
+            else -> AVAILABLE
+        }
 
     override fun displayPreference(screen: PreferenceScreen) {
         super.displayPreference(screen)
@@ -79,21 +80,15 @@ class SimEidPreferenceController(context: Context, preferenceKey: String) :
     override fun onViewCreated(viewLifecycleOwner: LifecycleOwner) {
         coroutineScope = viewLifecycleOwner.lifecycleScope
         coroutineScope?.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                update()
-            }
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) { update() }
         }
     }
 
     private suspend fun update() {
-        val isAvailable = withContext(Dispatchers.Default) {
-            getIsAvailableAndUpdateEid()
-        }
+        val isAvailable = withContext(Dispatchers.Default) { getIsAvailableAndUpdateEid() }
         preference.isVisible = isAvailable
         if (isAvailable) {
-            val title = withContext(Dispatchers.Default) {
-                getTitle()
-            }
+            val title = withContext(Dispatchers.Default) { getTitle() }
             preference.title = title
             preference.dialogTitle = title
             updateDialog()
@@ -107,17 +102,7 @@ class SimEidPreferenceController(context: Context, preferenceKey: String) :
 
     /** Constructs title string. */
     private fun getTitle(): String {
-        val slotSize = slotSimStatus?.size() ?: 0
-        if (slotSize <= 1) {
-            return mContext.getString(R.string.status_eid)
-        }
-        // Only append slot index to title when more than 1 is available
-        for (idxSlot in 0 until slotSize) {
-            val subInfo = slotSimStatus?.getSubscriptionInfo(idxSlot)
-            if (subInfo != null && subInfo.isEmbedded) {
-                return mContext.getString(R.string.eid_multi_sim, idxSlot + 1)
-            }
-        }
+        // Since there is the MEP feature, there is one EID item.
         return mContext.getString(R.string.status_eid)
     }
 
@@ -125,7 +110,7 @@ class SimEidPreferenceController(context: Context, preferenceKey: String) :
         val dialog = preference.dialog ?: return
         dialog.window?.setFlags(
             WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE
+            WindowManager.LayoutParams.FLAG_SECURE,
         )
         dialog.setCanceledOnTouchOutside(false)
         val textView = dialog.requireViewById<TextView>(R.id.esim_id_value)
@@ -140,9 +125,7 @@ class SimEidPreferenceController(context: Context, preferenceKey: String) :
 
     override fun handlePreferenceTreeClick(preference: Preference): Boolean {
         if (preference.key != preferenceKey) return false
-        this.preference.setOnShowListener {
-            coroutineScope?.launch { updateDialog() }
-        }
+        this.preference.setOnShowListener { coroutineScope?.launch { updateDialog() } }
         return true
     }
 
@@ -158,16 +141,19 @@ class SimEidPreferenceController(context: Context, preferenceKey: String) :
 
         /**
          * Gets the QR code for EID
+         *
          * @param eid is the EID string
          * @return a Bitmap of QR code
          */
-        private suspend fun getEidQrCode(eid: String): Bitmap? = withContext(Dispatchers.Default) {
-            try {
-                QrCodeGenerator.encodeQrCode(contents = eid, size = QR_CODE_SIZE)
-            } catch (exception: Exception) {
-                Log.w(TAG, "Error when creating QR code width $QR_CODE_SIZE", exception)
-                null
+        private suspend fun getEidQrCode(eid: String): Bitmap? =
+            withContext(Dispatchers.Default) {
+                try {
+                    QrCodeGenerator.encodeQrCode(contents = eid, size = QR_CODE_SIZE)
+                } catch (exception: Exception) {
+                    Log.w(TAG, "Error when creating QR code width $QR_CODE_SIZE", exception)
+                    null
+                }
             }
-        }
     }
 }
+// LINT.ThenChange(SimEidPreference.kt)

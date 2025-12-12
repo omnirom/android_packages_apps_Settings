@@ -23,7 +23,7 @@
             android:layout="@layout/cross_profiles_settings_entity_header"
             android:selectable="false"/>
 
-        <com.android.settings.widget.CardPreference
+        <com.android.settingslib.widget.CardPreference
             android:key="install_app_banner"
             android:icon="@drawable/ic_download_for_offline"
             android:gravity="top"/>

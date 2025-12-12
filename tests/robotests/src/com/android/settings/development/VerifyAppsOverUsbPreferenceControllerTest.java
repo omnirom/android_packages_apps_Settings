@@ -20,6 +20,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,12 +28,12 @@ import static org.mockito.Mockito.when;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.UserManager;
 import android.provider.Settings;
 import android.provider.Settings.Global;
 
 import androidx.preference.PreferenceScreen;
 
-import com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
 import com.android.settingslib.RestrictedSwitchPreference;
 
 import org.junit.Before;
@@ -57,10 +58,6 @@ public class VerifyAppsOverUsbPreferenceControllerTest {
     @Mock
     private RestrictedSwitchPreference mPreference;
 
-    @Mock
-    private VerifyAppsOverUsbPreferenceController.RestrictedLockUtilsDelegate
-            mRestrictedLockUtilsDelegate;
-
     private Context mContext;
     private VerifyAppsOverUsbPreferenceController mController;
 
@@ -80,8 +77,6 @@ public class VerifyAppsOverUsbPreferenceControllerTest {
         mContext = RuntimeEnvironment.application;
         when(mScreen.findPreference(anyString())).thenReturn(mPreference);
         mController = new VerifyAppsOverUsbPreferenceController(mContext);
-        ReflectionHelpers
-            .setField(mController, "mRestrictedLockUtils", mRestrictedLockUtilsDelegate);
         ReflectionHelpers.setField(mController, "mPackageManager", mPackageManager);
         mController.displayPreference(mScreen);
     }
@@ -94,15 +89,9 @@ public class VerifyAppsOverUsbPreferenceControllerTest {
                 .thenReturn(resolveInfos);
     }
 
-    private void setupEnforcedAdmin(EnforcedAdmin result) {
-        when(mRestrictedLockUtilsDelegate
-            .checkIfRestrictionEnforced(any(), anyString(), anyInt())).thenReturn(result);
-    }
-
     @Test
     public void updateState_settingEnabled_preferenceShouldBeChecked() {
         setupVerifyBroadcastReceivers(true);
-        setupEnforcedAdmin(null);
         mGlobals.set(Global.ADB_ENABLED, 1 /* setting enabled */)
                 .set(Global.PACKAGE_VERIFIER_INCLUDE_ADB, 1 /* setting enabled */);
         mController.updateState(mPreference);
@@ -112,7 +101,6 @@ public class VerifyAppsOverUsbPreferenceControllerTest {
     @Test
     public void updateState_settingDisabled_preferenceShouldNotBeChecked() {
         setupVerifyBroadcastReceivers(true);
-        setupEnforcedAdmin(null);
         mGlobals.set(Global.ADB_ENABLED, 1 /* setting enabled */)
                 .set(Global.PACKAGE_VERIFIER_INCLUDE_ADB, 0 /* setting disabled */);
         mController.updateState(mPreference);
@@ -122,7 +110,6 @@ public class VerifyAppsOverUsbPreferenceControllerTest {
     @Test
     public void updateState_adbDisabled_preferenceShouldNotBeChecked() {
         setupVerifyBroadcastReceivers(true);
-        setupEnforcedAdmin(null);
         mGlobals.set(Global.ADB_ENABLED, 0 /* setting disabled */)
                 .set(Global.PACKAGE_VERIFIER_INCLUDE_ADB, 1 /* setting enabled */);
         mController.updateState(mPreference);
@@ -132,7 +119,6 @@ public class VerifyAppsOverUsbPreferenceControllerTest {
     @Test
     public void updateState_noBroadcastReceivers_preferenceShouldNotBeChecked() {
         setupVerifyBroadcastReceivers(false);
-        setupEnforcedAdmin(null);
         mGlobals.set(Global.ADB_ENABLED, 1 /* setting enabled */)
                 .set(Global.PACKAGE_VERIFIER_INCLUDE_ADB, 1 /* setting enabled */);
         mController.updateState(mPreference);
@@ -142,12 +128,11 @@ public class VerifyAppsOverUsbPreferenceControllerTest {
     @Test
     public void updateState_restrictedByAdmin_preferenceShouldBeDisabled() {
         setupVerifyBroadcastReceivers(true);
-        final EnforcedAdmin admin = new EnforcedAdmin();
-        setupEnforcedAdmin(admin);
         mGlobals.set(Global.ADB_ENABLED, 1 /* setting enabled */)
                 .set(Global.PACKAGE_VERIFIER_INCLUDE_ADB, 1 /* setting enabled */);
         mController.updateState(mPreference);
-        verify(mPreference).setDisabledByAdmin(admin);
+        verify(mPreference).checkRestrictionAndSetDisabled(eq(UserManager.ENSURE_VERIFY_APPS),
+                anyInt());
     }
 
     @Test

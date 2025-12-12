@@ -33,6 +33,7 @@ import com.android.settingslib.widget.BannerMessagePreference;
 /**
  * Controller to take the user to location settings page
  */
+// LINT.IfChange
 public class TwilightLocationPreferenceController extends BasePreferenceController {
     private final LocationManager mLocationManager;
     private final MetricsFeatureProvider mMetricsFeatureProvider;
@@ -58,7 +59,7 @@ public class TwilightLocationPreferenceController extends BasePreferenceControll
 
     @Override
     public int getAvailabilityStatus() {
-        return mLocationManager.isLocationEnabled() ? DISABLED_DEPENDENT_SETTING
+        return mLocationManager.isLocationEnabled() ? CONDITIONALLY_UNAVAILABLE
                 : AVAILABLE_UNSEARCHABLE;
     }
 
@@ -73,3 +74,4 @@ public class TwilightLocationPreferenceController extends BasePreferenceControll
         mContext.startActivity(intent);
     }
 }
+// LINT.ThenChange(darkmode/TwilightLocationPreference.kt)

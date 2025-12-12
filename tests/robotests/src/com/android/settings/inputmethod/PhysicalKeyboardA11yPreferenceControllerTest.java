@@ -21,14 +21,12 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.view.InputDevice;
 
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.core.BasePreferenceController;
-import com.android.settings.keyboard.Flags;
 import com.android.settings.testutils.shadow.ShadowInputDevice;
 
 import org.junit.Before;
@@ -64,10 +62,8 @@ public class PhysicalKeyboardA11yPreferenceControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_KEYBOARD_AND_TOUCHPAD_A11Y_NEW_PAGE_ENABLED)
     public void getAvailabilityStatus_expected() {
         int deviceId = 1;
-        ShadowInputDevice.sDeviceIds = new int[]{deviceId};
         when(mInputDevice.isVirtual()).thenReturn(false);
         when(mInputDevice.isFullKeyboard()).thenReturn(true);
 
@@ -80,10 +76,8 @@ public class PhysicalKeyboardA11yPreferenceControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_KEYBOARD_AND_TOUCHPAD_A11Y_NEW_PAGE_ENABLED)
     public void getAvailabilityStatus_deviceIsNotAsExpected_unavailable() {
         int deviceId = 1;
-        ShadowInputDevice.sDeviceIds = new int[]{deviceId};
         when(mInputDevice.isVirtual()).thenReturn(true);
         when(mInputDevice.isFullKeyboard()).thenReturn(false);
 

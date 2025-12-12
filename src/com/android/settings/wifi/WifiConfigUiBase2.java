@@ -41,6 +41,12 @@ public interface WifiConfigUiBase2 {
     int MODE_MODIFY = 2;
 
     /**
+     * Connect mode specifically for the login screen. Data is displayed in editable mode partially,
+     * for example: the shared toggle will be hidden at the login screen.
+     */
+    int MODE_LOGIN_SCREEN = 3;
+
+    /**
      * UI like {@link WifiDialog} overrides to provide {@link Context} to controller.
      */
     Context getContext();

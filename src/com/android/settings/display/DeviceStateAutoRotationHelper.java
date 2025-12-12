@@ -27,6 +27,7 @@ import com.android.internal.view.RotationPolicy;
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 import com.android.settingslib.core.AbstractPreferenceController;
+import com.android.settingslib.devicestate.DeviceStateAutoRotateSettingManager;
 import com.android.settingslib.devicestate.SettableDeviceState;
 import com.android.settingslib.search.SearchIndexableRaw;
 
@@ -52,8 +53,13 @@ public class DeviceStateAutoRotationHelper {
 
     static ImmutableList<AbstractPreferenceController> createPreferenceControllers(
             Context context) {
-        List<SettableDeviceState> settableDeviceStates = DeviceStateAutoRotateSettingManagerProvider
-                .getSingletonInstance(context).getSettableDeviceStates();
+        final DeviceStateAutoRotateSettingManager manager =
+                DeviceStateAutoRotateSettingManagerProvider.getSingletonInstance(context);
+        if (manager == null) {
+            return ImmutableList.of();
+        }
+
+        List<SettableDeviceState> settableDeviceStates = manager.getSettableDeviceStates();
         int numDeviceStates = settableDeviceStates.size();
         if (numDeviceStates == 0) {
             return ImmutableList.of();
@@ -78,7 +84,7 @@ public class DeviceStateAutoRotationHelper {
             int order = -numDeviceStates + i;
             controllers.add(new DeviceStateAutoRotateSettingController(
                     context,
-                    settableDeviceState.getDeviceState(),
+                    settableDeviceState.deviceState(),
                     deviceStateSettingDescriptions[i],
                     order
             ));

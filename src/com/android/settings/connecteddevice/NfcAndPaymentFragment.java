@@ -24,6 +24,9 @@ import android.os.UserHandle;
 import android.os.UserManager;
 
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
@@ -32,6 +35,7 @@ import com.android.settingslib.search.SearchIndexable;
 /**
  * This fragment contains NFC and payment specific settings.
  */
+// LINT.IfChange
 @SearchIndexable(forTarget = SearchIndexable.ALL & ~SearchIndexable.ARC)
 public class NfcAndPaymentFragment extends DashboardFragment {
     private static final String TAG = "NfcAndPaymentFragment";
@@ -56,6 +60,11 @@ public class NfcAndPaymentFragment extends DashboardFragment {
         return R.string.help_uri_nfc_and_payment_settings;
     }
 
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return NfcAndPaymentScreen.KEY;
+    }
+
     /**
      * For Search.
      */
@@ -73,3 +82,4 @@ public class NfcAndPaymentFragment extends DashboardFragment {
                 }
             };
 }
+// LINT.ThenChange(NfcAndPaymentScreen.kt)

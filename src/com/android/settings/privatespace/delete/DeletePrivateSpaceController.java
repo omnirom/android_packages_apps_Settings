@@ -34,10 +34,7 @@ public class DeletePrivateSpaceController extends BasePreferenceController {
 
     @Override
     public int getAvailabilityStatus() {
-        return android.os.Flags.allowPrivateProfile()
-                && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                ? AVAILABLE
-                : UNSUPPORTED_ON_DEVICE;
+        return AVAILABLE;
     }
 
     @Override

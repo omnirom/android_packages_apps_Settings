@@ -21,14 +21,14 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import android.graphics.Typeface;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.android.settings.R;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -53,11 +53,9 @@ public class AudioSharingDialogHelperTest {
     public void updateMessageStyle_updateStyle() {
         when(mDialog.findViewById(android.R.id.message)).thenReturn(mTextView);
         AudioSharingDialogHelper.updateMessageStyle(mDialog);
-        Typeface typeface = Typeface.create(Typeface.DEFAULT_FAMILY, Typeface.NORMAL);
-        verify(mTextView).setTypeface(typeface);
+        verify(mTextView).setTextAppearance(R.style.DeviceAudioSharingText);
         verify(mTextView).setTextDirection(View.TEXT_DIRECTION_LOCALE);
         verify(mTextView).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        verify(mTextView).setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
     }
 
     @Test

@@ -21,6 +21,7 @@ import android.os.VibrationAttributes;
 import android.provider.Settings;
 
 /** Preference controller for notification vibration intensity */
+// LINT.IfChange
 public class NotificationVibrationIntensityPreferenceController
         extends VibrationIntensityPreferenceController {
 
@@ -56,3 +57,4 @@ public class NotificationVibrationIntensityPreferenceController
         return AVAILABLE;
     }
 }
+// LINT.ThenChange(NotificationVibrationIntensitySliderPreference.kt)

@@ -109,6 +109,11 @@
                         style="@style/CrossProfileConsentDialogSubDescription"/>
                 </LinearLayout>
             </LinearLayout>
+            <Space
+                android:id="@+id/dialog_extra_padding_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

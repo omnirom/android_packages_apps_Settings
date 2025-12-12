@@ -31,6 +31,7 @@ import com.android.settings.display.TwilightLocationDialog;
 /**
  * Controller for the dark ui option dropdown
  */
+// LINT.IfChange
 public class DarkModeScheduleSelectorController extends BasePreferenceController
         implements Preference.OnPreferenceChangeListener {
     private static final String TAG = DarkModeScheduleSelectorController.class.getSimpleName();
@@ -85,7 +86,7 @@ public class DarkModeScheduleSelectorController extends BasePreferenceController
             case UiModeManager.MODE_NIGHT_CUSTOM:
                 boolean isCustomBedtime = mBedtimeSettings.getBedtimeSettingsIntent() != null
                         && mUiModeManager.getNightModeCustomType()
-                                == UiModeManager.MODE_NIGHT_CUSTOM_TYPE_BEDTIME;
+                        == UiModeManager.MODE_NIGHT_CUSTOM_TYPE_BEDTIME;
                 resId = isCustomBedtime
                         ? R.string.dark_ui_auto_mode_custom_bedtime
                         : R.string.dark_ui_auto_mode_custom;
@@ -131,3 +132,4 @@ public class DarkModeScheduleSelectorController extends BasePreferenceController
         return true;
     }
 }
+// LINT.ThenChange(DarkModeSchedulePreference.kt)

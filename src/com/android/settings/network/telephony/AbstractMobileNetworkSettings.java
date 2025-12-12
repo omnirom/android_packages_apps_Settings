@@ -108,8 +108,10 @@ abstract class AbstractMobileNetworkSettings extends RestrictedDashboardFragment
 
         final long endTime = SystemClock.elapsedRealtime();
 
-        mMetricsFeatureProvider.action(getMetricsCategory(), getMetricsCategory(),
-                0, "updatePreferenceStates", (int)(endTime - startTime));
+        if (mMetricsFeatureProvider != null) {
+            mMetricsFeatureProvider.action(getMetricsCategory(), getMetricsCategory(),
+                    0, "updatePreferenceStates", (int) (endTime - startTime));
+        }
     }
 
     private void updateVisiblePreferenceControllers(PreferenceScreen screen,

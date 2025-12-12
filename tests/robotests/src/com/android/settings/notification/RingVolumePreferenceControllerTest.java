@@ -20,7 +20,9 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
+import android.app.Application;
 import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -30,7 +32,10 @@ import android.os.Vibrator;
 import android.service.notification.NotificationListenerService;
 import android.telephony.TelephonyManager;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.android.settings.core.BasePreferenceController;
+import com.android.settings.sound.VolumeSliderPreference;
 import com.android.settings.testutils.shadow.ShadowDeviceConfig;
 
 import org.junit.Before;
@@ -62,7 +67,7 @@ public class RingVolumePreferenceControllerTest {
     @Mock
     private Resources mResources;
     @Mock
-    private VolumeSeekBarPreference mPreference;
+    private VolumeSliderPreference mPreference;
 
     private Context mContext;
 
@@ -71,7 +76,8 @@ public class RingVolumePreferenceControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        ShadowApplication shadowContext = ShadowApplication.getInstance();
+        ShadowApplication shadowContext =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         shadowContext.setSystemService(Context.TELEPHONY_SERVICE, mTelephonyManager);
         shadowContext.setSystemService(Context.AUDIO_SERVICE, mAudioManager);
         shadowContext.setSystemService(Context.VIBRATOR_SERVICE, mVibrator);
@@ -86,7 +92,9 @@ public class RingVolumePreferenceControllerTest {
     @Test
     public void isAvailable_singleVolume_shouldReturnFalse() {
         when(mHelper.isSingleVolume()).thenReturn(true);
-        when(mTelephonyManager.isVoiceCapable()).thenReturn(true);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(true);
+        when(mResources.getBoolean(com.android.settings.R.bool.config_show_sim_info))
+                .thenReturn(true);
 
         assertThat(mController.isAvailable()).isFalse();
     }

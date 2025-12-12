@@ -31,6 +31,7 @@ import com.android.settings.R
 import com.android.settings.contract.KEY_CALL_VOLUME
 import com.android.settings.metrics.PreferenceActionMetricsProvider
 import com.android.settings.restriction.PreferenceRestrictionMixin
+import com.android.settings.sound.VolumeSliderPreference
 import com.android.settingslib.datastore.KeyValueStore
 import com.android.settingslib.datastore.NoOpKeyedObservable
 import com.android.settingslib.datastore.Permissions
@@ -44,13 +45,16 @@ import com.android.settingslib.metadata.SensitivityLevel
 import com.android.settingslib.preference.PreferenceBinding
 
 // LINT.IfChange
-open class CallVolumePreference :
+class CallVolumePreference(private val audioHelper: AudioHelper) :
     IntRangeValuePreference,
     PreferenceBinding,
     PreferenceActionMetricsProvider,
     PreferenceAvailabilityProvider,
     PreferenceIconProvider,
     PreferenceRestrictionMixin {
+
+    constructor(context: Context) : this(AudioHelper(context))
+
     override val key: String
         get() = KEY
 
@@ -65,28 +69,25 @@ open class CallVolumePreference :
     override fun getIcon(context: Context) = R.drawable.ic_local_phone_24_lib
 
     override fun isAvailable(context: Context) =
-        context.resources.getBoolean(R.bool.config_show_call_volume) &&
-            !createAudioHelper(context).isSingleVolume
+        context.resources.getBoolean(R.bool.config_show_call_volume) && !audioHelper.isSingleVolume
 
     override fun isEnabled(context: Context) = super<PreferenceRestrictionMixin>.isEnabled(context)
 
     override val restrictionKeys
         get() = arrayOf(UserManager.DISALLOW_ADJUST_VOLUME)
 
-    override fun storage(context: Context): KeyValueStore {
-        val helper = createAudioHelper(context)
-        return object : NoOpKeyedObservable<String>(), KeyValueStore {
+    override fun storage(context: Context): KeyValueStore =
+        object : NoOpKeyedObservable<String>(), KeyValueStore {
             override fun contains(key: String) = key == KEY
 
             @Suppress("UNCHECKED_CAST")
             override fun <T : Any> getValue(key: String, valueType: Class<T>) =
-                helper.getStreamVolume(getAudioStream(context)) as T
+                audioHelper.getStreamVolume(getAudioStream(context)) as T
 
             override fun <T : Any> setValue(key: String, valueType: Class<T>, value: T?) {
-                helper.setStreamVolume(getAudioStream(context), value as Int)
+                audioHelper.setStreamVolume(getAudioStream(context), value as Int)
             }
         }
-    }
 
     override fun getReadPermissions(context: Context) = Permissions.EMPTY
 
@@ -107,24 +108,20 @@ open class CallVolumePreference :
     override val sensitivityLevel
         get() = SensitivityLevel.NO_SENSITIVITY
 
-    override fun getMinValue(context: Context) =
-        createAudioHelper(context).getMinVolume(getAudioStream(context))
+    override fun getMinValue(context: Context) = audioHelper.getMinVolume(getAudioStream(context))
 
-    override fun getMaxValue(context: Context) =
-        createAudioHelper(context).getMaxVolume(getAudioStream(context))
+    override fun getMaxValue(context: Context) = audioHelper.getMaxVolume(getAudioStream(context))
 
-    override fun createWidget(context: Context) = VolumeSeekBarPreference(context)
+    override fun createWidget(context: Context) = VolumeSliderPreference(context)
 
     override fun bind(preference: Preference, metadata: PreferenceMetadata) {
         super.bind(preference, metadata)
-        (preference as VolumeSeekBarPreference).setStream(getAudioStream(preference.context))
+        (preference as VolumeSliderPreference).setStream(getAudioStream(preference.context))
     }
-
-    open fun createAudioHelper(context: Context) = AudioHelper(context)
 
     @Suppress("DEPRECATION")
     fun getAudioStream(context: Context): Int {
-        val audioManager = context.getSystemService(AudioManager::class.java)
+        val audioManager = context.getSystemService(AudioManager::class.java)!!
         return when {
             audioManager.isBluetoothScoOn() -> STREAM_BLUETOOTH_SCO
             else -> STREAM_VOICE_CALL

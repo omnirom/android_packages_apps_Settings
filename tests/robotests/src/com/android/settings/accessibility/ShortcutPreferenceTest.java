@@ -16,25 +16,24 @@
 
 package com.android.settings.accessibility;
 
+import static com.android.settings.testutils.AccessibilityTestUtils.inflateShortcutPreferenceView;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 
 import androidx.preference.PreferenceViewHolder;
 import androidx.test.core.app.ApplicationProvider;
-
-import com.android.settingslib.widget.SettingsThemeHelper;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-/** Tests for {@link ShortcutPreference} */
+/**
+ * Tests for {@link ShortcutPreference}
+ */
 @RunWith(RobolectricTestRunner.class)
 public class ShortcutPreferenceTest {
 
@@ -62,18 +61,7 @@ public class ShortcutPreferenceTest {
     public void setUp() {
         final Context context = ApplicationProvider.getApplicationContext();
         mShortcutPreference = new ShortcutPreference(context, null);
-
-        int resID = SettingsThemeHelper.isExpressiveTheme(context)
-                ? com.android.settingslib.widget.preference.twotarget.R.layout
-                        .settingslib_expressive_preference_two_target
-                : com.android.settingslib.widget.preference.twotarget.R.layout
-                        .preference_two_target;
-        final LayoutInflater inflater = LayoutInflater.from(context);
-        final View view = inflater.inflate(resID, null);
-        mViewHolder = PreferenceViewHolder.createInstanceForTests(view);
-
-        final LinearLayout widget = mViewHolder.itemView.findViewById(android.R.id.widget_frame);
-        inflater.inflate(mShortcutPreference.getSecondTargetResId(), widget, true);
+        mViewHolder = inflateShortcutPreferenceView(context, mShortcutPreference);
     }
 
     @Test

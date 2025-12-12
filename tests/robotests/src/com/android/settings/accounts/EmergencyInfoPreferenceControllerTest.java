@@ -25,8 +25,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.Intent;
@@ -36,6 +38,7 @@ import android.os.UserManager;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
 import com.android.settings.testutils.shadow.ShadowAccountManager;
@@ -155,7 +158,8 @@ public class EmergencyInfoPreferenceControllerTest {
 
     @Test
     public void handlePreferenceTreeClick_shouldStartActivity() {
-        final ShadowApplication application = ShadowApplication.getInstance();
+        final ShadowApplication application =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         final Activity activity = Robolectric.setupActivity(Activity.class);
         final Preference preference = new Preference(activity);
         preference.setKey("emergency_info");

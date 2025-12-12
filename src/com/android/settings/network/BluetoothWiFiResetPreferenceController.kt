@@ -29,6 +29,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
 import com.android.settings.R
 import com.android.settings.ResetNetworkRequest
+import com.android.settings.Utils
 import com.android.settings.overlay.FeatureFactory.Companion.featureFactory
 import com.android.settings.spa.preference.ComposePreferenceController
 import com.android.settingslib.spa.widget.dialog.AlertDialogButton
@@ -101,14 +102,15 @@ class BluetoothWiFiResetPreferenceController(context: Context, preferenceKey: St
     }
 
     @VisibleForTesting
-    fun resetOperation(): Runnable = if (SubscriptionUtil.isSimHardwareVisible(mContext)) {
+    fun resetOperation(): Runnable = if (Utils.isMobileDataCapable(mContext)
+                                             || Utils.isVoiceCapable(mContext)) {
         ResetNetworkRequest(
             ResetNetworkRequest.RESET_WIFI_MANAGER or
                 ResetNetworkRequest.RESET_WIFI_P2P_MANAGER or
                 ResetNetworkRequest.RESET_BLUETOOTH_MANAGER
         )
             .toResetNetworkOperationBuilder(mContext, Looper.getMainLooper())
-    } else {  // For device without SIMs visible to the user
+    } else {  // For device without telephony capabilities
         ResetNetworkRequest(
             ResetNetworkRequest.RESET_CONNECTIVITY_MANAGER or
                 ResetNetworkRequest.RESET_VPN_MANAGER or

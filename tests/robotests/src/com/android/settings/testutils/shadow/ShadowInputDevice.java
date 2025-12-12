@@ -24,13 +24,11 @@ import org.robolectric.annotation.Resetter;
 import org.robolectric.shadow.api.Shadow;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 @Implements(InputDevice.class)
 public class ShadowInputDevice extends org.robolectric.shadows.ShadowInputDevice {
-
-    public static int[] sDeviceIds;
-
     private static Map<Integer, InputDevice> sDeviceMap = new HashMap<>();
 
     private int mDeviceId;
@@ -41,7 +39,13 @@ public class ShadowInputDevice extends org.robolectric.shadows.ShadowInputDevice
 
     @Implementation
     protected static int[] getDeviceIds() {
-        return sDeviceIds;
+        Iterator<Integer> ids = sDeviceMap.keySet().iterator();
+        int[] deviceIds = new int[sDeviceMap.size()];
+        int i = 0;
+        while (ids.hasNext()) {
+            deviceIds[i++] = ids.next();
+        }
+        return deviceIds;
     }
 
     @Implementation
@@ -55,7 +59,6 @@ public class ShadowInputDevice extends org.robolectric.shadows.ShadowInputDevice
 
     @Resetter
     public static void reset() {
-        sDeviceIds = null;
         sDeviceMap.clear();
     }
 

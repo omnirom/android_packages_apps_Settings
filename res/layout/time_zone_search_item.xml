@@ -14,86 +14,71 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<!-- similar to preference_material.xml but textview for emoji country flag
-instead of an ImageView -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+    android:clipToPadding="false"
     android:gravity="center_vertical"
-    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-    android:background="?android:attr/selectableItemBackground"
-    android:clipToPadding="false">
+    android:layout_marginVertical="1dp"
+    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+    android:orientation="horizontal">
 
-    <LinearLayout
-        android:id="@+id/icon_frame"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="-4dp"
-        android:minWidth="60dp"
-        android:gravity="start|center_vertical"
-        android:orientation="horizontal"
-        android:paddingRight="12dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp">
-        <!-- It's not ImageView because the icon is Unicode emoji. -->
-        <TextView
-            android:id="@+id/icon_text"
+        android:paddingHorizontal="?android:attr/listPreferredItemPaddingEnd">
+
+        <RadioButton
+            android:id="@+id/selected_radio_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:contentDescription=""
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="?android:attr/textColorPrimary"
-            android:importantForAccessibility="no"/>
-    </LinearLayout>
+            android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
+            android:clickable="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp">
-
-        <TextView android:id="@android:id/title"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="?android:attr/listPreferredItemPaddingStart"
+            android:ellipsize="marquee"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceListItem"
-            android:ellipsize="marquee" />
+            app:layout_constraintEnd_toStartOf="@+id/current_time"
+            app:layout_constraintStart_toEndOf="@+id/selected_radio_button"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <RelativeLayout
-            android:id="@+id/summary_frame"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/summary"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@android:id/title"
-            android:layout_alignLeft="@android:id/title">
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="?android:attr/listPreferredItemPaddingEnd"
+            android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
+            android:layout_marginEnd="?android:attr/listPreferredItemPaddingEnd"
+            android:maxLines="10"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/current_time"
+            app:layout_constraintStart_toEndOf="@+id/selected_radio_button"
+            app:layout_constraintTop_toBottomOf="@id/title" />
 
-            <TextView
-                android:id="@+id/current_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorSecondary"
-                android:layout_alignParentEnd="true"/>
+        <TextView
+            android:id="@+id/current_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="?android:attr/listPreferredItemPaddingEnd"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintBottom_toBottomOf="@id/summary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_goneMarginBottom="0dp" />
 
-            <!-- Use layout_alignParentStart and layout_toStartOf to make the TextView multi-lines
-                if needed -->
-            <TextView
-                android:id="@android:id/summary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorSecondary"
-                android:maxLines="10"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/current_time"/>
-
-        </RelativeLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

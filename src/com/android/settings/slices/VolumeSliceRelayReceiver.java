@@ -23,6 +23,7 @@ import android.content.Intent;
 /**
  * Receives broadcasts to notify that Settings volume Slices are potentially stale.
  */
+@Deprecated(forRemoval = true)
 public class VolumeSliceRelayReceiver extends BroadcastReceiver {
 
     @Override

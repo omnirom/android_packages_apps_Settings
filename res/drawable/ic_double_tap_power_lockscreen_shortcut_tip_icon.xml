@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2025 The Android Open Source Project
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:androidprv="http://schemas.android.com/apk/prv/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40.0"
+    android:viewportHeight="40.0">
+    <path android:pathData="M0 20C0 8.95431 8.95431 0 20 0C31.0457 0 40 8.95431 40 20C40 31.0457 31.0457 40 20 40C8.95431 40 0 31.0457 0 20Z"
+        android:fillColor="@androidprv:color/materialColorSecondary"/>
+
+    <path
+        android:pathData="M25.7203 29.6492L19.6703 23.5492C19.337 23.6826 18.9953 23.7826 18.6453 23.8492C18.312 23.9159 17.9536 23.9492 17.5703 23.9492C15.9036 23.9492 14.487 23.3659 13.3203 22.1992C12.1536 21.0326 11.5703 19.6159 11.5703 17.9492C11.5703 17.3492 11.6536 16.7826 11.8203 16.2492C11.987 15.6992 12.2203 15.1826 12.5203 14.6992L16.1703 18.3492L17.9703 16.5492L14.3203 12.8992C14.8036 12.5992 15.312 12.3659 15.8453 12.1992C16.3953 12.0326 16.9703 11.9492 17.5703 11.9492C19.237 11.9492 20.6536 12.5326 21.8203 13.6992C22.987 14.8659 23.5703 16.2826 23.5703 17.9492C23.5703 18.3326 23.537 18.6992 23.4703 19.0492C23.4036 19.3826 23.3036 19.7159 23.1703 20.0492L29.2703 26.0992C29.4703 26.2992 29.5703 26.5409 29.5703 26.8242C29.5703 27.1076 29.4703 27.3492 29.2703 27.5492L27.1703 29.6492C26.9703 29.8492 26.7286 29.9492 26.4453 29.9492C26.162 29.9492 25.9203 29.8492 25.7203 29.6492Z"
+        android:fillColor="@androidprv:color/materialColorOnSecondary"/>
+</vector>

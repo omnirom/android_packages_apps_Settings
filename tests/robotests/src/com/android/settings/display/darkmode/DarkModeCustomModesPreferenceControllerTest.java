@@ -16,32 +16,21 @@
 
 package com.android.settings.display.darkmode;
 
-import static android.app.UiModeManager.MODE_NIGHT_AUTO;
-import static android.app.UiModeManager.MODE_NIGHT_CUSTOM_TYPE_BEDTIME;
-import static android.app.UiModeManager.MODE_NIGHT_CUSTOM_TYPE_SCHEDULE;
-import static android.app.UiModeManager.MODE_NIGHT_NO;
-import static android.app.UiModeManager.MODE_NIGHT_YES;
-
-import static com.android.settings.core.BasePreferenceController.AVAILABLE_UNSEARCHABLE;
-import static com.android.settings.core.BasePreferenceController.UNSUPPORTED_ON_DEVICE;
-
-import static com.google.common.truth.Truth.assertThat;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import android.app.Flags;
 import android.app.UiModeManager;
 import android.content.Context;
 import android.content.res.Resources;
-import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.service.notification.ZenDeviceEffects;
+import android.view.View;
+import android.view.accessibility.Flags;
 
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ApplicationProvider;
@@ -78,11 +67,13 @@ public class DarkModeCustomModesPreferenceControllerTest {
     @Mock
     private PreferenceScreen mScreen;
     @Mock
-    private FooterPreference mFooterPreference;
+    private FooterPreference mCustomModesFooterPreference;
+    @Mock
+    private FooterPreference mExpandedDarkThemeFooterPreference;
     @Mock
     private ZenModesBackend mZenModesBackend;
 
-    private DarkModeCustomModesPreferenceController mController;
+    private DarkModeCustomModesPreferenceController mModeCustomModesPreferenceController;
     private Context mContext;
     private BedtimeSettingsUtils mBedtimeSettingsUtils;
 
@@ -100,43 +91,47 @@ public class DarkModeCustomModesPreferenceControllerTest {
                 .thenReturn("wellbeing");
         when(mContext.getResources()).thenReturn(res);
 
-        when(mScreen.findPreference(anyString())).thenReturn(mFooterPreference);
+        mModeCustomModesPreferenceController =
+                new DarkModeCustomModesPreferenceController(
+                        mContext, "dark_theme_custom_bedtime_footer");
 
-        mController = new DarkModeCustomModesPreferenceController(mContext, "key");
+        when(mScreen.findPreference(mModeCustomModesPreferenceController.getPreferenceKey()))
+                .thenReturn(mCustomModesFooterPreference);
+        when(mScreen.findPreference(
+                DarkModeExpandedFooterPreferenceController.DARK_MODE_EXPANDED_FOOTER_KEY))
+                .thenReturn(mExpandedDarkThemeFooterPreference);
+        when(mExpandedDarkThemeFooterPreference.isVisible()).thenReturn(false);
 
         ZenModesBackend.setInstance(mZenModesBackend);
         when(mZenModesBackend.getModes()).thenReturn(List.of());
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
     public void displayPreference_withOneModeTogglingDarkTheme() {
         when(mZenModesBackend.getModes()).thenReturn(List.of(
                 new TestModeBuilder(MODE_WITH_DARK_THEME).setName("A").build()));
 
-        mController.displayPreference(mScreen);
+        mModeCustomModesPreferenceController.displayPreference(mScreen);
 
-        verify(mFooterPreference).setTitle("A also activates dark theme");
-        verify(mFooterPreference).setLearnMoreAction(any());
-        verify(mFooterPreference).setLearnMoreText("Modes settings");
+        verify(mCustomModesFooterPreference).setTitle("A also turns on dark theme");
+        verify(mCustomModesFooterPreference).setLearnMoreAction(any());
+        verify(mCustomModesFooterPreference).setLearnMoreText("Modes settings");
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
     public void displayPreference_withTwoModesTogglingDarkTheme() {
         when(mZenModesBackend.getModes()).thenReturn(List.of(
                 new TestModeBuilder(MODE_WITH_DARK_THEME).setName("A").build(),
                 new TestModeBuilder(MODE_WITH_DARK_THEME).setName("B").build()));
 
-        mController.displayPreference(mScreen);
+        mModeCustomModesPreferenceController.displayPreference(mScreen);
 
-        verify(mFooterPreference).setTitle("A and B also activate dark theme");
-        verify(mFooterPreference).setLearnMoreAction(any());
-        verify(mFooterPreference).setLearnMoreText("Modes settings");
+        verify(mCustomModesFooterPreference).setTitle("A and B also turn on dark theme");
+        verify(mCustomModesFooterPreference).setLearnMoreAction(any());
+        verify(mCustomModesFooterPreference).setLearnMoreText("Modes settings");
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
     public void displayPreference_withManyModesTogglingDarkTheme() {
         when(mZenModesBackend.getModes()).thenReturn(List.of(
                 new TestModeBuilder(MODE_WITH_DARK_THEME).setName("A").build(),
@@ -146,103 +141,43 @@ public class DarkModeCustomModesPreferenceControllerTest {
                 new TestModeBuilder(MODE_WITH_DARK_THEME).setName("E").build()
         ));
 
-        mController.displayPreference(mScreen);
+        mModeCustomModesPreferenceController.displayPreference(mScreen);
 
-        verify(mFooterPreference).setTitle("A, B, and 3 more also activate dark theme");
-        verify(mFooterPreference).setLearnMoreAction(any());
-        verify(mFooterPreference).setLearnMoreText("Modes settings");
+        verify(mCustomModesFooterPreference).setTitle("A, B, and 3 more also turn on dark theme");
+        verify(mCustomModesFooterPreference).setLearnMoreAction(any());
+        verify(mCustomModesFooterPreference).setLearnMoreText("Modes settings");
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MODES_UI)
     public void displayPreference_withZeroModesTogglingDarkTheme() {
         when(mZenModesBackend.getModes()).thenReturn(List.of());
 
-        mController.displayPreference(mScreen);
+        mModeCustomModesPreferenceController.displayPreference(mScreen);
 
-        verify(mFooterPreference).setTitle("Modes can also activate dark theme");
-        verify(mFooterPreference).setLearnMoreAction(any());
-        verify(mFooterPreference).setLearnMoreText("Modes settings");
+        verify(mCustomModesFooterPreference).setTitle("Modes can also turn on dark theme");
+        verify(mCustomModesFooterPreference).setLearnMoreAction(any());
+        verify(mCustomModesFooterPreference).setLearnMoreText("Modes settings");
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_MODES_UI)
-    public void getAvailabilityStatus_bedtimeSettingsExist_shouldBeAvailableUnsearchable() {
-        mBedtimeSettingsUtils.installBedtimeSettings("wellbeing" /* wellbeingPackage */,
-                true /* enabled */);
-        when(mService.getNightModeCustomType()).thenReturn(MODE_NIGHT_CUSTOM_TYPE_BEDTIME);
+    @EnableFlags(Flags.FLAG_FORCE_INVERT_COLOR)
+    public void displayPreference_expandedDarkThemeFooterVisible_expectedOrderAndIconGone() {
+        when(mExpandedDarkThemeFooterPreference.isVisible()).thenReturn(true);
 
-        assertThat(mController.getAvailabilityStatus()).isEqualTo(AVAILABLE_UNSEARCHABLE);
+        mModeCustomModesPreferenceController.displayPreference(mScreen);
+
+        verify(mCustomModesFooterPreference).setIconVisibility(View.GONE);
+        verify(mCustomModesFooterPreference).setOrder(
+                eq(DarkModePreferenceOrderUtil.Order.MODES_FOOTER.getValue()));
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_MODES_UI)
-    public void getAvailabilityStatus_bedtimeSettingsDisabled_shouldBeUnsupportedOnDevice() {
-        mBedtimeSettingsUtils.installBedtimeSettings("wellbeing" /* wellbeingPackage */,
-                false /* enabled */);
-        when(mService.getNightModeCustomType()).thenReturn(MODE_NIGHT_CUSTOM_TYPE_BEDTIME);
+    @EnableFlags(Flags.FLAG_FORCE_INVERT_COLOR)
+    public void displayPreference_expandedDarkThemeFooterInvisible_neverSetIconGone() {
+        when(mExpandedDarkThemeFooterPreference.isVisible()).thenReturn(false);
 
-        assertThat(mController.getAvailabilityStatus()).isEqualTo(UNSUPPORTED_ON_DEVICE);
-    }
+        mModeCustomModesPreferenceController.displayPreference(mScreen);
 
-    @Test
-    @DisableFlags(Flags.FLAG_MODES_UI)
-    public void nightModeCustomModeBedtime_bedtimeSettingsExist_shouldShowFooterPreference() {
-        mBedtimeSettingsUtils.installBedtimeSettings("wellbeing" /* wellbeingPackage */,
-                true /* enabled */);
-        when(mService.getNightModeCustomType()).thenReturn(MODE_NIGHT_CUSTOM_TYPE_BEDTIME);
-
-        mController.updateState(mFooterPreference);
-
-        verify(mFooterPreference).setVisible(eq(true));
-        assertThat(mController.getAvailabilityStatus()).isEqualTo(AVAILABLE_UNSEARCHABLE);
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_MODES_UI)
-    public void nightModeCustomModeSchedule_bedtimeSettingsExist_shouldHideFooterPreference() {
-        mBedtimeSettingsUtils.installBedtimeSettings("wellbeing" /* wellbeingPackage */,
-                true /* enabled */);
-        when(mService.getNightModeCustomType()).thenReturn(MODE_NIGHT_CUSTOM_TYPE_SCHEDULE);
-
-        mController.updateState(mFooterPreference);
-
-        verify(mFooterPreference).setVisible(eq(false));
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_MODES_UI)
-    public void nightModeNo_bedtimeSettingsExist_shouldHideFooterPreference() {
-        mBedtimeSettingsUtils.installBedtimeSettings("wellbeing" /* wellbeingPackage */,
-                true /* enabled */);
-        when(mService.getNightMode()).thenReturn(MODE_NIGHT_NO);
-
-        mController.updateState(mFooterPreference);
-
-        verify(mFooterPreference).setVisible(eq(false));
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_MODES_UI)
-    public void nightModeYes_bedtimeSettingsExist_shouldHideFooterPreference() {
-        mBedtimeSettingsUtils.installBedtimeSettings("wellbeing" /* wellbeingPackage */,
-                true /* enabled */);
-        when(mService.getNightMode()).thenReturn(MODE_NIGHT_YES);
-
-        mController.updateState(mFooterPreference);
-
-        verify(mFooterPreference).setVisible(eq(false));
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_MODES_UI)
-    public void nightModeAuto_bedtimeSettingsExist_shouldHideFooterPreference() {
-        mBedtimeSettingsUtils.installBedtimeSettings("wellbeing" /* wellbeingPackage */,
-                true /* enabled */);
-        when(mService.getNightMode()).thenReturn(MODE_NIGHT_AUTO);
-
-        mController.updateState(mFooterPreference);
-
-        verify(mFooterPreference).setVisible(eq(false));
+        verify(mCustomModesFooterPreference, never()).setIconVisibility(View.GONE);
     }
 }

@@ -61,7 +61,7 @@ public class SupportDashboardActivity extends Activity implements Indexable {
 
                 @Override
                 public List<SearchIndexableRaw> getRawDataToIndex(Context context,
-                        boolean enabled) {
+                    boolean enabled) {
 
                     final List<SearchIndexableRaw> result = new ArrayList<>();
 
@@ -74,6 +74,15 @@ public class SupportDashboardActivity extends Activity implements Indexable {
                     data.intentTargetClass = SupportDashboardActivity.class.getName();
                     data.intentAction = ACTION_SUPPORT_SETTINGS;
                     data.key = SUPPORT_SEARCH_INDEX_KEY;
+
+                    SupportFeatureProvider supportFeatureProvider =
+                            FeatureFactory.getFeatureFactory().getSupportFeatureProvider();
+                    // If the support feature provider is available, allow it
+                    // to override values on the search indexable.
+                    if (supportFeatureProvider != null) {
+                        supportFeatureProvider.applyOverrides(context, data);
+                    }
+
                     result.add(data);
 
                     return result;

@@ -20,7 +20,6 @@ import android.app.settings.SettingsEnums
 import android.content.Context
 import android.content.IntentFilter
 import android.os.Bundle
-import android.provider.Settings
 import android.telephony.SubscriptionInfo
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
@@ -53,19 +52,18 @@ import com.android.settings.network.telephony.MobileDataRepository
 import com.android.settings.network.telephony.SimRepository
 import com.android.settings.network.telephony.requireSubscriptionManager
 import com.android.settings.spa.network.PrimarySimRepository.PrimarySimInfo
-import com.android.settings.spa.search.SearchablePage
 import com.android.settings.wifi.WifiPickerTrackerHelper
 import com.android.settingslib.spa.framework.common.SettingsEntryBuilder
 import com.android.settingslib.spa.framework.common.SettingsPageProvider
 import com.android.settingslib.spa.framework.common.createSettingsPage
 import com.android.settingslib.spa.framework.compose.navigator
-import com.android.settingslib.spa.framework.compose.rememberContext
+import com.android.settingslib.spa.search.SearchablePage
+import com.android.settingslib.spa.search.SearchablePage.SearchItem
 import com.android.settingslib.spa.widget.preference.Preference
 import com.android.settingslib.spa.widget.preference.PreferenceModel
 import com.android.settingslib.spa.widget.scaffold.RegularScaffold
 import com.android.settingslib.spa.widget.ui.Category
 import com.android.settingslib.spaprivileged.framework.common.broadcastReceiverFlow
-import com.android.settingslib.spaprivileged.settingsprovider.settingsGlobalBooleanFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -78,9 +76,7 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/**
- * Showing the sim onboarding which is the process flow of sim switching on.
- */
+/** Showing the sim onboarding which is the process flow of sim switching on. */
 open class NetworkCellularGroupProvider : SettingsPageProvider, SearchablePage {
     override val name = fileName
     override val metricsCategory = SettingsEnums.MOBILE_NETWORK_LIST
@@ -91,14 +87,16 @@ open class NetworkCellularGroupProvider : SettingsPageProvider, SearchablePage {
     var defaultDataSubId: Int = SubscriptionManager.INVALID_SUBSCRIPTION_ID
     var nonDds: Int = SubscriptionManager.INVALID_SUBSCRIPTION_ID
 
-    open fun buildInjectEntry() = SettingsEntryBuilder.createInject(owner = owner)
-            .setUiLayoutFn {
-                // never using
-                Preference(object : PreferenceModel {
+    open fun buildInjectEntry() =
+        SettingsEntryBuilder.createInject(owner = owner).setUiLayoutFn {
+            // never using
+            Preference(
+                object : PreferenceModel {
                     override val title = name
                     override val onClick = navigator(name)
-                })
-            }
+                }
+            )
+        }
 
     @Composable
     override fun Page(arguments: Bundle?) {
@@ -115,8 +113,6 @@ open class NetworkCellularGroupProvider : SettingsPageProvider, SearchablePage {
         }
         val subscriptionViewModel = viewModel<SubscriptionInfoListViewModel>()
 
-        CollectAirplaneModeAndFinishIfOn()
-
         LaunchedEffect(Unit) {
             allOfFlows(context, subscriptionViewModel.selectableSubscriptionInfoListFlow).collect {
                 callsSelectedId.intValue = defaultVoiceSubId
@@ -126,9 +122,10 @@ open class NetworkCellularGroupProvider : SettingsPageProvider, SearchablePage {
             }
         }
 
-        val selectableSubscriptionInfoList by subscriptionViewModel
-                .selectableSubscriptionInfoListFlow
-                .collectAsStateWithLifecycle(initialValue = emptyList())
+        val selectableSubscriptionInfoList by
+            subscriptionViewModel.selectableSubscriptionInfoListFlow.collectAsStateWithLifecycle(
+                initialValue = emptyList()
+            )
 
         RegularScaffold(title = stringResource(R.string.provider_network_settings_title)) {
             SimsSection(selectableSubscriptionInfoList)
@@ -155,52 +152,58 @@ open class NetworkCellularGroupProvider : SettingsPageProvider, SearchablePage {
         }
     }
 
-    private fun allOfFlows(context: Context,
-                           selectableSubscriptionInfoListFlow: Flow<List<SubscriptionInfo>>) =
-            combine(
-                    selectableSubscriptionInfoListFlow,
-                    context.defaultVoiceSubscriptionFlow(),
-                    context.defaultSmsSubscriptionFlow(),
-                    DataSubscriptionRepository(context).defaultDataSubscriptionIdFlow(),
-                    this::refreshUiStates,
-            ).flowOn(Dispatchers.Default)
+    private fun allOfFlows(
+        context: Context,
+        selectableSubscriptionInfoListFlow: Flow<List<SubscriptionInfo>>,
+    ) =
+        combine(
+                selectableSubscriptionInfoListFlow,
+                context.defaultVoiceSubscriptionFlow(),
+                context.defaultSmsSubscriptionFlow(),
+                DataSubscriptionRepository(context).defaultDataSubscriptionIdFlow(),
+                this::refreshUiStates,
+            )
+            .flowOn(Dispatchers.Default)
 
     private fun refreshUiStates(
         selectableSubscriptionInfoList: List<SubscriptionInfo>,
         inputDefaultVoiceSubId: Int,
         inputDefaultSmsSubId: Int,
-        inputDefaultDateSubId: Int
+        inputDefaultDateSubId: Int,
     ) {
         defaultVoiceSubId = inputDefaultVoiceSubId
         defaultSmsSubId = inputDefaultSmsSubId
         defaultDataSubId = inputDefaultDateSubId
-        nonDds = if (defaultDataSubId == SubscriptionManager.INVALID_SUBSCRIPTION_ID) {
-            SubscriptionManager.INVALID_SUBSCRIPTION_ID
-        } else {
-            selectableSubscriptionInfoList
+        nonDds =
+            if (defaultDataSubId == SubscriptionManager.INVALID_SUBSCRIPTION_ID) {
+                SubscriptionManager.INVALID_SUBSCRIPTION_ID
+            } else {
+                selectableSubscriptionInfoList
                     .filter { info ->
                         (info.simSlotIndex != -1) && (info.subscriptionId != defaultDataSubId)
                     }
                     .map { it.subscriptionId }
                     .firstOrNull() ?: SubscriptionManager.INVALID_SUBSCRIPTION_ID
-        }
+            }
 
         Log.d(name, "defaultDataSubId: $defaultDataSubId, nonDds: $nonDds")
     }
+
     @Composable
-    open fun OtherSection(){
+    open fun OtherSection() {
         // Do nothing
     }
 
     override fun getPageTitleForSearch(context: Context): String =
         context.getString(R.string.provider_network_settings_title)
 
-    override fun getSearchableTitles(context: Context): List<String> {
+    override fun getSearchItems(context: Context): List<SearchItem> {
         if (!isPageSearchable(context)) return emptyList()
+        val activeSubscriptionCount =
+            context.requireSubscriptionManager().activeSubscriptionInfoCount
         return buildList {
-            if (context.requireSubscriptionManager().activeSubscriptionInfoCount > 0) {
-                add(context.getString(R.string.mobile_data_settings_title))
-            }
+            if (activeSubscriptionCount > 0) add(getMobileDataSearchItem(context))
+            if (activeSubscriptionCount >= 2) add(getAutomaticDataSwitchingSearchItem(context))
         }
     }
 
@@ -214,25 +217,10 @@ open class NetworkCellularGroupProvider : SettingsPageProvider, SearchablePage {
 
 @Composable
 fun MobileDataSectionImpl(mobileDataSelectedId: Int, nonDds: Int) {
-    val mobileDataRepository = rememberContext(::MobileDataRepository)
-
     Category(title = stringResource(id = R.string.mobile_data_settings_title)) {
         MobileDataSwitchPreference(subId = mobileDataSelectedId)
 
-        val isAutoDataEnabled by remember(nonDds) {
-            mobileDataRepository.isMobileDataPolicyEnabledFlow(
-                subId = nonDds,
-                policy = TelephonyManager.MOBILE_DATA_POLICY_AUTO_DATA_SWITCH
-            )
-        }.collectAsStateWithLifecycle(initialValue = null)
-        if (SubscriptionManager.isValidSubscriptionId(nonDds)) {
-            AutomaticDataSwitchingPreference(
-                isAutoDataEnabled = { isAutoDataEnabled },
-                setAutoDataEnabled = { newEnabled ->
-                    mobileDataRepository.setAutoDataSwitch(nonDds, newEnabled)
-                },
-            )
-        }
+        AutomaticDataSwitchingPreference(nonDds)
     }
 }
 
@@ -249,24 +237,15 @@ fun PrimarySimImpl(
     context: Context = LocalContext.current,
     actionSetCalls: (Int) -> Unit = {
         callsSelectedId.intValue = it
-        coroutineScope.launch {
-            setDefaultVoice(subscriptionManager, it)
-        }
+        coroutineScope.launch { setDefaultVoice(subscriptionManager, it) }
     },
     actionSetTexts: (Int) -> Unit = {
         textsSelectedId.intValue = it
-        coroutineScope.launch {
-            setDefaultSms(subscriptionManager, it)
-        }
+        coroutineScope.launch { setDefaultSms(subscriptionManager, it) }
     },
     actionSetMobileData: (Int) -> Unit = {
         coroutineScope.launch {
-            setDefaultData(
-                context,
-                subscriptionManager,
-                wifiPickerTrackerHelper,
-                it
-            )
+            setDefaultData(context, subscriptionManager, wifiPickerTrackerHelper, it)
         }
     },
 ) {
@@ -275,21 +254,21 @@ fun PrimarySimImpl(
         primarySimInfo.callsList,
         callsSelectedId,
         ImageVector.vectorResource(R.drawable.ic_phone),
-        actionSetCalls
+        actionSetCalls,
     )
     CreatePrimarySimListPreference(
         stringResource(id = R.string.primary_sim_texts_title),
         primarySimInfo.smsList,
         textsSelectedId,
         Icons.AutoMirrored.Outlined.Message,
-        actionSetTexts
+        actionSetTexts,
     )
     CreatePrimarySimListPreference(
         stringResource(id = R.string.mobile_data_settings_title),
         primarySimInfo.dataList,
         mobileDataSelectedId,
         Icons.Outlined.DataUsage,
-        actionSetMobileData
+        actionSetMobileData,
     )
 }
 
@@ -301,14 +280,17 @@ fun PrimarySimSectionImpl(
     mobileDataSelectedId: MutableIntState,
 ) {
     val context = LocalContext.current
-    val primarySimInfo = remember(subscriptionInfoListFlow) {
-        subscriptionInfoListFlow
-            .map { subscriptionInfoList ->
-                subscriptionInfoList.filter { subInfo -> subInfo.simSlotIndex != -1 }
+    val primarySimInfo =
+        remember(subscriptionInfoListFlow) {
+                subscriptionInfoListFlow
+                    .map { subscriptionInfoList ->
+                        subscriptionInfoList.filter { subInfo -> subInfo.simSlotIndex != -1 }
+                    }
+                    .map(PrimarySimRepository(context)::getPrimarySimInfo)
+                    .flowOn(Dispatchers.Default)
             }
-            .map(PrimarySimRepository(context)::getPrimarySimInfo)
-            .flowOn(Dispatchers.Default)
-    }.collectAsStateWithLifecycle(initialValue = null).value ?: return
+            .collectAsStateWithLifecycle(initialValue = null)
+            .value ?: return
 
     Category(title = stringResource(id = R.string.primary_sim_title)) {
         PrimarySimImpl(
@@ -316,21 +298,8 @@ fun PrimarySimSectionImpl(
             callsSelectedId,
             textsSelectedId,
             mobileDataSelectedId,
-            rememberWifiPickerTrackerHelper()
+            rememberWifiPickerTrackerHelper(),
         )
-    }
-}
-
-@Composable
-fun CollectAirplaneModeAndFinishIfOn() {
-    val context = LocalContext.current
-    LaunchedEffect(Unit) {
-        context.settingsGlobalBooleanFlow(Settings.Global.AIRPLANE_MODE_ON).collect {
-            isAirplaneModeOn ->
-            if (isAirplaneModeOn) {
-                context.getActivity()?.finish()
-            }
-        }
     }
 }
 
@@ -342,52 +311,39 @@ fun rememberWifiPickerTrackerHelper(): WifiPickerTrackerHelper {
 }
 
 private fun Context.defaultVoiceSubscriptionFlow(): Flow<Int> =
-        merge(
-                flowOf(null), // kick an initial value
-                broadcastReceiverFlow(
-                        IntentFilter(TelephonyManager.ACTION_DEFAULT_VOICE_SUBSCRIPTION_CHANGED)
-                ),
-        ).map { SubscriptionManager.getDefaultVoiceSubscriptionId() }
-                .conflate().flowOn(Dispatchers.Default)
+    merge(
+            flowOf(null), // kick an initial value
+            broadcastReceiverFlow(
+                IntentFilter(TelephonyManager.ACTION_DEFAULT_VOICE_SUBSCRIPTION_CHANGED)
+            ),
+        )
+        .map { SubscriptionManager.getDefaultVoiceSubscriptionId() }
+        .conflate()
+        .flowOn(Dispatchers.Default)
 
 private fun Context.defaultSmsSubscriptionFlow(): Flow<Int> =
-        merge(
-                flowOf(null), // kick an initial value
-                broadcastReceiverFlow(
-                        IntentFilter(SubscriptionManager.ACTION_DEFAULT_SMS_SUBSCRIPTION_CHANGED)
-                ),
-        ).map { SubscriptionManager.getDefaultSmsSubscriptionId() }
-                .conflate().flowOn(Dispatchers.Default)
+    merge(
+            flowOf(null), // kick an initial value
+            broadcastReceiverFlow(
+                IntentFilter(SubscriptionManager.ACTION_DEFAULT_SMS_SUBSCRIPTION_CHANGED)
+            ),
+        )
+        .map { SubscriptionManager.getDefaultSmsSubscriptionId() }
+        .conflate()
+        .flowOn(Dispatchers.Default)
 
-suspend fun setDefaultVoice(
-    subscriptionManager: SubscriptionManager?,
-    subId: Int
-): Unit =
-    withContext(Dispatchers.Default) {
-        subscriptionManager?.setDefaultVoiceSubscriptionId(subId)
-    }
+suspend fun setDefaultVoice(subscriptionManager: SubscriptionManager?, subId: Int): Unit =
+    withContext(Dispatchers.Default) { subscriptionManager?.setDefaultVoiceSubscriptionId(subId) }
 
-suspend fun setDefaultSms(
-    subscriptionManager: SubscriptionManager?,
-    subId: Int
-): Unit =
-    withContext(Dispatchers.Default) {
-        subscriptionManager?.setDefaultSmsSubId(subId)
-    }
+suspend fun setDefaultSms(subscriptionManager: SubscriptionManager?, subId: Int): Unit =
+    withContext(Dispatchers.Default) { subscriptionManager?.setDefaultSmsSubId(subId) }
 
 suspend fun setDefaultData(
     context: Context,
     subscriptionManager: SubscriptionManager?,
     wifiPickerTrackerHelper: WifiPickerTrackerHelper?,
-    subId: Int
-): Unit =
-    setMobileData(
-        context,
-        subscriptionManager,
-        wifiPickerTrackerHelper,
-        subId,
-        true
-    )
+    subId: Int,
+): Unit = setMobileData(context, subscriptionManager, wifiPickerTrackerHelper, subId, true)
 
 suspend fun setMobileData(
     context: Context,
@@ -405,7 +361,7 @@ suspend fun setMobileData(
             targetSubId = activeSubIdList[0]
             Log.d(
                 NetworkCellularGroupProvider.fileName,
-                "There is only one sim in the device, correct dds as $targetSubId"
+                "There is only one sim in the device, correct dds as $targetSubId",
             )
         }
 

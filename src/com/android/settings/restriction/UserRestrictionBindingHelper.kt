@@ -17,38 +17,50 @@
 package com.android.settings.restriction
 
 import android.content.Context
+import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceFragmentCompat
 import com.android.settingslib.datastore.HandlerExecutor
 import com.android.settingslib.datastore.KeyedObserver
 import com.android.settingslib.metadata.PreferenceChangeReason
+import com.android.settingslib.metadata.PreferenceHierarchyNode
 import com.android.settingslib.preference.PreferenceScreenBindingHelper
 
 /** Helper to rebind preference immediately when user restriction is changed. */
 class UserRestrictionBindingHelper(
-    private val context: Context,
+    fragment: PreferenceFragmentCompat,
     private val screenBindingHelper: PreferenceScreenBindingHelper,
 ) : KeyedObserver<String>, AutoCloseable {
-    private val restrictionKeysToPreferenceKeys: Map<String, MutableSet<String>> =
-        mutableMapOf<String, MutableSet<String>>()
-            .apply {
-                screenBindingHelper.forEachRecursively {
-                    val metadata = it.metadata
-                    if (metadata is PreferenceRestrictionMixin) {
-                        for (restrictionKey in metadata.restrictionKeys) {
-                            getOrPut(restrictionKey) { mutableSetOf() }.add(metadata.key)
-                        }
-                    }
-                }
-            }
-            .toMap()
+    private val context: Context = fragment.requireContext()
+    private val restrictionKeysToPreferenceKeys = mutableMapOf<String, MutableSet<String>>()
 
     init {
-        val restrictionKeys = restrictionKeysToPreferenceKeys.keys
-        if (restrictionKeys.isNotEmpty()) {
-            val userRestrictions = UserRestrictions.get(context)
-            val executor = HandlerExecutor.main
-            for (restrictionKey in restrictionKeys) {
-                userRestrictions.addObserver(restrictionKey, this, executor)
-            }
+        screenBindingHelper.forEachAsyncRecursively(::addNode, fragment.lifecycleScope) { _, node ->
+            // node is added to hierarchy in async manner
+            addNode(node)
+        }
+    }
+
+    private fun addNode(node: PreferenceHierarchyNode) {
+        val metadata = node.metadata
+        val restrictionKeys =
+            (metadata as? PreferenceRestrictionMixin)?.restrictionKeys ?: emptyArray()
+        if (restrictionKeys.isEmpty()) return
+        val userRestrictions = UserRestrictions.get(context)
+        val executor = HandlerExecutor.main
+        fun addObserver(restrictionKey: String) =
+            userRestrictions.addObserver(
+                restrictionKey,
+                this@UserRestrictionBindingHelper,
+                executor,
+            )
+        val key = metadata.key
+        for (restrictionKey in restrictionKeys) {
+            restrictionKeysToPreferenceKeys
+                .getOrPut(restrictionKey) {
+                    addObserver(restrictionKey)
+                    mutableSetOf()
+                }
+                .add(key)
         }
     }
 

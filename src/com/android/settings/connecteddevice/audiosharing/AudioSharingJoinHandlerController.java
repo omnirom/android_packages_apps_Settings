@@ -46,7 +46,6 @@ import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.CachedBluetoothDeviceManager;
 import com.android.settingslib.bluetooth.LocalBluetoothLeBroadcastAssistant;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
-import com.android.settingslib.flags.Flags;
 import com.android.settingslib.utils.ThreadUtils;
 
 import java.util.concurrent.Executor;
@@ -192,11 +191,9 @@ public class AudioSharingJoinHandlerController extends BasePreferenceController
         });
     }
 
-
     @Override
     public int getAvailabilityStatus() {
-        return (Flags.promoteAudioSharingForSecondAutoConnectedLeaDevice()
-                && BluetoothUtils.isAudioSharingUIAvailable(mContext))
+        return BluetoothUtils.isAudioSharingUIAvailable(mContext)
                 ? AVAILABLE_UNSEARCHABLE
                 : UNSUPPORTED_ON_DEVICE;
     }

@@ -16,195 +16,287 @@
 
 package com.android.settings.accessibility;
 
+import static com.android.internal.accessibility.AccessibilityShortcutController.DALTONIZER_COMPONENT_NAME;
 import static com.android.settings.accessibility.AccessibilityUtil.State.OFF;
 import static com.android.settings.accessibility.AccessibilityUtil.State.ON;
-import static com.android.settings.accessibility.ToggleDaltonizerPreferenceFragment.KEY_SHORTCUT_PREFERENCE;
-import static com.android.settings.accessibility.ToggleDaltonizerPreferenceFragment.KEY_SWITCH_PREFERENCE;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.app.settings.SettingsEnums;
+import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.flag.junit.SetFlagsRule;
+import android.platform.test.annotations.RequiresFlagsDisabled;
+import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
+import android.provider.SearchIndexableResource;
 import android.provider.Settings;
-import android.widget.PopupWindow;
 
-import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentFactory;
+import androidx.fragment.app.testing.FragmentScenario;
+import androidx.lifecycle.Lifecycle;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.TwoStatePreference;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
-import com.android.settings.SettingsActivity;
-import com.android.settings.testutils.XmlTestUtils;
-import com.android.settings.widget.SettingsMainSwitchPreference;
-import com.android.settingslib.search.SearchIndexableRaw;
+import com.android.settings.accessibility.colorcorrection.ui.ColorCorrectionScreen;
+import com.android.settings.testutils.SettingsStoreRule;
+import com.android.settingslib.datastore.SettingsSecureStore;
 
-import org.junit.Before;
+import com.google.testing.junit.testparameterinjector.TestParameters;
+
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.android.controller.ActivityController;
-import org.robolectric.shadow.api.Shadow;
-import org.robolectric.shadows.ShadowApplication;
+import org.robolectric.RobolectricTestParameterInjector;
+import org.robolectric.shadows.ShadowLooper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /** Tests for {@link ToggleDaltonizerPreferenceFragment} */
-@RunWith(RobolectricTestRunner.class)
-public class ToggleDaltonizerPreferenceFragmentTest {
+@RunWith(RobolectricTestParameterInjector.class)
+public class ToggleDaltonizerPreferenceFragmentTest extends
+        BaseShortcutInteractionsTestCases<ToggleDaltonizerPreferenceFragment> {
     @Rule
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
+    @Rule
+    public final SettingsStoreRule mSettingsStoreRule = new SettingsStoreRule();
+    private static final String MAIN_SWITCH_PREF_KEY = "accessibility_display_daltonizer_enabled";
+    private static final String SHORTCUT_PREF_KEY = "daltonizer_shortcut_key";
     private final Context mContext = ApplicationProvider.getApplicationContext();
-    private ActivityController<SettingsActivity> mActivityController;
+    private FragmentScenario<ToggleDaltonizerPreferenceFragment> mFragScenario = null;
+    private ToggleDaltonizerPreferenceFragment mFragment;
 
-    @Before
-    public void setUp() {
-        Intent intent = new Intent();
-        intent.putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT,
-                ToggleDaltonizerPreferenceFragment.class.getName());
-        intent.putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS, new Bundle());
-
-        mActivityController = ActivityController.of(new SettingsActivity(), intent);
+    @After
+    public void cleanUp() {
+        if (mFragScenario != null) {
+            mFragScenario.close();
+        }
     }
 
     @Test
-    public void onResume_colorCorrectEnabled_shouldReturnTrue() {
+    public void onResume_colorCorrectEnabled_mainSwitchIsOn() {
         Settings.Secure.putInt(mContext.getContentResolver(),
                 Settings.Secure.ACCESSIBILITY_DISPLAY_DALTONIZER_ENABLED, ON);
 
-        ToggleDaltonizerPreferenceFragment fragment = getFragmentInResumedState();
+        launchFragment();
 
-        SettingsMainSwitchPreference switchPreference = getMainFeatureToggle(fragment);
-        assertThat(switchPreference.isChecked()).isTrue();
+        assertThat(getMainSwitch().isChecked()).isTrue();
     }
 
     @Test
-    public void onResume_colorCorrectDisabled_shouldReturnFalse() {
+    public void onResume_colorCorrectDisabled_mainSwitchIsOff() {
         Settings.Secure.putInt(mContext.getContentResolver(),
                 Settings.Secure.ACCESSIBILITY_DISPLAY_DALTONIZER_ENABLED, OFF);
 
-        ToggleDaltonizerPreferenceFragment fragment = getFragmentInResumedState();
+        launchFragment();
 
-        SettingsMainSwitchPreference switchPreference = getMainFeatureToggle(fragment);
-        assertThat(switchPreference.isChecked()).isFalse();
+        assertThat(getMainSwitch().isChecked()).isFalse();
     }
 
     @Test
-    public void onResume_colorCorrectEnabled_switchPreferenceChecked_notShowTooltips() {
+    public void turnOffMainSwitch_colorCorrectionTurnedOff() {
         Settings.Secure.putInt(mContext.getContentResolver(),
                 Settings.Secure.ACCESSIBILITY_DISPLAY_DALTONIZER_ENABLED, ON);
+        launchFragment();
+        assertThat(getMainSwitch().isChecked()).isTrue();
 
-        ToggleDaltonizerPreferenceFragment fragment = getFragmentInResumedState();
-        SettingsMainSwitchPreference switchPreference = getMainFeatureToggle(fragment);
-        assertThat(switchPreference.isChecked()).isTrue();
-
-        assertThat(getLatestPopupWindow()).isNull();
-    }
-
-    @Test
-    public void onPreferenceToggled_colorCorrectEnabled_shouldReturnFalseAndNotShowTooltipView() {
-        Settings.Secure.putInt(mContext.getContentResolver(),
-                Settings.Secure.ACCESSIBILITY_DISPLAY_DALTONIZER_ENABLED, ON);
-        ToggleDaltonizerPreferenceFragment fragment = getFragmentInResumedState();
-        SettingsMainSwitchPreference switchPreference = getMainFeatureToggle(fragment);
-
-        fragment.onPreferenceToggled(switchPreference.getKey(), false);
+        getMainSwitch().performClick();
+        ShadowLooper.idleMainLooper();
 
         final boolean isEnabled = Settings.Secure.getInt(mContext.getContentResolver(),
                 Settings.Secure.ACCESSIBILITY_DISPLAY_DALTONIZER_ENABLED, OFF) == ON;
         assertThat(isEnabled).isFalse();
-        assertThat(getLatestPopupWindow()).isNull();
+        assertThat(getMainSwitch().isChecked()).isFalse();
+    }
+
+    @Test
+    public void turnOnMainSwitch_colorCorrectionTurnedOn() {
+        Settings.Secure.putInt(mContext.getContentResolver(),
+                Settings.Secure.ACCESSIBILITY_DISPLAY_DALTONIZER_ENABLED, OFF);
+        launchFragment();
+        assertThat(getMainSwitch().isChecked()).isFalse();
+
+        getMainSwitch().performClick();
+        ShadowLooper.idleMainLooper();
+
+        final boolean isEnabled = Settings.Secure.getInt(mContext.getContentResolver(),
+                Settings.Secure.ACCESSIBILITY_DISPLAY_DALTONIZER_ENABLED, OFF) == ON;
+        assertThat(isEnabled).isTrue();
+        assertThat(getMainSwitch().isChecked()).isTrue();
+    }
+
+    @RequiresFlagsDisabled(Flags.FLAG_CATALYST_DALTONIZER)
+    @Test
+    @TestParameters(
+            customName = "deuteranomaly",
+            value = "{modePrefKey: \"daltonizer_mode_deuteranomaly\", expectedValue: 12}")
+    @TestParameters(
+            customName = "protanomaly",
+            value = "{modePrefKey: \"daltonizer_mode_protanomaly\", expectedValue: 11}")
+    @TestParameters(
+            customName = "tritanomaly",
+            value = "{modePrefKey: \"daltonizer_mode_tritanomaly\", expectedValue: 13}")
+    @TestParameters(
+            customName = "grayscale",
+            value = "{modePrefKey: \"daltonizer_mode_grayscale\", expectedValue: 0}")
+    public void setDaltonizerMode_flagOff_updateSettingData(String modePrefKey, int expectedValue) {
+        launchFragment();
+        CheckBoxPreference modePref = mFragment.findPreference(modePrefKey);
+        assertThat(modePref).isNotNull();
+
+        modePref.performClick();
+        ShadowLooper.idleMainLooper();
+
+        assertThat(modePref.isChecked()).isTrue();
+        // Robolectric's ShadowSettings has different implementation detail than
+        // SettingsProvider's Settings.
+        // SettingsProvider always stores everything as String, whereas Robolectric's
+        // ShadowSettings store the data with the same type as when it's stored.
+        assertThat(Settings.Secure.getString(mContext.getContentResolver(),
+                Settings.Secure.ACCESSIBILITY_DISPLAY_DALTONIZER)).isEqualTo(
+                Integer.toString(expectedValue));
+    }
+
+    @RequiresFlagsEnabled(Flags.FLAG_CATALYST_DALTONIZER)
+    @Test
+    @TestParameters(
+            customName = "deuteranomaly",
+            value = "{modePrefKey: \"daltonizer_mode_deuteranomaly\", expectedValue: 12}")
+    @TestParameters(
+            customName = "protanomaly",
+            value = "{modePrefKey: \"daltonizer_mode_protanomaly\", expectedValue: 11}")
+    @TestParameters(
+            customName = "tritanomaly",
+            value = "{modePrefKey: \"daltonizer_mode_tritanomaly\", expectedValue: 13}")
+    @TestParameters(
+            customName = "grayscale",
+            value = "{modePrefKey: \"daltonizer_mode_grayscale\", expectedValue: 0}")
+    public void setDaltonizerMode_updateSettingData(String modePrefKey, int expectedValue) {
+        launchFragment();
+        CheckBoxPreference modePref = mFragment.findPreference(modePrefKey);
+        assertThat(modePref).isNotNull();
+
+        modePref.performClick();
+        ShadowLooper.idleMainLooper();
+
+        assertThat(modePref.isChecked()).isTrue();
+        // Robolectric's ShadowSettings has different implementation detail than
+        // SettingsProvider's Settings.
+        // SettingsProvider always stores everything as String, whereas Robolectric's
+        // ShadowSettings store the data with the same type as when it's stored.
+        assertThat(SettingsSecureStore.get(mContext).getInt(
+                Settings.Secure.ACCESSIBILITY_DISPLAY_DALTONIZER)).isEqualTo(expectedValue);
     }
 
     @Test
     public void getMetricsCategory_returnsCorrectCategory() {
-        ToggleDaltonizerPreferenceFragment fragment = getFragmentInResumedState();
+        launchFragment();
 
-        assertThat(fragment.getMetricsCategory()).isEqualTo(
+        assertThat(mFragment.getMetricsCategory()).isEqualTo(
                 SettingsEnums.ACCESSIBILITY_TOGGLE_DALTONIZER);
     }
 
     @Test
     public void getPreferenceScreenResId_returnsCorrectXml() {
-        ToggleDaltonizerPreferenceFragment fragment = getFragmentInResumedState();
+        launchFragment();
 
-        assertThat(fragment.getPreferenceScreenResId()).isEqualTo(
+        assertThat(mFragment.getPreferenceScreenResId()).isEqualTo(
                 R.xml.accessibility_daltonizer_settings);
     }
 
     @Test
     public void getHelpResource_returnsCorrectHelpResource() {
-        ToggleDaltonizerPreferenceFragment fragment = getFragmentInResumedState();
+        launchFragment();
 
-        assertThat(fragment.getHelpResource()).isEqualTo(R.string.help_url_color_correction);
+        assertThat(mFragment.getHelpResource()).isEqualTo(R.string.help_url_color_correction);
     }
 
+    @RequiresFlagsDisabled({
+            Flags.FLAG_CATALYST_DALTONIZER,
+            com.android.settings.flags.Flags.FLAG_CATALYST_SETTINGS_SEARCH
+    })
     @Test
-    public void getNonIndexableKeys_existInXmlLayout() {
+    public void getNonIndexableKeys_containsNonIndexableItems() {
         final List<String> niks = ToggleDaltonizerPreferenceFragment.SEARCH_INDEX_DATA_PROVIDER
                 .getNonIndexableKeys(mContext);
-        final List<String> keys =
-                XmlTestUtils.getKeysFromPreferenceXml(mContext,
-                        R.xml.accessibility_daltonizer_settings);
+        final List<String> keys = List.of(
+                "top_intro",
+                "daltonizer_preview",
+                "general_categories",
+                "html_description",
+                "feedback"
+        );
 
-        assertThat(keys).containsAtLeastElementsIn(niks);
+        assertThat(niks).containsExactlyElementsIn(keys);
+    }
+
+    @RequiresFlagsDisabled({
+            Flags.FLAG_CATALYST_DALTONIZER,
+            com.android.settings.flags.Flags.FLAG_CATALYST_SETTINGS_SEARCH
+    })
+    @Test
+    public void getXmlResourceToIndex() {
+        final List<SearchIndexableResource> indexableResources =
+                ToggleDaltonizerPreferenceFragment.SEARCH_INDEX_DATA_PROVIDER
+                        .getXmlResourcesToIndex(mContext, true);
+
+        assertThat(indexableResources).isNotNull();
+        assertThat(indexableResources.size()).isEqualTo(1);
+        assertThat(indexableResources.getFirst().xmlResId).isEqualTo(
+                R.xml.accessibility_daltonizer_settings);
+    }
+
+    @RequiresFlagsEnabled({
+            Flags.FLAG_CATALYST_DALTONIZER,
+            com.android.settings.flags.Flags.FLAG_CATALYST_SETTINGS_SEARCH
+    })
+    @Test
+    public void getXmlResourceToIndex_catalystSearch() {
+        final List<SearchIndexableResource> indexableResources =
+                ToggleDaltonizerPreferenceFragment.SEARCH_INDEX_DATA_PROVIDER
+                        .getXmlResourcesToIndex(mContext, true);
+
+        assertThat(indexableResources).isNull();
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
-    public void getRawDataToIndex_flagOff_returnEmptyData() {
-        List<SearchIndexableRaw> rawData = ToggleDaltonizerPreferenceFragment
-                .SEARCH_INDEX_DATA_PROVIDER.getRawDataToIndex(mContext, /* enabled= */ true);
+    public void getPreferenceScreenBindingKey_returnsColorCorrectionScreenKey() {
+        launchFragment();
 
-        assertThat(rawData).isEmpty();
+        assertThat(mFragment.getPreferenceScreenBindingKey(mContext))
+                .isEqualTo(ColorCorrectionScreen.KEY);
     }
 
-    @Test
-    @EnableFlags(Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
-    public void getRawDataToIndex_flagOn_returnAllIndexablePreferences() {
-        String[] expectedKeys = {KEY_SHORTCUT_PREFERENCE, KEY_SWITCH_PREFERENCE};
-        String[] expectedTitles = {
-                mContext.getString(R.string.accessibility_daltonizer_shortcut_title),
-                mContext.getString(R.string.accessibility_daltonizer_primary_switch_title)};
-        List<String> keysResultList = new ArrayList<>();
-        List<String> titlesResultList = new ArrayList<>();
-        List<SearchIndexableRaw> rawData = ToggleDaltonizerPreferenceFragment
-                .SEARCH_INDEX_DATA_PROVIDER.getRawDataToIndex(mContext, /* enabled= */ true);
-
-        for (SearchIndexableRaw rawDataItem : rawData) {
-            keysResultList.add(rawDataItem.key);
-            titlesResultList.add(rawDataItem.title);
-        }
-
-        assertThat(rawData).hasSize(2);
-        assertThat(keysResultList).containsExactly(expectedKeys);
-        assertThat(titlesResultList).containsExactly(expectedTitles);
+    @NonNull
+    @Override
+    public ToggleDaltonizerPreferenceFragment launchFragment() {
+        mFragScenario = FragmentScenario.launch(
+                ToggleDaltonizerPreferenceFragment.class,
+                /* bundle= */ null,
+                androidx.appcompat.R.style.Theme_AppCompat,
+                (FragmentFactory) null).moveToState(Lifecycle.State.RESUMED);
+        mFragScenario.onFragment(frag -> mFragment = frag);
+        return mFragment;
     }
 
-    private static PopupWindow getLatestPopupWindow() {
-        final ShadowApplication shadowApplication =
-                Shadow.extract(ApplicationProvider.getApplicationContext());
-        return shadowApplication.getLatestPopupWindow();
+    private TwoStatePreference getMainSwitch() {
+        return mFragment.findPreference(MAIN_SWITCH_PREF_KEY);
     }
 
-    private ToggleDaltonizerPreferenceFragment getFragmentInResumedState() {
-        mActivityController.create().start().resume();
-        Fragment fragment = mActivityController.get().getSupportFragmentManager().findFragmentById(
-                R.id.main_content);
-
-        assertThat(fragment).isNotNull();
-        assertThat(fragment).isInstanceOf(ToggleDaltonizerPreferenceFragment.class);
-
-        return (ToggleDaltonizerPreferenceFragment) fragment;
+    @Nullable
+    @Override
+    public ShortcutPreference getShortcutToggle() {
+        return mFragment.findPreference(SHORTCUT_PREF_KEY);
     }
 
-    private SettingsMainSwitchPreference getMainFeatureToggle(
-            ToggleDaltonizerPreferenceFragment fragment) {
-        return fragment.findPreference(fragment.getUseServicePreferenceKey());
+    @NonNull
+    @Override
+    public ComponentName getFeatureComponent() {
+        return DALTONIZER_COMPONENT_NAME;
     }
 }

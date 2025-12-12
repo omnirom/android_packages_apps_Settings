@@ -22,10 +22,12 @@ import static com.android.settings.connecteddevice.audiosharing.audiostreams.Sou
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -64,6 +66,7 @@ public class SourcePresentStateTest {
     @Mock private AudioStreamPreference mPreference;
     @Mock private AudioStreamsProgressCategoryController mController;
     @Mock private AudioStreamsHelper mHelper;
+    @Mock private AudioStreamScanHelper mScanHelper;
     @Mock private AudioStreamsRepository mRepository;
     @Mock private AudioStreamsDashboardFragment mFragment;
     @Mock private FragmentActivity mActivity;
@@ -99,6 +102,21 @@ public class SourcePresentStateTest {
         assertThat(stateEnum)
                 .isEqualTo(AudioStreamsProgressCategoryController.AudioStreamState.SOURCE_PRESENT);
     }
+
+    public void testOnEnter_log() {
+        when(mPreference.getContext()).thenReturn(mContext);
+        when(mPreference.getSourceOriginForLogging())
+                .thenReturn(SourceOriginForLogging.QR_CODE_SCAN_SETTINGS);
+
+        mInstance.onEnter(mPreference, mController, mHelper, mScanHelper);
+
+        verify(mFeatureFactory.metricsFeatureProvider)
+                .action(
+                        eq(mContext),
+                        eq(SettingsEnums.ACTION_AUDIO_STREAM_JOIN_PRESENT_SUCCEED),
+                        eq(SourceOriginForLogging.QR_CODE_SCAN_SETTINGS.ordinal()));
+    }
+
 
     @Test
     public void testGetOnClickListener_startSubSettings() {

@@ -50,6 +50,7 @@ public class RunningServices extends SettingsPreferenceFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.manage_applications_running, null);
         mRunningProcessesView = rootView.findViewById(R.id.running_processes);
         mRunningProcessesView.doCreate();

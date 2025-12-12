@@ -315,6 +315,10 @@
     <item msgid="7397961711906421599">"ମଧ୍ୟମ"</item>
     <item msgid="4079132024502041928">"ଦୀର୍ଘ"</item>
   </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"DHCP"</item>
+    <item msgid="4425163520864432692">"ଷ୍ଟାଟିକ"</item>
+  </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"ପୂର୍ବ-ନିର୍ଦ୍ଧାରିତ"</item>
     <item msgid="4234707448428002595">"ସାନ୍ସ-ସେରିଫ୍‌"</item>
@@ -330,7 +334,7 @@
     <item msgid="923916134548435468">"ବହୁତ ଛୋଟ"</item>
     <item msgid="5738147437573674872">"ଛୋଟ"</item>
     <item msgid="4691660235626027304">"ମଧ୍ୟମ"</item>
-    <item msgid="824386705928670045">"ବହୁତ ବଡ଼"</item>
+    <item msgid="824386705928670045">"ବଡ଼"</item>
     <item msgid="2790561781512874585">"ବହୁତ ବଡ଼"</item>
   </string-array>
   <string-array name="captioning_edge_type_selector_titles">
@@ -358,10 +362,6 @@
   <string-array name="accessibility_button_location_selector_titles">
     <item msgid="6485511780196327736">"ଅନ୍ୟ ଆପଗୁଡ଼ିକ ଉପରେ ଫ୍ଲୋଟ୍ ହେଉଛି"</item>
     <item msgid="3605616699204153590">"ନାଭିଗେସନ୍ ବାର୍"</item>
-  </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"ବଟନ"</item>
-    <item msgid="6922258575853746220">"ଜେଶ୍ଚର୍"</item>
   </string-array>
   <string-array name="accessibility_button_size_selector_titles">
     <item msgid="7482952318152486459">"ଛୋଟ"</item>
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"ଘଣ୍ଟା"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"କିଛି ନାହିଁ"</item>
+    <item msgid="321837941231023175">"ହୋମ"</item>
+    <item msgid="953234843613969792">"ବର୍ତ୍ତମାନର ଆପ୍ସ"</item>
+    <item msgid="1713942773283586136">"ବିଜ୍ଞପ୍ତି"</item>
+    <item msgid="5687603742365489342">"କ୍ୱିକ ସେଟିଂସ"</item>
+    <item msgid="5454862951059393431">"ଲକସ୍କ୍ରିନ"</item>
   </string-array>
 </resources>

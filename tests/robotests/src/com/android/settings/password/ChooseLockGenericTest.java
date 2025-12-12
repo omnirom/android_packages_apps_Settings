@@ -45,6 +45,7 @@ import static org.robolectric.RuntimeEnvironment.application;
 import static org.robolectric.Shadows.shadowOf;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.admin.DevicePolicyManager;
 import android.app.admin.PasswordMetrics;
 import android.app.admin.PasswordPolicy;
@@ -62,6 +63,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.preference.Preference;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.internal.widget.LockPatternUtils;
 import com.android.internal.widget.LockscreenCredential;
@@ -95,7 +97,6 @@ import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadow.api.Shadow;
 import org.robolectric.shadows.ShadowActivity;
-import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowBiometricManager;
 
 @RunWith(RobolectricTestRunner.class)
@@ -172,8 +173,8 @@ public class ChooseLockGenericTest {
     public void onCreate_deviceNotProvisioned_persistentDataServiceNotAvailable_shouldNotFinish() {
         Global.putInt(application.getContentResolver(), Global.DEVICE_PROVISIONED, 0);
         ShadowPersistentDataBlockManager.setDataBlockSize(1000);
-        ShadowApplication.getInstance().setSystemService(Context.PERSISTENT_DATA_BLOCK_SERVICE,
-                null);
+        shadowOf((Application) ApplicationProvider.getApplicationContext())
+                .setSystemService(Context.PERSISTENT_DATA_BLOCK_SERVICE, null);
 
         initActivity(null);
         assertThat(mActivity.isFinishing()).isFalse();
@@ -309,10 +310,24 @@ public class ChooseLockGenericTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MANDATORY_BIOMETRICS)
     public void onActivityResult_requestcode100_shouldLaunchBiometricPrompt() {
         initActivity(null);
         mShadowBiometricManager.setCanAuthenticate(true);
+
+        mFragment.onActivityResult(
+                ChooseLockGenericFragment.CONFIRM_EXISTING_REQUEST,
+                Activity.RESULT_OK, null /* data */);
+
+        assertThat(mActivity.isFinishing()).isFalse();
+        assertThat(mShadowActivity.getNextStartedActivity().getComponent().getClassName())
+                .isEqualTo(ConfirmDeviceCredentialActivity.class.getName());
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_BP_FALLBACK_OPTIONS)
+    public void onActivityResult_requestcode100_biometricError_shouldLaunchBiometricPrompt() {
+        initActivity(null);
+        mShadowBiometricManager.setCanAuthenticate(false);
 
         mFragment.onActivityResult(
                 ChooseLockGenericFragment.CONFIRM_EXISTING_REQUEST,

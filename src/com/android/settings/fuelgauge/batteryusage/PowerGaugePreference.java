@@ -29,6 +29,8 @@ import androidx.preference.PreferenceViewHolder;
 import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.fuelgauge.WarningFramePreference;
+import com.android.settingslib.widget.SettingsThemeHelper;
+import com.android.settingslib.widget.theme.R.style;
 
 /**
  * Custom preference for displaying battery usage info as a bar and an icon on the left for the
@@ -132,6 +134,10 @@ public class PowerGaugePreference extends WarningFramePreference {
         setViewAlpha(view.itemView, alpha);
 
         final TextView subtitle = (TextView) view.findViewById(R.id.widget_summary);
+        if (SettingsThemeHelper.isExpressiveTheme(getContext())) {
+            subtitle.setTextAppearance(style.TextAppearance_SettingsLib_TitleMedium);
+            subtitle.setTextColor(mTitleColorNormal);
+        }
         subtitle.setText(mProgress);
         if (!TextUtils.isEmpty(mProgressContentDescription)) {
             subtitle.setContentDescription(mProgressContentDescription);
@@ -145,7 +151,6 @@ public class PowerGaugePreference extends WarningFramePreference {
             // Set colors consistently to meet contrast requirements for non-selectable items
             ((TextView) view.findViewById(android.R.id.title)).setTextColor(mTitleColorNormal);
             ((TextView) view.findViewById(android.R.id.summary)).setTextColor(mTitleColorNormal);
-            subtitle.setTextColor(mTitleColorNormal);
         }
     }
 

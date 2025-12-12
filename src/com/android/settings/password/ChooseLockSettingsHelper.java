@@ -77,6 +77,7 @@ public final class ChooseLockSettingsHelper {
             "request_write_repair_mode_pw";
     public static final String EXTRA_KEY_WROTE_REPAIR_MODE_CREDENTIAL =
             "wrote_repair_mode_credential";
+    public static final String EXTRA_KEY_USE_EXPRESSIVE_STYLE = "use_expressive_style";
 
     /**
      * When EXTRA_KEY_UNIFICATION_PROFILE_CREDENTIAL and EXTRA_KEY_UNIFICATION_PROFILE_ID are

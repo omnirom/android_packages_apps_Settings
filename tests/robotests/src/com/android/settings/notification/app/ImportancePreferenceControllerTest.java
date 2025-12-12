@@ -27,14 +27,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
+import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
@@ -44,6 +45,7 @@ import android.os.UserManager;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.notification.NotificationBackend;
 import com.android.settingslib.RestrictedLockUtils;
@@ -82,7 +84,8 @@ public class ImportancePreferenceControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        ShadowApplication shadowApplication = ShadowApplication.getInstance();
+        ShadowApplication shadowApplication =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         shadowApplication.setSystemService(Context.NOTIFICATION_SERVICE, mNm);
         shadowApplication.setSystemService(Context.USER_SERVICE, mUm);
         mContext = RuntimeEnvironment.application;
@@ -220,9 +223,8 @@ public class ImportancePreferenceControllerTest {
 
         verify(pref, times(1)).setConfigurable(anyBoolean());
         verify(pref, times(1)).setImportance(IMPORTANCE_HIGH);
-        verify(pref, times(1)).setDisplayInStatusBar(false);
     }
-    
+
     @Test
     public void testImportanceLowToHigh() {
         NotificationChannel channel =

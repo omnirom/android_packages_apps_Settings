@@ -55,6 +55,7 @@ import androidx.annotation.WorkerThread;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.settings.HelpTrampoline;
 import com.android.settings.R;
+import com.android.settings.Utils;
 import com.android.settings.network.SatelliteRepository;
 import com.android.settings.network.SubscriptionUtil;
 
@@ -97,8 +98,8 @@ public class SimSelectNotification extends BroadcastReceiver {
             Log.d(TAG, "The userId is not the main user");
             return;
         }
-        if (!SubscriptionUtil.isSimHardwareVisible(context)) {
-            Log.w(TAG, "Received unexpected intent with null action.");
+        if (!Utils.isMobileDataCapable(context) && !Utils.isVoiceCapable(context)) {
+            Log.w(TAG, "No support on device without data or voice capabilities.");
             return;
         }
         String action = intent.getAction();

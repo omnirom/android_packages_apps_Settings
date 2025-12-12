@@ -34,6 +34,7 @@ class AdaptiveMobileNetworkTogglePreference() :
     SwitchPreference(
         KEY,
         R.string.adaptive_connectivity_mobile_network_switch_title,
+        R.string.adaptive_connectivity_mobile_network_switch_summary,
     ),
     PreferenceActionMetricsProvider {
 

@@ -98,6 +98,13 @@ public class FaceStatusPreferenceController extends BiometricStatusPreferenceCon
     }
 
     private void updateStateInternal() {
+        if (android.app.admin.flags.Flags.policyTransparencyRefactorEnabled()
+                && android.app.admin.flags.Flags.setKeyguardDisabledFeaturesCoexistence()) {
+            if (mPreference != null) {
+                mPreference.setDisabledByAdmin(mFaceStatusUtils.getEnforcingAdmin());
+            }
+            return;
+        }
         updateStateInternal(mFaceStatusUtils.getDisablingAdmin());
     }
 

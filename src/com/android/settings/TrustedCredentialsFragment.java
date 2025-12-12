@@ -60,15 +60,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.android.internal.annotations.GuardedBy;
 import com.android.internal.app.UnlaunchableAppActivity;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.settings.TrustedCredentialsSettings.Tab;
 import com.android.settingslib.core.lifecycle.ObservableFragment;
+import com.android.settingslib.widget.SettingsThemeHelper;
+
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
@@ -120,24 +126,17 @@ public class TrustedCredentialsFragment extends ObservableFragment
 
     private boolean isBroadcastValidForAction(Intent intent) {
         String action = intent.getAction();
-        if (android.os.Flags.allowPrivateProfile()
-                && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                && android.multiuser.Flags.handleInterleavedSettingsForPrivateSpace()) {
-            UserHandle userHandle = intent.getParcelableExtra(Intent.EXTRA_USER, UserHandle.class);
-            if (userHandle == null) {
-                Log.w(TAG, "received action " + action + " with missing user extra");
-                return false;
-            }
-
-            UserInfo userInfo = mUserManager.getUserInfo(userHandle.getIdentifier());
-            return (Intent.ACTION_PROFILE_AVAILABLE.equals(action)
-                    || Intent.ACTION_PROFILE_UNAVAILABLE.equals(action)
-                    || Intent.ACTION_PROFILE_ACCESSIBLE.equals(action))
-                    && (userInfo.isManagedProfile() || userInfo.isPrivateProfile());
+        UserHandle userHandle = intent.getParcelableExtra(Intent.EXTRA_USER, UserHandle.class);
+        if (userHandle == null) {
+            Log.w(TAG, "received action " + action + " with missing user extra");
+            return false;
         }
-        return (Intent.ACTION_MANAGED_PROFILE_AVAILABLE.equals(action)
-                || Intent.ACTION_MANAGED_PROFILE_UNAVAILABLE.equals(action)
-                || Intent.ACTION_MANAGED_PROFILE_UNLOCKED.equals(action));
+
+        UserInfo userInfo = mUserManager.getUserInfo(userHandle.getIdentifier());
+        return (Intent.ACTION_PROFILE_AVAILABLE.equals(action)
+                || Intent.ACTION_PROFILE_UNAVAILABLE.equals(action)
+                || Intent.ACTION_PROFILE_ACCESSIBLE.equals(action))
+                && (userInfo.isManagedProfile() || userInfo.isPrivateProfile());
     }
 
     @Override
@@ -162,17 +161,9 @@ public class TrustedCredentialsFragment extends ObservableFragment
         }
 
         IntentFilter filter = new IntentFilter();
-        if (android.os.Flags.allowPrivateProfile()
-                && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                && android.multiuser.Flags.handleInterleavedSettingsForPrivateSpace()) {
-            filter.addAction(Intent.ACTION_PROFILE_AVAILABLE);
-            filter.addAction(Intent.ACTION_PROFILE_UNAVAILABLE);
-            filter.addAction(Intent.ACTION_PROFILE_ACCESSIBLE);
-        } else {
-            filter.addAction(Intent.ACTION_MANAGED_PROFILE_AVAILABLE);
-            filter.addAction(Intent.ACTION_MANAGED_PROFILE_UNAVAILABLE);
-            filter.addAction(Intent.ACTION_MANAGED_PROFILE_UNLOCKED);
-        }
+        filter.addAction(Intent.ACTION_PROFILE_AVAILABLE);
+        filter.addAction(Intent.ACTION_PROFILE_UNAVAILABLE);
+        filter.addAction(Intent.ACTION_PROFILE_ACCESSIBLE);
         activity.registerReceiver(mProfileChangedReceiver, filter);
     }
 
@@ -209,12 +200,8 @@ public class TrustedCredentialsFragment extends ObservableFragment
         if (Utils.shouldHideUser(userInfo.getUserHandle(), mUserManager)) {
             return;
         }
-        boolean isProfile = userInfo.isManagedProfile();
-        if (android.os.Flags.allowPrivateProfile()
-                && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                && android.multiuser.Flags.handleInterleavedSettingsForPrivateSpace()) {
-            isProfile |= userInfo.isPrivateProfile();
-        }
+        boolean isProfile = userInfo.isManagedProfile()
+                || userInfo.isPrivateProfile();
         ChildAdapter adapter = mGroupAdapter.createChildAdapter(i);
 
         LinearLayout containerView = (LinearLayout) inflater.inflate(
@@ -372,10 +359,7 @@ public class TrustedCredentialsFragment extends ObservableFragment
             if (userInfo.isManagedProfile()) {
                 title.setText(mDevicePolicyManager.getResources().getString(WORK_CATEGORY_HEADER,
                         () -> getString(com.android.settingslib.R.string.category_work)));
-            } else if (android.os.Flags.allowPrivateProfile()
-                    && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                    && android.multiuser.Flags.handleInterleavedSettingsForPrivateSpace()
-                    && userInfo.isPrivateProfile()) {
+            } else if (userInfo.isPrivateProfile()) {
                 title.setText(mDevicePolicyManager.getResources().getString(PRIVATE_CATEGORY_HEADER,
                         () -> getString(com.android.settingslib.R.string.category_private)));
             } else {
@@ -467,7 +451,19 @@ public class TrustedCredentialsFragment extends ObservableFragment
                         convertView.findViewById(R.id.trusted_credential_subject_primary);
                 holder.mSubjectSecondaryView =
                         convertView.findViewById(R.id.trusted_credential_subject_secondary);
-                holder.mSwitch = convertView.findViewById(R.id.trusted_credential_status);
+
+                MaterialSwitch expressiveSwitch = convertView.requireViewById(
+                        R.id.trusted_credential_status_expressive);
+                Switch nonExpressiveSwitch = convertView.requireViewById(
+                        R.id.trusted_credential_status);
+                if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+                    holder.mSwitch = expressiveSwitch;
+                    nonExpressiveSwitch.setVisibility(View.GONE);
+                    expressiveSwitch.setVisibility(View.INVISIBLE);
+                } else {
+                    holder.mSwitch = nonExpressiveSwitch;
+                    expressiveSwitch.setVisibility(View.GONE);
+                }
                 holder.mSwitch.setOnClickListener(view -> {
                     removeOrInstallCert((CertHolder) view.getTag());
                 });
@@ -658,6 +654,14 @@ public class TrustedCredentialsFragment extends ObservableFragment
                     : mHideListLayoutParams);
             mContainerView.setLayoutParams(mIsListExpanded ? mShowLayoutParams
                     : mHideContainerLayoutParams);
+
+            TextView title = mHeaderView.findViewById(android.R.id.title);
+            String description = getString(mIsListExpanded
+                            ?
+                            R.string.trusted_credentials_category_content_description_to_collapse
+                            : R.string.trusted_credentials_category_content_description_to_expand,
+                    title.getText());
+            title.setContentDescription(description);
         }
 
         // Get group indicator from styles of ExpandableListView
@@ -668,7 +672,13 @@ public class TrustedCredentialsFragment extends ObservableFragment
             Drawable groupIndicator = a.getDrawable(
                     com.android.internal.R.styleable.ExpandableListView_groupIndicator);
             a.recycle();
-            return groupIndicator;
+
+            int tint = Utils.getColorAttrDefaultColor(
+                    getActivity(), android.R.attr.colorControlNormal);
+            var wrapped = DrawableCompat.wrap(groupIndicator);
+            DrawableCompat.setTint(wrapped.mutate(), tint);
+
+            return wrapped;
         }
 
         private Bundle saveState() {
@@ -852,7 +862,8 @@ public class TrustedCredentialsFragment extends ObservableFragment
         }
     }
 
-    /* package */ static class CertHolder implements Comparable<CertHolder> {
+    @VisibleForTesting
+    public static class CertHolder implements Comparable<CertHolder> {
         public int mProfileId;
         private final IKeyChainService mService;
         private final GroupAdapter mAdapter;
@@ -1043,7 +1054,7 @@ public class TrustedCredentialsFragment extends ObservableFragment
                     }
                 }
             } catch (CertificateEncodingException | SecurityException | IllegalStateException
-                    | RemoteException e) {
+                     | RemoteException e) {
                 Log.w(TAG, "Error while toggling alias " + mCertHolder.mAlias, e);
                 return false;
             }

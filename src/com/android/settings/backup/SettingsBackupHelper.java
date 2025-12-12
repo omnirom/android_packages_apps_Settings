@@ -16,10 +16,16 @@
 
 package com.android.settings.backup;
 
+import android.app.AppGlobals;
 import android.app.backup.BackupAgentHelper;
 import android.util.Log;
 
+import com.android.settings.applications.appcompat.UserAspectRatioBackupHelper;
+import com.android.settings.applications.appcompat.UserAspectRatioManager;
 import com.android.settings.flags.Flags;
+import com.android.settings.i18n.RegionalCustomizationFeatureProvider;
+import com.android.settings.inputmethod.TouchpadThreeFingerTapLaunchingAppBackupHelper;
+import com.android.settings.inputmethod.TouchpadThreeFingerTapUtils;
 import com.android.settings.onboarding.OnboardingFeatureProvider;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.shortcut.ShortcutsUpdater;
@@ -32,6 +38,10 @@ public class SettingsBackupHelper extends BackupAgentHelper {
     public static final String SOUND_BACKUP_HELPER = "SoundSettingsBackup";
     public static final String ACCESSIBILITY_APPEARANCE_BACKUP_HELPER =
             "AccessibilityAppearanceSettingsBackup";
+    public static final String MOVEMENT_BACKUP_HELPER = "MovementSettingsBackup";
+    private static final String USER_ASPECT_RATIO_BACKUP_HELPER = "UserAspectRatioSettingsBackup";
+    private static final String TOUCHPAD_THREE_FINGER_TAP_LAUNCHING_APP_BACKUP_HELPER =
+            "TouchpadThreeFingerTapLaunchingAppBackup";
 
     @Override
     public void onCreate() {
@@ -39,6 +49,8 @@ public class SettingsBackupHelper extends BackupAgentHelper {
         BackupRestoreStorageManager.getInstance(this).addBackupAgentHelpers(this);
         OnboardingFeatureProvider onboardingFeatureProvider =
                 FeatureFactory.getFeatureFactory().getOnboardingFeatureProvider();
+        RegionalCustomizationFeatureProvider regionalCustomizationFeatureProvider =
+                FeatureFactory.getFeatureFactory().getRegionalCustomizationFeatureProvider();
 
         if (Flags.enableSoundBackup()) {
             if (onboardingFeatureProvider != null) {
@@ -53,6 +65,35 @@ public class SettingsBackupHelper extends BackupAgentHelper {
                         onboardingFeatureProvider.getAccessibilityAppearanceBackupHelper(
                             this, this.getBackupRestoreEventLogger()));
             }
+        }
+
+        if (Flags.movementSettingsBackupEnabled()) {
+            if (regionalCustomizationFeatureProvider != null) {
+                addHelper(MOVEMENT_BACKUP_HELPER,
+                        regionalCustomizationFeatureProvider.getMovementBackupHelper(
+                            this, this.getBackupRestoreEventLogger()));
+            }
+        }
+
+        if (UserAspectRatioManager.isFeatureEnabled(getApplicationContext())) {
+            // Since the aconfig flag below is read-only, this class would not compile, and tests
+            // would fail to find the class, even if they are testing only code beyond the
+            // flag-guarded code.
+            final UserAspectRatioBackupHelper userAspectRatioBackupHelper =
+                    new UserAspectRatioBackupHelper(this, AppGlobals.getPackageManager(),
+                            getBackupRestoreEventLogger());
+            if (com.android.window.flags.Flags.backupAndRestoreForUserAspectRatioSettings()) {
+                addHelper(USER_ASPECT_RATIO_BACKUP_HELPER, userAspectRatioBackupHelper);
+            }
+        }
+
+        if (Flags.threeFingerTapAppLaunch()) {
+            String key = TouchpadThreeFingerTapUtils.getFileToBackup();
+            final TouchpadThreeFingerTapLaunchingAppBackupHelper launchingAppBackupHelper =
+                    new TouchpadThreeFingerTapLaunchingAppBackupHelper(this, key);
+            addHelper(
+                    TOUCHPAD_THREE_FINGER_TAP_LAUNCHING_APP_BACKUP_HELPER,
+                    launchingAppBackupHelper);
         }
     }
 

@@ -31,8 +31,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.android.settings.R;
-import com.android.settings.deviceinfo.PhoneNumberUtil;
 import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
+import com.android.settings.deviceinfo.PhoneNumberUtil;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;
@@ -47,15 +47,21 @@ public class ImeiInfoDialogFragment extends InstrumentedDialogFragment {
 
     private View mRootView;
 
+    /** Start the dialog and display it on screen. */
     public static void show(@NonNull Fragment host, int slotId, String dialogTitle) {
-        final FragmentManager manager = host.getChildFragmentManager();
-        if (manager.findFragmentByTag(TAG) == null) {
+        show(host.getChildFragmentManager(), slotId, dialogTitle);
+    }
+
+    /** Start the dialog and display it on screen. */
+    public static void show(@NonNull FragmentManager childFragmentManager, int slotId,
+            @NonNull String dialogTitle) {
+        if (childFragmentManager.findFragmentByTag(TAG) == null) {
             final Bundle bundle = new Bundle();
             bundle.putInt(SLOT_ID_BUNDLE_KEY, slotId);
             bundle.putString(DIALOG_TITLE_BUNDLE_KEY, dialogTitle);
             final ImeiInfoDialogFragment dialog = new ImeiInfoDialogFragment();
             dialog.setArguments(bundle);
-            dialog.show(manager, TAG);
+            dialog.show(childFragmentManager, TAG);
         }
     }
 

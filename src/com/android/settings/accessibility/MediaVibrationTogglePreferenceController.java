@@ -18,10 +18,11 @@ package com.android.settings.accessibility;
 
 import android.content.Context;
 
-import com.android.settings.accessibility.MediaVibrationIntensityPreferenceController.MediaVibrationPreferenceConfig;
 import com.android.settings.R;
+import com.android.settings.accessibility.MediaVibrationIntensityPreferenceController.MediaVibrationPreferenceConfig;
 
 /** Preference controller for alarm vibration with only a toggle for on/off states. */
+// LINT.IfChange
 public class MediaVibrationTogglePreferenceController extends VibrationTogglePreferenceController {
 
     public MediaVibrationTogglePreferenceController(Context context, String preferenceKey) {
@@ -34,3 +35,4 @@ public class MediaVibrationTogglePreferenceController extends VibrationTogglePre
                 AVAILABLE : UNSUPPORTED_ON_DEVICE;
     }
 }
+// LINT.ThenChange(MediaVibrationIntensitySwitchPreference.kt)

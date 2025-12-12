@@ -30,10 +30,10 @@ import androidx.preference.PreferenceScreen;
 import com.android.settings.R;
 import com.android.settings.core.TogglePreferenceController;
 import com.android.settings.slices.SliceBackgroundWorker;
+import com.android.settings.widget.SettingsMainSwitchPreference;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnPause;
 import com.android.settingslib.core.lifecycle.events.OnResume;
-import com.android.settingslib.widget.MainSwitchPreference;
 
 import java.io.IOException;
 
@@ -43,7 +43,7 @@ public class NfcPreferenceController extends TogglePreferenceController
     public static final String KEY_TOGGLE_NFC = "toggle_nfc";
     private final NfcAdapter mNfcAdapter;
     private NfcEnabler mNfcEnabler;
-    private MainSwitchPreference mPreference;
+    private SettingsMainSwitchPreference mPreference;
 
     public NfcPreferenceController(Context context, String key) {
         super(context, key);

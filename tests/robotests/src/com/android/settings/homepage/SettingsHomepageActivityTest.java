@@ -35,13 +35,11 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.UserHandle;
-import android.platform.test.annotations.DisableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.Settings;
 import android.util.ArraySet;
@@ -55,7 +53,6 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
 import com.android.settings.dashboard.suggestions.SuggestionFeatureProviderImpl;
-import com.android.settings.flags.Flags;
 import com.android.settings.testutils.shadow.ShadowActivityEmbeddingUtils;
 import com.android.settings.testutils.shadow.ShadowPasswordUtils;
 import com.android.settings.testutils.shadow.ShadowUserManager;
@@ -75,7 +72,6 @@ import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
-import org.robolectric.shadow.api.Shadow;
 import org.robolectric.shadows.ShadowActivityManager;
 import org.robolectric.util.ReflectionHelpers;
 
@@ -122,43 +118,6 @@ public class SettingsHomepageActivityTest {
         final FrameLayout frameLayout = activity.findViewById(R.id.main_content);
 
         assertThat(frameLayout.getLayoutTransition()).isNotNull();
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_HOMEPAGE_REVAMP)
-    public void launch_configDisabled_shouldHideAvatar() {
-        final SettingsHomepageActivity activity = Robolectric.buildActivity(
-                SettingsHomepageActivity.class).create().get();
-
-        final View avatarView = activity.findViewById(R.id.account_avatar);
-        assertThat(avatarView.getVisibility()).isNotEqualTo(View.VISIBLE);
-    }
-
-    @Test
-    @Config(qualifiers = "mcc999")
-    @DisableFlags(Flags.FLAG_HOMEPAGE_REVAMP)
-    public void launch_configEnabled_shouldShowAvatar() {
-        final SettingsHomepageActivity activity = Robolectric.buildActivity(
-                SettingsHomepageActivity.class).create().get();
-
-        final View avatarView = activity.findViewById(R.id.account_avatar);
-        assertThat(avatarView.getVisibility()).isEqualTo(View.VISIBLE);
-    }
-
-    @Test
-    @Config(qualifiers = "mcc999")
-    @DisableFlags(Flags.FLAG_HOMEPAGE_REVAMP)
-    public void launch_LowRamDevice_shouldHideAvatar() {
-        final ShadowActivityManager activityManager = Shadow.extract(
-                ApplicationProvider.getApplicationContext().getSystemService(
-                        ActivityManager.class));
-        activityManager.setIsLowRamDevice(true);
-
-        final SettingsHomepageActivity activity = Robolectric.buildActivity(
-                SettingsHomepageActivity.class).create().get();
-
-        final View avatarView = activity.findViewById(R.id.account_avatar);
-        assertThat(avatarView.getVisibility()).isNotEqualTo(View.VISIBLE);
     }
 
     @Test

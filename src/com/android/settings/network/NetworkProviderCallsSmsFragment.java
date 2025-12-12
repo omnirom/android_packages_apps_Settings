@@ -23,6 +23,7 @@ import android.os.UserManager;
 import androidx.annotation.VisibleForTesting;
 
 import com.android.settings.R;
+import com.android.settings.Utils;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.flags.Flags;
 import com.android.settings.network.telephony.CallsDefaultSubscriptionController;
@@ -93,7 +94,7 @@ public class NetworkProviderCallsSmsFragment extends DashboardFragment {
                 @Override
                 protected boolean isPageSearchEnabled(Context context) {
                     return !Flags.isDualSimOnboardingEnabled()
-                            && SubscriptionUtil.isSimHardwareVisible(context)
+                            && Utils.isVoiceCapable(context)
                             && context.getSystemService(UserManager.class).isAdminUser();
                 }
             };

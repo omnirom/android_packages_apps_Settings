@@ -21,9 +21,6 @@
               android:orientation="vertical"
               android:minHeight="?android:attr/listPreferredItemHeightSmall"
               android:gravity="center_vertical"
-              android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-              android:paddingTop="14dp"
-              android:paddingBottom="14dp"
               android:background="?android:attr/selectableItemBackground"
               android:clipToPadding="false">
 
@@ -32,8 +29,11 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:clipToPadding="false"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart">
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingTop="@dimen/settingslib_expressive_space_small3"
+        android:paddingBottom="@dimen/settingslib_expressive_space_small3"
+        android:clipToPadding="false">
 
         <include layout="@layout/settingslib_icon_frame"/>
 
@@ -43,11 +43,11 @@
 
             <TextView
                 android:id="@android:id/title"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/settingslib_expressive_space_none"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:textAppearance="@*android:style/TextAppearance.DeviceDefault.Subhead"
-                android:textSize="20sp"
+                android:textAppearance="?android:attr/textAppearanceListItem"
+                android:textSize="16sp"
                 android:textAlignment="viewStart"
                 android:ellipsize="marquee"
                 app:layout_constraintStart_toStartOf="parent"
@@ -58,24 +58,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewStart"
-                android:textAppearance="@*android:style/TextAppearance.DeviceDefault.Body1"
-                android:textSize="20sp"
+                android:textAppearance="?android:attr/textAppearanceListItemSecondary"
+                android:textSize="16sp"
                 android:textColor="?android:attr/textColorSecondary"
                 android:maxLines="10"
                 app:layout_constraintBaseline_toBaselineOf="@android:id/title"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <ProgressBar
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:theme="@style/Theme.Material3.DynamicColors.DayNight"
                 android:id="@android:id/progress"
                 android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="4dp"
+                android:layout_height="@dimen/settingslib_expressive_space_extrasmall2"
+                android:layout_marginTop="@dimen/settingslib_expressive_space_extrasmall4"
+                android:layout_marginBottom="@dimen/settingslib_expressive_space_extrasmall2"
                 android:max="100"
                 android:layout_below="@android:id/title"
                 app:layout_constraintTop_toBottomOf="@android:id/title"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:progressDrawable="@drawable/storage_progress_bar" />
+                app:trackThickness="@dimen/settingslib_expressive_space_extrasmall2"
+                app:indicatorTrackGapSize="@dimen/settingslib_expressive_space_extrasmall2"
+                style="@style/SettingsLibProgressBarStyle.Linear.Expressive" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </LinearLayout>

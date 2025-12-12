@@ -45,10 +45,11 @@ class SourceAddedState extends AudioStreamStateHandler {
     }
 
     @Override
-    void performAction(
+    void onEnter(
             AudioStreamPreference preference,
             AudioStreamsProgressCategoryController controller,
-            AudioStreamsHelper helper) {
+            AudioStreamsHelper helper,
+            AudioStreamScanHelper scanHelper) {
         var context = preference.getContext();
         // Saved connected metadata for user to re-join this broadcast later.
         var cached =

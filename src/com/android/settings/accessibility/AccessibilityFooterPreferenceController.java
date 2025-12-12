@@ -18,7 +18,9 @@ package com.android.settings.accessibility;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.core.BasePreferenceController;
@@ -34,13 +36,15 @@ public class AccessibilityFooterPreferenceController extends BasePreferenceContr
     private String mLearnMoreText;
     private String mIntroductionTitle;
 
+    private CharSequence mSummary;
+
     public AccessibilityFooterPreferenceController(Context context, String key) {
         super(context, key);
     }
 
     @Override
     public int getAvailabilityStatus() {
-        return AVAILABLE;
+        return AVAILABLE_UNSEARCHABLE;
     }
 
     @Override
@@ -99,11 +103,17 @@ public class AccessibilityFooterPreferenceController extends BasePreferenceContr
         return mIntroductionTitle;
     }
 
-    private void updateFooterPreferences(AccessibilityFooterPreference footerPreference) {
-        final StringBuffer sb = new StringBuffer();
-        sb.append(getIntroductionTitle()).append("\n\n").append(footerPreference.getTitle());
-        footerPreference.setContentDescription(sb);
+    /**
+     * Overrides ths summary of {@link AccessibilityFooterPreference}
+     */
+    protected void setSummary(@NonNull CharSequence summary) {
+        mSummary = summary;
+    }
 
+    /**
+     * Updates the footer preference with the given data set to this PreferenceController
+     */
+    public void updateFooterPreferences(@NonNull AccessibilityFooterPreference footerPreference) {
         final Intent helpIntent;
         if (getHelpResource() != 0) {
             // Returns may be null if content is wrong or empty.
@@ -123,7 +133,34 @@ public class AccessibilityFooterPreferenceController extends BasePreferenceContr
             footerPreference.setLinkEnabled(false);
         }
 
+        // Set footer summary and content description, prioritizing mSummary if available,
+        // otherwise using the default title from XML for content description.
+        if (!TextUtils.isEmpty(mSummary)) {
+            footerPreference.setSummary(mSummary);
+            updateContentDescription(footerPreference, mSummary);
+        } else {
+            updateContentDescription(footerPreference, footerPreference.getTitle());
+        }
+
         // Grouping subcomponents to make more accessible.
         footerPreference.setSelectable(false);
+
+        if (TextUtils.isEmpty(footerPreference.getTitle())
+                && TextUtils.isEmpty(footerPreference.getSummary())) {
+            footerPreference.setVisible(false);
+        } else {
+            footerPreference.setVisible(true);
+        }
+    }
+
+    private void updateContentDescription(
+            @NonNull AccessibilityFooterPreference footerPreference, CharSequence textToDescribe) {
+        if (TextUtils.isEmpty(textToDescribe)) {
+            return;
+        }
+
+        final StringBuffer sb = new StringBuffer();
+        sb.append(getIntroductionTitle()).append("\n\n").append(textToDescribe);
+        footerPreference.setContentDescription(sb);
     }
 }

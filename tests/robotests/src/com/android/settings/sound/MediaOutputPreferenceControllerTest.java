@@ -22,8 +22,8 @@ import static android.media.AudioSystem.DEVICE_OUT_BLUETOOTH_A2DP;
 import static android.media.AudioSystem.DEVICE_OUT_EARPIECE;
 import static android.media.AudioSystem.DEVICE_OUT_HEARING_AID;
 
-import static com.android.settingslib.media.flags.Flags.FLAG_ENABLE_OUTPUT_SWITCHER_FOR_SYSTEM_ROUTING;
 import static com.android.settingslib.flags.Flags.FLAG_ENABLE_LE_AUDIO_SHARING;
+import static com.android.settingslib.media.flags.Flags.FLAG_ENABLE_OUTPUT_SWITCHER_FOR_SYSTEM_ROUTING;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -51,6 +51,7 @@ import android.media.VolumeProvider;
 import android.media.session.MediaController;
 import android.media.session.MediaSessionManager;
 import android.media.session.PlaybackState;
+import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -61,7 +62,7 @@ import androidx.preference.PreferenceScreen;
 import com.android.media.flags.Flags;
 import com.android.settings.R;
 import com.android.settings.bluetooth.Utils;
-import com.android.settings.media.MediaOutputUtils;
+import com.android.settings.connecteddevice.audiosharing.audiostreams.testshadows.ShadowLocalMediaManager;
 import com.android.settings.testutils.shadow.ShadowAudioManager;
 import com.android.settings.testutils.shadow.ShadowBluetoothUtils;
 import com.android.settingslib.bluetooth.A2dpProfile;
@@ -73,6 +74,7 @@ import com.android.settingslib.bluetooth.LeAudioProfile;
 import com.android.settingslib.bluetooth.LocalBluetoothLeBroadcast;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
 import com.android.settingslib.bluetooth.LocalBluetoothProfileManager;
+import com.android.settingslib.media.LocalMediaManager;
 import com.android.settingslib.media.MediaOutputConstants;
 
 import org.junit.After;
@@ -98,7 +100,8 @@ import java.util.List;
 @Config(shadows = {
         ShadowAudioManager.class,
         ShadowBluetoothUtils.class,
-        ShadowBluetoothDevice.class}
+        ShadowBluetoothDevice.class,
+        ShadowLocalMediaManager.class }
 )
 public class MediaOutputPreferenceControllerTest {
     private static final String TEST_KEY = "Test_Key";
@@ -122,6 +125,8 @@ public class MediaOutputPreferenceControllerTest {
     private PackageManager mPackageManager;
     @Mock
     private LocalBluetoothManager mLocalManager;
+    @Mock
+    private LocalMediaManager mLocalMediaManager;
     @Mock
     private BluetoothEventManager mBluetoothEventManager;
     @Mock
@@ -236,6 +241,9 @@ public class MediaOutputPreferenceControllerTest {
         when(mRightBluetoothHapDevice.isConnected()).thenReturn(true);
 
         mController = new MediaOutputPreferenceController(mContext, TEST_KEY);
+        ShadowLocalMediaManager.setUseMock(mLocalMediaManager);
+        mController.mLocalMediaManager = mLocalMediaManager;
+        when(mLocalMediaManager.getCurrentConnectedDevice()).thenReturn(null);
         mScreen = spy(new PreferenceScreen(mContext, null));
         mPreference = new Preference(mContext);
         mProfileConnectedDevices = new ArrayList<>();
@@ -253,12 +261,14 @@ public class MediaOutputPreferenceControllerTest {
     @After
     public void tearDown() {
         ShadowBluetoothUtils.reset();
+        ShadowLocalMediaManager.reset();
     }
 
-    /** Device start broadcasting so Preference summary should become "Audio Sharing" */
+    /** Start broadcasting so Preference summary should become "Audio Sharing" and disabled */
     @Test
-    public void audioSharingStart_changeSummary() {
-        mSetFlagsRule.enableFlags(FLAG_ENABLE_LE_AUDIO_SHARING);
+    @EnableFlags(FLAG_ENABLE_LE_AUDIO_SHARING)
+    @DisableFlags(Flags.FLAG_ENABLE_OUTPUT_SWITCHER_PERSONAL_AUDIO_SHARING)
+    public void audioSharingStart_changeSummaryAndDisabled() {
         mController.onStart();
         ArgumentCaptor<BluetoothLeBroadcast.Callback> broadcastCallbackCaptor =
                 ArgumentCaptor.forClass(BluetoothLeBroadcast.Callback.class);
@@ -272,6 +282,28 @@ public class MediaOutputPreferenceControllerTest {
         callback.onBroadcastStarted(0, 0);
         assertThat(mPreference.getSummary().toString())
                 .isEqualTo(mContext.getText(R.string.media_output_audio_sharing).toString());
+        assertThat(mPreference.isEnabled()).isFalse();
+    }
+
+    /** Start broadcasting so Preference summary should become "Audio Sharing" and enabled */
+    @Test
+    @EnableFlags({FLAG_ENABLE_LE_AUDIO_SHARING,
+            Flags.FLAG_ENABLE_OUTPUT_SWITCHER_PERSONAL_AUDIO_SHARING})
+    public void audioSharingStart_outputSwitcherIntegrated_changeSummaryAndEnabled() {
+        mController.onStart();
+        ArgumentCaptor<BluetoothLeBroadcast.Callback> broadcastCallbackCaptor =
+                ArgumentCaptor.forClass(BluetoothLeBroadcast.Callback.class);
+        mShadowAudioManager.setOutputDevice(DEVICE_OUT_BLUETOOTH_A2DP);
+        mAudioManager.setMode(AudioManager.MODE_NORMAL);
+        when(mLocalBluetoothLeBroadcast.isEnabled(null)).thenReturn(true);
+        verify(mLocalBluetoothLeBroadcast)
+                .registerServiceCallBack(any(), broadcastCallbackCaptor.capture());
+        BluetoothLeBroadcast.Callback callback = broadcastCallbackCaptor.getValue();
+
+        callback.onBroadcastStarted(0, 0);
+        assertThat(mPreference.getSummary().toString())
+                .isEqualTo(mContext.getText(R.string.media_output_audio_sharing).toString());
+        assertThat(mPreference.isEnabled()).isTrue();
     }
 
     /**

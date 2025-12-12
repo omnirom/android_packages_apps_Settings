@@ -33,9 +33,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.IActivityManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -53,6 +53,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -78,7 +79,6 @@ import org.mockito.junit.MockitoRule;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowDialog;
 import org.robolectric.shadows.ShadowLooper;
 import org.robolectric.util.ReflectionHelpers;
 
@@ -88,7 +88,6 @@ import java.util.Locale;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {
-        ShadowDialog.class,
         ShadowAlertDialogCompat.class,
         ShadowActivityManager.class,
         com.android.settings.testutils.shadow.ShadowFragment.class,
@@ -190,7 +189,7 @@ public class LocaleListEditorTest {
         ReflectionHelpers.setField(mLocaleListEditor, "mRemoveMode", false);
         ReflectionHelpers.setField(mLocaleListEditor, "mShowingRemoveDialog", false);
         ReflectionHelpers.setField(mLocaleListEditor, "mLocaleAdditionMode", false);
-        ShadowDialog.reset();
+        ShadowAlertDialogCompat.reset();
     }
 
     @Test
@@ -221,18 +220,20 @@ public class LocaleListEditorTest {
         //launch dialog
         mLocaleListEditor.showRemoveLocaleWarningDialog();
 
-        final Dialog dialog = ShadowDialog.getLatestDialog();
+        final AlertDialog dialog = ShadowAlertDialogCompat.getLatestAlertDialog();
 
         assertThat(dialog).isNotNull();
 
-        TextView dialogTitle = dialog.findViewById(R.id.dialog_with_icon_title);
-        assertThat(dialogTitle.getText().toString())
-                .isEqualTo(mContext.getString(R.string.dlg_remove_locales_error_title));
+        final ShadowAlertDialogCompat shadowDialog = ShadowAlertDialogCompat.shadowOf(dialog);
+
+        assertThat(shadowDialog.getTitle().toString()).isEqualTo(
+                mContext.getString(R.string.dlg_remove_locales_error_title));
     }
 
     @Test
     public void showRemoveLocaleWarningDialog_mainLocaleSelected_shouldShowLocaleChangeDialog() {
         //pre-condition
+        setUpLocaleConditions2();
         when(mAdapter.getCheckedCount()).thenReturn(1);
         when(mAdapter.getItemCount()).thenReturn(2);
         when(mAdapter.isFirstLocaleChecked()).thenReturn(true);
@@ -242,13 +243,14 @@ public class LocaleListEditorTest {
         //launch dialog
         mLocaleListEditor.showRemoveLocaleWarningDialog();
 
-        final Dialog dialog = ShadowDialog.getLatestDialog();
+        final AlertDialog dialog = ShadowAlertDialogCompat.getLatestAlertDialog();
 
         assertThat(dialog).isNotNull();
 
-        TextView dialogMessage = dialog.findViewById(R.id.dialog_with_icon_message);
-        assertThat(dialogMessage.getText().toString())
-                .isEqualTo(mContext.getString(R.string.dlg_remove_locales_message));
+        final ShadowAlertDialogCompat shadowDialog = ShadowAlertDialogCompat.shadowOf(dialog);
+
+        assertThat(shadowDialog.getMessage().toString()).isEqualTo(
+                mContext.getString(R.string.dlg_remove_locales_message, "Anii (Benin)"));
     }
 
     @Test
@@ -263,46 +265,13 @@ public class LocaleListEditorTest {
         //launch dialog
         mLocaleListEditor.showRemoveLocaleWarningDialog();
 
-        final Dialog dialog = ShadowDialog.getLatestDialog();
+        final AlertDialog dialog = ShadowAlertDialogCompat.getLatestAlertDialog();
 
         assertThat(dialog).isNotNull();
 
-        TextView dialogMessage = dialog.findViewById(R.id.dialog_with_icon_message);
-        assertThat(dialogMessage.getText().isEmpty()).isTrue();
-    }
+        final ShadowAlertDialogCompat shadowDialog = ShadowAlertDialogCompat.shadowOf(dialog);
 
-    @Test
-    public void showConfirmDialog_systemLocaleSelected_shouldShowLocaleChangeDialog()
-            throws Exception {
-        //pre-condition
-        Locale.setDefault(Locale.forLanguageTag("zh-TW"));
-        setUpLocaleConditions(true);
-        final Configuration config = new Configuration();
-        config.setLocales((LocaleList.forLanguageTags("zh-TW,en-US")));
-        when(mActivityService.getConfiguration()).thenReturn(config);
-        when(mAdapter.getFeedItemList()).thenReturn(mLocaleList);
-        when(mAdapter.getCheckedCount()).thenReturn(1);
-        when(mAdapter.getItemCount()).thenReturn(2);
-        when(mAdapter.isFirstLocaleChecked()).thenReturn(true);
-        ReflectionHelpers.setField(mLocaleListEditor, "mRemoveMode", true);
-        ReflectionHelpers.setField(mLocaleListEditor, "mShowingRemoveDialog", true);
-
-        //launch the first dialog
-        mLocaleListEditor.showRemoveLocaleWarningDialog();
-
-        final Dialog dialog = ShadowDialog.getLatestDialog();
-
-        assertThat(dialog).isNotNull();
-
-        // click the remove button
-        dialog.findViewById(R.id.button_ok).performClick();
-        ShadowLooper.idleMainLooper();
-
-        assertThat(dialog.isShowing()).isFalse();
-
-        // check the second dialog is showing
-        verify(mFragmentTransaction).add(any(LocaleDialogFragment.class),
-                eq(TAG_DIALOG_CONFIRM_SYSTEM_DEFAULT));
+        assertThat(shadowDialog.getMessage()).isNull();
     }
 
     @Test
@@ -324,12 +293,12 @@ public class LocaleListEditorTest {
         //launch the first dialog
         mLocaleListEditor.showRemoveLocaleWarningDialog();
 
-        final Dialog dialog = ShadowDialog.getLatestDialog();
+        final AlertDialog dialog = ShadowAlertDialogCompat.getLatestAlertDialog();
 
         assertThat(dialog).isNotNull();
 
         // click the remove button
-        dialog.findViewById(R.id.button_ok).performClick();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
         ShadowLooper.idleMainLooper();
 
         assertThat(dialog.isShowing()).isFalse();
@@ -374,7 +343,7 @@ public class LocaleListEditorTest {
         mLocaleListEditor.onActivityResult(REQUEST_CONFIRM_SYSTEM_DEFAULT, Activity.RESULT_CANCELED,
                 mIntent);
 
-        verify(mAdapter).notifyListChanged(mLocaleInfo);
+        verify(mAdapter).notifyListChanged();
     }
 
     @Test
@@ -551,6 +520,7 @@ public class LocaleListEditorTest {
         mLocaleList.add(mLocaleInfo2);
         when(mLocaleInfo.getLocale()).thenReturn(Locale.forLanguageTag("blo-BJ"));
         when(mLocaleInfo.isTranslated()).thenReturn(false);
+        when(mLocaleInfo.getFullNameNative()).thenReturn("Anii (Benin)");
         when(mLocaleInfo2.getLocale()).thenReturn(Locale.forLanguageTag("zh-TW"));
         when(mLocaleInfo2.isTranslated()).thenReturn(true);
         when(mAdapter.getFeedItemList()).thenReturn(mLocaleList);

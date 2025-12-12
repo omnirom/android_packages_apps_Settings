@@ -23,6 +23,7 @@
 
     <application>
         <activity android:name="com.android.settings.security.TestActivity" android:exported="true" />
+        <activity android:name="com.android.settings.biometrics.face.FaceEnrollEducationTest$TestFaceEnrollEducation" android:exported="true" />
     </application>
 
 </manifest>

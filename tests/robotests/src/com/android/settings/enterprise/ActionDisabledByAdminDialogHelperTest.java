@@ -16,8 +16,6 @@
 
 package com.android.settings.enterprise;
 
-import static android.app.admin.DevicePolicyManager.DEVICE_OWNER_TYPE_FINANCED;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -28,7 +26,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import android.app.Activity;
+import android.app.admin.DeviceAdminAuthority;
 import android.app.admin.DevicePolicyManager;
+import android.app.admin.EnforcingAdmin;
 import android.app.supervision.SupervisionManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -212,6 +212,39 @@ public class ActionDisabledByAdminDialogHelperTest {
                 Shadows.shadowOf(textView).innerText());
     }
 
+    @Test
+    public void testSetAdminSupportDetails_enforcingAdmin() {
+        final ShadowDevicePolicyManager dpmShadow = ShadowDevicePolicyManager.getShadow();
+        final ViewGroup view = new FrameLayout(mActivity);
+        final String packageName = "some.package.name";
+        final ComponentName component =
+                new ComponentName(packageName, "some.package.name.SomeClass");
+        final EnforcingAdmin admin =
+                new EnforcingAdmin(
+                        packageName,
+                        DeviceAdminAuthority.DEVICE_ADMIN_AUTHORITY,
+                        UserHandle.of(123),
+                        component);
+        final TextView textView = createAdminSupportTextView(view, mActivity);
+        dpmShadow.setShortSupportMessageForUser(component, 123, "some message");
+        ShadowProcess.setUid(Process.SYSTEM_UID);
+
+        mHelper.setAdminSupportDetails(mActivity, view, admin);
+
+        assertEquals("some message", Shadows.shadowOf(textView).innerText());
+    }
+
+    @Test
+    public void testSetAdminSupportDetails_nullEnforcingAdmin_emptyString() {
+        final ShadowDevicePolicyManager dpmShadow = ShadowDevicePolicyManager.getShadow();
+        final ViewGroup view = new FrameLayout(mActivity);
+        final TextView textView = createAdminSupportTextView(view, mActivity);
+
+        mHelper.setAdminSupportDetails(mActivity, view, (EnforcingAdmin) null);
+
+        assertEquals("", Shadows.shadowOf(textView).innerText());
+    }
+
     @Ignore
     @Test
     public void testMaybeSetLearnMoreButton() {
@@ -260,7 +293,7 @@ public class ActionDisabledByAdminDialogHelperTest {
                 "some.package.name.SomeClass");
         dpmShadow.setDeviceOwner(component);
         dpmShadow.setDeviceOwnerComponentOnAnyUser(component);
-        dpmShadow.setDeviceOwnerType(component, DEVICE_OWNER_TYPE_FINANCED);
+        dpmShadow.setIsFinancedDevice(true);
         dpmShadow.setShortSupportMessageForUser(component, 123, null);
         dpmShadow.setIsAdminActiveAsUser(true);
     }

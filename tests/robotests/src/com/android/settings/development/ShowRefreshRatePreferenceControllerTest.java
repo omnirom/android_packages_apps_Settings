@@ -16,14 +16,13 @@
 
 package com.android.settings.development;
 
-import static com.android.settings.development.ShowRefreshRatePreferenceController
-        .SURFACE_FLINGER_CODE;
+import static com.android.settings.development.ShowRefreshRatePreferenceController.SURFACE_FLINGER_CODE;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -31,20 +30,20 @@ import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.os.IBinder;
+import android.os.Parcel;
 import android.os.RemoteException;
 
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
-
-import com.android.settings.testutils.shadow.ShadowParcel;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 import org.robolectric.util.ReflectionHelpers;
 
 @RunWith(RobolectricTestRunner.class)
@@ -86,22 +85,16 @@ public class ShowRefreshRatePreferenceControllerTest {
     }
 
     @Test
-    @Config(shadows = ShadowParcel.class)
     public void updateState_settingEnabled_shouldCheckPreference() throws RemoteException {
-        ShadowParcel.sReadBoolResult = true;
-        doReturn(true).when(mSurfaceFlinger)
-            .transact(eq(SURFACE_FLINGER_CODE), any(), any(), eq(0 /* flags */));
+        mockSurfaceFlingerTransactResponse(true);
         mController.updateState(mPreference);
 
         verify(mPreference).setChecked(true);
     }
 
     @Test
-    @Config(shadows = {ShadowParcel.class})
     public void updateState_settingDisabled_shouldUnCheckPreference() throws RemoteException {
-        ShadowParcel.sReadBoolResult = false;
-        doReturn(true).when(mSurfaceFlinger)
-            .transact(eq(SURFACE_FLINGER_CODE), any(), any(), eq(0 /* flags */));
+        mockSurfaceFlingerTransactResponse(false);
         mController.updateState(mPreference);
 
         verify(mPreference).setChecked(false);
@@ -125,5 +118,21 @@ public class ShowRefreshRatePreferenceControllerTest {
         verify(mController).writeShowRefreshRateSetting(false);
         verify(mPreference).setChecked(false);
         verify(mPreference).setEnabled(false);
+    }
+
+    private void mockSurfaceFlingerTransactResponse(boolean replyResult) throws RemoteException {
+        doAnswer(new Answer<Boolean>() {
+            @Override
+            public Boolean answer(InvocationOnMock invocation) {
+                // Get the arguments passed to the mocked method
+                Object[] args = invocation.getArguments();
+                if (args[2] instanceof Parcel reply) {
+                    reply.writeBoolean(replyResult);
+                    reply.setDataPosition(0);
+                }
+                return true;
+            }
+        }).when(mSurfaceFlinger).transact(
+                eq(SURFACE_FLINGER_CODE), any(), any(), eq(0 /* flags */));
     }
 }

@@ -32,6 +32,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import com.android.settings.R;
+import com.android.settings.notification.FutureUtil;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.Futures;

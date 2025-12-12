@@ -37,8 +37,8 @@ import com.android.settings.accessibility.TextReadingPreferenceFragmentForSetupW
 import com.android.settings.accessibility.ToggleColorInversionPreferenceFragment;
 import com.android.settings.accessibility.ToggleDaltonizerPreferenceFragment;
 import com.android.settings.accessibility.ToggleReduceBrightColorsPreferenceFragment;
-import com.android.settings.accessibility.ToggleScreenMagnificationPreferenceFragment;
 import com.android.settings.accessibility.VibrationIntensitySettingsFragment;
+import com.android.settings.accessibility.screenmagnification.ui.MagnificationPreferenceFragment;
 import com.android.settings.accessibility.shortcuts.EditShortcutsPreferenceFragment;
 import com.android.settings.accounts.AccountDashboardFragment;
 import com.android.settings.accounts.AccountSyncSettings;
@@ -82,9 +82,7 @@ import com.android.settings.biometrics.combination.CombinedBiometricSettings;
 import com.android.settings.biometrics.face.FaceSettings;
 import com.android.settings.biometrics.fingerprint.FingerprintSettings;
 import com.android.settings.biometrics.fingerprint2.ui.settings.fragment.FingerprintSettingsV2Fragment;
-import com.android.settings.bluetooth.BluetoothBroadcastDialog;
 import com.android.settings.bluetooth.BluetoothDeviceDetailsFragment;
-import com.android.settings.bluetooth.BluetoothFindBroadcastsFragment;
 import com.android.settings.bluetooth.BluetoothPairingDetail;
 import com.android.settings.bugreporthandler.BugReportHandlerPicker;
 import com.android.settings.communal.CommunalDashboardFragment;
@@ -140,8 +138,11 @@ import com.android.settings.inputmethod.SpellCheckersSettings;
 import com.android.settings.inputmethod.TouchpadAndMouseSettings;
 import com.android.settings.inputmethod.UserDictionaryList;
 import com.android.settings.inputmethod.UserDictionarySettings;
+import com.android.settings.language.LanguageAndRegionSettings;
 import com.android.settings.language.LanguageSettings;
+import com.android.settings.localepicker.AppLocalePickerFragment;
 import com.android.settings.localepicker.LocaleListEditor;
+import com.android.settings.localepicker.SystemLocalePickerFragment;
 import com.android.settings.location.LocationServices;
 import com.android.settings.location.LocationSettings;
 import com.android.settings.location.WifiScanningFragment;
@@ -156,25 +157,26 @@ import com.android.settings.network.telephony.NetworkSelectSettings;
 import com.android.settings.network.telephony.satellite.SatelliteSetting;
 import com.android.settings.network.tether.TetherSettings;
 import com.android.settings.nfc.PaymentSettings;
+import com.android.settings.notification.BubbleNotificationSettings;
+import com.android.settings.notification.BundlePreferenceFragment;
 import com.android.settings.notification.ConfigureNotificationSettings;
 import com.android.settings.notification.LockScreenNotificationsPreferencePageFragment;
 import com.android.settings.notification.NotificationAccessSettings;
 import com.android.settings.notification.NotificationAssistantPicker;
 import com.android.settings.notification.PoliteNotificationsPreferenceFragment;
 import com.android.settings.notification.SoundSettings;
+import com.android.settings.notification.SummarizationPreferenceFragment;
 import com.android.settings.notification.app.AppBubbleNotificationSettings;
 import com.android.settings.notification.app.AppNotificationSettings;
 import com.android.settings.notification.app.ChannelNotificationSettings;
 import com.android.settings.notification.app.ConversationListSettings;
 import com.android.settings.notification.history.NotificationStation;
+import com.android.settings.notification.modes.ZenModeCallsFragment;
+import com.android.settings.notification.modes.ZenModeDisplayFragment;
 import com.android.settings.notification.modes.ZenModeFragment;
+import com.android.settings.notification.modes.ZenModePeopleFragment;
 import com.android.settings.notification.modes.ZenModesListFragment;
 import com.android.settings.notification.zen.ZenAccessSettings;
-import com.android.settings.notification.zen.ZenModeAutomationSettings;
-import com.android.settings.notification.zen.ZenModeBlockedEffectsSettings;
-import com.android.settings.notification.zen.ZenModeEventRuleSettings;
-import com.android.settings.notification.zen.ZenModeScheduleRuleSettings;
-import com.android.settings.notification.zen.ZenModeSettings;
 import com.android.settings.password.ChooseLockPassword;
 import com.android.settings.password.ChooseLockPattern;
 import com.android.settings.print.PrintJobSettingsFragment;
@@ -191,6 +193,7 @@ import com.android.settings.regionalpreferences.RegionPickerFragment;
 import com.android.settings.regionalpreferences.RegionalPreferencesEntriesFragment;
 import com.android.settings.regionalpreferences.TemperatureUnitFragment;
 import com.android.settings.safetycenter.MoreSecurityPrivacyFragment;
+import com.android.settings.safetycenter.ui.SafetyCenterFragment;
 import com.android.settings.security.ContentProtectionPreferenceFragment;
 import com.android.settings.security.LockscreenDashboardFragment;
 import com.android.settings.security.MemtagPage;
@@ -198,8 +201,10 @@ import com.android.settings.security.SecurityAdvancedSettings;
 import com.android.settings.security.SecuritySettings;
 import com.android.settings.shortcut.CreateShortcut;
 import com.android.settings.sound.MediaControlsSettings;
+import com.android.settings.supervision.SupervisionDashboardFragment;
 import com.android.settings.support.SupportDashboardActivity;
 import com.android.settings.system.ResetDashboardFragment;
+import com.android.settings.system.ShadePanelsFragment;
 import com.android.settings.system.SystemDashboardFragment;
 import com.android.settings.tts.TextToSpeechSettings;
 import com.android.settings.users.UserSettings;
@@ -240,6 +245,7 @@ public class SettingsGateway {
             DataSaverSummary.class.getName(),
             DateTimeSettings.class.getName(),
             LocaleListEditor.class.getName(),
+            LanguageAndRegionSettings.class.getName(),
             AvailableVirtualKeyboardFragment.class.getName(),
             LanguageSettings.class.getName(),
             KeyboardSettings.class.getName(),
@@ -301,6 +307,7 @@ public class SettingsGateway {
             PickupGestureSettings.class.getName(),
             DoubleTwistGestureSettings.class.getName(),
             SystemNavigationGestureSettings.class.getName(),
+            ShadePanelsFragment.class.getName(),
             DataUsageSummary.class.getName(),
             DreamSettings.class.getName(),
             CommunalDashboardFragment.class.getName(),
@@ -310,15 +317,14 @@ public class SettingsGateway {
             AppBubbleNotificationSettings.class.getName(),
             ZenAccessSettings.class.getName(),
             ZenAccessDetails.class.getName(),
-            ZenModeAutomationSettings.class.getName(),
             PrintSettingsFragment.class.getName(),
             PrintJobSettingsFragment.class.getName(),
             TrustedCredentialsSettings.class.getName(),
             PaymentSettings.class.getName(),
             PhysicalKeyboardFragment.class.getName(),
-            ZenModeSettings.class.getName(),
             SoundSettings.class.getName(),
             ConversationListSettings.class.getName(),
+            BubbleNotificationSettings.class.getName(),
             ConfigureNotificationSettings.class.getName(),
             ChooseLockPassword.ChooseLockPasswordFragment.class.getName(),
             ChooseLockPattern.ChooseLockPatternFragment.class.getName(),
@@ -332,9 +338,6 @@ public class SettingsGateway {
             ApnSettings.class.getName(),
             ApnEditor.class.getName(),
             WifiCallingSettings.class.getName(),
-            ZenModeScheduleRuleSettings.class.getName(),
-            ZenModeEventRuleSettings.class.getName(),
-            ZenModeBlockedEffectsSettings.class.getName(),
             ProcessStatsUi.class.getName(),
             AdvancedPowerUsageDetail.class.getName(),
             ProcessStatsSummary.class.getName(),
@@ -373,8 +376,6 @@ public class SettingsGateway {
             LockScreenNotificationsPreferencePageFragment.class.getName(),
             MemtagPage.class.getName(),
             BluetoothDeviceDetailsFragment.class.getName(),
-            BluetoothBroadcastDialog.class.getName(),
-            BluetoothFindBroadcastsFragment.class.getName(),
             StylusUsiDetailsFragment.class.getName(),
             DataUsageList.class.getName(),
             ToggleBackupSettingFragment.class.getName(),
@@ -418,10 +419,19 @@ public class SettingsGateway {
             HearingDevicePairingFragment.class.getName(),
             ZenModesListFragment.class.getName(),
             ZenModeFragment.class.getName(),
+            ZenModeDisplayFragment.class.getName(),
+            ZenModePeopleFragment.class.getName(),
+            ZenModeCallsFragment.class.getName(),
             ContactsStorageSettings.class.getName(),
             ContentProtectionPreferenceFragment.class.getName(),
-            ToggleScreenMagnificationPreferenceFragment.class.getName(),
+            MagnificationPreferenceFragment.class.getName(),
             FlashNotificationsPreferenceFragment.class.getName(),
+            BundlePreferenceFragment.class.getName(),
+            SystemLocalePickerFragment.class.getName(),
+            AppLocalePickerFragment.class.getName(),
+            SupervisionDashboardFragment.class.getName(),
+            SummarizationPreferenceFragment.class.getName(),
+            SafetyCenterFragment.class.getName(),
     };
 
     public static final String[] SETTINGS_FOR_RESTRICTED = {
@@ -460,6 +470,7 @@ public class SettingsGateway {
             // Home page > Security & screen lock
             Settings.LocationSettingsActivity.class.getName(),
             Settings.LanguageSettingsActivity.class.getName(),
+            Settings.LanguageAndRegionSettingsActivity.class.getName(),
             Settings.KeyboardSettingsActivity.class.getName(),
             Settings.DateTimeSettingsActivity.class.getName(),
             Settings.EnterprisePrivacySettingsActivity.class.getName(),
@@ -468,5 +479,6 @@ public class SettingsGateway {
             UserBackupSettingsActivity.class.getName(),
             Settings.MemtagPageActivity.class.getName(),
             Settings.NavigationModeSettingsActivity.class.getName(),
+            Settings.ShadeSettingsActivity.class.getName(),
     };
 }

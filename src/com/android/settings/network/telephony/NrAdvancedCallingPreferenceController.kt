@@ -40,6 +40,7 @@ constructor(
     key: String,
     private val voNrRepository: VoNrRepository = VoNrRepository(context),
     private val callStateRepository: CallStateRepository = CallStateRepository(context),
+    private val airplaneModeRepository: AirplaneModeRepository = AirplaneModeRepository(context),
 ) : ComposePreferenceController(context, key) {
     private var subId: Int = SubscriptionManager.INVALID_SUBSCRIPTION_ID
     private val searchItem = NrAdvancedCallingSearchItem(context)
@@ -58,15 +59,17 @@ constructor(
         val isInCall by
             remember { callStateRepository.isInCallFlow() }
                 .collectAsStateWithLifecycle(initialValue = false)
-        val isVoNrEnabled by
-            remember { voNrRepository.isVoNrEnabledFlow(subId) }
+        val isAirplaneModeOn by
+            remember { airplaneModeRepository.airplaneModeChangedFlow() }
                 .collectAsStateWithLifecycle(initialValue = false)
+        val isVoNrEnabled by
+            remember { voNrRepository.isVoNrEnabledFlow(subId) }.collectAsStateWithLifecycle(null)
         val coroutineScope = rememberCoroutineScope()
         SwitchPreference(
             object : SwitchPreferenceModel {
                 override val title = stringResource(R.string.nr_advanced_calling_title)
                 override val summary = { summary }
-                override val changeable = { !isInCall }
+                override val changeable = { !isInCall && !isAirplaneModeOn }
                 override val checked = { isVoNrEnabled }
                 override val onCheckedChange: (Boolean) -> Unit = { newChecked ->
                     coroutineScope.launch { voNrRepository.setVoNrEnabled(subId, newChecked) }

@@ -18,8 +18,12 @@ package com.android.settings.wifi.details2;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.preference.Preference;
+
 import com.android.settings.R;
 import com.android.settings.core.TogglePreferenceController;
+import com.android.settings.wifi.WifiUtils;
 import com.android.wifitrackerlib.WifiEntry;
 
 /**
@@ -43,6 +47,13 @@ public class WifiAutoConnectPreferenceController2 extends TogglePreferenceContro
     @Override
     public int getAvailabilityStatus() {
         return mWifiEntry.canSetAutoJoinEnabled() ? AVAILABLE : CONDITIONALLY_UNAVAILABLE;
+    }
+
+    @Override
+    public void updateState(@NonNull Preference preference) {
+        super.updateState(preference);
+
+        preference.setEnabled(WifiUtils.isNetworkEditable(mWifiEntry, mContext));
     }
 
     @Override

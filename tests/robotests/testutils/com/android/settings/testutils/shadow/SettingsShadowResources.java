@@ -71,6 +71,17 @@ public class SettingsShadowResources extends ShadowResources {
     }
 
     @Implementation
+    protected String[] getStringArray(int id) throws NotFoundException {
+        final Object override = sResourceOverrides.get(id);
+        if (override instanceof String[]) {
+            return (String[]) override;
+        }
+        return directlyOn(
+                realResources, Resources.class, "getStringArray",
+                ClassParameter.from(int.class, id));
+    }
+
+    @Implementation
     protected String getString(int id) {
         final Object override = sResourceOverrides.get(id);
         if (override instanceof String) {

@@ -87,7 +87,7 @@
   <string-array name="bluetooth_leaudio_mode">
     <item msgid="5307106570247137458">"Disabled"</item>
     <item msgid="7781484297606806796">"Unicast"</item>
-    <item msgid="6667451574264144311">"Unicast and Broadcast"</item>
+    <item msgid="6667451574264144311">"Unicast i Broadcast"</item>
   </string-array>
   <string-array name="bluetooth_max_connected_audio_devices">
     <item msgid="4792793579224104167">"Koristi zadane postavke sustava: <xliff:g id="DEFAULT_BLUETOOTH_MAX_CONNECTED_AUDIO_DEVICES">%1$d</xliff:g>"</item>
@@ -315,6 +315,10 @@
     <item msgid="7397961711906421599">"Srednje"</item>
     <item msgid="4079132024502041928">"Dugo"</item>
   </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"DHCP"</item>
+    <item msgid="4425163520864432692">"Statično"</item>
+  </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"Zadano"</item>
     <item msgid="4234707448428002595">"Sans-serif"</item>
@@ -359,16 +363,12 @@
     <item msgid="6485511780196327736">"Plutanje preko drugih aplikacija"</item>
     <item msgid="3605616699204153590">"Navigacijska traka"</item>
   </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"Gumb"</item>
-    <item msgid="6922258575853746220">"Pokret"</item>
-  </string-array>
   <string-array name="accessibility_button_size_selector_titles">
-    <item msgid="7482952318152486459">"Maleno"</item>
+    <item msgid="7482952318152486459">"Malo"</item>
     <item msgid="1666628329913333563">"Veliko"</item>
   </string-array>
   <string-array name="vpn_proxy_settings">
-    <item msgid="7165538292837266997">"Nijedan"</item>
+    <item msgid="7165538292837266997">"Ništa"</item>
     <item msgid="2397017538263427575">"Ručno"</item>
   </string-array>
   <string-array name="vpn_states">
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"Sat"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"Ništa"</item>
+    <item msgid="321837941231023175">"Početna"</item>
+    <item msgid="953234843613969792">"Nedavne aplikacije"</item>
+    <item msgid="1713942773283586136">"Obavijesti"</item>
+    <item msgid="5687603742365489342">"Brze postavke"</item>
+    <item msgid="5454862951059393431">"Zaključavanje zaslona"</item>
   </string-array>
 </resources>

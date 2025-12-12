@@ -32,11 +32,13 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -64,6 +66,7 @@ import com.android.settings.R;
 import com.android.settings.Settings;
 import com.android.settings.biometrics.BiometricEnrollBase;
 import com.android.settings.biometrics.BiometricUtils;
+import com.android.settings.biometrics.MultiBiometricEnrollHelper;
 import com.android.settings.password.ChooseLockSettingsHelper;
 import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settings.testutils.shadow.SettingsShadowResources;
@@ -73,6 +76,7 @@ import com.android.settings.testutils.shadow.ShadowLockPatternUtils;
 import com.android.settings.testutils.shadow.ShadowSensorPrivacyManager;
 import com.android.settings.testutils.shadow.ShadowUserManager;
 import com.android.settings.testutils.shadow.ShadowUtils;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 import com.google.android.setupcompat.template.FooterBarMixin;
 import com.google.android.setupcompat.template.FooterButton;
@@ -96,6 +100,8 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
+import org.robolectric.annotation.Implementation;
+import org.robolectric.annotation.Implements;
 import org.robolectric.shadows.ShadowActivity;
 
 import java.util.ArrayList;
@@ -109,7 +115,8 @@ import java.util.List;
         ShadowDevicePolicyManager.class,
         ShadowSensorPrivacyManager.class,
         SettingsShadowResources.class,
-        ShadowAlertDialogCompat.class
+        ShadowAlertDialogCompat.class,
+        FaceEnrollIntroductionTest.ShadowSettingsThemeHelper.class,
 })
 public class FaceEnrollIntroductionTest {
 
@@ -179,6 +186,11 @@ public class FaceEnrollIntroductionTest {
         public boolean isInMultiWindowMode() {
             return mIsMultiWindowMode;
         }
+
+        @Override
+        public String getLaunchedFromPackage() {
+            return getPackageName();
+        }
     }
 
     @Before
@@ -199,12 +211,27 @@ public class FaceEnrollIntroductionTest {
         ShadowAlertDialogCompat.reset();
     }
 
+    private void setupNonExpressiveActivity() {
+        ShadowSettingsThemeHelper.setExpressiveTheme(false);
+        setupActivity();
+    }
+
+    private void setupExpressiveActivity() {
+        ShadowSettingsThemeHelper.setExpressiveTheme(true);
+        setupActivity();
+    }
     private void setupActivity() {
         final Intent testIntent = new Intent();
         // Set the challenge token so the confirm screen will not be shown
         testIntent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_CHALLENGE_TOKEN, new byte[0]);
         testIntent.putExtra(BiometricUtils.EXTRA_ENROLL_REASON,
                 FaceEnrollOptions.ENROLL_REASON_SETTINGS);
+
+        testIntent.putExtra(MultiBiometricEnrollHelper.EXTRA_ENROLL_AFTER_FACE,
+                mock(PendingIntent.class));
+        testIntent.putExtra(MultiBiometricEnrollHelper.EXTRA_ENROLL_AFTER_FINGERPRINT,
+                mock(PendingIntent.class));
+        testIntent.putExtra(MultiBiometricEnrollHelper.EXTRA_SKIP_PENDING_ENROLL, false);
 
         when(mFakeFeatureFactory.mFaceFeatureProvider.getPostureGuidanceIntent(any())).thenReturn(
                 null /* Simulate no posture intent */);
@@ -224,6 +251,7 @@ public class FaceEnrollIntroductionTest {
     }
 
     private void setupActivityForPosture() {
+        ShadowSettingsThemeHelper.setExpressiveTheme(false);
         final Intent testIntent = new Intent();
         // Set the challenge token so the confirm screen will not be shown
         testIntent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_CHALLENGE_TOKEN, new byte[0]);
@@ -277,6 +305,21 @@ public class FaceEnrollIntroductionTest {
             faces.add(new Face("Face " + i /* name */, 1 /*faceId */, 1 /* deviceId */));
         }
         when(mFaceManager.getEnrolledFaces(userId)).thenReturn(faces);
+    }
+
+    @Implements(SettingsThemeHelper.class)
+    public static class ShadowSettingsThemeHelper {
+        private static boolean sIsExpressiveTheme;
+
+        /** Shadow implementation of isExpressiveTheme */
+        @Implementation
+        public static boolean isExpressiveTheme(@NonNull Context context) {
+            return sIsExpressiveTheme;
+        }
+
+        static void setExpressiveTheme(boolean isExpressiveTheme) {
+            sIsExpressiveTheme = isExpressiveTheme;
+        }
     }
 
     @Test
@@ -338,7 +381,7 @@ public class FaceEnrollIntroductionTest {
 
     @Test
     public void testFaceEnrollIntroduction_hasHeader() {
-        setupActivity();
+        setupNonExpressiveActivity();
         TextView headerTextView = getGlifLayout(mActivity).findViewById(R.id.suc_layout_title);
 
         assertThat(headerTextView).isNotNull();
@@ -346,8 +389,32 @@ public class FaceEnrollIntroductionTest {
     }
 
     @Test
+    public void testFaceEnrollIntroduction_hasFooterBar_hasFooterButtons() {
+        setupNonExpressiveActivity();
+        FooterBarMixin footer = getGlifLayout(mActivity).getMixin(FooterBarMixin.class);
+
+        assertThat(footer).isNotNull();
+        assertThat(footer.getPrimaryButton()).isNotNull();
+        assertThat(footer.getPrimaryButton().getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(footer.getSecondaryButton()).isNotNull();
+        assertThat(footer.getSecondaryButton().getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
+    public void testFaceEnrollIntroduction_isExpressiveStyle_hasFooterBar_hasFooterButtons() {
+        setupExpressiveActivity();
+        FooterBarMixin footer = getGlifLayout(mActivity).getMixin(FooterBarMixin.class);
+
+        assertThat(footer).isNotNull();
+        assertThat(footer.getPrimaryButton()).isNotNull();
+        assertThat(footer.getPrimaryButton().getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(footer.getSecondaryButton()).isNotNull();
+        assertThat(footer.getSecondaryButton().getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
     public void testFaceEnrollIntroduction_hasDescription_weakFace() throws Exception {
-        setupActivity();
+        setupNonExpressiveActivity();
         SettingsShadowResources.overrideResource(
                 R.bool.config_face_intro_show_less_secure,
                 true);
@@ -378,7 +445,7 @@ public class FaceEnrollIntroductionTest {
     @Test
     public void testFaceEnrollIntroduction_hasDescriptionNoLessSecure_strongFace()
             throws Exception {
-        setupActivity();
+        setupNonExpressiveActivity();
         SettingsShadowResources.overrideResource(
                 R.bool.config_face_intro_show_less_secure,
                 true);
@@ -409,7 +476,7 @@ public class FaceEnrollIntroductionTest {
 
     @Test
     public void testFaceEnrollIntroduction_hasBottomScrollView() {
-        setupActivity();
+        setupNonExpressiveActivity();
         BottomScrollView scrollView = getGlifLayout(mActivity)
                 .findViewById(com.google.android.setupdesign.R.id.sud_scroll_view);
 
@@ -419,7 +486,7 @@ public class FaceEnrollIntroductionTest {
 
     @Test
     public void testFaceEnrollIntroduction_showFooterPrimaryButton() {
-        setupActivity();
+        setupNonExpressiveActivity();
         FooterBarMixin footer = getGlifLayout(mActivity).getMixin(FooterBarMixin.class);
         FooterButton footerButton = footer.getPrimaryButton();
 
@@ -431,7 +498,7 @@ public class FaceEnrollIntroductionTest {
 
     @Test
     public void testFaceEnrollIntroduction_footerSecondaryButtonWhenCanEnroll() {
-        setupActivity();
+        setupNonExpressiveActivity();
         FooterBarMixin footer = getGlifLayout(mActivity).getMixin(FooterBarMixin.class);
         FooterButton footerButton = footer.getSecondaryButton();
 
@@ -468,7 +535,7 @@ public class FaceEnrollIntroductionTest {
 
     @Test
     public void testFaceEnrollIntroduction_defaultNeverLaunchPostureGuidance() {
-        setupActivity();
+        setupNonExpressiveActivity();
 
         assertThat(mActivity.launchPostureGuidance()).isFalse();
         assertThat(mActivity.getDevicePostureState()).isEqualTo(DEVICE_POSTURE_UNKNOWN);
@@ -476,7 +543,7 @@ public class FaceEnrollIntroductionTest {
 
     @Test
     public void testFaceEnrollIntroduction_onStartNeverRegisterPostureChangeCallback() {
-        setupActivity();
+        setupNonExpressiveActivity();
         mActivity.onStart();
 
         assertThat(mActivity.getPostureGuidanceIntent()).isNull();
@@ -683,11 +750,23 @@ public class FaceEnrollIntroductionTest {
 
     @Test
     public void testFaceEnrollIntroduction_forwardsEnrollOptions() {
-        setupActivity();
+        setupNonExpressiveActivity();
         final Intent intent = mActivity.getEnrollingIntent();
 
         assertThat(intent.getIntExtra(BiometricUtils.EXTRA_ENROLL_REASON, -1))
                 .isEqualTo(FaceEnrollOptions.ENROLL_REASON_SETTINGS);
     }
 
+    @Test
+    public void drops_pendingIntents() {
+        setupNonExpressiveActivity();
+
+        mController.start();
+        Shadows.shadowOf(Looper.getMainLooper()).idle();
+
+        final Intent intent = mActivity.getIntent();
+        assertThat(intent.hasExtra(MultiBiometricEnrollHelper.EXTRA_SKIP_PENDING_ENROLL)).isFalse();
+        assertThat(intent.hasExtra(MultiBiometricEnrollHelper.EXTRA_ENROLL_AFTER_FACE)).isFalse();
+        assertThat(intent.hasExtra(MultiBiometricEnrollHelper.EXTRA_ENROLL_AFTER_FINGERPRINT)).isFalse();
+    }
 }

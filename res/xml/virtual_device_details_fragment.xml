@@ -45,7 +45,6 @@
     <com.android.settingslib.widget.FooterPreference
         android:key="virtual_device_details_footer"
         settings:controller="com.android.settings.connecteddevice.virtual.VirtualDeviceDetailsFooterController"
-        android:selectable="false"
         settings:searchable="false" />
 
 </PreferenceScreen>

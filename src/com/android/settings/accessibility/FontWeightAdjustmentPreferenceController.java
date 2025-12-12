@@ -26,6 +26,7 @@ import com.android.settings.core.TogglePreferenceController;
 import com.android.settings.core.instrumentation.SettingsStatsLog;
 
 /** PreferenceController for displaying all text in bold. */
+// LINT.IfChange
 public class FontWeightAdjustmentPreferenceController extends TogglePreferenceController implements
         TextReadingResetController.ResetStateListener {
     static final int BOLD_TEXT_ADJUSTMENT =
@@ -53,7 +54,7 @@ public class FontWeightAdjustmentPreferenceController extends TogglePreferenceCo
     public boolean setChecked(boolean isChecked) {
         SettingsStatsLog.write(
                 SettingsStatsLog.ACCESSIBILITY_TEXT_READING_OPTIONS_CHANGED,
-                AccessibilityStatsLogUtils.convertToItemKeyName(getPreferenceKey()),
+                SettingsStatsLog.ACCESSIBILITY_TEXT_READING_OPTIONS_CHANGED__NAME__TEXT_READING_BOLD_TEXT,
                 isChecked ? 1 : 0,
                 AccessibilityStatsLogUtils.convertToEntryPoint(mEntryPoint));
 
@@ -80,3 +81,4 @@ public class FontWeightAdjustmentPreferenceController extends TogglePreferenceCo
         mEntryPoint = entryPoint;
     }
 }
+// LINT.ThenChange(/src/com/android/settings/accessibility/textreading/ui/BoldTextPreference.kt, /src/com/android/settings/accessibility/textreading/data/BoldTextDataStore.kt,)

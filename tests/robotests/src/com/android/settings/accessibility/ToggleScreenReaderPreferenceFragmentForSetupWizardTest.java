@@ -19,124 +19,91 @@ package com.android.settings.accessibility;
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.settings.SettingsEnums;
-import android.content.Context;
+import android.content.ComponentName;
 import android.os.Bundle;
 
-import androidx.lifecycle.LifecycleOwner;
-import androidx.preference.PreferenceManager;
-import androidx.preference.PreferenceScreen;
-import androidx.test.core.app.ApplicationProvider;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.settings.R;
-import com.android.settings.SettingsActivity;
-import com.android.settings.widget.SettingsMainSwitchBar;
-import com.android.settings.widget.SettingsMainSwitchPreference;
-import com.android.settingslib.widget.TopIntroPreference;
+import com.android.settings.testutils.AccessibilityTestUtils;
 
-import com.google.android.setupcompat.template.FooterBarMixin;
-import com.google.android.setupdesign.GlifPreferenceLayout;
-
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
+
+import java.util.List;
 
 /** Tests for {@link ToggleScreenReaderPreferenceFragmentForSetupWizard}. */
 @RunWith(RobolectricTestRunner.class)
-@Config(shadows = {
-        com.android.settings.testutils.shadow.ShadowFragment.class,
-})
-public class ToggleScreenReaderPreferenceFragmentForSetupWizardTest {
+public class ToggleScreenReaderPreferenceFragmentForSetupWizardTest extends
+        BaseShortcutInteractionsInSuwTestCases<ToggleScreenReaderPreferenceFragmentForSetupWizard> {
 
-    private static final String TEST_TITLE = "test_title";
-    private final Context mContext = ApplicationProvider.getApplicationContext();
-    @Rule
-    public MockitoRule mMockitoRule = MockitoJUnit.rule();
-    @Mock
-    private SettingsActivity mActivity;
-    @Mock
-    private GlifPreferenceLayout mGlifLayoutView;
-    @Mock
-    private SettingsMainSwitchBar mSwitchBar;
-    @Mock
-    private FooterBarMixin mFooterBarMixin;
-    private ToggleScreenReaderPreferenceFragmentForSetupWizard mFragment;
+    private static final String PLACEHOLDER_PACKAGE_NAME = "com.placeholder.example";
+    private static final String A11Y_SERVICE_CLASS_NAME = "fakeA11yServiceClass";
 
-    @Before
-    public void setUp() {
-        mFragment = spy(new TestToggleScreenReaderPreferenceFragmentForSetupWizard(mContext));
-        doReturn(mActivity).when(mFragment).getActivity();
-        doReturn(mock(LifecycleOwner.class)).when(mFragment).getViewLifecycleOwner();
-        when(mActivity.getSwitchBar()).thenReturn(mSwitchBar);
-        doReturn(mFooterBarMixin).when(mGlifLayoutView).getMixin(FooterBarMixin.class);
-    }
+    private static final String DEFAULT_INTRO = "default intro";
+    private static final String SHORTCUT_PREF_KEY = "service_shortcut";
+    private static final ComponentName PLACEHOLDER_A11Y_SERVICE =
+            new ComponentName(PLACEHOLDER_PACKAGE_NAME, A11Y_SERVICE_CLASS_NAME);
 
     @Test
-    public void onViewCreated_verifyAction() {
-        mFragment.onViewCreated(mGlifLayoutView, null);
-
-        verify(mGlifLayoutView).setHeaderText(TEST_TITLE);
-        verify(mGlifLayoutView).setDescriptionText(
-                mContext.getString(R.string.talkback_summary));
-        verify(mGlifLayoutView).setDividerInsets(Integer.MAX_VALUE, 0);
-        verify(mFooterBarMixin).setPrimaryButton(any());
-        assertThat(mFragment.mTopIntroPreference.isVisible()).isFalse();
+    public void getMetricsCategory() {
+        assertThat(
+                new ToggleScreenReaderPreferenceFragmentForSetupWizard().getMetricsCategory()
+        ).isEqualTo(SettingsEnums.SUW_ACCESSIBILITY_TOGGLE_SCREEN_READER);
     }
 
-    @Test
-    public void getMetricsCategory_returnsCorrectCategory() {
-        assertThat(mFragment.getMetricsCategory()).isEqualTo(
-                SettingsEnums.SUW_ACCESSIBILITY_TOGGLE_SCREEN_READER);
+    @NonNull
+    @Override
+    public ToggleScreenReaderPreferenceFragmentForSetupWizard launchFragment() {
+        AccessibilityServiceInfo a11yServiceInfo =
+                spy(AccessibilityTestUtils.createAccessibilityServiceInfo(
+                        getContext(),
+                        PLACEHOLDER_A11Y_SERVICE,
+                        /* isAlwaysOnService= */ false));
+        when(a11yServiceInfo.loadIntro(any())).thenReturn(DEFAULT_INTRO);
+        getA11yManager().setInstalledAccessibilityServiceList(List.of(a11yServiceInfo));
+        getA11yManager().setAccessibilityServiceWarningExempted(a11yServiceInfo.getComponentName());
+
+        return super.launchFragment();
     }
 
-    private static class TestToggleScreenReaderPreferenceFragmentForSetupWizard
-            extends ToggleScreenReaderPreferenceFragmentForSetupWizard {
+    @NonNull
+    @Override
+    public ComponentName getFeatureComponent() {
+        return PLACEHOLDER_A11Y_SERVICE;
+    }
 
-        private final Context mContext;
-        private final PreferenceManager mPreferenceManager;
+    @Nullable
+    @Override
+    public Bundle getFragmentArgs() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(
+                AccessibilitySettings.EXTRA_COMPONENT_NAME, getFeatureComponent());
+        return bundle;
+    }
 
-        TestToggleScreenReaderPreferenceFragmentForSetupWizard(Context context) {
-            super();
-            mContext = context;
-            mPreferenceManager = new PreferenceManager(context);
-            mPreferenceManager.setPreferences(mPreferenceManager.createPreferenceScreen(context));
-            mTopIntroPreference = new TopIntroPreference(context);
-            mToggleServiceSwitchPreference = new SettingsMainSwitchPreference(context);
-            Bundle bundle = new Bundle();
-            bundle.putString(AccessibilitySettings.EXTRA_TITLE, TEST_TITLE);
-            setArguments(bundle);
-        }
+    @NonNull
+    @Override
+    public String getSetupWizardDescription() {
+        return getContext().getString(R.string.talkback_summary);
+    }
 
-        @Override
-        public int getPreferenceScreenResId() {
-            return R.xml.placeholder_prefs;
-        }
+    @NonNull
+    @Override
+    public Class<ToggleScreenReaderPreferenceFragmentForSetupWizard> getFragmentClazz() {
+        return ToggleScreenReaderPreferenceFragmentForSetupWizard.class;
+    }
 
-        @Override
-        public PreferenceScreen getPreferenceScreen() {
-            return mPreferenceManager.getPreferenceScreen();
-        }
-
-        @Override
-        public PreferenceManager getPreferenceManager() {
-            return mPreferenceManager;
-        }
-
-        @Override
-        public Context getContext() {
-            return mContext;
-        }
+    @Nullable
+    @Override
+    public ShortcutPreference getShortcutToggle() {
+        return getFragment() != null ? getFragment().findPreference(SHORTCUT_PREF_KEY) : null;
     }
 }

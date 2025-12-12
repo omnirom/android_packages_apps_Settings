@@ -20,10 +20,15 @@ import static com.android.settings.security.InstallCertificateFromStorage.SEARCH
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.robolectric.Shadows.shadowOf;
+
+import android.app.Application;
 import android.app.admin.DevicePolicyManager;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.os.UserManager;
+
+import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +58,8 @@ public class InstallCertificateFromStorageTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        ShadowApplication application = ShadowApplication.getInstance();
+        ShadowApplication application =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         application.setSystemService(Context.DEVICE_POLICY_SERVICE, mDevicePolicyManager);
         application.setSystemService(Context.USER_SERVICE, mUserManager);
         mContext = RuntimeEnvironment.application;

@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="smart_forwarding_preference"
@@ -5,7 +7,7 @@
 
       <SwitchPreferenceCompat
           android:key="smart_forwarding_switch"
-          android:title="Smart forwarding"
+          android:title="@string/smart_forwarding_title"
           android:summaryOff="@string/smart_forwarding_summary_disabled"
           android:summaryOn="@string/smart_forwarding_summary_enabled"
           android:disableDependentsState="true" />

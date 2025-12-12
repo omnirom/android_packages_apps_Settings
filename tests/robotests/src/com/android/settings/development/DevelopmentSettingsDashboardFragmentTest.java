@@ -30,8 +30,6 @@ import static org.mockito.Mockito.when;
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.biometrics.BiometricManager;
-import android.hardware.biometrics.Flags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.SearchIndexableResource;
 import android.provider.Settings;
@@ -203,7 +201,6 @@ public class DevelopmentSettingsDashboardFragmentTest {
 
     @Test
     @Config(shadows = ShadowEnableDevelopmentSettingWarningDialog.class)
-    @EnableFlags(Flags.FLAG_MANDATORY_BIOMETRICS)
     public void onSwitchChanged_turnOn_shouldLaunchBiometricPromptIfMandatoryBiometricsEffective() {
         when(mDashboard.getContext()).thenReturn(mContext);
         doNothing().when(mDashboard).startActivityForResult(any(),
@@ -222,7 +219,6 @@ public class DevelopmentSettingsDashboardFragmentTest {
 
     @Test
     @Config(shadows = ShadowEnableDevelopmentSettingWarningDialog.class)
-    @EnableFlags(Flags.FLAG_MANDATORY_BIOMETRICS)
     public void onActivityResult_requestBiometricPrompt_shouldShowWarningDialog() {
         when(mDashboard.getContext()).thenReturn(mContext);
 
@@ -239,7 +235,6 @@ public class DevelopmentSettingsDashboardFragmentTest {
     @Test
     @Config(shadows = ShadowIdentityCheckBiometricErrorDialog.class)
     @Ignore("b/354820314")
-    @EnableFlags(Flags.FLAG_MANDATORY_BIOMETRICS)
     public void onActivityResult_requestBiometricPrompt_showErrorDialog() {
         when(mDashboard.getContext()).thenReturn(mContext);
 
@@ -427,7 +422,7 @@ public class DevelopmentSettingsDashboardFragmentTest {
         }
     }
 
-    @Implements(WirelessDebuggingPreferenceController.class)
+    @Implements(AdbWirelessDebuggingPreferenceController.class)
     public static class ShadowWirelessDebuggingPreferenceController {
         @Implementation
         protected boolean isAvailable() {

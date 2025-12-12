@@ -32,6 +32,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.settings.R;
@@ -106,7 +107,8 @@ public final class PasswordUtils extends com.android.settingslib.Utils {
     }
 
     /** Setup screen lock options button under the Glif Header. */
-    public static void setupScreenLockOptionsButton(Context context, View view, Button optButton) {
+    public static void setupScreenLockOptionsButton(@NonNull Context context, @NonNull View view,
+            @NonNull Button optButton, @NonNull Boolean isExpressiveStyle) {
         final LinearLayout headerLayout = view.findViewById(
                 com.google.android.setupdesign.R.id.sud_layout_header);
         final TextView sucTitleView = headerLayout.findViewById(
@@ -120,7 +122,9 @@ public final class PasswordUtils extends com.android.settingslib.Utils {
             lp.setMarginStart(layoutTitleParams.leftMargin);
             lp.topMargin = (int) context.getResources().getDimensionPixelSize(
                     R.dimen.screen_lock_options_button_margin_top);
-            optButton.setPadding(0, 0, 0, 0);
+            if (!isExpressiveStyle) {
+                optButton.setPadding(0, 0, 0, 0);
+            }
             optButton.setLayoutParams(lp);
             optButton.setText(context.getString(R.string.setup_lock_settings_options_button_label));
             headerLayout.addView(optButton);

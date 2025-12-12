@@ -34,6 +34,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -44,6 +45,7 @@ import android.hardware.fingerprint.FingerprintEnrollOptions;
 import android.hardware.fingerprint.FingerprintManager;
 import android.hardware.fingerprint.FingerprintSensorProperties;
 import android.hardware.fingerprint.FingerprintSensorPropertiesInternal;
+import android.os.Looper;
 import android.os.UserManager;
 import android.view.View;
 
@@ -55,6 +57,7 @@ import com.android.internal.widget.VerifyCredentialResponse;
 import com.android.settings.R;
 import com.android.settings.biometrics.BiometricUtils;
 import com.android.settings.biometrics.GatekeeperPasswordProvider;
+import com.android.settings.biometrics.MultiBiometricEnrollHelper;
 
 import com.google.android.setupcompat.util.WizardManagerHelper;
 import com.google.android.setupdesign.GlifLayout;
@@ -70,6 +73,7 @@ import org.mockito.stubbing.Answer;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.Shadows;
 import org.robolectric.android.controller.ActivityController;
 
 import java.util.ArrayList;
@@ -353,7 +357,19 @@ public class FingerprintEnrollIntroductionTest {
                 false);
         Assert.assertEquals(View.INVISIBLE,
                 mFingerprintEnrollIntroduction.getSecondaryFooterButton().getVisibility());
+    }
 
+    @Test
+    public void drops_pendingIntents() {
+        setupFingerprintEnrollIntroWith(newExternalPendingIntent());
+
+        mController.start();
+        Shadows.shadowOf(Looper.getMainLooper()).idle();
+
+        final Intent intent = mFingerprintEnrollIntroduction.getIntent();
+        assertThat(intent.hasExtra(MultiBiometricEnrollHelper.EXTRA_SKIP_PENDING_ENROLL)).isFalse();
+        assertThat(intent.hasExtra(MultiBiometricEnrollHelper.EXTRA_ENROLL_AFTER_FACE)).isFalse();
+        assertThat(intent.hasExtra(MultiBiometricEnrollHelper.EXTRA_ENROLL_AFTER_FINGERPRINT)).isFalse();
     }
 
     private Intent newTokenOnlyIntent() {
@@ -381,6 +397,15 @@ public class FingerprintEnrollIntroductionTest {
         return new Intent()
                 .putExtra(EXTRA_FROM_SETTINGS_SUMMARY, true)
                 .putExtra(EXTRA_KEY_GK_PW_HANDLE, 1L);
+    }
+
+    private Intent newExternalPendingIntent() {
+        return newTokenOnlyIntent()
+                .putExtra(MultiBiometricEnrollHelper.EXTRA_ENROLL_AFTER_FACE,
+                        mock(PendingIntent.class))
+                .putExtra(MultiBiometricEnrollHelper.EXTRA_ENROLL_AFTER_FINGERPRINT,
+                        mock(PendingIntent.class))
+                .putExtra(MultiBiometricEnrollHelper.EXTRA_SKIP_PENDING_ENROLL, false);
     }
 
     private VerifyCredentialResponse newGoodCredential(long gkPwHandle, @NonNull byte[] hat) {

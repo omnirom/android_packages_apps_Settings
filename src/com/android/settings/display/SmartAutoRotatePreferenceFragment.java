@@ -30,7 +30,7 @@ import androidx.preference.Preference;
 
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
-import com.android.settings.dashboard.DashboardFragment;
+import com.android.settings.accessibility.BaseSupportFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.HelpUtils;
 import com.android.settingslib.core.AbstractPreferenceController;
@@ -46,7 +46,7 @@ import java.util.List;
  */
 @SuppressWarnings("WeakerAccess")
 @SearchIndexable
-public class SmartAutoRotatePreferenceFragment extends DashboardFragment {
+public class SmartAutoRotatePreferenceFragment extends BaseSupportFragment {
 
     private static final String TAG = "SmartAutoRotatePreferenceFragment";
 

@@ -87,6 +87,8 @@ public class AudioStreamButtonController extends BasePreferenceController
                         // TODO(b/308368124): Verify if this log is too noisy.
                         mMetricsFeatureProvider.action(
                                 mContext,
+                                localSourceState == PAUSED
+                                        ? SettingsEnums.ACTION_AUDIO_STREAM_JOIN_PRESENT_SUCCEED :
                                 SettingsEnums.ACTION_AUDIO_STREAM_JOIN_SUCCEED,
                                 SOURCE_ORIGIN_REPOSITORY);
                     }

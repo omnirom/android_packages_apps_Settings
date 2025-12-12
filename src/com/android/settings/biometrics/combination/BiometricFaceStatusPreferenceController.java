@@ -16,6 +16,8 @@
 package com.android.settings.biometrics.combination;
 
 import android.app.admin.DevicePolicyManager;
+import android.app.admin.EnforcingAdmin;
+import android.app.admin.PolicyEnforcementInfo;
 import android.content.Context;
 
 import androidx.lifecycle.Lifecycle;
@@ -46,6 +48,20 @@ public class BiometricFaceStatusPreferenceController extends FaceStatusPreferenc
     public void updateState(Preference preference) {
         super.updateState(preference);
         final boolean isFaceEnrolled = mFaceStatusUtils.hasEnrolled();
+        if (android.app.admin.flags.Flags.policyTransparencyRefactorEnabled()
+                && android.app.admin.flags.Flags.setKeyguardDisabledFeaturesCoexistence()) {
+            final PolicyEnforcementInfo info =
+                    RestrictedLockUtilsInternal.getEnforcingAdminsForKeyguardFeatures(mContext,
+                            DevicePolicyManager.KEYGUARD_DISABLE_FACE, getUserId());
+            final EnforcingAdmin admin =
+                    info == null ? null : info.getMostImportantEnforcingAdmin();
+            if (admin != null && !isFaceEnrolled) {
+                ((RestrictedPreference) preference).setDisabledByAdmin(admin);
+            } else {
+                preference.setEnabled(true);
+            }
+            return;
+        }
         final RestrictedLockUtils.EnforcedAdmin admin =
                 RestrictedLockUtilsInternal.checkIfKeyguardFeaturesDisabled(
                         mContext, DevicePolicyManager.KEYGUARD_DISABLE_FACE, getUserId());

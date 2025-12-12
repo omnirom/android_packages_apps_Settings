@@ -134,7 +134,7 @@ public class ConfirmDeviceCredentialActivity extends FragmentActivity {
                         showConfirmCredentials();
                     } else {
                         Log.i(TAG, "Finishing, device credential not requested");
-                        if (Flags.mandatoryBiometrics()
+                        if (!Flags.bpFallbackOptions()
                                 && errorCode == BiometricPrompt.BIOMETRIC_ERROR_LOCKOUT_PERMANENT) {
                             setResult(BIOMETRIC_LOCKOUT_ERROR_RESULT);
                         }
@@ -259,8 +259,7 @@ public class ConfirmDeviceCredentialActivity extends FragmentActivity {
             promptInfo.setRealCallerForConfirmDeviceCredentialActivity(getCallingActivity());
         }
 
-        if (android.multiuser.Flags.enablePrivateSpaceFeatures()
-                && android.multiuser.Flags.usePrivateSpaceIconInBiometricPrompt()
+        if (android.multiuser.Flags.usePrivateSpaceIconInBiometricPrompt()
                 && hasSetBiometricDialogAdvanced(mContext, getLaunchedFromUid())
         ) {
             final int iconResId = intent.getIntExtra(CUSTOM_BIOMETRIC_PROMPT_LOGO_RES_ID_KEY, 0);
@@ -374,9 +373,7 @@ public class ConfirmDeviceCredentialActivity extends FragmentActivity {
                 showConfirmCredentials();
                 launchedCDC = true;
             }
-        } else if (android.os.Flags.allowPrivateProfile()
-                && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                && userProperties != null
+        } else if (userProperties != null
                 && userProperties.isAuthAlwaysRequiredToDisableQuietMode()
                 && isInternalActivity()) {
             // Force verification path is required to be invoked as we might need to verify the
@@ -508,9 +505,7 @@ public class ConfirmDeviceCredentialActivity extends FragmentActivity {
     }
 
     private boolean doesUserStateEnforceStrongAuth(int userId) {
-        if (android.os.Flags.allowPrivateProfile()
-                && android.multiuser.Flags.enableBiometricsToUnlockPrivateSpace()
-                && android.multiuser.Flags.enablePrivateSpaceFeatures()) {
+        if (android.multiuser.Flags.enableBiometricsToUnlockPrivateSpace()) {
             // Check if CE storage for user is locked since biometrics can't unlock fbe/keystore of
             // the profile user using verifyTiedProfileChallenge. Biometrics can still be used if
             // the user is stopped with delayed locking (i.e., with storage unlocked), so the user

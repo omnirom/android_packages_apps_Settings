@@ -93,20 +93,23 @@ public class PageAgnosticNotificationService extends Service {
 
         // Create the PendingIntent.
         PendingIntent notifyPendingIntent =
-                PendingIntent.getActivity(
+                PendingIntent.getActivityAsUser(
                         this,
                         0,
                         notifyIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE,
+                        null,
+                        UserHandle.CURRENT);
 
         Intent dismissIntent = new Intent(this, Enable16KBootReceiver.class);
         dismissIntent.setAction(INTENT_ACTION_DISMISSED);
         PendingIntent dismissPendingIntent =
-                PendingIntent.getBroadcast(
-                        this.getApplicationContext(),
+                PendingIntent.getBroadcastAsUser(
+                        this,
                         0,
                         dismissIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE,
+                        UserHandle.CURRENT);
 
         Notification.Action action =
                 new Notification.Action.Builder(

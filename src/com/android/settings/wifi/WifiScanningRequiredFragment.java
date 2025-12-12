@@ -19,7 +19,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.settings.SettingsEnums;
 import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,17 +28,27 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 
 import com.android.settings.R;
 import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
 import com.android.settingslib.HelpUtils;
+import com.android.settingslib.metadata.PreferenceLifecycleContext;
+import com.android.settingslib.metadata.PreferenceLifecycleProvider;
 
 public class WifiScanningRequiredFragment extends InstrumentedDialogFragment implements
         DialogInterface.OnClickListener {
 
     private static final String TAG = "WifiScanReqFrag";
+
+    @Nullable
+    private PreferenceLifecycleProvider mCallback = null;
+    @Nullable
+    private PreferenceLifecycleContext mCallbackContext = null;
+    private int mCallbackRequestCode;
 
     public static WifiScanningRequiredFragment newInstance() {
         WifiScanningRequiredFragment fragment = new WifiScanningRequiredFragment();
@@ -66,7 +75,6 @@ public class WifiScanningRequiredFragment extends InstrumentedDialogFragment imp
     @Override
     public void onClick(DialogInterface dialog, int which) {
         Context context = getContext();
-        ContentResolver contentResolver = context.getContentResolver();
         switch(which) {
             case DialogInterface.BUTTON_POSITIVE:
                 context.getSystemService(WifiManager.class).setScanAlwaysAvailable(true);
@@ -74,10 +82,7 @@ public class WifiScanningRequiredFragment extends InstrumentedDialogFragment imp
                         context,
                         context.getString(R.string.wifi_settings_scanning_required_enabled),
                         Toast.LENGTH_SHORT).show();
-                getTargetFragment().onActivityResult(
-                        getTargetRequestCode(),
-                        Activity.RESULT_OK,
-                        null);
+                notifyActivityResult();
                 break;
             case DialogInterface.BUTTON_NEUTRAL:
                 openHelpPage();
@@ -85,6 +90,19 @@ public class WifiScanningRequiredFragment extends InstrumentedDialogFragment imp
             case DialogInterface.BUTTON_NEGATIVE:
             default:
                 // do nothing
+        }
+    }
+
+    private void notifyActivityResult() {
+        if (mCallback != null) {
+            mCallback.onActivityResult(mCallbackContext, mCallbackRequestCode, Activity.RESULT_OK,
+                    null);
+            return;
+        }
+
+        Fragment targetFragment = getTargetFragment();
+        if (targetFragment != null) {
+            targetFragment.onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
         }
     }
 
@@ -112,5 +130,15 @@ public class WifiScanningRequiredFragment extends InstrumentedDialogFragment imp
                     context,
                     context.getString(R.string.help_uri_wifi_scanning_required),
                     context.getClass().getName());
+    }
+
+    /**
+     * Method to set callback.
+     */
+    public void setCallback(@Nullable PreferenceLifecycleProvider callback,
+            @Nullable PreferenceLifecycleContext context, int requestCode) {
+        mCallback = callback;
+        mCallbackContext = context;
+        mCallbackRequestCode = requestCode;
     }
 }

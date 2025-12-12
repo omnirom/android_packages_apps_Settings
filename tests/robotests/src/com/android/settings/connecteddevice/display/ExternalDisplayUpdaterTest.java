@@ -93,7 +93,7 @@ public class ExternalDisplayUpdaterTest extends ExternalDisplayTestBase {
         assertThat(mPreferenceAdded).isNotNull();
         assertThat(mPreferenceRemoved).isNull();
         // Remove display
-        doReturn(List.of()).when(mMockedInjector).getConnectedDisplays();
+        doReturn(List.of()).when(mMockedInjector).getDisplays();
         mListener.onDisplayRemoved(1);
         mHandler.flush();
         assertThat(mPreferenceRemoved).isEqualTo(mPreferenceAdded);

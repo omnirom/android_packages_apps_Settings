@@ -23,12 +23,14 @@ import android.telephony.TelephonyManager
 import android.telephony.data.ApnSetting
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LifecycleOwner
+import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import com.android.settings.R
 import com.android.settings.Settings.MobileNetworkActivity.EXTRA_MMS_MESSAGE
+import com.android.settings.Utils
 import com.android.settings.core.TogglePreferenceController
-import com.android.settings.network.telephony.MobileNetworkSettingsSearchIndex.MobileNetworkSettingsSearchResult
 import com.android.settings.network.telephony.MobileNetworkSettingsSearchIndex.MobileNetworkSettingsSearchItem
+import com.android.settings.network.telephony.MobileNetworkSettingsSearchIndex.MobileNetworkSettingsSearchResult
 import com.android.settingslib.spa.framework.util.collectLatestWithLifecycle
 import kotlinx.coroutines.flow.combine
 
@@ -41,13 +43,15 @@ constructor(
     private val getDefaultDataSubId: () -> Int = {
         SubscriptionManager.getDefaultDataSubscriptionId()
     },
-) : TogglePreferenceController(context, key) {
+) : TogglePreferenceController(context, key), AirplaneModeChangedCallback {
 
     private var subId = SubscriptionManager.INVALID_SUBSCRIPTION_ID
     private var telephonyManager: TelephonyManager =
         context.getSystemService(TelephonyManager::class.java)!!
     private val carrierConfigRepository = CarrierConfigRepository(context)
     private var preferenceScreen: PreferenceScreen? = null
+    private var preference: Preference? = null
+    @VisibleForTesting var isAirplaneModeOn: Boolean = false
 
     fun init(subId: Int) {
         this.subId = subId
@@ -55,18 +59,18 @@ constructor(
     }
 
     override fun getAvailabilityStatus() =
-        if (getAvailabilityStatus(
-                telephonyManager,
-                subId,
-                getDefaultDataSubId,
-                carrierConfigRepository
-            )
-        ) AVAILABLE
-        else CONDITIONALLY_UNAVAILABLE
+        getAvailabilityStatus(
+            mContext,
+            telephonyManager,
+            subId,
+            getDefaultDataSubId,
+            carrierConfigRepository,
+        )
 
     override fun displayPreference(screen: PreferenceScreen) {
         super.displayPreference(screen)
         preferenceScreen = screen
+        preference = screen.findPreference(preferenceKey)
     }
 
     override fun onViewCreated(viewLifecycleOwner: LifecycleOwner) {
@@ -84,7 +88,8 @@ constructor(
 
     override fun isChecked(): Boolean =
         telephonyManager.isMobileDataPolicyEnabled(
-            TelephonyManager.MOBILE_DATA_POLICY_MMS_ALWAYS_ALLOWED)
+            TelephonyManager.MOBILE_DATA_POLICY_MMS_ALWAYS_ALLOWED
+        )
 
     override fun setChecked(isChecked: Boolean): Boolean {
         telephonyManager.setMobileDataPolicyEnabled(
@@ -94,20 +99,37 @@ constructor(
         return true
     }
 
+    override fun notifyAirplaneModeChanged(isAirplaneModeOn: Boolean) {
+        this.isAirplaneModeOn = isAirplaneModeOn
+    }
+
+    override fun updateState(preference: Preference?) {
+        super.updateState(preference)
+        preference?.isEnabled = !isAirplaneModeOn
+    }
+
     companion object {
         private fun getAvailabilityStatus(
+            context: Context,
             telephonyManager: TelephonyManager,
             subId: Int,
             getDefaultDataSubId: () -> Int,
             carrierConfigRepository: CarrierConfigRepository,
-        ): Boolean {
-            return SubscriptionManager.isValidSubscriptionId(subId) &&
-                !telephonyManager.isDataEnabled &&
-                telephonyManager.isApnMetered(ApnSetting.TYPE_MMS) &&
-                !isFallbackDataEnabled(telephonyManager, subId, getDefaultDataSubId()) &&
-                carrierConfigRepository.getBoolean(
-                    subId, CarrierConfigManager.KEY_MMS_MMS_ENABLED_BOOL)
-        }
+        ): Int =
+            when {
+                !Utils.isSmsMessagingCapable(context) -> UNSUPPORTED_ON_DEVICE
+
+                SubscriptionManager.isValidSubscriptionId(subId) &&
+                    !telephonyManager.isDataEnabled &&
+                    telephonyManager.isApnMetered(ApnSetting.TYPE_MMS) &&
+                    !isFallbackDataEnabled(telephonyManager, subId, getDefaultDataSubId()) &&
+                    carrierConfigRepository.getBoolean(
+                        subId,
+                        CarrierConfigManager.KEY_MMS_MMS_ENABLED_BOOL,
+                    ) -> AVAILABLE
+
+                else -> CONDITIONALLY_UNAVAILABLE
+            }
 
         private fun isFallbackDataEnabled(
             telephonyManager: TelephonyManager,
@@ -117,7 +139,8 @@ constructor(
             return defaultDataSubId != subId &&
                 telephonyManager.createForSubscriptionId(defaultDataSubId).isDataEnabled &&
                 telephonyManager.isMobileDataPolicyEnabled(
-                    TelephonyManager.MOBILE_DATA_POLICY_AUTO_DATA_SWITCH)
+                    TelephonyManager.MOBILE_DATA_POLICY_AUTO_DATA_SWITCH
+                )
         }
 
         class MmsMessageSearchItem(
@@ -132,12 +155,13 @@ constructor(
 
             @VisibleForTesting
             fun isAvailable(subId: Int): Boolean =
-                getAvailabilityStatus(
+                (getAvailabilityStatus(
+                    context,
                     telephonyManager.createForSubscriptionId(subId),
                     subId,
                     getDefaultDataSubId,
-                    carrierConfigRepository
-                )
+                    carrierConfigRepository,
+                ) == AVAILABLE)
 
             override fun getSearchResult(subId: Int): MobileNetworkSettingsSearchResult? {
                 if (!isAvailable(subId)) return null

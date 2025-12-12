@@ -16,6 +16,9 @@
 package com.android.settings.users;
 
 import android.app.Dialog;
+import android.app.admin.DevicePolicyIdentifiers;
+import android.app.admin.DevicePolicyManager;
+import android.app.admin.PolicyEnforcementInfo;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -73,23 +76,67 @@ public class RemoveGuestOnExitPreferenceController extends BasePreferenceControl
         if (!isAvailable()) {
             restrictedSwitchPreference.setVisible(false);
         } else {
-            if (android.multiuser.Flags.newMultiuserSettingsUx()) {
-                restrictedSwitchPreference.setVisible(true);
-                final RestrictedLockUtils.EnforcedAdmin disallowRemoveUserAdmin =
-                        RestrictedLockUtilsInternal.checkIfRestrictionEnforced(mContext,
-                                UserManager.DISALLOW_REMOVE_USER, UserHandle.myUserId());
-                if (disallowRemoveUserAdmin != null) {
-                    restrictedSwitchPreference.setDisabledByAdmin(disallowRemoveUserAdmin);
-                } else if (mUserCaps.mDisallowAddUserSetByAdmin) {
-                    restrictedSwitchPreference.setDisabledByAdmin(mUserCaps.mEnforcedAdmin);
-                } else if (mUserCaps.mDisallowAddUser) {
-                    // Adding user is restricted by system
-                    restrictedSwitchPreference.setVisible(false);
-                }
-            } else {
+            restrictedSwitchPreference.setVisible(true);
+            if (!handleRemoveUserRestriction(restrictedSwitchPreference)) {
+                // We only need to check add user restrictions if removing user is not restricted.
+                handleAddUserRestriction(restrictedSwitchPreference);
+            }
+        }
+    }
+
+
+    /**
+     * Handles the remove user restriction that's set by the admins.
+     *
+     * @return true if the preference is disabled by admin, false otherwise.
+     */
+    private boolean handleRemoveUserRestriction(RestrictedSwitchPreference preference) {
+        if (android.app.admin.flags.Flags.policyTransparencyRefactorEnabled()) {
+            DevicePolicyManager dpm = mContext.getSystemService(DevicePolicyManager.class);
+            if (dpm == null) {
+                return false;
+            }
+            final PolicyEnforcementInfo policyEnforcementInfo = dpm.getEnforcingAdminsForPolicy(
+                    DevicePolicyIdentifiers.getIdentifierForUserRestriction(
+                            UserManager.DISALLOW_REMOVE_USER), UserHandle.myUserId());
+            boolean disallowRemoveUser = !policyEnforcementInfo.getAllAdmins().isEmpty()
+                    && !policyEnforcementInfo.isOnlyEnforcedBySystem();
+            if (disallowRemoveUser) {
+                preference.setDisabledByAdmin(
+                        policyEnforcementInfo.getMostImportantEnforcingAdmin());
+            }
+            return disallowRemoveUser;
+        } else {
+            final RestrictedLockUtils.EnforcedAdmin disallowRemoveUserAdmin =
+                    RestrictedLockUtilsInternal.checkIfRestrictionEnforced(mContext,
+                            UserManager.DISALLOW_REMOVE_USER, UserHandle.myUserId());
+            if (disallowRemoveUserAdmin != null) {
+                preference.setDisabledByAdmin(disallowRemoveUserAdmin);
+            }
+            return disallowRemoveUserAdmin != null;
+        }
+    }
+
+    private void handleAddUserRestriction(RestrictedSwitchPreference restrictedSwitchPreference) {
+        if (android.app.admin.flags.Flags.policyTransparencyRefactorEnabled()) {
+            // Do nothing if adding user is allowed.
+            if (!mUserCaps.mDisallowAddUser) {
+                return;
+            }
+            if (mUserCaps.mDisallowAddUserSetByAdmin) {
                 restrictedSwitchPreference.setDisabledByAdmin(
-                        mUserCaps.disallowAddUser() ? mUserCaps.getEnforcedAdmin() : null);
-                restrictedSwitchPreference.setVisible(mUserCaps.mUserSwitcherEnabled);
+                        mUserCaps.mDisallowAddUserRestrictionEnforcementInfo
+                                .getMostImportantEnforcingAdmin());
+            } else {
+                // Adding user is restricted by system.
+                restrictedSwitchPreference.setVisible(false);
+            }
+        } else {
+            if (mUserCaps.mDisallowAddUserSetByAdmin) {
+                restrictedSwitchPreference.setDisabledByAdmin(mUserCaps.mEnforcedAdmin);
+            } else if (mUserCaps.mDisallowAddUser) {
+                // Adding user is restricted by system
+                restrictedSwitchPreference.setVisible(false);
             }
         }
     }
@@ -100,24 +147,12 @@ public class RemoveGuestOnExitPreferenceController extends BasePreferenceControl
         // then disable this controller
         // also disable this controller for non-admin users
         // also disable when config_guestUserAllowEphemeralStateChange is false
-        if (android.multiuser.Flags.newMultiuserSettingsUx()) {
-            if (mUserManager.isGuestUserAlwaysEphemeral()
-                    || !UserManager.isGuestUserAllowEphemeralStateChange()
-                    || !mUserCaps.isAdmin()) {
-                return DISABLED_FOR_USER;
-            } else {
-                return AVAILABLE;
-            }
+        if (mUserManager.isGuestUserAlwaysEphemeral()
+                || !UserManager.isGuestUserAllowEphemeralStateChange()
+                || !mUserCaps.isAdmin()) {
+            return DISABLED_FOR_USER;
         } else {
-            if (mUserManager.isGuestUserAlwaysEphemeral()
-                    || !UserManager.isGuestUserAllowEphemeralStateChange()
-                    || !mUserCaps.isAdmin()
-                    || mUserCaps.disallowAddUser()
-                    || mUserCaps.disallowAddUserSetByAdmin()) {
-                return DISABLED_FOR_USER;
-            } else {
-                return mUserCaps.mUserSwitcherEnabled ? AVAILABLE : CONDITIONALLY_UNAVAILABLE;
-            }
+            return AVAILABLE;
         }
     }
 

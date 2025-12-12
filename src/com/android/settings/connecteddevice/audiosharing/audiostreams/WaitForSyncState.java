@@ -16,18 +16,20 @@
 
 package com.android.settings.connecteddevice.audiosharing.audiostreams;
 
+import static com.android.settings.connecteddevice.audiosharing.audiostreams.AudioStreamsProgressCategoryController.AudioStreamState.ADD_SOURCE_WAIT_FOR_RESPONSE_FROM_QR;
 import static com.android.settings.connecteddevice.audiosharing.audiostreams.AudioStreamsScanQrCodeController.REQUEST_SCAN_BT_BROADCAST_QR_CODE;
 
-import android.app.AlertDialog;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.android.settings.R;
 import com.android.settings.core.SubSettingLauncher;
+import com.android.settingslib.flags.Flags;
 import com.android.settingslib.utils.ThreadUtils;
 
 class WaitForSyncState extends AudioStreamStateHandler {
@@ -50,12 +52,16 @@ class WaitForSyncState extends AudioStreamStateHandler {
     }
 
     @Override
-    void performAction(
+    void onEnter(
             AudioStreamPreference preference,
             AudioStreamsProgressCategoryController controller,
-            AudioStreamsHelper helper) {
+            AudioStreamsHelper helper,
+            AudioStreamScanHelper scanHelper) {
         var metadata = preference.getAudioStreamMetadata();
         if (metadata != null) {
+            if (Flags.audioStreamScanWithFilter()) {
+                scanHelper.startScanningWithFilter(metadata);
+            }
             mHandler.postDelayed(
                     () -> {
                         if (preference.isShown()
@@ -78,6 +84,21 @@ class WaitForSyncState extends AudioStreamStateHandler {
                         }
                     },
                     WAIT_FOR_SYNC_TIMEOUT_MILLIS);
+        }
+    }
+
+    @Override
+    void onExit(AudioStreamScanHelper scanHelper,
+            AudioStreamsProgressCategoryController.AudioStreamState newState) {
+        // If the new state indicates that we're in the process of adding source
+        // (ADD_SOURCE_WAIT_FOR_RESPONSE_FROM_QR), we will not stop and restart scanning here,
+        // instead, we will wait until the add source operation's completion. This is to preserve
+        // the sync link which is needed for the add source operation, as bluetooth stack clears
+        // active syncs when stopping scanning. If we're moving to other states, we can safely stop
+        // and restart scanning.
+        if (Flags.audioStreamScanWithFilter() && !newState.equals(
+                ADD_SOURCE_WAIT_FOR_RESPONSE_FROM_QR)) {
+            scanHelper.restartScanningWithoutFilter();
         }
     }
 

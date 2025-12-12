@@ -20,6 +20,7 @@ import android.app.Dialog;
 import android.app.settings.SettingsEnums;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Html;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -74,16 +75,32 @@ public class Enable16kPagesWarningDialog extends InstrumentedDialogFragment
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         final Bundle bundle = getArguments();
         boolean is16kDialog = bundle.getBoolean(DIALOG_BUNDLE_KEY);
+        boolean isDataExt4 = Enable16kUtils.isDataExt4();
+
+        int messageResId;
+        if (is16kDialog) {
+            if (isDataExt4) {
+                messageResId = R.string.confirm_enable_16k_pages_text;
+            } else {
+                messageResId = R.string.confirm_enable_16k_pages_update_wipe;
+            }
+        } else {
+            messageResId = R.string.confirm_enable_4k_pages_text;
+        }
+
         return new AlertDialog.Builder(getActivity())
                 .setTitle(
                         is16kDialog
                                 ? R.string.confirm_enable_16k_pages_title
                                 : R.string.confirm_enable_4k_pages_title)
-                .setMessage(
+                .setMessage(Html.fromHtml(getString(messageResId), Html.FROM_HTML_MODE_COMPACT))
+                .setPositiveButton(
                         is16kDialog
-                                ? R.string.confirm_enable_16k_pages_text
-                                : R.string.confirm_enable_4k_pages_text)
-                .setPositiveButton(android.R.string.ok, this /* onClickListener */)
+                                ? (isDataExt4
+                                        ? android.R.string.ok
+                                        : R.string.confirm_ext4_button_text)
+                                : android.R.string.ok,
+                        this /* onClickListener */)
                 .setNegativeButton(android.R.string.cancel, this /* onClickListener */)
                 .create();
     }

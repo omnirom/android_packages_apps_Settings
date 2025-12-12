@@ -37,6 +37,7 @@ import java.util.List;
 /**
  * Class used to map a {@link Uri} from {@link SettingsSliceProvider} to a Slice.
  */
+@Deprecated(forRemoval = true)
 public class SlicesDatabaseAccessor {
 
     public static final String[] SELECT_COLUMNS_ALL = {

@@ -27,6 +27,7 @@ import android.provider.Settings.Global;
 
 import androidx.preference.PreferenceScreen;
 
+import com.android.settings.testutils.shadow.SettingsShadowResources;
 import com.android.settings.testutils.shadow.ShadowUserManager;
 import com.android.settingslib.RestrictedSwitchPreference;
 
@@ -41,14 +42,15 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(shadows = {ShadowUserManager.class})
+@Config(shadows = {ShadowUserManager.class, SettingsShadowResources.class})
 public class AddUserWhenLockedPreferenceControllerTest {
 
     @Mock(answer = RETURNS_DEEP_STUBS)
     private PreferenceScreen mScreen;
-    @Mock(answer = RETURNS_DEEP_STUBS)
 
+    @Mock(answer = RETURNS_DEEP_STUBS)
     private Context mContext;
+
     private ShadowUserManager mUserManager;
     private AddUserWhenLockedPreferenceController mController;
 
@@ -64,6 +66,7 @@ public class AddUserWhenLockedPreferenceControllerTest {
     @After
     public void tearDown() {
         ShadowUserManager.reset();
+        SettingsShadowResources.reset();
     }
 
     @Test
@@ -100,6 +103,22 @@ public class AddUserWhenLockedPreferenceControllerTest {
         controller.updateState(preference);
 
         verify(preference).setVisible(true);
+    }
+
+    @Test
+    public void updateState_userSwitchingMustGoThroughLoginScreen_shouldNotDisplayPreference() {
+        SettingsShadowResources.overrideResource(
+                com.android.internal.R.bool.config_userSwitchingMustGoThroughLoginScreen, true);
+        mUserManager.setIsAdminUser(true);
+        mUserManager.setUserSwitcherEnabled(true);
+        mUserManager.setSupportsMultipleUsers(true);
+        final AddUserWhenLockedPreferenceController controller =
+                new AddUserWhenLockedPreferenceController(mContext, "fake_key");
+        final RestrictedSwitchPreference preference = mock(RestrictedSwitchPreference.class);
+
+        controller.updateState(preference);
+
+        verify(preference).setVisible(false);
     }
 
     @Test

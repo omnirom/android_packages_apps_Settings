@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2025 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.android.settingslib.widget.TopIntroPreference
+        android:key="top_intro"
+        app:controller="com.android.settings.accessibility.detail.a11yactivity.TopIntroPreferenceController"
+        app:searchable="false"
+        tools:title="Top intro title" />
+
+    <com.android.settingslib.widget.IllustrationPreference
+        android:key="animated_image"
+        android:selectable="false"
+        app:controller="com.android.settings.accessibility.detail.a11yactivity.AccessibilityActivityIllustrationPreferenceController"
+        app:searchable="false" />
+
+    <com.android.settingslib.widget.ButtonPreference
+        android:key="launch_preference"
+        android:persistent="false"
+        app:buttonPreferenceSize="extra"
+        app:buttonPreferenceType="tonal"
+        app:controller="com.android.settings.accessibility.detail.a11yactivity.LaunchAccessibilityActivityPreferenceController"
+        tools:title="Open XXX" />
+
+    <PreferenceCategory
+        android:key="general_categories"
+        android:title="@string/accessibility_screen_option"
+        app:searchable="false">
+
+        <com.android.settings.accessibility.ShortcutPreference
+            android:key="shortcut_preference_key"
+            android:persistent="true"
+            app:controller="com.android.settings.accessibility.detail.a11yactivity.ShortcutPreferenceController"
+            tools:title="Sound Amplifier shortcuts" />
+
+        <Preference
+            android:iconSpaceReserved="false"
+            android:key="accessibility_activity_settings"
+            android:persistent="false"
+            android:title="@string/accessibility_menu_item_settings"
+            app:controller="com.android.settings.accessibility.detail.a11yactivity.SettingsPreferenceController"
+            app:searchable="false" />
+
+        <Preference
+            android:iconSpaceReserved="false"
+            android:key="accessibility_activity_app_info"
+            android:persistent="false"
+            android:title="@string/application_info_label"
+            app:controller="com.android.settings.accessibility.shared.LaunchAppInfoPreferenceController"
+            app:searchable="false" />
+
+    </PreferenceCategory>
+
+    <com.android.settings.accessibility.AccessibilityFooterPreference
+        android:key="html_footer_info"
+        tools:title="html footer"
+        app:controller="com.android.settings.accessibility.detail.a11yactivity.AccessibilityActivityHtmlFooterPreferenceController"
+        app:searchable="false" />
+
+    <com.android.settings.accessibility.AccessibilityFooterPreference
+        android:key="footer_info"
+        tools:title="footer"
+        app:controller="com.android.settings.accessibility.detail.a11yactivity.AccessibilityActivityFooterPreferenceController"
+        app:searchable="false" />
+
+</PreferenceScreen>

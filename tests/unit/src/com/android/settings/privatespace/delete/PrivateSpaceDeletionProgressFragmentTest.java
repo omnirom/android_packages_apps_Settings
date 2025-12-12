@@ -30,9 +30,7 @@ import static org.mockito.Mockito.when;
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;
-import android.os.Flags;
 import android.os.UserManager;
-import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.annotation.UiThreadTest;
 import androidx.test.core.app.ApplicationProvider;
@@ -44,7 +42,6 @@ import com.android.settings.testutils.FakeFeatureFactory;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -52,7 +49,6 @@ import org.mockito.MockitoAnnotations;
 
 @RunWith(AndroidJUnit4.class)
 public class PrivateSpaceDeletionProgressFragmentTest {
-    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     private Context mContext;
     private PrivateSpaceDeletionProgressFragment mFragment;
     private PrivateSpaceMaintainer mPrivateSpaceMaintainer;
@@ -89,8 +85,6 @@ public class PrivateSpaceDeletionProgressFragmentTest {
     @Test
     @UiThreadTest
     public void verifyMetricsConstant() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
         assertThat(mFragment.getMetricsCategory()).isEqualTo(SettingsEnums.PRIVATE_SPACE_SETTINGS);
     }
 
@@ -100,8 +94,6 @@ public class PrivateSpaceDeletionProgressFragmentTest {
     public void deletePrivateSpace_deletesPS() {
         PrivateSpaceDeletionProgressFragment spyFragment = spy(mFragment);
         doNothing().when(spyFragment).showSuccessfulDeletionToast();
-        mSetFlagsRule.enableFlags(Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
         assumeTrue(mContext.getSystemService(UserManager.class).canAddPrivateProfile());
 
         mPrivateSpaceMaintainer.createPrivateSpace();
@@ -115,8 +107,6 @@ public class PrivateSpaceDeletionProgressFragmentTest {
     public void deletePrivateSpace_onDeletion_showsDeletedToast() {
         PrivateSpaceDeletionProgressFragment spyFragment = spy(mFragment);
         doNothing().when(spyFragment).showSuccessfulDeletionToast();
-        mSetFlagsRule.enableFlags(Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
         assumeTrue(mContext.getSystemService(UserManager.class).canAddPrivateProfile());
 
         mPrivateSpaceMaintainer.createPrivateSpace();
@@ -140,8 +130,6 @@ public class PrivateSpaceDeletionProgressFragmentTest {
         spyFragment.setPrivateSpaceMaintainer(injector);
         doReturn(DELETE_PS_ERROR_INTERNAL).when(mPrivateSpaceMaintainerMock).deletePrivateSpace();
         doNothing().when(spyFragment).showDeletionInternalErrorToast();
-        mSetFlagsRule.enableFlags(Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-                android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES);
         assumeTrue(mContext.getSystemService(UserManager.class).canAddPrivateProfile());
 
         spyFragment.deletePrivateSpace();

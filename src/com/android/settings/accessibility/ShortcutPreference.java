@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.preference.PreferenceViewHolder;
 
 import com.android.settings.R;
@@ -80,7 +81,8 @@ public class ShortcutPreference extends TwoTargetPreference {
                 : androidx.preference.R.layout.preference_widget_switch_compat;
     }
 
-    int getSwitchResId() {
+    @VisibleForTesting
+    public int getSwitchResId() {
         return SettingsThemeHelper.isExpressiveTheme(getContext())
                 ? com.android.settingslib.widget.theme.R.id.switchWidget
                 : androidx.preference.R.id.switchWidget;

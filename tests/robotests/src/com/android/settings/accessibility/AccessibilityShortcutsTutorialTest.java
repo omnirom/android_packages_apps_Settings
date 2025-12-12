@@ -22,22 +22,17 @@ import static com.android.internal.accessibility.common.ShortcutConstants.UserSh
 import static com.android.internal.accessibility.common.ShortcutConstants.UserShortcutType.SOFTWARE;
 import static com.android.internal.accessibility.common.ShortcutConstants.UserShortcutType.TRIPLETAP;
 import static com.android.internal.accessibility.common.ShortcutConstants.UserShortcutType.TWOFINGER_DOUBLETAP;
-import static com.android.settings.accessibility.AccessibilityShortcutsTutorial.createAccessibilityTutorialDialog;
-import static com.android.settings.accessibility.AccessibilityShortcutsTutorial.createAccessibilityTutorialDialogForSetupWizard;
-import static com.android.settings.accessibility.AccessibilityShortcutsTutorial.createShortcutTutorialPages;
-import static com.android.settings.accessibility.AccessibilityShortcutsTutorial.showGestureNavigationTutorialDialog;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.mockito.Mockito.verify;
 import static org.robolectric.Shadows.shadowOf;
 
-import android.app.Activity;
+import android.app.Dialog;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.text.SpannableStringBuilder;
@@ -49,8 +44,14 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentFactory;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.testing.FragmentScenario;
 import androidx.test.core.app.ApplicationProvider;
+import androidx.viewpager.widget.ViewPager;
 
+import com.android.internal.accessibility.common.ShortcutConstants;
 import com.android.server.accessibility.Flags;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
@@ -60,6 +61,7 @@ import com.android.settings.testutils.shadow.SettingsShadowResources;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 import com.android.settingslib.utils.StringUtil;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -67,10 +69,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAccessibilityManager;
+import org.robolectric.shadows.ShadowDialog;
 import org.robolectric.shadows.ShadowLooper;
 
 import java.util.Map;
@@ -86,125 +88,72 @@ public final class AccessibilityShortcutsTutorialTest {
     @Rule
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Mock
-    private DialogInterface.OnClickListener mOnClickListener;
-    @Mock
     private DialogInterface.OnDismissListener mOnDismissListener;
+
     private final Context mContext = ApplicationProvider.getApplicationContext();
-    private int mShortcutTypes;
+    private FragmentScenario<Fragment> mFragmentScenario = null;
 
     @Before
     public void setUp() {
         mContext.setTheme(androidx.appcompat.R.style.Theme_AppCompat);
-        mShortcutTypes = /* initial */ 0;
+        mFragmentScenario = FragmentScenario.launch(Fragment.class, /* bundle= */ null,
+                androidx.appcompat.R.style.Theme_AppCompat, (FragmentFactory) null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void createTutorialPages_shortcutListIsEmpty_throwsException() {
-        createAccessibilityTutorialDialog(mContext, mShortcutTypes, FAKE_FEATURE_NAME);
+    @After
+    public void cleanUp() {
+        if (mFragmentScenario != null) {
+            mFragmentScenario.close();
+        }
     }
 
     @Test
     public void createTutorialPages_turnOnTripleTapShortcut_hasOnePage() {
-        mShortcutTypes |= TRIPLETAP;
+        showShortcutsTutorialDialog(TRIPLETAP, FAKE_FEATURE_NAME, /* isInSetupWizard= */ false);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-
-        assertThat(
-                createShortcutTutorialPages(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME, /* inSetupWizard= */ false)
-        ).hasSize(/* expectedSize= */ 1);
-        assertThat(alertDialog).isNotNull();
+        assertTutorialPageSize(1);
     }
 
     @Test
     @EnableFlags(Flags.FLAG_ENABLE_MAGNIFICATION_MULTIPLE_FINGER_MULTIPLE_TAP_GESTURE)
     public void createTutorialPages_turnOnTwoFingerTripleTapShortcut_hasOnePage() {
-        mShortcutTypes |= TWOFINGER_DOUBLETAP;
+        showShortcutsTutorialDialog(TWOFINGER_DOUBLETAP, FAKE_FEATURE_NAME, /* isInSetupWizard= */
+                false);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-
-        assertThat(
-                createShortcutTutorialPages(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME, /* inSetupWizard= */ false)
-        ).hasSize(/* expectedSize= */ 1);
-        assertThat(alertDialog).isNotNull();
+        assertTutorialPageSize(1);
     }
 
     @Test
     public void createTutorialPages_turnOnQuickSettingShortcut_hasOnePage() {
-        mShortcutTypes |= QUICK_SETTINGS;
+        showShortcutsTutorialDialog(QUICK_SETTINGS, FAKE_FEATURE_NAME, /* isInSetupWizard= */
+                false);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-
-        assertThat(
-                createShortcutTutorialPages(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME, /* inSetupWizard= */ false)
-        ).hasSize(/* expectedSize= */ 1);
-        assertThat(alertDialog).isNotNull();
+        assertTutorialPageSize(1);
     }
 
     @Test
     public void createTutorialPages_turnOnSoftwareShortcut_hasOnePage() {
-        mShortcutTypes |= SOFTWARE;
+        showShortcutsTutorialDialog(SOFTWARE, FAKE_FEATURE_NAME, /* isInSetupWizard= */ false);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-
-        assertThat(
-                createShortcutTutorialPages(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME, /* inSetupWizard= */ false)
-        ).hasSize(/* expectedSize= */ 1);
-        assertThat(alertDialog).isNotNull();
+        assertTutorialPageSize(1);
     }
 
     @Test
     public void createTutorialPages_turnOnSoftwareAndHardwareShortcuts_hasTwoPages() {
-        mShortcutTypes |= SOFTWARE;
-        mShortcutTypes |= HARDWARE;
+        showShortcutsTutorialDialog(SOFTWARE | HARDWARE, FAKE_FEATURE_NAME, /* isInSetupWizard= */
+                false);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-
-        assertThat(
-                createShortcutTutorialPages(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME, /* inSetupWizard= */ false)
-        ).hasSize(/* expectedSize= */ 2);
-        assertThat(alertDialog).isNotNull();
-    }
-
-    @Test
-    public void createTutorialPages_turnOnA11yGestureShortcut_linkButtonShownWithText() {
-        mShortcutTypes |= SOFTWARE;
-        AccessibilityTestUtils.setSoftwareShortcutMode(
-                mContext, /* gestureNavEnabled= */ true, /* floatingButtonEnabled= */ false);
-
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
-
-        Button btn = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-        assertThat(btn).isNotNull();
-        assertThat(btn.getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(btn.getText().toString()).isEqualTo(
-                mContext.getString(
-                        R.string.accessibility_tutorial_dialog_configure_software_shortcut_type));
+        assertTutorialPageSize(2);
     }
 
     @Test
     public void createTutorialPages_turnOnA11yNavButtonShortcut_linkButtonShownWithText() {
-        mShortcutTypes |= SOFTWARE;
         AccessibilityTestUtils.setSoftwareShortcutMode(
                 mContext, /* gestureNavEnabled= */ false, /* floatingButtonEnabled= */ false);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
+        showShortcutsTutorialDialog(SOFTWARE, FAKE_FEATURE_NAME, /* isInSetupWizard= */ false);
 
+        AlertDialog alertDialog = assertDialogShown();
         Button btn = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
         assertThat(btn).isNotNull();
         assertThat(btn.getVisibility()).isEqualTo(View.VISIBLE);
@@ -215,15 +164,12 @@ public final class AccessibilityShortcutsTutorialTest {
 
     @Test
     public void createTutorialPages_turnOnFloatingButtonShortcut_linkButtonShownWithText() {
-        mShortcutTypes |= SOFTWARE;
         AccessibilityTestUtils.setSoftwareShortcutMode(
                 mContext, /* gestureNavEnabled= */ false, /* floatingButtonEnabled= */ true);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
+        showShortcutsTutorialDialog(SOFTWARE, FAKE_FEATURE_NAME, /* isInSetupWizard= */ false);
 
+        AlertDialog alertDialog = assertDialogShown();
         Button btn = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
         assertThat(btn).isNotNull();
         assertThat(btn.getVisibility()).isEqualTo(View.VISIBLE);
@@ -233,34 +179,24 @@ public final class AccessibilityShortcutsTutorialTest {
 
     @Test
     public void createTutorialPages_turnOnHardwareShortcut_linkButtonGone() {
-        mShortcutTypes |= HARDWARE;
+        showShortcutsTutorialDialog(HARDWARE, FAKE_FEATURE_NAME, /* isInSetupWizard= */ false);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
-
+        AlertDialog alertDialog = assertDialogShown();
         assertThat(alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).getVisibility())
                 .isEqualTo(View.GONE);
     }
 
     @Test
     public void createTutorialPages_turnOnSoftwareShortcut_showFromSuW_linkButtonGone() {
-        mShortcutTypes |= SOFTWARE;
+        showShortcutsTutorialDialog(SOFTWARE, FAKE_FEATURE_NAME, /* isInSetupWizard= */ true);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialogForSetupWizard(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
-
+        AlertDialog alertDialog = assertDialogShown();
         assertThat(alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).getVisibility())
                 .isEqualTo(View.GONE);
     }
 
     @Test
     public void createAccessibilityTutorialDialog_qsShortcut_inSuwTalkbackOn_verifyText() {
-        mShortcutTypes |= QUICK_SETTINGS;
         setTouchExplorationEnabled(true);
         final String expectedTitle = mContext.getString(
                 R.string.accessibility_tutorial_dialog_title_quick_setting);
@@ -277,12 +213,9 @@ public final class AccessibilityShortcutsTutorialTest {
                 .append("\n\n");
         expectedInstruction.append(instruction);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialogForSetupWizard(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
+        showShortcutsTutorialDialog(QUICK_SETTINGS, FAKE_FEATURE_NAME, /* isInSetupWizard= */ true);
 
+        AlertDialog alertDialog = assertDialogShown();
         verifyTutorialTitleAndInstruction(
                 alertDialog,
                 expectedTitle,
@@ -291,7 +224,6 @@ public final class AccessibilityShortcutsTutorialTest {
 
     @Test
     public void createAccessibilityTutorialDialog_qsShortcut_notInSuwTalkbackOn_verifyText() {
-        mShortcutTypes |= QUICK_SETTINGS;
         setTouchExplorationEnabled(true);
         final String expectedTitle = mContext.getString(
                 R.string.accessibility_tutorial_dialog_title_quick_setting);
@@ -302,12 +234,10 @@ public final class AccessibilityShortcutsTutorialTest {
                 arguments,
                 R.string.accessibility_tutorial_dialog_message_quick_setting);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
+        showShortcutsTutorialDialog(QUICK_SETTINGS, FAKE_FEATURE_NAME, /* isInSetupWizard= */
+                false);
 
+        AlertDialog alertDialog = assertDialogShown();
         verifyTutorialTitleAndInstruction(
                 alertDialog,
                 expectedTitle,
@@ -316,7 +246,6 @@ public final class AccessibilityShortcutsTutorialTest {
 
     @Test
     public void createAccessibilityTutorialDialog_qsShortcut_inSuwTalkbackOff_verifyText() {
-        mShortcutTypes |= QUICK_SETTINGS;
         setTouchExplorationEnabled(false);
         final String expectedTitle = mContext.getString(
                 R.string.accessibility_tutorial_dialog_title_quick_setting);
@@ -332,12 +261,9 @@ public final class AccessibilityShortcutsTutorialTest {
                 .append("\n\n");
         expectedInstruction.append(instruction);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialogForSetupWizard(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
+        showShortcutsTutorialDialog(QUICK_SETTINGS, FAKE_FEATURE_NAME, /* isInSetupWizard= */ true);
 
+        AlertDialog alertDialog = assertDialogShown();
         verifyTutorialTitleAndInstruction(
                 alertDialog,
                 expectedTitle,
@@ -346,7 +272,6 @@ public final class AccessibilityShortcutsTutorialTest {
 
     @Test
     public void createAccessibilityTutorialDialog_qsShortcut_notInSuwTalkbackOff_verifyText() {
-        mShortcutTypes |= QUICK_SETTINGS;
         setTouchExplorationEnabled(false);
         final String expectedTitle = mContext.getString(
                 R.string.accessibility_tutorial_dialog_title_quick_setting);
@@ -357,12 +282,10 @@ public final class AccessibilityShortcutsTutorialTest {
                 arguments,
                 R.string.accessibility_tutorial_dialog_message_quick_setting);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
+        showShortcutsTutorialDialog(QUICK_SETTINGS, FAKE_FEATURE_NAME, /* isInSetupWizard= */
+                false);
 
+        AlertDialog alertDialog = assertDialogShown();
         verifyTutorialTitleAndInstruction(
                 alertDialog,
                 expectedTitle,
@@ -371,18 +294,14 @@ public final class AccessibilityShortcutsTutorialTest {
 
     @Test
     public void createAccessibilityTutorialDialog_volumeKeysShortcut_verifyText() {
-        mShortcutTypes |= HARDWARE;
         final String expectedTitle = mContext.getString(
                 R.string.accessibility_tutorial_dialog_title_volume);
         final CharSequence expectedInstruction = mContext.getString(
                 R.string.accessibility_tutorial_dialog_message_volume);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
+        showShortcutsTutorialDialog(HARDWARE, FAKE_FEATURE_NAME, /* isInSetupWizard= */ false);
 
+        AlertDialog alertDialog = assertDialogShown();
         verifyTutorialTitleAndInstruction(
                 alertDialog,
                 expectedTitle,
@@ -391,18 +310,14 @@ public final class AccessibilityShortcutsTutorialTest {
 
     @Test
     public void createAccessibilityTutorialDialog_tripleTapShortcut_verifyText() {
-        mShortcutTypes |= TRIPLETAP;
         final String expectedTitle = mContext.getString(
                 R.string.accessibility_tutorial_dialog_title_triple);
         final CharSequence expectedInstruction = mContext.getString(
                 R.string.accessibility_tutorial_dialog_tripletap_instruction, 3);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
+        showShortcutsTutorialDialog(TRIPLETAP, FAKE_FEATURE_NAME, /* isInSetupWizard= */ false);
 
+        AlertDialog alertDialog = assertDialogShown();
         verifyTutorialTitleAndInstruction(
                 alertDialog,
                 expectedTitle,
@@ -412,19 +327,16 @@ public final class AccessibilityShortcutsTutorialTest {
     @Test
     @EnableFlags(Flags.FLAG_ENABLE_MAGNIFICATION_MULTIPLE_FINGER_MULTIPLE_TAP_GESTURE)
     public void createAccessibilityTutorialDialog_twoFingerDoubleTapShortcut_verifyText() {
-        mShortcutTypes |= TWOFINGER_DOUBLETAP;
         final int numFingers = 2;
         final String expectedTitle = mContext.getString(
                 R.string.accessibility_tutorial_dialog_title_two_finger_double, numFingers);
         final String expectedInstruction = mContext.getString(
                 R.string.accessibility_tutorial_dialog_twofinger_doubletap_instruction, numFingers);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
+        showShortcutsTutorialDialog(TWOFINGER_DOUBLETAP, FAKE_FEATURE_NAME, /* isInSetupWizard= */
+                false);
 
+        AlertDialog alertDialog = assertDialogShown();
         verifyTutorialTitleAndInstruction(
                 alertDialog,
                 expectedTitle,
@@ -433,7 +345,6 @@ public final class AccessibilityShortcutsTutorialTest {
 
     @Test
     public void createAccessibilityTutorialDialog_floatingButtonShortcut_verifyText() {
-        mShortcutTypes |= SOFTWARE;
         AccessibilityTestUtils.setSoftwareShortcutMode(
                 mContext, /* gestureNavEnabled= */ false, /* floatingButtonEnabled= */ true);
         final String expectedTitle = mContext.getString(
@@ -441,12 +352,9 @@ public final class AccessibilityShortcutsTutorialTest {
         final String expectedInstruction = mContext.getString(
                 R.string.accessibility_tutorial_dialog_message_floating_button);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
+        showShortcutsTutorialDialog(SOFTWARE, FAKE_FEATURE_NAME, /* isInSetupWizard= */ false);
 
+        AlertDialog alertDialog = assertDialogShown();
         verifyTutorialTitleAndInstruction(
                 alertDialog,
                 expectedTitle,
@@ -455,7 +363,6 @@ public final class AccessibilityShortcutsTutorialTest {
 
     @Test
     public void createAccessibilityTutorialDialog_navA11yButtonShortcut_verifyText() {
-        mShortcutTypes |= SOFTWARE;
         AccessibilityTestUtils.setSoftwareShortcutMode(
                 mContext, /* gestureNavEnabled= */ false, /* floatingButtonEnabled= */ false);
         final String expectedTitle = mContext.getString(
@@ -463,12 +370,9 @@ public final class AccessibilityShortcutsTutorialTest {
         final String expectedInstruction = mContext.getString(
                 R.string.accessibility_tutorial_dialog_message_button);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
+        showShortcutsTutorialDialog(SOFTWARE, FAKE_FEATURE_NAME, /* isInSetupWizard= */ false);
 
+        AlertDialog alertDialog = assertDialogShown();
         verifyTutorialTitleAndInstruction(
                 alertDialog,
                 expectedTitle,
@@ -476,36 +380,7 @@ public final class AccessibilityShortcutsTutorialTest {
     }
 
     @Test
-    @DisableFlags(android.provider.Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
-    public void createAccessibilityTutorialDialog_gestureShortcut_talkbackOn_verifyText() {
-        mShortcutTypes |= SOFTWARE;
-        setTouchExplorationEnabled(true);
-        AccessibilityTestUtils.setSoftwareShortcutMode(
-                mContext, /* gestureNavEnabled= */ true, /* floatingButtonEnabled= */ false);
-
-        final String expectedTitle = mContext.getString(
-                R.string.accessibility_tutorial_dialog_title_gesture);
-        final String expectedInstruction = StringUtil.getIcuPluralsString(
-                mContext,
-                /* count= */ 3,
-                R.string.accessibility_tutorial_dialog_gesture_shortcut_instruction);
-
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
-
-        verifyTutorialTitleAndInstruction(
-                alertDialog,
-                expectedTitle,
-                expectedInstruction);
-    }
-
-    @Test
-    @EnableFlags(android.provider.Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
     public void createAccessibilityTutorialDialog_gestureShortcut_talkbackOn_flag_verifyText() {
-        mShortcutTypes |= GESTURE;
         setTouchExplorationEnabled(true);
         AccessibilityTestUtils.setSoftwareShortcutMode(
                 mContext, /* gestureNavEnabled= */ true, /* floatingButtonEnabled= */ false);
@@ -516,12 +391,9 @@ public final class AccessibilityShortcutsTutorialTest {
                 /* count= */ 3,
                 R.string.accessibility_tutorial_dialog_gesture_shortcut_instruction);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
+        showShortcutsTutorialDialog(GESTURE, FAKE_FEATURE_NAME, /* isInSetupWizard= */ false);
 
+        AlertDialog alertDialog = assertDialogShown();
         verifyTutorialTitleAndInstruction(
                 alertDialog,
                 expectedTitle,
@@ -529,35 +401,7 @@ public final class AccessibilityShortcutsTutorialTest {
     }
 
     @Test
-    @DisableFlags(android.provider.Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
-    public void createAccessibilityTutorialDialog_gestureShortcut_talkbackOff_verifyText() {
-        mShortcutTypes |= SOFTWARE;
-        setTouchExplorationEnabled(false);
-        AccessibilityTestUtils.setSoftwareShortcutMode(
-                mContext, /* gestureNavEnabled= */ true, /* floatingButtonEnabled= */ false);
-        final String expectedTitle = mContext.getString(
-                R.string.accessibility_tutorial_dialog_title_gesture);
-        final String expectedInstruction = StringUtil.getIcuPluralsString(
-                mContext,
-                /* count= */ 2,
-                R.string.accessibility_tutorial_dialog_gesture_shortcut_instruction);
-
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
-
-        verifyTutorialTitleAndInstruction(
-                alertDialog,
-                expectedTitle,
-                expectedInstruction);
-    }
-
-    @Test
-    @EnableFlags(android.provider.Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
     public void createAccessibilityTutorialDialog_gestureShortcut_talkbackOff_flag_verifyText() {
-        mShortcutTypes |= GESTURE;
         setTouchExplorationEnabled(false);
         AccessibilityTestUtils.setSoftwareShortcutMode(
                 mContext, /* gestureNavEnabled= */ true, /* floatingButtonEnabled= */ false);
@@ -568,12 +412,9 @@ public final class AccessibilityShortcutsTutorialTest {
                 /* count= */ 2,
                 R.string.accessibility_tutorial_dialog_gesture_shortcut_instruction);
 
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(
-                        mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
+        showShortcutsTutorialDialog(GESTURE, FAKE_FEATURE_NAME, /* isInSetupWizard= */ false);
 
+        AlertDialog alertDialog = assertDialogShown();
         verifyTutorialTitleAndInstruction(
                 alertDialog,
                 expectedTitle,
@@ -582,12 +423,9 @@ public final class AccessibilityShortcutsTutorialTest {
 
     @Test
     public void performClickOnPositiveButton_turnOnSoftwareShortcut_dismiss() {
-        mShortcutTypes |= SOFTWARE;
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(mContext, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
+        showShortcutsTutorialDialog(SOFTWARE, FAKE_FEATURE_NAME, /* isInSetupWizard= */ false);
 
+        AlertDialog alertDialog = assertDialogShown();
         alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
         ShadowLooper.idleMainLooper();
 
@@ -595,49 +433,20 @@ public final class AccessibilityShortcutsTutorialTest {
     }
 
     @Test
-    public void performClickOnPositiveButton_turnOnSoftwareShortcut_callOnClickListener() {
-        mShortcutTypes |= SOFTWARE;
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(
-                        mContext, mShortcutTypes, mOnClickListener, FAKE_FEATURE_NAME);
-        alertDialog.show();
-        ShadowLooper.idleMainLooper();
-
-        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-        ShadowLooper.idleMainLooper();
-
-        verify(mOnClickListener).onClick(alertDialog, DialogInterface.BUTTON_POSITIVE);
-    }
-
-    @Test
     public void performClickOnNegativeButton_turnOnSoftwareShortcut_directToSettingsPage() {
-        mShortcutTypes |= SOFTWARE;
-        Activity activity = Robolectric.buildActivity(Activity.class).create().get();
-        final AlertDialog alertDialog =
-                createAccessibilityTutorialDialog(activity, mShortcutTypes, FAKE_FEATURE_NAME);
-        alertDialog.show();
+        showShortcutsTutorialDialog(SOFTWARE, FAKE_FEATURE_NAME, /* isInSetupWizard= */ false);
 
+        AlertDialog alertDialog = assertDialogShown();
         alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).performClick();
         ShadowLooper.idleMainLooper();
 
-        final Intent intent = shadowOf(activity).peekNextStartedActivity();
+        final Intent intent = shadowOf(
+                (ContextWrapper) alertDialog.getContext()).peekNextStartedActivity();
         assertThat(intent.getComponent().getClassName()).isEqualTo(SubSettings.class.getName());
         assertThat(intent.getStringExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT))
                 .isEqualTo(AccessibilityButtonFragment.class.getName());
         assertThat(intent.getIntExtra(MetricsFeatureProvider.EXTRA_SOURCE_METRICS_CATEGORY, -1))
                 .isEqualTo(SettingsEnums.SWITCH_SHORTCUT_DIALOG_ACCESSIBILITY_BUTTON_SETTINGS);
-    }
-
-    @Test
-    public void performClickOnPositiveButton_turnOnGestureShortcut_callOnDismissListener() {
-        final AlertDialog alertDialog =
-                showGestureNavigationTutorialDialog(mContext, mOnDismissListener);
-
-        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-        ShadowLooper.idleMainLooper();
-
-        assertThat(alertDialog.isShowing()).isFalse();
-        verify(mOnDismissListener).onDismiss(alertDialog);
     }
 
     private void setTouchExplorationEnabled(boolean enable) {
@@ -656,5 +465,39 @@ public final class AccessibilityShortcutsTutorialTest {
         assertThat(instructionView).isNotNull();
         assertThat(((TextView) instructionView.getCurrentView()).getText().toString()).isEqualTo(
                 expectedInstruction);
+    }
+
+    private void showShortcutsTutorialDialog(@ShortcutConstants.UserShortcutType int shortcutTypes,
+            CharSequence featureName, boolean isInSetupWizard) {
+        FragmentManager fragmentManager = getFragmentManager();
+        AccessibilityShortcutsTutorial.DialogFragment.showDialog(
+                fragmentManager, shortcutTypes, featureName, isInSetupWizard);
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+        Fragment frag = fragmentManager.findFragmentByTag(
+                AccessibilityShortcutsTutorial.DialogFragment.class.getSimpleName());
+        assertThat(frag).isNotNull();
+    }
+
+    private FragmentManager getFragmentManager() {
+        final FragmentManager[] fragmentManager = {null};
+        mFragmentScenario.onFragment(fragment ->
+                fragmentManager[0] = fragment.getChildFragmentManager());
+        return fragmentManager[0];
+    }
+
+    private AlertDialog assertDialogShown() {
+        Dialog alertDialog = ShadowDialog.getLatestDialog();
+        assertThat(alertDialog).isNotNull();
+        assertThat(alertDialog).isInstanceOf(AlertDialog.class);
+        return (AlertDialog) alertDialog;
+    }
+
+    private void assertTutorialPageSize(int size) {
+        Dialog dialog = ShadowDialog.getLatestDialog();
+        assertThat(ShadowDialog.getLatestDialog()).isNotNull();
+        ViewPager viewPager = dialog.findViewById(R.id.view_pager);
+        assertThat(viewPager).isNotNull();
+        assertThat(viewPager.getAdapter()).isNotNull();
+        assertThat(viewPager.getAdapter().getCount()).isEqualTo(size);
     }
 }

@@ -87,7 +87,7 @@
   <string-array name="bluetooth_leaudio_mode">
     <item msgid="5307106570247137458">"Disabled"</item>
     <item msgid="7781484297606806796">"Unicast"</item>
-    <item msgid="6667451574264144311">"Unicast and Broadcast"</item>
+    <item msgid="6667451574264144311">"Unicast et Broadcast"</item>
   </string-array>
   <string-array name="bluetooth_max_connected_audio_devices">
     <item msgid="4792793579224104167">"Utiliser la valeur par défaut du système : <xliff:g id="DEFAULT_BLUETOOTH_MAX_CONNECTED_AUDIO_DEVICES">%1$d</xliff:g>"</item>
@@ -315,6 +315,10 @@
     <item msgid="7397961711906421599">"Moyen"</item>
     <item msgid="4079132024502041928">"Long"</item>
   </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"DHCP"</item>
+    <item msgid="4425163520864432692">"Statique"</item>
+  </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"Par défaut"</item>
     <item msgid="4234707448428002595">"Sans Serif"</item>
@@ -327,11 +331,11 @@
     <item msgid="5012882784126308133">"Petites majuscules"</item>
   </string-array>
   <string-array name="captioning_font_size_selector_titles">
-    <item msgid="923916134548435468">"Très petite"</item>
-    <item msgid="5738147437573674872">"Petite"</item>
+    <item msgid="923916134548435468">"Très petit"</item>
+    <item msgid="5738147437573674872">"Petit"</item>
     <item msgid="4691660235626027304">"Moyenne"</item>
-    <item msgid="824386705928670045">"Grande"</item>
-    <item msgid="2790561781512874585">"Très grande"</item>
+    <item msgid="824386705928670045">"Grand"</item>
+    <item msgid="2790561781512874585">"Très grand"</item>
   </string-array>
   <string-array name="captioning_edge_type_selector_titles">
     <item msgid="70686029249840227">"Par défaut"</item>
@@ -358,10 +362,6 @@
   <string-array name="accessibility_button_location_selector_titles">
     <item msgid="6485511780196327736">"Flottant sur les autres applis"</item>
     <item msgid="3605616699204153590">"Barre de navigation"</item>
-  </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"Bouton"</item>
-    <item msgid="6922258575853746220">"Geste"</item>
   </string-array>
   <string-array name="accessibility_button_size_selector_titles">
     <item msgid="7482952318152486459">"Petite"</item>
@@ -412,15 +412,15 @@
   </string-array>
   <string-array name="wifi_metered_entries">
     <item msgid="3237321077949659241">"Détecter automatiquement"</item>
-    <item msgid="3779092145391320375">"Traiter comme limitée"</item>
-    <item msgid="2047166446768045816">"Traiter comme illimitée"</item>
+    <item msgid="3779092145391320375">"Facturé à l\'usage"</item>
+    <item msgid="2047166446768045816">"Non facturé à l\'usage"</item>
   </string-array>
   <string-array name="wifi_privacy_entries">
     <item msgid="91222619458919148">"Utiliser une adresse MAC aléatoire"</item>
     <item msgid="741680937828608749">"Utiliser l\'adresse MAC de l\'appareil"</item>
   </string-array>
   <string-array name="wifi_dhcp_entries">
-    <item msgid="2532836996945493932">"Envoyer le nom de l\'appareil au réseau"</item>
+    <item msgid="2532836996945493932">"Envoyer nom appareil au réseau"</item>
     <item msgid="7928900271137707489">"Ne pas envoyer le nom de l\'appareil au réseau"</item>
   </string-array>
   <string-array name="wifi_hidden_entries">
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"Horloge"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"Aucun"</item>
+    <item msgid="321837941231023175">"Accueil"</item>
+    <item msgid="953234843613969792">"Applis récentes"</item>
+    <item msgid="1713942773283586136">"Notifications"</item>
+    <item msgid="5687603742365489342">"Réglages rapides"</item>
+    <item msgid="5454862951059393431">"Écran de verrouillage"</item>
   </string-array>
 </resources>

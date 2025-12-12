@@ -16,16 +16,21 @@
 
 package com.android.settings.connecteddevice.audiosharing.audiostreams;
 
-import android.app.AlertDialog;
 import android.app.settings.SettingsEnums;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.android.settings.R;
+import com.android.settings.bluetooth.Utils;
 import com.android.settingslib.utils.ThreadUtils;
+
+import java.util.List;
 
 class AddSourceWaitForResponseState extends AudioStreamStateHandler {
     @VisibleForTesting
@@ -47,10 +52,11 @@ class AddSourceWaitForResponseState extends AudioStreamStateHandler {
     }
 
     @Override
-    void performAction(
+    void onEnter(
             AudioStreamPreference preference,
             AudioStreamsProgressCategoryController controller,
-            AudioStreamsHelper helper) {
+            AudioStreamsHelper helper,
+            AudioStreamScanHelper scanHelper) {
         mHandler.removeCallbacksAndMessages(preference);
         var metadata = preference.getAudioStreamMetadata();
         if (metadata != null) {
@@ -77,13 +83,21 @@ class AddSourceWaitForResponseState extends AudioStreamStateHandler {
                                     preference.getContext(),
                                     SettingsEnums.ACTION_AUDIO_STREAM_JOIN_FAILED_TIMEOUT,
                                     preference.getSourceOriginForLogging().ordinal());
+                            List<BluetoothDevice> devices =
+                                    AudioStreamsHelper.getConnectedBluetoothDevices(
+                                            Utils.getLocalBluetoothManager(
+                                                    preference.getContext()), /* inSharingOnly= */
+                                            false);
+                            String deviceName = devices.isEmpty() ? "" : TextUtils.emptyIfNull(
+                                    devices.getFirst().getAlias());
                             ThreadUtils.postOnMainThread(
                                     () -> {
                                         if (controller.getFragment() != null) {
                                             showBroadcastUnavailableNoRetryDialog(
                                                     controller.getFragment(),
                                                     preference.getContext(),
-                                                    AudioStreamsHelper.getBroadcastName(metadata));
+                                                    AudioStreamsHelper.getBroadcastName(metadata),
+                                                    deviceName);
                                         }
                                     });
                         }
@@ -104,14 +118,15 @@ class AddSourceWaitForResponseState extends AudioStreamStateHandler {
     }
 
     private void showBroadcastUnavailableNoRetryDialog(
-            Fragment fragment, Context context, String broadcastName) {
+            Fragment fragment, Context context, String broadcastName, String deviceName) {
         var broadcastUnavailableNoRetryDialog =
                 new AudioStreamsDialogFragment.DialogBuilder(context)
                         .setTitle(
                                 context.getString(
-                                        R.string.audio_streams_dialog_stream_is_not_available))
+                                        R.string.audio_streams_dialog_failed_to_join))
                         .setSubTitle1(broadcastName)
-                        .setSubTitle2(context.getString(R.string.audio_streams_is_not_playing))
+                        .setSubTitle2(context.getString(
+                                R.string.audio_streams_dialog_failed_to_join_detail, deviceName))
                         .setRightButtonText(context.getString(R.string.audio_streams_dialog_close))
                         .setRightButtonOnClickListener(AlertDialog::dismiss);
 

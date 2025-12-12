@@ -39,6 +39,7 @@ import com.android.settings.fuelgauge.BatterySettingsStorage;
 import com.android.settings.homepage.SettingsHomepageActivity;
 import com.android.settings.localepicker.LocaleNotificationDataManager;
 import com.android.settings.metrics.SettingsMetricsLogger;
+import com.android.settings.msds.MSDLPlayerWrapper;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.overlay.FeatureFactoryImpl;
 import com.android.settings.spa.SettingsSpaEnvironment;
@@ -107,6 +108,10 @@ public class SettingsApplication extends Application {
         }
 
         registerActivityLifecycleCallbacks(new DeveloperOptionsActivityLifecycle());
+
+        if (Flags.msdlFeedback()) {
+            MSDLPlayerWrapper.INSTANCE.createPlayer(this);
+        }
     }
 
     /** Returns the factories of preference screen metadata. */

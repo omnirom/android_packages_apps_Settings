@@ -29,9 +29,7 @@ import com.android.settingslib.metadata.SensitivityLevel
 import com.android.settingslib.metadata.SwitchPreference
 
 // LINT.IfChange
-class MediaControlsSwitchPreference(
-    private val mediaControlsStore: MediaControlsScreen.MediaControlsStore
-) :
+class MediaControlsSwitchPreference(private val mediaControlsStore: KeyValueStore) :
     SwitchPreference(
         KEY,
         R.string.media_controls_resume_title,
@@ -63,6 +61,9 @@ class MediaControlsSwitchPreference(
 
     companion object {
         const val KEY = MEDIA_CONTROLS_RESUME
+
+        val Context.mediaControlsDataStore: KeyValueStore
+            get() = SettingsSecureStore.get(this).apply { setDefaultValue(KEY, true) }
     }
 }
 // LINT.ThenChange(MediaControlsPreferenceController.java)

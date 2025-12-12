@@ -33,7 +33,6 @@ import android.os.Bundle;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
-import android.provider.Flags;
 import android.provider.Settings;
 
 import androidx.fragment.app.FragmentActivity;
@@ -94,22 +93,7 @@ public class AccessibilityButtonFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
     public void onCreate_navigationGestureEnabled_setCorrectTitle() {
-        Settings.Secure.putIntForUser(
-                mContext.getContentResolver(), Settings.Secure.NAVIGATION_MODE,
-                NAV_BAR_MODE_GESTURAL, mContext.getUserId());
-
-        mFragment.onAttach(mContext);
-        mFragment.onCreate(Bundle.EMPTY);
-
-        assertThat(mFragment.getActivity().getTitle().toString()).isEqualTo(
-                mContext.getString(R.string.accessibility_button_gesture_title));
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_A11Y_STANDALONE_GESTURE_ENABLED)
-    public void onCreate_navigationGestureEnabled_flag_setCorrectTitle() {
         Settings.Secure.putIntForUser(
                 mContext.getContentResolver(), Settings.Secure.NAVIGATION_MODE,
                 NAV_BAR_MODE_GESTURAL, mContext.getUserId());
@@ -135,20 +119,6 @@ public class AccessibilityButtonFragmentTest {
     }
 
     @Test
-    @DisableFlags(com.android.settings.accessibility.Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
-    public void getNonIndexableKeys_existInXmlLayout() {
-        final List<String> niks = AccessibilityButtonFragment.SEARCH_INDEX_DATA_PROVIDER
-                .getNonIndexableKeys(mContext);
-        final List<String> keys =
-                XmlTestUtils.getKeysFromPreferenceXml(mContext,
-                        R.xml.accessibility_button_settings);
-
-        assertThat(keys).isNotNull();
-        assertThat(niks).containsAtLeastElementsIn(keys);
-    }
-
-    @Test
-    @EnableFlags(com.android.settings.accessibility.Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
     public void getNonIndexableKeys_noTargets_doesNotExistInXmlLayout() {
         Settings.Secure.putStringForUser(mContext.getContentResolver(),
                 ShortcutUtils.convertToKey(SOFTWARE), "", mContext.getUserId());
@@ -163,7 +133,6 @@ public class AccessibilityButtonFragmentTest {
     }
 
     @Test
-    @EnableFlags(com.android.settings.accessibility.Flags.FLAG_FIX_A11Y_SETTINGS_SEARCH)
     public void getNonIndexableKeys_hasTargets_expectedKeys() {
         Settings.Secure.putStringForUser(mContext.getContentResolver(),
                 ShortcutUtils.convertToKey(SOFTWARE), "Foo", mContext.getUserId());
@@ -173,8 +142,7 @@ public class AccessibilityButtonFragmentTest {
         // Some keys should show up anyway, as they're flagged as unsearchable in the xml.
         assertThat(niks).containsAtLeast(
                 "accessibility_button_preview",
-                "accessibility_button_footer",
-                "accessibility_button_or_gesture");
+                "accessibility_button_footer");
     }
 
     private static class TestAccessibilityButtonFragment extends AccessibilityButtonFragment {

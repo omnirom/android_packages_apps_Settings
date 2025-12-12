@@ -23,7 +23,6 @@
 
     <com.android.settingslib.widget.LayoutPreference
         android:key="my_device_info_header"
-        android:order="0"
         android:layout="@layout/settings_entity_header"
         android:selectable="false"
         settings:isPreferenceVisible="false"/>
@@ -85,7 +84,7 @@
         <!-- Safety & regulatory manual -->
         <Preference
             android:key="safety_info"
-            android:order="17"
+            android:order="18"
             android:title="@string/safety_and_regulatory_info"/>
     </PreferenceCategory>
 
@@ -97,7 +96,7 @@
         <!-- SIM status -->
         <Preference
             android:key="sim_status"
-            android:order="18"
+            android:order="19"
             android:title="@string/sim_status_title"
             settings:keywords="@string/keywords_sim_status"
             android:summary="@string/summary_placeholder"
@@ -116,7 +115,7 @@
             settings:controller="com.android.settings.deviceinfo.HardwareInfoPreferenceController"/>
 
         <!-- EID -->
-        <com.android.settingslib.CustomDialogPreferenceCompat
+        <com.android.settings.deviceinfo.simstatus.SimEidInfoPreference
             android:key="eid_info"
             android:order="31"
             android:title="@string/status_eid"

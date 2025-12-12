@@ -33,6 +33,7 @@ import com.android.settings.core.BasePreferenceController;
 import com.android.settingslib.widget.FooterPreference;
 
 /** Controller for the Twilight location custom footer. */
+// LINT.IfChange
 public class DarkModePendingLocationPreferenceController extends BasePreferenceController {
     private final UiModeManager mUiModeManager;
     private final LocationManager mLocationManager;
@@ -46,7 +47,7 @@ public class DarkModePendingLocationPreferenceController extends BasePreferenceC
 
     @Override
     public int getAvailabilityStatus() {
-        return AVAILABLE_UNSEARCHABLE;
+        return isActive() ? AVAILABLE_UNSEARCHABLE : CONDITIONALLY_UNAVAILABLE;
     }
 
     @Override
@@ -54,6 +55,10 @@ public class DarkModePendingLocationPreferenceController extends BasePreferenceC
         super.displayPreference(screen);
         FooterPreference footerPreference = checkNotNull(screen.findPreference(getPreferenceKey()));
         footerPreference.setIcon(R.drawable.ic_settings_location_filled);
+        if (android.view.accessibility.Flags.forceInvertColor()) {
+            footerPreference.setOrder(
+                    DarkModePreferenceOrderUtil.Order.LOCATION_CONNECTION_FOOTER.getValue());
+        }
     }
 
     @Override
@@ -67,3 +72,4 @@ public class DarkModePendingLocationPreferenceController extends BasePreferenceC
                 && mLocationManager.getLastLocation() == null;
     }
 }
+// LINT.ThenChange(DarkModePendingLocationFooterPreference.kt)

@@ -58,8 +58,10 @@ public class ImportancePreferenceTest {
     @Test
     public void createNewPreference_shouldSetLayout() {
         final ImportancePreference preference = new ImportancePreference(mContext);
-        assertThat(preference.getLayoutResource()).isEqualTo(
-                R.layout.notif_importance_preference);
+        int layoutId = android.app.Flags.notificationsRedesignTemplates()
+                ? R.layout.notification_2025_importance_preference
+                : R.layout.notif_importance_preference;
+        assertThat(preference.getLayoutResource()).isEqualTo(layoutId);
     }
 
     @Test
@@ -67,7 +69,7 @@ public class ImportancePreferenceTest {
         final ImportancePreference preference = new ImportancePreference(mContext);
         final LayoutInflater inflater = LayoutInflater.from(mContext);
         PreferenceViewHolder holder = PreferenceViewHolder.createInstanceForTests(
-                inflater.inflate(R.layout.notif_importance_preference, null));
+                inflater.inflate(preference.getLayoutResource(), null));
         Drawable unselected = mock(Drawable.class);
         Drawable selected = mock(Drawable.class);
         preference.selectedBackground = selected;
@@ -87,7 +89,7 @@ public class ImportancePreferenceTest {
         // other button
         preference.setImportance(IMPORTANCE_LOW);
         holder = PreferenceViewHolder.createInstanceForTests(
-                inflater.inflate(R.layout.notif_importance_preference, null));
+                inflater.inflate(preference.getLayoutResource(), null));
         preference.onBindViewHolder(holder);
 
         assertThat(holder.itemView.findViewById(R.id.alert).getBackground()).isEqualTo(unselected);
@@ -99,7 +101,7 @@ public class ImportancePreferenceTest {
         final ImportancePreference preference = new ImportancePreference(mContext);
         final LayoutInflater inflater = LayoutInflater.from(mContext);
         final PreferenceViewHolder holder = PreferenceViewHolder.createInstanceForTests(
-                inflater.inflate(R.layout.notif_importance_preference, null));
+                inflater.inflate(preference.getLayoutResource(), null));
         Drawable unselected = mock(Drawable.class);
         Drawable selected = mock(Drawable.class);
         preference.selectedBackground = selected;
@@ -122,7 +124,7 @@ public class ImportancePreferenceTest {
         final ImportancePreference preference = spy(new ImportancePreference(mContext));
         final LayoutInflater inflater = LayoutInflater.from(mContext);
         final PreferenceViewHolder holder = PreferenceViewHolder.createInstanceForTests(
-                inflater.inflate(R.layout.notif_importance_preference, null));
+                inflater.inflate(preference.getLayoutResource(), null));
         Drawable unselected = mock(Drawable.class);
         Drawable selected = mock(Drawable.class);
         preference.selectedBackground = selected;
@@ -147,19 +149,14 @@ public class ImportancePreferenceTest {
         final ImportancePreference preference = spy(new ImportancePreference(mContext));
         final LayoutInflater inflater = LayoutInflater.from(mContext);
         final PreferenceViewHolder holder = PreferenceViewHolder.createInstanceForTests(
-                inflater.inflate(R.layout.notif_importance_preference, null));
+                inflater.inflate(preference.getLayoutResource(), null));
 
         preference.setConfigurable(true);
         preference.setImportance(IMPORTANCE_DEFAULT);
         preference.onBindViewHolder(holder);
 
         TextView tv = holder.itemView.findViewById(R.id.silence_summary);
-
-        preference.setDisplayInStatusBar(true);
-        preference.setDisplayOnLockscreen(true);
-
         preference.setImportanceSummary((ViewGroup) holder.itemView, IMPORTANCE_LOW, true);
-
         assertThat(tv.getText()).isEqualTo(
                 mContext.getString(R.string.notification_channel_summary_low));
     }
@@ -169,19 +166,14 @@ public class ImportancePreferenceTest {
         final ImportancePreference preference = spy(new ImportancePreference(mContext));
         final LayoutInflater inflater = LayoutInflater.from(mContext);
         final PreferenceViewHolder holder = PreferenceViewHolder.createInstanceForTests(
-                inflater.inflate(R.layout.notif_importance_preference, null));
+                inflater.inflate(preference.getLayoutResource(), null));
 
         preference.setConfigurable(true);
         preference.setImportance(IMPORTANCE_DEFAULT);
         preference.onBindViewHolder(holder);
 
         TextView tv = holder.itemView.findViewById(R.id.alert_summary);
-
-        preference.setDisplayInStatusBar(true);
-        preference.setDisplayOnLockscreen(true);
-
         preference.setImportanceSummary((ViewGroup) holder.itemView, IMPORTANCE_DEFAULT, true);
-
         assertThat(tv.getText()).isEqualTo(
                 mContext.getString(R.string.notification_channel_summary_default));
     }

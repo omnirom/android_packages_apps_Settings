@@ -33,7 +33,6 @@ import org.mockito.kotlin.stub
 class MediaVolumePreferenceTest {
     private val mockResources = mock<Resources>()
 
-    private val mediaVolumePreference = MediaVolumePreference()
     private val context =
         object : ContextWrapper(ApplicationProvider.getApplicationContext()) {
             override fun getResources(): Resources = mockResources
@@ -42,6 +41,7 @@ class MediaVolumePreferenceTest {
     @Test
     fun isAvailable_configTrue_shouldReturnTrue() {
         mockResources.stub { on { getBoolean(anyInt()) } doReturn true }
+        val mediaVolumePreference = MediaVolumePreference(context)
 
         assertThat(mediaVolumePreference.isAvailable(context)).isTrue()
     }
@@ -49,6 +49,7 @@ class MediaVolumePreferenceTest {
     @Test
     fun isAvailable_configFalse_shouldReturnFalse() {
         mockResources.stub { on { getBoolean(anyInt()) } doReturn false }
+        val mediaVolumePreference = MediaVolumePreference(context)
 
         assertThat(mediaVolumePreference.isAvailable(context)).isFalse()
     }

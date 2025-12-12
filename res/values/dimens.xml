@@ -17,6 +17,7 @@
 <resources>
     <dimen name="match_parent">-1px</dimen>
 
+    <dimen name="theme_icon_size">120dp</dimen>
     <dimen name="app_icon_size">40dip</dimen>
     <dimen name="min_tap_target_size">48dp</dimen>
     <dimen name="screen_margin_sides">64dip</dimen>
@@ -42,8 +43,8 @@
     <dimen name="ring_progress_bar_thickness">4dp</dimen>
 
     <dimen name="notification_importance_toggle_marginTop">28dp</dimen>
-    <dimen name="notification_importance_button_separation">16dp</dimen>
-    <dimen name="notification_importance_drawable_padding">8dp</dimen>
+    <dimen name="notification_importance_button_separation">8dp</dimen>
+    <dimen name="notification_importance_drawable_padding">16dp</dimen>
     <dimen name="notification_importance_description_text">14sp</dimen>
     <dimen name="notification_importance_button_text">16sp</dimen>
     <dimen name="notification_importance_button_padding">14dp</dimen>
@@ -76,43 +77,22 @@
     <dimen name="preference_icon_foreground_image_inset">12dp</dimen>
 
     <!-- Search bar -->
-    <dimen name="search_bar_margin">16dp</dimen>
-    <dimen name="search_bar_height">52dp</dimen>
     <dimen name="search_bar_text_size">20sp</dimen>
     <dimen name="search_bar_corner_radius">28dp</dimen>
-    <dimen name="search_bar_content_inset">56dp</dimen>
-    <dimen name="search_bar_padding_start">4dp</dimen>
-    <dimen name="search_bar_padding_start_two_pane">8dp</dimen>
-    <dimen name="search_bar_padding_end">16dp</dimen>
-    <dimen name="search_bar_padding_end_two_pane">24dp</dimen>
     <dimen name="search_bar_title_padding_start">-4dp</dimen>
     <dimen name="search_bar_title_padding_start_regular_two_pane">8dp</dimen>
     <dimen name="search_bar_container_top_padding">8dp</dimen>
 
     <!-- Avatar -->
-    <dimen name="avatar_length">48dp</dimen>
-    <dimen name="avatar_margin_top">56dp</dimen>
-    <dimen name="avatar_margin_end">24dp</dimen>
     <dimen name="multiple_users_avatar_size">20dp</dimen>
     <dimen name="multiple_users_user_icon_size">40dp</dimen>
 
     <!-- Homepage -->
     <dimen name="homepage_title_margin_bottom">8dp</dimen>
     <dimen name="homepage_title_margin_horizontal">24dp</dimen>
-    <dimen name="homepage_padding_horizontal_two_pane">24dp</dimen>
-    <dimen name="homepage_preference_corner_radius">28dp</dimen>
     <dimen name="homepage_preference_min_height">88sp</dimen>
-    <dimen name="homepage_preference_icon_padding_start">32dp</dimen>
-    <dimen name="homepage_preference_icon_padding_start_two_pane">8dp</dimen>
     <dimen name="homepage_preference_text_padding_start">16dp</dimen>
-    <dimen name="homepage_preference_text_padding_start_two_pane">24dp</dimen>
     <dimen name="homepage_preference_text_padding_start_expressive">12dp</dimen>
-    <dimen name="homepage_app_bar_corner_radius">32dp</dimen>
-    <dimen name="homepage_app_bar_padding_two_pane">6dp</dimen>
-    <!-- bottom: search_bar_margin - homepage_app_bar_padding_two_pane -->
-    <dimen name="homepage_app_bar_margin_bottom_two_pane">10dp</dimen>
-    <!-- horizontal: homepage_padding_horizontal_two_pane - homepage_app_bar_padding_two_pane -->
-    <dimen name="homepage_app_bar_margin_horizontal_two_pane">18dp</dimen>
 
     <!-- SIM Dialog padding -->
     <dimen name="sim_color_spinner_padding">12dip</dimen>
@@ -184,25 +164,25 @@
     <!-- Pointer -->
     <dimen name="pointer_fill_container_height">80dp</dimen>
     <dimen name="pointer_fill_container_max_width">344dp</dimen>
-    <dimen name="pointer_fill_style_container_padding">22dp</dimen>
-    <dimen name="pointer_fill_style_target_width">54dp</dimen>
-    <dimen name="pointer_fill_style_circle_diameter">34dp</dimen>
-    <dimen name="pointer_fill_style_circle_outline_diameter">34.5dp</dimen>
-    <dimen name="pointer_fill_style_circle_background_corner_radius">20dp</dimen>
-    <dimen name="pointer_fill_style_circle_background_corner_inner_radius">16dp</dimen>
-    <dimen name="pointer_fill_style_circle_background_outer_diameter">54dp</dimen>
-    <dimen name="pointer_fill_style_circle_background_outer_diameter_less_stroke">52dp</dimen>
-    <dimen name="pointer_fill_style_circle_background_outer_diameter_selected">42dp</dimen>
+    <dimen name="pointer_fill_style_container_padding">8dp</dimen>
+    <dimen name="pointer_fill_style_target_width">42dp</dimen>
+    <dimen name="pointer_fill_style_circle_diameter">26dp</dimen>
+    <dimen name="pointer_fill_style_circle_outline_diameter">26.5dp</dimen>
+    <dimen name="pointer_fill_style_circle_background_corner_radius">12dp</dimen>
+    <dimen name="pointer_fill_style_circle_background_corner_inner_radius">10dp</dimen>
+    <dimen name="pointer_fill_style_circle_background_outer_diameter">42dp</dimen>
+    <dimen name="pointer_fill_style_circle_background_outer_diameter_less_stroke">40dp</dimen>
+    <dimen name="pointer_fill_style_circle_background_outer_diameter_selected">36dp</dimen>
     <dimen name="pointer_fill_style_circle_background_outline_offset">1dp</dimen>
-    <dimen name="pointer_fill_style_circle_offset">8.5dp</dimen>
-    <dimen name="pointer_fill_style_circle_offset_selected">9.25dp</dimen>
-    <dimen name="pointer_fill_style_circle_outline_offset">8.25dp</dimen>
-    <dimen name="pointer_fill_style_circle_outline_offset_selected">9dp</dimen>
-    <dimen name="pointer_fill_style_circle_background_offset">7dp</dimen>
+    <dimen name="pointer_fill_style_circle_offset">6.5dp</dimen>
+    <dimen name="pointer_fill_style_circle_offset_selected">7.25dp</dimen>
+    <dimen name="pointer_fill_style_circle_outline_offset">6.25dp</dimen>
+    <dimen name="pointer_fill_style_circle_outline_offset_selected">7dp</dimen>
+    <dimen name="pointer_fill_style_circle_background_offset">4dp</dimen>
     <dimen name="pointer_fill_style_circle_outline_stroke">1dp</dimen>
     <dimen name="pointer_fill_style_circle_background_selected_outline_stroke">2dp</dimen>
     <dimen name="pointer_fill_style_circle_padding">16dp</dimen>
-    <dimen name="pointer_fill_style_circle_spacer">6dp</dimen>
+    <dimen name="pointer_fill_style_circle_spacer">3dp</dimen>
     <dimen name="pointer_fill_style_checkmark_selected_padding">16dp</dimen>
     <dimen name="pointer_fill_style_checkmark_size">24dp</dimen>
     <dimen name="pointer_stroke_style_padding">8dp</dimen>
@@ -283,7 +263,7 @@
 
     <!-- Accessibility Settings -->
     <dimen name="accessibility_layout_margin_start_end">16dp</dimen>
-    <dimen name="accessibility_imageview_size">176dp</dimen>
+    <dimen name="accessibility_imageview_size">160dp</dimen>
     <dimen name="accessibility_illustration_view_radius">28dp</dimen>
 
     <!-- Accessibility icon -->
@@ -370,7 +350,7 @@
 
     <!-- QR code picture size -->
     <dimen name="qrcode_size">264dp</dimen>
-    <dimen name="qrcode_preview_size">360dp</dimen>
+    <dimen name="qrcode_preview_size">300dp</dimen>
 
     <!-- Elevation of bluetooth icon -->
     <dimen name="bt_icon_elevation">4dp</dimen>
@@ -461,14 +441,20 @@
     <dimen name="dream_item_corner_radius">28dp</dimen>
     <dimen name="dream_item_content_padding">8dp</dimen>
     <dimen name="dream_item_icon_size">20dp</dimen>
+    <dimen name="dream_preview_small_icon_size">16dp</dimen>
     <dimen name="dream_item_summary_text_size">14sp</dimen>
     <dimen name="dream_item_title_margin_top">16dp</dimen>
     <dimen name="dream_item_title_margin_bottom">8dp</dimen>
     <dimen name="dream_item_title_text_size">16sp</dimen>
     <dimen name="dream_item_icon_padding">18dp</dimen>
+    <dimen name="dream_item_icon_padding_new">8dp</dimen>
     <dimen name="dream_item_title_margin_horizontal">8dp</dimen>
     <dimen name="dream_preference_card_padding">16dp</dimen>
     <dimen name="dream_preview_placeholder_width">52dp</dimen>
+    <dimen name="dream_item_customize_button_margin_bottom">16dp</dimen>
+    <dimen name="dream_preview_button_frame_size">48dp</dimen>
+    <dimen name="dream_preview_button_size">24dp</dimen>
+    <dimen name="dream_preview_button_icon_size">16dp</dimen>
 
     <!-- Sims/Data mobile/Calls/SMS select dialog-->
     <dimen name="sims_select_margin_bottom">24dp</dimen>
@@ -535,6 +521,7 @@
     <dimen name="audio_streams_qrcode_preview_size">300dp</dimen>
     <dimen name="audio_streams_qrcode_preview_radius">30dp</dimen>
     <dimen name="audio_streams_qrcode_scanner_fragment_padding">16dp</dimen>
+    <dimen name="audio_sharing_name_preference_edit_text_format_alert_padding">24dp</dimen>
 
     <!-- Zen Modes -->
     <dimen name="zen_mode_header_size">136dp</dimen>
@@ -553,15 +540,26 @@
     <dimen name="zen_mode_circular_icon_text_size">18dp</dimen>
 
     <!-- Connected displays -->
-    <dimen name="display_topology_pane_margin">24dp</dimen>
     <dimen name="display_topology_pane_vertical_margin">24dp</dimen>
+    <dimen name="display_topology_pane_in_appbar_layout_horizontal_padding">16dp</dimen>
     <dimen name="display_block_padding">5dp</dimen>
     <dimen name="display_block_highlight_width">2dp</dimen>
     <dimen name="display_block_corner_radius">10dp</dimen>
 
-    <!-- Locale Picker -->
-    <dimen name="locale_picker_dialog_icon_padding">10dp</dimen>
-    <dimen name="locale_picker_dialog_title_padding">16dp</dimen>
-    <dimen name="locale_picker_dialog_message_padding_left_right">24dp</dimen>
-    <dimen name="locale_picker_dialog_message_padding_bottom">32dp</dimen>
+    <!-- HDR brightness setting -->
+    <dimen name="hdr_brightness_preview_corner_radius">12dp</dimen>
+
+    <!-- VPN -->
+    <dimen name="vpn_dialog_max_height">600dp</dimen>
+    <dimen name="vpn_dialog_margin_bottom">132dp</dimen>
+
+    <!-- Bluetooth battery indicator -->
+    <dimen name="bluetooth_battery_indicator_stroke_width">6dp</dimen>
+    <dimen name="bluetooth_battery_indicator_stroke_padding">1dp</dimen>
+    <dimen name="bluetooth_battery_indicator_device_icon_size">48dp</dimen>
+    <dimen name="bluetooth_battery_indicator_battery_background_size">24dp</dimen>
+    <dimen name="bluetooth_battery_indicator_battery_meter_width">8dp</dimen>
+    <dimen name="bluetooth_battery_indicator_battery_meter_height">16dp</dimen>
+    <dimen name="bluetooth_battery_indicator_charging_icon_width">12dp</dimen>
+    <dimen name="bluetooth_battery_indicator_charging_icon_height">16dp</dimen>
 </resources>

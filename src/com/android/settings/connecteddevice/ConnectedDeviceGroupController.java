@@ -16,6 +16,7 @@
 package com.android.settings.connecteddevice;
 
 import static com.android.settings.connecteddevice.display.ExternalDisplaySettingsConfiguration.isExternalDisplaySettingsPageEnabled;
+import static com.android.settingslib.Utils.isAudioModeOngoingCall;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -46,6 +47,7 @@ import com.android.settings.flags.FeatureFlags;
 import com.android.settings.flags.FeatureFlagsImpl;
 import com.android.settings.overlay.DockUpdaterFeatureProvider;
 import com.android.settings.overlay.FeatureFactory;
+import com.android.settingslib.bluetooth.BluetoothCallback;
 import com.android.settingslib.bluetooth.BluetoothDeviceFilter;
 import com.android.settingslib.bluetooth.BluetoothUtils;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
@@ -54,6 +56,7 @@ import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnStart;
 import com.android.settingslib.core.lifecycle.events.OnStop;
 import com.android.settingslib.search.SearchIndexableRaw;
+import com.android.settingslib.utils.ThreadUtils;
 
 import java.util.List;
 
@@ -62,8 +65,12 @@ import java.util.List;
  * connected devices. It uses {@link DevicePreferenceCallback} to add/remove {@link Preference}
  */
 public class ConnectedDeviceGroupController extends BasePreferenceController
-        implements PreferenceControllerMixin, LifecycleObserver, OnStart, OnStop,
-        DevicePreferenceCallback {
+        implements PreferenceControllerMixin,
+                LifecycleObserver,
+                OnStart,
+                OnStop,
+                DevicePreferenceCallback,
+                BluetoothCallback {
 
     private static final String KEY = "connected_device_list";
     private static final String TAG = "ConnectedDeviceGroupController";
@@ -97,8 +104,23 @@ public class ConnectedDeviceGroupController extends BasePreferenceController
         }
 
         if (mBluetoothDeviceUpdater != null) {
-            mBluetoothDeviceUpdater.registerCallback();
-            mBluetoothDeviceUpdater.refreshPreference();
+            var unused =
+                    ThreadUtils.postOnBackgroundThread(
+                            () -> {
+                                boolean isOngoingCall = isAudioModeOngoingCall(mContext);
+                                if (mBluetoothDeviceUpdater
+                                        instanceof ConnectedBluetoothDeviceUpdater updater) {
+                                    updater.setIsOngoingCall(isOngoingCall);
+                                }
+                                mContext.getMainExecutor()
+                                        .execute(
+                                                () -> {
+                                                    if (mBluetoothDeviceUpdater != null) {
+                                                        mBluetoothDeviceUpdater.registerCallback();
+                                                        mBluetoothDeviceUpdater.refreshPreference();
+                                                    }
+                                                });
+                            });
         }
 
         if (mConnectedUsbDeviceUpdater != null) {
@@ -203,6 +225,27 @@ public class ConnectedDeviceGroupController extends BasePreferenceController
         }
     }
 
+    @Override
+    public void onAudioModeChanged() {
+        var unused =
+                ThreadUtils.postOnBackgroundThread(
+                        () -> {
+                            boolean isOngoingCall = isAudioModeOngoingCall(mContext);
+                            Log.d(TAG, "onAudioModeChanged, in call mode = " + isOngoingCall);
+                            if (mBluetoothDeviceUpdater
+                                    instanceof ConnectedBluetoothDeviceUpdater updater) {
+                                updater.setIsOngoingCall(isOngoingCall);
+                            }
+                            mContext.getMainExecutor()
+                                    .execute(
+                                            () -> {
+                                                if (mBluetoothDeviceUpdater != null) {
+                                                    mBluetoothDeviceUpdater.forceUpdate();
+                                                }
+                                            });
+                        });
+    }
+
     @VisibleForTesting
     void init(@Nullable ExternalDisplayUpdater externalDisplayUpdater,
             BluetoothDeviceUpdater bluetoothDeviceUpdater,
@@ -262,8 +305,8 @@ public class ConnectedDeviceGroupController extends BasePreferenceController
     }
 
     private boolean hasUsiStylusFeature() {
-        if (!FeatureFlagUtils.isEnabled(mContext,
-                FeatureFlagUtils.SETTINGS_SHOW_STYLUS_PREFERENCES)) {
+        if (!FeatureFlagUtils.isEnabled(
+                mContext, FeatureFlagUtils.SETTINGS_SHOW_STYLUS_PREFERENCES)) {
             return false;
         }
 

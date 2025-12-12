@@ -31,14 +31,11 @@ public class HidePrivateSpaceIllustrationController extends BasePreferenceContro
 
     @Override
     public int getAvailabilityStatus() {
-        if (android.multiuser.Flags.privateSpaceSearchIllustrationConfig()) {
-            boolean configValue =
-                    Resources.getSystem()
-                            .getBoolean(
-                                    com.android.internal.R.bool
-                                            .config_enableSearchTileHideIllustrationInPrivateSpace);
-            return configValue ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
-        }
-        return AVAILABLE;
+        boolean configValue =
+                Resources.getSystem()
+                        .getBoolean(
+                                com.android.internal.R.bool
+                                        .config_enableSearchTileHideIllustrationInPrivateSpace);
+        return configValue ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
     }
 }

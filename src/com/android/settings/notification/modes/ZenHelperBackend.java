@@ -31,7 +31,6 @@ import android.os.UserManager;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
 import android.service.notification.ConversationChannelWrapper;
-import android.util.ArrayMap;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -53,7 +52,7 @@ import java.util.function.Function;
  * Mode management, but still used in the UI of its Settings pages (such as listing priority
  * conversations, contacts, etc).
  */
-class ZenHelperBackend {
+public class ZenHelperBackend {
 
     private static final String TAG = "ZenHelperBackend";
 
@@ -64,7 +63,11 @@ class ZenHelperBackend {
     private final INotificationManager mInm;
     private final UserManager mUserManager;
 
-    static ZenHelperBackend getInstance(Context context) {
+    /**
+     * @return the instance of the {@link ZenHelperBackend}
+     */
+    @NonNull
+    public static ZenHelperBackend getInstance(@NonNull Context context) {
         if (sInstance == null) {
             sInstance = new ZenHelperBackend(context.getApplicationContext());
         }

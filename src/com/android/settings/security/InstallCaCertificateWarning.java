@@ -46,9 +46,15 @@ public class InstallCaCertificateWarning extends Activity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setTheme(SetupWizardUtils.getTheme(this, getIntent()));
-        ThemeHelper.trySetDynamicColor(this);
+        if (ThemeHelper.shouldApplyGlifExpressiveStyle(this)) {
+            if (!ThemeHelper.trySetSuwTheme(this)) {
+                setTheme(ThemeHelper.getSuwDefaultTheme(getApplicationContext()));
+                ThemeHelper.trySetDynamicColor(this);
+            }
+        } else {
+            setTheme(SetupWizardUtils.getTheme(this, getIntent()));
+            ThemeHelper.trySetDynamicColor(this);
+        }
         setContentView(R.layout.ca_certificate_warning_dialog);
         getWindow().addSystemFlags(SYSTEM_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS);
 
@@ -60,7 +66,7 @@ public class InstallCaCertificateWarning extends Activity {
                 new FooterButton.Builder(this)
                         .setText(R.string.certificate_warning_install_anyway)
                         .setListener(installCaCertificate())
-                        .setButtonType(FooterButton.ButtonType.OTHER)
+                        .setButtonType(FooterButton.ButtonType.NEXT)
                         .setTheme(com.google.android.setupdesign.R.style.SudGlifButton_Secondary)
                         .build()
         );
@@ -70,7 +76,7 @@ public class InstallCaCertificateWarning extends Activity {
                 new FooterButton.Builder(this)
                         .setText(R.string.certificate_warning_dont_install)
                         .setListener(returnToInstallCertificateFromStorage())
-                        .setButtonType(FooterButton.ButtonType.NEXT)
+                        .setButtonType(FooterButton.ButtonType.STOP)
                         .setTheme(com.google.android.setupdesign.R.style.SudGlifButton_Primary)
                         .build()
         );

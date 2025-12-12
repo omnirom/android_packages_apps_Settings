@@ -80,8 +80,20 @@ public class BluetoothDetailsAudioSharingControllerTest extends BluetoothDetails
 
     @Test
     @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
-    public void notConnected_noAudioSharingPreferences() {
+    public void leProfileNotConnected_noAudioSharingPreferences() {
         when(mCachedDevice.isConnectedLeAudioDevice()).thenReturn(false);
+        when(mCachedDevice.isConnectedLeAudioBroadcastAssistantDevice()).thenReturn(true);
+
+        showScreen(mController);
+
+        assertThat(mContainer.isVisible()).isFalse();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
+    public void broadcastAssistantNotConnected_noAudioSharingPreferences() {
+        when(mCachedDevice.isConnectedLeAudioDevice()).thenReturn(true);
+        when(mCachedDevice.isConnectedLeAudioBroadcastAssistantDevice()).thenReturn(false);
 
         showScreen(mController);
 
@@ -92,6 +104,7 @@ public class BluetoothDetailsAudioSharingControllerTest extends BluetoothDetails
     @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void connected_showOnePreference() {
         when(mCachedDevice.isConnectedLeAudioDevice()).thenReturn(true);
+        when(mCachedDevice.isConnectedLeAudioBroadcastAssistantDevice()).thenReturn(true);
         when(mCachedDevice.isActiveDevice(BluetoothProfile.LE_AUDIO)).thenReturn(false);
         when(mLocalManager
                         .getProfileManager()
@@ -120,6 +133,7 @@ public class BluetoothDetailsAudioSharingControllerTest extends BluetoothDetails
     @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void connected_active_showTwoPreference() {
         when(mCachedDevice.isConnectedLeAudioDevice()).thenReturn(true);
+        when(mCachedDevice.isConnectedLeAudioBroadcastAssistantDevice()).thenReturn(true);
         when(mCachedDevice.isActiveDevice(BluetoothProfile.LE_AUDIO)).thenReturn(true);
         when(mLocalManager
                 .getProfileManager()
@@ -146,6 +160,7 @@ public class BluetoothDetailsAudioSharingControllerTest extends BluetoothDetails
     @EnableFlags(Flags.FLAG_ENABLE_LE_AUDIO_SHARING)
     public void connected_hasBroadcastSource_showTwoPreference() {
         when(mCachedDevice.isConnectedLeAudioDevice()).thenReturn(true);
+        when(mCachedDevice.isConnectedLeAudioBroadcastAssistantDevice()).thenReturn(true);
         when(mCachedDevice.isActiveDevice(BluetoothProfile.LE_AUDIO)).thenReturn(false);
         List<Long> bisSyncState = new ArrayList<>();
         bisSyncState.add(1L);

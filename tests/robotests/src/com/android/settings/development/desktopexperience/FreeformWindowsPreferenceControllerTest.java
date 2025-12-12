@@ -32,8 +32,6 @@ import static org.mockito.Mockito.when;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.Settings;
 
@@ -43,10 +41,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
 
-import com.android.internal.R;
 import com.android.settings.development.DevelopmentSettingsDashboardFragment;
 import com.android.settings.development.RebootConfirmationDialogFragment;
-import com.android.window.flags.Flags;
+import com.android.wm.shell.shared.desktopmode.FakeDesktopState;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -85,56 +82,57 @@ public class FreeformWindowsPreferenceControllerTest {
     private FragmentTransaction mTransaction;
 
     private FreeformWindowsPreferenceController mController;
+    private FakeDesktopState mDesktopState;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+        mDesktopState = new FakeDesktopState();
         FragmentActivity activity = spy(Robolectric.buildActivity(
                 FragmentActivity.class).create().get());
         doReturn(mTransaction).when(mFragmentManager).beginTransaction();
         doReturn(mFragmentManager).when(activity).getSupportFragmentManager();
         doReturn(activity).when(mFragment).requireActivity();
-        doReturn(true).when(mResources).getBoolean(R.bool.config_isDesktopModeSupported);
-        doReturn(true).when(mResources).getBoolean(R.bool.config_canInternalDisplayHostDesktops);
-        mController = new FreeformWindowsPreferenceController(mContext, mFragment);
+        mDesktopState.setCanEnterDesktopMode(true);
+        mController = new FreeformWindowsPreferenceController(mContext, mFragment, mDesktopState);
         when(mScreen.findPreference(mController.getPreferenceKey())).thenReturn(mPreference);
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
         when(mContext.getResources()).thenReturn(mResources);
         mController.displayPreference(mScreen);
     }
 
-    @DisableFlags({Flags.FLAG_SHOW_DESKTOP_EXPERIENCE_DEV_OPTION,
-            Flags.FLAG_SHOW_DESKTOP_WINDOWING_DEV_OPTION})
     @Test
     public void isAvailable_whenDesktopDevOptionsAreDisabled_returnsTrue() {
+        mDesktopState.setCanShowDesktopModeDevOption(false);
+        mDesktopState.setCanShowDesktopExperienceDevOption(false);
         assertThat(mController.isAvailable()).isTrue();
     }
 
-    @EnableFlags(Flags.FLAG_SHOW_DESKTOP_WINDOWING_DEV_OPTION)
     @Test
     public void isAvailable_whenDesktopWindowingDevOptionIsEnabled_returnsFalse() {
+        mDesktopState.setCanShowDesktopModeDevOption(true);
         assertThat(mController.isAvailable()).isFalse();
     }
 
-    @EnableFlags(Flags.FLAG_SHOW_DESKTOP_EXPERIENCE_DEV_OPTION)
     @Test
     public void isAvailable_whenDesktopExperienceDevOptionIsEnabled_returnsFalse() {
+        mDesktopState.setCanShowDesktopExperienceDevOption(true);
         assertThat(mController.isAvailable()).isFalse();
     }
 
-    @DisableFlags({Flags.FLAG_SHOW_DESKTOP_EXPERIENCE_DEV_OPTION,
-            Flags.FLAG_SHOW_DESKTOP_WINDOWING_DEV_OPTION})
     @Test
     public void isAvailable_deviceHasFreeformWindowSystemFeature_returnsFalse() {
+        mDesktopState.setCanShowDesktopModeDevOption(false);
+        mDesktopState.setCanShowDesktopExperienceDevOption(false);
         when(mPackageManager.hasSystemFeature(FEATURE_FREEFORM_WINDOW_MANAGEMENT)).thenReturn(true);
 
         assertThat(mController.isAvailable()).isFalse();
     }
 
-    @DisableFlags({Flags.FLAG_SHOW_DESKTOP_EXPERIENCE_DEV_OPTION,
-            Flags.FLAG_SHOW_DESKTOP_WINDOWING_DEV_OPTION})
     @Test
     public void isAvailable_deviceDoesNotHaveFreeformWindowSystemFeature_returnsTrue() {
+        mDesktopState.setCanShowDesktopModeDevOption(false);
+        mDesktopState.setCanShowDesktopExperienceDevOption(false);
         when(mPackageManager.hasSystemFeature(FEATURE_FREEFORM_WINDOW_MANAGEMENT)).thenReturn(
                 false);
 

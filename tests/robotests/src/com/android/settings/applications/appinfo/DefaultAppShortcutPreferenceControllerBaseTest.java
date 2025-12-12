@@ -25,12 +25,14 @@ import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.role.RoleManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.UserManager;
 
 import androidx.preference.Preference;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
 
@@ -72,7 +74,8 @@ public class DefaultAppShortcutPreferenceControllerBaseTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        ShadowApplication shadowApplication = ShadowApplication.getInstance();
+        ShadowApplication shadowApplication =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         shadowApplication.setSystemService(Context.ROLE_SERVICE, mRoleManager);
         mActivity = Robolectric.setupActivity(Activity.class);
         mShadowUserManager = shadowOf(mActivity.getSystemService(UserManager.class));

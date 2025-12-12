@@ -132,7 +132,7 @@ public class ContentProtectionTogglePreferenceController extends TogglePreferenc
 
         UserManager userManager = mContext.getSystemService(UserManager.class);
         if (userManager != null
-                && userManager.isGuestUser()
+                && !userManager.isAdminUser()
                 && mSwitchBar != null) {
             mSwitchBar.setEnabled(false);
         }

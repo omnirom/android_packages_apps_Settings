@@ -56,6 +56,13 @@
         android:summary="@string/runtime_permissions_summary_control_app_access"
         settings:controller="com.android.settings.privacy.ManagePermissionsPreferenceController"/>
 
+    <!-- App Function access -->
+    <Preference
+        android:key="privacy_app_function_access"
+        android:title="@string/app_function_access_settings_title"
+        android:summary="@string/app_function_access_settings_summary"
+        settings:controller="com.android.settings.privacy.AppFunctionAccessPreferenceController"/>
+
     <!-- App Data Sharing Update -->
     <Preference
         android:key="privacy_app_data_sharing_updates"
@@ -106,9 +113,8 @@
             "com.android.settings.sound.MediaControlsLockScreenPreferenceController" />
 
     <!-- Privacy Service -->
-    <PreferenceCategory
-        android:key="privacy_services"
-        android:layout="@layout/preference_category_no_label"/>
+    <com.android.settingslib.widget.UntitledPreferenceCategory
+        android:key="privacy_services"/>
 
     <PreferenceCategory
         android:key="dashboard_tile_placeholder"/>

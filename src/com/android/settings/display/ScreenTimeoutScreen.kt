@@ -16,19 +16,22 @@
 
 package com.android.settings.display
 
+import android.app.settings.SettingsEnums
 import android.content.Context
+import androidx.fragment.app.Fragment
 import com.android.settings.R
 import com.android.settings.Settings.ScreenTimeoutActivity
+import com.android.settings.core.PreferenceScreenMixin
 import com.android.settings.flags.Flags
 import com.android.settings.utils.makeLaunchIntent
 import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.ProvidePreferenceScreen
 import com.android.settingslib.metadata.preferenceHierarchy
-import com.android.settingslib.preference.PreferenceScreenCreator
+import kotlinx.coroutines.CoroutineScope
 
 // TODO(b/368359967): The entry point logic is not yet migrated
 @ProvidePreferenceScreen(ScreenTimeoutScreen.KEY)
-class ScreenTimeoutScreen : PreferenceScreenCreator {
+open class ScreenTimeoutScreen : PreferenceScreenMixin {
 
     override val key: String
         get() = KEY
@@ -36,14 +39,19 @@ class ScreenTimeoutScreen : PreferenceScreenCreator {
     override val title: Int
         get() = R.string.screen_timeout
 
+    override val highlightMenuKey: Int
+        get() = R.string.menu_key_display
+
+    override fun getMetricsCategory() = SettingsEnums.SCREEN_TIMEOUT
+
     override fun isFlagEnabled(context: Context) = Flags.catalystScreenTimeout()
 
-    override fun fragmentClass() = ScreenTimeoutSettings::class.java
+    override fun fragmentClass(): Class<out Fragment>? = ScreenTimeoutSettings::class.java
 
     override fun hasCompleteHierarchy() = false
 
-    override fun getPreferenceHierarchy(context: Context) =
-        preferenceHierarchy(context, this) { +AdaptiveSleepPreference() }
+    override fun getPreferenceHierarchy(context: Context, coroutineScope: CoroutineScope) =
+        preferenceHierarchy(context) { +AdaptiveSleepPreference() }
 
     override fun getLaunchIntent(context: Context, metadata: PreferenceMetadata?) =
         makeLaunchIntent(context, ScreenTimeoutActivity::class.java, metadata?.key)

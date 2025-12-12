@@ -25,6 +25,7 @@ import com.android.settings.spa.SpaActivity.Companion.startSpaActivity
 import com.android.settings.spa.app.AllAppListPageProvider
 import com.android.settings.spa.app.appinfo.AppInfoSettingsProvider
 import com.android.settingslib.spa.framework.util.KEY_DESTINATION
+import com.android.settingslib.spa.framework.util.KEY_HIGHLIGHT_ITEM_KEY
 import com.google.android.setupcompat.util.WizardManagerHelper
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
@@ -86,7 +87,7 @@ class SpaActivityTest {
 
     @Test
     fun startSpaActivity() {
-        context.startSpaActivity(DESTINATION)
+        context.startSpaActivity(destination = DESTINATION)
 
         val intent = argumentCaptor<Intent> {
             verify(context).startActivity(capture())
@@ -95,7 +96,20 @@ class SpaActivityTest {
         assertThat(intent.getStringExtra(KEY_DESTINATION)).isEqualTo(DESTINATION)
     }
 
+    @Test
+    fun startSpaActivity_withHighlightItemKey() {
+        context.startSpaActivity(destination = DESTINATION, highlightItemKey = HIGHLIGHT_ITEM_KEY)
+
+        val intent = argumentCaptor<Intent> {
+            verify(context).startActivity(capture())
+        }.firstValue
+        assertThat(intent.component?.className).isEqualTo(SpaActivity::class.qualifiedName)
+        assertThat(intent.getStringExtra(KEY_DESTINATION)).isEqualTo(DESTINATION)
+        assertThat(intent.getStringExtra(KEY_HIGHLIGHT_ITEM_KEY)).isEqualTo(HIGHLIGHT_ITEM_KEY)
+    }
+
     private companion object {
         const val DESTINATION = "Destination"
+        const val HIGHLIGHT_ITEM_KEY = "highlight_item_key"
     }
 }

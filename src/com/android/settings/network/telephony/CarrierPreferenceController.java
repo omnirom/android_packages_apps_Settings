@@ -73,6 +73,14 @@ public class CarrierPreferenceController extends TelephonyBasePreferenceControll
         return false;
     }
 
+    @Override
+    public void updateState(Preference preference) {
+        super.updateState(preference);
+        if (preference != null) {
+            preference.setEnabled(!mIsAirplaneModeOn);
+        }
+    }
+
     private Intent getCarrierSettingsActivityIntent(int subId) {
         final PersistableBundle config = mCarrierConfigCache.getConfigForSubId(subId);
         final ComponentName cn = ComponentName.unflattenFromString(

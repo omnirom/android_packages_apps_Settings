@@ -21,6 +21,69 @@ flag {
 }
 
 flag {
+  name: "catalyst_a11y_activity_detail"
+  namespace: "accessibility"
+  description: "Migrate accessibility activity screen to the Catalyst infrastructure"
+  bug: "337243383"
+}
+
+flag {
+  name: "catalyst_a11y_service_detail"
+  namespace: "accessibility"
+  description: "Migrate accessibility service screen to the Catalyst infrastructure"
+  bug: "337243808"
+}
+
+flag {
+  name: "catalyst_color_inversion"
+  namespace: "accessibility"
+  description: "Migrate color inversion screen to the Catalyst infrastructure"
+  bug: "413452734"
+}
+
+flag {
+  name: "catalyst_dark_ui_mode"
+  namespace: "accessibility"
+  description: "Migrate dark mode screen to the Catalyst infrastructure"
+  bug: "337243099"
+}
+
+flag {
+  name: "catalyst_daltonizer"
+  namespace: "accessibility"
+  description: "Migrate daltonizer screen to the Catalyst infrastructure"
+  bug: "413453264"
+}
+
+flag {
+  name: "catalyst_extra_dim"
+  namespace: "accessibility"
+  description: "Migrate extra dim screen to the Catalyst infrastructure"
+  bug: "413454003"
+}
+
+flag {
+  name: "catalyst_flash_notifications"
+  namespace: "accessibility"
+  description: "Migrate flash notification screen to the Catalyst infrastructure"
+  bug: "337243568"
+}
+
+flag {
+  name: "catalyst_hearing_devices"
+  namespace: "accessibility"
+  description: "Migrate hearing device screen to the Catalyst infrastructure"
+  bug: "337244007"
+}
+
+flag {
+  name: "catalyst_magnification"
+  namespace: "accessibility"
+  description: "Migrate magnification screen to the Catalyst infrastructure"
+  bug: "413453974"
+}
+
+flag {
   name: "check_prebundled_is_preinstalled"
   namespace: "accessibility"
   description: "Checks that all 'prebundled' components, used for grouping, are also preinstalled"
@@ -31,13 +94,6 @@ flag {
 }
 
 flag {
-  name: "edit_shortcuts_in_full_screen"
-  namespace: "accessibility"
-  description: "Show the edit shorcuts screen in full screen, since the shortcut options are increasing."
-  bug: "300302098"
-}
-
-flag {
   name: "enable_color_contrast_control"
   namespace: "accessibility"
   description: "Allows users to control color contrast in the Accessibility settings page."
@@ -45,17 +101,10 @@ flag {
 }
 
 flag {
-  name: "enable_hearing_aid_preset_control"
-  namespace: "accessibility"
-  description: "Allows users to control hearing aid preset in the Bluetooth device details page."
-  bug: "300015207"
-}
-
-flag {
-  name: "enable_hearing_aid_volume_offset_control"
-  namespace: "accessibility"
-  description: "Allows users to control hearing aid volume offset in the Bluetooth device details page."
-  bug: "301198830"
+    name: "enable_disability_support"
+    namespace: "accessibility"
+    description: "Use disability support for accessibility"
+    bug: "419387108"
 }
 
 flag {
@@ -73,47 +122,10 @@ flag {
 }
 
 flag {
-  name: "fix_a11y_settings_search"
-  namespace: "accessibility"
-  description: "Fix the a11y related search items in Settings app"
-  bug: "333437173"
-  metadata {
-    purpose: PURPOSE_BUGFIX
-  }
-}
-
-flag {
-  name: "hide_magnification_always_on_toggle_when_window_mode_only"
-  namespace: "accessibility"
-  description: "Decides whether to hide the magnification always on setting when capabilities is window mode only."
-  bug: "328787031"
-  metadata {
-    purpose: PURPOSE_BUGFIX
-  }
-}
-
-flag {
   name: "never_restrict_accessibility_activity"
   namespace: "accessibility"
   description: "Stops possibly restricting AccessibilityActivityPreferences"
   bug: "331990900"
-  metadata {
-    purpose: PURPOSE_BUGFIX
-  }
-}
-
-flag {
-  name: "remove_qs_tooltip_in_suw"
-  namespace: "accessibility"
-  description: "Don't show quick settings tooltip in SUW, since the user can't use quick settings there."
-  bug: "294560581"
-}
-
-flag {
-  name: "toggle_feature_fragment_collection_info"
-  namespace: "accessibility"
-  description: "Provides custom CollectionInfo for ToggleFeaturePreferenceFragment"
-  bug: "318607873"
   metadata {
     purpose: PURPOSE_BUGFIX
   }

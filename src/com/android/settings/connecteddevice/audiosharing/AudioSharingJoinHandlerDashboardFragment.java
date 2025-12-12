@@ -16,6 +16,7 @@
 
 package com.android.settings.connecteddevice.audiosharing;
 
+import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -35,8 +36,7 @@ public class AudioSharingJoinHandlerDashboardFragment extends DashboardFragment 
 
     @Override
     public int getMetricsCategory() {
-        // TODO: use real enum
-        return 0;
+        return SettingsEnums.AUDIO_SHARING_JOIN_HANDLER;
     }
 
     @Override

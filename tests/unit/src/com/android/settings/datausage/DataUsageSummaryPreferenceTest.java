@@ -66,7 +66,8 @@ public class DataUsageSummaryPreferenceTest {
         mContext = spy(ApplicationProvider.getApplicationContext());
         mResources = spy(mContext.getResources());
         when(mContext.getResources()).thenReturn(mResources);
-        mSummaryPreference = spy(new DataUsageSummaryPreference(mContext, null /* attrs */));
+        mSummaryPreference = spy(new DataUsageSummaryPreference(mContext, null /* attrs */,
+                false /* isExpressiveTheme */));
         LayoutInflater inflater = mContext.getSystemService(LayoutInflater.class);
         View view = inflater.inflate(
                 mSummaryPreference.getLayoutResource(),
@@ -334,7 +335,7 @@ public class DataUsageSummaryPreferenceTest {
 
         mSummaryPreference.onBindViewHolder(mHolder);
         assertThat(mSummaryPreference.getDataUsed(mHolder).getText().toString())
-                .isEqualTo("1.00 MB used");
+                .isEqualTo("1.00 MB");
         assertThat(mSummaryPreference.getDataRemaining(mHolder).getText().toString())
                 .isEqualTo("9.00 MB left");
         assertThat(mSummaryPreference.getDataRemaining(mHolder).getVisibility())
@@ -353,7 +354,7 @@ public class DataUsageSummaryPreferenceTest {
 
         mSummaryPreference.onBindViewHolder(mHolder);
         assertThat(mSummaryPreference.getDataUsed(mHolder).getText().toString())
-                .isEqualTo("11.00 MB used");
+                .isEqualTo("11.00 MB");
         assertThat(mSummaryPreference.getDataRemaining(mHolder).getText().toString())
                 .isEqualTo("1.00 MB over");
         final int colorId = Utils.getColorAttrDefaultColor(mContext, android.R.attr.colorError);
@@ -369,7 +370,7 @@ public class DataUsageSummaryPreferenceTest {
 
         mSummaryPreference.onBindViewHolder(mHolder);
         assertThat(mSummaryPreference.getDataUsed(mHolder).getText().toString())
-                .isEqualTo("1.00 MB used");
+                .isEqualTo("1.00 MB");
         assertThat(mSummaryPreference.getDataRemaining(mHolder).getText()).isEqualTo("");
     }
 

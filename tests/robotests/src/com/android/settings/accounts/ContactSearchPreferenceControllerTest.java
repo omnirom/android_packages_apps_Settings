@@ -33,6 +33,7 @@ import android.provider.Settings;
 
 import androidx.test.core.app.ApplicationProvider;
 
+import com.android.settingslib.RestrictedLockUtils;
 import com.android.settingslib.RestrictedSwitchPreference;
 
 import org.junit.Before;
@@ -111,7 +112,7 @@ public class ContactSearchPreferenceControllerTest {
     public void updateState_preferenceShouldBeDisabled() {
         mController.updateState(mPreference);
 
-        verify(mPreference).setDisabledByAdmin(any());
+        verify(mPreference).setDisabledByAdmin((RestrictedLockUtils.EnforcedAdmin) any());
     }
 
     @Test

@@ -26,9 +26,10 @@
             settings:controller="com.android.settings.datausage.ChartDataUsagePreferenceController"
             />
 
-        <Preference
+        <com.android.settingslib.widget.LayoutPreference
             android:key="warning"
-            android:selectable="false" />
+            android:layout="@layout/data_usage_warning_preference"
+            android:selectable="false"/>
 
     </PreferenceCategory>
 

@@ -19,8 +19,6 @@
     android:id="@+id/nearby_sharing_suggestion_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
     android:paddingVertical="@dimen/settingslib_expressive_space_medium3">
 
     <LinearLayout
@@ -76,8 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/settingslib_expressive_space_extrasmall2"
-                android:textAppearance="@style/TextAppearance.CardSummary.SettingsLib"
-                android:text="@string/bluetooth_try_nearby_share_summary"/>
+                android:textAppearance="@style/TextAppearance.CardSummary.SettingsLib"/>
         </LinearLayout>
 
         <ImageView

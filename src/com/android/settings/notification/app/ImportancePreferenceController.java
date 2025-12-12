@@ -22,12 +22,11 @@ import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
 import android.app.NotificationChannel;
 import android.content.Context;
 import android.media.RingtoneManager;
-import android.provider.Settings;
+
+import androidx.preference.Preference;
 
 import com.android.settings.core.PreferenceControllerMixin;
 import com.android.settings.notification.NotificationBackend;
-
-import androidx.preference.Preference;
 
 public class ImportancePreferenceController extends NotificationPreferenceController
         implements PreferenceControllerMixin, Preference.OnPreferenceChangeListener  {
@@ -70,9 +69,6 @@ public class ImportancePreferenceController extends NotificationPreferenceContro
             ImportancePreference pref = (ImportancePreference) preference;
             pref.setConfigurable(isChannelConfigurable(mChannel));
             pref.setImportance(mChannel.getImportance());
-            pref.setDisplayInStatusBar(mBackend.showSilentInStatusBar(mContext.getPackageName()));
-            pref.setDisplayOnLockscreen(Settings.Secure.getInt(mContext.getContentResolver(),
-                    Settings.Secure.LOCK_SCREEN_SHOW_SILENT_NOTIFICATIONS, 1) == 1);
         }
     }
 

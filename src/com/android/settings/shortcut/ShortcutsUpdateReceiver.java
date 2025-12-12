@@ -16,7 +16,6 @@
 
 package com.android.settings.shortcut;
 
-import android.app.Flags;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -32,10 +31,6 @@ public class ShortcutsUpdateReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(@NonNull Context context, @NonNull Intent intent) {
-        if (!Flags.modesUi()) {
-            return;
-        }
-
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             PendingResult pendingResult = goAsync();
 

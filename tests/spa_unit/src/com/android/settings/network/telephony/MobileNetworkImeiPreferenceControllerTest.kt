@@ -30,7 +30,6 @@ import com.android.settings.R
 import com.android.settings.core.BasePreferenceController
 import com.android.settings.network.SubscriptionInfoListViewModel
 import com.android.settings.network.SubscriptionUtil
-import com.android.settingslib.Utils
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -70,8 +69,11 @@ class MobileNetworkImeiPreferenceControllerTest {
 
     private val context: Context = spy(ApplicationProvider.getApplicationContext()) {
         on { getSystemService(TelephonyManager::class.java) } doReturn mockTelephonyManager
+        on { getSystemService(Context.TELEPHONY_SERVICE) } doReturn mockTelephonyManager
         on { getSystemService(UserManager::class.java) } doReturn mockUserManager
     }
+
+    private val spyResources = spy(context.resources)
 
     private val controller = MobileNetworkImeiPreferenceController(context, TEST_KEY)
     private val preference = Preference(context).apply { key = TEST_KEY }
@@ -82,13 +84,19 @@ class MobileNetworkImeiPreferenceControllerTest {
         mockSession = ExtendedMockito.mockitoSession()
             .initMocks(this)
             .mockStatic(SubscriptionUtil::class.java)
-            .mockStatic(Utils::class.java)
             .strictness(Strictness.LENIENT)
             .startMocking()
 
+        context.stub { on { resources } doReturn spyResources }
+
         // By default, available
-        whenever(SubscriptionUtil.isSimHardwareVisible(context)).thenReturn(true)
-        whenever(Utils.isWifiOnly(context)).thenReturn(false)
+        spyResources.stub {
+            on { getBoolean(R.bool.config_show_sim_info) } doReturn true
+        }
+        mockTelephonyManager.stub {
+            on { isDataCapable } doReturn true
+            on { isDeviceVoiceCapable } doReturn true
+        }
         mockUserManager.stub {
             on { isAdminUser } doReturn true
         }
@@ -162,7 +170,7 @@ class MobileNetworkImeiPreferenceControllerTest {
     }
 
     @Test
-    fun getAvailabilityStatus_simHardwareVisible_userAdmin_notWifiOnly_displayed() {
+    fun getAvailabilityStatus_default_displayed() {
         controller.init(mockFragment, SUB_ID_1)
 
         // Use defaults from setup()
@@ -171,16 +179,54 @@ class MobileNetworkImeiPreferenceControllerTest {
     }
 
     @Test
-    fun getAvailabilityStatus_notSimHardwareVisible_userAdmin_notWifiOnly_notDisplayed() {
+    fun getAvailabilityStatus_notShowSimInfo_notDisplayed() {
         controller.init(mockFragment, SUB_ID_1)
-        whenever(SubscriptionUtil.isSimHardwareVisible(context)).thenReturn(false)
+        spyResources.stub {
+            on { getBoolean(R.bool.config_show_sim_info) } doReturn false
+        }
 
         val availabilityStatus = controller.availabilityStatus
         assertThat(availabilityStatus).isEqualTo(BasePreferenceController.UNSUPPORTED_ON_DEVICE)
     }
 
     @Test
-    fun getAvailabilityStatus_simHardwareVisible_notUserAdmin_notWifiOnly_notDisplayed() {
+    fun getAvailabilityStatus_notVoiceCapable_notDataCapable_notDisplayed() {
+        controller.init(mockFragment, SUB_ID_1)
+        mockTelephonyManager.stub {
+            on { isDataCapable } doReturn false
+            on { isDeviceVoiceCapable } doReturn false
+        }
+
+        val availabilityStatus = controller.availabilityStatus
+        assertThat(availabilityStatus).isEqualTo(BasePreferenceController.UNSUPPORTED_ON_DEVICE)
+    }
+
+    @Test
+    fun getAvailabilityStatus_voiceCapable_notDataCapable_displayed() {
+        controller.init(mockFragment, SUB_ID_1)
+        mockTelephonyManager.stub {
+            on { isDataCapable } doReturn false
+            on { isDeviceVoiceCapable } doReturn true
+        }
+
+        val availabilityStatus = controller.availabilityStatus
+        assertThat(availabilityStatus).isEqualTo(BasePreferenceController.AVAILABLE)
+    }
+
+    @Test
+    fun getAvailabilityStatus_notVoiceCapable_dataCapable_displayed() {
+        controller.init(mockFragment, SUB_ID_1)
+        mockTelephonyManager.stub {
+            on { isDataCapable } doReturn true
+            on { isDeviceVoiceCapable } doReturn false
+        }
+
+        val availabilityStatus = controller.availabilityStatus
+        assertThat(availabilityStatus).isEqualTo(BasePreferenceController.AVAILABLE)
+    }
+
+    @Test
+    fun getAvailabilityStatus_notUserAdmin_notDisplayed() {
         controller.init(mockFragment, SUB_ID_1)
         mockUserManager.stub {
             on { isAdminUser } doReturn false
@@ -188,15 +234,6 @@ class MobileNetworkImeiPreferenceControllerTest {
 
         val availabilityStatus = controller.availabilityStatus
         assertThat(availabilityStatus).isEqualTo(BasePreferenceController.DISABLED_FOR_USER)
-    }
-
-    @Test
-    fun getAvailabilityStatus_simHardwareVisible_userAdmin_wifiOnly_notDisplayed() {
-        controller.init(mockFragment, SUB_ID_1)
-        whenever(Utils.isWifiOnly(context)).thenReturn(true)
-
-        val availabilityStatus = controller.availabilityStatus
-        assertThat(availabilityStatus).isEqualTo(BasePreferenceController.UNSUPPORTED_ON_DEVICE)
     }
 
     private companion object {

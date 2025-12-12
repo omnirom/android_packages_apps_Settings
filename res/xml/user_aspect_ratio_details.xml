@@ -64,7 +64,6 @@
 
     <com.android.settingslib.widget.FooterPreference
         android:title="@string/app_aspect_ratio_footer"
-        android:selectable="false"
         settings:searchable="false"/>
 
 </PreferenceScreen>

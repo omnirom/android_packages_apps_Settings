@@ -105,7 +105,6 @@
 
     <com.android.settingslib.widget.FooterPreference
         android:key="lock_settings_footer"
-        android:selectable="false"
         settings:searchable="false"/>
 
 </PreferenceScreen>

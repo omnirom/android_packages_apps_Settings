@@ -22,6 +22,7 @@ import android.content.Context;
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.DeadObjectException;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.RemoteException;
@@ -146,26 +147,34 @@ public class ActiveUnlockContentListener {
             @NonNull String methodName,
             @NonNull String contentKey) {
         ContentResolver contentResolver = context.getContentResolver();
-        ContentProviderClient client = contentResolver.acquireContentProviderClient(uri);
-        if (client == null) {
+        // Use the unstable content provider to avoid us getting killed with process.
+        try (ContentProviderClient client =
+                contentResolver.acquireUnstableContentProviderClient(uri)) {
+            if (client == null) {
+                return null;
+            }
+
+            @Nullable Bundle bundle = null;
+
+            try {
+                bundle = client.call(methodName, /* arg= */ null, /* extras = */ null);
+            } catch (DeadObjectException e) {
+                Log.e(logTag, "Failed to call contentProvider", e);
+                return null;
+            } catch (RemoteException e) {
+                Log.e(logTag, "Failed to call contentProvider", e);
+                return null;
+            }
+
+            if (bundle == null) {
+                Log.e(logTag, "Null bundle returned from contentProvider");
+                return null;
+            }
+
+            return bundle.getString(contentKey);
+        } catch (Exception e) {
+            Log.e(logTag, "Error close content provider client.");
             return null;
         }
-
-        @Nullable Bundle bundle = null;
-
-        try {
-            bundle = client.call(methodName, /* arg= */ null, /* extras = */ null);
-        } catch (RemoteException e) {
-            Log.e(logTag, "Failed to call contentProvider", e);
-        } finally {
-            client.close();
-        }
-
-        if (bundle == null) {
-            Log.e(logTag, "Null bundle returned from contentProvider");
-            return null;
-        }
-
-        return bundle.getString(contentKey);
     }
 }

@@ -15,28 +15,35 @@
  */
 package com.android.settings.supervision
 
+import android.app.supervision.SupervisionManager
 import android.app.supervision.flags.Flags
 import android.content.Context
+import android.content.Intent
 import com.android.settings.R
-import androidx.preference.Preference
 import com.android.settingslib.metadata.PreferenceAvailabilityProvider
 import com.android.settingslib.metadata.PreferenceMetadata
 
-class SupervisionPinRecoveryPreference : PreferenceMetadata,
-    PreferenceAvailabilityProvider, Preference.OnPreferenceClickListener {
+class SupervisionPinRecoveryPreference : PreferenceMetadata, PreferenceAvailabilityProvider {
     override val key: String
-        get() = SupervisionPinRecoveryPreference.KEY
+        get() = KEY
 
     override val title: Int
         get() = R.string.supervision_add_forgot_pin_preference_title
 
-    override fun isAvailable(context: Context) = Flags.enableSupervisionPinRecoveryScreen()
+    override fun dependencies(context: Context) = arrayOf(SupervisionSetupRecoveryPreference.KEY)
 
-    // TODO(b/393657542): trigger re-authentication flow to confirm user credential before PIN
-    // recovery.
-    override fun onPreferenceClick(preference: Preference): Boolean {
-        return true
+    override fun isAvailable(context: Context): Boolean {
+        if (!Flags.enableSupervisionPinRecoveryScreen()) {
+            return false
+        }
+        return context
+            .getSystemService(SupervisionManager::class.java)
+            ?.getSupervisionRecoveryInfo() != null
     }
+
+    override fun intent(context: Context): Intent? =
+        Intent(context, SupervisionPinRecoveryActivity::class.java)
+            .setAction(SupervisionPinRecoveryActivity.ACTION_RECOVERY)
 
     companion object {
         const val KEY = "supervision_pin_recovery"

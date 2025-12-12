@@ -374,6 +374,9 @@ public class BatteryOptimizeUtils {
         if (action != Action.RESET) { // reset has been notified in resetAppOptimizationMode
             BatterySettingsStorage.get(context).notifyChange(toChangeReason(action));
         }
+        if (action == Action.BATTERY_TIP_APPLY || action == Action.BATTERY_TIP_ACCEPT) {
+            BatteryOptimizationActionLogUtils.writeLog(context, packageNameKey, action);
+        }
     }
 
     private static String createLogEvent(int appStandbyMode, boolean allowListed) {

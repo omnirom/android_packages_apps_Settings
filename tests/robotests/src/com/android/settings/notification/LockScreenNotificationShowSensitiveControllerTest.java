@@ -23,6 +23,7 @@ import static android.provider.Settings.Secure.LOCK_SCREEN_SHOW_NOTIFICATIONS;
 
 import static com.android.settings.core.BasePreferenceController.AVAILABLE;
 import static com.android.settings.core.BasePreferenceController.CONDITIONALLY_UNAVAILABLE;
+import static com.android.settings.core.BasePreferenceController.DISABLED_DEPENDENT_SETTING;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -149,8 +150,8 @@ public class LockScreenNotificationShowSensitiveControllerTest {
                 LOCK_SCREEN_SHOW_NOTIFICATIONS,
                 1, 10);
 
-        assertThat(mController.getAvailabilityStatus()).isEqualTo(CONDITIONALLY_UNAVAILABLE);
-        assertThat(mWorkController.getAvailabilityStatus()).isEqualTo(CONDITIONALLY_UNAVAILABLE);
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(DISABLED_DEPENDENT_SETTING);
+        assertThat(mWorkController.getAvailabilityStatus()).isEqualTo(DISABLED_DEPENDENT_SETTING);
     }
 
     @Test

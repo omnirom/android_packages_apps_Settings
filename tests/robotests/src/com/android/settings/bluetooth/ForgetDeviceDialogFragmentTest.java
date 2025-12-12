@@ -204,23 +204,11 @@ public class ForgetDeviceDialogFragmentTest {
 
     private void addAssociation() {
         setupLabelAndInfo(PACKAGE_NAME, APP_NAME);
-        final AssociationInfo association = new AssociationInfo(
-                1,
-                /* userId */ 0,
-                PACKAGE_NAME,
-                MacAddress.fromString(mCachedDevice.getAddress()),
-                /* displayName */ null,
-                /* deviceProfile */ "",
-                /* associatedDevice */ null,
-                /* selfManaged */ false,
-                /* notifyOnDeviceNearby */ true,
-                /* revoked */ false,
-                /* pending */ false,
-                /* timeApprovedMs */ System.currentTimeMillis(),
-                /* lastTimeConnected */ Long.MAX_VALUE,
-                /* systemDataSyncFlags */ -1,
-                /* deviceIcon */ null,
-                /* deviceId */ null);
+        final AssociationInfo association =
+                new AssociationInfo.Builder(1, /* userId */ 0, PACKAGE_NAME)
+                        .setDeviceMacAddress(MacAddress.fromString(mCachedDevice.getAddress()))
+                        .setNotifyOnDeviceNearby(true)
+                        .build();
 
         mAssociations.add(association);
     }

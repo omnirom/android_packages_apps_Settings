@@ -26,6 +26,7 @@ import androidx.preference.Preference
 import com.android.internal.app.PlatLogoActivity
 import com.android.settings.R
 import com.android.settings.Utils
+import com.android.settings.contract.TAG_DEVICE_STATE_PREFERENCE
 import com.android.settingslib.RestrictedLockUtils
 import com.android.settingslib.RestrictedLockUtilsInternal
 import com.android.settingslib.metadata.PreferenceMetadata
@@ -47,7 +48,10 @@ class FirmwareVersionDetailPreference :
     override val title: Int
         get() = R.string.firmware_version
 
-    override fun isIndexable(context: Context) = false
+    override val indexable
+        get() = false
+
+    override fun tags(context: Context) = arrayOf(TAG_DEVICE_STATE_PREFERENCE)
 
     override fun intent(context: Context): Intent? =
         Intent(Intent.ACTION_MAIN)

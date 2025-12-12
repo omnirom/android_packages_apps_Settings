@@ -24,6 +24,7 @@ import androidx.preference.PreferenceScreen;
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 
+// LINT.IfChange
 /** Preference controller that controls the text content of Flash Notifications intro. */
 public class FlashNotificationsIntroPreferenceController extends BasePreferenceController {
 
@@ -49,3 +50,4 @@ public class FlashNotificationsIntroPreferenceController extends BasePreferenceC
         }
     }
 }
+// LINT.ThenChange(/src/com/android/settings/accessibility/flashnotifications/ui/FlashNotificationsTopIntroPreference.kt)

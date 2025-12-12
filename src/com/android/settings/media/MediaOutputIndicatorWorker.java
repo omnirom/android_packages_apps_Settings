@@ -34,7 +34,6 @@ import androidx.annotation.Nullable;
 import com.android.settings.bluetooth.Utils;
 import com.android.settings.slices.SliceBackgroundWorker;
 import com.android.settingslib.bluetooth.BluetoothCallback;
-import com.android.settingslib.bluetooth.LocalBluetoothLeBroadcast;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
 import com.android.settingslib.media.LocalMediaManager;
 import com.android.settingslib.media.MediaDevice;
@@ -166,30 +165,6 @@ public class MediaOutputIndicatorWorker extends SliceBackgroundWorker implements
 
     public String getPackageName() {
         return mPackageName;
-    }
-
-    /** Check if this device supports LE Audio Broadcast feature */
-    public boolean isBroadcastSupported() {
-        if (mLocalBluetoothManager == null) {
-            Log.e(TAG, "isBroadcastSupported: Bluetooth is not supported on this device");
-            return false;
-        }
-        LocalBluetoothLeBroadcast broadcast =
-                mLocalBluetoothManager.getProfileManager().getLeAudioBroadcastProfile();
-        return broadcast != null ? true : false;
-    }
-
-    public boolean isDeviceBroadcasting() {
-        if (mLocalBluetoothManager == null) {
-            Log.e(TAG, "isDeviceBroadcasting: Bluetooth is not supported on this device");
-            return false;
-        }
-        LocalBluetoothLeBroadcast broadcast =
-                mLocalBluetoothManager.getProfileManager().getLeAudioBroadcastProfile();
-        if (broadcast == null) {
-            return false;
-        }
-        return broadcast.isEnabled(null);
     }
 
     private class DevicesChangedBroadcastReceiver extends BroadcastReceiver {

@@ -33,12 +33,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
-import android.app.Flags;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Bundle;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.provider.Settings;
 
@@ -70,7 +68,6 @@ import org.robolectric.shadows.ShadowLooper;
 import java.util.List;
 
 @RunWith(RobolectricTestRunner.class)
-@EnableFlags(Flags.FLAG_MODES_UI)
 public class ZenModeFragmentBaseTest {
 
     private static final Uri SETTINGS_URI = Settings.Global.getUriFor(
@@ -210,6 +207,37 @@ public class ZenModeFragmentBaseTest {
             assertThat(preference.getSummary()).isEqualTo("Original");
             assertThat(fragment.mShowsName.getZenMode()).isSameInstanceAs(notUpdatedMode);
             verify(fragment.mShowsName, never()).updateState(any(), same(notUpdatedMode));
+        });
+
+        scenario.close();
+    }
+
+    @Test
+    public void fragment_onModeUpdatedWhilePaused_updatesControllers() {
+        ZenMode originalMode = new TestModeBuilder().setId("id").setName("Original").build();
+        when(mBackend.getMode("id")).thenReturn(originalMode);
+
+        // Fragment starts, loads mode data.
+        FragmentScenario<TestableFragment> scenario = createScenario("id");
+        scenario.moveToState(State.RESUMED).onFragment(fragment -> {
+            Preference preference = fragment.requirePreference("pref_name");
+            assertThat(preference.getSummary()).isEqualTo("Original");
+            verify(fragment.mShowsName, times(1)).updateState(any(), eq(originalMode));
+        });
+
+        // Fragment is paused (but not stopped).
+        scenario.moveToState(State.STARTED).onFragment(fragment -> {
+            // Now, we get a message saying something changed.
+            ZenMode updatedMode = new TestModeBuilder().setId("id").setName("Updated").build();
+            when(mBackend.getMode("id")).thenReturn(updatedMode);
+            getSettingsContentObservers(fragment).stream().findFirst().get()
+                    .dispatchChange(false, SETTINGS_URI);
+            ShadowLooper.idleMainLooper();
+
+            // The screen was updated, and only updated once.
+            Preference preference = fragment.requirePreference("pref_name");
+            assertThat(preference.getSummary()).isEqualTo("Updated");
+            verify(fragment.mShowsName, times(1)).updateState(any(), eq(updatedMode));
         });
 
         scenario.close();

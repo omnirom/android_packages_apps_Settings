@@ -315,6 +315,10 @@
     <item msgid="7397961711906421599">"ಮಧ್ಯಮ"</item>
     <item msgid="4079132024502041928">"ದೀರ್ಘ"</item>
   </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"DHCP"</item>
+    <item msgid="4425163520864432692">"ಸ್ಟ್ಯಾಟಿಕ್"</item>
+  </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"ಡಿಫಾಲ್ಟ್"</item>
     <item msgid="4234707448428002595">"Sans-serif"</item>
@@ -359,17 +363,13 @@
     <item msgid="6485511780196327736">"ಇತರೆ ಆ್ಯಪ್‌ಗಳಲ್ಲೂ ರನ್ ಆಗುತ್ತಿದೆ"</item>
     <item msgid="3605616699204153590">"ನ್ಯಾವಿಗೇಷನ್ ಬಾರ್"</item>
   </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"ಬಟನ್"</item>
-    <item msgid="6922258575853746220">"ಗೆಸ್ಚರ್"</item>
-  </string-array>
   <string-array name="accessibility_button_size_selector_titles">
     <item msgid="7482952318152486459">"ಸಣ್ಣದು"</item>
     <item msgid="1666628329913333563">"ದೊಡ್ಡದು"</item>
   </string-array>
   <string-array name="vpn_proxy_settings">
     <item msgid="7165538292837266997">"ಯಾವುದೂ ಇಲ್ಲ"</item>
-    <item msgid="2397017538263427575">"ಹಸ್ತಚಾಲಿತ"</item>
+    <item msgid="2397017538263427575">"ಮ್ಯಾನುವಲ್"</item>
   </string-array>
   <string-array name="vpn_states">
     <item msgid="2262719249581510939">"ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಲಾಗಿದೆ"</item>
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"ಗಡಿಯಾರ"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"ಯಾವುದೂ ಅಲ್ಲ"</item>
+    <item msgid="321837941231023175">"ಮುಖಪುಟ"</item>
+    <item msgid="953234843613969792">"ಇತ್ತೀಚಿನ ಆ್ಯಪ್‌ಗಳು"</item>
+    <item msgid="1713942773283586136">"ನೋಟಿಫಿಕೇಶನ್‌ಗಳು"</item>
+    <item msgid="5687603742365489342">"ತ್ವರಿತ ಸೆಟ್ಟಿಂಗ್‍ಗಳು"</item>
+    <item msgid="5454862951059393431">"ಲಾಕ್‌ಸ್ಕ್ರೀನ್"</item>
   </string-array>
 </resources>

@@ -307,13 +307,13 @@
     <!-- Introduction description message shown in fingerprint enrollment introduction screen in setup wizard when asking for parental consent. [CHAR LIMIT=NONE] -->
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_4" product="desktop">You and your child can delete their fingerprint images and model, or turn off Fingerprint Unlock at any time in Settings. Fingerprint images and models are stored on the device until they\u2019re deleted.</string>
     <!-- Introduction description message shown in fingerprint enrollment introduction screen in setup wizard. [CHAR LIMIT=NONE] -->
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="default">Your phone can be unlocked when you don\u2019t intend to, like if someone holds it up to your finger.</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="default">Your phone can be unlocked when you don\u2019t intend to, like if someone holds it up to your finger</string>
     <!-- Introduction description message shown in fingerprint enrollment introduction screen in setup wizard. [CHAR LIMIT=NONE] -->
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="tablet">Your tablet can be unlocked when you don\u2019t intend to, like if someone holds it up to your finger.</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="tablet">Your tablet can be unlocked when you don\u2019t intend to, like if someone holds it up to your finger</string>
     <!-- Introduction description message shown in fingerprint enrollment introduction screen in setup wizard. [CHAR LIMIT=NONE] -->
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="device">Your device can be unlocked when you don\u2019t intend to, like if someone holds it up to your finger.</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="device">Your device can be unlocked when you don\u2019t intend to, like if someone holds it up to your finger</string>
     <!-- Introduction description message shown in fingerprint enrollment introduction screen in setup wizard. [CHAR LIMIT=NONE] -->
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="desktop">Your device can be unlocked when you don\u2019t intend to, like if someone holds it up to your finger.</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="desktop">Your device can be unlocked when you don\u2019t intend to, like if someone holds it up to your finger</string>
     <!-- Introduction description message shown in fingerprint enrollment introduction screen in setup wizard when asking for parental consent. [CHAR LIMIT=NONE] -->
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_5" product="default">Your child\u2019s phone can be unlocked when they don\u2019t intend to, like if someone holds it up to their finger.</string>
     <!-- Introduction description message shown in fingerprint enrollment introduction screen in setup wizard when asking for parental consent. [CHAR LIMIT=NONE] -->
@@ -779,12 +779,6 @@
     <string name="accessibility_daltonizer_about_intro_text" product="tablet">Adjust how colors display on your tablet</string>
     <!-- Intro for color correction settings screen to control turning on/off the feature entirely. [CHAR LIMIT=NONE] -->
     <string name="accessibility_daltonizer_about_intro_text" product="desktop">Adjust how colors display on your device</string>
-    <!-- Summary for the accessibility preference to configure Reduce Brightness feature. [CHAR LIMIT=NONE] -->
-    <string name="reduce_bright_colors_preference_summary" product="default">Dim screen beyond your phone\u2019s minimum brightness</string>
-    <!-- Summary for the accessibility preference to configure Reduce Brightness feature. [CHAR LIMIT=NONE] -->
-    <string name="reduce_bright_colors_preference_summary" product="tablet">Dim screen beyond your tablet\u2019s minimum brightness</string>
-    <!-- Summary for the accessibility preference to configure Reduce Brightness feature. [CHAR LIMIT=NONE] -->
-    <string name="reduce_bright_colors_preference_summary" product="desktop">Dim screen beyond your device\u2019s minimum brightness</string>
     <!-- Subtitle that describes Reduce Brightness. [CHAR LIMIT=NONE] -->
     <string name="reduce_bright_colors_preference_subtitle" product="default">
         <![CDATA[Extra dim can be helpful when:
@@ -1005,6 +999,57 @@
     <!-- Description for using device controls feature with a locked tablet [CHAR LIMIT=NONE] -->
     <string name="lockscreen_trivial_controls_summary" product="desktop">Without unlocking your device</string>
 
+    <!-- Title of toggle to enable or disable device supervision on a phone [CHAR LIMIT=60] -->
+    <string name="device_supervision_switch_title" product="default">Controls for this phone</string>
+    <!-- Title of toggle to enable or disable device supervision on a tablet [CHAR LIMIT=60] -->
+    <string name="device_supervision_switch_title" product="tablet">Controls for this tablet</string>
+    <!-- Title of toggle to enable or disable device supervision on a desktop device [CHAR LIMIT=60] -->
+    <string name="device_supervision_switch_title" product="desktop">Controls for this device</string>
+
+    <!-- Subheading on activity to choose a PIN for supervision setup on a phone [CHAR LIMIT=NONE] -->
+    <string name="supervision_pin_length_message" product="default">{count, plural,
+        =1      {Enter a PIN with at least # digit. You\u2019ll use it to manage controls on this phone.}
+        other   {Enter a PIN with at least # digits. You\u2019ll use it to manage controls on this phone.}
+        }</string>
+    <!-- Subheading on activity to choose a PIN for supervision setup on a tablet [CHAR LIMIT=NONE] -->
+    <string name="supervision_pin_length_message" product="tablet">{count, plural,
+        =1      {Enter a PIN with at least # digit. You\u2019ll use it to manage controls on this tablet.}
+        other   {Enter a PIN with at least # digits. You\u2019ll use it to manage controls on this tablet.}
+        }</string>
+    <!-- Subheading on activity to choose a PIN for supervision setup on a desktop device [CHAR LIMIT=NONE] -->
+    <string name="supervision_pin_length_message" product="desktop">{count, plural,
+        =1      {Enter a PIN with at least # digit. You\u2019ll use it to manage controls on this device.}
+        other   {Enter a PIN with at least # digits. You\u2019ll use it to manage controls on this device.}
+        }</string>
+
+    <!-- Message in dialog that informs the user that they need to disable supervision before deleting the PIN [CHAR LIMIT=NONE] -->
+    <string name="supervision_delete_pin_supervision_enabled_message" product="default">Your parental controls PIN is shared across users. To delete your PIN, controls using this PIN must be off for all users on this phone.</string>
+    <!-- Message in dialog that informs the user that they need to disable supervision before deleting the PIN [CHAR LIMIT=NONE] -->
+    <string name="supervision_delete_pin_supervision_enabled_message" product="tablet">Your parental controls PIN is shared across users. To delete your PIN, controls using this PIN must be off for all users on this tablet.</string>
+    <!-- Message in dialog that informs the user that they need to disable supervision before deleting the PIN [CHAR LIMIT=NONE] -->
+    <string name="supervision_delete_pin_supervision_enabled_message" product="desktop">Your parental controls PIN is shared across users. To delete your PIN, controls using this PIN must be off for all users on this device.</string>
+
+    <!-- Message in dialog that confirms whether user wants to delete their supervision PIN [CHAR LIMIT=NONE] -->
+    <string name="supervision_delete_pin_confirm_message" product="default">Your parental controls PIN will be deleted permanently. Any controls you set up for users on this phone using this PIN will be turned off.</string>
+    <!-- Message in dialog that confirms whether user wants to delete their supervision PIN [CHAR LIMIT=NONE] -->
+    <string name="supervision_delete_pin_confirm_message" product="tablet">Your parental controls PIN will be deleted permanently. Any controls you set up for users on this tablet using this PIN will be turned off.</string>
+    <!-- Message in dialog that confirms whether user wants to delete their supervision PIN [CHAR LIMIT=NONE] -->
+    <string name="supervision_delete_pin_confirm_message" product="desktop">Your parental controls PIN will be deleted permanently. Any controls you set up for users on this device using this PIN will be turned off.</string>
+
+    <!-- Footer message on device supervision pin management screen on a phone [CHAR LIMIT=NONE] -->
+    <string name="device_supervision_pin_management_footer" product="default">Your parental controls PIN is the same for all users on this phone</string>
+    <!-- Footer message on device supervision pin management screen on a tablet [CHAR LIMIT=NONE] -->
+    <string name="device_supervision_pin_management_footer" product="tablet">Your parental controls PIN is the same for all users on this tablet</string>
+    <!-- Footer message on device supervision pin management screen on a desktop device [CHAR LIMIT=NONE] -->
+    <string name="device_supervision_pin_management_footer" product="desktop">Your parental controls PIN is the same for all users on this device</string>
+
+    <!-- Message in dialog that informs the user that controls cannot be enabled on a device with multiple profiles. [CHAR LIMIT=NONE] -->
+    <string name="supervision_multi_profile_error_message" product="default">Because there are multiple profiles on this phone, parental controls can\u2019t be turned on.</string>
+    <!-- Message in dialog that informs the user that controls cannot be enabled on a device with multiple profiles. [CHAR LIMIT=NONE] -->
+    <string name="supervision_multi_profile_error_message" product="tablet">Because there are multiple profiles on this tablet, parental controls can\u2019t be turned on.</string>
+    <!-- Message in dialog that informs the user that controls cannot be enabled on a device with multiple profiles. [CHAR LIMIT=NONE] -->
+    <string name="supervision_multi_profile_error_message" product="desktop">Because there are multiple profiles on this device, parental controls can\u2019t be turned on.</string>
+
     <!-- Accessibility summary text for auto rotate [CHAR LIMIT=NONE] -->
     <string name="auto_rotate_summary_a11y" product="default">When you move your phone between portrait and landscape</string>
     <!-- Accessibility summary text for auto rotate [CHAR LIMIT=NONE] -->
@@ -1058,4 +1103,8 @@
     <string name="audio_sharing_confirm_dialog_content_with_link" product="tablet">To start sharing audio, first connect LE Audio headphones to your tablet. <annotation id="link">Learn more about compatible devices</annotation></string>
     <string name="audio_sharing_confirm_dialog_content_with_link" product="device">To start sharing audio, first connect LE Audio headphones to your device. <annotation id="link">Learn more about compatible devices</annotation></string>
     <string name="audio_sharing_confirm_dialog_content_with_link" product="desktop">To start sharing audio, first connect LE Audio headphones to your device. <annotation id="link">Learn more about compatible devices</annotation></string>
+
+    <!-- Summary for Network and Internet settings, explaining it contains mobile, wifi setting and data usage settings [CHAR LIMIT=NONE]-->
+    <string name="network_dashboard_summary_mobile" product="default">Mobile, Wi\u2011Fi, hotspot</string>
+    <string name="network_dashboard_summary_mobile" product="desktop">Wi\u2011Fi, mobile, hotspot</string>
 </resources>

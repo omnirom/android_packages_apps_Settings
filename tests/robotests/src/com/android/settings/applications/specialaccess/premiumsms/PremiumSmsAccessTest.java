@@ -45,6 +45,8 @@ import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settings.testutils.shadow.ShadowRestrictedLockUtilsInternal;
 import com.android.settingslib.RestrictedDropDownPreference;
 import com.android.settingslib.applications.ApplicationsState;
+import com.android.settingslib.widget.SettingsThemeHelper;
+import com.android.settingslib.widget.ZeroStatePreference;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -171,6 +173,25 @@ public class PremiumSmsAccessTest {
 
         mFragment.onRebuildComplete(createAppEntries(testPkg));
         verify(preferenceScreen).addPreference(any(RestrictedDropDownPreference.class));
+    }
+
+    @Test
+    public void onRebuildComplete_noApp() {
+        if (!SettingsThemeHelper.isExpressiveTheme(mContext)) {
+            return;
+        }
+        mFragment = spy(mFragment);
+        mContext = spy(mContext);
+
+        PreferenceManager preferenceManager = new PreferenceManager(mContext);
+        PreferenceScreen preferenceScreen = spy(preferenceManager.createPreferenceScreen(mContext));
+        doReturn(mContext).when(preferenceScreen).getContext();
+        doReturn(preferenceManager).when(mFragment).getPreferenceManager();
+        doReturn(preferenceScreen).when(mFragment).getPreferenceScreen();
+
+        mFragment.onRebuildComplete(null);
+
+        verify(preferenceScreen).addPreference(any(ZeroStatePreference.class));
     }
 
     private ArrayList<ApplicationsState.AppEntry> createAppEntries(String... packageNames) {

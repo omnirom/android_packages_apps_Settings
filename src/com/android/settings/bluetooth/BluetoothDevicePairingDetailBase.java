@@ -45,7 +45,7 @@ import com.android.settings.connecteddevice.audiosharing.AudioSharingIncompatibl
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settingslib.bluetooth.BluetoothUtils;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
-import com.android.settingslib.bluetooth.HearingAidStatsLogUtils;
+import com.android.settingslib.bluetooth.hearingdevices.metrics.HearingDeviceStatsLogUtils;
 import com.android.settingslib.utils.ThreadUtils;
 
 import com.google.common.collect.ImmutableList;
@@ -202,7 +202,7 @@ public abstract class BluetoothDevicePairingDetailBase extends DeviceListPrefere
                     .getAttribution(getActivity());
             final int bondEntry = AccessibilityStatsLogUtils.convertToHearingAidInfoBondEntry(
                     pageId);
-            HearingAidStatsLogUtils.setBondEntryForDevice(bondEntry, cachedDevice);
+            HearingDeviceStatsLogUtils.setBondEntryForDevice(bondEntry, cachedDevice);
         } else if (bondState == BluetoothDevice.BOND_NONE) {
             if (mShouldTriggerShareThenPairFlow && cachedDevice != null) {
                 BluetoothDevice device = cachedDevice.getDevice();

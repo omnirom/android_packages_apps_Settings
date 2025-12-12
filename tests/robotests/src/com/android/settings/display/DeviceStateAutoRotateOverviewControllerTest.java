@@ -22,10 +22,12 @@ import static com.android.settings.testutils.DeviceStateAutoRotateSettingTestUti
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.hardware.devicestate.DeviceStateManager;
 
 import com.android.settings.testutils.shadow.ShadowRotationPolicy;
 
@@ -44,6 +46,8 @@ import org.robolectric.annotation.Config;
 public class DeviceStateAutoRotateOverviewControllerTest {
     @Mock
     private Resources mResources;
+    @Mock
+    private DeviceStateManager mDeviceStateManager;
     private DeviceStateAutoRotateOverviewController mController;
 
     @Before
@@ -51,6 +55,7 @@ public class DeviceStateAutoRotateOverviewControllerTest {
         MockitoAnnotations.initMocks(this);
         Context context = Mockito.spy(RuntimeEnvironment.application);
         when(context.getResources()).thenReturn(mResources);
+        doReturn(mDeviceStateManager).when(context).getSystemService(DeviceStateManager.class);
 
         mController = new DeviceStateAutoRotateOverviewController(
                 context, "device_state_auto_rotate");
@@ -59,7 +64,7 @@ public class DeviceStateAutoRotateOverviewControllerTest {
     @Test
     public void getAvailabilityStatus_rotationAndDeviceStateRotationEnabled_returnsAvailable() {
         ShadowRotationPolicy.setRotationSupported(true);
-        setDeviceStateRotationLockEnabled(true, mResources);
+        setDeviceStateRotationLockEnabled(/* enable= */ true, mResources, mDeviceStateManager);
 
         int availability = mController.getAvailabilityStatus();
 
@@ -69,7 +74,7 @@ public class DeviceStateAutoRotateOverviewControllerTest {
     @Test
     public void getAvailabilityStatus_rotationNotSupported_returnsUnsupportedOnDevice() {
         ShadowRotationPolicy.setRotationSupported(false);
-        setDeviceStateRotationLockEnabled(true, mResources);
+        setDeviceStateRotationLockEnabled(/* enable= */ true, mResources, mDeviceStateManager);
 
         int availability = mController.getAvailabilityStatus();
 
@@ -79,7 +84,7 @@ public class DeviceStateAutoRotateOverviewControllerTest {
     @Test
     public void getAvailabilityStatus_deviceStateRotationNotSupported_returnsUnsupportedOnDevice() {
         ShadowRotationPolicy.setRotationSupported(true);
-        setDeviceStateRotationLockEnabled(false, mResources);
+        setDeviceStateRotationLockEnabled(/* enable= */ false, mResources, mDeviceStateManager);
 
         int availability = mController.getAvailabilityStatus();
 

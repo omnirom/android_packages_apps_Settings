@@ -29,7 +29,8 @@ interface FooterPreferenceMetadata : PreferenceMetadata {
     override val icon: Int
         get() = R.drawable.settingslib_ic_info_outline_24
 
-    override fun isIndexable(context: Context) = false
+    override val indexable
+        get() = false
 }
 
 /** Binding for [FooterPreferenceMetadata]. */
@@ -41,10 +42,5 @@ interface FooterPreferenceBinding : PreferenceBinding {
         // In FooterPreference, setSummary is redirected to setTitle, and title is
         // reset unexpectedly. So rebind the title again.
         preference.title = metadata.getPreferenceTitle(preference.context)
-        preference.isSelectable = false
-    }
-
-    companion object {
-        @JvmStatic val INSTANCE = object : FooterPreferenceBinding {}
     }
 }

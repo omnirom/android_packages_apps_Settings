@@ -21,12 +21,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.settings.R;
+import com.android.settings.flags.Flags;
 
 import com.google.common.collect.ImmutableList;
 
@@ -89,8 +91,15 @@ public class AudioSharingDeviceAdapter extends RecyclerView.Adapter<RecyclerView
                 mButtonView.setOnClickListener(
                         v -> mOnClickListener.onClick(mDevices.get(position)));
                 if (position == 0) {
-                    mButtonView.setBackgroundResource(
-                            com.android.settingslib.R.drawable.audio_sharing_rounded_bg_ripple_top);
+                    if (Flags.enableBluetoothSettingsExpressiveDesignReadOnly()) {
+                        MarginLayoutParams params =
+                                (MarginLayoutParams) mButtonView.getLayoutParams();
+                        params.topMargin = 0;
+                    } else {
+                        mButtonView.setBackgroundResource(
+                                com.android.settingslib.R.drawable
+                                        .audio_sharing_rounded_bg_ripple_top);
+                    }
                 }
             } else {
                 Log.w(TAG, "bind view skipped due to button view is null");

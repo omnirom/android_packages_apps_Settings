@@ -315,6 +315,10 @@
     <item msgid="7397961711906421599">"Средняя задержка"</item>
     <item msgid="4079132024502041928">"Длительная задержка"</item>
   </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"DHCP"</item>
+    <item msgid="4425163520864432692">"Статический"</item>
+  </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"По умолчанию"</item>
     <item msgid="4234707448428002595">"Без засечек"</item>
@@ -353,15 +357,11 @@
     <item msgid="5410164687403735103">"Черный на белом"</item>
     <item msgid="1119043472912497241">"Желтый на черном"</item>
     <item msgid="2836895041823327816">"Желтый на синем"</item>
-    <item msgid="747238414788976867">"Специальный"</item>
+    <item msgid="747238414788976867">"Свой стиль"</item>
   </string-array>
   <string-array name="accessibility_button_location_selector_titles">
     <item msgid="6485511780196327736">"Поверх других приложений"</item>
     <item msgid="3605616699204153590">"Панель навигации"</item>
-  </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"Кнопку"</item>
-    <item msgid="6922258575853746220">"Жест"</item>
   </string-array>
   <string-array name="accessibility_button_size_selector_titles">
     <item msgid="7482952318152486459">"Маленькая кнопка"</item>
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"Часы"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"Нет"</item>
+    <item msgid="321837941231023175">"Главный экран"</item>
+    <item msgid="953234843613969792">"Недавние приложения"</item>
+    <item msgid="1713942773283586136">"Уведомления"</item>
+    <item msgid="5687603742365489342">"Быстрые настройки"</item>
+    <item msgid="5454862951059393431">"Блокировка экрана"</item>
   </string-array>
 </resources>

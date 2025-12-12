@@ -16,12 +16,17 @@
 
 package com.android.settings.accessibility;
 
+import static com.android.settings.flags.Flags.FLAG_CATALYST_SETTINGS_SEARCH;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;
+import android.platform.test.annotations.RequiresFlagsDisabled;
+import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
+import android.provider.SearchIndexableResource;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -77,5 +82,24 @@ public class ColorAndMotionFragmentTest {
                         R.xml.accessibility_color_and_motion);
 
         assertThat(keys).containsAtLeastElementsIn(niks);
+    }
+
+    @RequiresFlagsDisabled(FLAG_CATALYST_SETTINGS_SEARCH)
+    @Test
+    public void getXmlResourcesToIndex_returnXmlResource() {
+        List<SearchIndexableResource> indexableResources =
+                ColorAndMotionFragment.SEARCH_INDEX_DATA_PROVIDER.getXmlResourcesToIndex(
+                        mContext, true);
+
+        assertThat(indexableResources.size()).isEqualTo(1);
+        assertThat(indexableResources.getFirst().xmlResId).isEqualTo(
+                R.xml.accessibility_color_and_motion);
+    }
+
+    @RequiresFlagsEnabled(FLAG_CATALYST_SETTINGS_SEARCH)
+    @Test
+    public void getXmlResourcesToIndex_returnNull() {
+        assertThat(ColorAndMotionFragment.SEARCH_INDEX_DATA_PROVIDER.getXmlResourcesToIndex(
+                mContext, true)).isNull();
     }
 }

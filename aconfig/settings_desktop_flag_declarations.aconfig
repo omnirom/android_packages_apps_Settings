@@ -2,11 +2,39 @@ package: "com.android.settings.flags"
 container: "system_ext"
 
 flag {
-    name: "settings_search_result_deep_link_in_same_task"
-    namespace: "desktop_personalization"
-    description: "Show the search result deep link in the same task (same window)"
-    bug: "381127948"
+    name: "enable_pattern_input_click_support"
+    namespace: "desktop_oobe"
+    description: "Feature flag for click support in pattern input."
+    bug: "403345215"
+}
+
+flag {
+    name: "hide_user_list_for_non_admins"
+    namespace: "desktop_users_and_accounts"
+    description: "Controls whether to hide the user list in Settings for non-admins."
+    bug: "406686772"
+}
+
+flag {
+    name: "setupfingerprintenrollfindsensor_skipdialog_theme"
+    namespace: "desktop_oobe"
+    description: "Bugfix flag for theme fix in SetupFingerprintEnrollFindSensor SkipDialog."
+    bug: "432304017"
     metadata {
         purpose: PURPOSE_BUGFIX
     }
+}
+
+flag {
+    name: "show_user_details_settings_for_self"
+    namespace: "desktop_users_and_accounts"
+    description: " Show the user details settings for own account."
+    bug: "425579387"
+}
+
+flag {
+    name: "show_add_users_from_signin_toggle"
+    namespace: "desktop_users_and_accounts"
+    description: "Controls whether to show the 'add users from the sign-in screen' toggle in Settings."
+    bug: "391862614"
 }

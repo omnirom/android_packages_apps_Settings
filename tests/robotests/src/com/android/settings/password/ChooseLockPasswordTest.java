@@ -31,6 +31,7 @@ import static android.view.WindowManager.LayoutParams.FLAG_SECURE;
 
 import static com.android.internal.widget.LockPatternUtils.PASSWORD_TYPE_KEY;
 import static com.android.settings.password.ChooseLockGeneric.CONFIRM_CREDENTIALS;
+import static com.android.settings.password.ChooseLockSettingsHelper.EXTRA_KEY_USE_EXPRESSIVE_STYLE;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -46,6 +47,8 @@ import android.app.admin.PasswordPolicy;
 import android.content.Intent;
 import android.os.Looper;
 import android.os.UserHandle;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -62,11 +65,13 @@ import com.android.settings.testutils.shadow.ShadowDevicePolicyManager;
 import com.android.settings.testutils.shadow.ShadowLockPatternUtils;
 import com.android.settings.testutils.shadow.ShadowUtils;
 import com.android.settings.widget.ScrollToParentEditText;
+import com.android.settingslib.widget.theme.flags.Flags;
 
 import com.google.android.setupdesign.GlifLayout;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -82,6 +87,9 @@ import org.robolectric.shadows.ShadowDrawable;
         ShadowDevicePolicyManager.class,
 })
 public class ChooseLockPasswordTest {
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
     @Before
     public void setUp() {
         SettingsShadowResources.overrideResource(
@@ -92,6 +100,20 @@ public class ChooseLockPasswordTest {
     public void tearDown() {
         SettingsShadowResources.reset();
         ShadowLockPatternUtils.reset();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
+    public void intentBuilder_setPassword_shouldAddExtras_referGlifExpressiveFlag() {
+        Intent intent = new IntentBuilder(application)
+                .setPassword(LockscreenCredential.createPassword("password"))
+                .setPasswordType(DevicePolicyManager.PASSWORD_QUALITY_NUMERIC)
+                .setUserId(123)
+                .build();
+
+        assertWithMessage("EXTRA_KEY_USE_EXPRESSIVE_STYLE").that(
+                intent.getBooleanExtra(EXTRA_KEY_USE_EXPRESSIVE_STYLE, false))
+                .isFalse();
     }
 
     @Test
@@ -534,6 +556,26 @@ public class ChooseLockPasswordTest {
         fragment.updateUi();
         shadowOf(Looper.getMainLooper()).idle();
         TextView textView = (TextView)view.getLayoutManager().findViewByPosition(0);
+
+        assertThat(textView.getCurrentTextColor()).isEqualTo(textColorPrimary);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
+    public void defaultMessage_shouldBeInTextColorPrimary_referGlifExpressiveFlag() {
+        final ChooseLockPassword passwordActivity = setupActivityWithPinTypeAndDefaultPolicy();
+
+        final ChooseLockPasswordFragment fragment = getChooseLockPasswordFragment(passwordActivity);
+        final ScrollToParentEditText passwordEntry = passwordActivity.findViewById(
+                R.id.password_entry);
+        final RecyclerView view = (RecyclerView) fragment.getPasswordRequirementsView();
+        @ColorInt final int textColorPrimary = Utils.getColorAttrDefaultColor(passwordActivity,
+                android.R.attr.textColorPrimary);
+
+        passwordEntry.setText("");
+        fragment.updateUi();
+        shadowOf(Looper.getMainLooper()).idle();
+        TextView textView = (TextView) view.getLayoutManager().findViewByPosition(0);
 
         assertThat(textView.getCurrentTextColor()).isEqualTo(textColorPrimary);
     }

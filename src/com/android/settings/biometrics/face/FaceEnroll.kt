@@ -19,10 +19,17 @@ package com.android.settings.biometrics.face
 import android.app.ComponentCaller
 import android.content.Intent
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import com.android.settings.biometrics.BiometricEnrollBase.RESULT_FINISHED
+import com.android.settings.biometrics.BiometricEnrollBase.RESULT_SKIP
+import com.android.settings.biometrics.BiometricEnrollBase.RESULT_TIMEOUT
+import com.android.settings.biometrics.BiometricsOnboardingProto
 import com.android.settings.biometrics.combination.CombinedBiometricStatusUtils
+import com.android.settings.biometrics.metrics.BiometricsLogger
+import com.android.settings.biometrics.metrics.OnboardingEvent
 import com.android.settings.overlay.FeatureFactory.Companion.featureFactory
 
 class FaceEnroll: AppCompatActivity() {
@@ -38,13 +45,22 @@ class FaceEnroll: AppCompatActivity() {
     private val enrollActivityProvider: FaceEnrollActivityClassProvider
         get() = featureFactory.faceFeatureProvider.enrollActivityClassProvider
 
+    @VisibleForTesting
+    var launchedFromProvider: () -> String? = { launchedFromPackage }
+
     private var isLaunched = false
+    private var startTimeMillis: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState != null) {
             isLaunched = savedInstanceState.getBoolean(KEY_IS_LAUNCHED, isLaunched)
+            startTimeMillis = savedInstanceState.getLong(KEY_START_TIME, 0)
+        }
+
+        if (startTimeMillis <= 0) {
+            startTimeMillis = SystemClock.elapsedRealtime()
         }
 
         if (!isLaunched) {
@@ -56,6 +72,11 @@ class FaceEnroll: AppCompatActivity() {
             Log.d("FaceEnroll", "forward to $nextActivityClass")
             val nextIntent = Intent(this, nextActivityClass)
             nextIntent.putExtras(intent)
+
+            // drop extras that are not allowed from external packages before launching
+            if (launchedFromProvider() != packageName) {
+                nextIntent.removeExtra(Intent.EXTRA_USER_ID)
+            }
             startActivityForResult(nextIntent, 0)
 
             isLaunched = true
@@ -64,6 +85,7 @@ class FaceEnroll: AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putBoolean(KEY_IS_LAUNCHED, isLaunched)
+        outState.putLong(KEY_START_TIME, startTimeMillis)
         super.onSaveInstanceState(outState)
     }
 
@@ -80,11 +102,49 @@ class FaceEnroll: AppCompatActivity() {
             && resultCode != RESULT_FINISHED) {
             featureFactory.biometricsFeatureProvider.notifySafetyIssueActionLaunched()
         }
+        updateOnboardingEvent(resultCode, data)
         setResult(resultCode, data)
         finish()
     }
 
+    fun updateOnboardingEvent(resultCode: Int, data: Intent?) {
+        val event = getOnboardingEventFromIntent(data)
+        event?.let { ev ->
+            ev.resultCode =
+                if (resultCode == RESULT_OK || resultCode == RESULT_FINISHED)
+                    BiometricsOnboardingProto.OnboardingResult.RESULT_COMPLETED_VALUE
+                else if (resultCode == RESULT_CANCELED)
+                    BiometricsOnboardingProto.OnboardingResult.RESULT_CANCEL_VALUE
+                else if (resultCode == RESULT_SKIP)
+                    BiometricsOnboardingProto.OnboardingResult.RESULT_SKIP_VALUE
+                else if (resultCode == RESULT_TIMEOUT)
+                    BiometricsOnboardingProto.OnboardingResult.RESULT_TIMEOUT_VALUE
+                else
+                    BiometricsOnboardingProto.OnboardingResult.RESULT_UNKNOWN_VALUE
+            ev.duration = SystemClock.elapsedRealtime() - startTimeMillis
+            data?.putExtra(BiometricsLogger.EXTRA_BIOMETRICS_ONBOARDING_EVENT, ev)
+            featureFactory.biometricsFeatureProvider
+                .biometricsLogger?.logSettingsBiometricsOnboarding(ev)
+        }
+        if(BiometricsLogger.LOGGABLE) {
+            Log.d(
+                BiometricsLogger.TAG, "${javaClass.getSimpleName()}: " + " received event=" + event
+            )
+        }
+    }
+
+    private fun getOnboardingEventFromIntent(data: Intent?): OnboardingEvent? {
+        val logger = featureFactory.biometricsFeatureProvider.biometricsLogger
+        if (logger != null && data != null
+            && data.hasExtra(BiometricsLogger.EXTRA_BIOMETRICS_ONBOARDING_EVENT_BYTES)) {
+            return logger.messageByteArrayToEvent(
+                data.getByteArrayExtra(BiometricsLogger.EXTRA_BIOMETRICS_ONBOARDING_EVENT_BYTES))
+        }
+        return null
+    }
+
     private companion object {
         const val KEY_IS_LAUNCHED = "isLaunched"
+        const val KEY_START_TIME = "startTime"
     }
 }

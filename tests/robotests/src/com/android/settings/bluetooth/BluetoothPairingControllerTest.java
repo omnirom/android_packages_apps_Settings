@@ -29,7 +29,11 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcel;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
+import com.android.settings.flags.Flags;
 import com.android.settings.testutils.shadow.ShadowBluetoothAdapter;
 import com.android.settings.testutils.shadow.ShadowBluetoothUtils;
 import com.android.settings.testutils.shadow.ShadowDeviceConfig;
@@ -40,10 +44,13 @@ import com.android.settingslib.bluetooth.LocalBluetoothProfile;
 import com.android.settingslib.bluetooth.LocalBluetoothProfileManager;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -56,6 +63,9 @@ import java.util.List;
 @Config(shadows = {ShadowBluetoothAdapter.class, ShadowBluetoothUtils.class,
         ShadowDeviceConfig.class})
 public class BluetoothPairingControllerTest {
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
     private final BluetoothClass mBluetoothClass =
             createBtClass(BluetoothClass.Device.AUDIO_VIDEO_HANDSFREE);
 
@@ -65,7 +75,7 @@ public class BluetoothPairingControllerTest {
     private LocalBluetoothManager mLocalBluetoothManager;
     @Mock
     private LocalBluetoothProfileManager mLocalBluetoothProfileManager;
-    @Mock
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private BluetoothDevice mBluetoothDevice;
     @Mock
     private CachedBluetoothDevice mCachedDevice;
@@ -96,8 +106,6 @@ public class BluetoothPairingControllerTest {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
-
         mContext = RuntimeEnvironment.application;
         mShadowBluetoothAdapter = Shadow.extract(BluetoothAdapter.getDefaultAdapter());
         mShadowBluetoothAdapter.setEnabled(true);
@@ -181,6 +189,36 @@ public class BluetoothPairingControllerTest {
         // isProfileReady=false, isLeAudio=false
         mockIsProfileReady(false);
         mockIsLeAudio(false);
+
+        mBluetoothPairingController = createBluetoothPairingController();
+        mBluetoothPairingController.mockPbapClientProfile(mPbapLocalBluetoothProfile);
+
+        assertThat(mBluetoothPairingController.isContactSharingVisible()).isTrue();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_HIDE_PHONEBOOK_ACCESS_TOGGLE_FOR_WEARABLE_DEVICES_WHEN_PAIRING)
+    public void isContactSharingVisible_wearableDevice_flagEnabled_returnsFalse() {
+        // isProfileReady=false, isLeAudio=false
+        mockIsProfileReady(false);
+        mockIsLeAudio(false);
+        when(mBluetoothDevice.getBluetoothClass().getMajorDeviceClass())
+                .thenReturn(BluetoothClass.Device.Major.WEARABLE);
+
+        mBluetoothPairingController = createBluetoothPairingController();
+        mBluetoothPairingController.mockPbapClientProfile(mPbapLocalBluetoothProfile);
+
+        assertThat(mBluetoothPairingController.isContactSharingVisible()).isFalse();
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_HIDE_PHONEBOOK_ACCESS_TOGGLE_FOR_WEARABLE_DEVICES_WHEN_PAIRING)
+    public void isContactSharingVisible_wearableDevice_flagDisabled_returnsTrue() {
+        // isProfileReady=false, isLeAudio=false
+        mockIsProfileReady(false);
+        mockIsLeAudio(false);
+        when(mBluetoothDevice.getBluetoothClass().getMajorDeviceClass())
+                .thenReturn(BluetoothClass.Device.Major.WEARABLE);
 
         mBluetoothPairingController = createBluetoothPairingController();
         mBluetoothPairingController.mockPbapClientProfile(mPbapLocalBluetoothProfile);

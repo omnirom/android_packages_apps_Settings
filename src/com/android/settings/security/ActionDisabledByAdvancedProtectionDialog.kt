@@ -23,7 +23,6 @@ import android.security.advancedprotection.AdvancedProtectionManager.EXTRA_SUPPO
 import android.security.advancedprotection.AdvancedProtectionManager.EXTRA_SUPPORT_DIALOG_TYPE
 import android.security.advancedprotection.AdvancedProtectionManager.FEATURE_ID_DISALLOW_CELLULAR_2G
 import android.security.advancedprotection.AdvancedProtectionManager.FEATURE_ID_DISALLOW_INSTALL_UNKNOWN_SOURCES
-import android.security.advancedprotection.AdvancedProtectionManager.FEATURE_ID_DISALLOW_WEP
 import android.security.advancedprotection.AdvancedProtectionManager.FEATURE_ID_ENABLE_MTE
 import android.security.advancedprotection.AdvancedProtectionManager.SUPPORT_DIALOG_TYPE_BLOCKED_INTERACTION
 import android.security.advancedprotection.AdvancedProtectionManager.SUPPORT_DIALOG_TYPE_DISABLED_SETTING
@@ -75,11 +74,7 @@ class ActionDisabledByAdvancedProtectionDialog : SpaDialogWindowTypeActivity() {
                 }
             }
             SUPPORT_DIALOG_TYPE_BLOCKED_INTERACTION -> {
-                if (featureId == FEATURE_ID_DISALLOW_WEP) {
-                    R.string.disabled_by_advanced_protection_wep_action_message
-                } else {
-                    R.string.disabled_by_advanced_protection_action_message
-                }
+                R.string.disabled_by_advanced_protection_action_message
             }
             else -> defaultMessageId
         }
@@ -138,7 +133,6 @@ class ActionDisabledByAdvancedProtectionDialog : SpaDialogWindowTypeActivity() {
         const val TAG = "AdvancedProtectionDlg"
         val defaultMessageId = R.string.disabled_by_advanced_protection_action_message
         val featureIdsWithSettingOn = setOf(FEATURE_ID_DISALLOW_CELLULAR_2G, FEATURE_ID_ENABLE_MTE)
-        val featureIdsWithSettingOff =
-            setOf(FEATURE_ID_DISALLOW_WEP, FEATURE_ID_DISALLOW_INSTALL_UNKNOWN_SOURCES)
+        val featureIdsWithSettingOff = setOf(FEATURE_ID_DISALLOW_INSTALL_UNKNOWN_SOURCES)
     }
 }

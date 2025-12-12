@@ -33,8 +33,8 @@ import com.android.settings.core.InstrumentedPreferenceFragment;
 import com.android.settings.fuelgauge.batterytip.actions.BatteryTipAction;
 import com.android.settings.fuelgauge.batterytip.tips.BatteryTip;
 import com.android.settings.overlay.FeatureFactory;
-import com.android.settings.widget.TipCardPreference;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
+import com.android.settingslib.widget.BannerMessagePreference;
 
 import java.util.List;
 import java.util.Map;
@@ -55,8 +55,10 @@ public class BatteryTipPreferenceController extends BasePreferenceController {
     private Activity mActivity;
     private MetricsFeatureProvider mMetricsFeatureProvider;
     private boolean mNeedUpdate;
-    @VisibleForTesting TipCardPreference mCardPreference;
+
+    @VisibleForTesting BannerMessagePreference mCardPreference;
     @VisibleForTesting Context mPrefContext;
+
     InstrumentedPreferenceFragment mFragment;
 
     public BatteryTipPreferenceController(Context context, String preferenceKey) {
@@ -146,7 +148,8 @@ public class BatteryTipPreferenceController extends BasePreferenceController {
             return;
         }
         try {
-            List<BatteryTip> batteryTips = bundle.getParcelableArrayList(KEY_BATTERY_TIPS);
+            List<BatteryTip> batteryTips =
+                    bundle.getParcelableArrayList(KEY_BATTERY_TIPS, BatteryTip.class);
             updateBatteryTips(batteryTips);
         } catch (BadParcelableException e) {
             Log.e(TAG, "failed to invoke restoreInstanceState()", e);

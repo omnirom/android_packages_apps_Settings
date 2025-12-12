@@ -20,6 +20,8 @@ import android.provider.DeviceConfig;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import androidx.preference.Preference;
+
 /**
  * Preference controller for "Require Encryption"
  *
@@ -128,5 +130,13 @@ public class NullAlgorithmsPreferenceController extends TelephonyTogglePreferenc
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void updateState(Preference preference) {
+        super.updateState(preference);
+        if (preference != null) {
+            preference.setEnabled(!mIsAirplaneModeOn);
+        }
     }
 }

@@ -19,10 +19,9 @@
     xmlns:settings="http://schemas.android.com/apk/res-auto"
     android:title="@string/provider_network_settings_title">
 
-    <PreferenceCategory
+    <com.android.settingslib.widget.UntitledPreferenceCategory
         android:key="provider_model_sim_category"
         android:title="@string/summary_placeholder"
-        android:layout="@layout/preference_category_no_label"
         android:order="20"
         settings:controller="com.android.settings.network.NetworkProviderSimListController"/>
 

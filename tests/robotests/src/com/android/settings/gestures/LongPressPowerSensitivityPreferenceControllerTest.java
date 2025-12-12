@@ -29,8 +29,8 @@ import android.provider.Settings;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ApplicationProvider;
 
-import com.android.settings.widget.LabeledSeekBarPreference;
 import com.android.settingslib.testutils.shadow.ShadowInteractionJankMonitor;
+import com.android.settingslib.widget.SliderPreference;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +49,7 @@ public class LongPressPowerSensitivityPreferenceControllerTest {
 
     private Application mContext;
     private Resources mResources;
-    private LabeledSeekBarPreference mPreference;
+    private SliderPreference mPreference;
     private LongPressPowerSensitivityPreferenceController mController;
     private PreferenceScreen mScreen;
 
@@ -69,7 +69,7 @@ public class LongPressPowerSensitivityPreferenceControllerTest {
         when(mResources.getInteger(com.android.internal.R.integer.config_longPressOnPowerBehavior))
                 .thenReturn(5); // Default to Assistant
 
-        mPreference = new LabeledSeekBarPreference(mContext, null);
+        mPreference = new SliderPreference(mContext, null);
         mController = new LongPressPowerSensitivityPreferenceController(mContext,
                 KEY_LONG_PRESS_SENSITIVITY);
 
@@ -104,6 +104,11 @@ public class LongPressPowerSensitivityPreferenceControllerTest {
     public void setSliderPositionOutOfBounds_returnsFalse() {
         assertThat(mController.setSliderPosition(-1)).isFalse();
         assertThat(mController.setSliderPosition(10)).isFalse();
+    }
+
+    @Test
+    public void discreteSlider_hasIncrementOne() {
+        assertThat(mPreference.getSliderIncrement()).isEqualTo(1);
     }
 
     @Test

@@ -18,6 +18,7 @@ package com.android.settings.metrics
 
 import android.content.Context
 import com.android.settings.overlay.FeatureFactory
+import com.android.settingslib.core.instrumentation.Instrumentable
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider
 import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.PreferenceScreenMetadata
@@ -37,11 +38,14 @@ constructor(
         preference: PreferenceMetadata,
         value: Any?,
     ) {
-        if (preference !is PreferenceActionMetricsProvider) return
-        when (value) {
-            is Boolean ->
-                metricsFeatureProvider.action(context, preference.preferenceActionMetrics, value)
-            else -> {}
-        }
+        val metricsCategory =
+            (screen as? Instrumentable)?.metricsCategory ?: Instrumentable.METRICS_CATEGORY_UNKNOWN
+        val intValue =
+            when (value) {
+                is Boolean -> if (value == true) 1 else 0
+                is Int -> value
+                else -> return
+            }
+        metricsFeatureProvider.changed(metricsCategory, preference.key, intValue)
     }
 }

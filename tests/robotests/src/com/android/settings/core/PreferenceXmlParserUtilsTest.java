@@ -65,10 +65,16 @@ public class PreferenceXmlParserUtilsTest {
             throws IOException, XmlPullParserException {
         List<Bundle> metadata = PreferenceXmlParserUtils.extractMetadata(mContext,
                 R.xml.top_level_settings,
-                MetadataFlag.FLAG_NEED_KEY | MetadataFlag.FLAG_NEED_HIGHLIGHTABLE_MENU_KEY);
+                MetadataFlag.FLAG_NEED_KEY | MetadataFlag.FLAG_NEED_HIGHLIGHTABLE_MENU_KEY
+                        | MetadataFlag.FLAG_NEED_PREF_TYPE);
 
         assertThat(metadata).isNotEmpty();
         for (Bundle bundle : metadata) {
+            String type = bundle.getString(PreferenceXmlParserUtils.METADATA_PREF_TYPE);
+            // Ignore PreferenceCategory and UntitledPreferenceCategory
+            if (type == null || type.endsWith("PreferenceCategory")) {
+                continue;
+            }
             assertThat(bundle.getString(PreferenceXmlParserUtils.METADATA_KEY)).isNotNull();
             assertThat(bundle.getString(PreferenceXmlParserUtils.METADATA_HIGHLIGHTABLE_MENU_KEY))
                     .isNotNull();

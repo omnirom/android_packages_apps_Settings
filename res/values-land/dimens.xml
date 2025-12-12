@@ -29,8 +29,9 @@
     <dimen name="text_reading_preview_background_padding_horizontal_min_suw">24dp</dimen>
 
     <!-- Keyboard -->
-    <dimen name="keyboard_picker_margin">106dp</dimen>
+    <dimen name="keyboard_picker_margin">56dp</dimen>
 
-    <!-- Connected displays -->
-    <dimen name="display_topology_pane_margin">80dp</dimen>
+    <!-- VPN -->
+    <dimen name="vpn_dialog_max_height">212dp</dimen>
+    <dimen name="vpn_dialog_margin_bottom">8dp</dimen>
 </resources>

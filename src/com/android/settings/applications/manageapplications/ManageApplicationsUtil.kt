@@ -20,7 +20,6 @@ import android.content.Context
 import android.util.FeatureFlagUtils
 import com.android.settings.Settings.AlarmsAndRemindersActivity
 import com.android.settings.Settings.AppBatteryUsageActivity
-import com.android.settings.Settings.UserAspectRatioAppListActivity
 import com.android.settings.Settings.ChangeNfcTagAppsActivity
 import com.android.settings.Settings.ChangeWifiStateActivity
 import com.android.settings.Settings.ClonedAppsListActivity
@@ -38,16 +37,14 @@ import com.android.settings.Settings.OverlaySettingsActivity
 import com.android.settings.Settings.StorageUseActivity
 import com.android.settings.Settings.TurnScreenOnSettingsActivity
 import com.android.settings.Settings.UsageAccessSettingsActivity
+import com.android.settings.Settings.UserAspectRatioAppListActivity
 import com.android.settings.Settings.WriteSettingsActivity
 import com.android.settings.applications.appinfo.AppLocaleDetails
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_MANAGE_EXTERNAL_STORAGE
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_ALARMS_AND_REMINDERS
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_APPS_LOCALE
-import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_USER_ASPECT_RATIO_APPS
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_BATTERY_OPTIMIZATION
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_CLONED_APPS
-import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_NOTIFICATION_EXCLUDE_CLASSIFICATION
-import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_NOTIFICATION_EXCLUDE_SUMMARIZATION
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_GAMES
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_HIGH_POWER
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_LONG_BACKGROUND_TASKS
@@ -56,15 +53,18 @@ import com.android.settings.applications.manageapplications.ManageApplications.L
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_MEDIA_MANAGEMENT_APPS
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_NFC_TAG_APPS
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_NOTIFICATION
+import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_NOTIFICATION_EXCLUDE_CLASSIFICATION
+import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_NOTIFICATION_EXCLUDE_SUMMARIZATION
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_OVERLAY
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_STORAGE
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_TURN_SCREEN_ON
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_USAGE_ACCESS
+import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_USER_ASPECT_RATIO_APPS
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_WIFI_ACCESS
 import com.android.settings.applications.manageapplications.ManageApplications.LIST_TYPE_WRITE_SETTINGS
 import com.android.settings.spa.app.AllAppListPageProvider
-import com.android.settings.spa.app.battery.BatteryOptimizationModeAppListPageProvider
 import com.android.settings.spa.app.appcompat.UserAspectRatioAppsPageProvider
+import com.android.settings.spa.app.battery.BatteryOptimizationModeAppListPageProvider
 import com.android.settings.spa.app.specialaccess.AlarmsAndRemindersAppListProvider
 import com.android.settings.spa.app.specialaccess.AllFilesAccessAppListProvider
 import com.android.settings.spa.app.specialaccess.DisplayOverOtherAppsAppListProvider
@@ -74,42 +74,42 @@ import com.android.settings.spa.app.specialaccess.MediaManagementAppsAppListProv
 import com.android.settings.spa.app.specialaccess.ModifySystemSettingsAppListProvider
 import com.android.settings.spa.app.specialaccess.NfcTagAppsSettingsProvider
 import com.android.settings.spa.app.specialaccess.TurnScreenOnAppsAppListProvider
+import com.android.settings.spa.app.specialaccess.UsageDataAppListProvider
 import com.android.settings.spa.app.specialaccess.WifiControlAppListProvider
 import com.android.settings.spa.notification.AppListNotificationsPageProvider
 import com.android.settings.spa.system.AppLanguagesPageProvider
 
-/**
- * Utils for [ManageApplications].
- */
+/** Utils for [ManageApplications]. */
 object ManageApplicationsUtil {
-    private val LIST_TYPE_CLASS_MAP = mapOf(
-        StorageUseActivity::class to LIST_TYPE_STORAGE,
-        UsageAccessSettingsActivity::class to LIST_TYPE_USAGE_ACCESS,
-        HighPowerApplicationsActivity::class to LIST_TYPE_HIGH_POWER,
-        OverlaySettingsActivity::class to LIST_TYPE_OVERLAY,
-        WriteSettingsActivity::class to LIST_TYPE_WRITE_SETTINGS,
-        ManageExternalSourcesActivity::class to LIST_TYPE_MANAGE_SOURCES,
-        GamesStorageActivity::class to LIST_TYPE_GAMES,
-        ChangeWifiStateActivity::class to LIST_TYPE_WIFI_ACCESS,
-        ManageExternalStorageActivity::class to LIST_MANAGE_EXTERNAL_STORAGE,
-        MediaManagementAppsActivity::class to LIST_TYPE_MEDIA_MANAGEMENT_APPS,
-        AlarmsAndRemindersActivity::class to LIST_TYPE_ALARMS_AND_REMINDERS,
-        NotificationAppListActivity::class to LIST_TYPE_NOTIFICATION,
-        NotificationReviewPermissionsActivity::class to LIST_TYPE_NOTIFICATION,
-        AppLocaleDetails::class to LIST_TYPE_APPS_LOCALE,
-        AppBatteryUsageActivity::class to LIST_TYPE_BATTERY_OPTIMIZATION,
-        LongBackgroundTasksActivity::class to LIST_TYPE_LONG_BACKGROUND_TASKS,
-        ClonedAppsListActivity::class to LIST_TYPE_CLONED_APPS,
-        ChangeNfcTagAppsActivity::class to LIST_TYPE_NFC_TAG_APPS,
-        TurnScreenOnSettingsActivity::class to LIST_TYPE_TURN_SCREEN_ON,
-        UserAspectRatioAppListActivity::class to LIST_TYPE_USER_ASPECT_RATIO_APPS,
-        NotificationExcludeSummarizationActivity::class to LIST_TYPE_NOTIFICATION_EXCLUDE_SUMMARIZATION,
-        NotificationExcludeClassificationActivity::class to LIST_TYPE_NOTIFICATION_EXCLUDE_CLASSIFICATION,
+    private val LIST_TYPE_CLASS_MAP =
+        mapOf(
+            StorageUseActivity::class to LIST_TYPE_STORAGE,
+            UsageAccessSettingsActivity::class to LIST_TYPE_USAGE_ACCESS,
+            HighPowerApplicationsActivity::class to LIST_TYPE_HIGH_POWER,
+            OverlaySettingsActivity::class to LIST_TYPE_OVERLAY,
+            WriteSettingsActivity::class to LIST_TYPE_WRITE_SETTINGS,
+            ManageExternalSourcesActivity::class to LIST_TYPE_MANAGE_SOURCES,
+            GamesStorageActivity::class to LIST_TYPE_GAMES,
+            ChangeWifiStateActivity::class to LIST_TYPE_WIFI_ACCESS,
+            ManageExternalStorageActivity::class to LIST_MANAGE_EXTERNAL_STORAGE,
+            MediaManagementAppsActivity::class to LIST_TYPE_MEDIA_MANAGEMENT_APPS,
+            AlarmsAndRemindersActivity::class to LIST_TYPE_ALARMS_AND_REMINDERS,
+            NotificationAppListActivity::class to LIST_TYPE_NOTIFICATION,
+            NotificationReviewPermissionsActivity::class to LIST_TYPE_NOTIFICATION,
+            AppLocaleDetails::class to LIST_TYPE_APPS_LOCALE,
+            AppBatteryUsageActivity::class to LIST_TYPE_BATTERY_OPTIMIZATION,
+            LongBackgroundTasksActivity::class to LIST_TYPE_LONG_BACKGROUND_TASKS,
+            ClonedAppsListActivity::class to LIST_TYPE_CLONED_APPS,
+            ChangeNfcTagAppsActivity::class to LIST_TYPE_NFC_TAG_APPS,
+            TurnScreenOnSettingsActivity::class to LIST_TYPE_TURN_SCREEN_ON,
+            UserAspectRatioAppListActivity::class to LIST_TYPE_USER_ASPECT_RATIO_APPS,
+            NotificationExcludeSummarizationActivity::class to
+                LIST_TYPE_NOTIFICATION_EXCLUDE_SUMMARIZATION,
+            NotificationExcludeClassificationActivity::class to
+                LIST_TYPE_NOTIFICATION_EXCLUDE_CLASSIFICATION,
+        )
 
-    )
-
-    @JvmField
-    val LIST_TYPE_MAP = LIST_TYPE_CLASS_MAP.mapKeys { it.key.java.name }
+    @JvmField val LIST_TYPE_MAP = LIST_TYPE_CLASS_MAP.mapKeys { it.key.java.name }
 
     @JvmStatic
     fun getSpaDestination(context: Context, listType: Int): String? {
@@ -131,12 +131,15 @@ object ManageApplicationsUtil {
             LIST_TYPE_USER_ASPECT_RATIO_APPS -> UserAspectRatioAppsPageProvider.name
             LIST_TYPE_LONG_BACKGROUND_TASKS -> LongBackgroundTasksAppListProvider.getAppListRoute()
             LIST_TYPE_TURN_SCREEN_ON -> TurnScreenOnAppsAppListProvider.getAppListRoute()
+            LIST_TYPE_USAGE_ACCESS -> UsageDataAppListProvider.getAppListRoute()
             // TODO(b/292165031) enable once sorting is supported
-            //LIST_TYPE_STORAGE -> StorageAppListPageProvider.Apps.name
-            //LIST_TYPE_GAMES -> StorageAppListPageProvider.Games.name
+            // LIST_TYPE_STORAGE -> StorageAppListPageProvider.Apps.name
+            // LIST_TYPE_GAMES -> StorageAppListPageProvider.Games.name
             LIST_TYPE_BATTERY_OPTIMIZATION -> BatteryOptimizationModeAppListPageProvider.name
-            LIST_TYPE_NOTIFICATION_EXCLUDE_SUMMARIZATION -> AppListNotificationsPageProvider.ExcludeSummarization.name
-            LIST_TYPE_NOTIFICATION_EXCLUDE_CLASSIFICATION -> AppListNotificationsPageProvider.ExcludeClassification.name
+            LIST_TYPE_NOTIFICATION_EXCLUDE_SUMMARIZATION ->
+                AppListNotificationsPageProvider.ExcludeSummarization.name
+            LIST_TYPE_NOTIFICATION_EXCLUDE_CLASSIFICATION ->
+                AppListNotificationsPageProvider.ExcludeClassification.name
             else -> null
         }
     }

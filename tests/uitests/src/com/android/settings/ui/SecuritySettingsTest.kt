@@ -16,8 +16,6 @@
 
 package com.android.settings.ui
 
-import android.os.Flags
-import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import android.provider.Settings
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -30,13 +28,11 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @RunWith(AndroidJUnit4::class)
 class SecuritySettingsTest {
     private val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 
-    @get:Rule
-    public val mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
+    @get:Rule public val mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @Before
     fun setUp() {
@@ -49,18 +45,12 @@ class SecuritySettingsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_ALLOW_PRIVATE_PROFILE,
-            android.multiuser.Flags.FLAG_ENABLE_PRIVATE_SPACE_FEATURES)
-    fun privateSpace_ifFlagON() {
+    fun privateSpace() {
         device.assertHasTexts(listOf("Private Space"))
     }
 
     private companion object {
         // Items we really want to always show
-        val ON_SCREEN_TEXTS = listOf(
-            "Device unlock",
-            "Privacy",
-            "More security & privacy",
-        )
+        val ON_SCREEN_TEXTS = listOf("Device unlock", "Privacy", "More security & privacy")
     }
 }

@@ -28,3 +28,11 @@ flag {
     description: "Feature flag for regional preferences APIs"
     bug: "370379000"
 }
+
+flag {
+    name: "movement_settings_backup_enabled"
+    namespace: "globalintl"
+    description: "Feature flag for B&R movement settings"
+    bug: "423570215"
+    is_fixed_read_only: true
+}

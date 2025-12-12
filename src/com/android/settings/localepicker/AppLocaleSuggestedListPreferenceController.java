@@ -33,6 +33,7 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
 
 import com.android.internal.app.AppLocaleCollector;
+import com.android.internal.app.LocaleHelper;
 import com.android.internal.app.LocaleStore;
 import com.android.settings.R;
 import com.android.settings.applications.manageapplications.ManageApplicationsUtil;
@@ -40,7 +41,9 @@ import com.android.settings.core.BasePreferenceController;
 import com.android.settingslib.widget.SelectorWithWidgetPreference;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -108,11 +111,9 @@ public class AppLocaleSuggestedListPreferenceController extends
             return;
         }
 
-        List<LocaleStore.LocaleInfo> result = LocaleUtils.getSortedLocaleList(
-                getSuggestedLocaleList(), mIsCountryMode);
         final Map<String, Preference> existingSuggestedPreferences = mSuggestedPreferences;
         mSuggestedPreferences = new ArrayMap<>();
-        setupSuggestedPreference(result, existingSuggestedPreferences);
+        setupSuggestedPreference(getSuggestedLocaleList(), existingSuggestedPreferences);
         for (Preference pref : existingSuggestedPreferences.values()) {
             mPreferenceCategory.removePreference(pref);
         }
@@ -127,15 +128,21 @@ public class AppLocaleSuggestedListPreferenceController extends
         }
 
         mPreferenceCategory.removeAll();
+        mSuggestedPreferences.clear();
         final Map<String, Preference> existingSuggestedPreferences = mSuggestedPreferences;
         List<LocaleStore.LocaleInfo> sortedList = getSuggestedLocaleList();
-        newList = LocaleUtils.getSortedLocaleFromSearchList(newList, sortedList, mIsCountryMode);
+        newList = LocaleUtils.getSortedLocaleFromSearchList(prefix, newList, sortedList,
+                mIsCountryMode);
         setupSuggestedPreference(newList, existingSuggestedPreferences);
     }
 
     @VisibleForTesting
     void setupSuggestedPreference(List<LocaleStore.LocaleInfo> localeInfoList,
             Map<String, Preference> existingSuggestedPreferences) {
+        // In language selection, list should not contain locale with U extension.
+        if (mParentLocale == null) {
+            localeInfoList.removeIf(localeInfo -> localeInfo.getLocale().hasExtensions());
+        }
         for (LocaleStore.LocaleInfo locale : localeInfoList) {
             if (mIsNumberingSystemMode || mIsCountryMode) {
                 Preference pref = existingSuggestedPreferences.remove(locale.getId());
@@ -192,6 +199,10 @@ public class AppLocaleSuggestedListPreferenceController extends
         } else {
             Log.d(TAG, "Can not get suggested locales because the locale list is null or empty.");
         }
+        final Locale sortingLocale = Locale.getDefault();
+        final LocaleHelper.LocaleInfoComparator comp = new LocaleHelper.LocaleInfoComparator(
+                sortingLocale, mIsCountryMode);
+        Collections.sort(mLocaleOptions, comp);
         return mLocaleOptions;
     }
 

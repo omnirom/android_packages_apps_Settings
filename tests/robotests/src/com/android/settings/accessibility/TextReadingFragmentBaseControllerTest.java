@@ -19,6 +19,7 @@ package com.android.settings.accessibility;
 import static com.android.settings.accessibility.TextReadingPreferenceFragment.EXTRA_LAUNCHED_FROM;
 import static com.android.settings.accessibility.TextReadingPreferenceFragment.EntryPoint.ACCESSIBILITY_SETTINGS;
 import static com.android.settings.accessibility.TextReadingPreferenceFragment.EntryPoint.UNKNOWN_ENTRY;
+import static com.android.settings.core.BasePreferenceController.AVAILABLE_UNSEARCHABLE;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -26,6 +27,8 @@ import android.content.Context;
 
 import androidx.preference.Preference;
 import androidx.test.core.app.ApplicationProvider;
+
+import com.android.settings.R;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,5 +54,22 @@ public class TextReadingFragmentBaseControllerTest {
 
         assertThat(a11ySettingsPreference.getExtras().getInt(EXTRA_LAUNCHED_FROM,
                 UNKNOWN_ENTRY)).isEqualTo(ACCESSIBILITY_SETTINGS);
+    }
+
+    @Test
+    public void getAvailabilityStatus_returnAvailableNotSearchable() {
+        final TextReadingFragmentBaseController controller =
+                new TextReadingFragmentBaseController(mContext, FRAGMENT_PREF_KEY,
+                        ACCESSIBILITY_SETTINGS);
+
+        assertThat(controller.getAvailabilityStatus()).isEqualTo(AVAILABLE_UNSEARCHABLE);
+    }
+
+    @Test
+    public void getSummary_returnExpectedString() {
+        final String summary = new TextReadingFragmentBaseController(mContext, FRAGMENT_PREF_KEY,
+                ACCESSIBILITY_SETTINGS).getSummary().toString();
+        assertThat(summary).isEqualTo(
+                mContext.getString(R.string.accessibility_text_reading_options_subtext));
     }
 }

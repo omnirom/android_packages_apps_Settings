@@ -17,6 +17,7 @@
 package com.android.settings.security;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -47,6 +48,7 @@ import com.android.settings.R;
 import com.android.settings.password.ChooseLockSettingsHelper;
 import com.android.settings.vpn2.VpnUtils;
 import com.android.settingslib.core.lifecycle.HideNonSystemOverlayMixin;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 /**
  * CredentialStorage handles resetting and installing keys into KeyStore.
@@ -158,7 +160,15 @@ public final class CredentialStorage extends FragmentActivity {
         private boolean mResetConfirmed;
 
         private ResetDialog() {
-            final AlertDialog dialog = new AlertDialog.Builder(CredentialStorage.this)
+            final AlertDialog.Builder dialogBuilder;
+            if (SettingsThemeHelper.isExpressiveTheme(getApplicationContext())) {
+                dialogBuilder = new AlertDialog.Builder(CredentialStorage.this,
+                        com.android.settingslib.widget.theme.R.style
+                                .Theme_AlertDialog_SettingsLib_Expressive);
+            } else {
+                dialogBuilder = new AlertDialog.Builder(CredentialStorage.this);
+            }
+            final AlertDialog dialog = dialogBuilder
                     .setTitle(android.R.string.dialog_alert_title)
                     .setMessage(R.string.credentials_reset_hint)
                     .setPositiveButton(android.R.string.ok, this)
@@ -322,15 +332,25 @@ public final class CredentialStorage extends FragmentActivity {
         }
     }
 
+    private String getCallingPackageName() {
+        try {
+            return ActivityManager.getService().getLaunchedFromPackage(getActivityToken());
+        } catch (RemoteException re) {
+            // Error talking to ActivityManager, just give up
+            return null;
+        }
+    }
+
     /**
      * Check that the caller is either certinstaller or Settings running in a profile of this user.
      */
     private boolean checkCallerIsCertInstallerOrSelfInProfile() {
-        if (TextUtils.equals("com.android.certinstaller", getCallingPackage())) {
+        String callingPackage = getCallingPackageName();
+        if (TextUtils.equals("com.android.certinstaller", callingPackage)) {
             // CertInstaller is allowed to install credentials if it has the same signature as
             // Settings package.
             return getPackageManager().checkSignatures(
-                    getCallingPackage(), getPackageName()) == PackageManager.SIGNATURE_MATCH;
+                    callingPackage, getPackageName()) == PackageManager.SIGNATURE_MATCH;
         }
 
         final int launchedFromUserId;

@@ -66,6 +66,14 @@ public class DataServiceSetupPreferenceController extends TelephonyBasePreferenc
     }
 
     @Override
+    public void updateState(Preference preference) {
+        super.updateState(preference);
+        if (preference != null) {
+            preference.setEnabled(!mIsAirplaneModeOn);
+        }
+    }
+
+    @Override
     public boolean handlePreferenceTreeClick(Preference preference) {
         if (getPreferenceKey().equals(preference.getKey())) {
             if (!TextUtils.isEmpty(mSetupUrl)) {

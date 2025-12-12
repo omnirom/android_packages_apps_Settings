@@ -21,12 +21,14 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.UserInfo;
 import android.credentials.CredentialManager;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.provider.SearchIndexableResource;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.settings.R;
 import com.android.settings.applications.autofill.PasswordsPreferenceController;
@@ -51,6 +53,7 @@ import com.android.settingslib.search.SearchIndexableRaw;
 import java.util.ArrayList;
 import java.util.List;
 
+// LINT.IfChange
 @SearchIndexable
 public class AccountDashboardFragment extends DashboardFragment {
     private static final String TAG = "AccountDashboardFrag";
@@ -110,6 +113,11 @@ public class AccountDashboardFragment extends DashboardFragment {
     @Override
     protected boolean shouldSkipForInitialSUW() {
         return true;
+    }
+
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return AccountScreen.KEY;
     }
 
     static void buildAutofillPreferenceControllers(
@@ -200,3 +208,4 @@ public class AccountDashboardFragment extends DashboardFragment {
                 }
             };
 }
+// LINT.ThenChange(AccountScreen.kt)

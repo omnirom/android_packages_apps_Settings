@@ -45,6 +45,7 @@ import java.util.Set;
 public class ShadowAudioStreamsHelper {
     private static AudioStreamsHelper sMockHelper;
     @Nullable private static CachedBluetoothDevice sCachedBluetoothDevice;
+    @Nullable private static BluetoothDevice sBluetoothDevice;
     @Nullable private static ComponentName sEnabledScreenReaderService;
 
     public static void setUseMock(AudioStreamsHelper mockAudioStreamsHelper) {
@@ -57,11 +58,16 @@ public class ShadowAudioStreamsHelper {
         sMockHelper = null;
         sCachedBluetoothDevice = null;
         sEnabledScreenReaderService = null;
+        sBluetoothDevice = null;
     }
 
     public static void setCachedBluetoothDeviceInSharingOrLeConnected(
             CachedBluetoothDevice cachedBluetoothDevice) {
         sCachedBluetoothDevice = cachedBluetoothDevice;
+    }
+
+    public static void setConnectedBluetoothDevice(BluetoothDevice bluetoothDevice) {
+        sBluetoothDevice = bluetoothDevice;
     }
 
     public static void setEnabledScreenReaderService(ComponentName componentName) {
@@ -84,6 +90,13 @@ public class ShadowAudioStreamsHelper {
     public static Optional<CachedBluetoothDevice> getCachedBluetoothDeviceInSharingOrLeConnected(
             LocalBluetoothManager manager) {
         return Optional.ofNullable(sCachedBluetoothDevice);
+    }
+
+    /** Gets {@link BluetoothDevice} that is le connected */
+    @Implementation
+    public static List<BluetoothDevice> getConnectedBluetoothDevices(
+            LocalBluetoothManager manager, boolean inSharingOnly) {
+        return sBluetoothDevice == null ? Collections.emptyList() : List.of(sBluetoothDevice);
     }
 
     /** Retrieves a set of enabled screen reader services that are pre-installed. */

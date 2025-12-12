@@ -202,9 +202,12 @@ public class RegionDialogFragment extends InstrumentedDialogFragment {
             return dialogContent;
         }
 
-        private void updateRegion(String selectedLanguageTag) {
+        @VisibleForTesting
+        void updateRegion(String selectedLanguageTag) {
             Locale[] newLocales = getUpdatedLocales(Locale.forLanguageTag(selectedLanguageTag));
-            LocalePicker.updateLocales(new LocaleList(newLocales));
+            LocaleList localeList = new LocaleList(newLocales);
+            LocaleList.setDefault(localeList);
+            LocalePicker.updateLocales(localeList);
         }
 
         private Locale[] getUpdatedLocales(Locale selectedLocale) {

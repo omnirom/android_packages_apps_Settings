@@ -123,21 +123,20 @@ public class BluetoothDetailsProfilesController extends BluetoothDetailsControll
         if (invisibleProfiles != null) {
             mInvisibleProfiles = Set.copyOf(invisibleProfiles);
         }
-    }
-
-    /** Sets whether it should show an extra padding on top of the preference. */
-    public void setHasExtraSpace(boolean hasExtraSpace) {
-        if (hasExtraSpace) {
-            mProfilesContainer.setLayoutResource(R.layout.preference_bluetooth_profile_category);
-        } else {
-            mProfilesContainer.setLayoutResource(R.layout.preference_category_bluetooth_no_padding);
-        }
+        mProfilesContainer.setVisible(false);
+        refresh();
     }
 
     @Override
     protected void init(PreferenceScreen screen) {
         mProfilesContainer = (PreferenceCategory) screen.findPreference(getPreferenceKey());
-        mProfilesContainer.setLayoutResource(R.layout.preference_bluetooth_profile_category);
+        if (Flags.enableBluetoothSettingsExpressiveDesign()) {
+            mProfilesContainer.setLayoutResource(
+                    com.android.settingslib.widget.category.R.layout
+                            .settingslib_expressive_untitled_preference_category);
+        } else {
+            mProfilesContainer.setLayoutResource(R.layout.preference_bluetooth_profile_category);
+        }
         // Call refresh here even though it will get called later in onResume, to avoid the
         // list of switches appearing to "pop" into the page.
         refresh();
@@ -531,7 +530,9 @@ public class BluetoothDetailsProfilesController extends BluetoothDetailsControll
                                     .getBluetoothFeatureProvider()
                                     .getInvisibleProfilePreferenceKeys(
                                             mContext, mCachedDevice.getDevice()));
-                    ThreadUtils.postOnMainThread(this::refreshUi);
+                    ThreadUtils.postOnMainThread(() -> {
+                        refreshUi();
+                    });
                 });
     }
 
@@ -556,19 +557,21 @@ public class BluetoothDetailsProfilesController extends BluetoothDetailsControll
             }
         }
 
-        Preference preference = mProfilesContainer.findPreference(KEY_BOTTOM_PREFERENCE);
-        if (preference == null) {
-            preference = new Preference(mContext);
-            if (mHasExtraSpace) {
-                preference.setLayoutResource(R.layout.preference_bluetooth_profile_category);
-            } else {
-                preference.setLayoutResource(R.layout.preference_category_bluetooth_no_padding);
+        if (!Flags.enableBluetoothSettingsExpressiveDesign()) {
+            Preference preference = mProfilesContainer.findPreference(KEY_BOTTOM_PREFERENCE);
+            if (preference == null) {
+                preference = new Preference(mContext);
+                if (mHasExtraSpace) {
+                    preference.setLayoutResource(R.layout.preference_bluetooth_profile_category);
+                } else {
+                    preference.setLayoutResource(R.layout.preference_category_bluetooth_no_padding);
+                }
+                preference.setEnabled(false);
+                preference.setKey(KEY_BOTTOM_PREFERENCE);
+                preference.setOrder(ORDINAL);
+                preference.setSelectable(false);
+                mProfilesContainer.addPreference(preference);
             }
-            preference.setEnabled(false);
-            preference.setKey(KEY_BOTTOM_PREFERENCE);
-            preference.setOrder(ORDINAL);
-            preference.setSelectable(false);
-            mProfilesContainer.addPreference(preference);
         }
 
         Set<String> additionalInvisibleProfiles = mAdditionalInvisibleProfiles.get();
@@ -577,10 +580,13 @@ public class BluetoothDetailsProfilesController extends BluetoothDetailsControll
             combinedInvisibleProfiles.addAll(additionalInvisibleProfiles);
         }
         Log.i(TAG, "Invisible profiles: " + combinedInvisibleProfiles);
+        boolean hasVisibleProfile = false;
         for (int i = 0; i < mProfilesContainer.getPreferenceCount(); ++i) {
             Preference pref = mProfilesContainer.getPreference(i);
             pref.setVisible(pref.isVisible() && !combinedInvisibleProfiles.contains(pref.getKey()));
+            hasVisibleProfile = hasVisibleProfile || pref.isVisible();
         }
+        mProfilesContainer.setVisible(hasVisibleProfile);
     }
 
     @Override

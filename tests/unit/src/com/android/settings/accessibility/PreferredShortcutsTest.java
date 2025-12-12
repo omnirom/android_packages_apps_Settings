@@ -19,6 +19,7 @@ package com.android.settings.accessibility;
 import static com.android.internal.accessibility.AccessibilityShortcutController.COLOR_INVERSION_COMPONENT_NAME;
 import static com.android.internal.accessibility.AccessibilityShortcutController.DALTONIZER_COMPONENT_NAME;
 import static com.android.internal.accessibility.AccessibilityShortcutController.MAGNIFICATION_CONTROLLER_NAME;
+import static com.android.internal.accessibility.common.ShortcutConstants.UserShortcutType.SOFTWARE;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -75,7 +76,7 @@ public class PreferredShortcutsTest {
 
         PreferredShortcuts.saveUserShortcutType(mContext, shortcut);
         final int retrieveType = PreferredShortcuts.retrieveUserShortcutType(mContext,
-                COMPONENT_NAME_1.flattenToString());
+                COMPONENT_NAME_1.flattenToString(), SOFTWARE);
 
         assertThat(retrieveType).isEqualTo(type);
     }
@@ -92,7 +93,7 @@ public class PreferredShortcutsTest {
         PreferredShortcuts.saveUserShortcutType(mContext, shortcut1);
         PreferredShortcuts.saveUserShortcutType(mContext, shortcut2);
         final int retrieveType = PreferredShortcuts.retrieveUserShortcutType(mContext,
-                COMPONENT_NAME_1.flattenToString());
+                COMPONENT_NAME_1.flattenToString(), SOFTWARE);
 
         assertThat(retrieveType).isEqualTo(type1);
     }
@@ -113,7 +114,7 @@ public class PreferredShortcutsTest {
 
         assertThat(
                 PreferredShortcuts.retrieveUserShortcutType(
-                        mContext, MAGNIFICATION_CONTROLLER_NAME
+                        mContext, MAGNIFICATION_CONTROLLER_NAME, SOFTWARE
                 ))
                 .isEqualTo(expectedShortcutTypes);
     }
@@ -121,7 +122,7 @@ public class PreferredShortcutsTest {
     @Test
     public void updatePreferredShortcutsFromSetting_magnificationWithNoActiveShortcuts_noChangesOnPreferredShortcutTypes() {
         int expectedShortcutTypes = ShortcutConstants.UserShortcutType.HARDWARE
-                | ShortcutConstants.UserShortcutType.SOFTWARE;
+                | SOFTWARE;
         PreferredShortcuts.saveUserShortcutType(mContext,
                 new PreferredShortcut(MAGNIFICATION_CONTROLLER_NAME, expectedShortcutTypes));
 
@@ -132,7 +133,7 @@ public class PreferredShortcutsTest {
 
         assertThat(
                 PreferredShortcuts.retrieveUserShortcutType(
-                        mContext, MAGNIFICATION_CONTROLLER_NAME
+                        mContext, MAGNIFICATION_CONTROLLER_NAME, SOFTWARE
                 ))
                 .isEqualTo(expectedShortcutTypes);
     }
@@ -149,19 +150,19 @@ public class PreferredShortcutsTest {
                 target1 + ShortcutConstants.SERVICES_SEPARATOR + target2);
 
         int target1ShortcutTypes = ShortcutConstants.UserShortcutType.HARDWARE
-                | ShortcutConstants.UserShortcutType.SOFTWARE;
+                | SOFTWARE;
         int target2ShortcutTypes = ShortcutConstants.UserShortcutType.HARDWARE;
 
         PreferredShortcuts.updatePreferredShortcutsFromSettings(mContext, Set.of(target1, target2));
 
         assertThat(
                 PreferredShortcuts.retrieveUserShortcutType(
-                        mContext, target1
+                        mContext, target1, SOFTWARE
                 ))
                 .isEqualTo(target1ShortcutTypes);
         assertThat(
                 PreferredShortcuts.retrieveUserShortcutType(
-                        mContext, target2
+                        mContext, target2, SOFTWARE
                 ))
                 .isEqualTo(target2ShortcutTypes);
     }
@@ -177,9 +178,9 @@ public class PreferredShortcutsTest {
         PreferredShortcuts.updatePreferredShortcutsFromSettings(mContext, Set.of(target));
 
         int savedPreferredShortcut = PreferredShortcuts.retrieveUserShortcutType(
-                mContext, target);
+                mContext, target, SOFTWARE);
         assertThat(savedPreferredShortcut).isEqualTo(
-                UserShortcutType.SOFTWARE | UserShortcutType.QUICK_SETTINGS);
+                SOFTWARE | UserShortcutType.QUICK_SETTINGS);
 
     }
 
@@ -187,8 +188,8 @@ public class PreferredShortcutsTest {
     public void retrieveUserShortcutTypeWithoutDefault_noUserPreferredShortcuts_returnSoftwareShortcut() {
         String target = COMPONENT_NAME_1.flattenToString();
 
-        assertThat(PreferredShortcuts.retrieveUserShortcutType(mContext, target))
-                .isEqualTo(UserShortcutType.SOFTWARE);
+        assertThat(PreferredShortcuts.retrieveUserShortcutType(mContext, target, SOFTWARE))
+                .isEqualTo(SOFTWARE);
     }
 
     @Test

@@ -29,6 +29,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Build;
 import android.os.StrictMode;
 import android.os.UserManager;
 import android.provider.Settings;
@@ -50,8 +51,8 @@ import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.bluetooth.BluetoothSliceBuilder;
 import com.android.settings.core.BasePreferenceController;
-import com.android.settings.notification.VolumeSeekBarPreferenceController;
-import com.android.settings.notification.zen.ZenModeSliceBuilder;
+import com.android.settings.notification.VolumeSliderPreferenceController;
+import com.android.settings.notification.modes.DndModeSliceBuilder;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settingslib.SliceBroadcastRelay;
 import com.android.settingslib.utils.ThreadUtils;
@@ -87,6 +88,7 @@ import java.util.stream.Collectors;
  * {@link com.android.settings.core.BasePreferenceController} indexed as
  * {@link SlicesDatabaseHelper.IndexColumns#CONTROLLER} to manipulate the setting.
  */
+@Deprecated(forRemoval = true)
 public class SettingsSliceProvider extends SliceProvider {
 
     private static final String TAG = "SettingsSliceProvider";
@@ -120,7 +122,7 @@ public class SettingsSliceProvider extends SliceProvider {
      * permission can use them.
      */
     private static final List<Uri> PUBLICLY_SUPPORTED_CUSTOM_SLICE_URIS =
-            android.app.Flags.modesUi()
+            !android.app.Flags.modesUiDndSlice()
                     ?
                     Arrays.asList(
                             CustomSliceRegistry.BLUETOOTH_URI,
@@ -194,8 +196,8 @@ public class SettingsSliceProvider extends SliceProvider {
         }
 
         if (CustomSliceRegistry.ZEN_MODE_SLICE_URI.equals(sliceUri)) {
-            if (!android.app.Flags.modesUi()) {
-                registerIntentToUri(ZenModeSliceBuilder.INTENT_FILTER, sliceUri);
+            if (android.app.Flags.modesUiDndSlice()) {
+                registerIntentToUri(DndModeSliceBuilder.INTENT_FILTER, sliceUri);
             }
             return;
         } else if (CustomSliceRegistry.BLUETOOTH_URI.equals(sliceUri)) {
@@ -268,9 +270,9 @@ public class SettingsSliceProvider extends SliceProvider {
                         .getSlicesFeatureProvider()
                         .getNewWifiCallingSliceHelper(getContext())
                         .createWifiCallingSlice(sliceUri);
-            } else if (!android.app.Flags.modesUi()
+            } else if (android.app.Flags.modesUiDndSlice()
                     && CustomSliceRegistry.ZEN_MODE_SLICE_URI.equals(sliceUri)) {
-                return ZenModeSliceBuilder.getSlice(getContext());
+                return DndModeSliceBuilder.getSlice(getContext());
             } else if (CustomSliceRegistry.BLUETOOTH_URI.equals(sliceUri)) {
                 return BluetoothSliceBuilder.getSlice(getContext());
             } else if (CustomSliceRegistry.ENHANCED_4G_SLICE_URI.equals(sliceUri)) {
@@ -388,19 +390,30 @@ public class SettingsSliceProvider extends SliceProvider {
         if (descendants == null) {
             Log.d(TAG, "No descendants to grant permission with, skipping.");
         }
-        final String[] allowlistPackages =
+        final List<String> allowlist = new ArrayList<>();
+        final String[] packages =
                 context.getResources().getStringArray(R.array.slice_allowlist_package_names);
-        if (allowlistPackages == null || allowlistPackages.length == 0) {
+        if (packages != null) {
+            allowlist.addAll(Arrays.asList(packages));
+        }
+        if (Build.IS_DEBUGGABLE) {
+            final String[] devPackages = context.getResources().getStringArray(
+                    R.array.slice_allowlist_package_names_for_dev);
+            if (devPackages != null) {
+                allowlist.addAll(Arrays.asList(devPackages));
+            }
+        }
+        if (allowlist.size() == 0) {
             Log.d(TAG, "No packages to allowlist, skipping.");
             return;
         } else {
             Log.d(TAG, String.format(
                     "Allowlisting %d uris to %d pkgs.",
-                    descendants.size(), allowlistPackages.length));
+                    descendants.size(), allowlist.size()));
         }
         final SliceManager sliceManager = context.getSystemService(SliceManager.class);
         for (Uri descendant : descendants) {
-            for (String toPackage : allowlistPackages) {
+            for (String toPackage : allowlist) {
                 sliceManager.grantSlicePermission(toPackage, descendant);
             }
         }
@@ -434,10 +447,10 @@ public class SettingsSliceProvider extends SliceProvider {
 
         final IntentFilter filter = controller.getIntentFilter();
         if (filter != null) {
-            if (controller instanceof VolumeSeekBarPreferenceController) {
+            if (controller instanceof VolumeSliderPreferenceController) {
                 // Register volume slices to a broadcast relay to reduce unnecessary UI updates
                 VolumeSliceHelper.registerIntentToUri(getContext(), filter, uri,
-                        ((VolumeSeekBarPreferenceController) controller).getAudioStream());
+                        ((VolumeSliderPreferenceController) controller).getAudioStream());
             } else {
                 registerIntentToUri(filter, uri);
             }

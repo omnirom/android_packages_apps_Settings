@@ -26,6 +26,7 @@ import android.icu.text.LocaleDisplayNames;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import com.android.settings.R;
@@ -44,6 +45,14 @@ import java.util.TreeSet;
  * Render a list of regions into a list view.
  */
 public class RegionSearchPicker extends BaseTimeZonePicker {
+    /**
+     * The extra key for the current region ID.
+     *
+     * <p>This extra is used to indicate the current region ID when the picker is launched.
+     * The picker will highlight the item that matches the current region in the list view.
+     */
+    /* package-private */ static final String EXTRA_CURRENT_REGION_ID =
+            "com.android.settings.datetime.timezone.current_region_id";
     private static final int REQUEST_CODE_ZONE_PICKER = 1;
     private static final String TAG = "RegionSearchPicker";
 
@@ -62,9 +71,14 @@ public class RegionSearchPicker extends BaseTimeZonePicker {
     @Override
     protected BaseTimeZoneAdapter createAdapter(TimeZoneData timeZoneData) {
         mTimeZoneData = timeZoneData;
-        mAdapter = new BaseTimeZoneAdapter<>(createAdapterItem(timeZoneData.getRegionIds()),
-                this::onListItemClick, getLocale(), false /* showItemSummary */,
-                    null /* headerText */);
+        final String currentRegionId = getArguments() == null
+                ? null : getArguments().getString(EXTRA_CURRENT_REGION_ID);
+        mAdapter = new BaseTimeZoneAdapter<>(
+                createAdapterItems(timeZoneData.getRegionIds(), currentRegionId),
+                this::onListItemClick,
+                getLocale(),
+                false /* showItemSummary */,
+                null /* headerText */);
         return mAdapter;
     }
 
@@ -112,7 +126,8 @@ public class RegionSearchPicker extends BaseTimeZonePicker {
         }
     }
 
-    private List<RegionItem> createAdapterItem(Set<String> regionIds) {
+    private List<RegionItem> createAdapterItems(Set<String> regionIds,
+            @Nullable String currentRegionId) {
         final Collator collator = Collator.getInstance(getLocale());
         final TreeSet<RegionItem> items = new TreeSet<>(new RegionInfoComparator(collator));
         final LocaleDisplayNames localeDisplayNames = LocaleDisplayNames.getInstance(getLocale());
@@ -120,7 +135,8 @@ public class RegionSearchPicker extends BaseTimeZonePicker {
         for (String regionId : regionIds) {
             String name = capitalizeForStandaloneDisplay(
                     mLocale, localeDisplayNames.regionDisplayName(regionId));
-            items.add(new RegionItem(i++, regionId, name));
+            items.add(new RegionItem(i++, regionId, name,
+                    currentRegionId != null && currentRegionId.equals(regionId)));
         }
         return new ArrayList<>(items);
     }
@@ -131,12 +147,14 @@ public class RegionSearchPicker extends BaseTimeZonePicker {
         private final String mId;
         private final String mName;
         private final long mItemId;
+        private final boolean mIsSelected;
         private final String[] mSearchKeys;
 
-        RegionItem(long itemId, String id, String name) {
+        RegionItem(long itemId, String id, String name, boolean isSelected) {
             mId = id;
             mName = name;
             mItemId = itemId;
+            mIsSelected = isSelected;
             // Allow to search with ISO_3166-1 alpha-2 code. It's handy for english users in some
             // countries, e.g. US for United States. It's not best search keys for users, but
             // ICU doesn't have the data for the alias names of a region.
@@ -153,18 +171,20 @@ public class RegionSearchPicker extends BaseTimeZonePicker {
         }
 
         @Override
+        @Nullable
         public CharSequence getSummary() {
             return null;
         }
 
         @Override
-        public String getIconText() {
+        @Nullable
+        public String getCurrentTime() {
             return null;
         }
 
         @Override
-        public String getCurrentTime() {
-            return null;
+        public boolean getIsSelected() {
+            return mIsSelected;
         }
 
         @Override

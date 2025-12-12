@@ -32,12 +32,14 @@
     <PreferenceCategory
         android:key="more_devices_category"
         android:title="@string/accessibility_found_all_devices">
-        <com.android.settings.accessibility.ArrowPreference
+        <com.android.settingslib.widget.ButtonPreference
             android:key="more_devices"
             android:title="@string/accessibility_list_all_devices_title"
+            settings:buttonPreferenceSize="extra"
+            settings:buttonPreferenceType="tonal"
             settings:searchable="false"
             settings:userRestriction="no_config_bluetooth"
             settings:useAdminDisabledSummary="true"
-            settings:controller="com.android.settings.accessibility.ViewAllBluetoothDevicesPreferenceController"/>
+            settings:controller="com.android.settings.accessibility.ViewAllBluetoothDevicesPreferenceController" />
     </PreferenceCategory>
 </PreferenceScreen>

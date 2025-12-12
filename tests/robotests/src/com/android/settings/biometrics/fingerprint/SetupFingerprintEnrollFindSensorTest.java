@@ -21,11 +21,14 @@ import static com.google.common.truth.Truth.assertThat;
 import android.content.Intent;
 import android.content.res.Resources.Theme;
 import android.hardware.fingerprint.FingerprintManager;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
+import com.android.settings.flags.Flags;
 import com.android.settings.password.ChooseLockSettingsHelper;
 import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settings.testutils.shadow.ShadowAlertDialogCompat;
@@ -52,6 +55,9 @@ import org.robolectric.shadows.ShadowLooper;
 public class SetupFingerprintEnrollFindSensorTest {
     @Rule
     public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Mock
     private FingerprintManager mFingerprintManager;
@@ -98,6 +104,7 @@ public class SetupFingerprintEnrollFindSensorTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_SETUPFINGERPRINTENROLLFINDSENSOR_SKIPDIALOG_THEME)
     public void fingerprintEnroll_showsAlert_setAlertDialogTheme() {
         final AlertDialog alertDialog = setupAlertDialog();
 

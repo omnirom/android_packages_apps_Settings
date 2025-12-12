@@ -82,7 +82,7 @@ public class ConversationNotificationSettings extends NotificationSettings {
     @Override
     protected List<AbstractPreferenceController> createPreferenceControllers(Context context) {
         mControllers = new ArrayList<>();
-        mControllers.add(new ConversationHeaderPreferenceController(context, this));
+        mControllers.add(new ConversationHeaderPreferenceController(context, this, mBackend));
         mControllers.add(new BlockPreferenceController(context, mDependentFieldListener, mBackend));
         mControllers.add(new ConversationPriorityPreferenceController(
                 context, mBackend, mDependentFieldListener));

@@ -26,14 +26,20 @@ import com.android.settings.metrics.PreferenceActionMetricsProvider
 import com.android.settingslib.datastore.KeyValueStore
 import com.android.settingslib.datastore.KeyValueStoreDelegate
 import com.android.settingslib.datastore.SettingsSecureStore
-import com.android.settingslib.metadata.MainSwitchPreference
+import com.android.settingslib.metadata.BooleanValuePreference
 import com.android.settingslib.metadata.ReadWritePermit
 import com.android.settingslib.metadata.SensitivityLevel
+import com.android.settingslib.widget.MainSwitchPreferenceBinding
 
 // LINT.IfChange
 class AdaptiveConnectivityTogglePreference :
-    MainSwitchPreference(KEY, R.string.adaptive_connectivity_main_switch_title),
-    PreferenceActionMetricsProvider {
+    BooleanValuePreference, MainSwitchPreferenceBinding, PreferenceActionMetricsProvider {
+
+    override val key
+        get() = KEY
+
+    override val title
+        get() = R.string.adaptive_connectivity_main_switch_title
 
     override val preferenceActionMetrics: Int
         get() = ACTION_ADAPTIVE_CONNECTIVITY

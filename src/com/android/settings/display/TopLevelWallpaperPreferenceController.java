@@ -23,7 +23,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.os.UserHandle;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -34,7 +33,6 @@ import com.android.settings.R;
 import com.android.settings.activityembedding.ActivityEmbeddingRulesController;
 import com.android.settings.activityembedding.ActivityEmbeddingUtils;
 import com.android.settings.core.BasePreferenceController;
-import com.android.settingslib.RestrictedLockUtilsInternal;
 import com.android.settingslib.RestrictedTopLevelPreference;
 
 import java.util.List;
@@ -129,16 +127,8 @@ public class TopLevelWallpaperPreferenceController extends BasePreferenceControl
     }
 
     private void disablePreferenceIfManaged(RestrictedTopLevelPreference pref) {
-        final String restriction = DISALLOW_SET_WALLPAPER;
         if (pref != null) {
-            pref.setDisabledByAdmin(null);
-            if (RestrictedLockUtilsInternal.hasBaseUserRestriction(mContext,
-                    restriction, UserHandle.myUserId())) {
-                // Do not show the admin dialog for system restriction.
-                pref.setEnabled(false);
-            } else {
-                pref.checkRestrictionAndSetDisabled(restriction);
-            }
+            pref.checkRestrictionAndSetDisabled(DISALLOW_SET_WALLPAPER);
         }
     }
 }

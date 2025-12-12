@@ -107,8 +107,8 @@ public class SavedBluetoothDeviceUpdater extends BluetoothDeviceUpdater
                 + cachedDevice.isConnected() + ", is exclusively managed : "
                 + isExclusivelyManaged);
         return device.getBondState() == BluetoothDevice.BOND_BONDED
-                && (mShowConnectedDevice || (!device.isConnected()
-                && isDeviceInCachedDevicesList(cachedDevice)))
+                && (mShowConnectedDevice || !device.isConnected())
+                && isDeviceInCachedDevicesList(cachedDevice)
                 && !isExclusivelyManaged;
     }
 

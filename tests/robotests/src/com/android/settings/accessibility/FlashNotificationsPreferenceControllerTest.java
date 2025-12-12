@@ -76,26 +76,26 @@ public class FlashNotificationsPreferenceControllerTest {
     }
 
     @Test
-    public void getSummary_stateCamera_assertCamera() {
+    public void getSummary_stateCamera_assertOn() {
         setFlashNotificationsState(FlashNotificationsUtil.State.CAMERA);
 
         assertThat(mController.getSummary().toString()).isEqualTo(mContext.getString(
-                R.string.flash_notifications_summary_on_camera));
+                R.string.flash_notifications_summary_on));
     }
 
     @Test
-    public void getSummary_stateScreen_assertScreen() {
+    public void getSummary_stateScreen_assertOn() {
         setFlashNotificationsState(FlashNotificationsUtil.State.SCREEN);
 
         assertThat(mController.getSummary().toString()).isEqualTo(mContext.getString(
-                R.string.flash_notifications_summary_on_screen));
+                R.string.flash_notifications_summary_on));
     }
 
     @Test
-    public void getSummary_stateCameraScreen_assertCameraScreen() {
+    public void getSummary_stateCameraScreen_assertOn() {
         setFlashNotificationsState(FlashNotificationsUtil.State.CAMERA_SCREEN);
 
         assertThat(mController.getSummary().toString()).isEqualTo(mContext.getString(
-                R.string.flash_notifications_summary_on_camera_and_screen));
+                R.string.flash_notifications_summary_on));
     }
 }

@@ -23,6 +23,7 @@ import android.provider.Settings;
 import com.android.settings.R;
 
 /** Preference controller for am vibration intensity */
+// LINT.IfChange
 public class MediaVibrationIntensityPreferenceController
         extends VibrationIntensityPreferenceController {
 
@@ -52,3 +53,4 @@ public class MediaVibrationIntensityPreferenceController
                 AVAILABLE : UNSUPPORTED_ON_DEVICE;
     }
 }
+// LINT.ThenChange(MediaVibrationIntensitySliderPreference.kt)

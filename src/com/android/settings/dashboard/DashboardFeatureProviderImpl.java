@@ -18,6 +18,8 @@ package com.android.settings.dashboard;
 
 import static android.content.Intent.EXTRA_USER;
 
+import static com.android.settingslib.drawer.EntriesProvider.EXTRA_ALERT_VALUE;
+import static com.android.settingslib.drawer.EntriesProvider.METHOD_GET_ALERT;
 import static com.android.settingslib.drawer.SwitchesProvider.EXTRA_SWITCH_CHECKED_STATE;
 import static com.android.settingslib.drawer.SwitchesProvider.EXTRA_SWITCH_SET_CHECKED_ERROR;
 import static com.android.settingslib.drawer.SwitchesProvider.EXTRA_SWITCH_SET_CHECKED_ERROR_MESSAGE;
@@ -26,6 +28,7 @@ import static com.android.settingslib.drawer.SwitchesProvider.METHOD_GET_DYNAMIC
 import static com.android.settingslib.drawer.SwitchesProvider.METHOD_GET_PROVIDER_ICON;
 import static com.android.settingslib.drawer.SwitchesProvider.METHOD_IS_CHECKED;
 import static com.android.settingslib.drawer.SwitchesProvider.METHOD_ON_CHECKED_CHANGED;
+import static com.android.settingslib.drawer.TileUtils.META_DATA_PREFERENCE_ALERT_URI;
 import static com.android.settingslib.drawer.TileUtils.META_DATA_PREFERENCE_ICON_URI;
 import static com.android.settingslib.drawer.TileUtils.META_DATA_PREFERENCE_SUMMARY;
 import static com.android.settingslib.drawer.TileUtils.META_DATA_PREFERENCE_SUMMARY_URI;
@@ -45,6 +48,8 @@ import android.graphics.drawable.Icon;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -53,6 +58,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.FragmentActivity;
@@ -69,6 +75,7 @@ import com.android.settings.flags.Flags;
 import com.android.settings.homepage.TopLevelHighlightMixin;
 import com.android.settings.homepage.TopLevelSettings;
 import com.android.settings.overlay.FeatureFactory;
+import com.android.settings.widget.HomepagePreference;
 import com.android.settingslib.PrimarySwitchPreference;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 import com.android.settingslib.drawer.ActivityTile;
@@ -80,7 +87,6 @@ import com.android.settingslib.utils.ThreadUtils;
 import com.android.settingslib.widget.AdaptiveIcon;
 import com.android.settingslib.widget.SettingsThemeHelper;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 
 import java.util.ArrayList;
@@ -97,19 +103,39 @@ public class DashboardFeatureProviderImpl implements DashboardFeatureProvider {
     private static final String META_DATA_KEY_INTENT_ACTION = "com.android.settings.intent.action";
     private static final String TOP_LEVEL_ACCOUNT_CATEGORY = "top_level_account_category";
 
-    private static final Map<String, Pair<Integer, Integer>> COLOR_SCHEMES = ImmutableMap.of(
-            "blue_variant", new Pair<>(
-                    R.color.homepage_blue_variant_fg, R.color.homepage_blue_variant_bg),
-            "blue", new Pair<>(R.color.homepage_blue_fg, R.color.homepage_blue_bg),
-            "pink", new Pair<>(R.color.homepage_pink_fg, R.color.homepage_pink_bg),
-            "orange", new Pair<>(R.color.homepage_orange_fg, R.color.homepage_orange_bg),
-            "yellow", new Pair<>(R.color.homepage_yellow_fg, R.color.homepage_yellow_bg),
-            "green", new Pair<>(R.color.homepage_green_fg, R.color.homepage_green_bg),
-            "grey", new Pair<>(R.color.homepage_grey_fg, R.color.homepage_grey_bg),
-            "cyan", new Pair<>(R.color.homepage_cyan_fg, R.color.homepage_cyan_bg),
-            "red", new Pair<>(R.color.homepage_red_fg, R.color.homepage_red_bg),
-            "purple", new Pair<>(R.color.homepage_purple_fg, R.color.homepage_purple_bg)
-    );
+    @VisibleForTesting
+    enum ColorScheme {
+        blue_variant(R.color.homepage_blue_variant_fg, R.color.homepage_blue_variant_bg),
+        blue(R.color.homepage_blue_fg, R.color.homepage_blue_bg),
+        pink(R.color.homepage_pink_fg, R.color.homepage_pink_bg),
+        orange(R.color.homepage_orange_fg, R.color.homepage_orange_bg),
+        yellow(R.color.homepage_yellow_fg, R.color.homepage_yellow_bg),
+        green(R.color.homepage_green_fg, R.color.homepage_green_bg),
+        grey(R.color.homepage_grey_fg, R.color.homepage_grey_bg),
+        cyan(R.color.homepage_cyan_fg, R.color.homepage_cyan_bg),
+        red(R.color.homepage_red_fg, R.color.homepage_red_bg),
+        purple(R.color.homepage_purple_fg, R.color.homepage_purple_bg);
+
+        @ColorRes
+        public final int foregroundColor;
+        @ColorRes
+        public final int backgroundColor;
+
+        ColorScheme(@ColorRes int foregroundColor, @ColorRes int backgroundColor) {
+            this.foregroundColor = foregroundColor;
+            this.backgroundColor = backgroundColor;
+        }
+
+        @Nullable
+        static ColorScheme get(String name) {
+            for (ColorScheme scheme : values()) {
+                if (TextUtils.equals(scheme.name(), name)) {
+                    return scheme;
+                }
+            }
+            return null;
+        }
+    }
 
     protected final Context mContext;
 
@@ -170,6 +196,10 @@ public class DashboardFeatureProviderImpl implements DashboardFeatureProvider {
             outObservers.add(observer);
         }
         observer = bindSwitchAndGetObserver(pref, tile);
+        if (observer != null) {
+            outObservers.add(observer);
+        }
+        observer = bindAlertAndGetObserver(pref, tile);
         if (observer != null) {
             outObservers.add(observer);
         }
@@ -276,6 +306,9 @@ public class DashboardFeatureProviderImpl implements DashboardFeatureProvider {
                     case METHOD_IS_CHECKED:
                         refreshSwitch(uri, pref, this);
                         break;
+                    case METHOD_GET_ALERT:
+                        refreshAlert(uri, pref, this);
+                        break;
                 }
             }
         };
@@ -340,6 +373,33 @@ public class DashboardFeatureProviderImpl implements DashboardFeatureProvider {
             if (!TextUtils.equals(summaryFromUri, preference.getSummary())) {
                 observer.post(() -> preference.setSummary(summaryFromUri));
             }
+        });
+    }
+
+    @Nullable
+    private DynamicDataObserver bindAlertAndGetObserver(Preference preference, Tile tile) {
+        if (!Flags.homepageTileAlert() || !(preference instanceof HomepagePreference)) {
+            return null;
+        }
+        if (tile.getMetaData() != null
+                && tile.getMetaData().containsKey(META_DATA_PREFERENCE_ALERT_URI)) {
+            final Uri uri = TileUtils.getCompleteUri(tile, META_DATA_PREFERENCE_ALERT_URI,
+                    METHOD_GET_ALERT);
+            return createDynamicDataObserver(METHOD_GET_ALERT, uri, preference);
+        }
+
+        return null;
+    }
+
+    private void refreshAlert(Uri uri, Preference preference, DynamicDataObserver observer) {
+        if (!Flags.homepageTileAlert() || !(preference instanceof HomepagePreference)) {
+            return;
+        }
+        var unused = ThreadUtils.postOnBackgroundThread(() -> {
+            Map<String, IContentProvider> providerMap = new ArrayMap<>();
+            int valueFromUri = TileUtils.getIntFromUri(mContext, uri, providerMap,
+                    EXTRA_ALERT_VALUE);
+            observer.post(() -> ((HomepagePreference) preference).setAlert(valueFromUri));
         });
     }
 
@@ -447,10 +507,7 @@ public class DashboardFeatureProviderImpl implements DashboardFeatureProvider {
                 }
 
                 final String iconPackage = (iconInfo != null) ? iconInfo.first : null;
-
-                ThreadUtils.postOnMainThread(() -> {
-                    setPreferenceIcon(preference, tile, forceRoundedIcon, iconPackage, icon);
-                });
+                setPreferenceIcon(preference, tile, forceRoundedIcon, iconPackage, icon);
             });
             return;
         }
@@ -466,15 +523,14 @@ public class DashboardFeatureProviderImpl implements DashboardFeatureProvider {
 
     private void setPreferenceIcon(Preference preference, Tile tile, boolean forceRoundedIcon,
             @Nullable String iconPackage, Icon icon) {
-        Drawable iconDrawable = icon.loadDrawable(preference.getContext());
-        if (iconDrawable == null) {
-            Log.w(TAG, "Set null preference icon for: " + iconPackage);
-            preference.setIcon(null);
-            return;
-        }
-        // Handle homepage icons
-        if (TextUtils.equals(tile.getCategory(), CategoryKey.CATEGORY_HOMEPAGE)) {
-            if (Flags.homepageRevamp()) {
+        icon.loadDrawableAsync(preference.getContext(), iconDrawable -> {
+            if (iconDrawable == null) {
+                Log.w(TAG, "Set null preference icon for: " + iconPackage);
+                preference.setIcon(null);
+                return;
+            }
+            // Handle homepage icons
+            if (TextUtils.equals(tile.getCategory(), CategoryKey.CATEGORY_HOMEPAGE)) {
                 if (SettingsThemeHelper.isExpressiveTheme(mContext)) {
                     preference.setIcon(getExpressiveHomepageIcon(tile, iconDrawable, iconPackage));
                     return;
@@ -485,16 +541,16 @@ public class DashboardFeatureProviderImpl implements DashboardFeatureProvider {
                     preference.setIcon(iconDrawable);
                     return;
                 }
+                iconDrawable.setTint(Utils.getHomepageIconColor(preference.getContext()));
             }
-            iconDrawable.setTint(Utils.getHomepageIconColor(preference.getContext()));
-        }
 
-        if (forceRoundedIcon && !TextUtils.equals(mContext.getPackageName(), iconPackage)) {
-            iconDrawable = new AdaptiveIcon(mContext, iconDrawable,
-                    R.dimen.dashboard_tile_foreground_image_inset);
-            ((AdaptiveIcon) iconDrawable).setBackgroundColor(mContext, tile);
-        }
-        preference.setIcon(iconDrawable);
+            if (forceRoundedIcon && !TextUtils.equals(mContext.getPackageName(), iconPackage)) {
+                iconDrawable = new AdaptiveIcon(mContext, iconDrawable,
+                        R.dimen.dashboard_tile_foreground_image_inset);
+                ((AdaptiveIcon) iconDrawable).setBackgroundColor(mContext, tile);
+            }
+            preference.setIcon(iconDrawable);
+        }, new Handler(Looper.getMainLooper()));
     }
 
     private Drawable getExpressiveHomepageIcon(Tile tile, Drawable iconDrawable,
@@ -509,13 +565,8 @@ public class DashboardFeatureProviderImpl implements DashboardFeatureProvider {
             return drawable;
         }
 
-        Pair<Integer, Integer> colors = getSchemedColors(tile);
-        if (colors != null) {
-            return getRoundedIcon(iconDrawable, colors.first, colors.second);
-        }
-
-        iconDrawable.setTint(Utils.getHomepageIconColor(mContext));
-        return iconDrawable;
+        ColorScheme scheme = getColorScheme(tile);
+        return getRoundedIcon(iconDrawable, scheme.foregroundColor, scheme.backgroundColor);
     }
 
     private Drawable getRoundedIcon(Drawable iconDrawable, int fgColorId, int bgColorId) {
@@ -526,18 +577,18 @@ public class DashboardFeatureProviderImpl implements DashboardFeatureProvider {
     }
 
     @VisibleForTesting
-    @Nullable
-    Pair<Integer, Integer> getSchemedColors(Tile tile) {
-        String scheme = tile.getIconColorScheme(mContext);
-        if (TextUtils.isEmpty(scheme)) {
-            return null;
+    ColorScheme getColorScheme(Tile tile) {
+        String schemeName = tile.getIconColorScheme(mContext);
+        if (!TextUtils.isEmpty(schemeName)) {
+            ColorScheme scheme = ColorScheme.get(schemeName);
+            if (scheme != null) {
+                return scheme;
+            }
+            Log.w(TAG, "Invalid color scheme: " + schemeName);
         }
-
-        Pair<Integer, Integer> colors = COLOR_SCHEMES.get(scheme);
-        if (colors == null) {
-            Log.w(TAG, "Invalid color scheme: " + scheme);
-        }
-        return colors;
+        Log.w(TAG, "No color scheme found for " + tile.getComponentName()
+                + ", fallback to the default one.");
+        return ColorScheme.grey;
     }
 
     private void launchPendingIntentOrSelectProfile(FragmentActivity activity, Tile tile,

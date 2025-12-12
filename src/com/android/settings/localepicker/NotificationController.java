@@ -90,7 +90,7 @@ public class NotificationController {
      * @return true if the notification needs to be triggered. Otherwise, false.
      */
     public boolean shouldTriggerNotification(int uid, @NonNull String locale) {
-        if (LocaleUtils.isInSystemLocale(locale)) {
+        if (LocaleUtils.isLanguageInSystemLocale(locale)) {
             return false;
         } else {
             // Add the uid into the locale's uid list and update the notification count if the

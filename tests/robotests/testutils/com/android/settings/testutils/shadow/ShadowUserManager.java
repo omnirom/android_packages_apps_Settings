@@ -59,6 +59,7 @@ public class ShadowUserManager extends org.robolectric.shadows.ShadowUserManager
     private final List<String> mBaseRestrictions = new ArrayList<>();
     private final Map<String, List<EnforcingUser>> mRestrictionSources = new HashMap<>();
     private final List<UserInfo> mUserProfileInfos = new ArrayList<>();
+    private final List<UserInfo> mAliveUserInfos = new ArrayList<>();
     private final Set<Integer> mManagedProfiles = new HashSet<>();
     private final Map<Integer, Integer> mProfileToParent = new HashMap<>();
     private final Map<Integer, UserInfo> mUserInfoMap = new HashMap<>();
@@ -83,6 +84,7 @@ public class ShadowUserManager extends org.robolectric.shadows.ShadowUserManager
     @Resetter
     public static void reset() {
         sIsSupportsMultipleUsers = false;
+        sIsMultipleAdminEnabled = false;
     }
 
     /**
@@ -314,6 +316,15 @@ public class ShadowUserManager extends org.robolectric.shadows.ShadowUserManager
         return UserHandle.of(PRIMARY_USER_ID);
     }
 
+    public void addAliveUser(UserInfo userInfo) {
+        mAliveUserInfos.add(userInfo);
+    }
+
+    @Implementation
+    protected List<UserInfo> getAliveUsers() {
+        return mAliveUserInfos;
+    }
+
     protected boolean setUserEphemeral(@UserIdInt int userId, boolean enableEphemeral) {
         UserInfo userInfo = mUserProfileInfos.stream()
                 .filter(user -> user.id == userId)
@@ -373,6 +384,11 @@ public class ShadowUserManager extends org.robolectric.shadows.ShadowUserManager
 
     public void setGuestUser(boolean isGuestUser) {
         mIsGuestUser = isGuestUser;
+    }
+
+    @Implementation
+    protected static boolean isMultipleAdminEnabled() {
+        return sIsMultipleAdminEnabled;
     }
 
     public static void setIsMultipleAdminEnabled(boolean enableMultipleAdmin) {

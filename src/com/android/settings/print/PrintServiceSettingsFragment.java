@@ -585,8 +585,12 @@ public class PrintServiceSettingsFragment extends SettingsPreferenceFragment
 
                 if (pi.getInfoIntent() != null) {
                     try {
+                        Bundle options = ActivityOptions.makeBasic()
+                                    .setPendingIntentBackgroundActivityStartMode(
+                                            ActivityOptions.MODE_BACKGROUND_ACTIVITY_START_ALLOWED)
+                                    .toBundle();
                         getActivity().startIntentSender(pi.getInfoIntent().getIntentSender(),
-                                null, 0, 0, 0);
+                                null, 0, 0, 0, options);
                     } catch (SendIntentException e) {
                         Log.e(LOG_TAG, "Could not execute info intent: %s", e);
                     }

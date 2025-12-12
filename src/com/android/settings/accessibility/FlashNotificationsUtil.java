@@ -30,21 +30,25 @@ import androidx.annotation.NonNull;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-class FlashNotificationsUtil {
+/**
+ * This class provides utilities for flash notifications.
+ */
+public class FlashNotificationsUtil {
     static final String LOG_TAG = "FlashNotificationsUtil";
-    static final String ACTION_FLASH_NOTIFICATION_START_PREVIEW =
+    public static final String ACTION_FLASH_NOTIFICATION_START_PREVIEW =
             "com.android.internal.intent.action.FLASH_NOTIFICATION_START_PREVIEW";
     static final String ACTION_FLASH_NOTIFICATION_STOP_PREVIEW =
             "com.android.internal.intent.action.FLASH_NOTIFICATION_STOP_PREVIEW";
     static final String EXTRA_FLASH_NOTIFICATION_PREVIEW_COLOR =
             "com.android.internal.intent.extra.FLASH_NOTIFICATION_PREVIEW_COLOR";
-    static final String EXTRA_FLASH_NOTIFICATION_PREVIEW_TYPE =
+    public static final String EXTRA_FLASH_NOTIFICATION_PREVIEW_TYPE =
             "com.android.internal.intent.extra.FLASH_NOTIFICATION_PREVIEW_TYPE";
 
-    static final int TYPE_SHORT_PREVIEW = 0;
-    static final int TYPE_LONG_PREVIEW = 1;
+    public static final int TYPE_SHORT_PREVIEW = 0;
+    public static final int TYPE_LONG_PREVIEW = 1;
 
-    static final int DEFAULT_SCREEN_FLASH_COLOR = ScreenFlashNotificationColor.YELLOW.mColorInt;
+    public static final int DEFAULT_SCREEN_FLASH_COLOR =
+            ScreenFlashNotificationColor.YELLOW.mColorInt;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
@@ -53,14 +57,24 @@ class FlashNotificationsUtil {
             FlashNotificationsUtil.State.SCREEN,
             FlashNotificationsUtil.State.CAMERA_SCREEN,
     })
-    @interface State {
+    public @interface State {
         int OFF = 0;
         int CAMERA = 1;
         int SCREEN = 2;
         int CAMERA_SCREEN = 3;
     }
 
-    static boolean isTorchAvailable(@NonNull Context context) {
+    /**
+     * Checks if a back-facing camera with a flash (torch) is available on the device.
+     * <p>
+     * Returns false if no such camera is found, if the CameraManager service is unavailable,
+     * or if a CameraAccessException occurs.
+     *
+     * @param context The context used to access the CameraManager system service.
+     * @return {@code true} if a back-facing camera with a flash is present, {@code false}
+     * otherwise.
+     */
+    public static boolean isTorchAvailable(@NonNull Context context) {
         // TODO This is duplicated logic of FlashNotificationsController.getCameraId.
         final CameraManager cameraManager = context.getSystemService(CameraManager.class);
         if (cameraManager == null) return false;
@@ -101,7 +115,7 @@ class FlashNotificationsUtil {
     }
 
     @NonNull
-    static String getColorDescriptionText(@NonNull Context context, @ColorInt int color) {
+    public static String getColorDescriptionText(@NonNull Context context, @ColorInt int color) {
         try {
             return context.getString(getScreenColor(color).mStringRes);
         } catch (ScreenColorNotFoundException e) {
@@ -110,7 +124,7 @@ class FlashNotificationsUtil {
     }
 
     @State
-    static int getFlashNotificationsState(Context context) {
+    public static int getFlashNotificationsState(Context context) {
         if (context == null) {
             return State.OFF;
         }

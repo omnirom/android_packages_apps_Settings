@@ -15,6 +15,7 @@ package com.android.settings.display;
 
 import static android.os.UserManager.DISALLOW_SET_WALLPAPER;
 
+import android.app.admin.EnforcingAdmin;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -136,7 +137,7 @@ public class WallpaperPreferenceController extends BasePreferenceController {
     private void disablePreferenceIfManaged(RestrictedPreference pref) {
         final String restriction = DISALLOW_SET_WALLPAPER;
         if (pref != null) {
-            pref.setDisabledByAdmin(null);
+            pref.setDisabledByAdmin((EnforcingAdmin) null);
             if (RestrictedLockUtilsInternal.hasBaseUserRestriction(mContext,
                     restriction, UserHandle.myUserId())) {
                 pref.setEnabled(false);

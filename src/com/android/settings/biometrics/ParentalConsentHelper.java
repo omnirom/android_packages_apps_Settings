@@ -32,8 +32,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.settings.biometrics.face.FaceEnrollParentalConsent;
-import com.android.settings.biometrics.fingerprint.FingerprintEnrollParentalConsent;
+import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.password.ChooseLockSettingsHelper;
 
 import com.google.android.setupcompat.util.WizardManagerHelper;
@@ -140,10 +139,12 @@ public class ParentalConsentHelper {
     @Nullable
     private Intent getNextConsentIntent(@NonNull Context context) {
         if (mRequireFingerprint && mConsentFingerprint == null) {
-            return new Intent(context, FingerprintEnrollParentalConsent.class);
+            return new Intent(context, FeatureFactory.getFeatureFactory()
+                    .getFingerprintFeatureProvider().getParentalConsentPage());
         }
         if (mRequireFace && mConsentFace == null) {
-            return new Intent(context, FaceEnrollParentalConsent.class);
+            return new Intent(context, FeatureFactory.getFeatureFactory()
+                    .getFaceFeatureProvider().getParentalConsentPage());
         }
         return null;
     }
@@ -161,11 +162,13 @@ public class ParentalConsentHelper {
         final Bundle result = new Bundle();
         result.putBoolean(KEY_FACE_CONSENT, mConsentFace != null ? mConsentFace : false);
         result.putIntArray(KEY_FACE_CONSENT_STRINGS,
-                FaceEnrollParentalConsent.CONSENT_STRING_RESOURCES);
+                FeatureFactory.getFeatureFactory().getFaceFeatureProvider()
+                        .getParentalConsentStringRes());
         result.putBoolean(KEY_FINGERPRINT_CONSENT,
                 mConsentFingerprint != null ? mConsentFingerprint : false);
         result.putIntArray(KEY_FINGERPRINT_CONSENT_STRINGS,
-                FingerprintEnrollParentalConsent.CONSENT_STRING_RESOURCES);
+                FeatureFactory.getFeatureFactory().getFingerprintFeatureProvider()
+                        .getParentalConsentStringRes());
         result.putBoolean(KEY_IRIS_CONSENT, false);
         result.putIntArray(KEY_IRIS_CONSENT_STRINGS, new int[0]);
         return result;

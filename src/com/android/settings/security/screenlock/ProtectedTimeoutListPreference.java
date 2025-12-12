@@ -20,7 +20,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.android.settings.display.TimeoutListPreference;
-import com.android.settings.flags.Flags;
 import com.android.settings.wifi.dpp.WifiDppUtils;
 
 /** Wraps {@link TimeoutListPreference} with an authentication challenge for user. */
@@ -31,10 +30,6 @@ public class ProtectedTimeoutListPreference extends TimeoutListPreference {
 
     @Override
     public void performClick() {
-        if (Flags.protectLockAfterTimeoutWithAuth()) {
-            WifiDppUtils.showLockScreen(getContext(), super::performClick);
-        } else {
-            super.performClick();
-        }
+        WifiDppUtils.showLockScreen(getContext(), super::performClick);
     }
 }

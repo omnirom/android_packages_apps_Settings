@@ -19,15 +19,16 @@ package com.android.settings.privatespace.delete;
 import android.app.settings.SettingsEnums;
 import android.os.Bundle;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.android.settings.R;
 import com.android.settings.SetupWizardUtils;
-import com.android.settings.core.InstrumentedActivity;
+import com.android.settingslib.core.instrumentation.Instrumentable;
 
 import com.google.android.setupdesign.util.ThemeHelper;
 
-public class PrivateSpaceDeleteActivity extends InstrumentedActivity {
+public class PrivateSpaceDeleteActivity extends FragmentActivity implements Instrumentable {
     @Override
     public int getMetricsCategory() {
         return SettingsEnums.PRIVATE_SPACE_SETTINGS;
@@ -35,10 +36,6 @@ public class PrivateSpaceDeleteActivity extends InstrumentedActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!android.os.Flags.allowPrivateProfile()
-                || !android.multiuser.Flags.enablePrivateSpaceFeatures()) {
-            return;
-        }
         setTheme(SetupWizardUtils.getTheme(this, getIntent()));
         ThemeHelper.trySetDynamicColor(this);
         super.onCreate(savedInstanceState);

@@ -36,6 +36,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.PreferenceScreen;
 import androidx.viewpager.widget.PagerAdapter;
@@ -53,6 +55,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+// LINT.IfChange
 @SuppressWarnings("WeakerAccess")
 @SearchIndexable
 public class ColorModePreferenceFragment extends RadioButtonPickerFragment {
@@ -240,6 +243,11 @@ public class ColorModePreferenceFragment extends RadioButtonPickerFragment {
         return true;
     }
 
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return ColorModeScreen.KEY;
+    }
+
     /**
      * Wraps ColorDisplayManager#getColorMode for substitution in testing.
      */
@@ -396,3 +404,4 @@ public class ColorModePreferenceFragment extends RadioButtonPickerFragment {
                 }
             };
 }
+// LINT.ThenChange(ColorModeScreen.kt)

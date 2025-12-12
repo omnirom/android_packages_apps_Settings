@@ -24,7 +24,9 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.PersistableBundle;
@@ -36,6 +38,7 @@ import android.telephony.TelephonyManager;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
@@ -74,7 +77,8 @@ public class SimLockPreferenceControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        ShadowApplication shadowApplication = ShadowApplication.getInstance();
+        ShadowApplication shadowApplication =
+                shadowOf((Application) ApplicationProvider.getApplicationContext());
         shadowApplication.setSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE,
                 mSubscriptionManager);
         when(mSubscriptionManager.createForAllUserProfiles()).thenReturn(mSubscriptionManager);
@@ -90,6 +94,11 @@ public class SimLockPreferenceControllerTest {
         mPreference = new Preference(mContext);
         mPreference.setKey(mController.getPreferenceKey());
         when(mScreen.findPreference(mController.getPreferenceKey())).thenReturn(mPreference);
+
+        // Available by default
+        when(mResources.getBoolean(R.bool.config_show_sim_info)).thenReturn(true);
+        when(mUserManager.isAdminUser()).thenReturn(true);
+        when(mTelephonyManager.isDataCapable()).thenReturn(true);
     }
 
     @Test
@@ -101,8 +110,15 @@ public class SimLockPreferenceControllerTest {
     }
 
     @Test
+    public void isAvailable_notDataCapable_false() {
+        when(mTelephonyManager.isDataCapable()).thenReturn(false);
+
+        assertThat(mController.getAvailabilityStatus())
+                .isEqualTo(BasePreferenceController.UNSUPPORTED_ON_DEVICE);
+    }
+
+    @Test
     public void isAvailable_notAdmin_false() {
-        when(mResources.getBoolean(R.bool.config_show_sim_info)).thenReturn(true);
         when(mUserManager.isAdminUser()).thenReturn(false);
 
         assertThat(mController.getAvailabilityStatus())
@@ -111,16 +127,12 @@ public class SimLockPreferenceControllerTest {
 
     @Test
     public void isAvailable_simIccNotReady_false() {
-        when(mResources.getBoolean(R.bool.config_show_sim_info)).thenReturn(true);
-        when(mUserManager.isAdminUser()).thenReturn(true);
-
         assertThat(mController.getAvailabilityStatus())
                 .isEqualTo(BasePreferenceController.DISABLED_FOR_USER);
     }
 
     @Test
     public void isAvailable_carrierConfigDisabled_false() {
-        when(mUserManager.isAdminUser()).thenReturn(true);
         setupMockIcc();
         final PersistableBundle pb = new PersistableBundle();
         pb.putBoolean(CarrierConfigManager.KEY_HIDE_SIM_LOCK_SETTINGS_BOOL, true);
@@ -132,7 +144,6 @@ public class SimLockPreferenceControllerTest {
 
     @Test
     public void isAvailable_true() {
-        when(mUserManager.isAdminUser()).thenReturn(true);
         setupMockIcc();
         final PersistableBundle pb = new PersistableBundle();
         when(mCarrierManager.getConfigForSubId(anyInt())).thenReturn(pb);
@@ -143,7 +154,6 @@ public class SimLockPreferenceControllerTest {
 
     @Test
     public void displayPreference_simReady_enablePreference() {
-        when(mResources.getBoolean(R.bool.config_show_sim_info)).thenReturn(true);
         mController.displayPreference(mScreen);
 
         assertThat(mPreference.isEnabled()).isFalse();
@@ -160,14 +170,12 @@ public class SimLockPreferenceControllerTest {
 
     @Test
     public void getPreferenceKey_whenGivenValue_returnsGivenValue() {
-        when(mResources.getBoolean(R.bool.config_show_sim_info)).thenReturn(true);
         mController = new SimLockPreferenceController(mContext, "key");
 
         assertThat(mController.getPreferenceKey()).isEqualTo("key");
     }
 
     private void setupMockIcc() {
-        when(mResources.getBoolean(R.bool.config_show_sim_info)).thenReturn(true);
         final List<SubscriptionInfo> subscriptionInfoList = new ArrayList<>();
         SubscriptionInfo info = mock(SubscriptionInfo.class);
         subscriptionInfoList.add(info);
@@ -178,10 +186,10 @@ public class SimLockPreferenceControllerTest {
     }
 
     private void setupMockSimReady() {
-        when(mResources.getBoolean(R.bool.config_show_sim_info)).thenReturn(true);
         final List<SubscriptionInfo> subscriptionInfoList = new ArrayList<>();
         SubscriptionInfo info = mock(SubscriptionInfo.class);
         subscriptionInfoList.add(info);
+        when(mTelephonyManager.createForSubscriptionId(anyInt())).thenReturn(mTelephonyManager);
         when(mTelephonyManager.getSimState(anyInt())).thenReturn(SIM_STATE_READY);
         when(mSubscriptionManager.getActiveSubscriptionInfoList())
                 .thenReturn(subscriptionInfoList);

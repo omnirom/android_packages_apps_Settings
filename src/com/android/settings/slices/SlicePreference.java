@@ -29,6 +29,7 @@ import com.android.settingslib.widget.LayoutPreference;
 /**
  * Preference for {@link SliceView}
  */
+@Deprecated(forRemoval = true)
 public class SlicePreference extends LayoutPreference {
     private SliceView mSliceView;
 

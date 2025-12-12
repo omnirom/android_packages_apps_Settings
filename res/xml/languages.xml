@@ -22,9 +22,7 @@
     android:key="system_languages">
 
     <com.android.settingslib.widget.TopIntroPreference
-        android:title="@string/desc_introduction_of_language_picker"
-        android:persistent="false"
-        android:selectable="false"/>
+        android:title="@string/desc_introduction_of_language_picker" />
 
     <PreferenceCategory
         android:title="@string/language_picker_category_title">
@@ -54,8 +52,6 @@
     <com.android.settingslib.widget.FooterPreference
         android:key="footer_languages_picker"
         android:title="@string/desc_notice_of_language_picker"
-        android:persistent="false"
-        android:selectable="false"
         settings:controller="com.android.settings.localepicker.LocaleHelperPreferenceController"/>
 
 </PreferenceScreen>

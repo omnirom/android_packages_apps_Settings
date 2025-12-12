@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2025 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:settings="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:key="security_category"
+        android:title="@string/security_header">
+
+        <Preference
+            android:key="device_unlock_subpage"
+            android:title="@string/device_unlock_subpage_title"
+            android:fragment="com.android.settings.safetycenter.ui.DeviceUnlockSubPageFragment"
+            settings:controller="com.android.settings.safetycenter.ui.SubpagePreferenceController"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="privacy_category"
+        android:title="@string/privacy_dashboard_title">
+        <Preference
+            android:key="privacy_controls_page"
+            android:title="@string/privacy_sources_title"
+            android:summary="@string/privacy_sources_summary"
+            android:fragment="com.android.settings.safetycenter.ui.PrivacyControlsFragment">
+        </Preference>
+        <Preference
+            android:key="privacy_permissions_usage"
+            android:summary="@string/permissions_usage_summary"
+            android:title="@string/permissions_usage_title"
+            settings:controller="com.android.settings.privacy.PrivacyHubPreferenceController" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="more_security_privacy_category"
+        android:title="@string/more_security_privacy_category_title">
+        <Preference
+            android:key="safety_center_more_security_privacy"
+            android:summary="@string/more_security_privacy_summary"
+            android:title="@string/more_security_privacy_settings"
+            settings:controller="com.android.settings.safetycenter.ui.MoreSecurityPrivacyPreferenceController"/>
+    </PreferenceCategory>
+</PreferenceScreen>

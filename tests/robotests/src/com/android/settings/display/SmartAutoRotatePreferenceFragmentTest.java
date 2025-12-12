@@ -142,6 +142,7 @@ public class SmartAutoRotatePreferenceFragmentTest {
         when(mContext.getContentResolver()).thenReturn(mContentResolver);
         when(mContext.getApplicationContext()).thenReturn(mContext);
         doReturn(mDeviceStateManager).when(mContext).getSystemService(DeviceStateManager.class);
+        doReturn(mDeviceStateManager).when(mActivity).getSystemService(DeviceStateManager.class);
         doReturn(PACKAGE_NAME).when(mPackageManager).getRotationResolverPackageName();
         doReturn(PackageManager.PERMISSION_GRANTED).when(mPackageManager).checkPermission(
                 Manifest.permission.CAMERA, PACKAGE_NAME);
@@ -172,7 +173,7 @@ public class SmartAutoRotatePreferenceFragmentTest {
 
     @Test
     public void createHeader_faceDetectionSupported_switchBarIsEnabled() {
-        setDeviceStateRotationLockEnabled(false, mResources);
+        setDeviceStateRotationLockEnabled(/* enable= */ false, mResources, mDeviceStateManager);
         mFragment.createHeader(mActivity);
 
         verify(mRotateMainSwitchPreference, never()).setVisible(false);
@@ -182,7 +183,8 @@ public class SmartAutoRotatePreferenceFragmentTest {
     @Test
     public void createHeader_deviceStateRotationSupported_switchBarIsDisabled() {
         ShadowRotationPolicy.setRotationSupported(true);
-        setDeviceStateRotationLockEnabled(true, mResources);
+        setDeviceStateRotationLockEnabled(/* enable= */ true, mResources,
+                /* mockDeviceStateManager= */ mDeviceStateManager);
 
         mFragment.createHeader(mActivity);
 
@@ -266,7 +268,7 @@ public class SmartAutoRotatePreferenceFragmentTest {
         when(mContext.getResources()).thenReturn(mResources);
     }
 
-    // Sets up posture mappings for PosturesHelper
+    // Sets up posture mappings for PostureDeviceStateConverter
     private void setUpPostureMappings() {
         when(mResources.getIntArray(
                 com.android.internal.R.array.config_foldedDeviceStates)).thenReturn(

@@ -28,6 +28,9 @@ import android.platform.test.flag.junit.SetFlagsRule
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
@@ -45,18 +48,19 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito.`when` as whenever
 import org.mockito.MockitoSession
 import org.mockito.Spy
 import org.mockito.kotlin.any
 import org.mockito.quality.Strictness
-import org.mockito.Mockito.`when` as whenever
 
 @RunWith(AndroidJUnit4::class)
 class AppButtonsTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    @get:Rule val setFlagsRule: SetFlagsRule = SetFlagsRule()
+    @get:Rule
+    val setFlagsRule: SetFlagsRule = SetFlagsRule()
 
     private lateinit var mockSession: MockitoSession
 
@@ -77,11 +81,12 @@ class AppButtonsTest {
 
     @Before
     fun setUp() {
-        mockSession = ExtendedMockito.mockitoSession()
-            .initMocks(this)
-            .mockStatic(AppUtils::class.java)
-            .strictness(Strictness.LENIENT)
-            .startMocking()
+        mockSession =
+            ExtendedMockito.mockitoSession()
+                .initMocks(this)
+                .mockStatic(AppUtils::class.java)
+                .strictness(Strictness.LENIENT)
+                .startMocking()
         whenever(packageInfoPresenter.context).thenReturn(context)
         whenever(packageInfoPresenter.packageName).thenReturn(PACKAGE_NAME)
         whenever(packageInfoPresenter.userPackageManager).thenReturn(packageManager)
@@ -120,7 +125,8 @@ class AppButtonsTest {
         setFlagsRule.disableFlags(SettingsFlags.FLAG_APP_ARCHIVING)
         setContent()
 
-        composeTestRule.onNodeWithText(context.getString(R.string.launch_instant_app))
+        composeTestRule
+            .onNodeWithText(context.getString(R.string.launch_instant_app))
             .assertIsDisplayed()
     }
 
@@ -130,7 +136,8 @@ class AppButtonsTest {
         featureFlags.setFlag(Flags.FLAG_ARCHIVING, true)
         setContent()
 
-        composeTestRule.onNodeWithText(context.getString(R.string.launch_instant_app))
+        composeTestRule
+            .onNodeWithText(context.getString(R.string.launch_instant_app))
             .assertIsNotDisplayed()
     }
 
@@ -138,28 +145,34 @@ class AppButtonsTest {
     fun uninstallButton_enabled_whenAppIsArchived() {
         whenever(packageManager.getLaunchIntentForPackage(PACKAGE_NAME)).thenReturn(Intent())
         featureFlags.setFlag(Flags.FLAG_ARCHIVING, true)
-        val packageInfo = PackageInfo().apply {
-            applicationInfo = ApplicationInfo().apply {
+        val packageInfo =
+            PackageInfo().apply {
+                applicationInfo =
+                    ApplicationInfo().apply {
+                        packageName = PACKAGE_NAME
+                        isArchived = true
+                    }
                 packageName = PACKAGE_NAME
-                isArchived = true
             }
-            packageName = PACKAGE_NAME
-        }
         setContent(packageInfo)
 
-        composeTestRule.onNodeWithText(context.getString(R.string.uninstall_text)).assertIsEnabled()
+        composeTestRule
+            .onNodeWithText(context.getString(R.string.uninstall_text))
+            .assertIsEnabled()
     }
 
     @Test
     fun archiveButton_displayed_whenAppIsNotArchived() {
         featureFlags.setFlag(Flags.FLAG_ARCHIVING, true)
-        val packageInfo = PackageInfo().apply {
-            applicationInfo = ApplicationInfo().apply {
+        val packageInfo =
+            PackageInfo().apply {
+                applicationInfo =
+                    ApplicationInfo().apply {
+                        packageName = PACKAGE_NAME
+                        isArchived = false
+                    }
                 packageName = PACKAGE_NAME
-                isArchived = false
             }
-            packageName = PACKAGE_NAME
-        }
         setContent(packageInfo)
 
         composeTestRule.onNodeWithText(context.getString(R.string.archive)).assertIsDisplayed()
@@ -169,13 +182,15 @@ class AppButtonsTest {
     @Test
     fun restoreButton_displayed_whenAppIsArchived() {
         featureFlags.setFlag(Flags.FLAG_ARCHIVING, true)
-        val packageInfo = PackageInfo().apply {
-            applicationInfo = ApplicationInfo().apply {
+        val packageInfo =
+            PackageInfo().apply {
+                applicationInfo =
+                    ApplicationInfo().apply {
+                        packageName = PACKAGE_NAME
+                        isArchived = true
+                    }
                 packageName = PACKAGE_NAME
-                isArchived = true
             }
-            packageName = PACKAGE_NAME
-        }
         setContent(packageInfo)
 
         composeTestRule.onNodeWithText(context.getString(R.string.restore)).assertIsDisplayed()
@@ -194,11 +209,12 @@ class AppButtonsTest {
     private companion object {
         const val PACKAGE_NAME = "package.name"
         const val APP_LABEL = "App label"
-        val PACKAGE_INFO = PackageInfo().apply {
-            applicationInfo = ApplicationInfo().apply {
-                packageName = PACKAGE_NAME
+        val PACKAGE_INFO =
+            PackageInfo().apply {
+                applicationInfo = ApplicationInfo().apply { packageName = PACKAGE_NAME }
             }
-            packageName = PACKAGE_NAME
-        }
+
+        fun ComposeContentTestRule.onButton(contentDescription: String) =
+            onNode(hasClickAction() and hasContentDescription(contentDescription))
     }
 }

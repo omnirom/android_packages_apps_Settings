@@ -17,11 +17,10 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:apps="http://schemas.android.com/apk/res-auto"
     android:id="@+id/suggestion_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
+    android:layout_marginTop="@dimen/settingslib_expressive_space_small1"
     style="@style/SuggestionCardStyle">
 
     <LinearLayout
@@ -30,8 +29,8 @@
         android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:minHeight="72dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="@dimen/settingslib_expressive_space_small1"
+        android:paddingEnd="@dimen/settingslib_expressive_space_extrasmall6"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:background="?android:attr/selectableItemBackground">
@@ -49,8 +48,8 @@
 
             <ImageView
                 android:id="@android:id/icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/settingslib_expressive_space_small4"
+                android:layout_height="@dimen/settingslib_expressive_space_small4"
                 android:layout_gravity="center"/>
 
         </FrameLayout>
@@ -60,9 +59,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingVertical="@dimen/suggestion_card_text_padding_vertical"
+            android:paddingStart="@dimen/settingslib_expressive_space_extrasmall6"
+            android:paddingVertical="@dimen/settingslib_expressive_space_small1"
             android:orientation="vertical">
 
             <TextView
@@ -81,9 +79,9 @@
 
         <ImageView
             android:id="@android:id/closeButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="8dp"
+            android:layout_width="@dimen/settingslib_expressive_space_medium4"
+            android:layout_height="@dimen/settingslib_expressive_space_medium4"
+            android:padding="@dimen/settingslib_expressive_space_extrasmall4"
             android:visibility="gone"
             android:layout_gravity="center"
             android:contentDescription="@string/suggestion_button_close"

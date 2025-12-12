@@ -17,6 +17,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:settings="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -48,6 +49,51 @@
         android:visibility="invisible"
         settings:layout_constraintTop_toBottomOf="@id/pinned_header"
         settings:layout_constraintBottom_toBottomOf="parent"/>
+
+    <!-- Zero State Preference as a BC25 empty view replacement -->
+    <LinearLayout
+        android:id="@+id/zero_state"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingTop="@dimen/settingslib_expressive_space_small1"
+        android:paddingBottom="@dimen/settingslib_expressive_space_small1"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        settings:layout_constraintTop_toBottomOf="@id/pinned_header"
+        settings:layout_constraintBottom_toBottomOf="parent">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription">
+
+            <ImageView
+                android:layout_width="@dimen/settingslib_expressive_zero_state_background_size"
+                android:layout_height="@dimen/settingslib_expressive_zero_state_background_size"
+                android:src="@drawable/settingslib_expressive_zerostate_background"/>
+
+            <ImageView
+                android:id="@android:id/icon"
+                android:layout_width="@dimen/settingslib_expressive_space_large2"
+                android:layout_height="@dimen/settingslib_expressive_space_large2"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_apps_alt"/>
+
+        </FrameLayout>
+        <TextView
+            android:id="@android:id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.SettingsLib.TitleMedium.Emphasized"
+            android:textColor="@color/settingslib_text_color_primary"
+            android:text="@string/no_applications"
+            android:layout_marginHorizontal="@dimen/settingslib_expressive_space_medium1"
+            android:layout_marginTop="@dimen/settingslib_expressive_space_small4"/>
+    </LinearLayout>
 
     <include layout="@layout/loading_container"
         settings:layout_constraintTop_toBottomOf="@id/pinned_header"

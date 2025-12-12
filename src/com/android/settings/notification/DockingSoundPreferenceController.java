@@ -16,29 +16,29 @@
 
 package com.android.settings.notification;
 
+import static android.provider.Settings.Global.DOCK_SOUNDS_ENABLED;
+
 import static com.android.settings.notification.SettingPref.TYPE_GLOBAL;
 
 import android.content.Context;
-import android.provider.Settings.Global;
 
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 
+// LINT.IfChange
 public class DockingSoundPreferenceController extends SettingPrefController {
-
-    private static final String KEY_DOCKING_SOUNDS = "docking_sounds";
 
     public DockingSoundPreferenceController(Context context, SettingsPreferenceFragment parent,
             Lifecycle lifecycle) {
         super(context, parent, lifecycle);
         mPreference = new SettingPref(
-            TYPE_GLOBAL, KEY_DOCKING_SOUNDS, Global.DOCK_SOUNDS_ENABLED, DEFAULT_ON) {
+            TYPE_GLOBAL, DOCK_SOUNDS_ENABLED, DOCK_SOUNDS_ENABLED, DEFAULT_ON) {
             @Override
             public boolean isApplicable(Context context) {
                 return context.getResources().getBoolean(R.bool.has_dock_settings);
             }
         };
     }
-
 }
+// LINT.ThenChange(DockingSoundPreference.kt)

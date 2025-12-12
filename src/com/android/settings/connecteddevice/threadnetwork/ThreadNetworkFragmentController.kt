@@ -29,6 +29,7 @@ import androidx.preference.PreferenceScreen
 import com.android.settings.R
 import com.android.settings.core.BasePreferenceController
 import com.android.settings.flags.Flags
+import com.android.settings.overlay.FeatureFactory
 import java.util.concurrent.Executor
 
 /**
@@ -57,7 +58,9 @@ class ThreadNetworkFragmentController @VisibleForTesting constructor(
     }
 
     override fun getAvailabilityStatus(): Int {
-        return if (!Flags.threadSettingsEnabled()) {
+        val featureProvider = FeatureFactory.featureFactory.threadNetworkFeatureProvider
+
+        return if (!Flags.threadSettingsEnabled() || !featureProvider.isThreadVisible()) {
             CONDITIONALLY_UNAVAILABLE
         } else if (threadController == null) {
             UNSUPPORTED_ON_DEVICE
@@ -80,7 +83,7 @@ class ThreadNetworkFragmentController @VisibleForTesting constructor(
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        if (threadController == null) {
+        if (threadController == null || availabilityStatus != AVAILABLE) {
             return
         }
 

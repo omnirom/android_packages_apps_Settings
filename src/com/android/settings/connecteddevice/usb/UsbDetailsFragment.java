@@ -36,19 +36,19 @@ import com.android.settingslib.search.SearchIndexable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Controls the USB device details and provides updates to individual controllers.
- */
+/** Controls the USB device details and provides updates to individual controllers. */
 @SearchIndexable(forTarget = SearchIndexable.ALL & ~SearchIndexable.ARC)
 public class UsbDetailsFragment extends DashboardFragment {
     private static final String TAG = UsbDetailsFragment.class.getSimpleName();
 
+    private static final String USER_AUTHENTICATED_KEY = "user_authenticated_key";
+
     private List<UsbDetailsController> mControllers;
     private UsbBackend mUsbBackend;
     private boolean mUserAuthenticated = false;
+    private boolean mResetUserAuthenticatedState = true;
 
-    @VisibleForTesting
-    UsbConnectionBroadcastReceiver mUsbReceiver;
+    @VisibleForTesting UsbConnectionBroadcastReceiver mUsbReceiver;
 
     private UsbConnectionBroadcastReceiver.UsbConnectionListener mUsbConnectionListener =
             (connected, functions, powerRole, dataRole, isUsbFigured) -> {
@@ -68,13 +68,27 @@ public class UsbDetailsFragment extends DashboardFragment {
     @Override
     public void onStart() {
         super.onStart();
-        mUserAuthenticated = false;
+        if (mResetUserAuthenticatedState) {
+            mUserAuthenticated = false;
+        } else {
+            mResetUserAuthenticatedState = true;
+        }
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Utils.setActionBarShadowAnimation(getActivity(), getSettingsLifecycle(), getListView());
+        if (savedInstanceState != null) {
+            mUserAuthenticated = savedInstanceState.getBoolean(USER_AUTHENTICATED_KEY, false);
+            mResetUserAuthenticatedState = false;
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(USER_AUTHENTICATED_KEY, mUserAuthenticated);
     }
 
     @Override
@@ -96,15 +110,15 @@ public class UsbDetailsFragment extends DashboardFragment {
     protected List<AbstractPreferenceController> createPreferenceControllers(Context context) {
         mUsbBackend = new UsbBackend(context);
         mControllers = createControllerList(context, mUsbBackend, this);
-        mUsbReceiver = new UsbConnectionBroadcastReceiver(context, mUsbConnectionListener,
-                mUsbBackend);
+        mUsbReceiver =
+                new UsbConnectionBroadcastReceiver(context, mUsbConnectionListener, mUsbBackend);
         this.getSettingsLifecycle().addObserver(mUsbReceiver);
 
         return new ArrayList<>(mControllers);
     }
 
-    private static List<UsbDetailsController> createControllerList(Context context,
-            UsbBackend usbBackend, UsbDetailsFragment fragment) {
+    private static List<UsbDetailsController> createControllerList(
+            Context context, UsbBackend usbBackend, UsbDetailsFragment fragment) {
         List<UsbDetailsController> ret = new ArrayList<>();
         ret.add(new UsbDetailsHeaderController(context, fragment, usbBackend));
         ret.add(new UsbDetailsDataRoleController(context, fragment, usbBackend));
@@ -114,15 +128,13 @@ public class UsbDetailsFragment extends DashboardFragment {
         return ret;
     }
 
-    /**
-     * For Search.
-     */
+    /** For Search. */
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(R.xml.usb_details_fragment) {
                 @Override
                 protected boolean isPageSearchEnabled(Context context) {
-                    return checkIfUsbDataSignalingIsDisabled(
-                            context, UserHandle.myUserId()) == null;
+                    return checkIfUsbDataSignalingIsDisabled(context, UserHandle.myUserId())
+                            == null;
                 }
 
                 @Override

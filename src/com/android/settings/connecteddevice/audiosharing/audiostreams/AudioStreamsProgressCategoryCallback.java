@@ -21,87 +21,119 @@ import static com.android.settingslib.bluetooth.LocalBluetoothLeBroadcastAssista
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothLeBroadcastMetadata;
 import android.bluetooth.BluetoothLeBroadcastReceiveState;
-import android.bluetooth.BluetoothStatusCodes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class AudioStreamsProgressCategoryCallback extends AudioStreamsBroadcastAssistantCallback {
-    private final AudioStreamsProgressCategoryController mCategoryController;
+    @Nullable private SourceStateListener mSourceStateListener = null;
+    @Nullable private ScanStateListener mScanStateListener = null;
 
-    public AudioStreamsProgressCategoryCallback(
-            AudioStreamsProgressCategoryController audioStreamsProgressCategoryController) {
-        mCategoryController = audioStreamsProgressCategoryController;
+    void setSourceStateListener(SourceStateListener listener) {
+        mSourceStateListener = listener;
+    }
+
+    void setScanStateListener(ScanStateListener listener) {
+        mScanStateListener = listener;
     }
 
     @Override
     public void onReceiveStateChanged(
             BluetoothDevice sink, int sourceId, BluetoothLeBroadcastReceiveState state) {
         super.onReceiveStateChanged(sink, sourceId, state);
-        var sourceState = getLocalSourceState(state);
-        switch (sourceState) {
-            case STREAMING -> mCategoryController.handleSourceStreaming(sink, state);
-            case DECRYPTION_FAILED -> mCategoryController.handleSourceConnectBadCode(state);
-            case PAUSED -> mCategoryController.handleSourcePaused(sink, state);
+        if (mSourceStateListener != null) {
+            var sourceState = getLocalSourceState(state);
+            switch (sourceState) {
+                case STREAMING -> mSourceStateListener.handleSourceStreaming(sink, state);
+                case DECRYPTION_FAILED -> mSourceStateListener.handleSourceConnectBadCode(state);
+                case PAUSED -> mSourceStateListener.handleSourcePaused(sink, state);
+                default -> {
+                    // Do nothing
+                }
+            }
         }
     }
 
     @Override
     public void onSearchStartFailed(int reason) {
-        if (reason == BluetoothStatusCodes.ERROR_ALREADY_IN_TARGET_STATE) {
-            return;
-        }
         super.onSearchStartFailed(reason);
-        mCategoryController.showToast("Failed to start scanning. Try again.");
-        mCategoryController.setScanning(false);
+        if (mScanStateListener != null) {
+            mScanStateListener.scanningStartFailed(reason);
+        }
     }
 
     @Override
     public void onSearchStarted(int reason) {
         super.onSearchStarted(reason);
-        mCategoryController.setScanning(true);
+        if (mScanStateListener != null) {
+            mScanStateListener.scanningStarted();
+        }
     }
 
     @Override
     public void onSearchStopFailed(int reason) {
-        if (reason == BluetoothStatusCodes.ERROR_ALREADY_IN_TARGET_STATE) {
-            return;
-        }
         super.onSearchStopFailed(reason);
-        mCategoryController.showToast("Failed to stop scanning. Try again.");
+        if (mScanStateListener != null) {
+            mScanStateListener.scanningStopFailed(reason);
+        }
     }
 
     @Override
     public void onSearchStopped(int reason) {
         super.onSearchStopped(reason);
-        mCategoryController.setScanning(false);
+        if (mScanStateListener != null) {
+            mScanStateListener.scanningStopped();
+        }
     }
 
     @Override
     public void onSourceAddFailed(
             BluetoothDevice sink, BluetoothLeBroadcastMetadata source, int reason) {
         super.onSourceAddFailed(sink, source, reason);
-        mCategoryController.handleSourceFailedToConnect(source.getBroadcastId());
+        if (mSourceStateListener != null) {
+            mSourceStateListener.handleSourceFailedToConnect(source.getBroadcastId());
+        }
     }
 
     @Override
     public void onSourceFound(BluetoothLeBroadcastMetadata source) {
         super.onSourceFound(source);
-        mCategoryController.handleSourceFound(source);
+        if (mSourceStateListener != null) {
+            mSourceStateListener.handleSourceFound(source);
+        }
     }
 
     @Override
     public void onSourceLost(int broadcastId) {
         super.onSourceLost(broadcastId);
-        mCategoryController.handleSourceLost(broadcastId);
-    }
-
-    @Override
-    public void onSourceRemoveFailed(BluetoothDevice sink, int sourceId, int reason) {
-        super.onSourceRemoveFailed(sink, sourceId, reason);
-        mCategoryController.showToast("Failed to remove source.");
+        if (mSourceStateListener != null) {
+            mSourceStateListener.handleSourceLost(broadcastId);
+        }
     }
 
     @Override
     public void onSourceRemoved(BluetoothDevice sink, int sourceId, int reason) {
         super.onSourceRemoved(sink, sourceId, reason);
-        mCategoryController.handleSourceRemoved();
+        if (mSourceStateListener != null) {
+            mSourceStateListener.handleSourceRemoved();
+        }
+    }
+
+    interface ScanStateListener {
+        void scanningStarted();
+        void scanningStartFailed(int reason);
+        void scanningStopped();
+        void scanningStopFailed(int reason);
+    }
+
+    interface SourceStateListener {
+        void handleSourceStreaming(@NonNull BluetoothDevice device,
+                @NonNull BluetoothLeBroadcastReceiveState receiveState);
+        void handleSourceConnectBadCode(@NonNull BluetoothLeBroadcastReceiveState receiveState);
+        void handleSourcePaused(@NonNull BluetoothDevice device,
+                @NonNull BluetoothLeBroadcastReceiveState receiveState);
+        void handleSourceFailedToConnect(int broadcastId);
+        void handleSourceFound(@NonNull BluetoothLeBroadcastMetadata source);
+        void handleSourceLost(int broadcastId);
+        void handleSourceRemoved();
     }
 }

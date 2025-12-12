@@ -16,7 +16,7 @@
 package com.android.settings.display;
 
 import static com.android.settings.core.BasePreferenceController.AVAILABLE_UNSEARCHABLE;
-import static com.android.settings.core.BasePreferenceController.DISABLED_DEPENDENT_SETTING;
+import static com.android.settings.core.BasePreferenceController.CONDITIONALLY_UNAVAILABLE;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -53,10 +53,10 @@ public class TwilightLocationPreferenceControllerTest {
     }
 
     @Test
-    public void getAvailabilityStatus_locationEnabled_shouldBeDISABLED_DEPENDENT_SETTING() {
+    public void getAvailabilityStatus_locationEnabled_shouldBeCONDITIONALLY_UNAVAILABLE() {
         when(mLocationManager.isLocationEnabled()).thenReturn(true);
 
-        assertThat(mController.getAvailabilityStatus()).isEqualTo(DISABLED_DEPENDENT_SETTING);
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(CONDITIONALLY_UNAVAILABLE);
     }
 
     @Test

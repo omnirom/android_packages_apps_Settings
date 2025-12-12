@@ -35,6 +35,7 @@ import static java.lang.Boolean.FALSE;
 
 import android.app.ActivityTaskManager;
 import android.app.AppGlobals;
+import android.app.backup.BackupManager;
 import android.app.compat.CompatChanges;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -53,6 +54,7 @@ import androidx.annotation.Nullable;
 
 import com.android.settings.R;
 import com.android.settings.Utils;
+import com.android.window.flags.Flags;
 
 import com.google.common.annotations.VisibleForTesting;
 
@@ -80,14 +82,16 @@ public class UserAspectRatioManager {
     private final Map<Integer, CharSequence> mUserAspectRatioA11yMap;
     private final SparseIntArray mUserAspectRatioOrder;
     private final ActivityTaskManager mActivityTaskManager;
+    private final BackupManager mBackupManager;
 
     public UserAspectRatioManager(@NonNull Context context) {
-        this(context, AppGlobals.getPackageManager());
+        this(context, AppGlobals.getPackageManager(), new BackupManager(context));
     }
 
     @VisibleForTesting
     UserAspectRatioManager(@NonNull Context context, @NonNull IPackageManager pm,
-                           @NonNull ActivityTaskManager activityTaskManager) {
+            @NonNull ActivityTaskManager activityTaskManager,
+            @NonNull BackupManager backupManager) {
         mContext = context;
         mIPm = pm;
         mUserAspectRatioA11yMap = new ArrayMap<>();
@@ -96,11 +100,12 @@ public class UserAspectRatioManager {
         mIgnoreActivityOrientationRequest = getValueFromDeviceConfig(
                 "ignore_activity_orientation_request", false);
         mActivityTaskManager = activityTaskManager;
-
+        mBackupManager = backupManager;
     }
 
-    UserAspectRatioManager(@NonNull Context context, @NonNull IPackageManager pm) {
-        this(context, pm, ActivityTaskManager.getInstance());
+    UserAspectRatioManager(@NonNull Context context, @NonNull IPackageManager pm,
+            @NonNull BackupManager backupManager) {
+        this(context, pm, ActivityTaskManager.getInstance(), backupManager);
     }
     /**
      * Whether user aspect ratio settings is enabled for device.
@@ -192,6 +197,10 @@ public class UserAspectRatioManager {
     public void setUserMinAspectRatio(@NonNull String packageName, int uid,
             @PackageManager.UserMinAspectRatio int aspectRatio) throws RemoteException {
         mIPm.setUserMinAspectRatio(packageName, uid, aspectRatio);
+
+        if (Flags.backupAndRestoreForUserAspectRatioSettings()) {
+            mBackupManager.dataChanged();
+        }
     }
 
     /**

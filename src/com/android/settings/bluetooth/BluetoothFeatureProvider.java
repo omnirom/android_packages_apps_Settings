@@ -16,7 +16,6 @@
 
 package com.android.settings.bluetooth;
 
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.ComponentName;
 import android.content.Context;
@@ -24,13 +23,12 @@ import android.media.Spatializer;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 
-import com.android.settings.bluetooth.ui.view.DeviceDetailsFragmentFormatter;
-import com.android.settings.dashboard.DashboardFragment;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.devicesettings.data.repository.DeviceSettingRepository;
-import com.android.settingslib.core.AbstractPreferenceController;
 
 import kotlinx.coroutines.CoroutineScope;
 
@@ -47,14 +45,6 @@ public interface BluetoothFeatureProvider {
      * @return {@link Uri} for extra settings
      */
     Uri getBluetoothDeviceSettingsUri(BluetoothDevice bluetoothDevice);
-
-    /**
-     * Gets the {@link Uri} that represents extra control for a specific bluetooth device
-     *
-     * @param bluetoothDevice bluetooth device
-     * @return {@link String} uri string for extra control
-     */
-    String getBluetoothDeviceControlUri(BluetoothDevice bluetoothDevice);
 
     /**
      * Gets the {@link ComponentName} of services or activities that need to be shown in related
@@ -94,15 +84,13 @@ public interface BluetoothFeatureProvider {
     @NonNull
     DeviceSettingRepository getDeviceSettingRepository(
             @NonNull Context context,
-            @NonNull BluetoothAdapter bluetoothAdapter,
             @NonNull CoroutineScope scope);
 
-    /** Gets device details fragment layout formatter. */
-    @NonNull
-    DeviceDetailsFragmentFormatter getDeviceDetailsFragmentFormatter(
+    /** Gets the alert dialogs for Bluetooth Diagnosis. */
+    @Nullable
+    AlertDialog getBluetoothDiagnosisAlertDialog(
             @NonNull Context context,
-            @NonNull DashboardFragment fragment,
-            @NonNull BluetoothAdapter bluetoothAdapter,
-            @NonNull CachedBluetoothDevice cachedDevice,
-            @NonNull List<AbstractPreferenceController> controllers);
+            @BluetoothDiagnosisEntryPoint int entryPoint,
+            @Nullable CachedBluetoothDevice device,
+            int metricsCategory);
 }

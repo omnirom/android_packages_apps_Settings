@@ -55,7 +55,7 @@ import com.android.settingslib.preference.SwitchPreferenceBinding
 
 // LINT.IfChange
 class WifiSwitchPreference :
-    SwitchPreference(KEY, R.string.wifi),
+    SwitchPreference(KEY, R.string.wifi_settings_primary_switch_title),
     SwitchPreferenceBinding,
     PreferenceActionMetricsProvider,
     OnPreferenceChangeListener,

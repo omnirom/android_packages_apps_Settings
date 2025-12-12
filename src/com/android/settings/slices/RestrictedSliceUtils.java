@@ -23,6 +23,7 @@ import android.provider.SettingsSlicesContract;
 /**
  * A utility class to check slice Uris for restriction.
  */
+@Deprecated(forRemoval = true)
 public class RestrictedSliceUtils {
 
     /**

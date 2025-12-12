@@ -18,8 +18,9 @@ package com.android.settings.spa.app.appinfo
 
 import android.app.settings.SettingsEnums
 import android.content.pm.ApplicationInfo
+import android.content.pm.FeatureFlags as PmFeatureFlags
+import android.content.pm.FeatureFlagsImpl as PmFeatureFlagsImpl
 import android.os.Bundle
-import android.os.SystemProperties
 import android.os.UserHandle
 import android.util.FeatureFlagUtils
 import androidx.compose.runtime.Composable
@@ -34,7 +35,6 @@ import androidx.navigation.navArgument
 import com.android.settings.R
 import com.android.settings.applications.AppInfoBase
 import com.android.settings.applications.appinfo.AppInfoDashboardFragment
-import com.android.settings.development.Enable16kUtils
 import com.android.settings.flags.Flags
 import com.android.settings.spa.SpaActivity.Companion.startSpaActivity
 import com.android.settings.spa.app.appcompat.UserAspectRatioAppPreference
@@ -43,6 +43,7 @@ import com.android.settings.spa.app.specialaccess.DisplayOverOtherAppsAppListPro
 import com.android.settings.spa.app.specialaccess.InstallUnknownAppsListProvider
 import com.android.settings.spa.app.specialaccess.ModifySystemSettingsAppListProvider
 import com.android.settings.spa.app.specialaccess.PictureInPictureListProvider
+import com.android.settings.spa.app.specialaccess.UsageDataAppListProvider
 import com.android.settings.spa.app.specialaccess.WriteSystemPreferencesAppListProvider
 import com.android.settingslib.spa.framework.common.SettingsPageProvider
 import com.android.settingslib.spa.framework.compose.navigator
@@ -51,8 +52,6 @@ import com.android.settingslib.spa.widget.ui.Category
 import com.android.settingslib.spaprivileged.model.app.toRoute
 import com.android.settingslib.spaprivileged.template.app.AppInfoProvider
 import kotlinx.coroutines.flow.MutableStateFlow
-import android.content.pm.FeatureFlags as PmFeatureFlags
-import android.content.pm.FeatureFlagsImpl as PmFeatureFlagsImpl
 
 private const val PACKAGE_NAME = "packageName"
 private const val USER_ID = "userId"
@@ -60,10 +59,11 @@ private const val USER_ID = "userId"
 object AppInfoSettingsProvider : SettingsPageProvider {
     override val name = "AppInfoSettings"
 
-    override val parameter = listOf(
-        navArgument(PACKAGE_NAME) { type = NavType.StringType },
-        navArgument(USER_ID) { type = NavType.IntType },
-    )
+    override val parameter =
+        listOf(
+            navArgument(PACKAGE_NAME) { type = NavType.StringType },
+            navArgument(USER_ID) { type = NavType.IntType },
+        )
 
     const val METRICS_CATEGORY = SettingsEnums.APPLICATIONS_INSTALLED_APP_DETAILS
 
@@ -80,8 +80,7 @@ object AppInfoSettingsProvider : SettingsPageProvider {
         packageInfoPresenter.PackageFullyRemovedEffect()
     }
 
-    @Composable
-    fun navigator(app: ApplicationInfo) = navigator(route = "$name/${app.toRoute()}")
+    @Composable fun navigator(app: ApplicationInfo) = navigator(route = "$name/${app.toRoute()}")
 
     /**
      * Gets the route to the App Info Settings page.
@@ -128,10 +127,11 @@ private fun AppInfoSettings(packageInfoPresenter: PackageInfoPresenter) {
         title = stringResource(R.string.application_info_label),
         actions = {
             packageInfoState.value?.applicationInfo?.let { app ->
-                if (isArchivingEnabled(featureFlags)) TopBarAppLaunchButton(packageInfoPresenter, app)
+                if (isArchivingEnabled(featureFlags))
+                    TopBarAppLaunchButton(packageInfoPresenter, app)
                 AppInfoSettingsMoreOptions(packageInfoPresenter, app)
             }
-        }
+        },
     ) {
         val packageInfo = packageInfoState.value ?: return@RegularScaffold
         val app = packageInfo.applicationInfo ?: return@RegularScaffold
@@ -147,6 +147,8 @@ private fun AppInfoSettings(packageInfoPresenter: PackageInfoPresenter) {
             AppAllServicesPreference(app)
             AppNotificationPreference(app)
             AppPermissionPreference(app)
+            ManageTargetAppFunctionAccessPreference(app)
+            ManageAgentAppFunctionAccessPreference(app)
             AppStoragePreference(app)
             InstantAppDomainsPreference(app)
             AppDataUsagePreference(app)
@@ -171,6 +173,7 @@ private fun AppInfoSettings(packageInfoPresenter: PackageInfoPresenter) {
             AlarmsAndRemindersAppListProvider.InfoPageEntryItem(app)
             WriteSystemPreferencesAppListProvider.InfoPageEntryItem(app)
             Enable16KbAppCompatPreference(app, packageInfoPresenter)
+            UsageDataAppListProvider.InfoPageEntryItem(app)
         }
 
         Category(title = stringResource(R.string.app_install_details_group_title)) {
@@ -181,4 +184,4 @@ private fun AppInfoSettings(packageInfoPresenter: PackageInfoPresenter) {
 }
 
 fun isArchivingEnabled(featureFlags: PmFeatureFlags) =
-        featureFlags.archiving() || Flags.appArchiving()
+    featureFlags.archiving() || Flags.appArchiving()

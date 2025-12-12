@@ -18,7 +18,6 @@ package com.android.settings.inputmethod;
 
 import android.content.Context;
 import android.hardware.input.InputManager;
-import android.util.FeatureFlagUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +25,6 @@ import androidx.preference.Preference;
 
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.core.PreferenceControllerMixin;
-import com.android.settings.keyboard.Flags;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnStart;
 import com.android.settingslib.core.lifecycle.events.OnStop;
@@ -86,15 +84,6 @@ public class TouchpadAndMouseSettingsController extends BasePreferenceController
 
     @Override
     public int getAvailabilityStatus() {
-        boolean isNewPageFlagDisabled = !Flags.keyboardAndTouchpadA11yNewPageEnabled();
-        boolean isFeatureOn = FeatureFlagUtils
-                .isEnabled(mContext, FeatureFlagUtils.SETTINGS_NEW_KEYBOARD_TRACKPAD);
-        boolean isTouchpad = InputPeripheralsSettingsUtils.isTouchpad();
-        boolean isPointerCustomizationEnabled =
-                android.view.flags.Flags.enableVectorCursorA11ySettings();
-        boolean isMouse = InputPeripheralsSettingsUtils.isMouse();
-        return ((isFeatureOn && isTouchpad) || (isPointerCustomizationEnabled && isMouse))
-                && isNewPageFlagDisabled ? AVAILABLE
-                : CONDITIONALLY_UNAVAILABLE;
+        return CONDITIONALLY_UNAVAILABLE;
     }
 }

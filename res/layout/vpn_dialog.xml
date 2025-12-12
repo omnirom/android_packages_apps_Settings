@@ -13,12 +13,13 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/Theme.Network"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:maxHeight="@dimen/vpn_dialog_max_height"
     android:orientation="vertical"
     android:paddingTop="0dp"
     android:paddingLeft="24dp"
@@ -64,10 +65,11 @@
                 <TextView style="@style/vpn_label"
                         android:text="@string/vpn_type"
                         android:labelFor="@+id/type"/>
-                <Spinner style="@style/vpn_value"
-                        android:id="@+id/type"
-                        android:prompt="@string/vpn_type"
-                        android:entries="@array/vpn_types"/>
+                <Spinner
+                    android:id="@+id/type"
+                    style="@style/vpn_spinner"
+                    android:prompt="@string/vpn_type"
+                    android:entries="@array/vpn_types"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/vpn_input_label"
@@ -126,9 +128,10 @@
                     <TextView style="@style/vpn_label"
                             android:text="@string/vpn_ipsec_user_cert"
                             android:labelFor="@+id/ipsec_user_cert"/>
-                    <Spinner style="@style/vpn_value"
-                            android:id="@+id/ipsec_user_cert"
-                            android:prompt="@string/vpn_ipsec_user_cert" />
+                    <Spinner
+                        android:id="@+id/ipsec_user_cert"
+                        style="@style/vpn_spinner"
+                        android:prompt="@string/vpn_ipsec_user_cert"/>
                 </LinearLayout>
 
                 <LinearLayout android:id="@+id/ipsec_peer"
@@ -139,16 +142,18 @@
                     <TextView style="@style/vpn_label"
                             android:text="@string/vpn_ipsec_ca_cert"
                             android:labelFor="@+id/ipsec_ca_cert"/>
-                    <Spinner style="@style/vpn_value"
-                            android:id="@+id/ipsec_ca_cert"
-                            android:prompt="@string/vpn_ipsec_ca_cert" />
+                    <Spinner
+                        android:id="@+id/ipsec_ca_cert"
+                        style="@style/vpn_spinner"
+                        android:prompt="@string/vpn_ipsec_ca_cert"/>
 
                     <TextView style="@style/vpn_label"
                             android:text="@string/vpn_ipsec_server_cert"
                             android:labelFor="@+id/ipsec_server_cert"/>
-                    <Spinner style="@style/vpn_value"
-                            android:id="@+id/ipsec_server_cert"
-                            android:prompt="@string/vpn_ipsec_server_cert" />
+                    <Spinner
+                        android:id="@+id/ipsec_server_cert"
+                        style="@style/vpn_spinner"
+                        android:prompt="@string/vpn_ipsec_server_cert"/>
                 </LinearLayout>
 
                 <CheckBox style="@style/vpn_value"
@@ -167,10 +172,11 @@
                           android:text="@string/proxy_settings_title"
                           android:labelFor="@+id/vpn_proxy_settings" />
 
-                <Spinner android:id="@+id/vpn_proxy_settings"
-                         style="@style/vpn_value"
-                         android:prompt="@string/proxy_settings_title"
-                         android:entries="@array/vpn_proxy_settings" />
+                <Spinner
+                    android:id="@+id/vpn_proxy_settings"
+                    style="@style/vpn_spinner"
+                    android:prompt="@string/proxy_settings_title"
+                    android:entries="@array/vpn_proxy_settings"/>
 
                 <LinearLayout
                     android:id="@+id/vpn_proxy_fields"
@@ -234,18 +240,21 @@
                         android:text="@string/vpn_save_login"/>
             </LinearLayout>
 
-            <LinearLayout android:id="@+id/connect"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:animateLayoutChanges="true">
-                <CheckBox style="@style/vpn_value"
-                        android:id="@+id/always_on_vpn"
-                        android:text="@string/vpn_menu_lockdown"/>
-                <TextView style="@style/vpn_warning"
-                        android:id="@+id/always_on_invalid_reason"
-                        android:visibility="gone"/>
+            <LinearLayout
+                android:id="@+id/connect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/vpn_dialog_margin_bottom"
+                android:orientation="vertical"
+                android:animateLayoutChanges="true">
+                <CheckBox
+                    android:id="@+id/always_on_vpn"
+                    style="@style/vpn_value"
+                    android:text="@string/vpn_menu_lockdown"/>
+                <TextView
+                    android:id="@+id/always_on_invalid_reason"
+                    style="@style/vpn_warning"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

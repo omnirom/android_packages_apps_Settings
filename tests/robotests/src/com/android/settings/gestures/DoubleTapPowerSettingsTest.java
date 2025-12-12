@@ -40,6 +40,7 @@ import org.robolectric.annotation.Config;
 
 import java.util.List;
 
+// LINT.IfChange
 @Config(shadows = SettingsShadowResources.class)
 @RunWith(RobolectricTestRunner.class)
 public class DoubleTapPowerSettingsTest {
@@ -130,3 +131,4 @@ public class DoubleTapPowerSettingsTest {
                 .isEqualTo(R.xml.double_tap_power_to_open_camera_settings);
     }
 }
+// LINT.ThenChange(DoubleTapPowerScreenTest.kt)

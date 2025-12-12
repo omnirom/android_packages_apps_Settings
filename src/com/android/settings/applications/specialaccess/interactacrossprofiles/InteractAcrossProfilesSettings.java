@@ -31,6 +31,7 @@ import android.util.IconDrawableFactory;
 import android.util.Pair;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceClickListener;
@@ -75,7 +76,7 @@ public class InteractAcrossProfilesSettings extends EmptyTextSettings {
         replaceEnterprisePreferenceScreenTitle(CONNECTED_WORK_AND_PERSONAL_APPS_TITLE,
                 R.string.interact_across_profiles_title);
 
-        final ArrayList<Pair<ApplicationInfo, UserHandle>> crossProfileApps =
+        final List<Pair<ApplicationInfo, UserHandle>> crossProfileApps =
                 collectConfigurableApps(mPackageManager, mUserManager, mCrossProfileApps);
 
         final Context prefContext = getPrefContext();
@@ -129,7 +130,7 @@ public class InteractAcrossProfilesSettings extends EmptyTextSettings {
      * @return the list of applications for the personal profile in the calling user's profile group
      * that can configure interact across profiles.
      */
-    static ArrayList<Pair<ApplicationInfo, UserHandle>> collectConfigurableApps(
+    public static @NonNull List<Pair<ApplicationInfo, UserHandle>> collectConfigurableApps(
             PackageManager packageManager, UserManager userManager,
             CrossProfileApps crossProfileApps) {
         final UserHandle workProfile = getWorkProfile(userManager);
@@ -182,7 +183,7 @@ public class InteractAcrossProfilesSettings extends EmptyTextSettings {
         if (personalProfile == null) {
             return 0;
         }
-        final ArrayList<Pair<ApplicationInfo, UserHandle>> apps =
+        final List<Pair<ApplicationInfo, UserHandle>> apps =
                 collectConfigurableApps(packageManager, userManager, crossProfileApps);
         apps.removeIf(
                 app -> !InteractAcrossProfilesDetails.isInteractAcrossProfilesEnabled(

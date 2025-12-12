@@ -32,6 +32,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+// LINT.IfChange
 @RunWith(RobolectricTestRunner.class)
 public class AlarmVolumePreferenceControllerTest {
 
@@ -84,3 +85,4 @@ public class AlarmVolumePreferenceControllerTest {
         assertThat(mController.isPublicSlice()).isTrue();
     }
 }
+// LINT.ThenChange(AlarmVolumePreferenceTest.kt)

@@ -56,8 +56,10 @@ public class ConversationPriorityPreferenceTest {
     public void createNewPreference_shouldSetLayout() {
         final ConversationPriorityPreference preference =
                 new ConversationPriorityPreference(mContext);
-        assertThat(preference.getLayoutResource()).isEqualTo(
-                R.layout.notif_priority_conversation_preference);
+        int layoutId = android.app.Flags.notificationsRedesignTemplates()
+                ? R.layout.notification_2025_priority_conversation_preference
+                : R.layout.notif_priority_conversation_preference;
+        assertThat(preference.getLayoutResource()).isEqualTo(layoutId);
     }
 
     @Test

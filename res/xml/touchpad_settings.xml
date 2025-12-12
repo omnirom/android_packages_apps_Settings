@@ -52,6 +52,14 @@
         android:key="three_finger_tap"
         android:title="@string/three_finger_tap_preference_title"
         settings:controller="com.android.settings.inputmethod.TouchpadThreeFingerTapPreferenceController"
+        android:order="36"/>
+
+    <Preference
+        android:fragment="com.android.settings.inputmethod.ActionCornerFragment"
+        android:key="action_corners"
+        android:title="@string/action_corner_title"
+        android:summary="@string/action_corner_summary"
+        settings:controller="com.android.settings.inputmethod.ActionCornerPreferenceController"
         android:order="37"/>
 
     <SwitchPreferenceCompat
@@ -61,10 +69,15 @@
         settings:controller="com.android.settings.inputmethod.TouchpadAccelerationPreferenceController"
         android:order="38"/>
 
-    <com.android.settings.widget.LabeledSeekBarPreference
+    <com.android.settingslib.widget.SliderPreference
         android:key="touchpad_pointer_speed"
         android:title="@string/trackpad_pointer_speed"
+        settings:seekBarIncrement="1"
         android:order="40"
+        settings:iconEnd="@drawable/ic_add_24dp"
+        settings:iconStart="@drawable/ic_remove_24dp"
+        settings:iconEndContentDescription="@string/trackpad_pointer_speed_make_faster_desc"
+        settings:iconStartContentDescription="@string/trackpad_pointer_speed_make_slower_desc"
         android:selectable="false"
         settings:controller="com.android.settings.inputmethod.TouchpadPointerSpeedPreferenceController"/>
 
@@ -80,6 +93,9 @@
     <com.android.settingslib.widget.ButtonPreference
         android:key="touchpad_touch_gesture"
         android:title="@string/trackpad_touch_gesture"
+        android:icon="@drawable/ic_settings_gestures"
+        settings:buttonPreferenceSize="large"
+        settings:buttonPreferenceType="filled"
         settings:controller="com.android.settings.inputmethod.TouchpadGesturesTutorialButtonPreferenceController"/>
 
     <com.android.settingslib.widget.FooterPreference

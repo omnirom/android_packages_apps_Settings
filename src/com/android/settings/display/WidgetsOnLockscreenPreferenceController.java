@@ -16,40 +16,119 @@
 
 package com.android.settings.display;
 
+import static android.provider.Settings.Secure.GLANCEABLE_HUB_ENABLED;
+
+import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.os.UserHandle;
 import android.os.UserManager;
+import android.provider.Settings;
+import android.util.Log;
+
+import androidx.preference.Preference;
 
 import com.android.settings.R;
-import com.android.settings.core.BasePreferenceController;
+import com.android.settings.core.TogglePreferenceController;
+import com.android.settingslib.PrimarySwitchPreference;
+import com.android.settingslib.RestrictedLockUtils;
+import com.android.settingslib.RestrictedLockUtilsInternal;
+import com.android.settingslib.RestrictedSwitchPreference;
+import com.android.systemui.Flags;
 
-/** Controls the "widgets on lock screen" preferences (under "Display & touch"). */
-public class WidgetsOnLockscreenPreferenceController extends BasePreferenceController {
+/** Controls the "widgets on lock screen" preferences (under "Display & touch > Lock screen"). */
+public class WidgetsOnLockscreenPreferenceController extends TogglePreferenceController {
+    private static final String TAG = "WidgetsOnLockscreen";
+
     public WidgetsOnLockscreenPreferenceController(Context context, String preferenceKey) {
         super(context, preferenceKey);
     }
 
     @Override
-    public int getAvailabilityStatus() {
-        return isAvailable(mContext) ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
+    public void updateState(Preference preference) {
+        super.updateState(preference);
+        disablePreferenceIfManaged(preference);
     }
 
-    /**
-     * Returns whether "widgets on lock screen" preferences are available.
-     */
-    public static boolean isAvailable(Context context) {
-        if (!isMainUser(context)) {
-            return false;
+    @Override
+    public boolean isChecked() {
+        return isEnabled(mContext);
+    }
+
+    @Override
+    public boolean setChecked(boolean isChecked) {
+        setEnabled(mContext, isChecked);
+        return true;
+    }
+
+    @Override
+    public int getSliceHighlightMenuRes() {
+        return R.string.menu_key_display;
+    }
+
+    @Override
+    public int getAvailabilityStatus() {
+        if (!isMainUser()) {
+            return UNSUPPORTED_ON_DEVICE;
         }
 
-        return com.android.systemui.Flags.glanceableHubV2()
-                && (context.getResources().getBoolean(R.bool.config_show_communal_settings)
-                    || context.getResources().getBoolean(
-                            R.bool.config_show_communal_settings_mobile));
+        // This config should only be true on tablet.
+        if (mContext.getResources().getBoolean(R.bool.config_show_glanceable_hub_toggle_setting)) {
+            return AVAILABLE;
+        }
+
+        if (Flags.glanceableHubV2()
+                && mContext.getResources().getBoolean(
+                R.bool.config_show_glanceable_hub_toggle_setting_mobile)) {
+            return AVAILABLE;
+        }
+
+        return UNSUPPORTED_ON_DEVICE;
     }
 
-    private static boolean isMainUser(Context context) {
-        final UserManager userManager = context.getSystemService(UserManager.class);
+    static void setEnabled(Context context, boolean isChecked) {
+        Settings.Secure.putInt(
+                context.getContentResolver(), GLANCEABLE_HUB_ENABLED, isChecked ? 1 : 0);
+    }
+
+    static boolean isEnabled(Context context) {
+        return Settings.Secure.getInt(
+                context.getContentResolver(),
+                GLANCEABLE_HUB_ENABLED,
+                getEnabledDefault(context)) == 1;
+    }
+
+    static int getEnabledDefault(Context context) {
+        if (!Flags.glanceableHubV2()) {
+            // The default was just "1" (enabled) pre-hub_v2).
+            return 1;
+        }
+
+        return Flags.glanceableHubEnabledByDefault()
+                || context.getResources().getBoolean(
+                com.android.internal.R.bool.config_glanceableHubEnabledByDefault) ? 1 : 0;
+    }
+
+    private void disablePreferenceIfManaged(Preference pref) {
+        final RestrictedLockUtils.EnforcedAdmin admin =
+                RestrictedLockUtilsInternal.checkIfKeyguardFeaturesDisabled(
+                        mContext,
+                        DevicePolicyManager.KEYGUARD_DISABLE_WIDGETS_ALL,
+                        UserHandle.myUserId());
+        if (admin != null) {
+            if (pref instanceof RestrictedSwitchPreference) {
+                ((RestrictedSwitchPreference) pref).setDisabledByAdmin(admin);
+                ((RestrictedSwitchPreference) pref).setChecked(false);
+            } else if (pref instanceof PrimarySwitchPreference) {
+                ((PrimarySwitchPreference) pref).setDisabledByAdmin(admin);
+                ((PrimarySwitchPreference) pref).setChecked(false);
+            } else {
+                Log.e(TAG, "Unknown pref type passed to disablePreferenceIfManaged: " + pref);
+            }
+        }
+    }
+
+    private boolean isMainUser() {
+        final UserManager userManager = mContext.getSystemService(UserManager.class);
         return userManager.getUserInfo(UserHandle.myUserId()).isMain();
     }
 }

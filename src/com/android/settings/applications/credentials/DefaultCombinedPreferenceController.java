@@ -91,12 +91,6 @@ public class DefaultCombinedPreferenceController extends DefaultAppPreferenceCon
         // Despite this method being called getSettingIntent this intent actually
         // opens the primary picker. This is so that we can swap the cog and the left
         // hand side presses to align the UX.
-        if (PrimaryProviderPreference.shouldUseNewSettingsUi()) {
-            // We need to return an empty intent here since the class we inherit
-            // from will throw an NPE if we return null and we don't want it to
-            // open anything since we added the buttons.
-            return new Intent();
-        }
         return createIntentToOpenPicker();
     }
 

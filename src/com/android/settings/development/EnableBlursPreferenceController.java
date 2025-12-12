@@ -62,7 +62,7 @@ public final class EnableBlursPreferenceController extends DeveloperOptionsPrefe
 
     @Override
     public boolean isAvailable() {
-        return mBlurSupported;
+        return !com.android.systemui.Flags.blurSettingsToggle() && mBlurSupported;
     }
 
     @Override

@@ -58,7 +58,7 @@ public class SettingsSearchIndexablesProviderTest {
     @Before
     public void setUp() {
         mContext = RuntimeEnvironment.application;
-        mProvider = spy(new SettingsSearchIndexablesProvider());
+        mProvider = spy(new IndexablesProvider());
         ProviderInfo info = new ProviderInfo();
         info.exported = true;
         info.grantUriPermissions = true;
@@ -236,6 +236,13 @@ public class SettingsSearchIndexablesProviderTest {
 
         static void setDashboardCategory(DashboardCategory category) {
             sCategory = category;
+        }
+    }
+
+    private static class IndexablesProvider extends SettingsSearchIndexablesProvider {
+        @Override
+        public boolean isCatalystSearchEnabled() {
+            return false;
         }
     }
 }

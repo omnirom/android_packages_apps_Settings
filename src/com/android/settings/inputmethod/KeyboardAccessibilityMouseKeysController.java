@@ -72,13 +72,6 @@ public class KeyboardAccessibilityMouseKeysController extends
     }
 
     @Override
-    public int getAvailabilityStatus() {
-        return (super.getAvailabilityStatus() == AVAILABLE)
-                && InputSettings.isAccessibilityMouseKeysFeatureFlagEnabled() ? AVAILABLE
-                : UNSUPPORTED_ON_DEVICE;
-    }
-
-    @Override
     protected void onInputSettingUpdated() {
         if (mPrimaryPreference != null) {
             mPrimaryPreference.setChecked(

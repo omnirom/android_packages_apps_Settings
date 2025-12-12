@@ -74,7 +74,6 @@
         android:key="notif_listener_not_migrated"
         android:title="@string/notif_listener_not_migrated"
         settings:controller="com.android.settings.applications.specialaccess.notificationaccess.PreUpgradePreferenceController"
-        android:selectable="false"
         settings:searchable="false"/>
 
 </PreferenceScreen>

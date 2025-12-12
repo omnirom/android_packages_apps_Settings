@@ -24,29 +24,27 @@
         android:key="header_view"
         android:selectable="false"/>
 
-    <PreferenceCategory
+    <com.android.settingslib.widget.UntitledPreferenceCategory
         android:key="battery_optimization_mode_category"
-        android:layout="@layout/settingslib_preference_category_no_title"
         settings:controller="com.android.settings.fuelgauge.BatteryOptimizationModePreferenceController">
 
         <com.android.settingslib.widget.MainSwitchPreference
             android:key="background_usage_allowability_switch"
             android:title="@string/manager_battery_usage_allow_background_usage_title"/>
 
-        <com.android.settingslib.widget.SelectorWithWidgetPreference
+        <com.android.settings.fuelgauge.WarningFrameSelectorPreference
             android:key="optimized_preference"
             android:title="@string/manager_battery_usage_optimized_title"
             android:summary="@string/manager_battery_usage_optimized_summary"/>
 
-        <com.android.settingslib.widget.SelectorWithWidgetPreference
+        <com.android.settings.fuelgauge.WarningFrameSelectorPreference
             android:key="unrestricted_preference"
             android:title="@string/manager_battery_usage_unrestricted_title"
-            android:summary="@string/manager_battery_usage_unrestricted_summary"/>
-    </PreferenceCategory>
+            android:summary="@string/manager_battery_usage_unrestricted_summary_v2"/>
+    </com.android.settingslib.widget.UntitledPreferenceCategory>
 
     <com.android.settingslib.widget.FooterPreference
         android:key="app_usage_footer_preference"
         android:title="@string/manager_battery_usage_footer"
-        android:selectable="false"
         settings:searchable="false"/>
 </PreferenceScreen>

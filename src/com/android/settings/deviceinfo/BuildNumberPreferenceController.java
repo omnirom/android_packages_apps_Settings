@@ -19,10 +19,10 @@ package com.android.settings.deviceinfo;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.settings.SettingsEnums;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.hardware.biometrics.Flags;
 import android.os.Build;
 import android.os.UserHandle;
 import android.os.UserManager;
@@ -130,19 +130,17 @@ public class BuildNumberPreferenceController extends BasePreferenceController im
         }
 
         if (mUm.hasUserRestriction(UserManager.DISALLOW_DEBUGGING_FEATURES)) {
-            if (mUm.isDemoUser()) {
-                // Route to demo device owner to lift the debugging restriction.
-                final ComponentName componentName = Utils.getDeviceOwnerComponent(mContext);
-                if (componentName != null) {
-                    final Intent requestDebugFeatures = new Intent()
-                            .setPackage(componentName.getPackageName())
-                            .setAction("com.android.settings.action.REQUEST_DEBUG_FEATURES");
-                    final ResolveInfo resolveInfo = mContext.getPackageManager().resolveActivity(
-                            requestDebugFeatures, 0);
-                    if (resolveInfo != null) {
-                        mContext.startActivity(requestDebugFeatures);
-                        return false;
-                    }
+            // Route to active device admin to lift the debugging restriction.
+            if (mDebuggingFeaturesDisallowedAdmin != null
+                    && mDebuggingFeaturesDisallowedAdmin.component != null) {
+                final Intent requestDebugFeatures = new Intent()
+                        .setPackage(mDebuggingFeaturesDisallowedAdmin.component.getPackageName())
+                        .setAction("com.android.settings.action.REQUEST_DEBUG_FEATURES");
+                final ResolveInfo resolveInfo = mContext.getPackageManager().resolveActivity(
+                        requestDebugFeatures, 0);
+                if (resolveInfo != null) {
+                    mContext.startActivity(requestDebugFeatures);
+                    return false;
                 }
             }
             if (mDebuggingFeaturesDisallowedAdmin != null &&
@@ -231,7 +229,15 @@ public class BuildNumberPreferenceController extends BasePreferenceController im
                     Utils.requestBiometricAuthenticationForMandatoryBiometrics(mContext,
                             false /* biometricsAuthenticationRequested */,
                             userId);
-            if (biometricAuthStatus == Utils.BiometricStatus.OK) {
+            if (Flags.bpFallbackOptions()) {
+                if (biometricAuthStatus != Utils.BiometricStatus.NOT_ACTIVE) {
+                    Utils.launchBiometricPromptForMandatoryBiometrics(mFragment,
+                            REQUEST_IDENTITY_CHECK_FOR_DEV_PREF,
+                            userId, false /* hideBackground */);
+                } else {
+                    enableDevelopmentSettings();
+                }
+            } else if (biometricAuthStatus == Utils.BiometricStatus.OK) {
                 Utils.launchBiometricPromptForMandatoryBiometrics(mFragment,
                         REQUEST_IDENTITY_CHECK_FOR_DEV_PREF,
                         userId, false /* hideBackground */);

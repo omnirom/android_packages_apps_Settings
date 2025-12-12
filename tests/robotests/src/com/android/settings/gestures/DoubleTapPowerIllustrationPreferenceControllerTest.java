@@ -59,7 +59,8 @@ public class DoubleTapPowerIllustrationPreferenceControllerTest {
 
         mController.updateState(mPreference);
 
-        assertThat(mPreference.getLottieAnimationResId()).isEqualTo(R.drawable.quickly_open_camera);
+        assertThat(mPreference.getLottieAnimationResId())
+                .isEqualTo(R.raw.gesture_double_tap_power_for_camera_lottie);
     }
 
     @Test
@@ -69,6 +70,6 @@ public class DoubleTapPowerIllustrationPreferenceControllerTest {
         mController.updateState(mPreference);
 
         assertThat(mPreference.getLottieAnimationResId())
-                .isEqualTo(R.drawable.double_tap_power_for_wallet);
+                .isEqualTo(R.raw.gesture_double_tap_power_for_wallet_lottie);
     }
 }

@@ -32,15 +32,19 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
+import com.android.settings.Utils;
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.deviceinfo.PhoneNumberSummaryPreference;
 import com.android.settings.deviceinfo.simstatus.SlotSimStatus;
-import com.android.settings.network.SubscriptionUtil;
-import com.android.settingslib.Utils;
+import com.android.settings.flags.Flags;
 
 /**
  * Controller that manages preference for single and multi sim devices.
+ *
+ * @deprecated Since PHONE_TYPE_CDMA has been deprecated in TelephonyManager, this controller
+ * will be deprecated and removed after V.
  */
+@Deprecated(forRemoval = true)
 public class ImeiInfoPreferenceController extends BasePreferenceController {
 
     private static final String TAG = "ImeiInfoPreferenceController";
@@ -82,12 +86,12 @@ public class ImeiInfoPreferenceController extends BasePreferenceController {
     @Override
     public void displayPreference(PreferenceScreen screen) {
         super.displayPreference(screen);
-        if ((!SubscriptionUtil.isSimHardwareVisible(mContext)) || (mSlotSimStatus == null)) {
+        if (!isAvailable() || (mSlotSimStatus == null)) {
             return;
         }
         mTelephonyManager = mContext.getSystemService(TelephonyManager.class);
         Preference preference = screen.findPreference(DEFAULT_KEY);
-        if (!isAvailable() || preference == null || !preference.isVisible()) {
+        if (preference == null || !preference.isVisible()) {
             return;
         }
         PreferenceCategory category = screen.findPreference(KEY_PREFERENCE_CATEGORY);
@@ -95,6 +99,10 @@ public class ImeiInfoPreferenceController extends BasePreferenceController {
         int imeiPreferenceOrder = preference.getOrder();
         screen.removePreference(preference);
         preference.setVisible(false);
+
+        if (Flags.catalystMyDeviceInfoPrefScreen()) {
+            return;
+        }
 
         // Add additional preferences for each imei slot in the device
         for (int simSlotNumber = 0; simSlotNumber < mSlotSimStatus.size(); simSlotNumber++) {
@@ -137,7 +145,7 @@ public class ImeiInfoPreferenceController extends BasePreferenceController {
 
     @Override
     public int getAvailabilityStatus() {
-        if (!SubscriptionUtil.isSimHardwareVisible(mContext) || Utils.isWifiOnly(mContext)) {
+        if (!Utils.isMobileDataCapable(mContext) && !Utils.isVoiceCapable(mContext)) {
             return UNSUPPORTED_ON_DEVICE;
         }
         if (!mContext.getSystemService(UserManager.class).isAdminUser()) {

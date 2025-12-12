@@ -45,6 +45,7 @@ import androidx.annotation.UiThread;
 import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
@@ -80,11 +81,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AudioSharingSwitchBarController extends BasePreferenceController
         implements DefaultLifecycleObserver,
-        OnCheckedChangeListener,
-        LocalBluetoothProfileManager.ServiceListener,
-        BluetoothCallback {
+                OnCheckedChangeListener,
+                LocalBluetoothProfileManager.ServiceListener,
+                BluetoothCallback {
     private static final String TAG = "AudioSharingSwitchCtlr";
     private static final String PREF_KEY = "audio_sharing_main_switch";
+    private static final String EXTRA_SOURCE_METRICS = ":settings:source_metrics";
 
     interface OnAudioSharingStateChangedListener {
         /**
@@ -120,7 +122,7 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
     private List<AudioSharingDeviceItem> mDeviceItemsForSharing = new ArrayList<>();
     private final AtomicBoolean mCallbacksRegistered = new AtomicBoolean(false);
     private AtomicInteger mIntentHandleStage =
-            new AtomicInteger(StartIntentHandleStage.TO_HANDLE.ordinal());
+            new AtomicInteger(StartIntentHandleStage.TO_HANDLE.getId());
     // The sinks in adding source process. We show the progress dialog based on this list.
     private CopyOnWriteArrayList<BluetoothDevice> mSinksInAdding = new CopyOnWriteArrayList<>();
     // The primary/active sinks in adding source process.
@@ -137,7 +139,7 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)
-                            == BluetoothAdapter.STATE_ON
+                                    == BluetoothAdapter.STATE_ON
                             && !AudioSharingUtils.isAudioSharingProfileReady(mProfileManager)) {
                         if (mProfileManager != null) {
                             mProfileManager.addServiceListener(
@@ -205,8 +207,8 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
                                     + broadcastId);
                     mStoppingSharing.compareAndSet(true, false);
                     updateSwitch();
-                    AudioSharingUtils.postOnMainThread(mContext,
-                            () -> dismissStaleDialogsOtherThanErrorDialog());
+                    AudioSharingUtils.postOnMainThread(
+                            mContext, () -> dismissStaleDialogsOtherThanErrorDialog());
                     AudioSharingUtils.toastMessage(
                             mContext,
                             mContext.getString(R.string.audio_sharing_sharing_stopped_label));
@@ -263,29 +265,32 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
                 public void onSourceFound(@NonNull BluetoothLeBroadcastMetadata source) {}
 
                 @Override
-                public void onSourceAdded(
-                        @NonNull BluetoothDevice sink, int sourceId, int reason) {
+                public void onSourceAdded(@NonNull BluetoothDevice sink, int sourceId, int reason) {
                     if (mSinksInAdding.contains(sink)) {
                         mSinksInAdding.remove(sink);
                     }
                     dismissProgressDialogIfNeeded();
-                    Log.d(TAG, "onSourceAdded(), sink = " + sink + ", remaining sinks = "
-                            + mSinksInAdding);
+                    Log.d(
+                            TAG,
+                            "onSourceAdded(), sink = "
+                                    + sink
+                                    + ", remaining sinks = "
+                                    + mSinksInAdding);
                     if (mSinksToWaitFor.contains(sink)) {
                         mSinksToWaitFor.remove(sink);
                         if (mSinksToWaitFor.isEmpty() && mBroadcast != null) {
                             // To avoid users advance to share then pair flow before the
                             // primary/active sinks successfully join the audio sharing,
                             // popup dialog till adding source complete for mSinksToWaitFor.
-                            Pair<Integer, Object>[] eventData =
+                            ImmutableList<Pair<Integer, Object>> eventData =
                                     AudioSharingUtils.buildAudioSharingDialogEventData(
                                             SettingsEnums.AUDIO_SHARING_SETTINGS,
-                                            SettingsEnums.DIALOG_AUDIO_SHARING_ADD_DEVICE,
+                                            SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
                                             /* userTriggered= */ false,
                                             /* deviceCountInSharing= */ 1,
                                             /* candidateDeviceCount= */ 0);
-                            showJoinAudioSharingDialog(eventData,
-                                    mBroadcast.getLatestBluetoothLeBroadcastMetadata());
+                            showJoinAudioSharingDialog(
+                                    eventData, mBroadcast.getLatestBluetoothLeBroadcastMetadata());
                         }
                     }
                 }
@@ -334,9 +339,14 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
                         @NonNull BluetoothDevice sink,
                         int sourceId,
                         @NonNull BluetoothLeBroadcastReceiveState state) {
-                    Log.d(TAG,
-                            "onReceiveStateChanged(), sink = " + sink + ", sourceId = " + sourceId
-                                    + ", state = " + state);
+                    Log.d(
+                            TAG,
+                            "onReceiveStateChanged(), sink = "
+                                    + sink
+                                    + ", sourceId = "
+                                    + sourceId
+                                    + ", state = "
+                                    + state);
                 }
             };
 
@@ -379,8 +389,8 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
             return;
         }
         if (mIntentHandleStage.compareAndSet(
-                StartIntentHandleStage.TO_HANDLE.ordinal(),
-                StartIntentHandleStage.HANDLE_AUTO_ADD.ordinal())) {
+                StartIntentHandleStage.TO_HANDLE.getId(),
+                StartIntentHandleStage.HANDLE_AUTO_ADD.getId())) {
             Log.d(TAG, "onStart: handleStartAudioSharingFromIntent");
             handleStartAudioSharingFromIntent();
         }
@@ -419,8 +429,8 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
             // FeatureFlagUtils.SETTINGS_NEED_CONNECTED_BLE_DEVICE_FOR_BROADCAST is always true in
             // prod. We can turn off the flag for debug purpose.
             if (FeatureFlagUtils.isEnabled(
-                    mContext,
-                    FeatureFlagUtils.SETTINGS_NEED_CONNECTED_BLE_DEVICE_FOR_BROADCAST)
+                            mContext,
+                            FeatureFlagUtils.SETTINGS_NEED_CONNECTED_BLE_DEVICE_FOR_BROADCAST)
                     && hasEmptyConnectedSink()) {
                 // Pop up dialog to ask users to connect at least one lea buds before audio sharing.
                 AudioSharingUtils.postOnMainThread(
@@ -447,7 +457,8 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
 
     @Override
     public int getAvailabilityStatus() {
-        return BluetoothUtils.isAudioSharingUIAvailable(mContext) ? AVAILABLE
+        return BluetoothUtils.isAudioSharingUIAvailable(mContext)
+                ? AVAILABLE
                 : UNSUPPORTED_ON_DEVICE;
     }
 
@@ -462,8 +473,8 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
                 mProfileManager.removeServiceListener(this);
             }
             if (mIntentHandleStage.compareAndSet(
-                    StartIntentHandleStage.TO_HANDLE.ordinal(),
-                    StartIntentHandleStage.HANDLE_AUTO_ADD.ordinal())) {
+                    StartIntentHandleStage.TO_HANDLE.getId(),
+                    StartIntentHandleStage.HANDLE_AUTO_ADD.getId())) {
                 Log.d(TAG, "onServiceConnected: handleStartAudioSharingFromIntent");
                 handleStartAudioSharingFromIntent();
             }
@@ -477,12 +488,15 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
     }
 
     @Override
-    public void onActiveDeviceChanged(@Nullable CachedBluetoothDevice activeDevice,
-            int bluetoothProfile) {
+    public void onActiveDeviceChanged(
+            @Nullable CachedBluetoothDevice activeDevice, int bluetoothProfile) {
         if (activeDevice != null) {
-            Log.d(TAG, "onActiveDeviceChanged: device = "
-                    + activeDevice.getDevice().getAnonymizedAddress()
-                    + ", profile = " + bluetoothProfile);
+            Log.d(
+                    TAG,
+                    "onActiveDeviceChanged: device = "
+                            + activeDevice.getDevice().getAnonymizedAddress()
+                            + ", profile = "
+                            + bluetoothProfile);
             updateSwitch();
         }
     }
@@ -491,9 +505,15 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
      * Initialize the controller.
      *
      * @param fragment The fragment to host the {@link AudioSharingSwitchBarController} dialog.
+     * @param needHandleIntent Indicates if need to handle intent to start sharing.
+     *                         When screen rotates, the controller will be re-created, this param
+     *                         is set false to avoid the intent being re-handled unexpectedly.
      */
-    public void init(@NonNull Fragment fragment) {
+    public void init(@NonNull Fragment fragment, boolean needHandleIntent) {
         this.mFragment = fragment;
+        if (!needHandleIntent) {
+            mIntentHandleStage.set(StartIntentHandleStage.UNSUPPORTED.getId());
+        }
     }
 
     /** Handle auto add source to the just paired device in share then pair flow. */
@@ -504,8 +524,12 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
                 deviceManager == null ? null : deviceManager.findDevice(device);
         if (cachedDevice != null && mBroadcast != null) {
             Log.d(TAG, "handleAutoAddSourceAfterPair, device = " + device.getAnonymizedAddress());
-            addSourceToTargetSinks(ImmutableList.of(device), cachedDevice.getName(),
-                    mBroadcast.getLatestBluetoothLeBroadcastMetadata());
+            addSourceToTargetSinks(
+                    ImmutableList.of(device),
+                    cachedDevice.getName(),
+                    mBroadcast.getLatestBluetoothLeBroadcastMetadata(),
+                    AudioSharingUtils.buildAddSourceEventData(
+                            SettingsEnums.BLUETOOTH_PAIRING, /* userTriggered= */ true));
         }
     }
 
@@ -577,10 +601,7 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
                     () -> AudioSharingProgressDialogFragment.show(mFragment,
                             mContext.getString(
                                     R.string.audio_sharing_progress_dialog_start_stream_content)));
-            mMetricsFeatureProvider.action(
-                    mContext,
-                    SettingsEnums.ACTION_AUDIO_SHARING_MAIN_SWITCH_ON,
-                    deviceItems.size());
+            logStartBroadcast(deviceItems.size());
         }
     }
 
@@ -608,15 +629,15 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
                             boolean isStateReady =
                                     isBluetoothOn()
                                             && AudioSharingUtils.isAudioSharingProfileReady(
-                                            mProfileManager)
+                                                    mProfileManager)
                                             && (isBroadcasting
-                                            // Always enable toggle when no connected sink. We have
-                                            // dialog to guide users to connect compatible devices
-                                            // for audio sharing.
-                                            || hasEmptyConnectedDevice
-                                            // Disable toggle till device gets active after
-                                            // broadcast ends.
-                                            || hasActiveDevice);
+                                                    // Always enable toggle when no connected sink.
+                                                    // We have dialog to guide users to connect
+                                                    // compatible devices for audio sharing.
+                                                    || hasEmptyConnectedDevice
+                                                    // Disable toggle till device gets active after
+                                                    // broadcast ends.
+                                                    || hasActiveDevice);
                             AudioSharingUtils.postOnMainThread(
                                     mContext,
                                     () -> {
@@ -645,20 +666,28 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
     }
 
     private void handleOnBroadcastReady(@NonNull BluetoothLeBroadcastMetadata metadata) {
-        List<BluetoothDevice> targetActiveSinks = mTargetActiveItem == null ? ImmutableList.of()
-                : mGroupedConnectedDevices.getOrDefault(
-                        mTargetActiveItem.getGroupId(), ImmutableList.of());
-        Pair<Integer, Object>[] eventData =
+        List<BluetoothDevice> targetActiveSinks =
+                mTargetActiveItem == null
+                        ? ImmutableList.of()
+                        : mGroupedConnectedDevices.getOrDefault(
+                                mTargetActiveItem.getGroupId(), ImmutableList.of());
+        ImmutableList<Pair<Integer, Object>> eventData =
                 AudioSharingUtils.buildAudioSharingDialogEventData(
                         SettingsEnums.AUDIO_SHARING_SETTINGS,
-                        SettingsEnums.DIALOG_AUDIO_SHARING_ADD_DEVICE,
+                        SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
                         /* userTriggered= */ false,
                         /* deviceCountInSharing= */ targetActiveSinks.isEmpty() ? 0 : 1,
                         /* candidateDeviceCount= */ mDeviceItemsForSharing.size());
         // Auto add primary/active sinks w/o user interactions.
         if (!targetActiveSinks.isEmpty() && mTargetActiveItem != null) {
             Log.d(TAG, "handleOnBroadcastReady: automatically add source to active sinks.");
-            addSourceToTargetSinks(targetActiveSinks, mTargetActiveItem.getName(), metadata);
+            addSourceToTargetSinks(
+                    targetActiveSinks,
+                    mTargetActiveItem.getName(),
+                    metadata,
+                    AudioSharingUtils.buildAddSourceEventData(
+                            SettingsEnums.ACTION_AUTO_JOIN_AUDIO_SHARING,
+                            /* userTriggered= */ false));
             // To avoid users advance to share then pair flow before the primary/active sinks
             // successfully join the audio sharing, save the primary/active sinks in mSinksToWaitFor
             // and popup dialog till adding source complete for these sinks.
@@ -666,29 +695,34 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
                 mSinksToWaitFor.clear();
                 mSinksToWaitFor.addAll(targetActiveSinks);
             }
-            mMetricsFeatureProvider.action(mContext, SettingsEnums.ACTION_AUTO_JOIN_AUDIO_SHARING);
             mTargetActiveItem = null;
             // When audio sharing page is brought up by intent with EXTRA_START_LE_AUDIO_SHARING
             // == true, plus there is one active lea headset and one connected lea headset, we
             // should auto add these sinks without user interactions.
             if (mIntentHandleStage.compareAndSet(
-                    StartIntentHandleStage.HANDLE_AUTO_ADD.ordinal(),
-                    StartIntentHandleStage.HANDLED.ordinal())
+                            StartIntentHandleStage.HANDLE_AUTO_ADD.getId(),
+                            StartIntentHandleStage.HANDLED.getId())
                     && mDeviceItemsForSharing.size() == 1) {
                 Log.d(TAG, "handleOnBroadcastReady: auto add source to the second device");
                 AudioSharingDeviceItem target = mDeviceItemsForSharing.get(0);
-                List<BluetoothDevice> targetSinks = mGroupedConnectedDevices.getOrDefault(
-                        target.getGroupId(), ImmutableList.of());
-                addSourceToTargetSinks(targetSinks, target.getName(), metadata);
+                List<BluetoothDevice> targetSinks =
+                        mGroupedConnectedDevices.getOrDefault(
+                                target.getGroupId(), ImmutableList.of());
+                addSourceToTargetSinks(
+                        targetSinks,
+                        target.getName(),
+                        metadata,
+                        AudioSharingUtils.buildAddSourceEventData(
+                                SettingsEnums.ACTION_AUTO_JOIN_AUDIO_SHARING,
+                                /* userTriggered= */ true));
                 cleanUpStatesForStartSharing();
-                // TODO: Add metric for auto add by intent
                 return;
             }
         }
         // Still mark intent as handled if early returned due to preconditions not met
         mIntentHandleStage.compareAndSet(
-                StartIntentHandleStage.HANDLE_AUTO_ADD.ordinal(),
-                StartIntentHandleStage.HANDLED.ordinal());
+                StartIntentHandleStage.HANDLE_AUTO_ADD.getId(),
+                StartIntentHandleStage.HANDLED.getId());
         if (mFragment == null) {
             Log.d(TAG, "handleOnBroadcastReady: dialog fail to show due to null fragment.");
             // Clean up states before early return.
@@ -704,7 +738,8 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
         }
     }
 
-    private void showJoinAudioSharingDialog(Pair<Integer, Object>[] eventData,
+    private void showJoinAudioSharingDialog(
+            ImmutableList<Pair<Integer, Object>> eventData,
             @Nullable BluetoothLeBroadcastMetadata metadata) {
         if (!BluetoothUtils.isBroadcasting(mBtManager)) {
             Log.d(TAG, "Skip showJoinAudioSharingDialog, broadcast is stopped");
@@ -721,9 +756,16 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
 
                     @Override
                     public void onItemClick(@NonNull AudioSharingDeviceItem item) {
-                        List<BluetoothDevice> targetSinks = mGroupedConnectedDevices.getOrDefault(
-                                item.getGroupId(), ImmutableList.of());
-                        addSourceToTargetSinks(targetSinks, item.getName(), metadata);
+                        List<BluetoothDevice> targetSinks =
+                                mGroupedConnectedDevices.getOrDefault(
+                                        item.getGroupId(), ImmutableList.of());
+                        addSourceToTargetSinks(
+                                targetSinks,
+                                item.getName(),
+                                metadata,
+                                AudioSharingUtils.buildAddSourceEventData(
+                                        SettingsEnums.DIALOG_AUDIO_SHARING_MAIN,
+                                        /* userTriggered= */ true));
                         cleanUpStatesForStartSharing();
                     }
 
@@ -736,16 +778,14 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
                 };
         AudioSharingUtils.postOnMainThread(
                 mContext,
-                () -> AudioSharingDialogFragment.show(
-                        mFragment,
-                        mDeviceItemsForSharing,
-                        metadata,
-                        listener,
-                        eventData));
+                () ->
+                        AudioSharingDialogFragment.show(
+                                mFragment, mDeviceItemsForSharing, metadata, listener, eventData));
     }
 
     private void showErrorDialog() {
-        AudioSharingUtils.postOnMainThread(mContext,
+        AudioSharingUtils.postOnMainThread(
+                mContext,
                 () -> {
                     // Remove all stale dialogs before showing error dialog
                     dismissStaleDialogsOtherThanErrorDialog();
@@ -758,14 +798,14 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
         List<Fragment> fragments = new ArrayList<Fragment>();
         try {
             if (mFragment != null) {
-                fragments =
-                        mFragment.getChildFragmentManager().getFragments();
+                fragments = mFragment.getChildFragmentManager().getFragments();
             }
         } catch (Exception e) {
             Log.e(TAG, "Fail to dismiss stale dialogs: " + e.getMessage());
         }
         for (Fragment fragment : fragments) {
-            if (fragment != null && fragment instanceof DialogFragment
+            if (fragment != null
+                    && fragment instanceof DialogFragment
                     && !(fragment instanceof AudioSharingErrorDialogFragment)
                     && ((DialogFragment) fragment).getDialog() != null) {
                 Log.d(TAG, "Remove stale dialog = " + fragment.getTag());
@@ -780,8 +820,8 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
                 @NonNull ViewGroup host, @NonNull View view, @NonNull AccessibilityEvent event) {
             if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
                     && (event.getContentChangeTypes()
-                    & AccessibilityEvent.CONTENT_CHANGE_TYPE_ENABLED)
-                    != 0) {
+                                    & AccessibilityEvent.CONTENT_CHANGE_TYPE_ENABLED)
+                            != 0) {
                 Log.d(TAG, "Skip accessibility event for CONTENT_CHANGE_TYPE_ENABLED");
                 return false;
             }
@@ -812,25 +852,29 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
                             if (!shouldStart) {
                                 Log.d(TAG, "Skip handleStartAudioSharingFromIntent, arg false");
                                 mIntentHandleStage.compareAndSet(
-                                        StartIntentHandleStage.HANDLE_AUTO_ADD.ordinal(),
-                                        StartIntentHandleStage.HANDLED.ordinal());
+                                        StartIntentHandleStage.HANDLE_AUTO_ADD.getId(),
+                                        StartIntentHandleStage.HANDLED.getId());
                                 return;
                             }
                             if (BluetoothUtils.isBroadcasting(mBtManager)) {
                                 Log.d(TAG, "Skip handleStartAudioSharingFromIntent, in broadcast");
                                 mIntentHandleStage.compareAndSet(
-                                        StartIntentHandleStage.HANDLE_AUTO_ADD.ordinal(),
-                                        StartIntentHandleStage.HANDLED.ordinal());
+                                        StartIntentHandleStage.HANDLE_AUTO_ADD.getId(),
+                                        StartIntentHandleStage.HANDLED.getId());
                                 return;
                             }
                             Log.d(TAG, "HandleStartAudioSharingFromIntent, start broadcast");
+                            //
                             AudioSharingUtils.postOnMainThread(
                                     mContext, () -> mSwitchBar.setChecked(true));
                         });
     }
 
-    private void addSourceToTargetSinks(List<BluetoothDevice> targetGroupedSinks,
-            @NonNull String targetSinkName, @Nullable BluetoothLeBroadcastMetadata metadata) {
+    private void addSourceToTargetSinks(
+            List<BluetoothDevice> targetGroupedSinks,
+            @NonNull String targetSinkName,
+            @Nullable BluetoothLeBroadcastMetadata metadata,
+            ImmutableList<Pair<Integer, Object>> eventData) {
         if (targetGroupedSinks.isEmpty()) {
             Log.d(TAG, "Skip addSourceToTargetSinks, no sinks.");
             return;
@@ -844,23 +888,31 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
             return;
         }
         mSinksInAdding.addAll(targetGroupedSinks);
-        String progressMessage = mContext.getString(
-                R.string.audio_sharing_progress_dialog_add_source_content, targetSinkName);
+        String progressMessage =
+                mContext.getString(
+                        R.string.audio_sharing_progress_dialog_add_source_content, targetSinkName);
         showProgressDialog(progressMessage);
         for (BluetoothDevice sink : targetGroupedSinks) {
             mAssistant.addSource(sink, metadata, /* isGroupOp= */ false);
         }
+        mMetricsFeatureProvider.action(
+                SettingsEnums.AUDIO_SHARING_SETTINGS,
+                SettingsEnums.ACTION_AUDIO_SHARING_ADD_SOURCE,
+                SettingsEnums.AUDIO_SHARING_SETTINGS,
+                eventData.toString(),
+                /* changedPreferenceIntValue= */ 0);
     }
 
     private void showProgressDialog(@NonNull String progressMessage) {
-        AudioSharingUtils.postOnMainThread(mContext,
+        AudioSharingUtils.postOnMainThread(
+                mContext,
                 () -> AudioSharingProgressDialogFragment.show(mFragment, progressMessage));
     }
 
     private void dismissProgressDialogIfNeeded() {
         if (mSinksInAdding.isEmpty()) {
-            AudioSharingUtils.postOnMainThread(mContext,
-                    () -> AudioSharingProgressDialogFragment.dismiss(mFragment));
+            AudioSharingUtils.postOnMainThread(
+                    mContext, () -> AudioSharingProgressDialogFragment.dismiss(mFragment));
         }
     }
 
@@ -869,9 +921,58 @@ public class AudioSharingSwitchBarController extends BasePreferenceController
         mDeviceItemsForSharing.clear();
     }
 
+    private void logStartBroadcast(int candidateDeviceCount) {
+        int sourceMetric = SettingsEnums.PAGE_UNKNOWN;
+        String callingPackage = "";
+        if (mIntentHandleStage.get() != StartIntentHandleStage.HANDLE_AUTO_ADD.getId()) {
+            // Sharing is started by toggle
+            sourceMetric = SettingsEnums.AUDIO_SHARING_SETTINGS;
+            callingPackage = mContext.getPackageName();
+        } else if (mFragment != null && mFragment.getActivity() != null) {
+            // Sharing is started by intent
+            FragmentActivity activity = mFragment.getActivity();
+            Intent intent = activity.getIntent();
+            if (intent != null) {
+                sourceMetric = intent.getIntExtra(EXTRA_SOURCE_METRICS, SettingsEnums.PAGE_UNKNOWN);
+            }
+            if (activity instanceof SettingsActivity settingsActivity) {
+                callingPackage = settingsActivity.getInitialCallingPackage();
+            }
+        }
+        ImmutableList<Pair<Integer, Object>> eventData =
+                ImmutableList.of(
+                        Pair.create(
+                                AudioSharingUtils.MetricKey.METRIC_KEY_SOURCE_PAGE_ID.getId(),
+                                sourceMetric),
+                        Pair.create(
+                                AudioSharingUtils.MetricKey.METRIC_KEY_SOURCE_PACKAGE_NAME.getId(),
+                                callingPackage),
+                        Pair.create(
+                                AudioSharingUtils.MetricKey.METRIC_KEY_CANDIDATE_DEVICE_COUNT
+                                        .getId(),
+                                candidateDeviceCount));
+        mMetricsFeatureProvider.action(
+                SettingsEnums.AUDIO_SHARING_SETTINGS,
+                SettingsEnums.ACTION_AUDIO_SHARING_MAIN_SWITCH_ON,
+                SettingsEnums.AUDIO_SHARING_SETTINGS,
+                eventData.toString(),
+                /* changedPreferenceIntValue= */ 0);
+    }
+
     private enum StartIntentHandleStage {
-        TO_HANDLE,
-        HANDLE_AUTO_ADD,
-        HANDLED,
+        TO_HANDLE(0),
+        HANDLE_AUTO_ADD(1),
+        HANDLED(2),
+        UNSUPPORTED(3);
+
+        private final int mId;
+
+        StartIntentHandleStage(int id) {
+            this.mId = id;
+        }
+
+        public int getId() {
+            return mId;
+        }
     }
 }

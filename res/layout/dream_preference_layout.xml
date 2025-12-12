@@ -66,6 +66,53 @@
             app:layout_constraintStart_toStartOf="@+id/preview"
             app:layout_constraintEnd_toEndOf="@+id/preview"/>
 
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/customize_button_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dream_item_customize_button_margin_bottom"
+            android:text="@string/customize_button_title"
+            android:contentDescription="@string/customize_button_title"
+            lineBreakWordStyle="phrase"
+            android:textAllCaps="false"
+            android:visibility="gone"
+            android:textColor="@color/settingslib_btn_colored_text_material"
+            android:theme="@style/Theme.CollapsingToolbar.Settings"
+            app:backgroundTint="@color/settingslib_btn_colored_background_material"
+            app:iconTint="@color/settingslib_btn_colored_text_material"
+            app:icon="@drawable/ic_edit"
+            app:layout_constraintBottom_toBottomOf="@+id/preview"
+            app:layout_constraintStart_toStartOf="@+id/preview"
+            app:layout_constraintEnd_toEndOf="@+id/preview"/>
+
+        <FrameLayout
+            android:id="@+id/preview_button"
+            android:layout_width="@dimen/dream_preview_button_frame_size"
+            android:layout_height="@dimen/dream_preview_button_frame_size"
+            android:clipChildren="false"
+            android:focusable="true"
+            android:contentDescription="@string/dream_preview_button_title"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@+id/preview"
+            app:layout_constraintEnd_toEndOf="@+id/preview">
+            <FrameLayout
+                android:layout_width="@dimen/dream_preview_button_size"
+                android:layout_height="@dimen/dream_preview_button_size"
+                android:layout_gravity="center"
+                android:background="@drawable/dream_preview_button_background"
+                app:backgroundTint="@color/settingslib_btn_colored_background_material"
+                android:focusable="false">
+                <ImageView
+                    android:layout_width="@dimen/dream_preview_button_icon_size"
+                    android:layout_height="@dimen/dream_preview_button_icon_size"
+                    android:layout_gravity="center"
+                    android:background="@drawable/dream_preview_button_background"
+                    android:src="@drawable/dream_preview_icon"
+                    android:tint="@color/settingslib_btn_colored_text_material"
+                    android:tintMode="src_in" />
+            </FrameLayout>
+        </FrameLayout>
+
         <TextView
             android:id="@+id/title_text"
             android:layout_width="0dp"

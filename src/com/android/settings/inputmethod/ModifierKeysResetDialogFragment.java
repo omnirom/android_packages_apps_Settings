@@ -19,7 +19,6 @@ package com.android.settings.inputmethod;
 import static android.view.WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.settings.SettingsEnums;
 import android.hardware.input.InputManager;
@@ -29,6 +28,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import com.android.settings.R;

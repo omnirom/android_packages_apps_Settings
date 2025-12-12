@@ -10,5 +10,7 @@ android_library {
     libs: [
         "BiometricsSharedLib",
         "FingerprintManagerInteractor",
+        "SettingsLibPreference-testutils",
+        "flag-junit",
     ],
 }

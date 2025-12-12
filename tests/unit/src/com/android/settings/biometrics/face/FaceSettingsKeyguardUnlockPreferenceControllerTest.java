@@ -16,14 +16,19 @@
 
 package com.android.settings.biometrics.face;
 
+import static com.android.settings.core.BasePreferenceController.UNSUPPORTED_ON_DEVICE;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;
+import android.os.UserManager;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -31,19 +36,30 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.android.settings.testutils.FakeFeatureFactory;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 @RunWith(AndroidJUnit4.class)
 public class FaceSettingsKeyguardUnlockPreferenceControllerTest {
-    private Context mContext;
+    @Rule
+    public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Spy
+    Context mContext = ApplicationProvider.getApplicationContext();
     private FaceSettingsKeyguardUnlockPreferenceController mController;
     private FakeFeatureFactory mFeatureFactory;
+    @Mock
+    private UserManager mUserManager;
 
     @Before
     public void setUp() {
-        mContext = ApplicationProvider.getApplicationContext();
+
         mFeatureFactory = FakeFeatureFactory.setupForTest();
+        when(mContext.getSystemService(UserManager.class)).thenReturn(mUserManager);
         mController = new FaceSettingsKeyguardUnlockPreferenceController(
                 mContext, "biometric_settings_face_keyguard");
     }
@@ -65,5 +81,12 @@ public class FaceSettingsKeyguardUnlockPreferenceControllerTest {
         mController.setChecked(false);
         verify(mFeatureFactory.metricsFeatureProvider).action(any(),
                 eq(SettingsEnums.ACTION_FACE_ENABLED_ON_KEYGUARD_SETTINGS), eq(false));
+    }
+
+    @Test
+    public void getAvailabilityStatus_unsupported_forWorkProfile() {
+        when(mUserManager.isManagedProfile(anyInt())).thenReturn(true);
+        final int result = mController.getAvailabilityStatus();
+        assertThat(result).isEqualTo(UNSUPPORTED_ON_DEVICE);
     }
 }

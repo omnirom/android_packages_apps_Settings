@@ -41,6 +41,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+// LINT.IfChange
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {
         com.android.settings.testutils.shadow.ShadowFragment.class,
@@ -128,3 +129,4 @@ public class DockingSoundPreferenceControllerTest {
         assertThat(Global.getInt(mContentResolver, Global.DOCK_SOUNDS_ENABLED, 1)).isEqualTo(0);
     }
 }
+// LINT.ThenChange(DockingSoundPreferenceTest.kt)

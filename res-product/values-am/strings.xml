@@ -164,10 +164,10 @@
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_4" product="tablet" msgid="8772005555323461143">"እርስዎ እና ልጅዎ በማንኛውም ጊዜ በቅንብሮች ውስጥ የጣት አሻራቸውን ምስሎች እና ሞዴል መሰረዝ ወይም በጣት አሻራ መክፈቻን ማጥፋት ትችላላችሁ። የጣት አሻራ ምስሎች እና ሞዴሎች እስኪሰረዙ ድረስ በጡባዊው ላይ ይቀመጣሉ።"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_4" product="device" msgid="7254955922685507093">"እርስዎ እና ልጅዎ በማንኛውም ጊዜ በቅንብሮች ውስጥ የጣት አሻራቸውን ምስሎች እና ሞዴል መሰረዝ ወይም በጣት አሻራ መክፈቻን ማጥፋት ትችላላችሁ። የጣት አሻራ ምስሎች እና ሞዴሎች እስኪሰረዙ ድረስ በመሣሪያው ላይ ይቀመጣሉ።"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_4" product="desktop" msgid="7254955922685507093">"እርስዎ እና ልጅዎ በማንኛውም ጊዜ በቅንብሮች ውስጥ የጣት አሻራቸውን ምስሎች እና ሞዴል መሰረዝ ወይም በጣት አሻራ መክፈቻን ማጥፋት ትችላላችሁ። የጣት አሻራ ምስሎች እና ሞዴሎች እስኪሰረዙ ድረስ በመሣሪያው ላይ ይቀመጣሉ።"</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="default" msgid="6272159089589340181">"የእርስዎ ስልክ ለምሳሌ የሆነ ሰው በግድ ወደ እርስዎ ጣት ቢያስጠጋው እርስዎ ሳይፈለጉ ሊከፈት ይችላል።"</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="tablet" msgid="2420109998272019149">"የእርስዎ ጡባዊ እርስዎ ሳይፈልጉ ሊከፈት ይችላል፣ ለምሳሌ የሆነ ሰው ወደ ጣትዎ አስጠግቶ ቢይዘው።"</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="device" msgid="5915844445830045866">"የእርስዎ መሣሪያ ለምሳሌ የሆነ ሰው ወደ ጣትዎ አስጠግቶ ቢይዘው እርስዎ ሳይፈልጉ ሊከፈት ይችላል።"</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="desktop" msgid="5915844445830045866">"የእርስዎ መሣሪያ ለምሳሌ የሆነ ሰው ወደ ጣትዎ አስጠግቶ ቢይዘው እርስዎ ሳይፈልጉ ሊከፈት ይችላል።"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="default" msgid="6838578698434849838">"የእርስዎን ስልክ የሆነ ሰው ወደ ጣትዎ አስጠግቶ ቢይዘው እርስዎ ሳያስቡት ሊከፈት ይችላል"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="tablet" msgid="7796353046744228477">"የአንቺን መሣሪያ የሆነ ሰው ወደ ጣትሽ አስጠግቶ ቢይዘው አንቺ ሳታስቢው ሊከፈት ይችላል"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="device" msgid="5075445491909690772">"የእርስዎን መሣሪያ የሆነ ሰው ወደ ጣትዎ አስጠግቶ ቢይዘው እርስዎ ሳያስቡት ሊከፈት ይችላል"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="desktop" msgid="5075445491909690772">"የእርስዎን መሣሪያ የሆነ ሰው ወደ ጣትዎ አስጠግቶ ቢይዘው እርስዎ ሳያስቡት ሊከፈት ይችላል"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_5" product="default" msgid="6556725426776167791">"ልጅዎ ሳይፈልጉ ስልካቸው ሊከፈት ይችላል፣ ለምሳሌ የሆነ ሰው ስልኩን ወደ ጣታቸው ቢያስጠጋው።"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_5" product="tablet" msgid="5156581794964551571">"ልጅዎ ሳይፈልጉ ጡባዊያቸው መከፈት ይችላል፣ ለምሳሌ የሆነ ሰው ጡባዊውን ጣታቸው ላይ ቢይዘው።"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_5" product="device" msgid="8309101436391515400">"ልጅዎ ሳይፈልጉ መሣሪያቸው መከፈት ይችላል፣ ለምሳሌ የሆነ ሰው መሣሪያውን ጣታቸው ላይ ቢይዘው።"</string>
@@ -341,7 +341,7 @@
     <string name="storage_wizard_migrate_v2_checklist_battery" product="default" msgid="8041162611685970218">"ይህ ስልክ ኃይል መሙላቱን ይቀጥሉ"</string>
     <string name="storage_wizard_migrate_v2_checklist_battery" product="desktop" msgid="3166603241842968388">"ይህን መሣሪያ ኃይል ሞልተው ይቆዩ"</string>
     <string name="main_clear_desc" product="tablet" msgid="5778614597513856716">"ይህ የሚከተሉትንም ጨምሮ ሁሉንም ውሂብ ከእርስዎ ጡባዊ "<b>"ውስጣዊ ማከማቻ"</b>" ይሰርዛል፦\n\n"<li>"የእርስዎ Google መለያ"</li>\n<li>"የሥርዓት እና መተግበሪያ ውሂብ እና ቅንብሮች"</li>\n<li>"የወረዱ መተግበሪያዎች"</li></string>
-    <string name="main_clear_desc" product="default" msgid="1888412491866186706">"ይሄ የሚከተሉትንም ጨምሮ ሁሉንም ውሂብ ከስልክዎ "<b>"ውስጣዊ ማከማቻ"</b>" ይደመስሰዋል፦\n\n"<li>"የእርስዎ Google መለያ"</li>\n<li>"የስርዓት እና መተግበሪያ ውሂብና ቅንብሮች"</li>\n<li>"የወረዱ መተግበሪያዎች"</li></string>
+    <string name="main_clear_desc" product="default" msgid="1888412491866186706">"ይሄ የሚከተሉትንም ጨምሮ ሁሉንም ውሂብ ከስልክዎ "<b>"ውስጣዊ ማከማቻ"</b>" ይደመስሰዋል፦\n\n"<li>"የእርስዎ Google መለያ"</li>\n<li>"የሥርዓት እና መተግበሪያ ውሂብና ቅንብሮች"</li>\n<li>"የወረዱ መተግበሪያዎች"</li></string>
     <string name="main_clear_desc" product="desktop" msgid="405802272460355609">"ይህ የሚከተሉትን ጨምሮ ሁሉንም ውሂብ ከመሣሪያዎ "<b>"ውስጣዊ ማህደረ ትውስታ"</b>" ይደመስሳል፦\n\n"<li>"የእርስዎ Google መለያ"</li>\n<li>"የሥርዓት እና መተግበሪያ ውሂብ እና ቅንብሮች"</li>\n<li>"የወረዱ መተግበሪያዎች"</li></string>
     <string name="main_clear_accounts" product="default" msgid="3604029744509330786">\n\n"እርስዎ በአሁኑ ጊዜ ወደሚከተሉት መለያዎች ገብተዋል፦\n"</string>
     <string name="main_clear_other_users_present" product="default" msgid="7750368595882863399">\n\n"በዚህ መሣሪያ ላይ ያሉ ሌሎች ተጠቃሚዎች አሉ።\n"</string>
@@ -386,9 +386,6 @@
     <string name="accessibility_daltonizer_about_intro_text" product="default" msgid="5234458848997942613">"ቀለሞች በስልክዎ ላይ እንዴት እንደሚታዩ ያስተካክሉ"</string>
     <string name="accessibility_daltonizer_about_intro_text" product="tablet" msgid="5300401841391736534">"ቀለሞች በጡባዊዎ ላይ እንዴት እንደሚታዩ ያስተካክሉ"</string>
     <string name="accessibility_daltonizer_about_intro_text" product="desktop" msgid="8908526728447739478">"ቀለሞች በመሣሪያዎ ላይ እንዴት እንደሚታዩ ያስተካክሉ"</string>
-    <string name="reduce_bright_colors_preference_summary" product="default" msgid="2025941326724094318">"ከስልክዎ ዝቅተኛ ብሩህነት ባሻገር ማያ ገጹን ደብዛዛ ያድርጉ"</string>
-    <string name="reduce_bright_colors_preference_summary" product="tablet" msgid="3106979202311807559">"ከጡባዊዎ አነስተኛ ብሩህነት ባሻገር ማያ ገጹን ደብዛዛ ያድርጉ"</string>
-    <string name="reduce_bright_colors_preference_summary" product="desktop" msgid="7810358416215416035">"ከመሣሪያዎ ዝቅተኛ ብሩህነት በላይ የማያ ገፁን ያደብዝዙ"</string>
     <string name="reduce_bright_colors_preference_subtitle" product="default" msgid="9162440023310121356">"ተጨማሪ ደብዛዛ በሚከተለው ጊዜ ጠቃሚ ሊሆን ይችላል፡- &lt;ol&gt; &lt;li&gt; የስልክዎ ነባሪ ዝቅተኛ ብሩህነት አሁንም በጣም ብሩህ ሲሆን&lt;/li&gt; &lt;li&gt; ስልክዎን በጨለማ ሁኔታዎች ውስጥ ሲጠቀሙ፣ ለምሳሌ ማታ ላይ ወይም በጨለማ ክፍል ውስጥ ከመተኛትዎ በፊት&lt;/li&gt; &lt;/ol&gt;"</string>
     <string name="reduce_bright_colors_preference_subtitle" product="tablet" msgid="5747242697890472822">"ተጨማሪ ደብዛዛ በሚከተለው ጊዜ ጠቃሚ ሊሆን ይችላል፡- &lt;ol&gt; &lt;li&gt; የጡባዊዎ ነባሪ ዝቅተኛ ብሩህነት አሁንም በጣም ብሩህ ሲሆን&lt;/li&gt; &lt;li&gt; ጡባዊዎን በጨለማ ሁኔታዎች ውስጥ ለምሳሌ ማታ ወይም በጨለማ ክፍል ውስጥ ከመተኛትዎ በፊት ሲጠቀሙ ነው&lt;/li&gt; &lt;/ol&gt;"</string>
     <string name="reduce_bright_colors_preference_subtitle" product="desktop" msgid="3114657547062643684">"ተጨማሪ ደብዛዛ በሚከተለው ጊዜ አጋዥ ሊሆን ይችላል፡- &lt;ol&gt; &lt;li&gt; የመሣሪያዎ ነባሪ ዝቅተኛ ብሩህነት አሁንም በጣም ብሩህ ሲሆን&lt;/li&gt; &lt;li&gt; መሣሪያዎን በጨለማ ሁኔታዎች ውስጥ ለምሳሌ ማታ ወይም በጨለማ ክፍል ውስጥ ከመተኛትዎ በፊት ሲጠቀሙ&lt;/li&gt; &lt;/ol&gt;"</string>
@@ -484,6 +481,24 @@
     <string name="lockscreen_trivial_controls_summary" product="default" msgid="42562533085885152">"ስልክዎን ሳይከፍቱ"</string>
     <string name="lockscreen_trivial_controls_summary" product="tablet" msgid="9052068482124729345">"ጡባዊዎን ሳይክፍቱ"</string>
     <string name="lockscreen_trivial_controls_summary" product="desktop" msgid="8183513643394359332">"መሣሪያዎን ሳይከፍቱ"</string>
+    <string name="device_supervision_switch_title" product="default" msgid="5711051584668311080">"የዚህ ስልክ መቆጣጠሪያዎች"</string>
+    <string name="device_supervision_switch_title" product="tablet" msgid="5400384750840247844">"የዚህ ጡባዊ መቆጣጠሪያዎች"</string>
+    <string name="device_supervision_switch_title" product="desktop" msgid="2140192989162020111">"የዚህ መሣሪያ መቆጣጠሪያዎች"</string>
+    <string name="supervision_pin_length_message" product="default" msgid="7142997986515800901">"{count,plural, =1{ቢያንስ # አሃዝ ያለው ፒን ያስገቡ። በዚህ ስልክ ላይ መቆጣጠሪያዎችን ለማስተዳደር ይጠቀሙታል።}one{ቢያንስ # አሃዝ ያለው ፒን ያስገቡ። በዚህ ስልክ ላይ መቆጣጠሪያዎችን ለማስተዳደር ይጠቀሙበታል።}other{ቢያንስ # አሃዞች ያሉት ፒን ያስገቡ። በዚህ ስልክ ላይ መቆጣጠሪያዎችን ለማስተዳደር ይጠቀሙበታል።}}"</string>
+    <string name="supervision_pin_length_message" product="tablet" msgid="1772471880165492225">"{count,plural, =1{ቢያንስ # አሃዝ ያለው ፒን ያስገቡ። በዚህ ጡባዊ ላይ መቆጣጠሪያዎችን ለማስተዳደር ይጠቀሙበታል።}one{ቢያንስ # አሃዝ ያለው ፒን ያስገቡ። በዚህ ጡባዊ ላይ መቆጣጠሪያዎችን ለማስተዳደር ይጠቀሙበታል።}other{ቢያንስ # አሃዞች ያሉት ፒን ያስገቡ። በዚህ ጡባዊ ላይ መቆጣጠሪያዎችን ለማስተዳደር ይጠቀሙበታል።}}"</string>
+    <string name="supervision_pin_length_message" product="desktop" msgid="7689193597679628648">"{count,plural, =1{ቢያንስ # አሃዝ ያለው ፒን ያስገቡ። በዚህ መሣሪያ ላይ መቆጣጠሪያዎችን ለማስተዳደር ይጠቀሙታል።}one{ቢያንስ # አሃዝ ያለው ፒን ያስገቡ። በዚህ መሣሪያ ላይ መቆጣጠሪያዎችን ለማስተዳደር ይጠቀሙታል።}other{ቢያንስ # አሃዞች ያሉት ፒን ያስገቡ። በዚህ መሣሪያ ላይ መቆጣጠሪያዎችን ለማስተዳደር ይጠቀሙታል።}}"</string>
+    <string name="supervision_delete_pin_supervision_enabled_message" product="default" msgid="3538726164054428290">"የእርስዎ የወላጅ መቆጣጠሪያዎች ፒን ለመላ ተጠቃሚዎች ይጋራል። ፒንዎን ለመሰረዝ ይህን ፒን የሚጠቀሙ መቆጣጠሪያዎች በዚህ ስልክ ላይ ላሉ ሁሉም ተጠቃሚዎች መጥፋት አለባቸው።"</string>
+    <string name="supervision_delete_pin_supervision_enabled_message" product="tablet" msgid="5923679321161365699">"የእርስዎ የወላጅ መቆጣጠሪያዎች ፒን ለመላ ተጠቃሚዎች ይጋራል። ፒንዎን ለመሰረዝ ይህን ፒን የሚጠቀሙ መቆጣጠሪያዎች በዚህ ጡባዊ ላይ ላሉ ሁሉም ተጠቃሚዎች መጥፋት አለባቸው።"</string>
+    <string name="supervision_delete_pin_supervision_enabled_message" product="desktop" msgid="4418588055965155673">"የእርስዎ የወላጅ መቆጣጠሪያዎች ፒን ለመላ ተጠቃሚዎች ይጋራል። ፒንዎን ለመሰረዝ ይህን ፒን የሚጠቀሙ መቆጣጠሪያዎች በዚህ መሣሪያ ላይ ላሉ ሁሉም ተጠቃሚዎች መጥፋት አለባቸው።"</string>
+    <string name="supervision_delete_pin_confirm_message" product="default" msgid="4142432379507014709">"የእርስዎ የወላጅ መቆጣጠሪያዎች ፒን በቋሚነት ይሰረዛል። ይህ ፒን በመጠቀም በዚህ ስልክ ላይ ለተጠቃሚዎች ያዋቀሯቸው ማናቸውም መቆጣጠሪያዎች ይጠፋሉ።"</string>
+    <string name="supervision_delete_pin_confirm_message" product="tablet" msgid="3676061526109959657">"የእርስዎ የወላጅ መቆጣጠሪያዎች ፒን በቋሚነት ይሰረዛል። ይህ ፒን በመጠቀም በዚህ ጡባዊ ላይ ለተጠቃሚዎች ያዋቀሯቸው ማናቸውም መቆጣጠሪያዎች ይጠፋሉ።"</string>
+    <string name="supervision_delete_pin_confirm_message" product="desktop" msgid="9122403113168273844">"የእርስዎ የወላጅ መቆጣጠሪያዎች ፒን በቋሚነት ይሰረዛል። ይህ ፒን በመጠቀም በዚህ መሣሪያ ላይ ለተጠቃሚዎች ያዋቀሯቸው ማናቸውም መቆጣጠሪያዎች ይጠፋሉ።"</string>
+    <string name="device_supervision_pin_management_footer" product="default" msgid="6890338658180593450">"የእርስዎ የወላጅ መቆጣጠሪያዎች ፒን በዚህ ስልክ ላይ ላሉ ሁሉም ተጠቃሚዎች ተመሳሳይ ነው"</string>
+    <string name="device_supervision_pin_management_footer" product="tablet" msgid="4013172842200145374">"የእርስዎ የወላጅ መቆጣጠሪያዎች ፒን በዚህ ጡባዊ ላይ ላሉ ሁሉም ተጠቃሚዎች ተመሳሳይ ነው"</string>
+    <string name="device_supervision_pin_management_footer" product="desktop" msgid="6539340160423866980">"የእርስዎ የወላጅ መቆጣጠሪያዎች ፒን በዚህ መሣሪያ ላይ ላሉ ሁሉም ተጠቃሚዎች ተመሳሳይ ነው"</string>
+    <string name="supervision_multi_profile_error_message" product="default" msgid="4185376425933293903">"በዚህ ስልክ ላይ በርካታ መገለጫዎች ስላሉ የወላጅ መቆጣጠሪያዎች መብራት አይችሉም።"</string>
+    <string name="supervision_multi_profile_error_message" product="tablet" msgid="5021937906206996760">"በዚህ ጡባዊ ላይ በርካታ መገለጫዎች ስላሉ የወላጅ መቆጣጠሪያዎች መብራት አይችሉም።"</string>
+    <string name="supervision_multi_profile_error_message" product="desktop" msgid="7222938263475617299">"በዚህ መሣሪያ ላይ በርካታ መገለጫዎች ስላሉ የወላጅ መቆጣጠሪያዎች መብራት አይችሉም።"</string>
     <string name="auto_rotate_summary_a11y" product="default" msgid="2813368383309985185">"ስልክዎን በቁም ፎቶ እና በወርድ መካከል ሲያንቀሳቅሱ"</string>
     <string name="auto_rotate_summary_a11y" product="tablet" msgid="4708833814245913981">"ጡባዊዎን በቁም ፎቶ እና በወርድ መካከል ሲያንቀሳቅሱ"</string>
     <string name="auto_rotate_summary_a11y" product="desktop" msgid="1342493478927297535">"መሣሪያዎን በቁም ፎቶ እና የመሬት ገጽታ መካከል ሲያንቀሳቅሱ"</string>
@@ -518,4 +533,6 @@
     <string name="audio_sharing_confirm_dialog_content_with_link" product="tablet" msgid="282597208139437138">"ኦዲዮ ማጋራት ለመጀመር፣ መጀመሪያ LE ኦዲዮ የራስ ላይ ማዳመጫዎችን ከጡባዊዎ ጋር ያገናኙ "<annotation id="link">"ስለ ተኳዃኝ መሣሪያዎች የበለጠ ይወቁ።"</annotation></string>
     <string name="audio_sharing_confirm_dialog_content_with_link" product="device" msgid="668964968208427465">"ኦዲዮ ማጋራት ለመጀመር፣ መጀመሪያ LE ኦዲዮ የራስ ላይ ማዳመጫዎችን ከመሣሪያዎ ጋር ያገናኙ። "<annotation id="link">"ስለ ተኳዃኝ መሣሪያዎች የበለጠ ይወቁ።"</annotation></string>
     <string name="audio_sharing_confirm_dialog_content_with_link" product="desktop" msgid="668964968208427465">"ኦዲዮ ማጋራት ለመጀመር፣ መጀመሪያ LE ኦዲዮ የራስ ላይ ማዳመጫዎችን ከመሣሪያዎ ጋር ያገናኙ። "<annotation id="link">"ስለ ተኳዃኝ መሣሪያዎች የበለጠ ይወቁ።"</annotation></string>
+    <string name="network_dashboard_summary_mobile" product="default" msgid="1856501121269595911">"ሞባይል፣ Wi-Fi፣ መገናኛ ነጥብ"</string>
+    <string name="network_dashboard_summary_mobile" product="desktop" msgid="8770767156162473221">"Wi‑Fi፣ ሞባይል፣ መገናኛ ነጥብ"</string>
 </resources>

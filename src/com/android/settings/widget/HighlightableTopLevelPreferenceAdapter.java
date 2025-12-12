@@ -17,13 +17,12 @@
 package com.android.settings.widget;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
@@ -33,12 +32,10 @@ import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.window.embedding.ActivityEmbeddingController;
 
-import com.android.settings.R;
-import com.android.settings.Utils;
 import com.android.settings.core.RoundCornerPreferenceAdapter;
-import com.android.settings.flags.Flags;
 import com.android.settings.homepage.SettingsHomepageActivity;
 import com.android.settingslib.widget.SettingsThemeHelper;
+import com.android.settingslib.widget.theme.R;
 
 /**
  *  Adapter for highlighting top level preferences
@@ -49,17 +46,6 @@ public class HighlightableTopLevelPreferenceAdapter extends RoundCornerPreferenc
     private static final String TAG = "HighlightableTopLevelAdapter";
 
     static final long DELAY_HIGHLIGHT_DURATION_MILLIS = 100L;
-    private static final int RES_NORMAL_BACKGROUND =
-            R.drawable.homepage_selectable_item_background;
-    private static final int RES_HIGHLIGHTED_BACKGROUND =
-            R.drawable.homepage_highlighted_item_background;
-
-    private final int mTitleColorNormal;
-    private final int mTitleColorHighlight;
-    private final int mSummaryColorNormal;
-    private final int mSummaryColorHighlight;
-    private final int mIconColorNormal;
-    private final int mIconColorHighlight;
 
     private final SettingsHomepageActivity mHomepageActivity;
     private final RecyclerView mRecyclerView;
@@ -79,15 +65,6 @@ public class HighlightableTopLevelPreferenceAdapter extends RoundCornerPreferenc
         mScrolled = !scrollNeeded;
         mViewHolders = new SparseArray<>();
         mHomepageActivity = homepageActivity;
-        Context context = preferenceGroup.getContext();
-        mTitleColorNormal = Utils.getColorAttrDefaultColor(context,
-                android.R.attr.textColorPrimary);
-        mTitleColorHighlight = context.getColor(R.color.accent_select_primary_text);
-        mSummaryColorNormal = Utils.getColorAttrDefaultColor(context,
-                android.R.attr.textColorSecondary);
-        mSummaryColorHighlight = context.getColor(R.color.accent_select_secondary_text);
-        mIconColorNormal = Utils.getHomepageIconColor(context);
-        mIconColorHighlight = Utils.getHomepageIconColorHighlight(context);
     }
 
     @Override
@@ -217,7 +194,7 @@ public class HighlightableTopLevelPreferenceAdapter extends RoundCornerPreferenc
         // get the visible area of the recycler view
         Rect rvRect = new Rect();
         mRecyclerView.getGlobalVisibleRect(rvRect);
-        if (Flags.homepageRevamp() && view.getBottom() <= rvRect.height()) {
+        if (view.getBottom() <= rvRect.height()) {
             // the request position already fully visible in the visible area
             return;
         }
@@ -241,48 +218,33 @@ public class HighlightableTopLevelPreferenceAdapter extends RoundCornerPreferenc
 
     private void addHighlightBackground(PreferenceViewHolder holder, int position) {
         final View v = holder.itemView;
-        if (Flags.homepageRevamp()) {
-            @DrawableRes int bgRes = getRoundCornerDrawableRes(position, true /*isSelected*/);
-            v.setBackgroundResource(bgRes);
-            Context context = v.getContext();
-            if (SettingsThemeHelper.isExpressiveTheme(context)) {
-                TextView title = v.findViewById(android.R.id.title);
-                if (title != null) {
-                    title.setTextAppearance(context, com.android.settingslib.widget.theme.R.style
-                            .TextAppearance_SettingsLib_TitleMedium_Emphasized);
-                }
-            }
-        } else {
-            v.setBackgroundResource(RES_HIGHLIGHTED_BACKGROUND);
-            ((TextView) v.findViewById(android.R.id.title)).setTextColor(mTitleColorHighlight);
-            ((TextView) v.findViewById(android.R.id.summary)).setTextColor(mSummaryColorHighlight);
-            final Drawable drawable = ((ImageView) v.findViewById(android.R.id.icon)).getDrawable();
-            if (drawable != null) {
-                drawable.setTint(mIconColorHighlight);
+        @DrawableRes int bgRes = getRoundCornerDrawableRes(position, true /*isSelected*/);
+        v.setBackgroundResource(bgRes);
+        Context context = v.getContext();
+        if (SettingsThemeHelper.isExpressiveTheme(context)) {
+            // homepage preference title should change text appearance when it's selected
+            TextView title = v.findViewById(android.R.id.title);
+            if (title != null) {
+                ColorStateList currentColor = title.getTextColors();
+                title.setTextAppearance(context,
+                        R.style.TextAppearance_SettingsLib_TitleMedium_Emphasized);
+                title.setTextColor(currentColor);
             }
         }
     }
 
     private void removeHighlightBackground(PreferenceViewHolder holder, int position) {
         final View v = holder.itemView;
-        if (Flags.homepageRevamp()) {
-            @DrawableRes int bgRes = getRoundCornerDrawableRes(position, false /*isSelected*/);
-            v.setBackgroundResource(bgRes);
-            Context context = v.getContext();
-            if (SettingsThemeHelper.isExpressiveTheme(context)) {
-                TextView title = v.findViewById(android.R.id.title);
-                if (title != null) {
-                    title.setTextAppearance(context, com.android.settingslib.widget.theme.R.style
-                            .TextAppearance_SettingsLib_TitleMedium);
-                }
-            }
-        } else {
-            v.setBackgroundResource(RES_NORMAL_BACKGROUND);
-            ((TextView) v.findViewById(android.R.id.title)).setTextColor(mTitleColorNormal);
-            ((TextView) v.findViewById(android.R.id.summary)).setTextColor(mSummaryColorNormal);
-            final Drawable drawable = ((ImageView) v.findViewById(android.R.id.icon)).getDrawable();
-            if (drawable != null) {
-                drawable.setTint(mIconColorNormal);
+        @DrawableRes int bgRes = getRoundCornerDrawableRes(position, false /*isSelected*/);
+        v.setBackgroundResource(bgRes);
+        Context context = v.getContext();
+        if (SettingsThemeHelper.isExpressiveTheme(context)) {
+            // recover homepage preference title when it's unselected
+            TextView title = v.findViewById(android.R.id.title);
+            if (title != null) {
+                ColorStateList currentColor = title.getTextColors();
+                title.setTextAppearance(context, R.style.TextAppearance_SettingsLib_TitleMedium);
+                title.setTextColor(currentColor);
             }
         }
     }

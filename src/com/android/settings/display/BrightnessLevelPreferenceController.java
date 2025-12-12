@@ -140,8 +140,8 @@ public class BrightnessLevelPreferenceController extends BasePreferenceControlle
     @Override
     public void onStart() {
         mContentResolver.registerContentObserver(BRIGHTNESS_ADJ_URI, false, mBrightnessObserver);
-        mDisplayManager.registerDisplayListener(mDisplayListener, mHandler, /* eventFlags= */ 0,
-                DisplayManager.PRIVATE_EVENT_TYPE_DISPLAY_BRIGHTNESS);
+        mDisplayManager.registerDisplayListener(mDisplayListener, mHandler,
+                DisplayManager.EVENT_TYPE_DISPLAY_BRIGHTNESS);
         updatedSummary(mPreference);
     }
 

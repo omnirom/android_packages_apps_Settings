@@ -29,6 +29,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.SoftApConfiguration;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+import android.os.Process;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.provider.Settings;
@@ -344,5 +345,35 @@ public class WifiUtils extends com.android.settingslib.wifi.WifiUtils {
                         return WindowInsetsCompat.CONSUMED;
                     });
         }
+    }
+
+    /**
+     * Checks if the network is owned by the current user of the settings app or
+     * if the userCount is one.
+     *
+     * @param wifiEntry the network entry for which the ownership check will be made.
+     * @param context Context of caller
+     * @return true if the network is owned by the current user or if the device
+     *         contains single user.
+     */
+    public static boolean isNetworkEditable(
+            @NonNull WifiEntry wifiEntry, @NonNull Context context) {
+        if (!com.android.settings.connectivity.Flags.wifiMultiuser()
+                || wifiEntry.isModifiableByOtherUsers()) {
+            return true;
+        }
+
+        UserManager userManager = context.getSystemService(UserManager.class);
+        int userCount = userManager.getUserCount();
+
+        UserHandle currentUserHandle = Process.myUserHandle();
+
+        int currentUserId = currentUserHandle.getIdentifier();
+
+        int creatorUid = wifiEntry.getWifiConfiguration().creatorUid;
+        UserHandle userHandle = UserHandle.getUserHandleForUid(creatorUid);
+
+        return (userCount == 1)
+                || (userHandle != null && (currentUserId == userHandle.getIdentifier()));
     }
 }

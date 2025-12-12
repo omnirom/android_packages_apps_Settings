@@ -26,10 +26,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.window.OnBackInvokedDispatcher;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -92,17 +92,17 @@ public class LocaleDialogFragmentTest {
     @Test
     public void onBackInvoked_dialogIsStillDisplaying() {
         mDialogFragment.setBackDispatcher(mOnBackInvokedDispatcher);
-        Dialog dialog = mDialogFragment.onCreateDialog(null);
-        dialog.show();
-        assertThat(dialog).isNotNull();
-        assertThat(dialog.isShowing()).isTrue();
+        AlertDialog alertDialog = (AlertDialog) mDialogFragment.onCreateDialog(null);
+        alertDialog.show();
+        assertThat(alertDialog).isNotNull();
+        assertThat(alertDialog.isShowing()).isTrue();
 
         mOnBackInvokedDispatcher.registerOnBackInvokedCallback(
                 eq(OnBackInvokedDispatcher.PRIORITY_DEFAULT), any());
 
         mDialogFragment.getBackInvokedCallback().onBackInvoked();
 
-        assertThat(dialog.isShowing()).isTrue();
+        assertThat(alertDialog.isShowing()).isTrue();
 
     }
 }

@@ -41,6 +41,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.android.settings.R;
 import com.android.settingslib.bluetooth.BluetoothDiscoverableTimeoutReceiver;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 import kotlin.Unit;
 
@@ -81,6 +82,9 @@ public class RequestPermissionActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (SettingsThemeHelper.isExpressiveTheme(this)) {
+            setTheme(R.style.Transparent_Expressive);
+        }
 
         getWindow().addSystemFlags(SYSTEM_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS);
 

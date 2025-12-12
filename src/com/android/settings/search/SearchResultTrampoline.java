@@ -54,9 +54,14 @@ public class SearchResultTrampoline extends Activity {
 
         final String callerPackage = getLaunchedFromPackage();
         // First make sure caller has privilege to launch a search result page.
-        FeatureFactory.getFeatureFactory()
-                .getSearchFeatureProvider()
-                .verifyLaunchSearchResultPageCaller(this, callerPackage);
+        try {
+            FeatureFactory.getFeatureFactory()
+                    .getSearchFeatureProvider()
+                    .verifyLaunchSearchResultPageCaller(this, callerPackage);
+        } catch (SecurityException e) {
+            finish();
+            return;
+        }
         // Didn't crash, proceed and launch the result as a subsetting.
         Intent intent = getIntent();
         final String highlightMenuKey = intent.getStringExtra(

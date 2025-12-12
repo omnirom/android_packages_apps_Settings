@@ -21,22 +21,23 @@ import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcel;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 import androidx.preference.Preference;
 
 import com.android.settings.R;
+import com.android.settings.Utils;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settingslib.HelpUtils;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
-
-import kotlin.Unit;
 
 /** Tip to show current battery is overheated */
 public class BatteryDefenderTip extends BatteryTip {
 
     private static final String TAG = "BatteryDefenderTip";
+    private static final String DEFAULT_DEFEND_MODE = "default_defend_mode";
 
     private boolean mIsPluggedIn;
 
@@ -51,12 +52,16 @@ public class BatteryDefenderTip extends BatteryTip {
 
     @Override
     public CharSequence getTitle(Context context) {
-        return context.getString(R.string.battery_tip_limited_temporarily_title);
+        return context.getString(isDefaultDefendMode(context)
+                ? R.string.battery_tip_default_limited_temporarily_title
+                : R.string.battery_tip_limited_temporarily_title);
     }
 
     @Override
     public CharSequence getSummary(Context context) {
-        return context.getString(R.string.battery_tip_limited_temporarily_summary);
+        return context.getString(isDefaultDefendMode(context)
+                ? R.string.battery_tip_default_limited_temporarily_summary
+                : R.string.battery_tip_limited_temporarily_summary);
     }
 
     @Override
@@ -79,17 +84,20 @@ public class BatteryDefenderTip extends BatteryTip {
         super.updatePreference(preference);
         final Context context = preference.getContext();
 
-        var cardPreference = castToTipCardPreferenceSafely(preference);
+        var cardPreference = castToBannerMassagePreferenceSafely(preference);
         if (cardPreference == null) {
             Log.e(TAG, "cast Preference to TipCardPreference failed");
             return;
         }
 
         cardPreference.setSelectable(false);
-        cardPreference.setIconResId(getIconId());
-        cardPreference.setPrimaryButtonText(context.getString(R.string.learn_more));
-        cardPreference.setPrimaryButtonAction(
-                () -> {
+        cardPreference.setNegativeButtonText(
+                Utils.createAccessibleSequence(
+                        context.getString(R.string.learn_more),
+                        context.getString(R.string
+                                .battery_tip_limited_temporarily_sec_button_content_description)));
+        cardPreference.setNegativeButtonOnClickListener(
+                unused -> {
                     var helpIntent =
                             HelpUtils.getHelpIntent(
                                     context,
@@ -100,25 +108,17 @@ public class BatteryDefenderTip extends BatteryTip {
                             helpIntent,
                             /* requestCode= */ 0,
                             /* options= */ null);
-
-                    return Unit.INSTANCE;
                 });
-        cardPreference.setPrimaryButtonVisibility(true);
-        cardPreference.setPrimaryButtonContentDescription(
-                context.getString(
-                        R.string.battery_tip_limited_temporarily_sec_button_content_description));
+        cardPreference.setNegativeButtonVisible(true);
 
-        cardPreference.setSecondaryButtonText(
+        cardPreference.setPositiveButtonText(
                 context.getString(R.string.battery_tip_charge_to_full_button));
-        cardPreference.setSecondaryButtonAction(
-                () -> {
+        cardPreference.setPositiveButtonOnClickListener(
+                unused -> {
                     resumeCharging(context);
                     preference.setVisible(false);
-
-                    return Unit.INSTANCE;
                 });
-        cardPreference.setSecondaryButtonVisibility(mIsPluggedIn);
-        cardPreference.buildContent();
+        cardPreference.setPositiveButtonVisible(mIsPluggedIn);
     }
 
     private void resumeCharging(Context context) {
@@ -131,6 +131,10 @@ public class BatteryDefenderTip extends BatteryTip {
         }
 
         Log.i(TAG, "send resume charging broadcast intent=" + intent);
+    }
+
+    private boolean isDefaultDefendMode(Context context) {
+        return Settings.Secure.getInt(context.getContentResolver(), DEFAULT_DEFEND_MODE, 0) == 1;
     }
 
     public static final Creator CREATOR =

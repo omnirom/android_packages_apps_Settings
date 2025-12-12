@@ -1,0 +1,9 @@
+package: "com.android.settings.connectivity"
+container: "system_ext"
+
+flag {
+  name: "wifi_multiuser"
+  namespace: "desktop_connectivity"
+  description: "Flag for WiFi Multiuser"
+  bug: "402214828"
+}

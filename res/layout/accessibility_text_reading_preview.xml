@@ -29,55 +29,51 @@
         android:background="@drawable/accessibility_text_reading_preview"
         android:clipChildren="true"
         android:orientation="vertical"
-        android:padding="18dp">
+        android:padding="@dimen/settingslib_expressive_space_extrasmall6">
 
         <TextView
             android:id="@+id/preview_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/screen_zoom_preview_title"
+            android:importantForAccessibility="noHideDescendants"
             style="@style/AccessibilityTextReadingPreviewTitle" />
-
+        <com.android.settings.accessibility.TextReadingPreviewPager
+            android:id="@+id/preview_pager"
+            android:layout_width="wrap_content"
+            android:layout_height="240dp"
+            android:contentDescription="@string/screen_zoom_preview_title"
+            android:nestedScrollingEnabled="true"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <com.android.settings.accessibility.TextReadingPreviewPager
-                android:id="@+id/preview_pager"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal">
+            <ImageButton
+                android:id="@+id/preview_left_button"
+                android:src="@drawable/keyboard_arrow_left"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/preview_pager_previous_button"
+                style="?android:attr/borderlessButtonStyle" />
+            <com.android.settings.widget.DotsPageIndicator
+                android:id="@+id/page_indicator"
+                style="@style/PreviewPagerPageIndicator"
                 android:layout_width="wrap_content"
-                android:layout_height="217dp"
-                android:nestedScrollingEnabled="true" />
-            <LinearLayout
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal">
-                <ImageButton
-                    android:id="@+id/preview_left_button"
-                    android:src="@drawable/keyboard_arrow_left"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center_vertical"
-                    android:contentDescription="@string/preview_pager_previous_button"
-                    style="?android:attr/borderlessButtonStyle" />
-                <com.android.settings.widget.DotsPageIndicator
-                    android:id="@+id/page_indicator"
-                    style="@style/PreviewPagerPageIndicator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:padding="6dp"
-                    android:visibility="gone" />
-                <ImageButton
-                    android:id="@+id/preview_right_button"
-                    android:src="@drawable/keyboard_arrow_right"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center_vertical"
-                    android:contentDescription="@string/preview_pager_next_button"
-                    style="?android:attr/borderlessButtonStyle" />
-            </LinearLayout>
+                android:layout_gravity="center_vertical"
+                android:padding="6dp"
+                android:visibility="gone" />
+            <ImageButton
+                android:id="@+id/preview_right_button"
+                android:src="@drawable/keyboard_arrow_right"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/preview_pager_next_button"
+                style="?android:attr/borderlessButtonStyle" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

@@ -16,6 +16,7 @@
 
 package com.android.settings.biometrics.combination;
 
+import android.app.admin.EnforcingAdmin;
 import android.content.Context;
 import android.hardware.biometrics.BiometricAuthenticator;
 import android.hardware.face.FaceManager;
@@ -92,6 +93,23 @@ public class CombinedBiometricStatusUtils {
         // Result is only required if all modalities require consent.
         // If the admins are non-null, they are actually always the same.
         return faceConsentRequired && fpConsentRequired ? faceAdmin : null;
+    }
+
+    /**
+     * Returns the {@link EnforcingAdmin} in case parental consent is required to change both
+     * face and fingerprint settings.
+     *
+     * @return null if either face or fingerprint settings do not require a parental consent.
+     */
+    @Nullable
+    public EnforcingAdmin getEnforcingAdmin() {
+        // This controller currently is shown if fingerprint&face exist on the device. If this
+        // changes in the future, the modalities passed into the below will need to be updated.
+        // Result is only required if all modalities require consent.
+        // If they're enforced by admin, they are actually always enforced by the same admin.
+        return ParentalControlsUtils
+                .getParentalSupervisionAdmin(mContext, (BiometricAuthenticator.TYPE_FACE
+                        & BiometricAuthenticator.TYPE_FINGERPRINT));
     }
 
     /**

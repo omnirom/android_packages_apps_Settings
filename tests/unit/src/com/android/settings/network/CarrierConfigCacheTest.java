@@ -16,8 +16,12 @@
 
 package com.android.settings.network;
 
+import static android.telephony.CarrierConfigManager.KEY_SATELLITE_ESOS_SUPPORTED_BOOL;
+
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -97,5 +101,16 @@ public class CarrierConfigCacheTest {
         mCarrierConfigCache.getConfigForSubId(TWICE_SUB_ID);
 
         verify(mCarrierConfigManager, times(1)).getConfigForSubId(TWICE_SUB_ID);
+    }
+
+    @Test
+    public void getSpecificConfigsForSubId_getTwice_onlyGetOnceFromManager() {
+        when(mCarrierConfigManager.getConfigForSubId(eq(TWICE_SUB_ID), any())).thenReturn(
+                mCarrierConfig);
+
+        mCarrierConfigCache.getSpecificConfigsForSubId(TWICE_SUB_ID,
+                KEY_SATELLITE_ESOS_SUPPORTED_BOOL);
+
+        verify(mCarrierConfigManager, times(1)).getConfigForSubId(eq(TWICE_SUB_ID), any());
     }
 }

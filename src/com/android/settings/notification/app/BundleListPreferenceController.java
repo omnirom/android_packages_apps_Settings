@@ -22,8 +22,7 @@ import static android.app.NotificationChannel.RECS_ID;
 import static android.app.NotificationChannel.SOCIAL_MEDIA_ID;
 import static android.app.NotificationManager.IMPORTANCE_LOW;
 import static android.app.NotificationManager.IMPORTANCE_NONE;
-
-import static com.android.server.notification.Flags.notificationHideUnusedChannels;
+import static android.service.notification.Adjustment.KEY_TYPE;
 
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
@@ -47,6 +46,7 @@ import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.applications.AppInfoBase;
 import com.android.settings.core.SubSettingLauncher;
+import com.android.settings.notification.BundlePreferenceFragment;
 import com.android.settings.notification.NotificationBackend;
 import com.android.settingslib.PrimarySwitchPreference;
 import com.android.settingslib.RestrictedSwitchPreference;
@@ -73,7 +73,16 @@ public class BundleListPreferenceController extends NotificationPreferenceContro
         if (!Flags.notificationClassification()) {
             return false;
         }
+        if (android.app.Flags.notificationClassificationUi()) {
+            return false;
+        }
+        if (!mBackend.isNotificationBundlingSupported()) {
+            return false;
+        }
         if (mAppRow == null) {
+            return false;
+        }
+        if (!mBackend.getAllowedAssistantAdjustments().contains(KEY_TYPE)) {
             return false;
         }
         if (mAppRow.banned || mAppRow.lockedImportance || mAppRow.systemApp) {
@@ -121,14 +130,37 @@ public class BundleListPreferenceController extends NotificationPreferenceContro
         for (int i = 0; i < preferenceCount; i++) {
             Preference preference = groupPrefGroup.getPreference(i);
             if (channel.getId().equals(preference.getKey())) {
-                updateSingleChannelPrefs((PrimarySwitchPreference) preference, channel);
+                if (android.app.Flags.notificationClassificationUi()) {
+                    updateSingleChannelPref(preference, channel);
+                } else {
+                    updateSingleChannelPrefs((PrimarySwitchPreference) preference, channel);
+                }
                 return;
             }
         }
-        PrimarySwitchPreference channelPref = new PrimarySwitchPreference(mContext);
-        channelPref.setKey(channel.getId());
-        updateSingleChannelPrefs(channelPref, channel);
-        groupPrefGroup.addPreference(channelPref);
+        if (android.app.Flags.notificationClassificationUi()) {
+            Preference pref = new Preference(mContext);
+            pref.setKey(channel.getId());
+            updateSingleChannelPref(pref, channel);
+            groupPrefGroup.addPreference(pref);
+        } else {
+            PrimarySwitchPreference channelPref = new PrimarySwitchPreference(mContext);
+            channelPref.setKey(channel.getId());
+            updateSingleChannelPrefs(channelPref, channel);
+            groupPrefGroup.addPreference(channelPref);
+        }
+    }
+
+    private void updateSingleChannelPref(@NonNull final Preference channelPref,
+            @NonNull final NotificationChannel channel) {
+        channelPref.setTitle(channel.getName());
+        channelPref.setSummary(NotificationBackend.getSentSummary(
+                mContext, mAppRow.sentByChannel.get(channel.getId()), false));
+        channelPref.setIntent(new SubSettingLauncher(mContext)
+                .setDestination(BundlePreferenceFragment.class.getName())
+                .setTitleRes(R.string.notification_channel_title)
+                .setSourceMetricsCategory(SettingsEnums.NOTIFICATION_APP_NOTIFICATION)
+                .toIntent());
     }
 
     /** Update the properties of the channel preference with the values from the channel object. */

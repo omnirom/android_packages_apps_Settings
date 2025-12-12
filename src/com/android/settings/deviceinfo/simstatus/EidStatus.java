@@ -22,6 +22,9 @@ import android.telephony.TelephonyManager;
 import android.telephony.UiccCardInfo;
 import android.telephony.euicc.EuiccManager;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -55,7 +58,7 @@ public class EidStatus {
      * @param context Context
      * @param executor executor for offload to thread
      */
-    public EidStatus(SlotSimStatus slotSimStatus, Context context, Executor executor) {
+    public EidStatus(SlotSimStatus slotSimStatus, Context context, @Nullable Executor executor) {
         mSlotSimStatus = slotSimStatus;
 
         if (executor == null) {

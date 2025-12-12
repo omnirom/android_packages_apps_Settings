@@ -20,6 +20,8 @@ import static com.android.settings.core.BasePreferenceController.CONDITIONALLY_U
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -27,10 +29,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Looper;
-import android.os.PersistableBundle;
-import android.platform.test.flag.junit.SetFlagsRule;
-import android.telephony.CarrierConfigManager;
+import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 
@@ -40,34 +41,34 @@ import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.settings.flags.Flags;
-import com.android.settings.network.CarrierConfigCache;
+import com.android.settings.R;
 import com.android.settingslib.RestrictedSwitchPreference;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RunWith(AndroidJUnit4.class)
 public final class Enable2gPreferenceControllerTest {
-    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
     private static final int SUB_ID = 2;
     private static final String PREFERENCE_KEY = "TEST_2G_PREFERENCE";
-
-    @Mock
-    private CarrierConfigCache mCarrierConfigCache;
+    private static final String ENABLE_2G_SUMMARY = "Avoids 2G networks, which are less secure."
+            + " This may limit connectivity in some places. 2G is always allowed for emergency"
+            + " calls, but calls may not connect if you're roaming internationally.";
     @Mock
     private TelephonyManager mTelephonyManager;
     @Mock
     private TelephonyManager mInvalidTelephonyManager;
+    @Mock
+    private SubscriptionManager mSubscriptionManager;
 
     private RestrictedSwitchPreference mPreference;
     private PreferenceScreen mPreferenceScreen;
-    private PersistableBundle mPersistableBundle;
     private Enable2gPreferenceController mController;
     private Context mContext;
 
@@ -82,16 +83,17 @@ public final class Enable2gPreferenceControllerTest {
         mContext = spy(ApplicationProvider.getApplicationContext());
         when(mContext.getSystemService(Context.TELEPHONY_SERVICE)).thenReturn(mTelephonyManager);
         when(mContext.getSystemService(TelephonyManager.class)).thenReturn(mTelephonyManager);
-        CarrierConfigCache.setTestInstance(mContext, mCarrierConfigCache);
+        Resources resources = spy(mContext.getResources());
+        when(mContext.getResources()).thenReturn(resources);
+        when(resources.getString(R.string.enable_2g_summary)).thenReturn(ENABLE_2G_SUMMARY);
+        when(mContext.getString(R.string.enable_2g_summary)).thenReturn(ENABLE_2G_SUMMARY);
+
+        when(mContext.getSystemService(SubscriptionManager.class)).thenReturn(mSubscriptionManager);
 
         doReturn(mTelephonyManager).when(mTelephonyManager).createForSubscriptionId(SUB_ID);
         doReturn(mInvalidTelephonyManager).when(mTelephonyManager).createForSubscriptionId(
                 SubscriptionManager.INVALID_SUBSCRIPTION_ID);
 
-        mPersistableBundle = new PersistableBundle();
-        doReturn(mPersistableBundle).when(mCarrierConfigCache).getConfigForSubId(SUB_ID);
-        doReturn(mPersistableBundle).when(mCarrierConfigCache).getConfigForSubId(
-                SubscriptionManager.INVALID_SUBSCRIPTION_ID);
         mController = new Enable2gPreferenceController(mContext, PREFERENCE_KEY);
 
         mPreference = spy(new RestrictedSwitchPreference(mContext));
@@ -139,7 +141,10 @@ public final class Enable2gPreferenceControllerTest {
     @Test
     public void setChecked_disabledByAdmin_returnFalse() {
         when2gIsDisabledByAdmin(true);
+
         assertThat(mController.setChecked(false)).isFalse();
+        verify(mPreference).useAdminDisabledSummary(true);
+        verify(mPreference).getRestrictedPreferenceHelper();
     }
 
     @Test
@@ -179,40 +184,124 @@ public final class Enable2gPreferenceControllerTest {
     }
 
     @Test
-    public void updateState_carrierDisablementSupported_carrierHidesToggle() {
-        mSetFlagsRule.disableFlags(Flags.FLAG_REMOVE_KEY_HIDE_ENABLE_2G);
-        when2gIsDisabledByAdmin(false);
-        mPersistableBundle.putBoolean(CarrierConfigManager.KEY_HIDE_ENABLE_2G, true);
-        mPreference.setEnabled(true);
+    public void updateState_isDisabledByAdmin() {
+        when2gIsDisabledByAdmin(true);
 
         mController.updateState((Preference) mPreference);
 
-        assertThat(mPreference.isEnabled()).isFalse();
+        assertThat(mPreference.getSummary()).isNull();
     }
 
     @Test
-    public void updateState_carrierDisablementSupported_carrierShowsToggle() {
-        mSetFlagsRule.disableFlags(Flags.FLAG_REMOVE_KEY_HIDE_ENABLE_2G);
+    public void updateState_preferenceIsNull() {
         when2gIsDisabledByAdmin(false);
-        mPersistableBundle.putBoolean(CarrierConfigManager.KEY_HIDE_ENABLE_2G, false);
-        mPreference.setEnabled(true);
 
-        mController.updateState((Preference) mPreference);
+        mController.updateState(null);
 
-        assertThat(mPreference.isEnabled()).isTrue();
+        assertThat(mPreference.getSummary()).isNull();
     }
 
     @Test
-    public void updateState_carrierDisablementRemoved() {
-        mSetFlagsRule.enableFlags(Flags.FLAG_REMOVE_KEY_HIDE_ENABLE_2G);
-        mPreference.setEnabled(true);
+    public void updateState_notUsableSubscriptionId() {
+        mController.init(-1);
         when2gIsDisabledByAdmin(false);
-        // Set the config, so that we can later assert it was ignored
-        mPersistableBundle.putBoolean(CarrierConfigManager.KEY_HIDE_ENABLE_2G, true);
 
         mController.updateState((Preference) mPreference);
 
-        assertThat(mPreference.isEnabled()).isTrue();
+        assertThat(mPreference.getSummary()).isNull();
+    }
+
+    @Test
+    public void updateState_withEnable2gSummary() {
+        when2gIsDisabledByAdmin(false);
+
+        mController.updateState((Preference) mPreference);
+
+        assertThat(mPreference.getSummary().toString()).isEqualTo(
+                mContext.getString(R.string.enable_2g_summary));
+    }
+
+    @Test
+    public void updateState_simNameAsSummary() {
+        when2gIsDisabledByAdmin(false);
+        String simName = "SIM1";
+        SubscriptionInfo subscriptionInfo = new SubscriptionInfo.Builder()
+                .setId(SUB_ID)
+                .setDisplayName(simName)
+                .build();
+        List<SubscriptionInfo> subInfos = new ArrayList();
+        subInfos.add(subscriptionInfo);
+        when(mSubscriptionManager.getAllSubscriptionInfoList()).thenReturn(subInfos);
+        mController.init(SUB_ID, true);
+
+        mController.updateState((Preference) mPreference);
+
+        assertThat(mPreference.getSummary().toString()).isEqualTo(simName);
+    }
+
+    @Test
+    public void updateState_simNameAsSummary_2gPreferenceDisableByAdmin() {
+        when2gIsDisabledByAdmin(true);
+        String simName = "SIM1";
+        SubscriptionInfo subscriptionInfo = new SubscriptionInfo.Builder()
+                .setId(SUB_ID)
+                .setDisplayName(simName)
+                .build();
+        List<SubscriptionInfo> subInfos = new ArrayList();
+        subInfos.add(subscriptionInfo);
+        when(mSubscriptionManager.getAllSubscriptionInfoList()).thenReturn(subInfos);
+        mController.init(SUB_ID, true);
+
+        mController.updateState((Preference) mPreference);
+
+        assertThat(mPreference.getSummary().toString()).isEqualTo(simName);
+    }
+
+    @Test
+    public void updateState_preferenceEnable() {
+        when2gIsDisabledByAdmin(false);
+        mockAllowedNetworkTypes(TelephonyManager.NETWORK_MODE_LTE_GSM_WCDMA);
+
+        mController.updateState((Preference) mPreference);
+
+        assertTrue(mPreference.isEnabled());
+    }
+
+    @Test
+    public void updateState_isAirplaneModeOn_preferenceDisable() {
+        when2gIsDisabledByAdmin(false);
+        mockAllowedNetworkTypes(TelephonyManager.NETWORK_MODE_LTE_GSM_WCDMA);
+        mController.notifyAirplaneModeChanged(true);
+
+        mController.updateState((Preference) mPreference);
+
+        assertFalse(mPreference.isEnabled());
+    }
+
+    @Test
+    public void updateState_preferenceDisable() {
+        when2gIsDisabledByAdmin(false);
+        mockAllowedNetworkTypes(TelephonyManager.NETWORK_MODE_GSM_ONLY);
+
+        mController.updateState((Preference) mPreference);
+
+        assertFalse(mPreference.isEnabled());
+    }
+
+    @Test
+    public void updateState_isDisabledByAdmin_networkTypeLte_preferenceDisable() {
+        when2gIsDisabledByAdmin(true);
+        mPreference.setEnabled(false);
+        mockAllowedNetworkTypes(TelephonyManager.NETWORK_MODE_LTE_GSM_WCDMA);
+
+        mController.updateState((Preference) mPreference);
+
+        assertFalse(mPreference.isEnabled());
+    }
+
+    private void mockAllowedNetworkTypes(long allowedNetworkType) {
+        doReturn(allowedNetworkType).when(mTelephonyManager).getAllowedNetworkTypesForReason(
+                TelephonyManager.ALLOWED_NETWORK_TYPES_REASON_USER);
     }
 
     private void when2gIsEnabledForReasonEnable2g() {

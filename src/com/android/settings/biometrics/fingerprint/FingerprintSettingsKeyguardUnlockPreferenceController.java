@@ -21,6 +21,7 @@ import static android.provider.Settings.Secure.FINGERPRINT_KEYGUARD_ENABLED;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.hardware.fingerprint.FingerprintManager;
+import android.os.UserManager;
 import android.provider.Settings;
 
 import androidx.annotation.NonNull;
@@ -37,11 +38,13 @@ public class FingerprintSettingsKeyguardUnlockPreferenceController
     private static final int DEFAULT = ON;
 
     private FingerprintManager mFingerprintManager;
+    private UserManager mUserManager;
 
     public FingerprintSettingsKeyguardUnlockPreferenceController(
             @NonNull Context context, @NonNull String key) {
         super(context, key);
         mFingerprintManager = Utils.getFingerprintManagerOrNull(context);
+        mUserManager = context.getSystemService(UserManager.class);
     }
 
     @Override
@@ -74,13 +77,13 @@ public class FingerprintSettingsKeyguardUnlockPreferenceController
 
     @Override
     public int getAvailabilityStatus() {
+        if (mUserManager.isManagedProfile(getUserId()) || !Utils.hasFingerprintHardware(mContext)) {
+            return UNSUPPORTED_ON_DEVICE;
+        }
         final ActiveUnlockStatusUtils activeUnlockStatusUtils =
                 new ActiveUnlockStatusUtils(mContext);
         if (activeUnlockStatusUtils.isAvailable()) {
             return getAvailabilityFromRestrictingAdmin();
-        }
-        if (!Utils.hasFingerprintHardware(mContext)) {
-            return UNSUPPORTED_ON_DEVICE;
         }
         return getAvailabilityFromRestrictingAdmin();
     }

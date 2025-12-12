@@ -21,10 +21,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:paddingStart="24dp"
-    android:paddingEnd="24dp"
     android:background="?android:attr/selectableItemBackground"
-    android:scaleType="center"
+    android:scaleType="centerInside"
     android:src="@drawable/ic_settings_accent"
     android:contentDescription="@string/settings_button" />
-

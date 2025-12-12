@@ -15,22 +15,17 @@
  */
 package com.android.settings.bluetooth
 
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.ComponentName
 import android.content.Context
 import android.media.AudioManager
 import android.media.Spatializer
 import android.net.Uri
+import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
-import com.android.settings.bluetooth.ui.view.DeviceDetailsFragmentFormatter
-import com.android.settings.bluetooth.ui.view.DeviceDetailsFragmentFormatterImpl
-import com.android.settings.dashboard.DashboardFragment
-import com.android.settingslib.bluetooth.BluetoothUtils
 import com.android.settingslib.bluetooth.CachedBluetoothDevice
 import com.android.settingslib.bluetooth.devicesettings.data.repository.DeviceSettingRepository
 import com.android.settingslib.bluetooth.devicesettings.data.repository.DeviceSettingRepositoryImpl
-import com.android.settingslib.core.AbstractPreferenceController
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import kotlinx.coroutines.CoroutineScope
@@ -41,10 +36,6 @@ open class BluetoothFeatureProviderImpl : BluetoothFeatureProvider {
     override fun getBluetoothDeviceSettingsUri(bluetoothDevice: BluetoothDevice): Uri? {
         val uriByte = bluetoothDevice.getMetadata(BluetoothDevice.METADATA_ENHANCED_SETTINGS_UI_URI)
         return uriByte?.let { Uri.parse(String(it)) }
-    }
-
-    override fun getBluetoothDeviceControlUri(bluetoothDevice: BluetoothDevice): String? {
-        return BluetoothUtils.getControlUriMetaData(bluetoothDevice)
     }
 
     override fun getRelatedTools(): List<ComponentName>? {
@@ -58,39 +49,27 @@ open class BluetoothFeatureProviderImpl : BluetoothFeatureProvider {
 
     override fun getBluetoothExtraOptions(
         context: Context,
-        device: CachedBluetoothDevice
+        device: CachedBluetoothDevice,
     ): List<Preference>? {
         return ImmutableList.of<Preference>()
     }
 
     override fun getInvisibleProfilePreferenceKeys(
         context: Context,
-        bluetoothDevice: BluetoothDevice
+        bluetoothDevice: BluetoothDevice,
     ): Set<String> {
         return ImmutableSet.of()
     }
 
     override fun getDeviceSettingRepository(
         context: Context,
-        bluetoothAdapter: BluetoothAdapter,
-        scope: CoroutineScope
-    ): DeviceSettingRepository =
-        DeviceSettingRepositoryImpl(context, bluetoothAdapter, scope, Dispatchers.IO)
+        scope: CoroutineScope,
+    ): DeviceSettingRepository = DeviceSettingRepositoryImpl(context, scope, Dispatchers.IO)
 
-    override fun getDeviceDetailsFragmentFormatter(
+    override fun getBluetoothDiagnosisAlertDialog(
         context: Context,
-        fragment: DashboardFragment,
-        bluetoothAdapter: BluetoothAdapter,
-        cachedDevice: CachedBluetoothDevice,
-        controllers: List<AbstractPreferenceController>,
-    ): DeviceDetailsFragmentFormatter {
-        return DeviceDetailsFragmentFormatterImpl(
-            context,
-            fragment,
-            controllers,
-            bluetoothAdapter,
-            cachedDevice,
-            Dispatchers.IO
-        )
-    }
+        entryPoint: Int,
+        device: CachedBluetoothDevice?,
+        metricsCategory: Int,
+    ): AlertDialog? = null
 }

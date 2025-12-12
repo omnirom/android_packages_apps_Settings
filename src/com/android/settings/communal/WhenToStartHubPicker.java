@@ -29,8 +29,10 @@ import android.provider.Settings;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
+import com.android.settings.dream.RadioButtonPickerExtraSwitchController;
 import com.android.settings.widget.RadioButtonPickerFragment;
 import com.android.settingslib.widget.CandidateInfo;
 
@@ -48,12 +50,42 @@ public class WhenToStartHubPicker extends RadioButtonPickerFragment {
     private static final String SHOW_NEVER = "never";
 
     private Context mContext;
+    private boolean mShowRestrictToWirelessCharging;
+
+    @Nullable
+    private RadioButtonPickerExtraSwitchController mRestrictToWirelessChargingController = null;
+
+    private final RadioButtonPickerExtraSwitchController.PreferenceAccessor
+            mWirelessChargingPreferenceAccessor =
+            new RadioButtonPickerExtraSwitchController.PreferenceAccessor() {
+                @Override
+                public void setValue(boolean value) {
+                    Settings.Secure.putInt(
+                            mContext.getContentResolver(),
+                            Settings.Secure.GLANCEABLE_HUB_RESTRICT_TO_WIRELESS_CHARGING,
+                            value ? 1 : 0);
+                }
+
+                @Override
+                public boolean getValue() {
+                    final int defaultValue = mContext.getResources().getBoolean(
+                            com.android.internal.R.bool
+                                    .config_onlyShowGlanceableHubWhenWirelessChargingDefault)
+                            ? 1 : 0;
+                    return Settings.Secure.getInt(
+                            mContext.getContentResolver(),
+                            Settings.Secure.GLANCEABLE_HUB_RESTRICT_TO_WIRELESS_CHARGING,
+                            defaultValue) == 1;
+                }
+            };
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         mContext = context;
+        mShowRestrictToWirelessCharging =
+                getResources().getBoolean(R.bool.config_show_restrict_to_wireless_charging);
     }
 
     @Override
@@ -78,11 +110,30 @@ public class WhenToStartHubPicker extends RadioButtonPickerFragment {
             throw new IllegalArgumentException("Entries and values must be of the same length.");
         }
 
+        final boolean supportAutoShowWhilePostured =
+                getResources().getBoolean(R.bool.config_posturing_supported);
         for (int i = 0; i < entries.length; i++) {
+            final String key = values[i];
+            if (key.equals(SHOW_WHILE_CHARGING_AND_UPRIGHT) && !supportAutoShowWhilePostured) {
+                continue;
+            }
+
             candidates.add(new WhenToStartHubCandidateInfo(entries[i], values[i]));
         }
 
         return candidates;
+    }
+
+    @Override
+    protected void addStaticPreferences(PreferenceScreen screen) {
+        if (mShowRestrictToWirelessCharging && mRestrictToWirelessChargingController == null) {
+            mRestrictToWirelessChargingController =
+                    new RadioButtonPickerExtraSwitchController(
+                            mContext,
+                            R.string.hub_restrict_to_wireless_charging_title,
+                            mWirelessChargingPreferenceAccessor);
+            mRestrictToWirelessChargingController.addToScreen(screen);
+        }
     }
 
     private String[] entries() {

@@ -21,6 +21,8 @@ import android.safetycenter.SafetySourceIssue;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.settings.biometrics.metrics.BiometricsLogger;
+
 public class BiometricsFeatureProviderImpl implements BiometricsFeatureProvider {
     @Nullable
     @Override
@@ -30,4 +32,10 @@ public class BiometricsFeatureProviderImpl implements BiometricsFeatureProvider 
 
     @Override
     public void notifySafetyIssueActionLaunched() {}
+
+    @Nullable
+    @Override
+    public BiometricsLogger getBiometricsLogger() {
+        return null;
+    }
 }

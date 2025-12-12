@@ -49,6 +49,7 @@ public class AccessibilityFooterPreferenceControllerTest {
 
     private static final String TEST_KEY = "test_pref_key";
     private static final String TEST_TITLE = "test_title";
+    private static final String TEST_SUMMARY = "test_summary";
     private static final String TEST_INTRODUCTION_TITLE = "test_introduction_title";
     private static final String TEST_CONTENT_DESCRIPTION = "test_content_description";
     private static final int TEST_HELP_ID = 12345;
@@ -69,7 +70,6 @@ public class AccessibilityFooterPreferenceControllerTest {
         mController = new AccessibilityFooterPreferenceController(mContext, TEST_KEY);
         mPreference = new AccessibilityFooterPreference(mContext);
         mPreference.setKey(TEST_KEY);
-        mPreference.setTitle(TEST_TITLE);
 
         final LayoutInflater inflater = LayoutInflater.from(mContext);
         final View view = inflater.inflate(
@@ -81,28 +81,62 @@ public class AccessibilityFooterPreferenceControllerTest {
     }
 
     @Test
-    public void setIntroductionTitle_setCorrectIntroductionTitle() {
-        mController.setIntroductionTitle(TEST_INTRODUCTION_TITLE);
-
-        assertThat(mController.getIntroductionTitle()).isEqualTo(TEST_INTRODUCTION_TITLE);
+    public void noIntroductionTitle_contentDescriptionIsNull() {
+        assertThat(mPreference.getContentDescription()).isNull();
     }
 
     @Test
-    public void onBindViewHolder_setIntroductionTitle_setCorrectIntroductionTitle() {
+    public void introductionTitleSetOnly_contentDescriptionIsNull() {
         mController.setIntroductionTitle(TEST_INTRODUCTION_TITLE);
+
         mController.displayPreference(mScreen);
 
-        mPreference.onBindViewHolder(mPreferenceViewHolder);
+        assertThat(mPreference.getContentDescription()).isNull();
+    }
 
-        final TextView summaryView = (TextView) mPreferenceViewHolder
-                .findViewById(android.R.id.title);
-        assertThat(summaryView.getContentDescription().toString())
+    @Test
+    public void introductionTitleAndTitleSet_contentDescriptionContainsBoth() {
+        mPreference.setTitle(TEST_TITLE);
+        mController.setIntroductionTitle(TEST_INTRODUCTION_TITLE);
+
+        mController.displayPreference(mScreen);
+
+        assertThat(mPreference.getContentDescription().toString())
                 .contains(TEST_INTRODUCTION_TITLE);
+        assertThat(mPreference.getContentDescription().toString()).contains(TEST_TITLE);
+    }
+
+    @Test
+    public void introductionTitleAndSummarySet_contentDescriptionContainsBoth() {
+        mController.setIntroductionTitle(TEST_INTRODUCTION_TITLE);
+        mController.setSummary(TEST_SUMMARY);
+
+        mController.displayPreference(mScreen);
+
+        assertThat(mPreference.getContentDescription().toString())
+                .contains(TEST_INTRODUCTION_TITLE);
+        assertThat(mPreference.getContentDescription().toString()).contains(TEST_SUMMARY);
+    }
+
+    @Test
+    public void introductionTitleSummaryAndTitleSet_summaryPrioritizesContentDescription() {
+        mPreference.setTitle(TEST_TITLE);
+        mController.setIntroductionTitle(TEST_INTRODUCTION_TITLE);
+        mController.setSummary(TEST_SUMMARY);
+
+        mController.displayPreference(mScreen);
+
+        assertThat(mPreference.getContentDescription().toString())
+                .contains(TEST_INTRODUCTION_TITLE);
+        assertThat(mPreference.getContentDescription().toString()).contains(TEST_SUMMARY);
+        assertThat(mPreference.getContentDescription().toString()).doesNotContain(TEST_TITLE);
     }
 
     @Test
     public void setupHelpLink_setCorrectHelpLinkAndLearnMoreText() {
         mController.setupHelpLink(TEST_HELP_ID, TEST_CONTENT_DESCRIPTION);
+
+        mPreference.onBindViewHolder(mPreferenceViewHolder);
 
         assertThat(mController.getHelpResource()).isEqualTo(TEST_HELP_ID);
         assertThat(mController.getLearnMoreText())
@@ -110,9 +144,8 @@ public class AccessibilityFooterPreferenceControllerTest {
     }
 
     @Test
-    public void onBindViewHolder_setHelpResource_emptyString_notVisible() {
+    public void setupHelpLink_emptyString_notVisible() {
         mController.setupHelpLink(R.string.help_url_timeout, TEST_CONTENT_DESCRIPTION);
-        mController.displayPreference(mScreen);
 
         mPreference.onBindViewHolder(mPreferenceViewHolder);
 
@@ -124,9 +157,8 @@ public class AccessibilityFooterPreferenceControllerTest {
     }
 
     @Test
-    public void onBindViewHolder_setHelpResource_expectSummaryViewIsNonFocusable() {
+    public void setupHelpLink_expectSummaryViewIsNonFocusable() {
         mController.setupHelpLink(R.string.help_url_timeout, TEST_CONTENT_DESCRIPTION);
-        mController.displayPreference(mScreen);
 
         mPreference.onBindViewHolder(mPreferenceViewHolder);
 

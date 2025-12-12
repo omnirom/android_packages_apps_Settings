@@ -37,6 +37,7 @@ import com.android.settings.bluetooth.AlwaysDiscoverable;
 import com.android.settings.bluetooth.BluetoothDeviceRenamePreferenceController;
 import com.android.settings.bluetooth.BluetoothSwitchPreferenceController;
 import com.android.settings.dashboard.DashboardFragment;
+import com.android.settings.flags.Flags;
 import com.android.settings.password.PasswordUtils;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.widget.MainSwitchBarController;
@@ -93,6 +94,9 @@ public class BluetoothDashboardFragment extends DashboardFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if (isCatalystEnabled() && Flags.deeplinkConnectedDevices25q4()) {
+            return;
+        }
         use(BluetoothDeviceRenamePreferenceController.class).setFragment(this);
     }
 

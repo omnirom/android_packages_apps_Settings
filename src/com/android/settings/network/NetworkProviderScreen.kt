@@ -15,20 +15,31 @@
  */
 package com.android.settings.network
 
+import android.app.settings.SettingsEnums
 import android.content.Context
+import android.content.Intent
 import android.os.UserManager
+import androidx.fragment.app.Fragment
 import com.android.settings.R
+import com.android.settings.Settings.NetworkProviderSettingsActivity
+import com.android.settings.core.PreferenceScreenMixin
 import com.android.settings.flags.Flags
 import com.android.settings.restriction.PreferenceRestrictionMixin
+import com.android.settings.utils.makeLaunchIntent
+import com.android.settings.wifi.WifiDataUsagePreference
 import com.android.settings.wifi.WifiSwitchPreference
+import com.android.settings.wifi.savedaccesspoints2.SavedAccessPointsWifiScreen
 import com.android.settingslib.metadata.PreferenceAvailabilityProvider
+import com.android.settingslib.metadata.PreferenceCategory
+import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.ProvidePreferenceScreen
 import com.android.settingslib.metadata.preferenceHierarchy
-import com.android.settingslib.preference.PreferenceScreenCreator
+import com.android.settingslib.widget.UntitledPreferenceCategoryMetadata
+import kotlinx.coroutines.CoroutineScope
 
 @ProvidePreferenceScreen(NetworkProviderScreen.KEY)
-class NetworkProviderScreen :
-    PreferenceScreenCreator, PreferenceAvailabilityProvider, PreferenceRestrictionMixin {
+open class NetworkProviderScreen :
+    PreferenceScreenMixin, PreferenceAvailabilityProvider, PreferenceRestrictionMixin {
     override val key: String
         get() = KEY
 
@@ -46,17 +57,33 @@ class NetworkProviderScreen :
 
     override fun isEnabled(context: Context) = super<PreferenceRestrictionMixin>.isEnabled(context)
 
+    override fun getMetricsCategory() = SettingsEnums.WIFI
+
     override val restrictionKeys
         get() = arrayOf(UserManager.DISALLOW_CONFIG_WIFI)
+
+    override val highlightMenuKey
+        get() = R.string.menu_key_network
 
     override fun isFlagEnabled(context: Context) = Flags.catalystInternetSettings()
 
     override fun hasCompleteHierarchy() = false
 
-    override fun fragmentClass() = NetworkProviderSettings::class.java
+    override fun fragmentClass(): Class<out Fragment>? = NetworkProviderSettings::class.java
 
-    override fun getPreferenceHierarchy(context: Context) =
-        preferenceHierarchy(context, this) { +WifiSwitchPreference() }
+    override fun getPreferenceHierarchy(context: Context, coroutineScope: CoroutineScope) =
+        preferenceHierarchy(context) {
+            +PreferenceCategory("wifi_category", R.string.wifi_settings) += {
+                +WifiSwitchPreference()
+            }
+            +UntitledPreferenceCategoryMetadata("wifi_ext_category") += {
+                if (Flags.deeplinkNetworkAndInternet25q4()) +SavedAccessPointsWifiScreen.KEY
+                +WifiDataUsagePreference(context)
+            }
+        }
+
+    override fun getLaunchIntent(context: Context, metadata: PreferenceMetadata?): Intent? =
+        makeLaunchIntent(context, NetworkProviderSettingsActivity::class.java, metadata?.key)
 
     companion object {
         const val KEY = "internet_settings"

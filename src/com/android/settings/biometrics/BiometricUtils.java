@@ -17,7 +17,10 @@
 package com.android.settings.biometrics;
 
 
+import static android.content.pm.PackageManager.FEATURE_PC;
+
 import static com.android.settings.biometrics.BiometricEnrollActivity.EXTRA_SKIP_INTRO;
+import static com.android.settings.flags.Flags.biometricEnrollmentSkipSplitscreenChecksOnDesktop;
 
 import android.annotation.IntDef;
 import android.app.Activity;
@@ -52,6 +55,7 @@ import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.password.ChooseLockGeneric;
 import com.android.settings.password.ChooseLockSettingsHelper;
 import com.android.settings.password.SetupChooseLockGeneric;
+import com.android.settingslib.activityembedding.ActivityEmbeddingUtils;
 import com.android.settingslib.widget.SettingsThemeHelper;
 
 import com.google.android.setupcompat.util.WizardManagerHelper;
@@ -541,14 +545,52 @@ public class BiometricUtils {
      * @param context that for applying Expressive Style
      * @param isSettingsPreference Apply Expressive style on Settings Preference or not.
      * @return true if device using Expressive Style theme, otherwise false.
+     *
+     * @deprecated Use useExpressiveStyle(context, intent) instead
      */
+    @Deprecated
     public static boolean isExpressiveStyle(@NonNull Context context,
             boolean isSettingsPreference) {
         return isSettingsPreference ? SettingsThemeHelper.isExpressiveTheme(context) :
                 ThemeHelper.shouldApplyGlifExpressiveStyle(context);
     }
 
+    /**
+     * Check if current SUW/Settings Page is using Expressive Style or Pre-Expressive Style.
+     * @param context that for applying Expressive Style
+     * @param intent intent The original intent that was used to start the step, usually
+     *               via {@link Activity#getIntent()}, Null will assume calling from Settings Flow.
+     * @return true if device using Expressive Style theme, otherwise false.
+     *
+     * @deprecated Using either ThemeHelper.shouldApplyGlifExpressiveStyle()
+     *             or SettingsThemeHelper.isExpressiveTheme() is more practical.
+     */
+    @Deprecated
+    public static boolean useExpressiveStyle(@NonNull Context context, @Nullable Intent intent) {
+        if (WizardManagerHelper.isAnySetupWizard(intent)) {
+            return ThemeHelper.shouldApplyGlifExpressiveStyle(context);
+        } else {
+            return SettingsThemeHelper.isExpressiveTheme(context);
+        }
+    }
+
     private static String capitalize(final String input) {
         return Character.toUpperCase(input.charAt(0)) + input.substring(1);
+    }
+
+    /** Check if split screen enrollment is disabled. Note this is a temporary workaround. */
+    @Deprecated
+    public static boolean isSplitScreenEnrollmentDisabled(@NonNull Activity hostActivity) {
+        // TODO(b/419423592): Fix properly but allow desktop devices to bypass check for now
+        // A form factor check should not be needed. Instead, only prevent in cases
+        // where it won't work or requires new UI to be built to support it (i.e. udfps)
+        if (biometricEnrollmentSkipSplitscreenChecksOnDesktop()) {
+            if (hostActivity.getPackageManager().hasSystemFeature(FEATURE_PC)) {
+                return false;
+            }
+        }
+
+        return hostActivity.isInMultiWindowMode() &&
+                !ActivityEmbeddingUtils.isActivityEmbedded(hostActivity);
     }
 }

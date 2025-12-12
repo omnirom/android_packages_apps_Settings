@@ -67,8 +67,8 @@
     <!-- no translation found for wifi_tether_security:3 (5512131148045414341) -->
   <string-array name="eap_ocsp_type">
     <item msgid="8568170800958331461">"पुष्टि न करें"</item>
-    <item msgid="5703177653586269306">"प्रमाणपत्र की स्थिति का अनुरोध करें"</item>
-    <item msgid="326388247868439528">"प्रमाणपत्र की स्थिति ज़रूरी है"</item>
+    <item msgid="5703177653586269306">"सर्टिफ़िकेट की स्थिति के लिए अनुरोध करें"</item>
+    <item msgid="326388247868439528">"सर्टिफ़िकेट की स्थिति ज़रूरी है"</item>
   </string-array>
   <string-array name="wifi_p2p_status">
     <item msgid="8357401480964012245">"कनेक्ट है"</item>
@@ -142,7 +142,7 @@
     <item msgid="5845194685644699724">"PAP या CHAP"</item>
   </string-array>
   <string-array name="apn_protocol_entries">
-    <item msgid="5005228027485376993">"IPv4"</item>
+    <item msgid="5005228027485376993">"आईपीवी4"</item>
     <item msgid="3249973932011349323">"IPv6"</item>
     <item msgid="2254055042792806324">"IPv4/IPv6"</item>
   </string-array>
@@ -315,6 +315,10 @@
     <item msgid="7397961711906421599">"कुछ समय के लिए"</item>
     <item msgid="4079132024502041928">"ज़्यादा समय के लिए"</item>
   </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"डीएचसीपी"</item>
+    <item msgid="4425163520864432692">"स्टैटिक"</item>
+  </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"डिफ़ॉल्ट"</item>
     <item msgid="4234707448428002595">"Sans-serif"</item>
@@ -348,7 +352,7 @@
     <item msgid="3237802033158517495">"100%"</item>
   </string-array>
   <string-array name="captioning_preset_selector_titles">
-    <item msgid="3880932435325583041">"ऐप, अपने हिसाब से कैप्शन सेट करे"</item>
+    <item msgid="3880932435325583041">"ऐप की स्टाइल"</item>
     <item msgid="8719204526359229387">"काले पर सफ़ेद"</item>
     <item msgid="5410164687403735103">"सफ़ेद पर काला"</item>
     <item msgid="1119043472912497241">"काले पर पीला"</item>
@@ -358,10 +362,6 @@
   <string-array name="accessibility_button_location_selector_titles">
     <item msgid="6485511780196327736">"दूसरे ऐप्लिकेशन के ऊपर फ़्लोट करता हुआ"</item>
     <item msgid="3605616699204153590">"नेविगेशन बार में"</item>
-  </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"बटन"</item>
-    <item msgid="6922258575853746220">"जेस्चर"</item>
   </string-array>
   <string-array name="accessibility_button_size_selector_titles">
     <item msgid="7482952318152486459">"छोटा"</item>
@@ -392,7 +392,7 @@
     <item msgid="7582717864806562725">"?"</item>
   </string-array>
   <string-array name="color_picker">
-    <item msgid="7216413848731287689">"नीला-हरा"</item>
+    <item msgid="7216413848731287689">"सायन"</item>
     <item msgid="5661027589207588703">"नीला"</item>
     <item msgid="1219738214736244749">"हरा"</item>
     <item msgid="6331809026622602308">"बैंगनी"</item>
@@ -411,13 +411,13 @@
     <item msgid="9080166583718385565">"0"</item>
   </string-array>
   <string-array name="wifi_metered_entries">
-    <item msgid="3237321077949659241">"नेटवर्क की अपने-आप पहचान हो"</item>
+    <item msgid="3237321077949659241">"डिवाइस अपने-आप पता लगाए"</item>
     <item msgid="3779092145391320375">"सीमित डेटा वाले नेटवर्क के तौर पर मानें"</item>
-    <item msgid="2047166446768045816">"सीमित डेटा वाले नेटवर्क के तौर पर न मानें"</item>
+    <item msgid="2047166446768045816">"असीमित डेटा वाले नेटवर्क के तौर पर मानें"</item>
   </string-array>
   <string-array name="wifi_privacy_entries">
-    <item msgid="91222619458919148">"किसी भी MAC का इस्तेमाल करें"</item>
-    <item msgid="741680937828608749">"डिवाइस MAC का इस्तेमाल करें"</item>
+    <item msgid="91222619458919148">"रैंडम तौर पर चुने गए एमएसी का इस्तेमाल करें"</item>
+    <item msgid="741680937828608749">"डिवाइस एमएसी का इस्तेमाल करें"</item>
   </string-array>
   <string-array name="wifi_dhcp_entries">
     <item msgid="2532836996945493932">"डिवाइस का नाम नेटवर्क को भेजें"</item>
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"घड़ी"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"कोई नहीं"</item>
+    <item msgid="321837941231023175">"होम"</item>
+    <item msgid="953234843613969792">"हाल ही में इस्तेमाल किए गए ऐप"</item>
+    <item msgid="1713942773283586136">"सूचनाएं"</item>
+    <item msgid="5687603742365489342">"क्विक सेटिंग"</item>
+    <item msgid="5454862951059393431">"लॉक स्क्रीन"</item>
   </string-array>
 </resources>

@@ -30,6 +30,7 @@ import com.android.settingslib.widget.MainSwitchPreference;
 /**
  * Controller for activate/deactivate night mode button
  */
+// LINT.IfChange
 public class DarkModeActivationPreferenceController extends BasePreferenceController
         implements Preference.OnPreferenceChangeListener {
 
@@ -70,3 +71,4 @@ public class DarkModeActivationPreferenceController extends BasePreferenceContro
         return AVAILABLE_UNSEARCHABLE;
     }
 }
+// LINT.ThenChange(DarkModeMainSwitchPreference.java)

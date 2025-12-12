@@ -23,14 +23,22 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.lifecycle.testing.TestLifecycleOwner
+import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.settings.SettingsActivity
-import com.android.settings.core.BasePreferenceController
+import com.android.settings.core.BasePreferenceController.AVAILABLE
+import com.android.settings.core.BasePreferenceController.CONDITIONALLY_UNAVAILABLE
+import com.android.settings.core.BasePreferenceController.DISABLED_FOR_USER
 import com.android.settings.development.DevelopmentSettingsDashboardFragment
+import com.android.settings.spa.preference.ComposePreference
 import com.android.settingslib.spa.testutils.delay
 import com.android.settingslib.spaprivileged.framework.common.userManager
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.runBlocking
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -56,34 +64,66 @@ class DeveloperOptionsControllerTest {
         doNothing().whenever(mock).startActivity(any())
     }
 
-    private val controller = DeveloperOptionsController(context, TEST_KEY)
+    private var isDevelopmentSettingsEnabledFlow = MutableStateFlow(false)
 
-    @Test
-    fun getAvailabilityStatus_isAdminUser_returnAvailable() {
-        mockUserManager.stub {
-            on { isAdminUser } doReturn true
-        }
+    private val controller =
+        DeveloperOptionsController(
+            context = context,
+            preferenceKey = TEST_KEY,
+            isDevelopmentSettingsEnabledFlow = isDevelopmentSettingsEnabledFlow,
+        )
 
-        val availabilityStatus = controller.getAvailabilityStatus()
+    private val preference = ComposePreference(context).apply { key = TEST_KEY }
+    private val preferenceScreen = PreferenceManager(context).createPreferenceScreen(context)
 
-        assertThat(availabilityStatus).isEqualTo(BasePreferenceController.AVAILABLE)
+    @Before
+    fun setUp() {
+        preferenceScreen.addPreference(preference)
     }
 
     @Test
-    fun getAvailabilityStatus_notAdminUser_returnDisabledForUser() {
-        mockUserManager.stub {
-            on { isAdminUser } doReturn false
-        }
+    fun onViewCreated_developmentSettingsEnabledAndAdminUser_returnAvailable() = runBlocking {
+        isDevelopmentSettingsEnabledFlow.value = true
+        mockUserManager.stub { on { isAdminUser } doReturn true }
+        controller.displayPreference(preferenceScreen)
 
+        controller.onViewCreated(TestLifecycleOwner())
+
+        composeTestRule.waitUntil { controller.availabilityStatus == AVAILABLE }
+    }
+
+    @Test
+    fun onViewCreated_developmentSettingsEnabledAndNotAdminUser_returnAvailable() = runBlocking {
+        isDevelopmentSettingsEnabledFlow.value = true
+        mockUserManager.stub { on { isAdminUser } doReturn false }
+        controller.displayPreference(preferenceScreen)
+
+        controller.onViewCreated(TestLifecycleOwner())
+
+        composeTestRule.waitUntil { controller.availabilityStatus == DISABLED_FOR_USER }
+    }
+
+    @Test
+    fun onViewCreated_developmentSettingsNotEnabled_returnAvailable() = runBlocking {
+        isDevelopmentSettingsEnabledFlow.value = false
+        controller.displayPreference(preferenceScreen)
+
+        controller.onViewCreated(TestLifecycleOwner())
+
+        composeTestRule.waitUntil { controller.availabilityStatus == CONDITIONALLY_UNAVAILABLE }
+    }
+
+    @Test
+    fun getAvailabilityStatus_returnsConditionallyUnavailableInitially() {
         val availabilityStatus = controller.getAvailabilityStatus()
 
-        assertThat(availabilityStatus).isEqualTo(BasePreferenceController.DISABLED_FOR_USER)
+        assertThat(availabilityStatus).isEqualTo(CONDITIONALLY_UNAVAILABLE)
     }
 
     @Test
     fun title_isDisplayed() {
         composeTestRule.setContent {
-            controller.DeveloperOptionsPreference()
+            controller.Content()
         }
 
         composeTestRule.onNodeWithText(
@@ -94,7 +134,7 @@ class DeveloperOptionsControllerTest {
     @Test
     fun onClick_launchDevelopmentSettingsDashboardFragment() {
         composeTestRule.setContent {
-            controller.DeveloperOptionsPreference()
+            controller.Content()
         }
 
         composeTestRule.onNodeWithText(

@@ -18,20 +18,20 @@ package com.android.settings.notification.app;
 
 import static android.app.NotificationManager.IMPORTANCE_LOW;
 import static android.app.NotificationManager.IMPORTANCE_NONE;
-import static com.android.server.notification.Flags.notificationHideUnusedChannels;
 
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
+import android.content.pm.ShortcutInfo;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceGroup;
@@ -41,13 +41,24 @@ import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.applications.AppInfoBase;
 import com.android.settings.core.SubSettingLauncher;
+import com.android.settings.notification.FutureUtil;
 import com.android.settings.notification.NotificationBackend;
 import com.android.settingslib.PrimarySwitchPreference;
+import com.android.settingslib.RestrictedLockUtils;
 import com.android.settingslib.RestrictedSwitchPreference;
+import com.android.settingslib.utils.ThreadUtils;
+import com.android.settingslib.widget.ButtonPreference;
+import com.android.settingslib.widget.ExpandablePreference;
+import com.android.settingslib.widget.SettingsThemeHelper;
+
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.function.Consumer;
 
 public class ChannelListPreferenceController extends NotificationPreferenceController {
 
@@ -55,13 +66,30 @@ public class ChannelListPreferenceController extends NotificationPreferenceContr
     private static final String KEY_GENERAL_CATEGORY = "categories";
     private static final String KEY_ZERO_CATEGORIES = "zeroCategories";
     public static final String ARG_FROM_SETTINGS = "fromSettings";
+    public static final String KEY_SHOW_MORE = "show_more";
 
     private List<NotificationChannelGroup> mChannelGroupList;
     private PreferenceCategory mPreference;
-    int mChannelCount;
+    private int mChannelCount;
+    private int mVisibleChannelCount;
+    private final NotificationSettings.DependentFieldListener mDependentFieldListener;
+    private ListeningExecutorService mBackgroundExecutor;
+    private Executor mUiExecutor;
 
-    public ChannelListPreferenceController(Context context, NotificationBackend backend) {
+    public ChannelListPreferenceController(Context context,
+            NotificationSettings.DependentFieldListener dependentFieldListener,
+            NotificationBackend backend) {
         super(context, backend);
+        mDependentFieldListener = dependentFieldListener;
+        mBackgroundExecutor = ThreadUtils.getBackgroundExecutor();
+        mUiExecutor = context.getMainExecutor();
+    }
+
+    @VisibleForTesting
+    void setExecutors(ListeningExecutorService backgroundExecutor,
+            Executor uiExecutor) {
+        mBackgroundExecutor = MoreExecutors.listeningDecorator(backgroundExecutor);
+        mUiExecutor = uiExecutor;
     }
 
     @Override
@@ -92,73 +120,99 @@ public class ChannelListPreferenceController extends NotificationPreferenceContr
     }
 
     @Override
+    protected void onResume(NotificationBackend.AppRow appRow,
+            @Nullable NotificationChannel channel, @Nullable NotificationChannelGroup group,
+            Drawable conversationDrawable, ShortcutInfo conversationInfo,
+            RestrictedLockUtils.EnforcedAdmin admin, List<String> preferenceFilter) {
+        // If we previously toggled "Show All", don't lose that on the next onResume()
+        if (mAppRow != null && mAppRow.showAllChannels) {
+            appRow.showAllChannels = true;
+        }
+        super.onResume(appRow, channel, group, conversationDrawable, conversationInfo, admin,
+                preferenceFilter);
+    }
+
+    @Override
     public void updateState(Preference preference) {
         mPreference = (PreferenceCategory) preference;
-        // Load channel settings
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... unused) {
-                if (notificationHideUnusedChannels()) {
-                    if (mAppRow.showAllChannels) {
-                        mChannelGroupList = mBackend.getGroups(mAppRow.pkg, mAppRow.uid).getList();
-                    } else {
-                        mChannelGroupList = mBackend.getGroupsWithRecentBlockedFilter(mAppRow.pkg,
-                                mAppRow.uid).getList();
+        FutureUtil.whenDone(mBackgroundExecutor.submit(this::loadChannels),
+                new Consumer<>() {
+                    @Override
+                    public void accept(Boolean aBoolean) {
+                        updateFullList();
                     }
-                } else {
-                    mChannelGroupList = mBackend.getGroups(mAppRow.pkg, mAppRow.uid).getList();
-                }
-                mChannelCount = mBackend.getChannelCount(mAppRow.pkg, mAppRow.uid);
-                Collections.sort(mChannelGroupList, CHANNEL_GROUP_COMPARATOR);
-                return null;
-            }
+                },
+                mUiExecutor);
+    }
 
-            @Override
-            protected void onPostExecute(Void unused) {
-                if (mContext == null) {
-                    return;
-                }
-
-                updateFullList(mPreference, mChannelGroupList);
+    private boolean loadChannels() {
+        mChannelCount = mBackend.getChannelCount(mAppRow.pkg, mAppRow.uid);
+        if (mAppRow.showAllChannels) {
+            mChannelGroupList = mBackend.getGroups(mAppRow.pkg, mAppRow.uid).getList();
+            mVisibleChannelCount = mChannelCount;
+        } else {
+            mChannelGroupList = mBackend.getGroupsWithRecentBlockedFilter(mAppRow.pkg,
+                    mAppRow.uid).getList();
+            mVisibleChannelCount = 0;
+            for (NotificationChannelGroup group : mChannelGroupList) {
+                    mVisibleChannelCount += group.getChannels().size();
             }
-        }.execute();
+        }
+
+        mChannelGroupList.sort(CHANNEL_GROUP_COMPARATOR);
+        return true;
     }
 
     /**
-     * Update the preferences group to match the
-     * @param groupPrefsList
-     * @param channelGroups
+     * Update the preferences group to match the backing data
      */
-    void updateFullList(@NonNull PreferenceCategory groupPrefsList,
-                @NonNull List<NotificationChannelGroup> channelGroups) {
-        if (channelGroups.isEmpty()) {
-            if (mChannelCount > 0) {
-                groupPrefsList.removeAll();
-            } else {
-                if (groupPrefsList.getPreferenceCount() == 1
-                        && KEY_ZERO_CATEGORIES.equals(groupPrefsList.getPreference(0).getKey())) {
-                    // Ensure the titles are correct for the current language, but otherwise leave alone
-                    PreferenceGroup groupCategory = (PreferenceGroup) groupPrefsList.getPreference(
-                            0);
-                    groupCategory.setTitle(R.string.notification_channels);
-                    groupCategory.getPreference(0).setTitle(R.string.no_channels);
-                } else {
-                    // Clear any contents and create the 'zero-categories' group.
-                    groupPrefsList.removeAll();
-
-                    PreferenceCategory groupCategory = new PreferenceCategory(mContext);
-                    groupCategory.setTitle(R.string.notification_channels);
-                    groupCategory.setKey(KEY_ZERO_CATEGORIES);
-                    groupPrefsList.addPreference(groupCategory);
-
-                    Preference empty = new Preference(mContext);
-                    empty.setTitle(R.string.no_channels);
-                    empty.setEnabled(false);
-                    groupCategory.addPreference(empty);
-                }
+    void updateFullList() {
+        Preference empty = mPreference.findPreference(KEY_ZERO_CATEGORIES);
+        if (mChannelCount == 0) {
+            if (empty == null) {
+                mPreference.removeAll();
+                empty = new Preference(mContext);
+                empty.setTitle(R.string.no_channels);
+                empty.setKey(KEY_ZERO_CATEGORIES);
+                mPreference.addPreference(empty);
             }
-        } else {
-            updateGroupList(groupPrefsList, channelGroups);
+        } else if (empty != null) {
+            mPreference.removePreference(empty);
+        }
+
+        if (!mChannelGroupList.isEmpty()) {
+            updateGroupList(mPreference, mChannelGroupList);
+        }
+        Preference showMore = mPreference.findPreference(KEY_SHOW_MORE);
+        if (!mAppRow.showAllChannels && mVisibleChannelCount != mChannelCount) {
+            if (showMore == null) {
+                if (SettingsThemeHelper.isExpressiveTheme(mContext)) {
+                    ButtonPreference showMoreButton = new ButtonPreference(mContext);
+                    showMoreButton.setButtonStyle(ButtonPreference.TYPE_TONAL,
+                            ButtonPreference.SIZE_LARGE);
+                    showMoreButton.setIcon(
+                            com.android.settingslib.widget.preference.menu.R.drawable
+                                    .settingslib_expressive_icon_more_vert);
+                    showMoreButton.setOnClickListener(unused -> {
+                        mAppRow.showAllChannels = true;
+                        mDependentFieldListener.onFieldValueChanged();
+                    });
+                    showMore = showMoreButton;
+                } else {
+                    showMore = new Preference(mContext);
+                    showMore.setOnPreferenceClickListener(preference1 -> {
+                        mAppRow.showAllChannels = true;
+                        mDependentFieldListener.onFieldValueChanged();
+                        return true;
+                    });
+                }
+                showMore.setKey(KEY_SHOW_MORE);
+                showMore.setTitle(R.string.no_recent_channels);
+                showMore.setOrder(1000000);
+                mPreference.addPreference(showMore);
+            }
+        } else if (showMore != null) {
+            mPreference.removePreference(showMore);
         }
     }
 
@@ -167,7 +221,7 @@ public class ChannelListPreferenceController extends NotificationPreferenceContr
      * match, it checks all groups, and if it can't find that group anywhere, it creates it.
      */
     @NonNull
-    private PreferenceCategory findOrCreateGroupCategoryForKey(
+    private ExpandablePreference findOrCreateGroupCategoryForKey(
             @NonNull PreferenceCategory groupPrefsList, @Nullable String key, int expectedIndex) {
         if (key == null) {
             key = KEY_GENERAL_CATEGORY;
@@ -176,17 +230,17 @@ public class ChannelListPreferenceController extends NotificationPreferenceContr
         if (expectedIndex < preferenceCount) {
             Preference preference = groupPrefsList.getPreference(expectedIndex);
             if (key.equals(preference.getKey())) {
-                return (PreferenceCategory) preference;
+                return (ExpandablePreference) preference;
             }
         }
         for (int i = 0; i < preferenceCount; i++) {
             Preference preference = groupPrefsList.getPreference(i);
             if (key.equals(preference.getKey())) {
                 preference.setOrder(expectedIndex);
-                return (PreferenceCategory) preference;
+                return (ExpandablePreference) preference;
             }
         }
-        PreferenceCategory groupCategory = new PreferenceCategory(mContext);
+        ExpandablePreference groupCategory = new ExpandablePreference(mContext);
         groupCategory.setOrder(expectedIndex);
         groupCategory.setKey(key);
         groupPrefsList.addPreference(groupCategory);
@@ -198,10 +252,10 @@ public class ChannelListPreferenceController extends NotificationPreferenceContr
         // Update the list, but optimize for the most common case where the list hasn't changed.
         int numFinalGroups = channelGroups.size();
         int initialPrefCount = groupPrefsList.getPreferenceCount();
-        List<PreferenceCategory> finalOrderedGroups = new ArrayList<>(numFinalGroups);
+        List<ExpandablePreference> finalOrderedGroups = new ArrayList<>(numFinalGroups);
         for (int i = 0; i < numFinalGroups; i++) {
             NotificationChannelGroup group = channelGroups.get(i);
-            PreferenceCategory groupCategory =
+            ExpandablePreference groupCategory =
                     findOrCreateGroupCategoryForKey(groupPrefsList, group.getId(), i);
             finalOrderedGroups.add(groupCategory);
             updateGroupPreferences(group, groupCategory);
@@ -215,14 +269,13 @@ public class ChannelListPreferenceController extends NotificationPreferenceContr
         boolean requiresRemoval = postAddPrefCount != numFinalGroups;
         if (hasInsertions || requiresRemoval) {
             groupPrefsList.removeAll();
-            for (PreferenceCategory group : finalOrderedGroups) {
+            for (ExpandablePreference group : finalOrderedGroups) {
                 groupPrefsList.addPreference(group);
             }
         }
-        Preference otherGroup = groupPrefsList.findPreference(KEY_GENERAL_CATEGORY);
+        ExpandablePreference otherGroup = groupPrefsList.findPreference(KEY_GENERAL_CATEGORY);
         if (otherGroup != null) {
-            otherGroup.setTitle(numFinalGroups == 1
-                    ? R.string.notification_channels : R.string.notification_channels_other);
+            otherGroup.setTitle(R.string.notification_channels_other);
         }
     }
 

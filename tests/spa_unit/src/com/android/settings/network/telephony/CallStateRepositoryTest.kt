@@ -17,6 +17,7 @@
 package com.android.settings.network.telephony
 
 import android.content.Context
+import android.telecom.TelecomManager
 import android.telephony.TelephonyCallback
 import android.telephony.TelephonyManager
 import androidx.test.core.app.ApplicationProvider
@@ -26,6 +27,7 @@ import com.android.settingslib.spa.testutils.toListWithTimeout
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
@@ -36,6 +38,7 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.stub
+import org.mockito.kotlin.whenever
 
 @RunWith(AndroidJUnit4::class)
 class CallStateRepositoryTest {
@@ -49,12 +52,15 @@ class CallStateRepositoryTest {
         }
     }
 
+    private val mockTelecomManager = mock<TelecomManager>{}
+
     private val mockSubscriptionRepository = mock<SubscriptionRepository> {
         on { activeSubscriptionIdListFlow() } doReturn flowOf(listOf(SUB_ID))
     }
 
     private val context: Context = spy(ApplicationProvider.getApplicationContext()) {
         on { getSystemService(TelephonyManager::class.java) } doReturn mockTelephonyManager
+        on { getSystemService(TelecomManager::class.java) } doReturn mockTelecomManager
     }
 
     private val repository = CallStateRepository(context, mockSubscriptionRepository)
@@ -112,6 +118,23 @@ class CallStateRepositoryTest {
         assertThat(listDeferred.await())
             .containsExactly(false, true)
             .inOrder()
+    }
+
+    @Test
+    fun isInEmergencyCall_inCall_returnTrue() = runBlocking {
+        whenever(mockTelecomManager.isInEmergencyCall).thenReturn(true)
+
+        val result = repository.isInEmergencyCallFlow().first()
+        assertThat(result).isEqualTo(true)
+    }
+
+    @Test
+    fun isInEmergencyCall_notInCall_returnFalse() = runBlocking {
+        whenever(mockTelecomManager.isInEmergencyCall).thenReturn(false)
+
+        val result = repository.isInEmergencyCallFlow().first()
+
+        assertThat(result).isEqualTo(false)
     }
 
     private companion object {

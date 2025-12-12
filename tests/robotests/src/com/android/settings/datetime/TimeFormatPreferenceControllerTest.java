@@ -21,11 +21,15 @@ import static com.android.settings.core.BasePreferenceController.DISABLED_DEPEND
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.robolectric.Shadows.shadowOf;
+
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
 
 import androidx.preference.SwitchPreference;
+import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +56,7 @@ public class TimeFormatPreferenceControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        mApplication = ShadowApplication.getInstance();
+        mApplication = shadowOf((Application) ApplicationProvider.getApplicationContext());
         mContext = RuntimeEnvironment.application;
         mController = new TimeFormatPreferenceController(mContext, "test_key");
         mController.setTimeAndDateCallback(mCallback);

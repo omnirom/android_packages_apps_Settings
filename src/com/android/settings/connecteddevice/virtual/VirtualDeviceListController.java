@@ -174,9 +174,6 @@ public class VirtualDeviceListController extends BasePreferenceController
                 com.android.internal.R.bool.config_enableVirtualDeviceManager)) {
             return UNSUPPORTED_ON_DEVICE;
         }
-        if (!android.companion.virtualdevice.flags.Flags.vdmSettings()) {
-            return CONDITIONALLY_UNAVAILABLE;
-        }
         return AVAILABLE;
     }
 }

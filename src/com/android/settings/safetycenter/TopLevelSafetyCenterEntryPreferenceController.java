@@ -16,6 +16,7 @@
 
 package com.android.settings.safetycenter;
 
+import android.app.settings.SettingsEnums;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +26,11 @@ import android.util.Log;
 import androidx.preference.Preference;
 
 import com.android.settings.core.BasePreferenceController;
+import com.android.settings.core.SubSettingLauncher;
+import com.android.settings.safetycenter.SafetyCenterUtils;
+import com.android.settings.safetycenter.ui.SafetyCenterFragment;
+import com.android.settings.flags.Flags;
+
 
 /** Controller for the SafetyCenter entry in top level Settings. */
 public class TopLevelSafetyCenterEntryPreferenceController extends BasePreferenceController {
@@ -48,10 +54,19 @@ public class TopLevelSafetyCenterEntryPreferenceController extends BasePreferenc
         if (!TextUtils.equals(preference.getKey(), getPreferenceKey())) {
             return super.handlePreferenceTreeClick(preference);
         }
-
         try {
-            mContext.startActivity(new Intent(Intent.ACTION_SAFETY_CENTER)
-                    .setPackage(mContext.getPackageManager().getPermissionControllerPackageName()));
+            if (Flags.enableSafetyCenterNewUi()) {
+                Log.d(TAG, "Launching SafetyCenter in Settings");
+                new SubSettingLauncher(mContext)
+                    .setDestination(SafetyCenterFragment.class.getName())
+                    .setSourceMetricsCategory(SettingsEnums.SETTINGS_HOMEPAGE)
+                    .launch();
+            } else {
+                Log.d(TAG, "Launching SafetyCenter in PermissionController");
+                mContext.startActivity(new Intent(Intent.ACTION_SAFETY_CENTER)
+                        .setPackage(
+                                mContext.getPackageManager().getPermissionControllerPackageName()));
+            }
         } catch (ActivityNotFoundException e) {
             Log.e(TAG, "Unable to open safety center", e);
             return false;

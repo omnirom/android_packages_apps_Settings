@@ -56,6 +56,10 @@ public class BluetoothDetailsHearingDeviceInputRoutingController extends
 
     private final HearingAidAudioRoutingHelper mAudioRoutingHelper;
     private final AudioManager mAudioManager;
+    @Nullable
+    PreferenceCategory mPreferenceContainer;
+    @Nullable
+    private HearingDeviceInputRoutingPreference mPreference;
 
     public BluetoothDetailsHearingDeviceInputRoutingController(
             @NonNull Context context,
@@ -92,15 +96,27 @@ public class BluetoothDetailsHearingDeviceInputRoutingController extends
 
     @Override
     protected void init(PreferenceScreen screen) {
-        PreferenceCategory hearingCategory = screen.findPreference(KEY_HEARING_DEVICE_GROUP);
-        if (hearingCategory != null) {
-            hearingCategory.addPreference(
-                    createInputRoutingPreference(hearingCategory.getContext()));
+        mPreferenceContainer = screen.findPreference(KEY_HEARING_DEVICE_GROUP);
+        if (mPreferenceContainer != null) {
+            mPreference = createInputRoutingPreference(mPreferenceContainer.getContext());
+            mPreferenceContainer.addPreference(mPreference);
         }
     }
 
     @Override
-    protected void refresh() {}
+    protected void refresh() {
+        if (mPreferenceContainer == null || mPreference == null) {
+            return;
+        }
+        if (mPreference.isVisible() && !isAvailable()) {
+            if (mPreference.isDialogOpen()) {
+                mPreference.getDialog().dismiss();
+            }
+            mPreference.setVisible(false);
+        } else if (!mPreference.isVisible() && isAvailable()) {
+            mPreference.setVisible(true);
+        }
+    }
 
     @Nullable
     @Override

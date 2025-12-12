@@ -15,32 +15,15 @@
  */
 package com.android.settings.supervision
 
-import android.app.settings.SettingsEnums
 import android.content.Context
-import com.android.settings.R
-import com.android.settings.dashboard.DashboardFragment
+import com.android.settings.CatalystFragment
 
 /**
  * Fragment to display the Supervision settings landing page (Settings > Supervision).
  *
  * See [SupervisionDashboardScreen] for details on the page contents.
- *
- * This class extends [DashboardFragment] in order to support dynamic settings injection.
  */
-class SupervisionDashboardFragment : DashboardFragment() {
-
-    override fun getPreferenceScreenResId() = 0
-
-    override fun getMetricsCategory() = SettingsEnums.SUPERVISION_DASHBOARD
-
-    override fun getLogTag() = TAG
+class SupervisionDashboardFragment : CatalystFragment() {
 
     override fun getPreferenceScreenBindingKey(context: Context) = SupervisionDashboardScreen.KEY
-
-    // TODO(b/383405598): redirect to Play Store if supervisor client is not
-    // fully present.
-
-    companion object {
-        private const val TAG = "SupervisionDashboard"
-    }
 }

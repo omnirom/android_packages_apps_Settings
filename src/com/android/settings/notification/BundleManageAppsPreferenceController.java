@@ -16,22 +16,32 @@
 
 package com.android.settings.notification;
 
+import static android.service.notification.Adjustment.KEY_TYPE;
+
 import android.app.Flags;
 import android.content.Context;
+import android.os.UserHandle;
+import android.os.UserManager;
 
 import androidx.annotation.NonNull;
+import androidx.preference.Preference;
 
+import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 
 public class BundleManageAppsPreferenceController extends
         BasePreferenceController {
 
     NotificationBackend mBackend;
+    private Context mContext;
+    private UserManager mUserManager;
 
     public BundleManageAppsPreferenceController(@NonNull Context context,
             @NonNull String preferenceKey) {
         super(context, preferenceKey);
+        mContext = context;
         mBackend = new NotificationBackend();
+        mUserManager = context.getSystemService(UserManager.class);
     }
 
     @Override
@@ -40,5 +50,27 @@ public class BundleManageAppsPreferenceController extends
             return AVAILABLE;
         }
         return CONDITIONALLY_UNAVAILABLE;
+    }
+
+    @Override
+    public void updateState(Preference preference) {
+        // If there are no apps that are currently excluded from bundling, add help text clarifying;
+        // otherwise, no summary text needed
+        super.updateState(preference);
+
+        boolean hasDeniedPackages = false;
+        for (UserHandle userHandle : mUserManager.getUserProfiles()) {
+            int userId = userHandle.getIdentifier();
+            if (!mBackend.getAdjustmentDeniedPackages(userId, KEY_TYPE).isEmpty()) {
+                hasDeniedPackages = true;
+                break;
+            }
+        }
+
+        if (!hasDeniedPackages) {
+            preference.setSummary(mContext.getString(R.string.notification_bundle_no_apps_desc));
+        } else {
+            preference.setSummary("");
+        }
     }
 }

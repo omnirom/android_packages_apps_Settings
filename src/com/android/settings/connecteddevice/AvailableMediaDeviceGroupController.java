@@ -31,6 +31,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.annotation.WorkerThread;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
@@ -58,6 +59,7 @@ import com.android.settingslib.utils.ThreadUtils;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Controller to maintain the {@link androidx.preference.PreferenceGroup} for all available media
@@ -76,6 +78,7 @@ public class AvailableMediaDeviceGroupController extends BasePreferenceControlle
     @Nullable private BluetoothDeviceUpdater mBluetoothDeviceUpdater;
     @Nullable private FragmentManager mFragmentManager;
     @Nullable private AudioSharingDialogHandler mDialogHandler;
+    private AtomicBoolean mIsOngoingCall = new AtomicBoolean(false);
     private BluetoothLeBroadcast.Callback mBroadcastCallback =
             new BluetoothLeBroadcast.Callback() {
                 @Override
@@ -131,8 +134,7 @@ public class AvailableMediaDeviceGroupController extends BasePreferenceControlle
                 public void onSourceFound(@NonNull BluetoothLeBroadcastMetadata source) {}
 
                 @Override
-                public void onSourceAdded(
-                        @NonNull BluetoothDevice sink, int sourceId, int reason) {
+                public void onSourceAdded(@NonNull BluetoothDevice sink, int sourceId, int reason) {
                     Log.d(TAG, "onSourceAdded: update media device list.");
                     if (mBluetoothDeviceUpdater != null) {
                         mBluetoothDeviceUpdater.forceUpdate();
@@ -191,13 +193,25 @@ public class AvailableMediaDeviceGroupController extends BasePreferenceControlle
 
     @Override
     public void onStart(@NonNull LifecycleOwner owner) {
-        if (isAvailable()) {
-            updateTitle();
-        }
         if (mBtManager == null) {
             Log.d(TAG, "onStart() Bluetooth is not supported on this device");
             return;
         }
+        if (!isAvailable()) {
+            Log.d(TAG, "onStart() Bluetooth feature is not available on this device");
+            return;
+        }
+        var unused =
+                ThreadUtils.postOnBackgroundThread(
+                        () -> {
+                            boolean isOngoingCall = isAudioModeOngoingCall(mContext);
+                            mIsOngoingCall.set(isOngoingCall);
+                            if (mBluetoothDeviceUpdater
+                                    instanceof AvailableMediaBluetoothDeviceUpdater updater) {
+                                updater.setIsOngoingCall(isOngoingCall);
+                            }
+                            updateTitle();
+                        });
         if (BluetoothUtils.isAudioSharingUIAvailable(mContext)) {
             registerAudioSharingCallbacks();
         }
@@ -212,6 +226,10 @@ public class AvailableMediaDeviceGroupController extends BasePreferenceControlle
     public void onStop(@NonNull LifecycleOwner owner) {
         if (mBtManager == null) {
             Log.d(TAG, "onStop() Bluetooth is not supported on this device");
+            return;
+        }
+        if (!isAvailable()) {
+            Log.d(TAG, "onStop() Bluetooth feature is not available on this device");
             return;
         }
         if (BluetoothUtils.isAudioSharingUIAvailable(mContext)) {
@@ -278,7 +296,8 @@ public class AvailableMediaDeviceGroupController extends BasePreferenceControlle
                 ((BluetoothDevicePreference) preference).getBluetoothDevice();
         if (BluetoothUtils.isAudioSharingUIAvailable(mContext) && mDialogHandler != null) {
             mDialogHandler.handleDeviceConnected(cachedDevice, /* userTriggered= */ true);
-            FeatureFactory.getFeatureFactory().getMetricsFeatureProvider()
+            FeatureFactory.getFeatureFactory()
+                    .getMetricsFeatureProvider()
                     .action(mContext, SettingsEnums.ACTION_MEDIA_DEVICE_CLICK);
         } else {
             cachedDevice.setActive();
@@ -314,7 +333,25 @@ public class AvailableMediaDeviceGroupController extends BasePreferenceControlle
 
     @Override
     public void onAudioModeChanged() {
-        updateTitle();
+        var unused =
+                ThreadUtils.postOnBackgroundThread(
+                        () -> {
+                            boolean isOngoingCall = isAudioModeOngoingCall(mContext);
+                            mIsOngoingCall.set(isOngoingCall);
+                            Log.d(TAG, "onAudioModeChanged, in call mode = " + isOngoingCall);
+                            if (mBluetoothDeviceUpdater
+                                    instanceof AvailableMediaBluetoothDeviceUpdater updater) {
+                                updater.setIsOngoingCall(isOngoingCall);
+                            }
+                            updateTitle();
+                            mContext.getMainExecutor()
+                                    .execute(
+                                            () -> {
+                                                if (mBluetoothDeviceUpdater != null) {
+                                                    mBluetoothDeviceUpdater.forceUpdate();
+                                                }
+                                            });
+                        });
     }
 
     @Override
@@ -330,32 +367,29 @@ public class AvailableMediaDeviceGroupController extends BasePreferenceControlle
         }
     }
 
+    @WorkerThread
     private void updateTitle() {
         if (mPreferenceGroup == null) return;
-        var unused =
-                ThreadUtils.postOnBackgroundThread(
+        Log.d(TAG, "updateTitle, check current status");
+        int titleResId;
+        if (mIsOngoingCall.get()) {
+            // in phone call
+            titleResId = R.string.connected_device_call_device_title;
+        } else if (BluetoothUtils.isAudioSharingUIAvailable(mContext)
+                && BluetoothUtils.isBroadcasting(mBtManager)) {
+            // without phone call, in audio sharing
+            titleResId = R.string.audio_sharing_media_device_group_title;
+        } else {
+            // without phone call, not audio sharing
+            titleResId = R.string.connected_device_media_device_title;
+        }
+        Log.d(TAG, "updateTitle, title = " + titleResId);
+        mContext.getMainExecutor()
+                .execute(
                         () -> {
-                            Log.d(TAG, "updateTitle, check current status");
-                            int titleResId;
-                            if (isAudioModeOngoingCall(mContext)) {
-                                // in phone call
-                                titleResId = R.string.connected_device_call_device_title;
-                            } else if (BluetoothUtils.isAudioSharingUIAvailable(mContext)
-                                    && BluetoothUtils.isBroadcasting(mBtManager)) {
-                                // without phone call, in audio sharing
-                                titleResId = R.string.audio_sharing_media_device_group_title;
-                            } else {
-                                // without phone call, not audio sharing
-                                titleResId = R.string.connected_device_media_device_title;
+                            if (mPreferenceGroup != null) {
+                                mPreferenceGroup.setTitle(titleResId);
                             }
-                            Log.d(TAG, "updateTitle, title = " + titleResId);
-                            mContext.getMainExecutor()
-                                    .execute(
-                                            () -> {
-                                                if (mPreferenceGroup != null) {
-                                                    mPreferenceGroup.setTitle(titleResId);
-                                                }
-                                            });
                         });
     }
 

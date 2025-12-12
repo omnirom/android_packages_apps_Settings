@@ -25,10 +25,7 @@ import static org.mockito.Mockito.when;
 import android.app.admin.DevicePolicyManager;
 import android.app.admin.FactoryResetProtectionPolicy;
 import android.content.Context;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
-import android.security.Flags;
 import android.service.persistentdata.PersistentDataBlockManager;
 import android.view.LayoutInflater;
 
@@ -130,20 +127,6 @@ public class MainClearConfirmTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_FRP_ENFORCEMENT)
-    public void shouldWipePersistentDataBlock_oemUnlockAllowedAndFlagDiscabled_shouldReturnFalse() {
-        when(mMainClearConfirm.getActivity()).thenReturn(mMockActivity);
-
-        when(mDevicePolicyManager.isFactoryResetProtectionPolicySupported()).thenReturn(true);
-        doReturn(false).when(mMainClearConfirm).isDeviceStillBeingProvisioned();
-        doReturn(true).when(mMainClearConfirm).isOemUnlockedAllowed();
-
-        assertThat(mMainClearConfirm.shouldWipePersistentDataBlock(mPersistentDataBlockManager))
-                .isFalse();
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_FRP_ENFORCEMENT)
     public void shouldWipePersistentDataBlock_oemUnlockAllowedAndFlagEnabled_shouldReturnTrue() {
         when(mMainClearConfirm.getActivity()).thenReturn(mMockActivity);
 

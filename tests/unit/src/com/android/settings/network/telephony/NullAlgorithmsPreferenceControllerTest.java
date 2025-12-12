@@ -160,4 +160,13 @@ public final class NullAlgorithmsPreferenceControllerTest {
         assertFalse(mController.setChecked(false));
         verify(mTelephonyManager, times(1)).setNullCipherAndIntegrityEnabled(true);
     }
+
+    @Test
+    public void updateState_isAirplaneModeOn_disabled() {
+        mController.notifyAirplaneModeChanged(true);
+
+        mController.updateState(mPreference);
+
+        assertThat(mPreference.isEnabled()).isFalse();
+    }
 }

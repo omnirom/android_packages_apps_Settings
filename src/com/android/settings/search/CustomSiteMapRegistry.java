@@ -16,7 +16,6 @@
 
 package com.android.settings.search;
 
-import android.app.Flags;
 import android.util.ArrayMap;
 
 import com.android.settings.backup.UserBackupSettingsActivity;
@@ -28,8 +27,6 @@ import com.android.settings.gestures.GestureNavigationSettingsFragment;
 import com.android.settings.gestures.SystemNavigationGestureSettings;
 import com.android.settings.location.LocationSettings;
 import com.android.settings.location.RecentLocationAccessSeeAllFragment;
-import com.android.settings.notification.zen.ZenModeBlockedEffectsSettings;
-import com.android.settings.notification.zen.ZenModeRestrictNotificationsSettings;
 import com.android.settings.security.SecuritySettings;
 import com.android.settings.security.screenlock.ScreenLockSettings;
 import com.android.settings.system.SystemDashboardFragment;
@@ -56,10 +53,6 @@ public class CustomSiteMapRegistry {
                 ConnectedDeviceDashboardFragment.class.getName());
         CUSTOM_SITE_MAP.put(UserBackupSettingsActivity.class.getName(),
                 SystemDashboardFragment.class.getName());
-        if (!Flags.modesUi()) {
-            CUSTOM_SITE_MAP.put(ZenModeBlockedEffectsSettings.class.getName(),
-                    ZenModeRestrictNotificationsSettings.class.getName());
-        }
         CUSTOM_SITE_MAP.put(GestureNavigationSettingsFragment.class.getName(),
                 SystemNavigationGestureSettings.class.getName());
     }

@@ -30,14 +30,21 @@ import java.util.concurrent.atomic.AtomicInteger;
  * {@link TogglePreferenceController} that used by all preferences that requires subscription id.
  */
 public abstract class TelephonyTogglePreferenceController extends TogglePreferenceController
-        implements TelephonyAvailabilityCallback, TelephonyAvailabilityHandler {
+        implements TelephonyAvailabilityCallback, TelephonyAvailabilityHandler,
+        AirplaneModeChangedCallback {
     protected int mSubId;
     private AtomicInteger mAvailabilityStatus = new AtomicInteger(0);
     private AtomicInteger mSetSessionCount = new AtomicInteger(0);
+    protected boolean mIsAirplaneModeOn = false;
 
     public TelephonyTogglePreferenceController(Context context, String preferenceKey) {
         super(context, preferenceKey);
         mSubId = SubscriptionManager.INVALID_SUBSCRIPTION_ID;
+    }
+
+    @Override
+    public void notifyAirplaneModeChanged(boolean isAirplaneModeOn) {
+        this.mIsAirplaneModeOn = isAirplaneModeOn;
     }
 
     @Override

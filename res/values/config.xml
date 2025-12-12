@@ -201,6 +201,12 @@
     <!-- List of packages that should be allowlisted for slice uri access. Do not translate -->
     <string-array name="slice_allowlist_package_names" translatable="false"/>
 
+    <!-- List of packages that should be allowlisted for slice uri access for debugging purpose. Do not translate -->
+    <string-array name="slice_allowlist_package_names_for_dev" translatable="false"/>
+
+    <!-- Whether to support click input for the pattern component -->
+    <bool name="config_enable_pattern_input_click_support">false</bool>
+
     <!-- Whether to use a UI variant that minimizes the number of UI elements on screen. This is
          typically used when there is not enough space to display everything, because pattern view
          doesn't interact well with scroll view -->
@@ -634,7 +640,10 @@
     </integer-array>
 
     <!-- App aspect ratio settings screen, user aspect ratio override options. Must be the same
-         length and order as config_userAspectRatioOverrideValues below. -->
+         length and order as config_userAspectRatioOverrideValues below.
+
+         If changed, also update the Backup & Restore logic for choosing the closest value in
+         com/android/settings/applications/appcompat/UserAspectRatioBackupManager.java -->
     <string-array name="config_userAspectRatioOverrideEntries" translatable="false">
         <item>@string/user_aspect_ratio_app_default</item>
         <item>@string/user_aspect_ratio_fullscreen</item>
@@ -647,7 +656,10 @@
 
     <!-- App aspect ratio settings screen, user aspect ratio override options. Must be the same
          length and order as config_userAspectRatioOverrideEntries above. The values must
-         correspond to PackageManager.UserMinAspectRatio -->
+         correspond to PackageManager.UserMinAspectRatio.
+
+         If changed, also update the Backup & Restore logic for choosing the closest value in
+         com/android/settings/applications/appcompat/UserAspectRatioBackupManager.java -->
     <integer-array name="config_userAspectRatioOverrideValues" translatable="false">
         <item>0</item> <!-- USER_MIN_ASPECT_RATIO_UNSET -->
         <item>6</item> <!-- USER_MIN_ASPECT_RATIO_FULLSCREEN -->
@@ -712,11 +724,27 @@
     <!-- Whether the dream setup activity should be enabled as part of setupwizard -->
     <bool name="dream_setup_supported">false</bool>
 
+    <!-- The minimum number of spans (columns) to show in the dream picker preference. -->
+    <integer name="config_dream_picker_min_span_count">2</integer>
+
     <!-- Whether to show communal settings at the top level. -->
     <bool name="config_show_communal_settings">false</bool>
 
     <!-- Whether to show communal settings at the top level on mobile. -->
     <bool name="config_show_communal_settings_mobile">false</bool>
+
+    <!-- Whether posturing detection is supported. -->
+    <bool name="config_posturing_supported">false</bool>
+
+    <!-- Whether to show the "glanceable hub" settings. -->
+    <bool name="config_show_glanceable_hub_toggle_setting">false</bool>
+
+    <!-- Whether to show the "glanceable hub" settings on mobile. -->
+    <bool name="config_show_glanceable_hub_toggle_setting_mobile">false</bool>
+
+    <!-- Whether to show a "restrict to wireless charging" settings option in screensaver and hub
+         mode settings (false by default). -->
+    <bool name="config_show_restrict_to_wireless_charging">false</bool>
 
     <!-- The extra value for battery tip -->
     <integer name="config_battery_extra_tip_value">12</integer>
@@ -739,7 +767,7 @@
     <!-- Whether to enable the app battery usage list page feature. -->
     <bool name="config_app_battery_usage_list_enabled">false</bool>
 
-    <!-- Whether sim related information is visible to the end user. -->
+    <!-- Whether telephony related information is visible to the end user. -->
     <bool name="config_show_sim_info">true</bool>
 
     <!-- In the case of receiving both help and progress message, display progress message. -->
@@ -856,4 +884,71 @@
 
     <!-- Whether the Gaze is enabled -->
     <bool name="config_gazeEnabled">false</bool>
+
+    <!-- Whether to share the WiFi network by default. -->
+    <bool name="config_share_network_by_default">true</bool>
+
+    <!-- Whether to allow other device users to edit network configuration of a shared network by default. -->
+    <bool name="config_allow_edit_network_configuration_by_default">true</bool>
+
+    <!-- Array of carrier id that use to check current region be in satellite GEO fence or not. -->
+    <integer-array name="config_carrier_id_list_for_satellite_geo_fence_check" translatable="false">
+        <!--
+        <item>1234</item>
+        -->
+    </integer-array>
+
+    <!-- Array of carrier IDs for which the Wi-Fi scorer toggle should be OFF by default. -->
+    <integer-array name="config_carrier_for_wifi_scorer_toggle_off" translatable="false">
+    </integer-array>
+
+    <!-- Array of carrier IDs for which the mobile network toggle should be disabled/hidden by default. -->
+    <integer-array name="config_carrier_for_mobile_network_toggle_disable" translatable="false">
+    </integer-array>
+
+    <!-- Whether strings are provided to show Identity Check Watch promo card. This implies that
+         the following strings have overlays:
+         R.string.identity_check_watch_issue_card_title
+         R.string.identity_check_watch_issue_card_summary
+         R.string.identity_check_watch_promo_card_title
+         R.string.identity_check_promo_card_watch_summary -->
+    <bool name="config_show_identity_check_watch_promo">false</bool>
+
+    <!-- Safety Center safety source ID of an app security source. -->
+    <string name="config_safety_center_app_security_source_id" translatable="false"></string>
+
+    <!-- Safety Center safety source ID of an app protection service source. -->
+    <string name="config_safety_center_app_protection_service_source_id" translatable="false"></string>
+
+    <!-- Safety Center safety source ID of an auto lock source. -->
+    <string name="config_safety_center_auto_lock_source_id" translatable="false"></string>
+
+    <!-- Safety Center safety source ID of an account security source. -->
+    <string name="config_safety_center_account_security_source_id" translatable="false"></string>
+
+    <!-- Safety Center safety source ID of a password security source. -->
+    <string name="config_safety_center_password_security_source_id" translatable="false"></string>
+
+    <!-- Safety Center safety source ID of a device finder source. -->
+    <string name="config_safety_center_device_finder_source_id" translatable="false"></string>
+
+    <!-- Safety Center safety source ID of an unwanted tracker alert source. -->
+    <string name="config_safety_center_unwanted_tracker_alert_source_id" translatable="false"></string>
+
+    <!-- Safety Center safety source ID of a security update source. -->
+    <string name="config_safety_center_security_update_source_id" translatable="false"></string>
+
+    <!-- Safety Center safety source ID of a system component update source. -->
+    <string name="config_safety_center_system_component_update_source_id" translatable="false"></string>
+
+    <!-- Safety Center safety source ID of a backup source. -->
+    <string name="config_safety_center_backup_source_id" translatable="false"></string>
+
+    <!-- Comma separated list of Safety Center safety source IDs to show in the same task as Safety Center -->
+    <string name="config_same_task_safety_source_ids" translatable="false">AdvancedProtection,AndroidAccessibility,AndroidAppFunctionAccess,AndroidBackgroundLocation,AndroidBiometrics,AndroidFaceUnlock,AndroidFingerprintUnlock,AndroidHealthConnect,AndroidLockScreen,AndroidPrivateSpace,AndroidNotificationListener,AndroidPermissionAutoRevoke,AndroidPrivacyAppDataSharingUpdates,AndroidWearUnlock,AndroidWorkPolicyInfo</string>
+
+    <!-- Resolutions shown on external display (for native resolutions only). There must be an even
+         number of values, each pair being width x height. If empty, all resolutions are supported. -->
+    <integer-array name="config_resolutionsShownOnExternalDisplay" translatable="false"/>
+
 </resources>

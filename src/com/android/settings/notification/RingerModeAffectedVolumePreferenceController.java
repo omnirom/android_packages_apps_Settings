@@ -27,6 +27,7 @@ import android.util.Log;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.settings.R;
+import com.android.settings.sound.VolumeSliderPreference;
 
 import java.util.Objects;
 
@@ -34,7 +35,7 @@ import java.util.Objects;
  * Shared functionality and interfaces for volume controllers whose state can change by ringer mode
  */
 public abstract class RingerModeAffectedVolumePreferenceController extends
-        VolumeSeekBarPreferenceController {
+        VolumeSliderPreferenceController {
 
     private final String mTag;
 
@@ -85,8 +86,8 @@ public abstract class RingerModeAffectedVolumePreferenceController extends
     }
 
     @VisibleForTesting
-    void setPreference(VolumeSeekBarPreference volumeSeekBarPreference) {
-        mPreference = volumeSeekBarPreference;
+    void setPreference(VolumeSliderPreference volumeSliderPreference) {
+        mPreference = volumeSliderPreference;
     }
 
     @VisibleForTesting

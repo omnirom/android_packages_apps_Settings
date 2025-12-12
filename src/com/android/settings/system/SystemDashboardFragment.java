@@ -16,8 +16,11 @@
 package com.android.settings.system;
 
 import android.app.settings.SettingsEnums;
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceScreen;
@@ -27,6 +30,7 @@ import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.SearchIndexable;
 
+// LINT.IfChange
 @SearchIndexable
 public class SystemDashboardFragment extends DashboardFragment {
 
@@ -76,9 +80,15 @@ public class SystemDashboardFragment extends DashboardFragment {
         return visibleCount;
     }
 
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return SystemDashboardScreen.KEY;
+    }
+
     /**
      * For Search.
      */
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(R.xml.system_dashboard_fragment);
 }
+// LINT.ThenChange(SystemDashboardScreen.kt)

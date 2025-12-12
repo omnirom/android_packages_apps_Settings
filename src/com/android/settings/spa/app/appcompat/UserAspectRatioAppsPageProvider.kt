@@ -22,8 +22,6 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.GET_ACTIVITIES
-import android.content.pm.PackageManager.USER_MIN_ASPECT_RATIO_APP_DEFAULT
-import android.content.pm.PackageManager.USER_MIN_ASPECT_RATIO_UNSET
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -51,7 +49,7 @@ import com.android.settingslib.spa.widget.illustration.IllustrationModel
 import com.android.settingslib.spa.widget.illustration.ResourceType
 import com.android.settingslib.spa.widget.preference.Preference
 import com.android.settingslib.spa.widget.preference.PreferenceModel
-import com.android.settingslib.spa.widget.ui.SettingsBody
+import com.android.settingslib.spa.widget.ui.SettingsIntro
 import com.android.settingslib.spa.widget.ui.SpinnerOption
 import com.android.settingslib.spaprivileged.model.app.AppListModel
 import com.android.settingslib.spaprivileged.model.app.AppRecord
@@ -113,7 +111,7 @@ fun UserAspectRatioAppList(
         appList = appList,
         header = {
             Box(Modifier.padding(SettingsDimension.itemPadding)) {
-                SettingsBody(stringResource(R.string.aspect_ratio_main_summary_text, Build.MODEL))
+                SettingsIntro(stringResource(R.string.aspect_ratio_main_summary_text, Build.MODEL))
             }
             Illustration(object : IllustrationModel {
                 override val resId = R.raw.user_aspect_ratio_education

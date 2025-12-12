@@ -18,14 +18,14 @@ package com.android.settings.bluetooth.ui.model
 
 import android.content.Intent
 import com.android.settingslib.bluetooth.devicesettings.DeviceSettingId
+import com.android.settingslib.bluetooth.devicesettings.shared.model.ButtonModel
 import com.android.settingslib.bluetooth.devicesettings.shared.model.DeviceSettingActionModel
 import com.android.settingslib.bluetooth.devicesettings.shared.model.DeviceSettingIcon
 import com.android.settingslib.bluetooth.devicesettings.shared.model.ToggleModel
 
 /** Models a device setting preference. */
 sealed interface DeviceSettingPreferenceModel {
-    @DeviceSettingId
-    val id: Int
+    @DeviceSettingId val id: Int
 
     /** Models a plain preference. */
     data class PlainPreference(
@@ -60,20 +60,27 @@ sealed interface DeviceSettingPreferenceModel {
     ) : DeviceSettingPreferenceModel
 
     /** Models a footer preference. */
-    data class FooterPreference(
-        @DeviceSettingId override val id: Int,
-        val footerText: String,
-    ) : DeviceSettingPreferenceModel
+    data class FooterPreference(@DeviceSettingId override val id: Int, val footerText: String) :
+        DeviceSettingPreferenceModel
 
     /** Models a preference which could navigate to more settings fragment. */
-    data class MoreSettingsPreference(
-        @DeviceSettingId override val id: Int,
-    ) : DeviceSettingPreferenceModel
+    data class MoreSettingsPreference(@DeviceSettingId override val id: Int) :
+        DeviceSettingPreferenceModel
 
     /** Models a help button on the top right corner of the fragment. */
     data class HelpPreference(
         @DeviceSettingId override val id: Int,
         val icon: DeviceSettingIcon,
         val intent: Intent,
+    ) : DeviceSettingPreferenceModel
+
+    /** Models a banner preference. */
+    data class BannerPreference(
+        @DeviceSettingId override val id: Int,
+        val title: String,
+        val message: String,
+        val icon: DeviceSettingIcon? = null,
+        val positiveButton: ButtonModel? = null,
+        val negativeButton: ButtonModel? = null,
     ) : DeviceSettingPreferenceModel
 }

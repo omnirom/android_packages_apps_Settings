@@ -144,7 +144,7 @@ public class BluetoothEnablerTest {
         assertThat(mBluetoothEnabler.maybeEnforceRestrictions()).isFalse();
 
         // THEN a null EnfoceAdmin is set.
-        verify(mSwitchController).setDisabledByAdmin(null);
+        verify(mSwitchController).setDisabledByAdmin((EnforcedAdmin) null);
         // THEN the state of the switch isn't changed.
         verify(mSwitchController, never()).setChecked(anyBoolean());
     }

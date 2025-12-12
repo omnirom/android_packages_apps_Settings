@@ -15,6 +15,7 @@
  */
 package com.android.settings.development;
 
+import android.app.admin.EnforcingAdmin;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,8 +29,6 @@ import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 
 import com.android.settings.core.PreferenceControllerMixin;
-import com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
-import com.android.settingslib.RestrictedLockUtilsInternal;
 import com.android.settingslib.RestrictedSwitchPreference;
 import com.android.settingslib.development.DeveloperOptionsPreferenceController;
 
@@ -48,23 +47,6 @@ public class VerifyAppsOverUsbPreferenceController extends DeveloperOptionsPrefe
     static final int SETTING_VALUE_ON = 1;
     @VisibleForTesting
     static final int SETTING_VALUE_OFF = 0;
-
-    /**
-     * Class for indirection of RestrictedLockUtils for testing purposes. It would be nice to mock
-     * the appropriate methods in UserManager instead but they aren't accessible.
-     */
-    @VisibleForTesting
-    class RestrictedLockUtilsDelegate {
-        public EnforcedAdmin checkIfRestrictionEnforced(
-                Context context, String userRestriction, int userId) {
-            return RestrictedLockUtilsInternal.checkIfRestrictionEnforced(context, userRestriction,
-                    userId);
-        }
-    }
-
-    // NB: This field is accessed using reflection in the test, please keep name in sync.
-    private final RestrictedLockUtilsDelegate mRestrictedLockUtils =
-            new RestrictedLockUtilsDelegate();
 
     // This field is accessed using reflection in the test, please keep name in sync.
     private final PackageManager mPackageManager;
@@ -98,21 +80,16 @@ public class VerifyAppsOverUsbPreferenceController extends DeveloperOptionsPrefe
     @Override
     public void updateState(Preference preference) {
         final RestrictedSwitchPreference restrictedPreference =
-            (RestrictedSwitchPreference) preference;
+                (RestrictedSwitchPreference) preference;
         if (!shouldBeEnabled()) {
             restrictedPreference.setChecked(false);
-            restrictedPreference.setDisabledByAdmin(null);
+            restrictedPreference.setDisabledByAdmin((EnforcingAdmin) null);
             restrictedPreference.setEnabled(false);
             return;
         }
 
-        final EnforcedAdmin enforcingAdmin = mRestrictedLockUtils.checkIfRestrictionEnforced(
-                mContext, UserManager.ENSURE_VERIFY_APPS, UserHandle.myUserId());
-        if (enforcingAdmin != null) {
-            restrictedPreference.setChecked(true);
-            restrictedPreference.setDisabledByAdmin(enforcingAdmin);
-            return;
-        }
+        restrictedPreference.checkRestrictionAndSetDisabled(UserManager.ENSURE_VERIFY_APPS,
+                UserHandle.myUserId());
 
         restrictedPreference.setEnabled(true);
         final boolean checked = Settings.Global.getInt(mContext.getContentResolver(),

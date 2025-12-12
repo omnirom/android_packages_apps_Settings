@@ -24,6 +24,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
@@ -190,5 +191,14 @@ public class PrivateDnsModeDialogPreferenceTest {
         mPreference.doSaveButton();
 
         assertThat(mPreference.mHostnameLayout.isErrorEnabled()).isTrue();
+    }
+
+    @Test
+    public void doSaveButton_getDialogIsNull_noCrash() {
+        mPreference = spy(new PrivateDnsModeDialogPreference(mContext));
+        mPreference.mMode = PRIVATE_DNS_MODE_OFF;
+        when(mPreference.getDialog()).thenReturn(null);
+
+        mPreference.doSaveButton();
     }
 }

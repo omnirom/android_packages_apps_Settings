@@ -61,7 +61,8 @@ public class BluetoothDetailsAudioSharingController extends BluetoothDetailsCont
     @Override
     public boolean isAvailable() {
         return BluetoothUtils.isAudioSharingUIAvailable(mContext)
-                && mCachedDevice.isConnectedLeAudioDevice();
+                && mCachedDevice.isConnectedLeAudioDevice()
+                && mCachedDevice.isConnectedLeAudioBroadcastAssistantDevice();
     }
 
     @Override

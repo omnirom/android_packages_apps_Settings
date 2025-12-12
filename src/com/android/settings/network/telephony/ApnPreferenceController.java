@@ -43,6 +43,7 @@ import com.android.settingslib.core.lifecycle.events.OnStop;
 /**
  * Preference controller for "Apn settings"
  */
+// LINT.IfChange
 public class ApnPreferenceController extends TelephonyBasePreferenceController implements
         LifecycleObserver, OnStart, OnStop {
 
@@ -148,3 +149,4 @@ public class ApnPreferenceController extends TelephonyBasePreferenceController i
         }
     }
 }
+// LINT.ThenChange(../apn/ApnSettingsScreen.kt)

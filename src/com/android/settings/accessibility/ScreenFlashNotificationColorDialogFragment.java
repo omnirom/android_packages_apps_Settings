@@ -62,7 +62,15 @@ public class ScreenFlashNotificationColorDialogFragment extends DialogFragment i
     private Timer mTimer = null;
     private Boolean mIsPreview = false;
 
-    static ScreenFlashNotificationColorDialogFragment getInstance(int initialColor) {
+    /**
+     * Static factory method to create a new instance of this fragment, configured with an initial
+     * color which is the current selection.
+     *
+     * @param initialColor The ARGB integer value of the color to be initially selected in the
+     *                     dialog. This should be a {@link ColorInt}.
+     * @return A new, configured instance of {@link ScreenFlashNotificationColorDialogFragment}.
+     */
+    public static ScreenFlashNotificationColorDialogFragment getInstance(int initialColor) {
         final ScreenFlashNotificationColorDialogFragment result =
                 new ScreenFlashNotificationColorDialogFragment();
         Bundle bundle = new Bundle();

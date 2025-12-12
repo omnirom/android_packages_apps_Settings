@@ -237,7 +237,12 @@ public class BluetoothDetailsProfilesControllerTest extends BluetoothDetailsCont
     private List<SwitchPreferenceCompat> getProfileSwitches(boolean expectOnlyMConnectable) {
         if (expectOnlyMConnectable) {
             assertThat(mConnectableProfiles).isNotEmpty();
-            assertThat(mProfiles.getPreferenceCount() - 1).isEqualTo(mConnectableProfiles.size());
+            if (Flags.enableBluetoothSettingsExpressiveDesign()) {
+                assertThat(mProfiles.getPreferenceCount()).isEqualTo(mConnectableProfiles.size());
+            } else {
+                assertThat(mProfiles.getPreferenceCount() - 1)
+                        .isEqualTo(mConnectableProfiles.size());
+            }
         }
         List<SwitchPreferenceCompat> result = new ArrayList<>();
         for (int i = 0; i < mProfiles.getPreferenceCount(); i++) {
@@ -283,7 +288,8 @@ public class BluetoothDetailsProfilesControllerTest extends BluetoothDetailsCont
         mController.onDeviceAttributesChanged();
 
         // There should have been no new switches added.
-        assertThat(mProfiles.getPreferenceCount()).isEqualTo(3);
+        assertThat(mProfiles.getPreferenceCount())
+                .isEqualTo(Flags.enableBluetoothSettingsExpressiveDesign() ? 2 : 3);
 
         // Make sure both switches got disabled.
         assertThat(switches.get(0).isEnabled()).isFalse();
@@ -305,7 +311,8 @@ public class BluetoothDetailsProfilesControllerTest extends BluetoothDetailsCont
         assertThat(mConnectableProfiles.get(0).isEnabled(mDevice)).isFalse();
 
         // Make sure no new preferences were added.
-        assertThat(mProfiles.getPreferenceCount()).isEqualTo(3);
+        assertThat(mProfiles.getPreferenceCount())
+                .isEqualTo(Flags.enableBluetoothSettingsExpressiveDesign() ? 2 : 3);
 
         // Clicking the pref again should make the profile once again preferred.
         pref.performClick();
@@ -313,7 +320,8 @@ public class BluetoothDetailsProfilesControllerTest extends BluetoothDetailsCont
         assertThat(mConnectableProfiles.get(0).isEnabled(mDevice)).isTrue();
 
         // Make sure we still haven't gotten any new preferences added.
-        assertThat(mProfiles.getPreferenceCount()).isEqualTo(3);
+        assertThat(mProfiles.getPreferenceCount())
+                .isEqualTo(Flags.enableBluetoothSettingsExpressiveDesign() ? 2 : 3);
     }
 
     @Test
@@ -346,7 +354,8 @@ public class BluetoothDetailsProfilesControllerTest extends BluetoothDetailsCont
         assertThat(pref.isChecked()).isTrue();
 
         pref.performClick();
-        assertThat(mProfiles.getPreferenceCount()).isEqualTo(2);
+        assertThat(mProfiles.getPreferenceCount())
+                .isEqualTo(Flags.enableBluetoothSettingsExpressiveDesign() ? 1 : 2);
         assertThat(mDevice.getPhonebookAccessPermission())
                 .isEqualTo(BluetoothDevice.ACCESS_REJECTED);
     }
@@ -373,7 +382,8 @@ public class BluetoothDetailsProfilesControllerTest extends BluetoothDetailsCont
         assertThat(pref.isChecked()).isFalse();
 
         pref.performClick();
-        assertThat(mProfiles.getPreferenceCount()).isEqualTo(2);
+        assertThat(mProfiles.getPreferenceCount())
+                .isEqualTo(Flags.enableBluetoothSettingsExpressiveDesign() ? 1 : 2);
         assertThat(mDevice.getPhonebookAccessPermission())
                 .isEqualTo(BluetoothDevice.ACCESS_ALLOWED);
     }
@@ -397,7 +407,8 @@ public class BluetoothDetailsProfilesControllerTest extends BluetoothDetailsCont
         assertThat(pref.isChecked()).isFalse();
 
         pref.performClick();
-        assertThat(mProfiles.getPreferenceCount()).isEqualTo(2);
+        assertThat(mProfiles.getPreferenceCount())
+                .isEqualTo(Flags.enableBluetoothSettingsExpressiveDesign() ? 1 : 2);
         assertThat(mDevice.getMessageAccessPermission()).isEqualTo(BluetoothDevice.ACCESS_ALLOWED);
     }
 
@@ -470,7 +481,8 @@ public class BluetoothDetailsProfilesControllerTest extends BluetoothDetailsCont
         setupDevice(makeDefaultDeviceConfig());
         addA2dpProfileToDevice(true, false, false);
         showScreen(mController);
-        assertThat(mProfiles.getPreferenceCount()).isEqualTo(2);
+        assertThat(mProfiles.getPreferenceCount())
+                .isEqualTo(Flags.enableBluetoothSettingsExpressiveDesign() ? 1 : 2);
         SwitchPreferenceCompat pref = (SwitchPreferenceCompat) mProfiles.getPreference(0);
         assertThat(pref.getKey())
             .isNotEqualTo(BluetoothDetailsProfilesController.HIGH_QUALITY_AUDIO_PREF_TAG);
@@ -493,7 +505,8 @@ public class BluetoothDetailsProfilesControllerTest extends BluetoothDetailsCont
         setupDevice(makeDefaultDeviceConfig());
         addA2dpProfileToDevice(true, true, true);
         showScreen(mController);
-        assertThat(mProfiles.getPreferenceCount()).isEqualTo(3);
+        assertThat(mProfiles.getPreferenceCount())
+                .isEqualTo(Flags.enableBluetoothSettingsExpressiveDesign() ? 2 : 3);
 
         // Disabling media audio should cause the high quality audio switch to disappear, but not
         // the regular audio one.
@@ -557,7 +570,6 @@ public class BluetoothDetailsProfilesControllerTest extends BluetoothDetailsCont
     @Test
     public void prefKeyInBlockingList_hideToggle() {
         mController.setInvisibleProfiles(List.of("A2DP"));
-        mController.setHasExtraSpace(true);
         setupDevice(makeDefaultDeviceConfig());
 
         addA2dpProfileToDevice(true, true, true);

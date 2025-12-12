@@ -15,11 +15,14 @@
  */
 package com.android.settings.security
 
+import android.app.settings.SettingsEnums
 import android.content.Context
 import android.provider.Settings.Secure.LOCK_SCREEN_ALLOW_PRIVATE_NOTIFICATIONS
 import android.provider.Settings.Secure.LOCK_SCREEN_SHOW_NOTIFICATIONS
+import androidx.fragment.app.Fragment
 import com.android.settings.R
 import com.android.settings.Settings.LockScreenSettingsActivity
+import com.android.settings.core.PreferenceScreenMixin
 import com.android.settings.display.AmbientDisplayAlwaysOnPreference
 import com.android.settings.flags.Flags
 import com.android.settings.notification.LockScreenNotificationPreferenceController
@@ -33,11 +36,12 @@ import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.PreferenceSummaryProvider
 import com.android.settingslib.metadata.ProvidePreferenceScreen
 import com.android.settingslib.metadata.preferenceHierarchy
-import com.android.settingslib.preference.PreferenceScreenCreator
+import com.android.systemui.shared.Flags.ambientAod
+import kotlinx.coroutines.CoroutineScope
 
 @ProvidePreferenceScreen(LockScreenPreferenceScreen.KEY)
 open class LockScreenPreferenceScreen(private val context: Context) :
-    AbstractKeyedDataObservable<String>(), PreferenceScreenCreator, PreferenceSummaryProvider {
+    PreferenceScreenMixin, AbstractKeyedDataObservable<String>(), PreferenceSummaryProvider {
 
     private val observer =
         KeyedObserver<String> { _, _ -> notifyChange(KEY, PreferenceChangeReason.STATE) }
@@ -50,6 +54,11 @@ open class LockScreenPreferenceScreen(private val context: Context) :
 
     override val keywords: Int
         get() = R.string.keywords_ambient_display_screen
+
+    override val highlightMenuKey: Int
+        get() = R.string.menu_key_display
+
+    override fun getMetricsCategory() = SettingsEnums.SETTINGS_LOCK_SCREEN_PREFERENCES
 
     override fun onFirstObserverAdded() {
         val store = SettingsSecureStore.get(context)
@@ -72,14 +81,16 @@ open class LockScreenPreferenceScreen(private val context: Context) :
 
     override fun hasCompleteHierarchy() = false
 
-    override fun fragmentClass() = LockscreenDashboardFragment::class.java
+    override fun fragmentClass(): Class<out Fragment>? = LockscreenDashboardFragment::class.java
 
     override fun getLaunchIntent(context: Context, metadata: PreferenceMetadata?) =
         makeLaunchIntent(context, LockScreenSettingsActivity::class.java, metadata?.key)
 
-    override fun getPreferenceHierarchy(context: Context) =
-        preferenceHierarchy(context, this) {
-            +AmbientDisplayAlwaysOnPreference()
+    override fun getPreferenceHierarchy(context: Context, coroutineScope: CoroutineScope) =
+        preferenceHierarchy(context) {
+            if (!ambientAod()) {
+                +AmbientDisplayAlwaysOnPreference()
+            }
         }
 
     companion object {

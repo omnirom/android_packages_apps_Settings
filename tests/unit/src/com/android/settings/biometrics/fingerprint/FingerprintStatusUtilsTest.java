@@ -16,6 +16,8 @@
 
 package com.android.settings.biometrics.fingerprint;
 
+import static com.android.settings.testutils.AdminRestrictionUtils.SUPERVISION_ROLE_AUTHORITY;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -23,6 +25,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import android.app.admin.DevicePolicyManager;
+import android.app.admin.EnforcingAdmin;
 import android.app.supervision.SupervisionManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -32,8 +35,11 @@ import android.hardware.fingerprint.Fingerprint;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.UserHandle;
 import android.os.UserManager;
-import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
+import android.platform.test.annotations.RequiresFlagsDisabled;
+import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -58,6 +64,9 @@ public class FingerprintStatusUtilsTest {
 
     @Rule
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
+    @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
     private static final ComponentName COMPONENT_NAME =
             new ComponentName("package", "class");
@@ -143,7 +152,7 @@ public class FingerprintStatusUtilsTest {
     }
 
     @Test
-    @DisableFlags(android.app.supervision.flags.Flags.FLAG_DEPRECATE_DPM_SUPERVISION_APIS)
+    @RequiresFlagsDisabled(android.app.supervision.flags.Flags.FLAG_DEPRECATE_DPM_SUPERVISION_APIS)
     public void getDisabledAdmin_whenFingerprintDisabled_returnsEnforcedAdmin() {
         when(mDevicePolicyManager.getProfileOwnerOrDeviceOwnerSupervisionComponent(USER_HANDLE))
                 .thenReturn(COMPONENT_NAME);
@@ -180,7 +189,42 @@ public class FingerprintStatusUtilsTest {
     }
 
     @Test
-    @DisableFlags(com.android.settings.flags.Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
+    @RequiresFlagsDisabled(android.app.supervision.flags.Flags.FLAG_DEPRECATE_DPM_SUPERVISION_APIS)
+    public void getEnforcingAdmin_whenFingerprintDisabled_returnsEnforcedAdmin() {
+        when(mDevicePolicyManager.getProfileOwnerOrDeviceOwnerSupervisionComponent(USER_HANDLE))
+                .thenReturn(COMPONENT_NAME);
+        when(mDevicePolicyManager.getKeyguardDisabledFeatures(COMPONENT_NAME))
+                .thenReturn(DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT);
+
+        final EnforcingAdmin admin = mFingerprintStatusUtils.getEnforcingAdmin();
+
+        assertThat(admin).isEqualTo(
+                new EnforcingAdmin(COMPONENT_NAME.getPackageName(), SUPERVISION_ROLE_AUTHORITY,
+                        USER_HANDLE, COMPONENT_NAME));
+    }
+
+    @Test
+    @EnableFlags(android.app.supervision.flags.Flags.FLAG_DEPRECATE_DPM_SUPERVISION_APIS)
+    public void getEnforcingAdmin_whenFingerprintDisabled_returnsRestriction() {
+        when(mSupervisionManager.isSupervisionEnabledForUser(USER_ID)).thenReturn(true);
+        when(mSupervisionManager.getActiveSupervisionAppPackage()).thenReturn("supervision.pkg");
+        when(mDevicePolicyManager.getKeyguardDisabledFeatures(null))
+                .thenReturn(DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT);
+
+        final EnforcingAdmin admin = mFingerprintStatusUtils.getEnforcingAdmin();
+
+        assertThat(admin.getUserHandle()).isEqualTo(USER_HANDLE);
+    }
+
+    @Test
+    public void getEnforcingAdmin_withFingerprintEnabled_returnsNull() {
+        when(mDevicePolicyManager.getKeyguardDisabledFeatures(COMPONENT_NAME)).thenReturn(0);
+
+        assertThat(mFingerprintStatusUtils.getEnforcingAdmin()).isNull();
+    }
+
+    @Test
+    @RequiresFlagsDisabled(com.android.settings.flags.Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void getSummary_whenNotEnrolled_flagOff_returnsSummaryNone() {
         when(mFingerprintManager.hasEnrolledTemplates(anyInt())).thenReturn(false);
 
@@ -191,7 +235,7 @@ public class FingerprintStatusUtilsTest {
     }
 
     @Test
-    @EnableFlags(com.android.settings.flags.Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
+    @RequiresFlagsEnabled(com.android.settings.flags.Flags.FLAG_BIOMETRICS_ONBOARDING_EDUCATION)
     public void getSummary_whenNotEnrolled_flagOn_returnsSummaryNone() {
         when(mFingerprintManager.hasEnrolledTemplates(anyInt())).thenReturn(false);
 

@@ -39,6 +39,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+// LINT.IfChange
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {
         com.android.settings.testutils.shadow.ShadowFragment.class,
@@ -119,3 +120,4 @@ public class ScreenLockSoundPreferenceControllerTest {
             .isEqualTo(0);
     }
 }
+// LINT.ThenChange(ScreenLockSoundPreferenceTest.kt)

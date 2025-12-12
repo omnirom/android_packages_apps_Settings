@@ -86,7 +86,7 @@ public class LiveCaptionPreferenceControllerTest {
         mController.updateState(mLiveCaptionPreference);
 
         assertThat(mLiveCaptionPreference.getSummary().toString()).isEqualTo(
-                mContext.getString(R.string.live_caption_summary)
+                mContext.getString(R.string.live_caption_on_summary)
         );
     }
 
@@ -97,7 +97,7 @@ public class LiveCaptionPreferenceControllerTest {
         mController.updateState(mLiveCaptionPreference);
 
         assertThat(mLiveCaptionPreference.getSummary()).isEqualTo(
-                mContext.getString(R.string.live_caption_summary)
+                mContext.getString(R.string.live_caption_off_summary)
         );
     }
 

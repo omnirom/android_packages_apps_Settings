@@ -20,17 +20,32 @@
     android:persistent="false"
     android:title="@string/accessibility_display_daltonizer_preference_title">
 
+    <com.android.settingslib.widget.TopIntroPreference
+        android:key="top_intro"
+        android:title="@string/accessibility_daltonizer_about_intro_text"
+        settings:searchable="false" />
+
     <com.android.settings.accessibility.PaletteListPreference
         android:key="daltonizer_preview"
         android:persistent="false"
         android:selectable="false"
-        android:title="@string/summary_placeholder"
         settings:allowDividerBelow="true"
         settings:searchable="false"/>
 
+    <com.android.settingslib.widget.MainSwitchPreference
+        android:key="accessibility_display_daltonizer_enabled"
+        android:title="@string/accessibility_daltonizer_primary_switch_title"
+        settings:controller="com.android.settings.accessibility.DaltonizerMainSwitchPreferenceController" />
+
+    <com.android.settingslib.widget.SliderPreference
+        android:key="accessibility_display_daltonizer_saturation_level"
+        android:persistent="true"
+        android:title="@string/daltonizer_saturation_title"
+        settings:controller="com.android.settings.accessibility.DaltonizerSaturationSliderPreferenceController" />
+
     <com.android.settingslib.widget.SelectorWithWidgetPreference
         android:key="daltonizer_mode_deuteranomaly"
-        android:persistent="false"
+        android:persistent="true"
         android:summary="@string/daltonizer_mode_deuteranomaly_summary"
         android:title="@string/daltonizer_mode_deuteranomaly_title"
         settings:titleMaxLines="@integer/max_integer"
@@ -38,7 +53,7 @@
 
     <com.android.settingslib.widget.SelectorWithWidgetPreference
         android:key="daltonizer_mode_protanomaly"
-        android:persistent="false"
+        android:persistent="true"
         android:summary="@string/daltonizer_mode_protanomaly_summary"
         android:title="@string/daltonizer_mode_protanomaly_title"
         settings:titleMaxLines="@integer/max_integer"
@@ -46,7 +61,7 @@
 
     <com.android.settingslib.widget.SelectorWithWidgetPreference
         android:key="daltonizer_mode_tritanomaly"
-        android:persistent="false"
+        android:persistent="true"
         android:summary="@string/daltonizer_mode_tritanomaly_summary"
         android:title="@string/daltonizer_mode_tritanomaly_title"
         settings:titleMaxLines="@integer/max_integer"
@@ -54,15 +69,34 @@
 
     <com.android.settingslib.widget.SelectorWithWidgetPreference
         android:key="daltonizer_mode_grayscale"
-        android:persistent="false"
+        android:persistent="true"
         android:title="@string/daltonizer_mode_grayscale_title"
         settings:titleMaxLines="@integer/max_integer"
         settings:controller="com.android.settings.accessibility.DaltonizerRadioButtonPreferenceController" />
 
-    <com.android.settings.widget.SeekBarPreference
-        android:key="daltonizer_saturation"
+    <PreferenceCategory
+        android:key="general_categories"
+        android:title="@string/accessibility_screen_option"
+        settings:searchable="false">
+        <com.android.settings.accessibility.ShortcutPreference
+            android:key="daltonizer_shortcut_key"
+            android:persistent="true"
+            android:title="@string/accessibility_daltonizer_shortcut_title"
+            settings:controller="com.android.settings.accessibility.ToggleShortcutPreferenceController" />
+    </PreferenceCategory>
+
+    <com.android.settings.accessibility.AccessibilityFooterPreference
+        android:key="html_description"
+        settings:controller="com.android.settings.accessibility.DaltonizerFooterPreferenceController"
+        settings:searchable="false" />
+
+    <com.android.settingslib.widget.ButtonPreference
+        android:key="feedback"
+        android:title="@string/accessibility_send_feedback_title"
+        android:icon="@drawable/ic_feedback"
         android:persistent="false"
-        android:title="@string/daltonizer_saturation_title"
-        settings:controller="com.android.settings.accessibility.DaltonizerSaturationSeekbarPreferenceController"
-        />
+        settings:searchable="false"
+        settings:buttonPreferenceSize="normal"
+        settings:buttonPreferenceType="tonal"
+        settings:controller="com.android.settings.accessibility.FeedbackButtonPreferenceController" />
 </PreferenceScreen>

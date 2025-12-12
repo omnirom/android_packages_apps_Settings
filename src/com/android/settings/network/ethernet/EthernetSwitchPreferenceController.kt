@@ -28,7 +28,6 @@ import com.android.settings.connectivity.Flags
 import com.android.settingslib.RestrictedSwitchPreference
 import com.android.settingslib.core.AbstractPreferenceController
 import com.google.common.annotations.VisibleForTesting
-import java.util.concurrent.Executor
 
 class EthernetSwitchPreferenceController(context: Context, private val lifecycle: Lifecycle) :
     AbstractPreferenceController(context),

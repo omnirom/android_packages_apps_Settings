@@ -19,14 +19,42 @@ package com.android.settings.biometrics.face;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.face.FaceManager;
+import android.hardware.face.FaceSensorPropertiesInternal;
+import android.hardware.face.IFaceAuthenticatorsRegisteredCallback;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.settings.R;
+import com.android.settings.Utils;
+
+import java.util.List;
 
 public class FaceFeatureProviderImpl implements FaceFeatureProvider {
+    private static final String TAG = "FaceFeatureProvider";
+
+    private int mMaxEnrollableCount = -1;
+
+    public FaceFeatureProviderImpl(@NonNull Context context) {
+        final FaceManager faceManager = Utils.getFaceManagerOrNull(context);
+        if (faceManager != null) {
+            faceManager.addAuthenticatorsRegisteredCallback(
+                    new IFaceAuthenticatorsRegisteredCallback.Stub() {
+                        @Override
+                        public void onAllAuthenticatorsRegistered(
+                                @NonNull List<FaceSensorPropertiesInternal> sensors) {
+                            Log.d(TAG, "onAllAuthenticatorsRegistered sensors=" + sensors);
+                            if (sensors.isEmpty()) {
+                                return;
+                            }
+                            mMaxEnrollableCount = sensors.get(0).maxEnrollmentsPerUser;
+                        }
+                    });
+        }
+    }
 
     /**
      * Returns the guidance page intent if device support {@link FoldingFeature}, and we want to
@@ -59,5 +87,26 @@ public class FaceFeatureProviderImpl implements FaceFeatureProvider {
     @Override
     public boolean isSetupWizardSupported(@NonNull Context context) {
         return true;
+    }
+
+    @Override
+    public int getMaxEnrollableCount(@NonNull Context context) {
+        if (mMaxEnrollableCount == -1) {
+            Log.e(TAG, "The max enrollable count is not yet initialized.");
+            return 0;
+        }
+        return mMaxEnrollableCount;
+    }
+
+    @NonNull
+    @Override
+    public Class<? extends FaceEnrollParentalConsent> getParentalConsentPage() {
+        return FaceEnrollParentalConsent.class;
+    }
+
+    @NonNull
+    @Override
+    public int[] getParentalConsentStringRes() {
+        return  FaceEnrollParentalConsent.CONSENT_STRING_RESOURCES;
     }
 }

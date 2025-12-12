@@ -28,12 +28,15 @@ class ZenSubSettingLauncher {
     static SubSettingLauncher forModeFragment(Context context,
             Class<? extends DashboardFragment> fragmentClass, String modeId,
             int sourceMetricsCategory) {
-        Bundle bundle = new Bundle();
-        bundle.putString(EXTRA_AUTOMATIC_ZEN_RULE_ID, modeId);
-
         return new SubSettingLauncher(context)
                 .setDestination(fragmentClass.getName())
-                .setArguments(bundle)
+                .setArguments(getModeArguments(modeId))
                 .setSourceMetricsCategory(sourceMetricsCategory);
+    }
+
+    static Bundle getModeArguments(String modeId) {
+        Bundle bundle = new Bundle();
+        bundle.putString(EXTRA_AUTOMATIC_ZEN_RULE_ID, modeId);
+        return bundle;
     }
 }

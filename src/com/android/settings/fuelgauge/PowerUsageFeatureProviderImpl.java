@@ -32,6 +32,7 @@ import androidx.annotation.Nullable;
 import com.android.internal.util.ArrayUtils;
 import com.android.settings.fuelgauge.batteryusage.BatteryDiffData;
 import com.android.settings.fuelgauge.batteryusage.BatteryEvent;
+import com.android.settings.fuelgauge.batteryusage.DataProcessor;
 import com.android.settings.fuelgauge.batteryusage.DetectRequestSourceType;
 import com.android.settings.fuelgauge.batteryusage.PowerAnomalyEventList;
 import com.android.settingslib.fuelgauge.Estimate;
@@ -101,6 +102,11 @@ public class PowerUsageFeatureProviderImpl implements PowerUsageFeatureProvider 
     @Override
     public boolean isAppOptimizationModeLogged() {
         return false;
+    }
+
+    @Override
+    public long getBatteryUsageStatsMaxAgeMs(boolean isFromPeriodJob) {
+        return DataProcessor.BATTERY_STATS_MAX_AGE_UNSET;
     }
 
     @Override

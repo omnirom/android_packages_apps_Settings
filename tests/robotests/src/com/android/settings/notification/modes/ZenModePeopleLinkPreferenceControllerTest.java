@@ -34,7 +34,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import android.app.Flags;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -44,7 +43,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.UserHandle;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.service.notification.ConversationChannelWrapper;
 import android.service.notification.ZenPolicy;
@@ -74,7 +72,6 @@ import org.robolectric.RuntimeEnvironment;
 
 import java.util.Collection;
 
-@EnableFlags(Flags.FLAG_MODES_UI)
 @RunWith(RobolectricTestRunner.class)
 public final class ZenModePeopleLinkPreferenceControllerTest {
 

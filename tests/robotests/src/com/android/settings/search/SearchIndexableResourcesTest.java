@@ -29,10 +29,10 @@ import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.android.settings.network.NetworkProviderSettings;
-import com.android.settings.spa.search.SearchablePage;
 import com.android.settings.testutils.FakeFeatureFactory;
 import com.android.settings.testutils.FakeIndexProvider;
 import com.android.settingslib.search.SearchIndexableData;
+import com.android.settingslib.spa.search.SearchablePage;
 
 import org.junit.After;
 import org.junit.Before;

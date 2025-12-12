@@ -45,13 +45,19 @@ public class BatteryOptimizationModePreferenceController extends BasePreferenceC
     @Nullable @VisibleForTesting MainSwitchPreference mBackgroundUsageAllowabilityPreference;
     @Nullable @VisibleForTesting SelectorWithWidgetPreference mOptimizedPreference;
     @Nullable @VisibleForTesting SelectorWithWidgetPreference mUnrestrictedPreference;
+    @Nullable @VisibleForTesting String mHintPrefKey;
+    @Nullable @VisibleForTesting String mHintText;
 
     public BatteryOptimizationModePreferenceController(
             @NonNull Context context,
             @NonNull String preferenceKey,
-            @NonNull BatteryOptimizeUtils batteryOptimizeUtils) {
+            @NonNull BatteryOptimizeUtils batteryOptimizeUtils,
+            @Nullable String hintPrefKey,
+            @Nullable String hintText) {
         super(context, preferenceKey);
         mBatteryOptimizeUtils = batteryOptimizeUtils;
+        mHintPrefKey = hintPrefKey;
+        mHintText = hintText;
     }
 
     @Override
@@ -72,6 +78,7 @@ public class BatteryOptimizationModePreferenceController extends BasePreferenceC
         mOptimizedPreference = screen.findPreference(KEY_OPTIMIZED_PREF);
         mUnrestrictedPreference = screen.findPreference(KEY_UNRESTRICTED_PREF);
         initPreferences();
+        initPreferenceHint(screen);
     }
 
     @VisibleForTesting
@@ -104,6 +111,17 @@ public class BatteryOptimizationModePreferenceController extends BasePreferenceC
                         handleBatteryOptimizeModeUpdated(BatteryOptimizeUtils.MODE_UNRESTRICTED);
                         return true;
                     });
+        }
+    }
+
+    @VisibleForTesting
+    void initPreferenceHint(@NonNull PreferenceScreen screen) {
+        if (mHintPrefKey == null || mHintText == null) {
+            return;
+        }
+        final Preference preference = screen.findPreference(mHintPrefKey);
+        if (preference instanceof WarningFrameSelectorPreference) {
+            ((WarningFrameSelectorPreference) preference).setHint(mHintText);
         }
     }
 

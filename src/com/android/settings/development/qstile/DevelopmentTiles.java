@@ -45,7 +45,7 @@ import android.widget.Toast;
 
 import com.android.internal.app.LocalePicker;
 import com.android.internal.statusbar.IStatusBarService;
-import com.android.settings.development.WirelessDebuggingPreferenceController;
+import com.android.settings.development.AdbWirelessDebuggingPreferenceController;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 import com.android.settingslib.development.DevelopmentSettingsEnabler;
@@ -292,7 +292,7 @@ public abstract class DevelopmentTiles extends TileService {
             }
 
             // Show error toast if not connected to Wi-Fi
-            if (isEnabled && !WirelessDebuggingPreferenceController.isWifiConnected(mContext)) {
+            if (isEnabled && !AdbWirelessDebuggingPreferenceController.isWifiConnected(mContext)) {
                 // Close quick shade
                 sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
                 mToast.show();

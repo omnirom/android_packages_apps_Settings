@@ -595,9 +595,11 @@ public class SimStatusDialogController implements DefaultLifecycleObserver {
 
         @Override
         public void onServiceStateChanged(ServiceState serviceState) {
+            // TODO(b/407459434): a mechaism to prevent UX redundant updating
             updateNetworkProvider();
             updateServiceState(serviceState);
             updateRoamingStatus(serviceState);
+            updateNetworkType();
         }
 
         @Override

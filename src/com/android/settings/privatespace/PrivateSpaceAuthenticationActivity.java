@@ -16,8 +16,6 @@
 
 package com.android.settings.privatespace;
 
-import static android.app.admin.DevicePolicyManager.ACTION_SET_NEW_PASSWORD;
-
 import static com.android.internal.app.SetScreenLockDialogActivity.LAUNCH_REASON_PRIVATE_SPACE_SETTINGS_ACCESS;
 import static com.android.settings.activityembedding.EmbeddedDeepLinkUtils.tryStartMultiPaneDeepLink;
 import static com.android.settings.password.ConfirmDeviceCredentialActivity.CUSTOM_BIOMETRIC_PROMPT_LOGO_DESCRIPTION_KEY;
@@ -28,21 +26,19 @@ import android.app.KeyguardManager;
 import android.app.PendingIntent;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Flags;
 import android.util.Log;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.internal.app.SetScreenLockDialogActivity;
+import com.android.internal.app.SetScreenLockDialogContract;
 import com.android.settings.R;
 import com.android.settings.activityembedding.ActivityEmbeddingUtils;
 import com.android.settings.core.SubSettingLauncher;
@@ -80,12 +76,6 @@ public class PrivateSpaceAuthenticationActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!(Flags.allowPrivateProfile()
-                && android.multiuser.Flags.enablePrivateSpaceFeatures())) {
-            finish();
-            return;
-        }
-
         Intent intent = getIntent();
         String highlightMenuKey = getString(R.string.menu_key_security);
         if (shouldShowMultiPaneDeepLink(intent)
@@ -147,31 +137,18 @@ public class PrivateSpaceAuthenticationActivity extends FragmentActivity {
 
     private void promptToSetDeviceLock() {
         Log.d(TAG, "Show prompt to set device lock before using private space feature");
-        if (android.multiuser.Flags.showSetScreenLockDialog()) {
-            Intent setScreenLockPromptIntent =
+        Intent setScreenLockPromptIntent;
+        if (android.multiuser.Flags.moveSetScreenLockDialogToSettingsApp()) {
+            setScreenLockPromptIntent =
+                    SetScreenLockDialogContract
+                            .createDialogIntent(LAUNCH_REASON_PRIVATE_SPACE_SETTINGS_ACCESS);
+        } else {
+            setScreenLockPromptIntent =
                     SetScreenLockDialogActivity
                             .createBaseIntent(LAUNCH_REASON_PRIVATE_SPACE_SETTINGS_ACCESS);
-            startActivity(setScreenLockPromptIntent);
-            finish();
-        } else {
-            new AlertDialog.Builder(this, R.style.Theme_AlertDialog)
-                    .setTitle(R.string.no_device_lock_title)
-                    .setMessage(R.string.no_device_lock_summary)
-                    .setPositiveButton(
-                            R.string.no_device_lock_action_label,
-                            (DialogInterface dialog, int which) -> {
-                                Log.d(TAG, "Start activity to set new device lock");
-                                mSetDeviceLock.launch(new Intent(ACTION_SET_NEW_PASSWORD));
-                            })
-                    .setNegativeButton(
-                            R.string.no_device_lock_cancel,
-                            (DialogInterface dialog, int which) -> finish())
-                    .setOnCancelListener(
-                            (DialogInterface dialog) -> {
-                                finish();
-                            })
-                    .show();
         }
+        startActivity(setScreenLockPromptIntent);
+        finish();
     }
 
     private KeyguardManager getKeyguardManager() {

@@ -19,6 +19,9 @@ package com.android.settings.emergency;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.notification.EmergencyBroadcastPreferenceController;
@@ -33,6 +36,7 @@ import java.util.List;
 /**
  * {@link DashboardFragment} that hosts emergency/safety related settings.
  */
+// LINT.IfChange
 @SearchIndexable
 public class EmergencyDashboardFragment extends DashboardFragment {
 
@@ -59,6 +63,11 @@ public class EmergencyDashboardFragment extends DashboardFragment {
         return buildPreferenceControllers(context);
     }
 
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return EmergencyDashboardScreen.KEY;
+    }
+
     private static List<AbstractPreferenceController> buildPreferenceControllers(Context context) {
         final List<AbstractPreferenceController> controllers = new ArrayList<>();
         controllers.add(new EmergencyBroadcastPreferenceController(context, WEA_PREF_KEY));
@@ -73,3 +82,4 @@ public class EmergencyDashboardFragment extends DashboardFragment {
                 }
             };
 }
+// LINT.ThenChange(EmergencyDashboardScreen.kt)

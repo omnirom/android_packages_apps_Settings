@@ -56,9 +56,18 @@
             settings:controller="com.android.settings.gestures.OneHandedActionShowNotificationPrefController"/>
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="general_categories"
+        android:title="@string/accessibility_screen_option">
+        <com.android.settings.accessibility.ShortcutPreference
+            android:key="one_handed_shortcuts_preference"
+            android:persistent="false"
+            android:title="@string/one_handed_mode_shortcut_title"
+            settings:controller="com.android.settings.accessibility.ToggleShortcutPreferenceController" />
+    </PreferenceCategory>
+
     <com.android.settingslib.widget.FooterPreference
         android:key="one_handed_mode_footer"
         android:title="@string/one_handed_mode_footer_text"
-        android:selectable="false"
         settings:searchable="false"/>
 </PreferenceScreen>

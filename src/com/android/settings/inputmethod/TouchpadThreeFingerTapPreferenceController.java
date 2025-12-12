@@ -16,9 +16,18 @@
 
 package com.android.settings.inputmethod;
 
+import static com.android.settings.inputmethod.TouchpadThreeFingerTapUtils.SHARED_PREF_NAME;
+import static com.android.settings.inputmethod.TouchpadThreeFingerTapUtils.getCurrentGestureType;
+import static com.android.settings.inputmethod.TouchpadThreeFingerTapUtils.getDefaultAssistantTitle;
+import static com.android.settings.inputmethod.TouchpadThreeFingerTapUtils.getLabel;
+import static com.android.settings.inputmethod.TouchpadThreeFingerTapUtils.getLaunchingAppComponentName;
+
 import android.app.settings.SettingsEnums;
+import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
-import android.hardware.input.InputSettings;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.hardware.input.KeyGestureEvent;
 import android.os.UserHandle;
 import android.provider.Settings;
@@ -36,38 +45,29 @@ import com.android.settings.core.BasePreferenceController;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 
-import java.util.Map;
-
+/** The top-level preference controller that handles the three finger tap behaviour. */
 public class TouchpadThreeFingerTapPreferenceController extends BasePreferenceController
         implements LifecycleEventObserver {
 
-    private final Map<Integer, String> mKeyGestureTypeNameMap;
     private final MetricsFeatureProvider mMetricsFeatureProvider;
+    private final ContentResolver mContentResolver;
+    private final PackageManager mPackageManager;
+    private final SharedPreferences mSharedPreferences;
+
     private @Nullable Preference mPreference;
 
     public TouchpadThreeFingerTapPreferenceController(@NonNull Context context,
             @NonNull String key) {
         super(context, key);
         mMetricsFeatureProvider = FeatureFactory.getFeatureFactory().getMetricsFeatureProvider();
-
-        mKeyGestureTypeNameMap = Map.ofEntries(
-                Map.entry(KeyGestureEvent.KEY_GESTURE_TYPE_LAUNCH_ASSISTANT,
-                        context.getString(R.string.three_finger_tap_launch_gemini)),
-                Map.entry(KeyGestureEvent.KEY_GESTURE_TYPE_HOME,
-                        context.getString(R.string.three_finger_tap_go_home)),
-                Map.entry(KeyGestureEvent.KEY_GESTURE_TYPE_BACK,
-                        context.getString(R.string.three_finger_tap_go_back)),
-                Map.entry(KeyGestureEvent.KEY_GESTURE_TYPE_RECENT_APPS,
-                        context.getString(R.string.three_finger_tap_recent_apps)),
-                Map.entry(KeyGestureEvent.KEY_GESTURE_TYPE_UNSPECIFIED,
-                        context.getString(R.string.three_finger_tap_middle_click)));
+        mContentResolver = context.getContentResolver();
+        mPackageManager = context.getPackageManager();
+        mSharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
     }
 
     @Override
     public int getAvailabilityStatus() {
-        boolean isTouchpad = InputPeripheralsSettingsUtils.isTouchpad();
-        return (InputSettings.isTouchpadThreeFingerTapShortcutFeatureFlagEnabled() && isTouchpad)
-                ? AVAILABLE : CONDITIONALLY_UNAVAILABLE;
+        return InputPeripheralsSettingsUtils.isTouchpad() ? AVAILABLE : CONDITIONALLY_UNAVAILABLE;
     }
 
     @Override
@@ -77,10 +77,29 @@ public class TouchpadThreeFingerTapPreferenceController extends BasePreferenceCo
 
     @Override
     public @Nullable CharSequence getSummary() {
-        int currentType = Settings.System.getIntForUser(mContext.getContentResolver(),
-                Settings.System.TOUCHPAD_THREE_FINGER_TAP_CUSTOMIZATION,
-                KeyGestureEvent.KEY_GESTURE_TYPE_UNSPECIFIED, UserHandle.USER_CURRENT);
-        return mKeyGestureTypeNameMap.get(currentType);
+        int gesture = getCurrentGestureType(mContentResolver);
+
+        return switch (gesture) {
+            case KeyGestureEvent.KEY_GESTURE_TYPE_UNSPECIFIED ->
+                    mContext.getString(R.string.three_finger_tap_middle_click);
+            case KeyGestureEvent.KEY_GESTURE_TYPE_LAUNCH_ASSISTANT ->
+                    getDefaultAssistantTitle(mContext, mPackageManager);
+            case KeyGestureEvent.KEY_GESTURE_TYPE_HOME ->
+                    mContext.getString(R.string.three_finger_tap_go_home);
+            case KeyGestureEvent.KEY_GESTURE_TYPE_BACK ->
+                    mContext.getString(R.string.three_finger_tap_go_back);
+            case KeyGestureEvent.KEY_GESTURE_TYPE_RECENT_APPS ->
+                    mContext.getString(R.string.three_finger_tap_recent_apps);
+            case KeyGestureEvent.KEY_GESTURE_TYPE_LAUNCH_APPLICATION -> getLaunchAppSummary();
+            default -> null;
+        };
+    }
+
+    private CharSequence getLaunchAppSummary() {
+        ComponentName componentName = getLaunchingAppComponentName(mSharedPreferences);
+        CharSequence label = getLabel(mPackageManager, componentName);
+        return label == null
+                ? mContext.getString(R.string.three_finger_tap_launch_app_summary) : label;
     }
 
     @Override

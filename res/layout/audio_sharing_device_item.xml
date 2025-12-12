@@ -30,6 +30,18 @@
         android:layout_marginTop="4dp"
         android:textColor="?androidprv:attr/textColorOnAccent"
         android:background="@drawable/audio_sharing_rounded_bg_ripple"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:featureFlag="!com.android.settings.flags.enable_bluetooth_settings_expressive_design_read_only" />
+
+    <Button
+        android:id="@+id/device_button"
+        style="@style/Widget.SettingsLib.DialogButton.Filled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginEnd="0dp"
+        android:textAlignment="center"
+        android:featureFlag="com.android.settings.flags.enable_bluetooth_settings_expressive_design_read_only" />
 
 </FrameLayout>

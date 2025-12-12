@@ -45,6 +45,8 @@ import com.android.settingslib.applications.ApplicationsState.Session;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 import com.android.settingslib.search.SearchIndexable;
 import com.android.settingslib.widget.FooterPreference;
+import com.android.settingslib.widget.SettingsThemeHelper;
+import com.android.settingslib.widget.ZeroStatePreference;
 
 import java.util.ArrayList;
 
@@ -70,7 +72,9 @@ public class PremiumSmsAccess extends EmptyTextSettings
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setEmptyText(R.string.premium_sms_none);
+        if (!SettingsThemeHelper.isExpressiveTheme(getContext())) {
+            setEmptyText(R.string.premium_sms_none);
+        }
     }
 
     @Override
@@ -139,7 +143,20 @@ public class PremiumSmsAccess extends EmptyTextSettings
     }
 
     private void updatePrefs(ArrayList<AppEntry> apps) {
-        if (apps == null) return;
+        if (apps == null || apps.isEmpty()) {
+            if (SettingsThemeHelper.isExpressiveTheme(getPreferenceScreen().getContext())) {
+                if (getPreferenceScreen().getPreferenceCount() == 0) {
+                    ZeroStatePreference preference = new ZeroStatePreference(
+                            getPreferenceScreen().getContext());
+                    preference.setIcon(R.drawable.premium_sms_no_app_icon_24dp);
+                    preference.setTitle(R.string.premium_sms_none);
+                    preference.setScreenCentering(true);
+                    getPreferenceScreen().addPreference(preference);
+                }
+            }
+            return;
+        }
+
         final PreferenceScreen screen = getPreferenceScreen();
         screen.removeAll();
         screen.setOrderingAsAdded(true);

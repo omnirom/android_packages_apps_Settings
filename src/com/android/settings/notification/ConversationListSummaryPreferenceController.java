@@ -22,6 +22,7 @@ import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 import com.android.settingslib.utils.StringUtil;
 
+// LINT.IfChange
 public class ConversationListSummaryPreferenceController extends BasePreferenceController {
 
     private NotificationBackend mBackend;
@@ -50,3 +51,4 @@ public class ConversationListSummaryPreferenceController extends BasePreferenceC
         mBackend = backend;
     }
 }
+// LINT.ThenChange(ConversationListScreen.kt)

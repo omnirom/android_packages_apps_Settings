@@ -50,12 +50,11 @@ class WifiPickerRepositoryTest {
         }
 
     @Test
-    fun connectedWifiEntryFlow_callOnStartOnStopAndOnDestroy() = runBlocking {
+    fun connectedWifiEntryFlow_callOnStartOnStop() = runBlocking {
         repository.connectedWifiEntryFlow().firstWithTimeoutOrNull()
 
         verify(mockWifiPickerTracker).onStart()
         verify(mockWifiPickerTracker).onStop()
-        verify(mockWifiPickerTracker).onDestroy()
     }
 
     @Test

@@ -35,7 +35,6 @@ import androidx.lifecycle.OnLifecycleEvent;
 import androidx.preference.Preference;
 
 import com.android.settings.core.TogglePreferenceController;
-import com.android.settings.keyboard.Flags;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 
@@ -84,7 +83,7 @@ public abstract class InputSettingPreferenceController extends TogglePreferenceC
 
     @Override
     public int getAvailabilityStatus() {
-        return Flags.keyboardAndTouchpadA11yNewPageEnabled() ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
+        return AVAILABLE;
     }
 
     @Override

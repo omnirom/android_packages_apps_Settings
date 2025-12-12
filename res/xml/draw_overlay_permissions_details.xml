@@ -23,7 +23,6 @@
         android:title="@string/permit_draw_overlay"/>
 
     <com.android.settingslib.widget.FooterPreference
-        android:title="@string/allow_overlay_description"
-        android:selectable="false"/>
+        android:title="@string/allow_overlay_description" />
 
 </PreferenceScreen>

@@ -67,8 +67,8 @@
     <!-- no translation found for wifi_tether_security:3 (5512131148045414341) -->
   <string-array name="eap_ocsp_type">
     <item msgid="8568170800958331461">"ચકાસણી કરશો નહીં"</item>
-    <item msgid="5703177653586269306">"પ્રમાણપત્રના સ્ટેટસ માટે વિનંતી કરો"</item>
-    <item msgid="326388247868439528">"પ્રમાણપત્રનું સ્ટેટસ જરુરી છે"</item>
+    <item msgid="5703177653586269306">"સર્ટિફિકેટના સ્ટેટસ માટે વિનંતી કરો"</item>
+    <item msgid="326388247868439528">"સર્ટિફિકેટનું સ્ટેટસ જરુરી છે"</item>
   </string-array>
   <string-array name="wifi_p2p_status">
     <item msgid="8357401480964012245">"કનેક્ટ કર્યું"</item>
@@ -87,7 +87,7 @@
   <string-array name="bluetooth_leaudio_mode">
     <item msgid="5307106570247137458">"Disabled"</item>
     <item msgid="7781484297606806796">"Unicast"</item>
-    <item msgid="6667451574264144311">"Unicast and Broadcast"</item>
+    <item msgid="6667451574264144311">"Unicast અને Broadcast"</item>
   </string-array>
   <string-array name="bluetooth_max_connected_audio_devices">
     <item msgid="4792793579224104167">"સિસ્ટમ ડિફૉલ્ટનો ઉપયોગ કરો: <xliff:g id="DEFAULT_BLUETOOTH_MAX_CONNECTED_AUDIO_DEVICES">%1$d</xliff:g>"</item>
@@ -315,6 +315,10 @@
     <item msgid="7397961711906421599">"દબાવો અને છોડો"</item>
     <item msgid="4079132024502041928">"દવાબી રાખો"</item>
   </string-array>
+  <string-array name="ethernet_ip_settings">
+    <item msgid="7618681915649929019">"DHCP"</item>
+    <item msgid="4425163520864432692">"સ્થિર"</item>
+  </string-array>
   <string-array name="captioning_typeface_selector_titles">
     <item msgid="2166553138528640250">"ડિફૉલ્ટ"</item>
     <item msgid="4234707448428002595">"Sans-serif"</item>
@@ -359,17 +363,13 @@
     <item msgid="6485511780196327736">"અન્ય ઍપની ઉપર ફ્લોટિંગ કરતું"</item>
     <item msgid="3605616699204153590">"નૅવિગેશન બાર"</item>
   </string-array>
-  <string-array name="accessibility_button_gesture_selector_titles">
-    <item msgid="2370918472773154939">"બટન"</item>
-    <item msgid="6922258575853746220">"સંકેત"</item>
-  </string-array>
   <string-array name="accessibility_button_size_selector_titles">
     <item msgid="7482952318152486459">"નાનું"</item>
     <item msgid="1666628329913333563">"મોટું"</item>
   </string-array>
   <string-array name="vpn_proxy_settings">
     <item msgid="7165538292837266997">"એકપણ નહીં"</item>
-    <item msgid="2397017538263427575">"મૅન્યુઅલ"</item>
+    <item msgid="2397017538263427575">"મેન્યુઅલ"</item>
   </string-array>
   <string-array name="vpn_states">
     <item msgid="2262719249581510939">"ડિસ્કનેક્ટ કર્યું"</item>
@@ -392,7 +392,7 @@
     <item msgid="7582717864806562725">"?"</item>
   </string-array>
   <string-array name="color_picker">
-    <item msgid="7216413848731287689">"સાઍન"</item>
+    <item msgid="7216413848731287689">"સાયન"</item>
     <item msgid="5661027589207588703">"વાદળી"</item>
     <item msgid="1219738214736244749">"લીલો"</item>
     <item msgid="6331809026622602308">"જાંબલી"</item>
@@ -417,7 +417,7 @@
   </string-array>
   <string-array name="wifi_privacy_entries">
     <item msgid="91222619458919148">"કોઈપણ ક્રમમાં ગોઠવણ કરેલા MACનો ઉપયોગ કરો"</item>
-    <item msgid="741680937828608749">"MAC ડિવાઇસનો ઉપયોગ કરો"</item>
+    <item msgid="741680937828608749">"ડિવાઇસના MACનો ઉપયોગ કરો"</item>
   </string-array>
   <string-array name="wifi_dhcp_entries">
     <item msgid="2532836996945493932">"ડિવાઇસનું નામ નેટવર્કને મોકલો"</item>
@@ -505,7 +505,7 @@
     <item msgid="2142527562511049422">"સ્પીચ બબલ"</item>
     <item msgid="2548100558260478605">"લોકોનું ગ્રૂપ"</item>
     <item msgid="2270003903304578284">"લાઇટ બલ્બ"</item>
-    <item msgid="4793496619091161864">"કૅલેન્ડર"</item>
+    <item msgid="4793496619091161864">"Calendar"</item>
     <item msgid="5673625795644364100">"ખલેલ પાડશો નહીં"</item>
     <item msgid="1423820834865831361">"દોડતી વ્યક્તિ"</item>
     <item msgid="2037298830718732608">"ગોલ્ફ"</item>
@@ -541,5 +541,13 @@
     <item msgid="5421089790869483206">"Clock"</item>
   </string-array>
   <string-array name="display_over_apps_permission_change_exempt">
+  </string-array>
+  <string-array name="action_corner_action_titles">
+    <item msgid="8199124402836468201">"એકપણ નહીં"</item>
+    <item msgid="321837941231023175">"હોમ"</item>
+    <item msgid="953234843613969792">"તાજેતરની ઍપ"</item>
+    <item msgid="1713942773283586136">"નોટિફિકેશન"</item>
+    <item msgid="5687603742365489342">"ઝડપી સેટિંગ"</item>
+    <item msgid="5454862951059393431">"લૉક સ્ક્રીન"</item>
   </string-array>
 </resources>

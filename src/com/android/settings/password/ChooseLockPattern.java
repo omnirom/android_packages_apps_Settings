@@ -41,8 +41,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.core.view.insets.ProtectionLayout;
 import androidx.fragment.app.Fragment;
 
 import com.android.internal.annotations.VisibleForTesting;
@@ -51,21 +54,26 @@ import com.android.internal.widget.LockPatternUtils;
 import com.android.internal.widget.LockPatternView;
 import com.android.internal.widget.LockPatternView.Cell;
 import com.android.internal.widget.LockPatternView.DisplayMode;
+import com.android.internal.widget.LockPatternView.InputMode;
 import com.android.internal.widget.LockscreenCredential;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
 import com.android.settings.SetupWizardUtils;
 import com.android.settings.Utils;
 import com.android.settings.core.InstrumentedFragment;
+import com.android.settings.flags.Flags;
+import com.android.settings.msds.MSDLPlayerWrapper;
 import com.android.settings.notification.RedactionInterstitial;
 
 import com.google.android.collect.Lists;
+import com.google.android.msdl.data.model.MSDLToken;
 import com.google.android.setupcompat.template.FooterBarMixin;
 import com.google.android.setupcompat.template.FooterButton;
 import com.google.android.setupdesign.GlifLayout;
 import com.google.android.setupdesign.template.IconMixin;
 import com.google.android.setupdesign.util.ThemeHelper;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -95,6 +103,8 @@ public class ChooseLockPattern extends SettingsActivity {
     public Intent getIntent() {
         Intent modIntent = new Intent(super.getIntent());
         modIntent.putExtra(EXTRA_SHOW_FRAGMENT, getFragmentClass().getName());
+        modIntent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_USE_EXPRESSIVE_STYLE,
+                ThemeHelper.shouldApplyGlifExpressiveStyle(getApplicationContext()));
         return modIntent;
     }
 
@@ -104,6 +114,8 @@ public class ChooseLockPattern extends SettingsActivity {
         public IntentBuilder(Context context) {
             mIntent = new Intent(context, ChooseLockPattern.class);
             mIntent.putExtra(ChooseLockGeneric.CONFIRM_CREDENTIALS, false);
+            mIntent.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_USE_EXPRESSIVE_STYLE,
+                    ThemeHelper.shouldApplyGlifExpressiveStyle(context));
         }
 
         public IntentBuilder setUserId(int userId) {
@@ -168,15 +180,10 @@ public class ChooseLockPattern extends SettingsActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(SetupWizardUtils.getTheme(this, getIntent()));
+        ThemeHelper.trySetDynamicColor(this);
         if (ThemeHelper.shouldApplyGlifExpressiveStyle(getApplicationContext())) {
-            if (!ThemeHelper.trySetSuwTheme(this)) {
-                setTheme(ThemeHelper.getSuwDefaultTheme(getApplicationContext()));
-                ThemeHelper.trySetDynamicColor(this);
-            }
-        } else {
-
-            setTheme(SetupWizardUtils.getTheme(this, getIntent()));
-            ThemeHelper.trySetDynamicColor(this);
+            ThemeHelper.trySetSuwTheme(this);
         }
         super.onCreate(savedInstanceState);
         findViewById(R.id.content_parent).setFitsSystemWindows(false);
@@ -215,6 +222,8 @@ public class ChooseLockPattern extends SettingsActivity {
         private boolean mRequestWriteRepairModePassword;
         protected TextView mHeaderText;
         protected LockPatternView mLockPatternView;
+        @Nullable private LockPatternView.InputMode mInputMode;
+        @Nullable private List<LockPatternView.Cell> mInputPattern;
         protected TextView mFooterText;
         protected FooterButton mSkipOrClearButton;
         protected FooterButton mNextButton;
@@ -266,54 +275,72 @@ public class ChooseLockPattern extends SettingsActivity {
          */
         protected LockPatternView.OnPatternListener mChooseNewLockPatternListener =
                 new LockPatternView.OnPatternListener() {
-
-                public void onPatternStart() {
-                    mLockPatternView.removeCallbacks(mClearPatternRunnable);
-                    patternInProgress();
-                }
-
-                public void onPatternCleared() {
-                    mLockPatternView.removeCallbacks(mClearPatternRunnable);
-                }
-
-                public void onPatternDetected(List<LockPatternView.Cell> pattern) {
-                    if (mUiStage == Stage.NeedToConfirm || mUiStage == Stage.ConfirmWrong) {
-                        if (mChosenPattern == null) throw new IllegalStateException(
-                                "null chosen pattern in stage 'need to confirm");
-                        try (LockscreenCredential confirmPattern =
-                                LockscreenCredential.createPattern(pattern)) {
-                            if (mChosenPattern.equals(confirmPattern)) {
-                                updateStage(Stage.ChoiceConfirmed);
-                            } else {
-                                updateStage(Stage.ConfirmWrong);
-                            }
-                        }
-                    } else if (mUiStage == Stage.Introduction || mUiStage == Stage.ChoiceTooShort){
-                        if (pattern.size() < LockPatternUtils.MIN_LOCK_PATTERN_SIZE) {
-                            updateStage(Stage.ChoiceTooShort);
+                    public void onPatternStart(InputMode inputMode) {
+                        mInputMode = inputMode;
+                        mLockPatternView.removeCallbacks(mClearPatternRunnable);
+                        if (inputMode == InputMode.Click) {
+                            final String text = getResources().getString(
+                                    R.string.lockpattern_recording_inprogress_click,
+                                    LockPatternUtils.MIN_LOCK_PATTERN_SIZE);
+                            mHeaderText.setText(text);
                         } else {
-                            mChosenPattern = LockscreenCredential.createPattern(pattern);
-                            updateStage(Stage.FirstChoiceValid);
+                            mHeaderText.setText(R.string.lockpattern_recording_inprogress);
                         }
+                        if (mDefaultHeaderColorList != null) {
+                            mHeaderText.setTextColor(mDefaultHeaderColorList);
+                        }
+                        mFooterText.setText("");
+                        mNextButton.setEnabled(inputMode == InputMode.Click);
+                    }
+
+                    public void onPatternCleared() {
+                        mLockPatternView.removeCallbacks(mClearPatternRunnable);
+                        mInputPattern = new ArrayList<LockPatternView.Cell>();
+                    }
+
+                    public void onPatternDetected(List<LockPatternView.Cell> pattern,
+                                                  InputMode inputMode) {
+                        mInputMode = inputMode;
+                        mInputPattern = pattern;
+                        if (inputMode != InputMode.Click) {
+                            verifyPattern(pattern);
+                        }
+                    }
+
+                    public void onPatternCellAdded(List<Cell> pattern,
+                                                   InputMode inputMode) {
+                        mInputMode = inputMode;
+                        mInputPattern = pattern;
+                    }
+                };
+
+        private void verifyPattern(List<LockPatternView.Cell> pattern) {
+            if (mUiStage == Stage.NeedToConfirm || mUiStage == Stage.ConfirmWrong) {
+                if (mChosenPattern == null) {
+                    throw new IllegalStateException(
+                            "null chosen pattern in stage 'need to confirm");
+                }
+                try (LockscreenCredential confirmPattern =
+                             LockscreenCredential.createPattern(pattern)) {
+                    if (mChosenPattern.equals(confirmPattern)) {
+                        updateStage(Stage.ChoiceConfirmed);
                     } else {
-                        throw new IllegalStateException("Unexpected stage " + mUiStage + " when "
-                                + "entering the pattern.");
+                        updateStage(Stage.ConfirmWrong);
                     }
                 }
-
-                public void onPatternCellAdded(List<Cell> pattern) {
-
+            } else if (mUiStage == Stage.Introduction || mUiStage == Stage.ChoiceTooShort) {
+                if (pattern.size() < LockPatternUtils.MIN_LOCK_PATTERN_SIZE) {
+                    updateStage(Stage.ChoiceTooShort);
+                } else {
+                    mChosenPattern = LockscreenCredential.createPattern(pattern);
+                    updateStage(Stage.FirstChoiceValid);
                 }
+            } else {
+                throw new IllegalStateException("Unexpected stage " + mUiStage + " when "
+                        + "entering the pattern.");
+            }
+        }
 
-                private void patternInProgress() {
-                    mHeaderText.setText(R.string.lockpattern_recording_inprogress);
-                    if (mDefaultHeaderColorList != null) {
-                        mHeaderText.setTextColor(mDefaultHeaderColorList);
-                    }
-                    mFooterText.setText("");
-                    mNextButton.setEnabled(false);
-                }
-         };
 
         @Override
         public int getMetricsCategory() {
@@ -454,6 +481,13 @@ public class ChooseLockPattern extends SettingsActivity {
         private static final String KEY_PATTERN_CHOICE = "chosenPattern";
         private static final String KEY_CURRENT_PATTERN = "currentPattern";
 
+        @Nullable
+        private static Boolean sIsPatternInputClickSupportedForTesting;
+
+        private final LockPatternView.ExternalHapticsPlayer mExternalHapticsPlayer = () -> {
+            MSDLPlayerWrapper.INSTANCE.playToken(MSDLToken.DRAG_INDICATOR_DISCRETE);
+        };
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -486,9 +520,7 @@ public class ChooseLockPattern extends SettingsActivity {
                         .getString(SET_WORK_PROFILE_PATTERN_HEADER,
                                 () -> getString(
                                         R.string.lockpassword_choose_your_profile_pattern_header));
-            } else if (android.os.Flags.allowPrivateProfile()
-                    && android.multiuser.Flags.enablePrivateSpaceFeatures()
-                    && isPrivateProfile()) {
+            } else if (isPrivateProfile()) {
                 msg = getString(R.string.private_space_choose_your_pattern_header);
             } else {
                 msg = getString(R.string.lockpassword_choose_your_pattern_header);
@@ -512,6 +544,17 @@ public class ChooseLockPattern extends SettingsActivity {
                 }
                 return false;
             });
+
+            // TODO(b/440023111):This can be removed once SetupDesignLib and SettingsLib have
+            //  integrated the solution.
+            if (Flags.removeProtectionLayout()
+                    && ThemeHelper.shouldApplyGlifExpressiveStyle(getContext())) {
+                final ProtectionLayout protect = layout.findViewById(
+                        com.google.android.setupdesign.R.id.sud_layout_protection);
+                if (protect != null) {
+                    protect.setProtections(Collections.emptyList());
+                }
+            }
             updateActivityTitle();
             layout.setHeaderText(getActivity().getTitle());
             layout.getHeaderTextView().setAccessibilityLiveRegion(ACCESSIBILITY_LIVE_REGION_POLITE);
@@ -553,6 +596,19 @@ public class ChooseLockPattern extends SettingsActivity {
             return layout;
         }
 
+        @VisibleForTesting
+        public static void setPatternInputClickSupportedForTesting(boolean enabled) {
+            sIsPatternInputClickSupportedForTesting = enabled;
+        }
+
+        private boolean isPatternInputClickSupported() {
+            if (sIsPatternInputClickSupportedForTesting != null) {
+                return sIsPatternInputClickSupportedForTesting;
+            }
+            return Flags.enablePatternInputClickSupport()
+                    && getResources().getBoolean(R.bool.config_enable_pattern_input_click_support);
+        }
+
         @Override
         public void onViewCreated(View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
@@ -561,9 +617,13 @@ public class ChooseLockPattern extends SettingsActivity {
             mHeaderText.setMinLines(2);
             mDefaultHeaderColorList = mHeaderText.getTextColors();
             mLockPatternView = (LockPatternView) view.findViewById(R.id.lockPattern);
+            if (Flags.msdlFeedback()) {
+                mLockPatternView.setExternalHapticsPlayer(mExternalHapticsPlayer);
+            }
             mLockPatternView.setOnPatternListener(mChooseNewLockPatternListener);
             mLockPatternView.setFadePattern(false);
             mLockPatternView.setClickable(false);
+            mLockPatternView.setClickInputSupported(isPatternInputClickSupported());
 
             mFooterText = (TextView) view.findViewById(R.id.footerText);
 
@@ -628,6 +688,9 @@ public class ChooseLockPattern extends SettingsActivity {
                 setRightButtonEnabled(false);
                 mSaveAndFinishWorker.setListener(this);
             }
+            if (mLockPatternView != null && Flags.msdlFeedback()) {
+                mLockPatternView.setExternalHapticsPlayer(mExternalHapticsPlayer);
+            }
         }
 
         @Override
@@ -636,13 +699,20 @@ public class ChooseLockPattern extends SettingsActivity {
             if (mSaveAndFinishWorker != null) {
                 mSaveAndFinishWorker.setListener(null);
             }
+            if (mLockPatternView != null) {
+                mLockPatternView.setExternalHapticsPlayer(null);
+            }
         }
 
         @Override
         public void onDestroy() {
             super.onDestroy();
+            mInputPattern = null;
             if (mCurrentCredential != null) {
                 mCurrentCredential.zeroize();
+            }
+            if (mLockPatternView != null) {
+                mLockPatternView.setExternalHapticsPlayer(null);
             }
             // Force a garbage collection immediately to remove remnant of user password shards
             // from memory.
@@ -670,13 +740,31 @@ public class ChooseLockPattern extends SettingsActivity {
         }
 
         public void handleRightButton() {
-            if (mUiStage.rightMode == RightButtonMode.Continue) {
+            if (mUiStage.rightMode == RightButtonMode.ContinueDisabled) {
+                if (mUiStage != Stage.Introduction && mUiStage != Stage.ChoiceTooShort) {
+                    throw new IllegalStateException("expected ui stage "
+                            + Stage.Introduction + " or " + Stage.ChoiceTooShort
+                            + " when button is " + RightButtonMode.Continue);
+                }
+                if (mInputMode == InputMode.Click && mInputPattern != null) {
+                    verifyPattern(mInputPattern);
+                }
+            } else if (mUiStage.rightMode == RightButtonMode.Continue) {
                 if (mUiStage != Stage.FirstChoiceValid) {
                     throw new IllegalStateException("expected ui stage "
                             + Stage.FirstChoiceValid + " when button is "
                             + RightButtonMode.Continue);
                 }
                 updateStage(Stage.NeedToConfirm);
+            } else if (mUiStage.rightMode == RightButtonMode.ConfirmDisabled) {
+                if (mUiStage != Stage.NeedToConfirm && mUiStage != Stage.ConfirmWrong) {
+                    throw new IllegalStateException("expected ui stage " + Stage.NeedToConfirm
+                            + " or " + Stage.ConfirmWrong + " when button is "
+                            + RightButtonMode.Confirm);
+                }
+                if (mInputMode == InputMode.Click && mInputPattern != null) {
+                    verifyPattern(mInputPattern);
+                }
             } else if (mUiStage.rightMode == RightButtonMode.Confirm) {
                 if (mUiStage != Stage.ChoiceConfirmed) {
                     throw new IllegalStateException("expected ui stage " + Stage.ChoiceConfirmed
@@ -787,7 +875,6 @@ public class ChooseLockPattern extends SettingsActivity {
             // the rest of the stuff varies enough that it is easier just to handle
             // on a case by case basis.
             mLockPatternView.setDisplayMode(DisplayMode.Correct);
-            boolean announceAlways = false;
 
             switch (mUiStage) {
                 case Introduction:
@@ -800,7 +887,6 @@ public class ChooseLockPattern extends SettingsActivity {
                 case ConfirmWrong:
                     mLockPatternView.setDisplayMode(DisplayMode.Wrong);
                     postClearPatternRunnable();
-                    announceAlways = true;
                     break;
                 case FirstChoiceValid:
                     break;
@@ -811,14 +897,8 @@ public class ChooseLockPattern extends SettingsActivity {
                     break;
             }
 
-            // If the stage changed, announce the header for accessibility. This
-            // is a no-op when accessibility is disabled.
-            if (previousStage != stage || announceAlways) {
-                if (stage == Stage.NeedToConfirm) {
-                    // If the Stage is NeedToConfirm, move the a11y focus to the header.
-                    mHeaderText.requestAccessibilityFocus();
-                }
-            }
+            mHeaderText.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+
         }
 
         protected void updateFooterLeftButton(Stage stage) {

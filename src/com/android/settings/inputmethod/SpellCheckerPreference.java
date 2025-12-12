@@ -20,17 +20,21 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.textservice.SpellCheckerInfo;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog.Builder;
 import androidx.preference.PreferenceViewHolder;
 
 import com.android.settings.CustomListPreference;
 import com.android.settings.R;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 /**
  * Spell checker service preference.
@@ -46,10 +50,11 @@ class SpellCheckerPreference extends CustomListPreference {
     Intent mIntent;
 
     public SpellCheckerPreference(final Context context, final SpellCheckerInfo[] scis) {
-        super(context, null);
+        super(applyExpressivePreferenceThemeOverlay(context), null);
         mScis = scis;
-        setLayoutResource(
-                com.android.settingslib.widget.preference.twotarget.R.layout.preference_two_target);
+        setLayoutResource(SettingsThemeHelper.isExpressiveTheme(context)
+                ? com.android.settingslib.widget.preference.twotarget.R.layout.settingslib_expressive_preference_two_target
+                : com.android.settingslib.widget.preference.twotarget.R.layout.preference_two_target);
 
         setWidgetLayoutResource(R.layout.preference_widget_gear);
         if (scis == null) {
@@ -64,6 +69,23 @@ class SpellCheckerPreference extends CustomListPreference {
         }
         setEntries(labels);
         setEntryValues(values);
+    }
+
+    @NonNull
+    private static Context applyExpressivePreferenceThemeOverlay(@NonNull Context context) {
+        if (SettingsThemeHelper.isExpressiveTheme(context)) {
+            TypedArray typedArray = context.obtainStyledAttributes(new int[] {
+                    com.android.settingslib.widget.theme.R.attr
+                            .expressiveTwoTargetPreferenceTheme});
+            // Since the context is shared, only try to apply the theme if it 's not resolved.
+            if (typedArray.getResourceId(0, Resources.ID_NULL) == Resources.ID_NULL) {
+                context.getTheme().applyStyle(
+                        com.android.settingslib.widget.preference.twotarget.R.style
+                                .ThemeOverlay_ExpressiveTwoTargetPreference, false);
+            }
+            typedArray.recycle();
+        }
+        return context;
     }
 
     @Override

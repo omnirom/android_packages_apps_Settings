@@ -32,12 +32,15 @@
             android:id="@+id/homepage_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="-8dp"
             android:orientation="vertical">
 
-            <include
-                android:id="@+id/suggestion_container_two_pane"
-                layout="@layout/suggestion_container_two_pane"
-                android:visibility="gone"/>
+            <FrameLayout
+                android:id="@+id/suggestion_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
+                android:layout_marginEnd="?android:attr/listPreferredItemPaddingEnd" />
 
             <FrameLayout
                 android:id="@+id/contextual_cards_content"
@@ -59,23 +62,22 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:elevation="0dp"
         android:touchscreenBlocksFocus="false"
         android:keyboardNavigationCluster="false">
         <LinearLayout
             android:id="@+id/app_bar_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/search_bar_container_top_padding"
+            android:paddingBottom="@dimen/settingslib_expressive_space_extrasmall4"
+            android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+            android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+            android:background="?android:attr/colorBackground">
 
-            <include
-                android:id="@+id/homepage_app_bar_regular_phone_view"
-                layout="@layout/settings_homepage_app_bar_regular_phone_layout"/>
+            <include layout="@layout/search_bar"/>
 
-            <include
-                android:id="@+id/homepage_app_bar_two_pane_view"
-                layout="@layout/settings_homepage_app_bar_two_pane_layout"
-                android:visibility="gone"/>
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -45,6 +45,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 /** Tests for {@link RingVibrationIntensityPreferenceController}. */
+// LINT.IfChange
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {ShadowInteractionJankMonitor.class})
 public class RingVibrationIntensityPreferenceControllerTest {
@@ -201,3 +202,4 @@ public class RingVibrationIntensityPreferenceControllerTest {
         return Settings.System.getInt(mContext.getContentResolver(), settingKey);
     }
 }
+// LINT.ThenChange(RingVibrationIntensitySliderPreferenceTest.kt)

@@ -322,6 +322,10 @@ public class SubscriptionsPreferenceController extends AbstractPreferenceControl
         if (isCarrierNetworkActive) {
             level = getCarrierNetworkLevel();
             numLevels = WifiEntry.WIFI_LEVEL_MAX + 1;
+            if (shouldInflateSignalStrength(subId)) {
+                level += 1;
+                numLevels += 1;
+            }
         } else if (shouldInflateSignalStrength(subId)) {
             level += 1;
             numLevels += 1;

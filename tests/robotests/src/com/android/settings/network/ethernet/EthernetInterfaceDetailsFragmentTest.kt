@@ -19,6 +19,9 @@ package com.android.settings.network.ethernet
 import android.app.settings.SettingsEnums
 import android.content.Context
 import android.content.ContextWrapper
+import android.net.EthernetManager
+import android.net.IpConfiguration
+import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.settings.R
@@ -65,5 +68,36 @@ class EthernetInterfaceDetailsFragmentTest {
             ethernetInterfaceDetailsFragment.createPreferenceControllers(context)
         assertEquals(1, preferenceController.size)
         assertTrue(preferenceController[0] is AbstractPreferenceController)
+    }
+
+    @Test
+    fun getDialogMetricsCategory_shouldReturnCorrectValues() {
+        assertEquals(
+            ethernetInterfaceDetailsFragment.getDialogMetricsCategory(1),
+            SettingsEnums.ETHERNET_SETTINGS,
+        )
+        assertEquals(ethernetInterfaceDetailsFragment.getDialogMetricsCategory(2), 0)
+    }
+
+    @Test
+    fun onCreateDialog_successfullyCreatesDialog() {
+        val ethernetTracker = EthernetTrackerImpl.getInstance(context)
+        val ipConfiguration = IpConfiguration()
+        ipConfiguration.setIpAssignment(IpConfiguration.IpAssignment.STATIC)
+
+        ethernetTracker.onInterfaceStateChanged(
+            "eth0",
+            EthernetManager.STATE_LINK_UP,
+            1,
+            ipConfiguration,
+        )
+
+        val scenario = launchFragmentInContainer<EthernetInterfaceDetailsFragment>()
+        scenario.onFragment { fragment ->
+            {
+                val dialog = fragment.onCreateDialog(/* dialogId= */ 1)
+                assertTrue(dialog.isShowing())
+            }
+        }
     }
 }

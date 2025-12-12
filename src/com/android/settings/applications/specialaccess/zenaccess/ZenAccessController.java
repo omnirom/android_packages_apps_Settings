@@ -18,7 +18,6 @@ package com.android.settings.applications.specialaccess.zenaccess;
 
 import android.app.ActivityManager;
 import android.app.AppGlobals;
-import android.app.Flags;
 import android.app.NotificationManager;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
@@ -56,9 +55,7 @@ public class ZenAccessController extends BasePreferenceController {
     public void displayPreference(PreferenceScreen screen) {
         Preference preference = screen.findPreference(getPreferenceKey());
         if (preference != null) {
-            preference.setTitle(Flags.modesUi()
-                    ? R.string.manage_zen_modes_access_title
-                    : R.string.manage_zen_access_title);
+            preference.setTitle(R.string.manage_zen_modes_access_title);
         }
     }
 

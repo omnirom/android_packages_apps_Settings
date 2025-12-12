@@ -26,9 +26,8 @@ import static org.mockito.Mockito.when;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.UserManager;
-import android.preference.SeekBarVolumizer;
 
-import com.android.settings.R;
+import com.android.settings.sound.SliderVolumizer;
 import com.android.settings.testutils.XmlTestUtils;
 import com.android.settings.testutils.shadow.ShadowAudioHelper;
 import com.android.settings.testutils.shadow.ShadowBluetoothAdapter;
@@ -66,7 +65,6 @@ public class SoundSettingsTest {
         SoundSettings settings = new SoundSettings();
         final int xmlId = settings.getPreferenceScreenResId();
         final List<String> keys = XmlTestUtils.getKeysFromPreferenceXml(context, xmlId);
-        keys.addAll(XmlTestUtils.getKeysFromPreferenceXml(context, R.xml.zen_mode_settings));
         // Add keys with hidden resources
         keys.add("alarm_volume");
         keys.add("separate_ring_volume");
@@ -79,9 +77,9 @@ public class SoundSettingsTest {
     public void onStreamValueChanged_shouldRepostStopSampleMessage() {
         final SoundSettings settings = new SoundSettings();
         ReflectionHelpers.setField(
-                settings.mVolumeCallback, "mCurrent", mock(SeekBarVolumizer.class));
+                settings.mVolumeSliderCallback, "mSliderVolumizer", mock(SliderVolumizer.class));
 
-        settings.mVolumeCallback.onStreamValueChanged(0, 5);
+        settings.mVolumeSliderCallback.onStreamValueChanged(0, 5);
 
         assertThat(settings.mHandler.hasMessages(SoundSettings.STOP_SAMPLE)).isTrue();
     }

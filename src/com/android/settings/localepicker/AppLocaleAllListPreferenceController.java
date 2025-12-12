@@ -38,6 +38,7 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
 
 import com.android.internal.app.AppLocaleCollector;
+import com.android.internal.app.LocaleHelper;
 import com.android.internal.app.LocaleStore;
 import com.android.settings.R;
 import com.android.settings.applications.manageapplications.ManageApplicationsUtil;
@@ -48,7 +49,9 @@ import com.android.settingslib.core.instrumentation.Instrumentable;
 import com.android.settingslib.widget.SelectorWithWidgetPreference;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -117,15 +120,13 @@ public class AppLocaleAllListPreferenceController extends
             return;
         }
 
-        List<LocaleStore.LocaleInfo> result = LocaleUtils.getSortedLocaleList(
-                getSupportedLocaleList(), mIsCountryMode);
         if (mIsCountryMode) {
             mPreferenceCategory.setTitle(
                     mContext.getString(R.string.all_supported_locales_regions_title));
         }
         final Map<String, Preference> existingSupportedPreferences = mSupportedPreferences;
         mSupportedPreferences = new ArrayMap<>();
-        setupSupportedPreference(result, existingSupportedPreferences);
+        setupSupportedPreference(getSupportedLocaleList(), existingSupportedPreferences);
         for (Preference pref : existingSupportedPreferences.values()) {
             mPreferenceCategory.removePreference(pref);
         }
@@ -134,11 +135,17 @@ public class AppLocaleAllListPreferenceController extends
     @Override
     public void onSearchListChanged(@NonNull List<LocaleStore.LocaleInfo> newList,
             @Nullable CharSequence prefix) {
+        if (mPreferenceCategory == null) {
+            Log.d(TAG, "onSearchListChanged, mPreferenceCategory is null");
+            return;
+        }
+
         mPreferenceCategory.removeAll();
         mSupportedPreferences.clear();
         final Map<String, Preference> existingSupportedPreferences = mSupportedPreferences;
         List<LocaleStore.LocaleInfo> sortedList = getSupportedLocaleList();
-        newList = LocaleUtils.getSortedLocaleFromSearchList(newList, sortedList, mIsCountryMode);
+        newList = LocaleUtils.getSortedLocaleFromSearchList(prefix, newList, sortedList,
+                mIsCountryMode);
         setupSupportedPreference(newList, existingSupportedPreferences);
     }
 
@@ -183,6 +190,9 @@ public class AppLocaleAllListPreferenceController extends
     @VisibleForTesting
     void switchFragment(Context context, LocaleStore.LocaleInfo localeInfo,
             boolean shouldShowAppLanguage) {
+        if (mLocaleList != null && mLocaleList.size() == 1) {
+            localeInfo = mLocaleList.iterator().next();
+        }
         if (shouldShowAppLanguage) {
             LocaleUtils.onLocaleSelected(mContext, localeInfo, mPackageName);
         } else {

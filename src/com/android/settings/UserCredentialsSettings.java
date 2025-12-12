@@ -42,11 +42,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
@@ -54,6 +56,7 @@ import com.android.settings.wifi.helper.SavedWifiHelper;
 import com.android.settingslib.RestrictedLockUtils;
 import com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
 import com.android.settingslib.RestrictedLockUtilsInternal;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
 import java.security.Key;
 import java.security.KeyStore;
@@ -75,6 +78,11 @@ public class UserCredentialsSettings extends SettingsPreferenceFragment
     private static final String TAG = "UserCredentialsSettings";
 
     private static final String KEYSTORE_PROVIDER = "AndroidKeyStore";
+    private static final String ZERO_STATE_PREF = "zero_state";
+
+    private Preference mZeroStatePreference;
+
+    private String mRootKey;
 
     @VisibleForTesting
     protected SavedWifiHelper mSavedWifiHelper;
@@ -105,6 +113,12 @@ public class UserCredentialsSettings extends SettingsPreferenceFragment
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.user_credentials);
         mSavedWifiHelper = SavedWifiHelper.getInstance(getContext(), getSettingsLifecycle());
+    }
+
+    @Override
+    public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
+        mRootKey = rootKey;
+        setUpZeroStatePreference();
     }
 
     @VisibleForTesting
@@ -356,7 +370,7 @@ public class UserCredentialsSettings extends SettingsPreferenceFragment
                         } else {
                             // This is a weired inconsistent case that should not exist.
                             // Pure trusted certificate entries should be stored in CA_CERTIFICATE,
-                            // but if isCErtificateEntry returns null this means that only the
+                            // but if isCertificateEntry returns null this means that only the
                             // USER_CERTIFICATE is populated which should never be the case without
                             // a private key. It can still be retrieved with
                             // keystore.getCertificate().
@@ -377,18 +391,39 @@ public class UserCredentialsSettings extends SettingsPreferenceFragment
                 return;
             }
 
-            if (credentials == null || credentials.size() == 0) {
-                // Create a "no credentials installed" message for the empty case.
-                TextView emptyTextView = (TextView) getActivity().findViewById(android.R.id.empty);
-                emptyTextView.setText(R.string.user_credential_none_installed);
-                setEmptyView(emptyTextView);
+            CredentialAdapter credentialAdapter = new CredentialAdapter(credentials,
+                    UserCredentialsSettings.this);
+
+            if (credentials == null || credentials.isEmpty()) {
+                if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+                    // For expressive style, use zero state preference instead of adapter
+                    setEmptyView(null);
+                    getListView().setAdapter(null);
+                    setUpZeroStatePreference();
+                    mZeroStatePreference.setVisible(true);
+                } else {
+                    // Create a "no credentials installed" message for the empty case.
+                    mZeroStatePreference.setVisible(false);
+                    TextView emptyTextView = requireActivity().requireViewById(android.R.id.empty);
+                    emptyTextView.setText(R.string.user_credential_none_installed);
+                    setEmptyView(emptyTextView);
+                    emptyTextView.setVisibility(View.VISIBLE);
+                    getListView().setAdapter(credentialAdapter);
+                }
             } else {
+                mZeroStatePreference.setVisible(false);
                 setEmptyView(null);
+                getListView().setAdapter(credentialAdapter);
             }
 
-            getListView().setAdapter(
-                    new CredentialAdapter(credentials, UserCredentialsSettings.this));
         }
+    }
+
+    private void setUpZeroStatePreference() {
+        setPreferencesFromResource(R.xml.preference_zero_state, mRootKey);
+        mZeroStatePreference = findPreference(ZERO_STATE_PREF);
+        mZeroStatePreference.setTitle(R.string.user_credential_none_installed);
+        mZeroStatePreference.setIcon(R.drawable.badge_24dp);
     }
 
     /**
@@ -405,6 +440,7 @@ public class UserCredentialsSettings extends SettingsPreferenceFragment
             mListener = listener;
         }
 
+        @NonNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             final LayoutInflater inflater = LayoutInflater.from(parent.getContext());

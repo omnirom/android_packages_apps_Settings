@@ -17,6 +17,7 @@
 package com.android.settings.network.telephony
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.UserManager
 import android.provider.Settings
 import android.telephony.SubscriptionInfo
@@ -26,11 +27,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.settings.R
 import com.android.settings.network.telephony.MobileNetworkSettingsSearchIndex.Companion.isMobileNetworkSettingsSearchable
 import com.android.settings.network.telephony.MobileNetworkSettingsSearchIndex.MobileNetworkSettingsSearchResult
-import com.android.settings.spa.SpaSearchLanding.BundleValue
-import com.android.settings.spa.SpaSearchLanding.SpaSearchLandingFragment
-import com.android.settings.spa.SpaSearchLanding.SpaSearchLandingKey
-import com.android.settings.spa.search.SpaSearchLandingActivity
-import com.android.settings.spa.search.decodeToSpaSearchLandingKey
+import com.android.settingslib.spa.search.SpaSearchLanding.BundleValue
+import com.android.settingslib.spa.search.SpaSearchLanding.SpaSearchLandingFragment
+import com.android.settingslib.spa.search.SpaSearchLanding.SpaSearchLandingKey
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -45,6 +44,8 @@ class MobileNetworkSettingsSearchIndexTest {
 
     private val mockUserManager = mock<UserManager> { on { isAdminUser } doReturn true }
 
+    private val mockPackageManager = mock<PackageManager>()
+
     private val mockSubscriptionManager =
         mock<SubscriptionManager> {
             on { activeSubscriptionInfoList } doReturn listOf(SUB_INFO_1, SUB_INFO_2)
@@ -55,6 +56,7 @@ class MobileNetworkSettingsSearchIndexTest {
             on { getSystemService(UserManager::class.java) } doReturn mockUserManager
             on { getSystemService(SubscriptionManager::class.java) } doReturn
                 mockSubscriptionManager
+            on { packageManager } doReturn mockPackageManager
         }
 
     private val resources =
@@ -75,12 +77,17 @@ class MobileNetworkSettingsSearchIndexTest {
     @Before
     fun setUp() {
         context.stub { on { resources } doReturn resources }
+
+        // By default, searchable
+        mockUserManager.stub { on { isAdminUser } doReturn true }
+        mockPackageManager.stub {
+            on { hasSystemFeature(PackageManager.FEATURE_TELEPHONY) } doReturn true
+        }
     }
 
     @Test
-    fun isMobileNetworkSettingsSearchable_adminUser_returnTrue() {
-        mockUserManager.stub { on { isAdminUser } doReturn true }
-
+    fun isMobileNetworkSettingsSearchable_default_returnTrue() {
+        // Use defaults
         val isSearchable = isMobileNetworkSettingsSearchable(context)
 
         assertThat(isSearchable).isTrue()
@@ -96,16 +103,25 @@ class MobileNetworkSettingsSearchIndexTest {
     }
 
     @Test
-    fun createSearchIndexableData() {
-        val searchIndexableData = mobileNetworkSettingsSearchIndex.createSearchIndexableData()
+    fun isMobileNetworkSettingsSearchable_noTelephony_returnFalse() {
+        mockPackageManager.stub {
+            on { hasSystemFeature(PackageManager.FEATURE_TELEPHONY) } doReturn false
+        }
 
-        assertThat(searchIndexableData.targetClass).isEqualTo(MobileNetworkSettings::class.java)
-        val dynamicRawDataToIndex =
-            searchIndexableData.searchIndexProvider.getDynamicRawDataToIndex(context, true)
-        assertThat(dynamicRawDataToIndex).hasSize(1)
-        val rawData = dynamicRawDataToIndex[0]
-        val key = decodeToSpaSearchLandingKey(rawData.key)
-        assertThat(key)
+        val isSearchable = isMobileNetworkSettingsSearchable(context)
+
+        assertThat(isSearchable).isFalse()
+    }
+
+    @Test
+    fun getSearchIndexablePage() {
+        val searchIndexablePage = mobileNetworkSettingsSearchIndex.getSearchIndexablePage()
+
+        assertThat(searchIndexablePage.targetClass).isEqualTo(MobileNetworkSettings::class.java)
+        val items = searchIndexablePage.itemsProvider(context)
+        assertThat(items).hasSize(1)
+        val item = items.single()
+        assertThat(item.searchLandingKey)
             .isEqualTo(
                 SpaSearchLandingKey.newBuilder()
                     .setFragment(
@@ -116,12 +132,8 @@ class MobileNetworkSettingsSearchIndexTest {
                                 Settings.EXTRA_SUB_ID,
                                 BundleValue.newBuilder().setIntValue(SUB_ID_1).build()))
                     .build())
-        assertThat(rawData.title).isEqualTo(TITLE)
-        assertThat(rawData.intentAction).isEqualTo("android.settings.SPA_SEARCH_LANDING")
-        assertThat(rawData.intentTargetClass)
-            .isEqualTo(SpaSearchLandingActivity::class.qualifiedName)
-        assertThat(rawData.className).isEqualTo(MobileNetworkSettings::class.java.name)
-        assertThat(rawData.screenTitle).isEqualTo("SIMs > $SUB_DISPLAY_NAME_1")
+        assertThat(item.pageTitle).isEqualTo("SIMs > $SUB_DISPLAY_NAME_1")
+        assertThat(item.itemTitle).isEqualTo(TITLE)
     }
 
     private companion object {

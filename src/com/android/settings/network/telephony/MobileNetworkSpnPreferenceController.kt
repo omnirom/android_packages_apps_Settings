@@ -27,13 +27,11 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import com.android.settings.flags.Flags
-import com.android.settings.network.SimOnboardingActivity
 import com.android.settings.network.SubscriptionInfoListViewModel
 import com.android.settingslib.spa.framework.util.collectLatestWithLifecycle
 
-/**
- * Preference controller for "Mobile network" and showing the SPN.
- */
+/** Preference controller for "Mobile network" and showing the SPN. */
+// LINT.IfChange
 class MobileNetworkSpnPreferenceController(context: Context, key: String) :
     TelephonyBasePreferenceController(context, key) {
 
@@ -47,11 +45,12 @@ class MobileNetworkSpnPreferenceController(context: Context, key: String) :
         mSubId = subId
     }
 
-    override fun getAvailabilityStatus(subId: Int): Int = when {
-        !Flags.isDualSimOnboardingEnabled() -> CONDITIONALLY_UNAVAILABLE
-        SubscriptionManager.isValidSubscriptionId(subId)-> AVAILABLE
-        else -> CONDITIONALLY_UNAVAILABLE
-    }
+    override fun getAvailabilityStatus(subId: Int): Int =
+        when {
+            !Flags.isDualSimOnboardingEnabled() -> CONDITIONALLY_UNAVAILABLE
+            SubscriptionManager.isValidSubscriptionId(subId) -> AVAILABLE
+            else -> CONDITIONALLY_UNAVAILABLE
+        }
 
     override fun displayPreference(screen: PreferenceScreen) {
         super.displayPreference(screen)
@@ -62,30 +61,31 @@ class MobileNetworkSpnPreferenceController(context: Context, key: String) :
         if (!this::lazyViewModel.isInitialized) {
             Log.e(
                 this.javaClass.simpleName,
-                "lateinit property lazyViewModel has not been initialized"
+                "lateinit property lazyViewModel has not been initialized",
             )
             return
         }
 
         val viewModel by lazyViewModel
 
-        viewModel.subscriptionInfoListFlow
-                .collectLatestWithLifecycle(viewLifecycleOwner) { subscriptionInfoList ->
-                    refreshData(subscriptionInfoList)
-                }
+        viewModel.subscriptionInfoListFlow.collectLatestWithLifecycle(viewLifecycleOwner) {
+            subscriptionInfoList ->
+            refreshData(subscriptionInfoList)
+        }
     }
 
     @VisibleForTesting
-    fun refreshData(subscriptionInfoList: List<SubscriptionInfo>){
-        spn = subscriptionInfoList
-            .firstOrNull { subInfo -> subInfo.subscriptionId == mSubId }
-            ?.let { info -> info.carrierName.toString() }
-            ?: String()
+    fun refreshData(subscriptionInfoList: List<SubscriptionInfo>) {
+        spn =
+            subscriptionInfoList
+                .firstOrNull { subInfo -> subInfo.subscriptionId == mSubId }
+                ?.let { info -> info.carrierName.toString() } ?: String()
 
         refreshUi()
     }
 
-    private fun refreshUi(){
+    private fun refreshUi() {
         preference.summary = spn
     }
 }
+// LINT.ThenChange(MobileNetworkSpnPreference.java)

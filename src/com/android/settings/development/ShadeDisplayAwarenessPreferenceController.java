@@ -86,4 +86,9 @@ public class ShadeDisplayAwarenessPreferenceController extends DeveloperOptionsP
                 Settings.Global.DEVELOPMENT_SHADE_DISPLAY_AWARENESS,
                 mListValues[SHADE_DISPLAY_AWARENESS_DEFAULT]);
     }
+
+    @Override
+    public boolean isAvailable() {
+        return false;
+    }
 }

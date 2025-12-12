@@ -15,39 +15,37 @@
      limitations under the License.
 -->
 
-<LinearLayout
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/SearchBarStyle_v2"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/search_bar_margin">
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/search_bar"
-        style="@style/SearchBarStyle"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/search_action_bar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
-        <Toolbar
-            android:id="@+id/search_action_bar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/search_bar_height"
-            android:paddingStart="@dimen/search_bar_padding_start"
-            android:paddingEnd="@dimen/search_bar_padding_end"
-            android:background="@drawable/search_bar_selected_background"
-            android:touchscreenBlocksFocus="false"
-            android:nextFocusForward="@+id/homepage_container"
-            android:contentInsetStartWithNavigation="@dimen/search_bar_content_inset"
-            android:navigationIcon="@drawable/ic_homepage_search">
-            <TextView
-                android:id="@+id/search_action_bar_title"
-                style="@style/TextAppearance.SearchBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/search_bar_title_padding_start"
-                android:layout_gravity="start"
-                android:text="@string/search_menu"/>
-        </Toolbar>
-    </com.google.android.material.card.MaterialCardView>
+        android:minHeight="72dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:focusedByDefault="true"
+        android:background="@drawable/search_bar_selected_background">
 
-</LinearLayout>
-
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_homepage_search" />
+        <TextView
+            android:id="@+id/search_bar_title"
+            style="@style/TextAppearance.SearchBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@string/homepage_search"/>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

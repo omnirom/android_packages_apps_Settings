@@ -17,9 +17,48 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:androidprv="http://schemas.android.com/apk/prv/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/mouse_keys_info_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|top"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/title_mouse_keys_image_recycler_list">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/settingslib_ic_info_outline_24"
+            android:tint="@color/settingslib_materialColorOnSurfaceVariant"
+            android:importantForAccessibility="no"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/title_mouse_keys_image_recycler_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/mouse_keys_primary_keys_image_list_title"
+        android:textSize="16sp"
+        android:textColor="@androidprv:color/materialColorPrimary"
+        android:fontFamily="@*android:string/config_headlineFontFamilyMedium"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mouse_keys_info_icon"
+        app:layout_constraintBottom_toTopOf="@+id/mouse_keys_image_recycler_list"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mouse_keys_image_recycler_list"
@@ -30,7 +69,49 @@
         android:padding="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_mouse_keys_image_recycler_list"
+        app:layout_constraintBottom_toTopOf="@+id/title_mouse_keys_numpad_image_recycler_list"/>
+
+    <TextView
+        android:id="@+id/title_mouse_keys_numpad_image_recycler_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/mouse_keys_numpad_keys_image_list_title"
+        android:textSize="16sp"
+        android:textColor="@androidprv:color/materialColorPrimary"
+        android:fontFamily="@*android:string/config_headlineFontFamilyMedium"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mouse_keys_image_recycler_list"
+        app:layout_constraintBottom_toTopOf="@+id/summary_mouse_keys_numpad_image_recycler_list"/>
+
+    <TextView
+        android:id="@+id/summary_mouse_keys_numpad_image_recycler_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/mouse_keys_numpad_keys_image_list_summary"
+        android:textSize="14sp"
+        android:textColor="?android:attr/textColorSecondary"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_mouse_keys_numpad_image_recycler_list"
+        app:layout_constraintBottom_toTopOf="@+id/mouse_keys_numpad_image_recycler_list"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mouse_keys_numpad_image_recycler_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clipToPadding="true"
+        android:nestedScrollingEnabled="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mouse_keys_image_recycler_list"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,29 +16,34 @@
 
 package com.android.settings.datausage
 
+import android.app.settings.SettingsEnums
 import android.content.Context
 import android.telephony.SubscriptionManager.INVALID_SUBSCRIPTION_ID
+import androidx.fragment.app.Fragment
 import com.android.settings.R
 import com.android.settings.Settings.DataSaverSummaryActivity
+import com.android.settings.core.PreferenceScreenMixin
 import com.android.settings.datausage.DataSaverMainSwitchPreference.Companion.KEY as DATA_SAVER_KEY
 import com.android.settings.flags.Flags
 import com.android.settings.utils.makeLaunchIntent
 import com.android.settingslib.datastore.HandlerExecutor
 import com.android.settingslib.datastore.KeyedObserver
 import com.android.settingslib.metadata.PreferenceAvailabilityProvider
+import com.android.settingslib.metadata.PreferenceIndexableProvider
 import com.android.settingslib.metadata.PreferenceLifecycleContext
 import com.android.settingslib.metadata.PreferenceLifecycleProvider
 import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.PreferenceSummaryProvider
 import com.android.settingslib.metadata.ProvidePreferenceScreen
 import com.android.settingslib.metadata.preferenceHierarchy
-import com.android.settingslib.preference.PreferenceScreenCreator
+import kotlinx.coroutines.CoroutineScope
 
 @ProvidePreferenceScreen(DataSaverScreen.KEY)
-class DataSaverScreen(context: Context) :
-    PreferenceScreenCreator,
+open class DataSaverScreen(context: Context) :
+    PreferenceScreenMixin,
     PreferenceAvailabilityProvider,
     PreferenceSummaryProvider,
+    PreferenceIndexableProvider,
     PreferenceLifecycleProvider {
 
     private val dataSaverStore = DataSaverMainSwitchPreference.createDataStore(context)
@@ -67,25 +72,34 @@ class DataSaverScreen(context: Context) :
     override fun isAvailable(context: Context) =
         context.resources.getBoolean(R.bool.config_show_data_saver)
 
+    override val highlightMenuKey: Int
+        get() = R.string.menu_key_network
+
+    override fun getMetricsCategory() = SettingsEnums.DATA_SAVER_SUMMARY
+
     override fun isFlagEnabled(context: Context) = Flags.catalystRestrictBackgroundParentEntry()
 
-    override fun fragmentClass() = DataSaverSummary::class.java
+    override fun fragmentClass(): Class<out Fragment>? = DataSaverSummary::class.java
 
     override fun getLaunchIntent(context: Context, metadata: PreferenceMetadata?) =
         makeLaunchIntent(context, DataSaverSummaryActivity::class.java, metadata?.key)
 
-    override fun getPreferenceHierarchy(context: Context) =
-        preferenceHierarchy(context, this) { +DataSaverMainSwitchPreference() }
+    override fun getPreferenceHierarchy(context: Context, coroutineScope: CoroutineScope) =
+        preferenceHierarchy(context) { +DataSaverMainSwitchPreference() }
 
     override fun hasCompleteHierarchy() = false
 
     override fun onCreate(context: PreferenceLifecycleContext) {
-        keyedObserver = KeyedObserver { _, _ -> context.notifyPreferenceChange(KEY) }
-        dataSaverStore.addObserver(DATA_SAVER_KEY, keyedObserver, HandlerExecutor.main)
+        if (isEntryPoint(context)) {
+            keyedObserver = KeyedObserver { _, _ -> context.notifyPreferenceChange(KEY) }
+            dataSaverStore.addObserver(DATA_SAVER_KEY, keyedObserver, HandlerExecutor.main)
+        }
     }
 
     override fun onDestroy(context: PreferenceLifecycleContext) {
-        dataSaverStore.removeObserver(DATA_SAVER_KEY, keyedObserver)
+        if (isEntryPoint(context)) {
+            dataSaverStore.removeObserver(DATA_SAVER_KEY, keyedObserver)
+        }
     }
 
     companion object {

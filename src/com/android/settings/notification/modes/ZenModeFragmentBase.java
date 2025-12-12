@@ -115,10 +115,12 @@ abstract class ZenModeFragmentBase extends ZenModesFragmentBase {
      * do it soon).
      */
     private void maybeUpdateControllersState(@NonNull ZenMode zenMode) {
+        // DashboardFragment will update every controller on first onResume. Thus, the first onStart
+        // doesn't need to force it, but subsequent ones do.
         boolean needsFullUpdate =
-                getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)
-                && (mModeOnLastControllerUpdate == null
-                        || !mModeOnLastControllerUpdate.equals(zenMode));
+                getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)
+                && (mModeOnLastControllerUpdate != null
+                        && !mModeOnLastControllerUpdate.equals(zenMode));
         mModeOnLastControllerUpdate = zenMode.copy();
 
         for (var controller : getZenPreferenceControllers()) {

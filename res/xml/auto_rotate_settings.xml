@@ -58,7 +58,6 @@
     <com.android.settingslib.widget.FooterPreference
         android:key="auto_rotate_footer_preference"
         android:title="@string/smart_rotate_text_headline"
-        android:selectable="false"
         settings:searchable="false"/>
 
 </PreferenceScreen>

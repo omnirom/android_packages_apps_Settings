@@ -19,7 +19,7 @@ package com.android.settings.biometrics.fingerprint;
 import static android.hardware.fingerprint.FingerprintSensorProperties.TYPE_POWER_BUTTON;
 import static android.hardware.fingerprint.FingerprintSensorProperties.TYPE_REAR;
 import static android.hardware.fingerprint.FingerprintSensorProperties.TYPE_UDFPS_OPTICAL;
-import static android.text.Layout.HYPHENATION_FREQUENCY_NORMAL;
+import static android.text.Layout.HYPHENATION_FREQUENCY_NONE;
 
 import static com.android.settings.biometrics.BiometricEnrollBase.RESULT_FINISHED;
 import static com.android.settings.biometrics.BiometricEnrollBase.RESULT_SKIP;
@@ -573,12 +573,12 @@ public class FingerprintEnrollFindSensorTest {
     }
 
     @Test
-    public void fingerprintEnrollFindSensor_setHyphenationFrequencyNormalOnHeader() {
+    public void fingerprintEnrollFindSensor_setHyphenationFrequencyNoneOnHeader() {
         setupActivity_onUdfpsDevice();
         PartnerCustomizationLayout layout = mActivity.findViewById(R.id.setup_wizard_layout);
         final TextView textView = layout.getMixin(HeaderMixin.class).getTextView();
 
-        assertThat(textView.getHyphenationFrequency()).isEqualTo(HYPHENATION_FREQUENCY_NORMAL);
+        assertThat(textView.getHyphenationFrequency()).isEqualTo(HYPHENATION_FREQUENCY_NONE);
     }
 
     private void triggerEnrollProgressAndError_onRearDevice() {

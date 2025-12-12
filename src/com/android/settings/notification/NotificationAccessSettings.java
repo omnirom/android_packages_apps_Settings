@@ -55,6 +55,8 @@ import com.android.settings.widget.EmptyTextSettings;
 import com.android.settingslib.applications.ServiceListing;
 import com.android.settingslib.search.SearchIndexable;
 import com.android.settingslib.widget.AppPreference;
+import com.android.settingslib.widget.SettingsThemeHelper;
+import com.android.settingslib.widget.ZeroStatePreference;
 
 import java.util.List;
 
@@ -77,7 +79,8 @@ public class NotificationAccessSettings extends EmptyTextSettings {
                     .setWarningDialogTitle(R.string.notification_listener_security_warning_title)
                     .setWarningDialogSummary(
                             R.string.notification_listener_security_warning_summary)
-                    .setEmptyText(R.string.no_notification_listeners)
+                    .setEmptyText(R.string.no_applications)
+                    .setZeroResourceIcon(R.drawable.ic_apps)
                     .build();
 
     @VisibleForTesting NotificationManager mNm;
@@ -118,7 +121,10 @@ public class NotificationAccessSettings extends EmptyTextSettings {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setEmptyText(CONFIG.emptyText);
+
+        if (!SettingsThemeHelper.isExpressiveTheme(getContext())) {
+            setEmptyText(CONFIG.emptyText);
+        }
     }
 
     @Override
@@ -136,14 +142,38 @@ public class NotificationAccessSettings extends EmptyTextSettings {
 
     @VisibleForTesting
     void updateList(List<ServiceInfo> services) {
+        final PreferenceScreen screen = getPreferenceScreen();
+        final PreferenceCategory allowedCategory = screen.findPreference(ALLOWED_KEY);
+        final PreferenceCategory notAllowedCategory = screen.findPreference(NOT_ALLOWED_KEY);
+
+        assert allowedCategory != null;
+        allowedCategory.removeAll();
+
+        assert notAllowedCategory != null;
+        notAllowedCategory.removeAll();
+
+        if (services == null || services.isEmpty()) {
+            if (SettingsThemeHelper.isExpressiveTheme(screen.getContext())) {
+                if (screen.getPreferenceCount() == 0) {
+                    ZeroStatePreference preference = new ZeroStatePreference(
+                            screen.getContext());
+                    preference.setIcon(CONFIG.zeroResourceIcon);
+                    preference.setTitle(CONFIG.emptyText);
+                    preference.setScreenCentering(true);
+                    screen.addPreference(preference);
+
+                    allowedCategory.setVisible(false);
+                    notAllowedCategory.setVisible(false);
+                }
+            }
+            return;
+        }
+
         final UserManager um = (UserManager) mContext.getSystemService(Context.USER_SERVICE);
         final int managedProfileId = Utils.getManagedProfileId(um, UserHandle.myUserId());
 
-        final PreferenceScreen screen = getPreferenceScreen();
-        final PreferenceCategory allowedCategory = screen.findPreference(ALLOWED_KEY);
-        allowedCategory.removeAll();
-        final PreferenceCategory notAllowedCategory = screen.findPreference(NOT_ALLOWED_KEY);
-        notAllowedCategory.removeAll();
+        allowedCategory.setVisible(true);
+        notAllowedCategory.setVisible(true);
 
         services.sort(new PackageItemInfo.DisplayNameComparator(mPm));
         for (ServiceInfo service : services) {

@@ -19,6 +19,9 @@ package com.android.settings.utils;
 import android.icu.text.ListFormatter;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+import androidx.core.util.Preconditions;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -30,9 +33,11 @@ public class LocaleUtils {
     /**
      * Returns a character sequence concatenating the items with the localized comma.
      *
-     * @param items items to be concatenated
+     * @param items items to be concatenated. Must be non-empty.
      */
-    public static CharSequence getConcatenatedString(List<CharSequence> items) {
+    @NonNull
+    public static CharSequence getConcatenatedString(@NonNull List<CharSequence> items) {
+        Preconditions.checkArgument(!items.isEmpty(), "items should not be empty");
         final ListFormatter listFormatter = ListFormatter.getInstance(Locale.getDefault());
         final CharSequence lastItem =  items.get(items.size() - 1);
         items.add("fake last item");

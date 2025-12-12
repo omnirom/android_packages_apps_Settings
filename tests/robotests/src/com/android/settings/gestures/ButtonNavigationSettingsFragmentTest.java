@@ -21,13 +21,17 @@ import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_3BUTTON_OVE
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.Mockito.spy;
 import static org.robolectric.Shadows.shadowOf;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
 
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -35,6 +39,15 @@ import org.robolectric.shadows.ShadowPackageManager;
 
 @RunWith(RobolectricTestRunner.class)
 public class ButtonNavigationSettingsFragmentTest {
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    private final Context mContext = ApplicationProvider.getApplicationContext();
+    private ButtonNavigationSettingsFragment mFragment;
+
+    @Before
+    public void setUp() {
+        mFragment = spy(new ButtonNavigationSettingsFragment());
+    }
 
     @Test
     public void getNonIndexableKeys_twoAndThreeButtonNavigationNotAvailable_allKeysNonIndexable() {
@@ -58,6 +71,12 @@ public class ButtonNavigationSettingsFragmentTest {
         assertThat(ButtonNavigationSettingsFragment.SEARCH_INDEX_DATA_PROVIDER.getNonIndexableKeys(
                 ApplicationProvider.getApplicationContext())).containsExactly(
                 "gesture_power_menu_video");
+    }
+
+    @Test
+    public void getPreferenceScreenBindingKey_returnsCorrectKey() {
+        assertThat(mFragment.getPreferenceScreenBindingKey(mContext)).isEqualTo(
+                ButtonNavigationSettingsScreen.KEY);
     }
 
     private static void addPackageToPackageManager(Context context, String pkg) {

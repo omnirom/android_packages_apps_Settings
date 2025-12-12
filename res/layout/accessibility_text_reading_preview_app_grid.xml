@@ -14,19 +14,25 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:contentDescription="@string/preview_pager_home_content_description" >
+    android:orientation="vertical"
+    android:contentDescription="@string/preview_pager_home_title"
+    android:clipChildren="true" >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/preview_pager_home_title"
+        android:importantForAccessibility="noHideDescendants"
+        style="@style/AccessibilityTextReadingPreviewPageTitle" />
     <com.android.settings.display.AppGridView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:numColumns="3"
         android:gravity="center"
         android:nestedScrollingEnabled="true"
         android:importantForAccessibility="noHideDescendants"
         app:appCount="6"/>
-</FrameLayout>
+</LinearLayout>

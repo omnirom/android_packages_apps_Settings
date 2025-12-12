@@ -53,7 +53,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.SearchIndexableResource;
 import android.provider.SearchIndexablesContract;
-import android.provider.SearchIndexablesProvider;
 import android.provider.SettingsSlicesContract;
 import android.text.TextUtils;
 import android.util.ArrayMap;
@@ -69,11 +68,13 @@ import com.android.settings.SettingsActivity;
 import com.android.settings.dashboard.CategoryManager;
 import com.android.settings.dashboard.DashboardFeatureProvider;
 import com.android.settings.dashboard.DashboardFragmentRegistry;
+import com.android.settings.flags.Flags;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.slices.SettingsSliceProvider;
 import com.android.settingslib.drawer.ActivityTile;
 import com.android.settingslib.drawer.DashboardCategory;
 import com.android.settingslib.drawer.Tile;
+import com.android.settingslib.metadata.PreferenceSearchIndexablesProvider;
 import com.android.settingslib.search.Indexable;
 import com.android.settingslib.search.SearchIndexableData;
 import com.android.settingslib.search.SearchIndexableRaw;
@@ -83,7 +84,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class SettingsSearchIndexablesProvider extends SearchIndexablesProvider {
+public class SettingsSearchIndexablesProvider extends PreferenceSearchIndexablesProvider {
 
     public static final boolean DEBUG = false;
 
@@ -105,6 +106,11 @@ public class SettingsSearchIndexablesProvider extends SearchIndexablesProvider {
         INVALID_KEYS = new ArraySet<>();
         INVALID_KEYS.add(null);
         INVALID_KEYS.add("");
+    }
+
+    @Override
+    public boolean isCatalystSearchEnabled() {
+        return Flags.catalystSettingsSearch();
     }
 
     @Override
@@ -137,8 +143,8 @@ public class SettingsSearchIndexablesProvider extends SearchIndexablesProvider {
      * Gets a Cursor of RawData. We use those data in search indexing time
      */
     @Override
-    public Cursor queryRawData(String[] projection) {
-        final MatrixCursor cursor = new MatrixCursor(INDEXABLES_RAW_COLUMNS);
+    public MatrixCursor queryRawData(String[] projection) {
+        final MatrixCursor cursor = super.queryRawData(projection);
         final List<SearchIndexableRaw> raws = getSearchIndexableRawFromProvider(getContext());
         for (SearchIndexableRaw val : raws) {
             cursor.addRow(createIndexableRawColumnObjects(val));
@@ -153,8 +159,8 @@ public class SettingsSearchIndexablesProvider extends SearchIndexablesProvider {
      * the validity of results in the database.
      */
     @Override
-    public Cursor queryNonIndexableKeys(String[] projection) {
-        final MatrixCursor cursor = new MatrixCursor(NON_INDEXABLES_KEYS_COLUMNS);
+    public MatrixCursor queryNonIndexableKeys(String[] projection) {
+        final MatrixCursor cursor = super.queryNonIndexableKeys(projection);
         final List<String> nonIndexableKeys = getNonIndexableKeysFromProvider(getContext());
         for (String nik : nonIndexableKeys) {
             final Object[] ref = new Object[NON_INDEXABLES_KEYS_COLUMNS.length];
@@ -171,7 +177,7 @@ public class SettingsSearchIndexablesProvider extends SearchIndexablesProvider {
      */
     @Nullable
     @Override
-    public Cursor queryDynamicRawData(String[] projection) {
+    public MatrixCursor queryDynamicRawData(String[] projection) {
         final Context context = getContext();
         final List<SearchIndexableRaw> rawList = new ArrayList<>();
         final Collection<SearchIndexableData> bundles = FeatureFactory.getFeatureFactory()
@@ -188,7 +194,7 @@ public class SettingsSearchIndexablesProvider extends SearchIndexablesProvider {
         }
         rawList.addAll(getInjectionIndexableRawData(context));
 
-        final MatrixCursor cursor = new MatrixCursor(INDEXABLES_RAW_COLUMNS);
+        final MatrixCursor cursor = super.queryDynamicRawData(projection);
         for (SearchIndexableRaw raw : rawList) {
             cursor.addRow(createIndexableRawColumnObjects(raw));
         }

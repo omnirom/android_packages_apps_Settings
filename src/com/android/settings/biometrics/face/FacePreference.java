@@ -18,9 +18,11 @@ package com.android.settings.biometrics.face;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.preference.PreferenceViewHolder;
 
 import com.android.settings.R;
 import com.android.settingslib.widget.TwoTargetPreference;
@@ -48,5 +50,21 @@ public class FacePreference extends TwoTargetPreference {
     @Override
     protected int getSecondTargetResId() {
         return R.layout.preference_widget_delete;
+    }
+
+    @Override
+    public void onBindViewHolder(PreferenceViewHolder view) {
+        super.onBindViewHolder(view);
+        final View divider = view.findViewById(
+                com.android.settingslib.widget.preference.twotarget.R.id.two_target_divider);
+        if (divider != null) {
+            divider.setVisibility(View.GONE);
+        }
+
+        final View deleteIcon = view.findViewById(R.id.delete_button);
+        if (deleteIcon != null) {
+            // prevent overlapped ripple effect when clicking
+            deleteIcon.setBackground(null);
+        }
     }
 }

@@ -43,6 +43,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+// LINT.IfChange
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {ShadowInteractionJankMonitor.class})
 public class HapticFeedbackIntensityPreferenceControllerTest {
@@ -193,3 +194,4 @@ public class HapticFeedbackIntensityPreferenceControllerTest {
         return Settings.System.getInt(mContext.getContentResolver(), settingKey);
     }
 }
+// LINT.ThenChange(TouchVibrationIntensitySliderPreferenceTest.kt)

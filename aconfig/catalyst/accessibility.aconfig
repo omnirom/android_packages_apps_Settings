@@ -2,10 +2,10 @@ package: "com.android.settings.flags"
 container: "system_ext"
 
 flag {
-  name: "catalyst_accessibility_color_and_motion"
+  name: "catalyst_accessibility_screen"
   namespace: "android_settings"
-  description: "Migrate Color and motion screen to the Catalyst infrastructure"
-  bug: "323791114"
+  description: "Flag for Accessibility"
+  bug: "405344827"
 }
 
 flag {
@@ -13,4 +13,11 @@ flag {
   namespace: "android_settings"
   description: "Flag for Display size and text"
   bug: "323791114"
+}
+
+flag {
+  name: "deeplink_accessibility_25q4"
+  namespace: "android_settings"
+  description: "Flag using for all common deeplink migration in 25Q4"
+  bug: "405344827"
 }

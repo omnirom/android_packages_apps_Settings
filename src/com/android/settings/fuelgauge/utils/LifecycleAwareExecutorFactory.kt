@@ -31,18 +31,21 @@ import java.util.concurrent.Executors
  */
 object LifecycleAwareExecutorFactory {
 
+    @JvmStatic
     fun newSingleThreadExecutor(lifecycle: Lifecycle?): ExecutorService {
         return Executors.newSingleThreadExecutor().also { executor ->
             executor.autoShutdown(lifecycle)
         }
     }
 
+    @JvmStatic
     fun newFixedThreadPool(lifecycle: Lifecycle?, nThreads: Int): ExecutorService {
         return Executors.newFixedThreadPool(nThreads).also { executor ->
             executor.autoShutdown(lifecycle)
         }
     }
 
+    @JvmStatic
     fun newCachedThreadPool(lifecycle: Lifecycle?): ExecutorService {
         return Executors.newCachedThreadPool().also { executor ->
             executor.autoShutdown(lifecycle)

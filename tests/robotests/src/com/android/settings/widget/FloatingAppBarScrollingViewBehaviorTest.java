@@ -19,12 +19,13 @@ package com.android.settings.widget;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 
 import com.android.settings.R;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.shape.MaterialShapeDrawable;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,7 +58,9 @@ public class FloatingAppBarScrollingViewBehaviorTest {
         final AppBarLayout appBarLayout = new AppBarLayout(mContext);
         appBarLayout.setBackgroundColor(Color.WHITE);
         mScrollingViewBehavior.setAppBarLayoutTransparent(appBarLayout);
-        assertThat(((ColorDrawable) appBarLayout.getBackground()).getColor()).isEqualTo(
-                Color.TRANSPARENT);
+        ColorStateList backgroundColor = ((MaterialShapeDrawable) appBarLayout.getBackground())
+                .getFillColor();
+        assertThat(backgroundColor).isNotNull();
+        assertThat(backgroundColor.getDefaultColor()).isEqualTo(Color.TRANSPARENT);
     }
 }

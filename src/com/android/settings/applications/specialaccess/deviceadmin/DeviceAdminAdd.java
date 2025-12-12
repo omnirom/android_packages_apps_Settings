@@ -16,7 +16,6 @@
 
 package com.android.settings.applications.specialaccess.deviceadmin;
 
-import static android.app.admin.DevicePolicyManager.DEVICE_OWNER_TYPE_FINANCED;
 import static android.app.admin.DevicePolicyResources.Strings.Settings.ACTIVATE_DEVICE_ADMIN_APP;
 import static android.app.admin.DevicePolicyResources.Strings.Settings.ACTIVATE_THIS_DEVICE_ADMIN_APP;
 import static android.app.admin.DevicePolicyResources.Strings.Settings.ACTIVE_DEVICE_ADMIN_WARNING;
@@ -417,7 +416,7 @@ public class DeviceAdminAdd extends CollapsingToolbarBaseActivity {
             }
         });
 
-        mActionButton = (Button) findViewById(R.id.action_button);
+        mActionButton = (Button) findViewById(R.id.admin_action_button);
 
         final View restrictedAction = findViewById(R.id.restricted_action);
         restrictedAction.setFilterTouchesWhenObscured(true);
@@ -696,7 +695,7 @@ public class DeviceAdminAdd extends CollapsingToolbarBaseActivity {
                             () -> getString(R.string.admin_profile_owner_user_message)));
                 } else {
                     // Show device owner description.
-                    if (isFinancedDevice()) {
+                    if (mDPM.isFinancedDevice()) {
                         mAdminWarning.setText(R.string.admin_financed_message);
                     } else {
                         mAdminWarning.setText(mDPM.getResources().getString(
@@ -831,11 +830,6 @@ public class DeviceAdminAdd extends CollapsingToolbarBaseActivity {
         UserInfo info = um.getUserInfo(
                 UserHandle.getUserId(adminInfo.getActivityInfo().applicationInfo.uid));
         return info != null ? info.isManagedProfile() : false;
-    }
-
-    private boolean isFinancedDevice() {
-        return mDPM.isDeviceManaged() && mDPM.getDeviceOwnerType(
-                mDPM.getDeviceOwnerComponentOnAnyUser()) == DEVICE_OWNER_TYPE_FINANCED;
     }
 
     /**

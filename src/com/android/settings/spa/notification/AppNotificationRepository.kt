@@ -22,6 +22,7 @@ import android.app.INotificationManager
 import android.app.NotificationChannel
 import android.app.NotificationManager.IMPORTANCE_NONE
 import android.app.NotificationManager.IMPORTANCE_UNSPECIFIED
+import android.app.admin.DevicePolicyManager
 import android.app.usage.IUsageStatsManager
 import android.app.usage.UsageEvents
 import android.content.Context
@@ -31,7 +32,10 @@ import android.os.IUserManager
 import android.os.RemoteException
 import android.os.ServiceManager
 import android.util.Log
+
+import com.android.settings.flags.Flags
 import com.android.settings.R
+import com.android.settingslib.RestrictedLockUtils
 import com.android.settingslib.spa.framework.util.formatString
 import com.android.settingslib.spaprivileged.model.app.IPackageManagers
 import com.android.settingslib.spaprivileged.model.app.PackageManagers
@@ -70,6 +74,8 @@ class AppNotificationRepository(
     private val userManager: IUserManager = IUserManager.Stub.asInterface(
             ServiceManager.getService(Context.USER_SERVICE)
     ),
+    private val dpm: DevicePolicyManager =
+            context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager,
 ) : IAppNotificationRepository {
     fun getAggregatedUsageEvents(userIdFlow: Flow<Int>): Flow<Map<String, NotificationSentState>> =
         userIdFlow.map { userId ->
@@ -94,12 +100,27 @@ class AppNotificationRepository(
         }
     }
 
+    fun hasSentMessageNotification(app: ApplicationInfo): Boolean =
+        notificationManager.hasSentValidMsg(app.packageName, app.uid)
+                || notificationManager.isInInvalidMsgState(app.packageName, app.uid)
+
     fun isEnabled(app: ApplicationInfo): Boolean =
         notificationManager.areNotificationsEnabledForPackage(app.packageName, app.uid)
 
     fun isChangeable(app: ApplicationInfo): Boolean {
         if (notificationManager.isImportanceLocked(app.packageName, app.uid)) {
             return false
+        }
+
+        if (Flags.notificationUseDpcPolicy()) {
+            val admin: RestrictedLockUtils.EnforcedAdmin? =
+                RestrictedLockUtils.getProfileOrDeviceOwner(context, context.getUser())
+            val devicePolicyEnforced: Boolean = admin?.let {
+                dpm.getPermissionPolicy(it.component) != DevicePolicyManager.PERMISSION_POLICY_PROMPT
+            } ?: false
+            if (devicePolicyEnforced) {
+                return false
+            }
         }
 
         // If the app targets T but has not requested the permission, we cannot change the
@@ -127,12 +148,12 @@ class AppNotificationRepository(
     }
 
     fun isAdjustmentSupportedForPackage(app: ApplicationInfo,  key: String): Boolean =
-        notificationManager.isAdjustmentSupportedForPackage(key, app.packageName)
+        notificationManager.isAdjustmentSupportedForPackage(app.userId, key, app.packageName)
 
     fun setAdjustmentSupportedForPackage(app: ApplicationInfo, key: String, enabled: Boolean):
             Boolean {
         return try {
-            notificationManager.setAdjustmentSupportedForPackage(key, app.packageName, enabled)
+            notificationManager.setAdjustmentSupportedForPackage(app.userId, key, app.packageName, enabled)
             true
         } catch (e: Exception) {
             Log.w(TAG, "Error calling INotificationManager", e)

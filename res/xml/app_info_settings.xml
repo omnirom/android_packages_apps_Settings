@@ -60,6 +60,18 @@
         settings:controller="com.android.settings.applications.appinfo.AppPermissionPreferenceController" />
 
     <Preference
+        android:key="manage_target_app_function_access_settings"
+        android:title="@string/manage_target_app_function_access_settings_title"
+        android:summary="@string/manage_target_app_function_access_settings_summary"
+        settings:controller="com.android.settings.applications.appinfo.ManageTargetAppFunctionAccessPreferenceController" />
+
+    <Preference
+        android:key="manage_agent_app_function_access_settings"
+        android:title="@string/manage_agent_app_function_access_settings_title"
+        android:summary="@string/manage_agent_app_function_access_settings_summary"
+        settings:controller="com.android.settings.applications.appinfo.ManageAgentAppFunctionAccessPreferenceController" />
+
+    <Preference
         android:key="storage_settings"
         android:title="@string/storage_settings_for_app"
         android:summary="@string/summary_placeholder"

@@ -282,7 +282,7 @@ class TrustedCredentialsDialogBuilder extends AlertDialog.Builder {
             if (certificates != null) {
                 for (X509Certificate certificate : certificates) {
                     SslCertificate sslCert = new SslCertificate(certificate);
-                    views.add(sslCert.inflateCertificateView(mActivity));
+                    views.add(sslCert.inflateCertificateView(mDialog.getContext()));
                     titles.add(sslCert.getIssuedTo().getCName());
                 }
             }
@@ -293,6 +293,12 @@ class TrustedCredentialsDialogBuilder extends AlertDialog.Builder {
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             Spinner spinner = new Spinner(mActivity);
             spinner.setAdapter(arrayAdapter);
+
+            // Ensure spinner height satisfies a11y requirements for minimum touch target size.
+            int minHeightPx = mActivity.getResources().getDimensionPixelSize(
+                    R.dimen.min_tap_target_size);
+            spinner.setMinimumHeight(minHeightPx);
+
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position,

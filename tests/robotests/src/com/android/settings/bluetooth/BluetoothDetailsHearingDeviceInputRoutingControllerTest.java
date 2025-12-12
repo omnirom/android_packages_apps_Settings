@@ -179,6 +179,36 @@ public class BluetoothDetailsHearingDeviceInputRoutingControllerTest extends
         assertThat(mController.isAvailable()).isTrue();
     }
 
+    @Test
+    public void refresh_validInputChangeToNotValidInput_noPreference() {
+        when(mCachedDevice.getAddress()).thenReturn(TEST_ADDRESS);
+        AudioDeviceInfo[] mockInfo = new AudioDeviceInfo[] {mockTestAddressInfo(TEST_ADDRESS)};
+        when(mAudioManager.getDevices(AudioManager.GET_DEVICES_INPUTS)).thenReturn(mockInfo);
+        when(mCachedDevice.getProfiles()).thenReturn(List.of(mHapClientProfile));
+        mController.init(mScreen);
+
+        when(mCachedDevice.getProfiles()).thenReturn(Collections.emptyList());
+        mController.refresh();
+
+        Preference pref = mScreen.findPreference(KEY_HEARING_DEVICE_INPUT_ROUTING);
+        assertThat(pref.isVisible()).isFalse();
+    }
+
+    @Test
+    public void refresh_notValidInputChangeToValidInput_expectedPreference() {
+        when(mCachedDevice.getAddress()).thenReturn(TEST_ADDRESS);
+        AudioDeviceInfo[] mockInfo = new AudioDeviceInfo[] {mockTestAddressInfo(TEST_ADDRESS)};
+        when(mAudioManager.getDevices(AudioManager.GET_DEVICES_INPUTS)).thenReturn(mockInfo);
+        when(mCachedDevice.getProfiles()).thenReturn(Collections.emptyList());
+        mController.init(mScreen);
+
+        when(mCachedDevice.getProfiles()).thenReturn(List.of(mHapClientProfile));
+        mController.refresh();
+
+        Preference pref = mScreen.findPreference(KEY_HEARING_DEVICE_INPUT_ROUTING);
+        assertThat(pref.isVisible()).isTrue();
+    }
+
     private AudioDeviceInfo mockTestAddressInfo(String address) {
         final AudioDeviceInfo info = mock(AudioDeviceInfo.class);
         when(info.getType()).thenReturn(AudioDeviceInfo.TYPE_BLE_HEADSET);

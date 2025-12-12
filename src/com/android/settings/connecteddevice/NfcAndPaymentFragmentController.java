@@ -27,6 +27,7 @@ import com.android.settings.core.BasePreferenceController;
 /**
  * Controller that used to show NFC and payment features
  */
+// LINT.IfChange
 public class NfcAndPaymentFragmentController extends BasePreferenceController {
     private final NfcAdapter mNfcAdapter;
     private final PackageManager mPackageManager;
@@ -62,3 +63,4 @@ public class NfcAndPaymentFragmentController extends BasePreferenceController {
         return null;
     }
 }
+// LINT.ThenChange(NfcAndPaymentScreen.kt)

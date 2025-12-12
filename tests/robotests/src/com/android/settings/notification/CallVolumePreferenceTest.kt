@@ -16,7 +16,6 @@
 
 package com.android.settings.notification
 
-import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Resources
 import android.media.AudioManager
@@ -30,35 +29,31 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.spy
 import org.mockito.kotlin.stub
 
 // LINT.IfChange
 @RunWith(AndroidJUnit4::class)
 class CallVolumePreferenceTest {
-    private var audioHelper = mock<AudioHelper>()
-    private var mockResources = mock<Resources>()
+    private val mockResources = mock<Resources>()
 
-    private var audioManager: AudioManager? = null
+    private val audioManager = mock<AudioManager>()
 
-    private var callVolumePreference = CallVolumePreference()
-    private val context = object : ContextWrapper(ApplicationProvider.getApplicationContext()) {
-        override fun getSystemService(name: String): Any? =
-            when (name) {
-                Context.AUDIO_SERVICE -> audioManager
-                else -> super.getSystemService(name)
-            }
+    private val context =
+        object : ContextWrapper(ApplicationProvider.getApplicationContext()) {
+            override fun getSystemService(name: String): Any? =
+                when (name) {
+                    AUDIO_SERVICE -> audioManager
+                    else -> super.getSystemService(name)
+                }
 
-        override fun getResources(): Resources = mockResources
-    }
+            override fun getResources(): Resources = mockResources
+        }
 
     @Test
     fun isAvailable_configTrueAndNoSingleVolume_shouldReturnTrue() {
         mockResources.stub { on { getBoolean(anyInt()) } doReturn true }
-        audioHelper = mock { on { isSingleVolume } doReturn false }
-        callVolumePreference = spy(callVolumePreference).stub {
-            onGeneric { createAudioHelper(context) } doReturn audioHelper
-        }
+        val audioHelper = mock<AudioHelper> { on { isSingleVolume } doReturn false }
+        val callVolumePreference = CallVolumePreference(audioHelper)
 
         assertThat(callVolumePreference.isAvailable(context)).isTrue()
     }
@@ -66,10 +61,8 @@ class CallVolumePreferenceTest {
     @Test
     fun isAvailable_configTrueAndSingleVolume_shouldReturnFalse() {
         mockResources.stub { on { getBoolean(anyInt()) } doReturn true }
-        audioHelper = mock { on { isSingleVolume } doReturn true }
-        callVolumePreference = spy(callVolumePreference).stub {
-            onGeneric { createAudioHelper(context) } doReturn audioHelper
-        }
+        val audioHelper = mock<AudioHelper> { on { isSingleVolume } doReturn true }
+        val callVolumePreference = CallVolumePreference(audioHelper)
 
         assertThat(callVolumePreference.isAvailable(context)).isFalse()
     }
@@ -77,6 +70,7 @@ class CallVolumePreferenceTest {
     @Test
     fun isAvailable_configFalse_shouldReturnFalse() {
         mockResources.stub { on { getBoolean(anyInt()) } doReturn false }
+        val callVolumePreference = CallVolumePreference(context)
 
         assertThat(callVolumePreference.isAvailable(context)).isFalse()
     }
@@ -84,7 +78,8 @@ class CallVolumePreferenceTest {
     @Test
     @Suppress("DEPRECATION")
     fun getAudioStream_onBluetoothScoOn_shouldEqualToStreamBluetoothSco() {
-        audioManager = mock { on { isBluetoothScoOn } doReturn true }
+        audioManager.stub { on { isBluetoothScoOn } doReturn true }
+        val callVolumePreference = CallVolumePreference(context)
 
         assertThat(callVolumePreference.getAudioStream(context)).isEqualTo(STREAM_BLUETOOTH_SCO)
     }
@@ -92,7 +87,8 @@ class CallVolumePreferenceTest {
     @Test
     @Suppress("DEPRECATION")
     fun getAudioStream_onBluetoothScoOff_shouldEqualToStreamVoiceCall() {
-        audioManager = mock { on { isBluetoothScoOn } doReturn false }
+        audioManager.stub { on { isBluetoothScoOn } doReturn false }
+        val callVolumePreference = CallVolumePreference(context)
 
         assertThat(callVolumePreference.getAudioStream(context)).isEqualTo(STREAM_VOICE_CALL)
     }

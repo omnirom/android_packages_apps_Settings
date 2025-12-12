@@ -19,7 +19,7 @@
     xmlns:settings="http://schemas.android.com/apk/res-auto">
 
     <com.android.settingslib.widget.LayoutPreference
-        android:key="connection_header"
+        android:key="ethernet_details"
         android:layout="@layout/settings_entity_header"
         android:selectable="false"
         android:order="-10000"/>
@@ -29,7 +29,8 @@
         android:icon="@drawable/ic_attach_money_black_24dp"
         android:title="@string/wifi_metered_title"
         android:entries="@array/wifi_metered_entries"
-        android:entryValues="@array/wifi_metered_values"/>
+        android:entryValues="@array/wifi_metered_values"
+        android:defaultValue="0"/>
 
    <!-- Network Details -->
    <PreferenceCategory
@@ -37,6 +38,16 @@
        <Preference
                android:key="ethernet_ip_address"
                android:title="@string/ethernet_ip_address"
+               android:selectable="false"
+               settings:enableCopying="true"/>
+        <Preference
+               android:key="ethernet_gateway"
+               android:title="Gateway"
+               android:selectable="false"
+               settings:enableCopying="true"/>
+       <Preference
+               android:key="ethernet_dns"
+               android:title="DNS"
                android:selectable="false"
                settings:enableCopying="true"/>
        <Preference

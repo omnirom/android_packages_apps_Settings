@@ -14,44 +14,54 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:contentDescription="@string/preview_pager_email_content_description">
-
-    <LinearLayout
+    android:orientation="vertical"
+    android:contentDescription="@string/preview_pager_email_title"
+    android:clipChildren="true">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/preview_pager_email_title"
+        android:importantForAccessibility="noHideDescendants"
+        style="@style/AccessibilityTextReadingPreviewPageTitle" />
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:importantForAccessibility="noHideDescendants">
-
-        <TextView
-            android:id="@+id/subject"
+        android:importantForAccessibility="noHideDescendants"
+        android:fillViewport="true">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/accessibility_text_reading_preview_mail_subject"
-            android:textSize="14sp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="?android:attr/textColorPrimary"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/from"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:paddingTop="11dp"
-            android:textSize="12sp"
-            android:text="@string/accessibility_text_reading_preview_mail_from"
-            android:textColor="?android:attr/textColorSecondary"/>
+            <TextView
+                android:id="@+id/subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/accessibility_text_reading_preview_mail_subject"
+                android:textSize="14sp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="?android:attr/textColorPrimary"/>
 
-        <TextView
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:text="@string/accessibility_text_reading_preview_mail_content"
-            android:textColor="?android:attr/textColorPrimary"/>
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+            <TextView
+                android:id="@+id/from"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:paddingTop="11dp"
+                android:textSize="12sp"
+                android:text="@string/accessibility_text_reading_preview_mail_from"
+                android:textColor="?android:attr/textColorSecondary"/>
+
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:text="@string/accessibility_text_reading_preview_mail_content"
+                android:textColor="?android:attr/textColorPrimary"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

@@ -40,9 +40,9 @@ import com.android.settings.Settings;
 import com.android.settings.Settings.DataUsageSummaryActivity;
 import com.android.settings.Settings.TetherSettingsActivity;
 import com.android.settings.Settings.WifiTetherSettingsActivity;
+import com.android.settings.Utils;
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.gestures.OneHandedSettingsUtils;
-import com.android.settings.network.SubscriptionUtil;
 import com.android.settings.network.telephony.MobileNetworkUtils;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.wifi.WifiUtils;
@@ -204,7 +204,7 @@ public class CreateShortcutPreferenceController extends BasePreferenceController
 
     @VisibleForTesting
     boolean canShowDataUsage() {
-        return SubscriptionUtil.isSimHardwareVisible(mContext)
+        return Utils.isMobileDataCapable(mContext)
                 && !MobileNetworkUtils.isMobileNetworkUserRestricted(mContext);
     }
 

@@ -45,7 +45,7 @@ import android.text.TextUtils;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.settings.R;
+import com.android.settings.network.telephony.SubscriptionActionDialogActivity;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -564,23 +564,6 @@ public class SubscriptionUtilTest {
     }
 
     @Test
-    public void isSimHardwareVisible_configAsInvisible_returnFalse() {
-        when(mResources.getBoolean(R.bool.config_show_sim_info))
-                .thenReturn(false);
-
-        assertThat(SubscriptionUtil.isSimHardwareVisible(mContext)).isFalse();
-    }
-
-    @Test
-    @Ignore("b/339149463")
-    public void isSimHardwareVisible_configAsVisible_returnTrue() {
-        when(mResources.getBoolean(R.bool.config_show_sim_info))
-                .thenReturn(true);
-
-        assertTrue(SubscriptionUtil.isSimHardwareVisible(mContext));
-    }
-
-    @Test
     public void isValidCachedDisplayName_matchesRule1_returnTrue() {
         String originalName = "originalName";
         String cacheString = "originalName 1234";
@@ -681,14 +664,30 @@ public class SubscriptionUtilTest {
     }
 
     @Test
-    public void hasNoSubscriptionWithRacCarrier_hasNoWifi_showRacDialogForAllEsims_returnFalse() {
-        when(mResources.getIntArray(anyInt())).thenReturn(CARRIERS_THAT_USE_RAC);
-        final SubscriptionInfo info = mock(SubscriptionInfo.class);
-        when(info.getCarrierId()).thenReturn(NO_RAC_CARRIER_ID);
-        when(mSubMgr.getAvailableSubscriptionInfoList()).thenReturn(Arrays.asList(info));
-        addNetworkTransportType(NetworkCapabilities.TRANSPORT_WIFI);
+    public void isSimSwitchingInProgress_inProgress_returnTrue() {
+        SharedPreferences sp = mock(SharedPreferences.class);
+        when(mContext.getSharedPreferences(SubscriptionActionDialogActivity.SIM_ACTION_DIALOG_PREFS,
+                Context.MODE_PRIVATE)).thenReturn(sp);
+        when(sp.getInt(eq(SubscriptionActionDialogActivity.KEY_PROGRESS_STATE),
+                anyInt())).thenReturn(SubscriptionActionDialogActivity.PROGRESS_IS_SHOWING);
 
-        assertFalse(SubscriptionUtil.shouldShowRacDialogWhenErasingAllEsims(mContext));
+        assertTrue(SubscriptionUtil.isSimSwitchingInProgress(mContext));
+    }
+
+    @Test
+    public void isSimSwitchingInProgress_notInProgress_returnFalse() {
+        SharedPreferences sp = mock(SharedPreferences.class);
+        when(mContext.getSharedPreferences(SubscriptionActionDialogActivity.SIM_ACTION_DIALOG_PREFS,
+                Context.MODE_PRIVATE)).thenReturn(sp);
+        when(sp.getInt(eq(SubscriptionActionDialogActivity.KEY_PROGRESS_STATE),
+                anyInt())).thenReturn(SubscriptionActionDialogActivity.PROGRESS_IS_NOT_SHOWING);
+
+        assertFalse(SubscriptionUtil.isSimSwitchingInProgress(mContext));
+    }
+
+    @Test
+    public void isSimSwitchingInProgress_noContext_returnFalse() {
+        assertFalse(SubscriptionUtil.isSimSwitchingInProgress(null));
     }
 
     private void addNetworkTransportType(int networkType) {

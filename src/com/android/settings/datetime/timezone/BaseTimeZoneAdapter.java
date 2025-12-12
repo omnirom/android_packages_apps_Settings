@@ -16,23 +16,33 @@
 
 package com.android.settings.datetime.timezone;
 
+import static com.android.settingslib.widget.theme.R.drawable;
+
+import android.annotation.DrawableRes;
 import android.icu.text.BreakIterator;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.settings.R;
 import com.android.settings.datetime.timezone.BaseTimeZonePicker.OnListItemClickListener;
+import com.android.settingslib.widget.SettingsThemeHelper;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +74,13 @@ public class BaseTimeZoneAdapter<T extends BaseTimeZoneAdapter.AdapterItem>
     private ArrayFilter mFilter;
 
     /**
-     * @param headerText the text shown in the header, or null to show no header.
+     * Constructs a new BaseTimeZoneAdapter.
+     *
+     * @param items The list of items to display.
+     * @param onListItemClickListener The listener to be notified when an item is clicked.
+     * @param locale The locale to use for formatting.
+     * @param showItemSummary Whether to show summary text and the current time in the time zone.
+     * @param headerText The text shown in the header, or null to show no header.
      */
     public BaseTimeZoneAdapter(List<T> items, OnListItemClickListener<T> onListItemClickListener,
             Locale locale, boolean showItemSummary, @Nullable CharSequence headerText) {
@@ -91,7 +107,7 @@ public class BaseTimeZoneAdapter<T extends BaseTimeZoneAdapter.AdapterItem>
             }
             case TYPE_ITEM: {
                 final View view = inflater.inflate(R.layout.time_zone_search_item, parent, false);
-                return new ItemViewHolder(view, mOnListItemClickListener);
+                return new ItemViewHolder<>(view, mOnListItemClickListener);
             }
             default:
                 throw new IllegalArgumentException("Unexpected viewType: " + viewType);
@@ -105,8 +121,74 @@ public class BaseTimeZoneAdapter<T extends BaseTimeZoneAdapter.AdapterItem>
         } else if (holder instanceof ItemViewHolder) {
             ItemViewHolder<T> itemViewHolder = (ItemViewHolder<T>) holder;
             itemViewHolder.setAdapterItem(getDataItem(position));
-            itemViewHolder.mSummaryFrame.setVisibility(mShowItemSummary ? View.VISIBLE : View.GONE);
+            boolean showItemSummaryText = mShowItemSummary && !TextUtils.isEmpty(
+                    getDataItem(position).getSummary());
+            boolean showTimeText = mShowItemSummary && !TextUtils.isEmpty(
+                    getDataItem(position).getCurrentTime());
+            toggleSummaryVisibilityAndAdjustConstraints(itemViewHolder, showItemSummaryText,
+                    showTimeText);
+
+            View itemView = holder.itemView;
+            if (SettingsThemeHelper.isExpressiveTheme(itemView.getContext())) {
+                int backgroundRes = getBackgroundRes(position);
+                itemView.setBackgroundResource(backgroundRes);
+                itemView.invalidate();
+            }
         }
+    }
+
+    private @DrawableRes int getBackgroundRes(int position) {
+        int cornerType = SettingsLibHelper.ROUND_CORNER_BACKGROUND_CENTER;
+        if (position == (getItemCount() - 1)) {
+            cornerType |= SettingsLibHelper.ROUND_CORNER_BACKGROUND_BOTTOM;
+        }
+        // if an header is showing, it means the first time zone item is at position 1 not 0.
+        if (mShowHeader ? position == 1 : position == 0) {
+            cornerType |= SettingsLibHelper.ROUND_CORNER_BACKGROUND_TOP;
+        }
+        return SettingsLibHelper.getRoundCornerDrawableRes(cornerType);
+    }
+
+    private void toggleSummaryVisibilityAndAdjustConstraints(ItemViewHolder<?> itemViewHolder,
+            boolean showItemSummaryText, boolean showTimeText) {
+        itemViewHolder.mSummaryTextView.setVisibility(
+                showItemSummaryText ? View.VISIBLE : View.GONE);
+        itemViewHolder.mTimeTextView.setVisibility(showTimeText ? View.VISIBLE : View.GONE);
+
+        // Adjust subview's constraints
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(itemViewHolder.mRootConstraintLayout);
+
+        if (showItemSummaryText) {
+            // Align mTitleTextView to TOP when mSummaryTextView is showing.
+            constraintSet.connect(itemViewHolder.mTitleTextView.getId(), ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+            constraintSet.clear(itemViewHolder.mTitleTextView.getId(), ConstraintSet.BOTTOM);
+
+            // Reset mTimeTextView constraints to align with summary
+            if (showTimeText) {
+                constraintSet.connect(itemViewHolder.mTimeTextView.getId(), ConstraintSet.BOTTOM,
+                        itemViewHolder.mSummaryTextView.getId(), ConstraintSet.BOTTOM);
+                constraintSet.connect(itemViewHolder.mTimeTextView.getId(), ConstraintSet.TOP,
+                        itemViewHolder.mSummaryTextView.getId(), ConstraintSet.TOP);
+            }
+        } else {
+            // center mTitleTextView vertically when mSummaryTextView is not showing.
+            constraintSet.connect(itemViewHolder.mTitleTextView.getId(), ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+            constraintSet.connect(itemViewHolder.mTitleTextView.getId(), ConstraintSet.BOTTOM,
+                    ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
+
+            // Center mTimeTextView vertically when mSummaryTextView is gone
+            if (showTimeText) {
+                constraintSet.connect(itemViewHolder.mTimeTextView.getId(), ConstraintSet.TOP,
+                        ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+                constraintSet.connect(itemViewHolder.mTimeTextView.getId(), ConstraintSet.BOTTOM,
+                        ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
+                constraintSet.setVerticalBias(itemViewHolder.mTimeTextView.getId(), 0.5f);
+            }
+        }
+        constraintSet.applyTo(itemViewHolder.mRootConstraintLayout);
     }
 
     @Override
@@ -159,13 +241,25 @@ public class BaseTimeZoneAdapter<T extends BaseTimeZoneAdapter.AdapterItem>
     }
 
     public interface AdapterItem {
+        /**
+         * @return the title text.
+         */
         CharSequence getTitle();
 
-        CharSequence getSummary();
+        /**
+         * @return the summary text, or null if no summary should be shown.
+         */
+        @Nullable CharSequence getSummary();
 
-        String getIconText();
+        /**
+         * @return the current time in the time zone, or null if no time should be shown.
+         */
+        @Nullable String getCurrentTime();
 
-        String getCurrentTime();
+        /**
+         * @return whether the current item should be marked as selected.
+         */
+        boolean getIsSelected();
 
         /**
          * @return unique non-negative number
@@ -206,30 +300,30 @@ public class BaseTimeZoneAdapter<T extends BaseTimeZoneAdapter.AdapterItem>
             extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final OnListItemClickListener<T> mOnListItemClickListener;
-        final View mSummaryFrame;
-        final TextView mTitleView;
-        final TextView mIconTextView;
-        final TextView mSummaryView;
-        final TextView mTimeView;
+        final ConstraintLayout mRootConstraintLayout;
+        final RadioButton mItemSelectedRadioButton;
+        final TextView mTitleTextView;
+        final TextView mSummaryTextView;
+        final TextView mTimeTextView;
         private T mItem;
 
         public ItemViewHolder(View itemView, OnListItemClickListener<T> onListItemClickListener) {
             super(itemView);
             itemView.setOnClickListener(this);
-            mSummaryFrame = itemView.findViewById(R.id.summary_frame);
-            mTitleView = itemView.findViewById(android.R.id.title);
-            mIconTextView = itemView.findViewById(R.id.icon_text);
-            mSummaryView = itemView.findViewById(android.R.id.summary);
-            mTimeView = itemView.findViewById(R.id.current_time);
+            mRootConstraintLayout = itemView.findViewById(R.id.container);
+            mItemSelectedRadioButton = itemView.findViewById(R.id.selected_radio_button);
+            mTitleTextView = itemView.findViewById(R.id.title);
+            mSummaryTextView = itemView.findViewById(R.id.summary);
+            mTimeTextView = itemView.findViewById(R.id.current_time);
             mOnListItemClickListener = onListItemClickListener;
         }
 
         public void setAdapterItem(T item) {
             mItem = item;
-            mTitleView.setText(item.getTitle());
-            mIconTextView.setText(item.getIconText());
-            mSummaryView.setText(item.getSummary());
-            mTimeView.setText(item.getCurrentTime());
+            mItemSelectedRadioButton.setChecked(item.getIsSelected());
+            mTitleTextView.setText(item.getTitle());
+            mSummaryTextView.setText(item.getSummary());
+            mTimeTextView.setText(item.getCurrentTime());
         }
 
         @Override
@@ -250,7 +344,7 @@ public class BaseTimeZoneAdapter<T extends BaseTimeZoneAdapter.AdapterItem>
     @VisibleForTesting
     public class ArrayFilter extends Filter {
 
-        private BreakIterator mBreakIterator = BreakIterator.getWordInstance(mLocale);
+        private final BreakIterator mBreakIterator = BreakIterator.getWordInstance(mLocale);
 
         @WorkerThread
         @Override
@@ -300,6 +394,46 @@ public class BaseTimeZoneAdapter<T extends BaseTimeZoneAdapter.AdapterItem>
         public void publishResults(CharSequence constraint, FilterResults results) {
             mItems = (List<T>) results.values;
             notifyDataSetChanged();
+        }
+    }
+
+    private static final class SettingsLibHelper {
+        @Retention(RetentionPolicy.SOURCE)
+        @IntDef(
+                flag = true,
+                value = {
+                        ROUND_CORNER_BACKGROUND_CENTER,
+                        ROUND_CORNER_BACKGROUND_TOP,
+                        ROUND_CORNER_BACKGROUND_BOTTOM
+                })
+        private @interface RoundCornerFlags {}
+
+        private static final int ROUND_CORNER_BACKGROUND_CENTER = 1;
+        private static final int ROUND_CORNER_BACKGROUND_TOP = 1 << 1;
+        private static final int ROUND_CORNER_BACKGROUND_BOTTOM = 1 << 2;
+
+        /**
+         * Gets the drawable resource ID for a round corner background.
+         * @param cornerType The type of corner to round.
+         */
+        private static @DrawableRes int getRoundCornerDrawableRes(
+                @RoundCornerFlags int cornerType) {
+            boolean isTopRounded = (cornerType & ROUND_CORNER_BACKGROUND_TOP) != 0;
+            boolean isBottomRounded = (cornerType & ROUND_CORNER_BACKGROUND_BOTTOM) != 0;
+
+            if (isTopRounded && !isBottomRounded) {
+                // first item in the list
+                return drawable.settingslib_round_background_top;
+            } else if (!isTopRounded && isBottomRounded) {
+                // the last item in the list
+                return drawable.settingslib_round_background_bottom;
+            } else if (isTopRounded && isBottomRounded) {
+                // single item in the list
+                return drawable.settingslib_round_background;
+            } else {
+                // the item in the center of the list
+                return drawable.settingslib_round_background_center;
+            }
         }
     }
 }

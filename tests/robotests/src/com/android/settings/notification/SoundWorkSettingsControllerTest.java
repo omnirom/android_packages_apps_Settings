@@ -26,6 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.telephony.TelephonyManager;
@@ -54,6 +55,8 @@ public class SoundWorkSettingsControllerTest {
     private static final String KEY_WORK_ALARM_RINGTONE = "work_alarm_ringtone";
 
     @Mock
+    private Resources mResources;
+    @Mock
     private Context mContext;
     @Mock
     private PreferenceScreen mScreen;
@@ -70,7 +73,10 @@ public class SoundWorkSettingsControllerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         when(mContext.getSystemService(Context.TELEPHONY_SERVICE)).thenReturn(mTelephonyManager);
-        when(mTelephonyManager.isVoiceCapable()).thenReturn(true);
+        when(mContext.getResources()).thenReturn(mResources);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(true);
+        when(mResources.getBoolean(com.android.settings.R.bool.config_show_sim_info))
+                .thenReturn(true);
         when(mFragment.getPreferenceScreen()).thenReturn(mScreen);
         when(mScreen.findPreference(KEY_WORK_USE_PERSONAL_SOUNDS))
                 .thenReturn(mock(TwoStatePreference.class));
@@ -123,7 +129,31 @@ public class SoundWorkSettingsControllerTest {
 
     @Test
     public void onResume_noVoiceCapability_shouldHidePhoneRingtone() {
-        when(mTelephonyManager.isVoiceCapable()).thenReturn(false);
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(false);
+        when(mResources.getBoolean(com.android.settings.R.bool.config_show_sim_info))
+                .thenReturn(true);
+        mController = new SoundWorkSettingsController(mContext, mFragment, null, mAudioHelper);
+
+        when(mAudioHelper.getManagedProfileId(nullable(UserManager.class)))
+                .thenReturn(UserHandle.myUserId());
+        when(mAudioHelper.isUserUnlocked(nullable(UserManager.class), anyInt())).thenReturn(true);
+        when(mAudioHelper.isSingleVolume()).thenReturn(false);
+        when(mAudioHelper.createPackageContextAsUser(anyInt())).thenReturn(mContext);
+
+        // Precondition: work profile is available.
+        assertThat(mController.isAvailable()).isTrue();
+
+        mController.displayPreference(mScreen);
+        mController.onResume();
+
+        verify((Preference) mScreen.findPreference(KEY_WORK_PHONE_RINGTONE)).setVisible(false);
+    }
+
+    @Test
+    public void onResume_telephonyDisabled_shouldHidePhoneRingtone() {
+        when(mTelephonyManager.isDeviceVoiceCapable()).thenReturn(true);
+        when(mResources.getBoolean(com.android.settings.R.bool.config_show_sim_info))
+                .thenReturn(false);
         mController = new SoundWorkSettingsController(mContext, mFragment, null, mAudioHelper);
 
         when(mAudioHelper.getManagedProfileId(nullable(UserManager.class)))

@@ -33,7 +33,7 @@ import java.lang.annotation.RetentionPolicy;
 /** Class to provide magnification capabilities. */
 public final class MagnificationCapabilities {
 
-    private static final String KEY_CAPABILITY =
+    public static final String KEY_CAPABILITY =
             Settings.Secure.ACCESSIBILITY_MAGNIFICATION_CAPABILITY;
 
     /**

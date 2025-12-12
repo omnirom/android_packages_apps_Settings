@@ -62,6 +62,7 @@ import com.android.settings.network.telephony.wificalling.IWifiCallingRepository
 import com.android.settings.network.telephony.wificalling.WifiCallingRepository;
 import com.android.settings.widget.SettingsMainSwitchPreference;
 import com.android.settingslib.core.AbstractPreferenceController;
+import com.android.settingslib.widget.TopIntroPreference;
 
 import kotlin.Unit;
 
@@ -292,8 +293,7 @@ public class WifiCallingSettingsForSub extends DashboardFragment
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction(ImsManager.ACTION_WFC_IMS_REGISTRATION_ERROR);
 
-        updateDescriptionForOptions(
-                List.of(mButtonWfcMode, mButtonWfcRoamingMode, mUpdateAddress));
+        updateDescription(List.of(mButtonWfcMode, mButtonWfcRoamingMode, mUpdateAddress));
 
         List<AbstractPreferenceController> subscriptionPreferenceControllers =
                 useGroup(AbstractSubscriptionPreferenceController.class);
@@ -611,12 +611,11 @@ public class WifiCallingSettingsForSub extends DashboardFragment
             mButtonWfcRoamingMode.setVisible(false);
             mUpdateAddress.setVisible(false);
         }
-        updateDescriptionForOptions(
-                List.of(mButtonWfcMode, mButtonWfcRoamingMode, mUpdateAddress));
+        updateDescription(List.of(mButtonWfcMode, mButtonWfcRoamingMode, mUpdateAddress));
     }
 
-    private void updateDescriptionForOptions(List<Preference> visibleOptions) {
-        LinkifyDescriptionPreference pref = findPreference(PREFERENCE_NO_OPTIONS_DESC);
+    private void updateDescription(List<Preference> visibleOptions) {
+        TopIntroPreference pref = findPreference(PREFERENCE_NO_OPTIONS_DESC);
         if (pref == null) {
             return;
         }
@@ -624,9 +623,9 @@ public class WifiCallingSettingsForSub extends DashboardFragment
         boolean optionsAvailable = visibleOptions.stream().anyMatch(Preference::isVisible);
         if (!optionsAvailable) {
             final Resources res = getResourcesForSubId();
-            String emptyViewText = res.getString(R.string.wifi_calling_off_explanation,
+            String titleText = res.getString(R.string.wifi_calling_off_explanation,
                     res.getString(R.string.wifi_calling_off_explanation_2));
-            pref.setSummary(emptyViewText);
+            pref.setTitle(titleText);
         }
         pref.setVisible(!optionsAvailable);
     }

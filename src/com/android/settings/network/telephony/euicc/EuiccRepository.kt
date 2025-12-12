@@ -22,7 +22,7 @@ import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.telephony.euicc.EuiccManager
 import android.util.Log
-import com.android.settings.network.SubscriptionUtil
+import com.android.settings.Utils
 import com.android.settingslib.development.DevelopmentSettingsEnabler
 import com.android.settingslib.spaprivileged.settingsprovider.settingsGlobalBoolean
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +61,10 @@ constructor(
      * has enabled development mode.
      */
     fun showEuiccSettings(): Boolean {
-        if (!SubscriptionUtil.isSimHardwareVisible(context)) return false
+        if (!Utils.isMobileDataCapable(context) && !Utils.isVoiceCapable(context)) {
+            Log.i(TAG, "showEuiccSettings: no telephony voice/data capabilities.")
+            return false
+        }
         if (euiccManager == null || !euiccManager.isEnabled) {
             Log.w(TAG, "EuiccManager is not enabled.")
             return false

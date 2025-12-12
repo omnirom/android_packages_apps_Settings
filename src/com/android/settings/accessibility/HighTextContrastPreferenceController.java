@@ -16,6 +16,8 @@
 
 package com.android.settings.accessibility;
 
+import static com.android.settings.core.instrumentation.SettingsStatsLog.ACCESSIBILITY_TEXT_READING_OPTIONS_CHANGED__NAME__TEXT_READING_HIGH_CONTRAST_TEXT;
+
 import android.content.Context;
 import android.provider.Settings;
 
@@ -31,6 +33,7 @@ import com.android.settings.core.instrumentation.SettingsStatsLog;
 /**
  * PreferenceController for displaying all text in high contrast style.
  */
+// LINT.IfChange
 public class HighTextContrastPreferenceController extends TogglePreferenceController implements
         TextReadingResetController.ResetStateListener {
     private TwoStatePreference mSwitchPreference;
@@ -57,7 +60,7 @@ public class HighTextContrastPreferenceController extends TogglePreferenceContro
     public boolean setChecked(boolean isChecked) {
         SettingsStatsLog.write(
                 SettingsStatsLog.ACCESSIBILITY_TEXT_READING_OPTIONS_CHANGED,
-                AccessibilityStatsLogUtils.convertToItemKeyName(getPreferenceKey()),
+                ACCESSIBILITY_TEXT_READING_OPTIONS_CHANGED__NAME__TEXT_READING_HIGH_CONTRAST_TEXT,
                 isChecked ? 1 : 0,
                 AccessibilityStatsLogUtils.convertToEntryPoint(mEntryPoint));
 
@@ -105,3 +108,4 @@ public class HighTextContrastPreferenceController extends TogglePreferenceContro
         mEntryPoint = entryPoint;
     }
 }
+// LINT.ThenChange(/src/com/android/settings/accessibility/textreading/ui/OutlineTextPreference.kt, /src/com/android/settings/accessibility/textreading/data/OutlineTextDataStore.kt,)

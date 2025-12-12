@@ -29,6 +29,7 @@ import android.content.Context;
 import androidx.fragment.app.Fragment;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.android.settingslib.RestrictedLockUtils;
 import com.android.wifitrackerlib.WifiEntry;
 
 import org.junit.Before;
@@ -118,7 +119,7 @@ public class LongPressWifiEntryPreferenceTest {
 
         mPreference.checkRestrictionAndSetDisabled();
 
-        verify(mPreference).setDisabledByAdmin(any());
+        verify(mPreference).setDisabledByAdmin(any(RestrictedLockUtils.EnforcedAdmin.class));
     }
 
     @Test
@@ -127,6 +128,7 @@ public class LongPressWifiEntryPreferenceTest {
 
         mPreference.checkRestrictionAndSetDisabled();
 
-        verify(mPreference, never()).setDisabledByAdmin(any());
+        verify(mPreference, never()).setDisabledByAdmin(
+                any(RestrictedLockUtils.EnforcedAdmin.class));
     }
 }

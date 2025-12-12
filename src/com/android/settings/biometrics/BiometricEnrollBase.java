@@ -23,13 +23,16 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.os.UserHandle;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 
@@ -37,10 +40,12 @@ import com.android.settings.R;
 import com.android.settings.SetupWizardUtils;
 import com.android.settings.Utils;
 import com.android.settings.biometrics.fingerprint.FingerprintEnrollEnrolling;
+import com.android.settings.biometrics.metrics.BiometricsLogger;
+import com.android.settings.biometrics.metrics.OnboardingEvent;
+import com.android.settings.biometrics.metrics.OnboardingScreenInfoEvent;
 import com.android.settings.core.InstrumentedActivity;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.password.ChooseLockSettingsHelper;
-import com.android.settingslib.activityembedding.ActivityEmbeddingUtils;
 import com.android.systemui.unfold.compat.ScreenSizeFoldProvider;
 import com.android.systemui.unfold.updates.FoldProvider;
 
@@ -49,6 +54,8 @@ import com.google.android.setupcompat.template.FooterButton;
 import com.google.android.setupcompat.util.WizardManagerHelper;
 import com.google.android.setupdesign.GlifLayout;
 import com.google.android.setupdesign.util.ThemeHelper;
+
+import java.util.ArrayList;
 
 /**
  * Base activity for all biometric enrollment steps.
@@ -65,6 +72,9 @@ public abstract class BiometricEnrollBase extends InstrumentedActivity {
     public static final String EXTRA_KEY_CHALLENGE = "challenge";
     public static final String EXTRA_KEY_MODALITY = "sensor_modality";
     public static final String EXTRA_KEY_NEXT_LAUNCHED = "next_launched";
+    public static final String EXTRA_KEY_START_TIME = "start_time";
+    public static final String EXTRA_KEY_ONBOARDING_EVENT = "onboarding_event";
+    public static final String EXTRA_KEY_ONBOARDING_ACTIONS = "onboarding_actions";
     public static final String EXTRA_FINISHED_ENROLL_FACE = "finished_enrolling_face";
     public static final String EXTRA_FINISHED_ENROLL_FINGERPRINT = "finished_enrolling_fingerprint";
     public static final String EXTRA_LAUNCHED_POSTURE_GUIDANCE = "launched_posture_guidance";
@@ -145,18 +155,20 @@ public abstract class BiometricEnrollBase extends InstrumentedActivity {
     @Nullable
     protected FoldProvider.FoldCallback mFoldCallback = null;
 
+    @Nullable
+    protected BiometricsLogger mBiometricsLogger;
+    @Nullable
+    protected OnboardingEvent mOnboardingEvent;
+    protected ArrayList<Integer> mActions = new ArrayList<>();
+    protected long mStartTimeMillis;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setTheme(SetupWizardUtils.getTheme(this, getIntent()));
+        ThemeHelper.trySetDynamicColor(this);
         if (ThemeHelper.shouldApplyGlifExpressiveStyle(getApplicationContext())) {
-            if (!ThemeHelper.trySetSuwTheme(this)) {
-                setTheme(ThemeHelper.getSuwDefaultTheme(getApplicationContext()));
-                ThemeHelper.trySetDynamicColor(this);
-            }
-        } else {
-            setTheme(SetupWizardUtils.getTheme(this, getIntent()));
-            ThemeHelper.trySetDynamicColor(this);
+            ThemeHelper.trySetSuwTheme(this);
         }
         mChallenge = getIntent().getLongExtra(EXTRA_KEY_CHALLENGE, -1L);
         mSensorId = getIntent().getIntExtra(EXTRA_KEY_SENSOR_ID, -1);
@@ -181,10 +193,32 @@ public abstract class BiometricEnrollBase extends InstrumentedActivity {
             mLaunchedPostureGuidance = savedInstanceState.getBoolean(
                     EXTRA_LAUNCHED_POSTURE_GUIDANCE);
             mNextLaunched = savedInstanceState.getBoolean(EXTRA_KEY_NEXT_LAUNCHED);
+            mStartTimeMillis = savedInstanceState.getLong(EXTRA_KEY_START_TIME, 0);
+            mActions = savedInstanceState.getIntegerArrayList(EXTRA_KEY_ONBOARDING_ACTIONS);
+            mOnboardingEvent = savedInstanceState.getParcelable(
+                    EXTRA_KEY_ONBOARDING_EVENT, OnboardingEvent.class);
         }
-        mUserId = getIntent().getIntExtra(Intent.EXTRA_USER_ID, UserHandle.myUserId());
+        if (mStartTimeMillis <= 0) {
+            mStartTimeMillis = SystemClock.elapsedRealtime();
+        }
+        final String callingPackage = getLaunchedFromPackage();
+        if (callingPackage == null || !getPackageName().equals(callingPackage)) {
+            mUserId = UserHandle.myUserId();
+        } else {
+            mUserId = getIntent().getIntExtra(Intent.EXTRA_USER_ID, UserHandle.myUserId());
+        }
         mPostureGuidanceIntent = FeatureFactory.getFeatureFactory()
                 .getFaceFeatureProvider().getPostureGuidanceIntent(getApplicationContext());
+
+        mBiometricsLogger = FeatureFactory.getFeatureFactory().getBiometricsFeatureProvider()
+                .getBiometricsLogger();
+        if (mOnboardingEvent == null && mBiometricsLogger != null) {
+            mOnboardingEvent = getOnboardingEventFromIntent(getIntent());
+        }
+        if (BiometricsLogger.LOGGABLE) {
+            Log.d(BiometricsLogger.TAG, getClass().getSimpleName() + ".onCreate event="
+                    + mOnboardingEvent);
+        }
 
         // Remove the existing split screen dialog.
         BiometricsSplitScreenDialog dialog =
@@ -193,6 +227,22 @@ public abstract class BiometricEnrollBase extends InstrumentedActivity {
         if (dialog != null) {
             getSupportFragmentManager().beginTransaction().remove(dialog).commit();
         }
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                updateOnboardingScreenInfoActions(
+                        BiometricsOnboardingProto.OnboardingAction.ACTION_CANCEL_VALUE);
+                setResult(RESULT_CANCELED, newResultIntent());
+                finish();
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mStartTimeMillis = SystemClock.elapsedRealtime();
     }
 
     @Override
@@ -205,6 +255,11 @@ public abstract class BiometricEnrollBase extends InstrumentedActivity {
         outState.putInt(EXTRA_KEY_SENSOR_ID, mSensorId);
         outState.putBoolean(EXTRA_LAUNCHED_POSTURE_GUIDANCE, mLaunchedPostureGuidance);
         outState.putBoolean(EXTRA_KEY_NEXT_LAUNCHED, mNextLaunched);
+        if (mOnboardingEvent != null) {
+            outState.putLong(EXTRA_KEY_START_TIME, mStartTimeMillis);
+            outState.putIntegerArrayList(EXTRA_KEY_ONBOARDING_ACTIONS, mActions);
+            outState.putParcelable(EXTRA_KEY_ONBOARDING_EVENT, mOnboardingEvent);
+        }
     }
 
     @Override
@@ -239,8 +294,8 @@ public abstract class BiometricEnrollBase extends InstrumentedActivity {
         mFoldCallback = null;
 
         if (!isChangingConfigurations() && shouldFinishWhenBackgrounded()
-                && !BiometricUtils.isAnyMultiBiometricFlow(this)) {
-            setResult(RESULT_TIMEOUT);
+                && !BiometricUtils.isAnyMultiBiometricFlow(this) && !isFinishing()) {
+            setResult(RESULT_TIMEOUT, newResultIntent());
             finish();
         }
     }
@@ -270,6 +325,7 @@ public abstract class BiometricEnrollBase extends InstrumentedActivity {
 
     protected void setHeaderText(int resId, boolean force) {
         TextView layoutTitle = getLayout().getHeaderTextView();
+        layoutTitle.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NONE);
         CharSequence previousTitle = layoutTitle.getText();
         CharSequence title = getText(resId);
         if (previousTitle != title || force) {
@@ -360,6 +416,57 @@ public abstract class BiometricEnrollBase extends InstrumentedActivity {
     }
 
     protected boolean shouldShowSplitScreenDialog() {
-        return isInMultiWindowMode() && !ActivityEmbeddingUtils.isActivityEmbedded(this);
+        return BiometricUtils.isSplitScreenEnrollmentDisabled(this);
+    }
+
+    protected int getOnboardingScreen() {
+        return BiometricsOnboardingProto.OnboardingScreen.SCREEN_UNKNOWN_VALUE;
+    }
+
+    protected void updateOnboardingScreenInfoActions(int action) {
+        if (mBiometricsLogger != null && mOnboardingEvent != null) {
+            mActions.add(action);
+        }
+    }
+
+    @Nullable
+    protected Intent newResultIntent() {
+        if (mBiometricsLogger == null || mOnboardingEvent == null) {
+            return null;
+        }
+        addScreenInfoToEvent();
+        final Intent intent = new Intent();
+        intent.putExtra(
+                BiometricsLogger.EXTRA_BIOMETRICS_ONBOARDING_EVENT_BYTES,
+                mBiometricsLogger.eventToMessageByteArray(mOnboardingEvent)
+        );
+        return intent;
+    }
+
+    @Nullable
+    protected OnboardingEvent getOnboardingEventFromIntent(Intent intent) {
+        if (mBiometricsLogger != null && intent != null
+                && intent.hasExtra(BiometricsLogger.EXTRA_BIOMETRICS_ONBOARDING_EVENT_BYTES)) {
+            return mBiometricsLogger.messageByteArrayToEvent(intent.getByteArrayExtra(
+                    BiometricsLogger.EXTRA_BIOMETRICS_ONBOARDING_EVENT_BYTES));
+        }
+        return null;
+    }
+
+    protected void addScreenInfoToEvent() {
+        if (mBiometricsLogger == null || mOnboardingEvent == null) {
+            return;
+        }
+        mOnboardingEvent.addScreenInfo(new OnboardingScreenInfoEvent(
+                getOnboardingScreen(),
+                SystemClock.elapsedRealtime() - mStartTimeMillis,
+                mActions.stream().mapToInt(Integer::intValue).toArray()
+        ));
+        if (BiometricsLogger.LOGGABLE) {
+            Log.d(BiometricsLogger.TAG, getClass().getSimpleName() + ": add screen info="
+                    + mOnboardingEvent.getScreenInfos());
+        }
+        // reset data
+        mActions.clear();
     }
 }

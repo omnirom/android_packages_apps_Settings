@@ -33,6 +33,7 @@ import com.android.settingslib.dream.DreamBackend;
 import com.android.settingslib.dream.DreamBackend.DreamInfo;
 import com.android.settingslib.widget.LayoutPreference;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,7 +46,7 @@ public class DreamPickerController extends BasePreferenceController {
 
     private final DreamBackend mBackend;
     private final MetricsFeatureProvider mMetricsFeatureProvider;
-    private final List<DreamInfo> mDreamInfos;
+    private final List<DreamInfo> mDreamInfos = new ArrayList<>();
     @Nullable
     private DreamInfo mActiveDream;
     private DreamAdapter mAdapter;
@@ -59,14 +60,14 @@ public class DreamPickerController extends BasePreferenceController {
     public DreamPickerController(Context context, DreamBackend backend) {
         super(context, PREF_KEY);
         mBackend = backend;
-        mDreamInfos = mBackend.getDreamInfos();
+        mDreamInfos.addAll(mBackend.getDreamInfos());
         mActiveDream = getActiveDreamInfo(mDreamInfos);
         mMetricsFeatureProvider = FeatureFactory.getFeatureFactory().getMetricsFeatureProvider();
     }
 
     @Override
     public int getAvailabilityStatus() {
-        return mDreamInfos.size() > 0 ? AVAILABLE : CONDITIONALLY_UNAVAILABLE;
+        return !mDreamInfos.isEmpty() ? AVAILABLE : CONDITIONALLY_UNAVAILABLE;
     }
 
     @Override
@@ -103,6 +104,16 @@ public class DreamPickerController extends BasePreferenceController {
     @Nullable
     public DreamInfo getActiveDreamInfo() {
         return mActiveDream;
+    }
+
+    void refreshDreamsList() {
+        mDreamInfos.clear();
+        mDreamInfos.addAll(mBackend.getDreamInfos());
+        mAdapter.setItemList(mDreamInfos
+                .stream()
+                .map(DreamItem::new)
+                .collect(Collectors.toList()));
+        mAdapter.notifyDataSetChanged();
     }
 
     @Nullable
@@ -157,6 +168,11 @@ public class DreamPickerController extends BasePreferenceController {
             mMetricsFeatureProvider.action(SettingsEnums.PAGE_UNKNOWN,
                     SettingsEnums.ACTION_DREAM_SELECT_TYPE, SettingsEnums.DREAM,
                     mDreamInfo.componentName.flattenToString(), 1);
+        }
+
+        @Override
+        public void onPreviewClicked() {
+            mBackend.preview(mDreamInfo.componentName);
         }
 
         @Override

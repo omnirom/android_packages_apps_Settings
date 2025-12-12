@@ -18,7 +18,9 @@ package com.android.settings;
 
 import static com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
 
+import android.annotation.Nullable;
 import android.app.KeyguardManager;
+import android.app.admin.EnforcingAdmin;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -53,6 +55,10 @@ public class RestrictedListPreference extends CustomListPreference implements
     private final List<RestrictedItem> mRestrictedItems = new ArrayList<>();
     private boolean mRequiresActiveUnlockedProfile = false;
     private int mProfileUserId;
+
+    public RestrictedListPreference(Context context) {
+        this(context, null);
+    }
 
     public RestrictedListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -110,8 +116,15 @@ public class RestrictedListPreference extends CustomListPreference implements
         super.setEnabled(enabled);
     }
 
+    @Deprecated
     public void setDisabledByAdmin(EnforcedAdmin admin) {
         if (mHelper.setDisabledByAdmin(admin)) {
+            notifyChanged();
+        }
+    }
+
+    public void setDisabledByAdmin(@Nullable EnforcingAdmin admin) {
+        if (mHelper.setDisabledByEnforcingAdmin(admin)) {
             notifyChanged();
         }
     }
@@ -245,8 +258,15 @@ public class RestrictedListPreference extends CustomListPreference implements
                     if (item != null) {
                         ListView listView = ((AlertDialog) dialog).getListView();
                         listView.setItemChecked(getLastCheckedPosition(), true);
-                        RestrictedLockUtils.sendShowAdminSupportDetailsIntent(getContext(),
-                                item.enforcedAdmin);
+                        // Either the enforcing admin or the enforced admin should be set, but not
+                        // both.
+                        if (item.enforcingAdmin != null) {
+                            RestrictedLockUtils.sendShowAdminSupportDetailsIntent(
+                                    getContext(), item.enforcingAdmin, item.restriction);
+                        } else if (item.enforcedAdmin != null) {
+                            RestrictedLockUtils.sendShowAdminSupportDetailsIntent(
+                                    getContext(), item.enforcedAdmin);
+                        }
                     } else {
                         setClickedDialogEntryIndex(which);
                     }
@@ -286,13 +306,29 @@ public class RestrictedListPreference extends CustomListPreference implements
     public static class RestrictedItem {
         public final CharSequence entry;
         public final CharSequence entryValue;
+        @Nullable
         public final EnforcedAdmin enforcedAdmin;
+        @Nullable
+        public final EnforcingAdmin enforcingAdmin;
+        @Nullable
+        public final String restriction;
 
         public RestrictedItem(CharSequence entry, CharSequence entryValue,
                 EnforcedAdmin enforcedAdmin) {
             this.entry = entry;
             this.entryValue = entryValue;
             this.enforcedAdmin = enforcedAdmin;
+            this.restriction = enforcedAdmin == null ? null : enforcedAdmin.enforcedRestriction;
+            this.enforcingAdmin = null;
+        }
+
+        public RestrictedItem(CharSequence entry, CharSequence entryValue,
+                 EnforcingAdmin enforcingAdmin, String restriction) {
+            this.entry = entry;
+            this.entryValue = entryValue;
+            this.enforcedAdmin = null;
+            this.enforcingAdmin = enforcingAdmin;
+            this.restriction = restriction;
         }
     }
 }

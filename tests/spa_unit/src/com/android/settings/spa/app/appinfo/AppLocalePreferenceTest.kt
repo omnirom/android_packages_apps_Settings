@@ -20,6 +20,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsNotDisplayed
@@ -31,6 +34,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.dx.mockito.inline.extended.ExtendedMockito.mockitoSession
 import com.android.settings.R
+import com.android.settings.Settings
 import com.android.settings.applications.AppInfoBase
 import com.android.settings.applications.AppLocaleUtil
 import com.android.settings.applications.appinfo.AppLocaleDetails
@@ -38,6 +42,7 @@ import com.android.settings.localepicker.AppLocalePickerActivity
 import com.android.settingslib.spa.testutils.delay
 import com.android.settingslib.spa.testutils.waitUntilExists
 import com.android.settingslib.spaprivileged.model.app.userHandle
+import com.android.settingslib.widget.theme.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Before
@@ -59,6 +64,8 @@ import org.mockito.Mockito.`when` as whenever
 class AppLocalePreferenceTest {
     @get:Rule
     val composeTestRule = createComposeRule()
+    @get:Rule
+    val setFlagsRule = SetFlagsRule()
 
     private lateinit var mockSession: MockitoSession
 
@@ -106,6 +113,24 @@ class AppLocalePreferenceTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
+    fun whenCanDisplayLocalUi_click_startActivityWithExpressiveTheme() {
+        doNothing().`when`(context).startActivityAsUser(any(), any())
+
+        setContent()
+        composeTestRule.onRoot().performClick()
+        composeTestRule.delay()
+
+        val intentCaptor = ArgumentCaptor.forClass(Intent::class.java)
+        verify(context).startActivityAsUser(intentCaptor.capture(), eq(APP.userHandle))
+        val intent = intentCaptor.value
+        assertThat(intent.component?.className)
+            .isEqualTo(Settings.AppLanguageSettingsActivity::class.java.name)
+        assertThat(intent.getIntExtra(AppInfoBase.ARG_PACKAGE_UID, -1)).isEqualTo(UID)
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
     fun whenCanDisplayLocalUi_click_startActivity() {
         doNothing().`when`(context).startActivityAsUser(any(), any())
 

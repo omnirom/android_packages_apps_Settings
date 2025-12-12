@@ -29,6 +29,7 @@ import androidx.annotation.VisibleForTesting;
 
 import com.android.settings.R;
 import com.android.settings.bluetooth.BluetoothPairingDialogFragment.BluetoothPairingDialogListener;
+import com.android.settings.flags.Flags;
 import com.android.settingslib.bluetooth.BluetoothUtils;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
@@ -212,11 +213,16 @@ public class BluetoothPairingController implements OnCheckedChangeListener,
     }
 
     /**
-     * A method whether the device allows to show the le audio's contact sharing.
+     * A method whether the device allows to show the contact sharing toggle.
      *
      * @return A boolean whether the device allows to show the contact sharing.
      */
     public boolean isContactSharingVisible() {
+        if (Flags.hidePhonebookAccessToggleForWearableDevicesWhenPairing()) {
+            return !isProfileReady()
+                    && (mDevice.getBluetoothClass().getMajorDeviceClass()
+                    != BluetoothClass.Device.Major.WEARABLE);
+        }
         return !isProfileReady();
     }
 

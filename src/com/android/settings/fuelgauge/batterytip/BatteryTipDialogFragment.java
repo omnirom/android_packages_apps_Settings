@@ -39,7 +39,6 @@ import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
 import com.android.settings.fuelgauge.batterytip.BatteryTipPreferenceController.BatteryTipListener;
 import com.android.settings.fuelgauge.batterytip.actions.BatteryTipAction;
 import com.android.settings.fuelgauge.batterytip.tips.BatteryTip;
-import com.android.settings.fuelgauge.batterytip.tips.HighUsageTip;
 import com.android.settings.fuelgauge.batterytip.tips.RestrictAppTip;
 import com.android.settings.fuelgauge.batterytip.tips.UnrestrictAppTip;
 import com.android.settingslib.utils.StringUtil;
@@ -79,22 +78,6 @@ public class BatteryTipDialogFragment extends InstrumentedDialogFragment
             case BatteryTip.TipType.SUMMARY:
                 return new AlertDialog.Builder(context)
                         .setMessage(R.string.battery_tip_dialog_summary_message)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .create();
-            case BatteryTip.TipType.HIGH_DEVICE_USAGE:
-                final HighUsageTip highUsageTip = (HighUsageTip) mBatteryTip;
-                final RecyclerView view =
-                        (RecyclerView)
-                                LayoutInflater.from(context).inflate(R.layout.recycler_view, null);
-                view.setLayoutManager(new LinearLayoutManager(context));
-                view.setAdapter(new HighUsageAdapter(context, highUsageTip.getHighUsageAppList()));
-
-                return new AlertDialog.Builder(context)
-                        .setMessage(
-                                getString(
-                                        R.string.battery_tip_dialog_message,
-                                        highUsageTip.getHighUsageAppList().size()))
-                        .setView(view)
                         .setPositiveButton(android.R.string.ok, null)
                         .create();
             case BatteryTip.TipType.APP_RESTRICTION:

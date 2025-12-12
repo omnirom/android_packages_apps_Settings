@@ -24,7 +24,6 @@
 
     <com.android.settingslib.widget.FooterPreference
         android:key="long_background_tasks_description"
-        android:title="@string/long_background_tasks_footer_title"
-        android:selectable="false" />
+        android:title="@string/long_background_tasks_footer_title" />
 
 </PreferenceScreen>

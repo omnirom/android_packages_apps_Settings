@@ -60,7 +60,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.android.settings.R;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settingslib.qrcode.QrCamera;
-import com.android.settingslib.qrcode.QrDecorateView;
 import com.android.settingslib.wifi.WifiPermissionChecker;
 import com.android.wifitrackerlib.WifiEntry;
 import com.android.wifitrackerlib.WifiPickerTracker;
@@ -106,7 +105,6 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
 
     private QrCamera mCamera;
     private TextureView mTextureView;
-    private QrDecorateView mDecorateView;
     private TextView mErrorMessage;
 
     /** true if the fragment working for configurator, false enrollee*/
@@ -151,7 +149,6 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
 
                     if (msg.arg1 == ARG_RESTART_CAMERA) {
                         setProgressBarShown(false);
-                        mDecorateView.setFocused(false);
                         restartCamera();
                     }
                     break;
@@ -239,7 +236,6 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
             mCamera.stop();
         }
 
-        mDecorateView.setFocused(true);
         mErrorMessage.setVisibility(View.INVISIBLE);
 
         WifiDppUtils.triggerVibrationForQrCodeRecognition(getContext());
@@ -476,8 +472,6 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
         mTextureView = view.findViewById(R.id.preview_view);
         mTextureView.setSurfaceTextureListener(this);
 
-        mDecorateView = view.findViewById(R.id.decorate_view);
-
         setProgressBarShown(isWifiDppHandshaking());
 
         if (mIsConfiguratorMode) {
@@ -605,11 +599,7 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
         if (mCamera == null) {
             mCamera = new QrCamera(getContext(), this);
 
-            if (isWifiDppHandshaking()) {
-                if (mDecorateView != null) {
-                    mDecorateView.setFocused(true);
-                }
-            } else {
+            if (!isWifiDppHandshaking()) {
                 mCamera.start(surface);
             }
         }

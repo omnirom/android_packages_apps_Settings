@@ -17,4 +17,4 @@
 
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/manage_zen_access_title" />
+    android:title="@string/manage_zen_modes_access_title" />

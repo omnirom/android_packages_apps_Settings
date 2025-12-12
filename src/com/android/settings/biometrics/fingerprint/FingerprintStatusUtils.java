@@ -17,10 +17,14 @@
 package com.android.settings.biometrics.fingerprint;
 
 import android.app.admin.DevicePolicyManager;
+import android.app.admin.EnforcingAdmin;
+import android.app.admin.PolicyEnforcementInfo;
 import android.content.Context;
 import android.hardware.biometrics.BiometricAuthenticator;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.UserManager;
+
+import androidx.annotation.Nullable;
 
 import com.android.settings.R;
 import com.android.settings.Utils;
@@ -58,6 +62,18 @@ public class FingerprintStatusUtils {
     public EnforcedAdmin getDisablingAdmin() {
         return ParentalControlsUtils.parentConsentRequired(
                 mContext, BiometricAuthenticator.TYPE_FINGERPRINT);
+    }
+
+    /**
+     * Returns the {@link android.app.admin.EnforcingAdmin} if parental consent is required to
+     * change face settings.
+     *
+     * @return null if face settings does not require a parental consent.
+     */
+    @Nullable
+    public EnforcingAdmin getEnforcingAdmin() {
+        return ParentalControlsUtils.getParentalSupervisionAdmin(mContext,
+                BiometricAuthenticator.TYPE_FINGERPRINT);
     }
 
     /** Returns the title of fingerprint settings entity. */
@@ -126,6 +142,13 @@ public class FingerprintStatusUtils {
 
     /** Indicates if the fingerprint feature should show the "Disabled by Admin" string. */
     private boolean shouldShowDisabledByAdminStr() {
+        if (android.app.admin.flags.Flags.policyTransparencyRefactorEnabled()
+                && android.app.admin.flags.Flags.setKeyguardDisabledFeaturesCoexistence()) {
+            PolicyEnforcementInfo info =
+                    RestrictedLockUtilsInternal.getEnforcingAdminsForKeyguardFeatures(mContext,
+                            DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT, mUserId);
+            return info != null && info.getMostImportantEnforcingAdmin() != null;
+        }
         return RestrictedLockUtilsInternal.checkIfKeyguardFeaturesDisabled(
                         mContext, DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT, mUserId)
                 != null;

@@ -28,12 +28,12 @@ import androidx.annotation.VisibleForTesting;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.core.SliderPreferenceController;
-import com.android.settings.widget.SeekBarPreference;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnPause;
 import com.android.settingslib.core.lifecycle.events.OnResume;
+import com.android.settingslib.widget.SliderPreference;
 
-/** Preference controller that controls the transparency seekbar in accessibility button page. */
+/** Preference controller that controls the transparency slider in accessibility button page. */
 public class FloatingMenuTransparencyPreferenceController extends SliderPreferenceController
         implements LifecycleObserver, OnResume, OnPause {
 
@@ -51,7 +51,7 @@ public class FloatingMenuTransparencyPreferenceController extends SliderPreferen
     private final ContentResolver mContentResolver;
     @VisibleForTesting
     final ContentObserver mContentObserver;
-    private SeekBarPreference mPreference;
+    private SliderPreference mPreference;
 
     public FloatingMenuTransparencyPreferenceController(Context context,
             String preferenceKey) {
@@ -76,10 +76,10 @@ public class FloatingMenuTransparencyPreferenceController extends SliderPreferen
         super.displayPreference(screen);
 
         mPreference = screen.findPreference(getPreferenceKey());
-        mPreference.setContinuousUpdates(true);
+        mPreference.setUpdatesContinuously(true);
         mPreference.setMax(getMax());
         mPreference.setMin(getMin());
-        mPreference.setHapticFeedbackMode(SeekBarPreference.HAPTIC_FEEDBACK_MODE_ON_ENDS);
+        mPreference.setHapticFeedbackMode(SliderPreference.HAPTIC_FEEDBACK_MODE_ON_ENDS);
 
         updateAvailabilityStatus();
         updateState(mPreference);

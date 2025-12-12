@@ -51,13 +51,15 @@
             <!-- Animation res MUST be set in code, gated by config_face_education_use_lottie. -->
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/illustration_lottie"
+                style="@style/SudContentIllustration"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/illustration_lottie_height"
                 android:layout_marginTop="@dimen/lottie_animation_view_margin_top"
                 android:scaleType="centerInside"
                 android:visibility="gone"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
+                app:lottie_autoPlay="false"
+                app:lottie_loop="false"
+                android:contentDescription="@string/settingslib_illustration_content_description"
                 app:lottie_speed="1.5" />
 
             <ImageView
@@ -94,6 +96,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/limited_vision_button_margin_top"
                     android:layout_marginBottom="@dimen/limited_vision_button_margin_bottom"
+                    android:text="@string/security_settings_face_enroll_introduction_accessibility"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/accessibility_button_expressive"
+                    android:theme="@style/Theme.MaterialComponents.DayNight"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/limited_vision_button_margin_top"
+                    android:layout_marginBottom="@dimen/limited_vision_button_margin_bottom"
+                    android:visibility="gone"
                     android:text="@string/security_settings_face_enroll_introduction_accessibility"/>
 
                 <com.android.settings.biometrics.face.FaceEnrollAccessibilityToggle

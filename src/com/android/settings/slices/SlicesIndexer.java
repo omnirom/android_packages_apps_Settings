@@ -35,6 +35,7 @@ import java.util.List;
  * Manages the conversion of {@link DashboardFragment} and {@link BasePreferenceController} to
  * indexable data {@link SliceData} to be stored for Slices.
  */
+@Deprecated(forRemoval = true)
 class SlicesIndexer implements Runnable {
 
     private static final String TAG = "SlicesIndexer";

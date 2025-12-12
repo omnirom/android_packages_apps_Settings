@@ -53,7 +53,6 @@ public class BatteryTipLoaderTest {
         BatteryTip.TipType.LOW_BATTERY,
         BatteryTip.TipType.BATTERY_DEFENDER,
         BatteryTip.TipType.INCOMPATIBLE_CHARGER,
-        BatteryTip.TipType.HIGH_DEVICE_USAGE
     };
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)

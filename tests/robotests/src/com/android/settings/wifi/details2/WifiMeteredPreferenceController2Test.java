@@ -19,19 +19,29 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 import android.content.Context;
+import android.net.wifi.WifiConfiguration;
+import android.os.UserManager;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.preference.DropDownPreference;
+import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
+import com.android.settings.connectivity.Flags;
 import com.android.wifitrackerlib.WifiEntry;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
@@ -42,8 +52,21 @@ public class WifiMeteredPreferenceController2Test {
     private static final int METERED_OVERRIDE_METERED = 1;
     private static final int METERED_OVERRIDE_NOT_METERED = 2;
 
+    @Rule
+    public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
+    @Mock
+    private UserManager mUserManager;
     @Mock
     private WifiEntry mWifiEntry;
+    @Mock
+    private WifiConfiguration mWifiConfiguration;
+    @Mock
+    private PreferenceScreen mScreen;
+    @Mock
+    private DropDownPreference mPreference;
 
     private WifiMeteredPreferenceController2 mPreferenceController;
     private Context mContext;
@@ -51,9 +74,9 @@ public class WifiMeteredPreferenceController2Test {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        mContext = RuntimeEnvironment.application;
+        mContext = spy(RuntimeEnvironment.application);
 
+        when(mContext.getSystemService(UserManager.class)).thenReturn(mUserManager);
         mPreferenceController = spy(
                 new WifiMeteredPreferenceController2(mContext, mWifiEntry));
         mDropDownPreference = new DropDownPreference(mContext);
@@ -86,5 +109,49 @@ public class WifiMeteredPreferenceController2Test {
         mPreferenceController.updateState(mDropDownPreference);
 
         assertThat(mDropDownPreference.getEntry()).isEqualTo("Detect automatically");
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_WIFI_MULTIUSER)
+    public void displayPreference_flagDisabled() {
+        mPreferenceController.updateState(mDropDownPreference);
+
+        assertThat(mDropDownPreference.isEnabled()).isTrue();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_WIFI_MULTIUSER)
+    public void displayPreference_networkOwned() {
+        when(mUserManager.getUserCount()).thenReturn(3);
+        when(mWifiEntry.getWifiConfiguration()).thenReturn(mWifiConfiguration);
+        mWifiConfiguration.creatorUid = 1;
+
+        mPreferenceController.updateState(mDropDownPreference);
+
+        assertThat(mDropDownPreference.isEnabled()).isTrue();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_WIFI_MULTIUSER)
+    public void displayPreference_networkNotOwned_singleUser() {
+        when(mUserManager.getUserCount()).thenReturn(1);
+        when(mWifiEntry.getWifiConfiguration()).thenReturn(mWifiConfiguration);
+        mWifiConfiguration.creatorUid = Integer.MAX_VALUE;
+
+        mPreferenceController.updateState(mDropDownPreference);
+
+        assertThat(mDropDownPreference.isEnabled()).isTrue();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_WIFI_MULTIUSER)
+    public void displayPreference_networkNotOwned() {
+        when(mUserManager.getUserCount()).thenReturn(3);
+        when(mWifiEntry.getWifiConfiguration()).thenReturn(mWifiConfiguration);
+        mWifiConfiguration.creatorUid = Integer.MAX_VALUE;
+
+        mPreferenceController.updateState(mDropDownPreference);
+
+        assertThat(mDropDownPreference.isEnabled()).isFalse();
     }
 }

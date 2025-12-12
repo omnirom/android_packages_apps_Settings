@@ -21,6 +21,8 @@ import static com.android.settings.core.BasePreferenceController.UNSUPPORTED_ON_
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -58,6 +60,7 @@ public final class CellularSecurityPreferenceControllerTest {
     private static final String PREF_KEY = "cellular_security_pref_controller_test";
     private Context mContext;
     private CellularSecurityPreferenceController mController;
+    private SafetyCenterManager mSafetyCenterManager;
 
     @Before
     public void setUp() {
@@ -65,8 +68,8 @@ public final class CellularSecurityPreferenceControllerTest {
 
         // Tests must be skipped if these conditions aren't met as they cannot be mocked
         Assume.assumeTrue(Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU);
-        SafetyCenterManager mSafetyCenterManager = InstrumentationRegistry.getInstrumentation()
-                .getContext().getSystemService(SafetyCenterManager.class);
+        mSafetyCenterManager = InstrumentationRegistry.getInstrumentation().getContext()
+                .getSystemService(SafetyCenterManager.class);
         Assume.assumeTrue(mSafetyCenterManager != null);
         Assume.assumeTrue(mSafetyCenterManager.isSafetyCenterEnabled());
 
@@ -75,12 +78,75 @@ public final class CellularSecurityPreferenceControllerTest {
 
         doNothing().when(mContext).startActivity(any(Intent.class));
 
-        mController = new CellularSecurityPreferenceController(mContext, PREF_KEY);
+        initControllerAndPreference();
+    }
 
-        mPreference = spy(new Preference(mContext));
-        mPreference.setKey(PREF_KEY);
-        mPreferenceScreen = new PreferenceManager(mContext).createPreferenceScreen(mContext);
-        mPreferenceScreen.addPreference(mPreference);
+    @Test
+    public void handlePreferenceTreeClick_SafetyCenterSupported_RadioInterfaceNotSupported() {
+        Assume.assumeTrue(mSafetyCenterManager.isSafetyCenterEnabled());
+        doReturn(false).when(mTelephonyManager).isRadioInterfaceCapabilitySupported(any());
+
+        boolean result = mController.handlePreferenceTreeClick(mPreference);
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void handlePreferenceTreeClick_SafetyCenterNotSupported_RadioInterfaceSupported() {
+        Assume.assumeFalse(mSafetyCenterManager.isSafetyCenterEnabled());
+        doReturn(true).when(mTelephonyManager).isRadioInterfaceCapabilitySupported(any());
+
+        boolean result = mController.handlePreferenceTreeClick(mPreference);
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void handlePreferenceTreeClick_SafetyCenterSupported_RadioInterfaceSupported() {
+        Assume.assumeTrue(mSafetyCenterManager.isSafetyCenterEnabled());
+        doReturn(true).when(mTelephonyManager).isRadioInterfaceCapabilitySupported(any());
+
+        boolean result = mController.handlePreferenceTreeClick(mPreference);
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void handlePreferenceTreeClick_preferenceKeyNotMatch() {
+        mPreference.setKey("PREF_KEY");
+
+        boolean result = mController.handlePreferenceTreeClick(mPreference);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void handlePreferenceTreeClick_SafetyCenterManagerIsNull() {
+        when(mContext.getSystemService(SafetyCenterManager.class)).thenReturn(null);
+
+        boolean result = mController.handlePreferenceTreeClick(mPreference);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void handlePreferenceTreeClick_telephonyManagerIsNull() {
+        when(mContext.getSystemService(TelephonyManager.class)).thenReturn(null);
+        initControllerAndPreference();
+
+        boolean result = mController.handlePreferenceTreeClick(mPreference);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void handlePreferenceTreeClick_SafetyCenterNotSupported_RadioInterfaceNotSupported() {
+        Assume.assumeFalse(mSafetyCenterManager.isSafetyCenterEnabled());
+        doReturn(false).when(mTelephonyManager).isRadioInterfaceCapabilitySupported(any());
+
+        boolean result = mController.handlePreferenceTreeClick(mPreference);
+
+        assertFalse(result);
     }
 
     @Test
@@ -120,5 +186,51 @@ public final class CellularSecurityPreferenceControllerTest {
               .isNullCipherAndIntegrityPreferenceEnabled();
 
         assertThat(mController.getAvailabilityStatus()).isEqualTo(UNSUPPORTED_ON_DEVICE);
+    }
+
+    @Test
+    public void getAvailabilityStatus_isRadioInterfaceCapabilitySupported() {
+        doReturn(true).when(mTelephonyManager).isRadioInterfaceCapabilitySupported(
+                TelephonyManager.CAPABILITY_USES_ALLOWED_NETWORK_TYPES_BITMASK);
+        doReturn(false).when(mTelephonyManager).isNullCipherNotificationsEnabled();
+        doReturn(false).when(mTelephonyManager)
+                .isCellularIdentifierDisclosureNotificationsEnabled();
+        doReturn(false).when(mTelephonyManager).isNullCipherAndIntegrityPreferenceEnabled();
+
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(AVAILABLE);
+    }
+
+    @Test
+    public void getAvailabilityStatus_isRadioInterfaceCapabilityNotSupported() {
+        doThrow(new UnsupportedOperationException("test")).when(mTelephonyManager)
+                .isNullCipherNotificationsEnabled();
+        doThrow(new UnsupportedOperationException("test")).when(mTelephonyManager)
+                .isNullCipherAndIntegrityPreferenceEnabled();
+        doReturn(false).when(mTelephonyManager).isRadioInterfaceCapabilitySupported(
+                TelephonyManager.CAPABILITY_USES_ALLOWED_NETWORK_TYPES_BITMASK);
+
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(UNSUPPORTED_ON_DEVICE);
+    }
+
+    @Test
+    public void getAvailabilityStatus_isRadioInterfaceCapabilitySupported_throwException() {
+        doThrow(new UnsupportedOperationException("test")).when(mTelephonyManager)
+                .isRadioInterfaceCapabilitySupported(
+                        TelephonyManager.CAPABILITY_USES_ALLOWED_NETWORK_TYPES_BITMASK);
+        doThrow(new UnsupportedOperationException("test")).when(mTelephonyManager)
+                .isNullCipherNotificationsEnabled();
+        doThrow(new UnsupportedOperationException("test")).when(mTelephonyManager)
+                .isNullCipherAndIntegrityPreferenceEnabled();
+
+        assertThat(mController.getAvailabilityStatus()).isEqualTo(UNSUPPORTED_ON_DEVICE);
+    }
+
+    private void initControllerAndPreference() {
+        mController = new CellularSecurityPreferenceController(mContext, PREF_KEY);
+
+        mPreference = spy(new Preference(mContext));
+        mPreference.setKey(PREF_KEY);
+        mPreferenceScreen = new PreferenceManager(mContext).createPreferenceScreen(mContext);
+        mPreferenceScreen.addPreference(mPreference);
     }
 }

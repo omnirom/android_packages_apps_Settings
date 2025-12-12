@@ -19,11 +19,15 @@ package com.android.settings.deviceinfo.hardwareinfo;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.SearchIndexable;
 
+// LINT.IfChange
 @SearchIndexable
 public class HardwareInfoFragment extends DashboardFragment {
 
@@ -44,6 +48,11 @@ public class HardwareInfoFragment extends DashboardFragment {
         return TAG;
     }
 
+    @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return HardwareInfoScreen.KEY;
+    }
+
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(R.xml.hardware_info) {
 
@@ -53,3 +62,4 @@ public class HardwareInfoFragment extends DashboardFragment {
                 }
             };
 }
+// LINT.ThenChange(HardwareInfoScreen.kt)

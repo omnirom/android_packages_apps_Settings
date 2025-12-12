@@ -20,16 +20,21 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
+import com.android.settings.flags.Flags;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.search.SearchIndexable;
+import com.android.settingslib.utils.ThreadUtils;
 
 /**
  * This fragment contains previously connected device
  */
+// LINT.IfChange
 @SearchIndexable(forTarget = SearchIndexable.MOBILE)
 public class PreviouslyConnectedDeviceDashboardFragment extends DashboardFragment {
 
@@ -67,6 +72,12 @@ public class PreviouslyConnectedDeviceDashboardFragment extends DashboardFragmen
     }
 
     @Override
+    public @Nullable String getPreferenceScreenBindingKey(@NonNull Context context) {
+        return PreviouslyConnectedDeviceScreen.KEY;
+    }
+
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         use(SavedDeviceGroupController.class).init(this);
@@ -75,7 +86,9 @@ public class PreviouslyConnectedDeviceDashboardFragment extends DashboardFragmen
     @Override
     public void onStart() {
         super.onStart();
-        enableBluetoothIfNecessary();
+        if (!isCatalystEnabled() || !Flags.deeplinkConnectedDevices25q4()) {
+            ThreadUtils.postOnBackgroundThread(() -> enableBluetoothIfNecessary());
+        }
     }
 
     @VisibleForTesting
@@ -91,3 +104,4 @@ public class PreviouslyConnectedDeviceDashboardFragment extends DashboardFragmen
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(R.xml.previously_connected_devices);
 }
+// LINT.ThenChange(PreviouslyConnectedDeviceScreen.kt)

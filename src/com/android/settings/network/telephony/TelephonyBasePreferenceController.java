@@ -19,6 +19,9 @@ package com.android.settings.network.telephony;
 import android.content.Context;
 import android.telephony.SubscriptionManager;
 
+import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
+
 import com.android.settings.core.BasePreferenceController;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -27,14 +30,29 @@ import java.util.concurrent.atomic.AtomicInteger;
  * {@link BasePreferenceController} that used by all preferences that requires subscription id.
  */
 public abstract class TelephonyBasePreferenceController extends BasePreferenceController
-        implements TelephonyAvailabilityCallback, TelephonyAvailabilityHandler {
+        implements TelephonyAvailabilityCallback, TelephonyAvailabilityHandler,
+        AirplaneModeChangedCallback {
     protected int mSubId;
+    protected boolean mIsAirplaneModeOn = false;
+    private Preference mPreference;
+
     private AtomicInteger mAvailabilityStatus = new AtomicInteger(0);
     private AtomicInteger mSetSessionCount = new AtomicInteger(0);
 
     public TelephonyBasePreferenceController(Context context, String preferenceKey) {
         super(context, preferenceKey);
         mSubId = SubscriptionManager.INVALID_SUBSCRIPTION_ID;
+    }
+
+    @Override
+    public void displayPreference(PreferenceScreen screen) {
+        super.displayPreference(screen);
+        mPreference = screen.findPreference(getPreferenceKey());
+    }
+
+    @Override
+    public void notifyAirplaneModeChanged(boolean isAirplaneModeOn) {
+        this.mIsAirplaneModeOn = isAirplaneModeOn;
     }
 
     @Override

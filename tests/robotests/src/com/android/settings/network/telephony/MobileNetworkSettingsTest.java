@@ -113,4 +113,31 @@ public class MobileNetworkSettingsTest {
         mFragment.onActivityResult(REQUEST_CODE_DELETE_SUBSCRIPTION, Activity.RESULT_OK, null);
         verify(mActivity).finish();
     }
+
+    @Test
+    public void airplaneModeChanged_notifiesPreference() {
+        TestPreferenceController testPreferenceController = mock(TestPreferenceController.class);
+        when(mFragment.getPreferenceControllersAsList())
+                .thenReturn(List.of(testPreferenceController));
+
+        mFragment.notifyAirplaneModeForPreferences(true);
+
+        verify(testPreferenceController).notifyAirplaneModeChanged(true);
+    }
+
+    public static class TestPreferenceController extends TelephonyBasePreferenceController {
+        public TestPreferenceController(Context context, String prefKey) {
+            super(context, prefKey);
+        }
+
+        /** do init */
+        public void init(int subId) {
+            mSubId = subId;
+        }
+
+        @Override
+        public int getAvailabilityStatus(int subId) {
+            return AVAILABLE;
+        }
+    }
 }

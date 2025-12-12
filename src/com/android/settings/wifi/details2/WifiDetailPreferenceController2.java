@@ -30,10 +30,7 @@ import android.content.AsyncQueryHandler;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.VectorDrawable;
 import android.net.CaptivePortalData;
 import android.net.ConnectivityManager;
 import android.net.ConnectivityManager.NetworkCallback;
@@ -48,12 +45,12 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
+import android.os.UserManager;
 import android.provider.Telephony.CarrierId;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.VisibleForTesting;
@@ -68,7 +65,6 @@ import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.core.PreferenceControllerMixin;
 import com.android.settings.network.SubscriptionUtil;
-import com.android.settings.widget.EntityHeaderController;
 import com.android.settings.wifi.WifiDialog2;
 import com.android.settings.wifi.WifiDialog2.WifiDialog2Listener;
 import com.android.settings.wifi.WifiUtils;
@@ -82,7 +78,6 @@ import com.android.settingslib.core.lifecycle.events.OnPause;
 import com.android.settingslib.core.lifecycle.events.OnResume;
 import com.android.settingslib.utils.StringUtil;
 import com.android.settingslib.widget.ActionButtonsPreference;
-import com.android.settingslib.widget.LayoutPreference;
 import com.android.wifitrackerlib.HotspotNetworkEntry;
 import com.android.wifitrackerlib.WifiEntry;
 import com.android.wifitrackerlib.WifiEntry.ConnectCallback;
@@ -117,7 +112,7 @@ public class WifiDetailPreferenceController2 extends AbstractPreferenceControlle
     private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
 
     @VisibleForTesting
-    static final String KEY_HEADER = "connection_header";
+    static final String KEY_WIFI_DETAILS_INTRO = "wifi_details_intro";
     @VisibleForTesting
     static final String KEY_DATA_USAGE_HEADER = "status_header";
     @VisibleForTesting
@@ -152,6 +147,8 @@ public class WifiDetailPreferenceController2 extends AbstractPreferenceControlle
     static final String KEY_IPV6_ADDRESSES_PREF = "ipv6_addresses";
     @VisibleForTesting
     static final String KEY_WIFI_TYPE_PREF = "type";
+    @VisibleForTesting
+    static final String KEY_SHARED_NETWORK_FOOTER = "shared_network_footer";
 
     private final WifiEntry mWifiEntry;
     private final ConnectivityManager mConnectivityManager;
@@ -165,11 +162,12 @@ public class WifiDetailPreferenceController2 extends AbstractPreferenceControlle
     private String[] mSignalStr;
     private final WifiManager mWifiManager;
     private final MetricsFeatureProvider mMetricsFeatureProvider;
+    private final UserManager mUserManager;
 
     // UI elements - in order of appearance
     private ActionButtonsPreference mButtonsPref;
     @VisibleForTesting
-    EntityHeaderController mEntityHeaderController;
+    Preference mWifiDetailsIntro;
     private Preference mSignalStrengthPref;
     private Preference mTxLinkSpeedPref;
     private Preference mRxLinkSpeedPref;
@@ -324,6 +322,7 @@ public class WifiDetailPreferenceController2 extends AbstractPreferenceControlle
         mMetricsFeatureProvider = metricsFeatureProvider;
         mIconInjector = injector;
         mClock = clock;
+        mUserManager = context.getSystemService(UserManager.class);
 
         lifecycle.addObserver(this);
     }
@@ -343,7 +342,7 @@ public class WifiDetailPreferenceController2 extends AbstractPreferenceControlle
     public void displayPreference(PreferenceScreen screen) {
         super.displayPreference(screen);
 
-        setupEntityHeader(screen);
+        mWifiDetailsIntro = screen.findPreference(KEY_WIFI_DETAILS_INTRO);
 
         mButtonsPref = ((ActionButtonsPreference) screen.findPreference(KEY_BUTTONS_PREF))
                 .setButton1Text(R.string.forget)
@@ -375,6 +374,11 @@ public class WifiDetailPreferenceController2 extends AbstractPreferenceControlle
         mDnsPref = screen.findPreference(KEY_DNS_PREF);
         mTypePref = screen.findPreference(KEY_WIFI_TYPE_PREF);
         mIpv6AddressPref = screen.findPreference(KEY_IPV6_ADDRESSES_PREF);
+
+        if (!canModifyNetwork()) {
+            Preference footer = screen.findPreference(KEY_SHARED_NETWORK_FOOTER);
+            footer.setVisible(true);
+        }
     }
 
     /**
@@ -421,19 +425,6 @@ public class WifiDetailPreferenceController2 extends AbstractPreferenceControlle
         mContext.startActivity(infoIntent);
     }
 
-    private void setupEntityHeader(PreferenceScreen screen) {
-        LayoutPreference headerPref = screen.findPreference(KEY_HEADER);
-
-        mEntityHeaderController =
-                EntityHeaderController.newInstance(
-                        mFragment.getActivity(), mFragment,
-                        headerPref.findViewById(R.id.entity_header));
-
-        ImageView iconView = headerPref.findViewById(R.id.entity_header_icon);
-
-        iconView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-    }
-
     private String getExpiryTimeSummary() {
         if (mLinkProperties == null || mLinkProperties.getCaptivePortalData() == null) {
             return null;
@@ -466,11 +457,13 @@ public class WifiDetailPreferenceController2 extends AbstractPreferenceControlle
     }
 
     private void refreshEntityHeader() {
-        mEntityHeaderController
-                .setLabel(mWifiEntry.getTitle())
-                .setSummary(mWifiEntry.getSummary())
-                .setSecondSummary(getExpiryTimeSummary())
-                .done(true /* rebind */);
+        mWifiDetailsIntro.setTitle(mWifiEntry.getTitle());
+        String secondSummary = getExpiryTimeSummary();
+        if (TextUtils.isEmpty(secondSummary)) {
+            mWifiDetailsIntro.setSummary(mWifiEntry.getSummary());
+        } else {
+            mWifiDetailsIntro.setSummary(mWifiEntry.getSummary() + "\n" + secondSummary);
+        }
     }
 
     @VisibleForTesting
@@ -542,13 +535,12 @@ public class WifiDetailPreferenceController2 extends AbstractPreferenceControlle
 
     @VisibleForTesting
     void refreshEntryHeaderIcon() {
-        if (mEntityHeaderController == null) {
+        if (mWifiDetailsIntro == null) {
             return;
         }
         Drawable drawable = getWifiDrawable(mWifiEntry);
-        mEntityHeaderController
-                .setIcon(redrawIconForHeader(drawable))
-                .done(true /* rebind */);
+        drawable.setTintList(Utils.getColorAttr(mContext, android.R.attr.textColorPrimary));
+        mWifiDetailsIntro.setIcon(drawable);
     }
 
     /**
@@ -592,32 +584,6 @@ public class WifiDetailPreferenceController2 extends AbstractPreferenceControlle
 
         mSignalStrengthPref.setSummary(mSignalStr[mRssiSignalLevel]);
         mSignalStrengthPref.setVisible(true);
-    }
-
-    private Drawable redrawIconForHeader(Drawable original) {
-        final int iconSize = mContext.getResources().getDimensionPixelSize(
-                R.dimen.wifi_detail_page_header_image_size);
-        final int actualWidth = original.getMinimumWidth();
-        final int actualHeight = original.getMinimumHeight();
-
-        if ((actualWidth == iconSize && actualHeight == iconSize)
-                || !VectorDrawable.class.isInstance(original)) {
-            return original;
-        }
-
-        // clear tint list to make sure can set 87% black after enlarge
-        original.setTintList(null);
-
-        // enlarge icon size
-        final Bitmap bitmap = Utils.createBitmap(original,
-                iconSize /*width*/,
-                iconSize /*height*/);
-        Drawable newIcon = new BitmapDrawable(null /*resource*/, bitmap);
-
-        // config color for 87% black after enlarge
-        newIcon.setTintList(Utils.getColorAttr(mContext, android.R.attr.textColorPrimary));
-
-        return newIcon;
     }
 
     private void refreshFrequency() {
@@ -890,9 +856,17 @@ public class WifiDetailPreferenceController2 extends AbstractPreferenceControlle
     /**
      * Returns whether the network represented by this preference can be modified.
      */
-    public boolean canModifyNetwork() {
+    public boolean isNetworkAdminLocked() {
         return mWifiEntry.isSaved()
-                && !WifiUtils.isNetworkLockedDown(mContext, mWifiEntry.getWifiConfiguration());
+                && WifiUtils.isNetworkLockedDown(mContext, mWifiEntry.getWifiConfiguration());
+    }
+
+    /**
+     * Returns true if the current user owns the network or if there is only a single user
+     * on the device.
+     */
+    public boolean canModifyNetwork() {
+        return WifiUtils.isNetworkEditable(mWifiEntry, mContext);
     }
 
     /**
@@ -900,21 +874,22 @@ public class WifiDetailPreferenceController2 extends AbstractPreferenceControlle
      */
     public boolean canForgetNetwork() {
         return mWifiEntry.canForget()
-                && !WifiUtils.isNetworkLockedDown(mContext, mWifiEntry.getWifiConfiguration());
+                && !WifiUtils.isNetworkLockedDown(mContext, mWifiEntry.getWifiConfiguration())
+                    && WifiUtils.isNetworkEditable(mWifiEntry, mContext);
     }
 
     /**
      * Returns whether the user can sign into the network represented by this preference.
      */
     private boolean canSignIntoNetwork() {
-        return mWifiEntry.canSignIn();
+        return mWifiEntry.canSignIn() && WifiUtils.isNetworkEditable(mWifiEntry, mContext);
     }
 
     /**
      * Returns whether the user can share the network represented by this preference with QR code.
      */
     private boolean canShareNetwork() {
-        return mWifiEntry.canShare();
+        return mWifiEntry.canShare() && WifiUtils.isNetworkEditable(mWifiEntry, mContext);
     }
 
     /**
@@ -923,7 +898,15 @@ public class WifiDetailPreferenceController2 extends AbstractPreferenceControlle
     private void forgetNetwork() {
         if (mWifiEntry.isSubscription()) {
             // Post a dialog to confirm if user really want to forget the passpoint network.
-            showConfirmForgetDialog();
+            showConfirmForgetDialog(
+                    R.string.wifi_forget_dialog_title, R.string.forget_passpoint_dialog_message);
+            return;
+        } else if (com.android.settings.connectivity.Flags.wifiMultiuser()
+                        && mWifiEntry.isSharedWithOtherUsers()
+                        && mUserManager.getUserCount() > 1) {
+            showConfirmForgetDialog(
+                    R.string.shared_wifi_forget_dialog_title,
+                    R.string.shared_wifi_forget_dialog_message);
             return;
         } else {
             mWifiEntry.forget(this);
@@ -937,7 +920,7 @@ public class WifiDetailPreferenceController2 extends AbstractPreferenceControlle
     }
 
     @VisibleForTesting
-    protected void showConfirmForgetDialog() {
+    protected void showConfirmForgetDialog(int titleId, int messageId) {
         final AlertDialog dialog = new AlertDialog.Builder(mContext)
                 .setPositiveButton(R.string.forget, ((dialog1, which) -> {
                     try {
@@ -950,8 +933,8 @@ public class WifiDetailPreferenceController2 extends AbstractPreferenceControlle
                     mFragment.getActivity().finish();
                 }))
                 .setNegativeButton(R.string.cancel, null /* listener */)
-                .setTitle(R.string.wifi_forget_dialog_title)
-                .setMessage(R.string.forget_passpoint_dialog_message)
+                .setTitle(titleId)
+                .setMessage(messageId)
                 .create();
         dialog.show();
     }

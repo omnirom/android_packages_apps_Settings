@@ -23,10 +23,8 @@ import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.hardware.fingerprint.FingerprintSensorPropertiesInternal;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.VisibleForTesting;
 
@@ -34,8 +32,6 @@ import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.biometrics.BiometricEnrollBase;
 import com.android.settings.biometrics.BiometricUtils;
-import com.android.settings.biometrics.fingerprint.feature.SfpsRestToUnlockFeature;
-import com.android.settings.overlay.FeatureFactory;
 
 import com.google.android.setupcompat.template.FooterBarMixin;
 import com.google.android.setupcompat.template.FooterButton;
@@ -60,8 +56,6 @@ public class FingerprintEnrollFinish extends BiometricEnrollBase {
 
     private boolean mIsAddAnotherOrFinish;
 
-    private SfpsRestToUnlockFeature mSfpsRestToUnlockFeature;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,10 +64,7 @@ public class FingerprintEnrollFinish extends BiometricEnrollBase {
                 mFingerprintManager.getSensorPropertiesInternal();
         mCanAssumeSfps = props != null && props.size() == 1 && props.get(0).isAnySidefpsType();
         if (mCanAssumeSfps) {
-            mSfpsRestToUnlockFeature = FeatureFactory.getFeatureFactory()
-                    .getFingerprintFeatureProvider().getSfpsRestToUnlockFeature(this);
             setContentView(R.layout.sfps_enroll_finish);
-            setUpRestToUnlockLayout();
         } else {
             setContentView(R.layout.fingerprint_enroll_finish);
         }
@@ -81,12 +72,8 @@ public class FingerprintEnrollFinish extends BiometricEnrollBase {
         setDescriptionText(Utils.isPrivateProfile(mUserId, getApplicationContext())
                 ? R.string.private_space_fingerprint_enroll_finish_message
                 : R.string.security_settings_fingerprint_enroll_finish_v2_message);
-
-        final String sfpsDescription = mSfpsRestToUnlockFeature != null
-                ? mSfpsRestToUnlockFeature.getDescriptionForSfps(this)
-                : null;
-        if (mCanAssumeSfps && !TextUtils.isEmpty(sfpsDescription)) {
-            setDescriptionForSfps(sfpsDescription);
+        if (mCanAssumeSfps) {
+            setDescriptionForSfps();
         }
 
         mFooterBarMixin = getLayout().getMixin(FooterBarMixin.class);
@@ -108,7 +95,7 @@ public class FingerprintEnrollFinish extends BiometricEnrollBase {
         );
     }
 
-    private void setDescriptionForSfps(String sfpsDescription) {
+    private void setDescriptionForSfps() {
         final FingerprintManager fpm = Utils.getFingerprintManagerOrNull(this);
         if (fpm != null) {
             final List<FingerprintSensorPropertiesInternal> props =
@@ -116,17 +103,10 @@ public class FingerprintEnrollFinish extends BiometricEnrollBase {
             final int maxEnrollments = props.get(0).maxEnrollmentsPerUser;
             final int enrolled = fpm.getEnrolledFingerprints(mUserId).size();
             if (enrolled < maxEnrollments) {
-                setDescriptionText(sfpsDescription);
+                setDescriptionText(R.string
+                        .security_settings_fingerprint_enroll_finish_v2_add_fingerprint_message);
             }
         }
-    }
-
-    private void setUpRestToUnlockLayout() {
-        final ViewGroup contentFrame = findViewById(R.id.sfps_enrollment_finish_content_frame);
-        final View restToUnlockLayout = mSfpsRestToUnlockFeature.getRestToUnlockLayout(this);
-        if (restToUnlockLayout == null) return;
-        contentFrame.removeAllViews();
-        contentFrame.addView(restToUnlockLayout);
     }
 
     @Override

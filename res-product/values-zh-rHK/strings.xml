@@ -164,10 +164,10 @@
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_4" product="tablet" msgid="8772005555323461143">"你和子女隨時可以前往「設定」刪除指紋圖片和模型，或停用「指紋解鎖」。指紋圖片和模型會儲存在平板電腦上，直至你或子女刪除為止。"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_4" product="device" msgid="7254955922685507093">"你和子女隨時可以前往「設定」刪除指紋圖片和模型，或停用「指紋解鎖」。指紋圖片和模型會儲存在裝置上，直至你或子女刪除為止。"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_4" product="desktop" msgid="7254955922685507093">"你和子女隨時可以前往「設定」刪除指紋圖片和模型，或停用「指紋解鎖」。指紋圖片和模型會儲存在裝置上，直至你或子女刪除為止。"</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="default" msgid="6272159089589340181">"你的手機有可能會意外解鎖，例如有人讓你的手指觸碰到手機。"</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="tablet" msgid="2420109998272019149">"你的平板電腦有可能會意外解鎖，例如有人讓你的手指觸碰到平板電腦。"</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="device" msgid="5915844445830045866">"你的裝置有可能會意外解鎖，例如有人讓你的手指觸碰到裝置。"</string>
-    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="desktop" msgid="5915844445830045866">"你的裝置有可能會意外解鎖，例如有人讓你的手指觸碰到裝置。"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="default" msgid="6838578698434849838">"你的手機有可能會意外解鎖，例如有人將手機放到你的手指附近"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="tablet" msgid="7796353046744228477">"你的平板電腦有可能會意外解鎖，例如有人將平板電腦放到你的手指附近"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="device" msgid="5075445491909690772">"你的裝置有可能會意外解鎖，例如有人將裝置放到你的手指附近"</string>
+    <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_5" product="desktop" msgid="5075445491909690772">"你的裝置有可能會意外解鎖，例如有人將裝置放到你的手指附近"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_5" product="default" msgid="6556725426776167791">"你子女的手機有可能會意外解鎖，例如有人讓其手指觸碰到手機。"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_5" product="tablet" msgid="5156581794964551571">"子女的平板電腦有可能會意外解鎖，例如有人讓子女用手指觸碰平板電腦。"</string>
     <string name="security_settings_fingerprint_v2_enroll_introduction_footer_message_consent_5" product="device" msgid="8309101436391515400">"子女的裝置有可能會意外解鎖，例如有人讓子女用手指觸碰裝置。"</string>
@@ -310,7 +310,7 @@
     <string name="wifi_add_app_networks_summary" product="default" msgid="7014504084783236696">"「<xliff:g id="APPNAME">%1$s</xliff:g>」想將這些網絡儲存至你的手機"</string>
     <string name="wifi_add_app_networks_summary" product="tablet" msgid="6433255556506891439">"「<xliff:g id="APPNAME">%1$s</xliff:g>」想在你的平板電腦中新增這些網絡"</string>
     <string name="wifi_add_app_networks_summary" product="desktop" msgid="4238956725252527159">"「<xliff:g id="APPNAME">%1$s</xliff:g>」想在你的裝置儲存這些網絡"</string>
-    <string name="auto_rotate_screen_summary" product="default" msgid="5562937346878935483">"當你將手機在直向或橫向模式之間轉換時，螢幕都會自動旋轉以調整方向"</string>
+    <string name="auto_rotate_screen_summary" product="default" msgid="5562937346878935483">"隨著你將手機轉為直向或橫向，自動調整螢幕方向"</string>
     <string name="auto_rotate_screen_summary" product="tablet" msgid="3163709742477804994">"當你以直向或橫向模式使用平板電腦時，螢幕都會自動旋轉以調整方向"</string>
     <string name="auto_rotate_screen_summary" product="desktop" msgid="3805199344834364732">"隨裝置方向自動調整屏幕定向 (直向或橫向)"</string>
     <string name="sim_lock_on" product="tablet" msgid="227481196121403470">"需要 PIN 碼才能使用平板電腦"</string>
@@ -361,7 +361,7 @@
     <string name="bluetooth_tethering_subtext" product="tablet" msgid="1339730853653511849">"透過藍牙分享平板電腦的互聯網連線"</string>
     <string name="bluetooth_tethering_subtext" product="device" msgid="4847586521141330988">"透過藍牙分享裝置的互聯網連線"</string>
     <string name="bluetooth_tethering_subtext" product="desktop" msgid="4847586521141330988">"透過藍牙分享裝置的互聯網連線"</string>
-    <string name="ethernet_tethering_subtext" product="default" msgid="8652438909365718644">"透過以太網分享手機的互聯網連線"</string>
+    <string name="ethernet_tethering_subtext" product="default" msgid="8652438909365718644">"透過以太網絡分享手機的互聯網連線"</string>
     <string name="ethernet_tethering_subtext" product="tablet" msgid="2227710549796706455">"透過以太網絡分享平板電腦的互聯網連線"</string>
     <string name="ethernet_tethering_subtext" product="device" msgid="454840171632885947">"透過以太網絡分享裝置的互聯網連線"</string>
     <string name="ethernet_tethering_subtext" product="desktop" msgid="454840171632885947">"透過以太網絡分享裝置的互聯網連線"</string>
@@ -386,9 +386,6 @@
     <string name="accessibility_daltonizer_about_intro_text" product="default" msgid="5234458848997942613">"調整手機顯示的顏色"</string>
     <string name="accessibility_daltonizer_about_intro_text" product="tablet" msgid="5300401841391736534">"調整平板電腦上的顏色顯示效果"</string>
     <string name="accessibility_daltonizer_about_intro_text" product="desktop" msgid="8908526728447739478">"調整裝置的顏色顯示方式"</string>
-    <string name="reduce_bright_colors_preference_summary" product="default" msgid="2025941326724094318">"將螢幕調至比手機最低亮度更暗"</string>
-    <string name="reduce_bright_colors_preference_summary" product="tablet" msgid="3106979202311807559">"將螢幕調至比平板電腦最低亮度更暗"</string>
-    <string name="reduce_bright_colors_preference_summary" product="desktop" msgid="7810358416215416035">"將螢幕調至比裝置最低亮度更暗"</string>
     <string name="reduce_bright_colors_preference_subtitle" product="default" msgid="9162440023310121356">"「超暗」功能適用於以下情況：&lt;ol&gt; &lt;li&gt; 手機預設的最低亮度仍然太光&lt;/li&gt; &lt;li&gt; 在夜間或睡前黑暗的房間等昏暗環境下使用手機&lt;/li&gt; &lt;/ol&gt;"</string>
     <string name="reduce_bright_colors_preference_subtitle" product="tablet" msgid="5747242697890472822">"「超暗」功能適用於以下情況：&lt;ol&gt; &lt;li&gt; 平板電腦預設的最低亮度仍然太亮&lt;/li&gt; &lt;li&gt; 在夜間或睡前黑暗的房間等昏暗環境下使用平板電腦&lt;/li&gt; &lt;/ol&gt;"</string>
     <string name="reduce_bright_colors_preference_subtitle" product="desktop" msgid="3114657547062643684">"「超暗」功能適用於以下情況：&lt;ol&gt; &lt;li&gt; 裝置預設的最低亮度仍然太光&lt;/li&gt; &lt;li&gt; 在夜間或睡前黑暗的房間等昏暗環境下使用裝置&lt;/li&gt; &lt;/ol&gt;"</string>
@@ -484,7 +481,25 @@
     <string name="lockscreen_trivial_controls_summary" product="default" msgid="42562533085885152">"無需解鎖手機"</string>
     <string name="lockscreen_trivial_controls_summary" product="tablet" msgid="9052068482124729345">"無需解鎖平板電腦"</string>
     <string name="lockscreen_trivial_controls_summary" product="desktop" msgid="8183513643394359332">"無需解鎖裝置"</string>
-    <string name="auto_rotate_summary_a11y" product="default" msgid="2813368383309985185">"喺手機轉成直向或者橫向嘅時候自動旋轉畫面"</string>
+    <string name="device_supervision_switch_title" product="default" msgid="5711051584668311080">"此手機的控制項"</string>
+    <string name="device_supervision_switch_title" product="tablet" msgid="5400384750840247844">"此平板電腦的控制項"</string>
+    <string name="device_supervision_switch_title" product="desktop" msgid="2140192989162020111">"此裝置的控制項"</string>
+    <string name="supervision_pin_length_message" product="default" msgid="7142997986515800901">"{count,plural, =1{輸入至少 # 個數字的 PIN。你將使用此 PIN 管理此手機上的控制項。}other{輸入至少 # 個數字的 PIN。你將使用此 PIN 管理此手機上的控制項。}}"</string>
+    <string name="supervision_pin_length_message" product="tablet" msgid="1772471880165492225">"{count,plural, =1{輸入至少 # 個數字的 PIN。你將使用此 PIN 管理此平板電腦上的控制項。}other{輸入至少 # 個數字的 PIN。你將使用此 PIN 管理此平板電腦上的控制項。}}"</string>
+    <string name="supervision_pin_length_message" product="desktop" msgid="7689193597679628648">"{count,plural, =1{輸入至少 # 個數字的 PIN。你將使用此 PIN 管理此裝置上的控制項。}other{輸入至少 # 個數字的 PIN。你將使用此 PIN 管理此裝置上的控制項。}}"</string>
+    <string name="supervision_delete_pin_supervision_enabled_message" product="default" msgid="3538726164054428290">"家長監控 PIN 已與所有使用者分享。如要刪除 PIN，使用此 PIN 為此手機使用者設定的監控設定必須關閉。"</string>
+    <string name="supervision_delete_pin_supervision_enabled_message" product="tablet" msgid="5923679321161365699">"家長監控 PIN 已與所有使用者分享。如要刪除 PIN，使用此 PIN 為此平板電腦使用者設定的監控設定必須關閉。"</string>
+    <string name="supervision_delete_pin_supervision_enabled_message" product="desktop" msgid="4418588055965155673">"家長監控 PIN 已與所有使用者分享。如要刪除 PIN，使用此 PIN 為此裝置使用者設定的監控設定必須關閉。"</string>
+    <string name="supervision_delete_pin_confirm_message" product="default" msgid="4142432379507014709">"家長監控 PIN 將會永久刪除。你使用此 PIN 為此手機使用者設定的任何監控設定將會關閉。"</string>
+    <string name="supervision_delete_pin_confirm_message" product="tablet" msgid="3676061526109959657">"家長監控 PIN 將會永久刪除。你使用此 PIN 為此平板電腦使用者設定的任何監控設定將會關閉。"</string>
+    <string name="supervision_delete_pin_confirm_message" product="desktop" msgid="9122403113168273844">"家長監控 PIN 將會永久刪除。你使用此 PIN 為此裝置使用者設定的任何監控設定將會關閉。"</string>
+    <string name="device_supervision_pin_management_footer" product="default" msgid="6890338658180593450">"此手機上所有使用者的家長監控 PIN 相同"</string>
+    <string name="device_supervision_pin_management_footer" product="tablet" msgid="4013172842200145374">"此平板電腦上所有使用者的家長監控 PIN 相同"</string>
+    <string name="device_supervision_pin_management_footer" product="desktop" msgid="6539340160423866980">"此裝置上所有使用者的家長監控 PIN 相同"</string>
+    <string name="supervision_multi_profile_error_message" product="default" msgid="4185376425933293903">"由於此手機有多個個人檔案，因此無法開啟家長監控。"</string>
+    <string name="supervision_multi_profile_error_message" product="tablet" msgid="5021937906206996760">"由於此平板電腦有多個個人檔案，因此無法開啟家長監控。"</string>
+    <string name="supervision_multi_profile_error_message" product="desktop" msgid="7222938263475617299">"由於此裝置有多個個人檔案，因此無法開啟家長監控。"</string>
+    <string name="auto_rotate_summary_a11y" product="default" msgid="2813368383309985185">"當手機轉成直向或橫向時自動旋轉畫面"</string>
     <string name="auto_rotate_summary_a11y" product="tablet" msgid="4708833814245913981">"喺平板電腦轉成直向或者橫向嘅時候自動旋轉畫面"</string>
     <string name="auto_rotate_summary_a11y" product="desktop" msgid="1342493478927297535">"在裝置轉成直向或橫向時自動旋轉螢幕"</string>
     <string name="daltonizer_feature_summary" product="default" msgid="3940653889277283702">"調整手機上的顏色顯示效果"</string>
@@ -518,4 +533,6 @@
     <string name="audio_sharing_confirm_dialog_content_with_link" product="tablet" msgid="282597208139437138">"如要開始分享音訊，請先將 LE Audio 耳機連線至平板電腦。"<annotation id="link">"進一步瞭解兼容裝置"</annotation></string>
     <string name="audio_sharing_confirm_dialog_content_with_link" product="device" msgid="668964968208427465">"如要開始分享音訊，請先將 LE Audio 耳機連線至裝置。"<annotation id="link">"進一步瞭解兼容裝置"</annotation></string>
     <string name="audio_sharing_confirm_dialog_content_with_link" product="desktop" msgid="668964968208427465">"如要開始分享音訊，請先將 LE Audio 耳機連線至裝置。"<annotation id="link">"進一步瞭解兼容裝置"</annotation></string>
+    <string name="network_dashboard_summary_mobile" product="default" msgid="1856501121269595911">"流動裝置、Wi-Fi、熱點"</string>
+    <string name="network_dashboard_summary_mobile" product="desktop" msgid="8770767156162473221">"Wi‑Fi、流動網絡、熱點"</string>
 </resources>

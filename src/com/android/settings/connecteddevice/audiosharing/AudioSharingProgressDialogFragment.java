@@ -17,6 +17,7 @@
 package com.android.settings.connecteddevice.audiosharing;
 
 import android.app.Dialog;
+import android.app.settings.SettingsEnums;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -54,8 +55,7 @@ public class AudioSharingProgressDialogFragment extends InstrumentedDialogFragme
 
     @Override
     public int getMetricsCategory() {
-        // TODO: add metrics
-        return 0;
+        return SettingsEnums.DIALOG_AUDIO_SHARING_IN_PROGRESS;
     }
 
     /**

@@ -109,6 +109,15 @@ public class ContactDiscoveryPreferenceController extends TelephonyTogglePrefere
         preference = screen.findPreference(getPreferenceKey());
     }
 
+    @Override
+    public void updateState(Preference preference) {
+        super.updateState(preference);
+        if (preference == null) {
+            return;
+        }
+        preference.setEnabled(!mIsAirplaneModeOn);
+    }
+
     private void registerUceObserver() {
         mUceSettingObserver = new ContentObserver(mContext.getMainThreadHandler()) {
             @Override

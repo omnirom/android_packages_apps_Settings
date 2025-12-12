@@ -1,0 +1,16 @@
+package: "com.android.settings.flags"
+container: "system_ext"
+
+flag {
+  name: "device_state"
+  namespace: "android_settings"
+  description: "Flag for Settings screen of device state"
+  bug: "405344827"
+}
+
+flag {
+  name: "deeplink_others_25q4"
+  namespace: "android_settings"
+  description: "Flag using for all common deeplink migration in 25Q4"
+  bug: "405344827"
+}

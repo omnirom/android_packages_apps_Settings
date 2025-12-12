@@ -21,6 +21,8 @@ import static android.window.DesktopModeFlags.ToggleOverride.OVERRIDE_OFF;
 import static android.window.DesktopModeFlags.ToggleOverride.OVERRIDE_ON;
 import static android.window.DesktopModeFlags.ToggleOverride.OVERRIDE_UNSET;
 
+import static com.android.server.display.feature.flags.Flags.FLAG_ENABLE_DISPLAY_CONTENT_MODE_MANAGEMENT;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -47,6 +49,7 @@ import com.android.settings.R;
 import com.android.settings.development.DevelopmentSettingsDashboardFragment;
 import com.android.settings.development.RebootConfirmationDialogFragment;
 import com.android.window.flags.Flags;
+import com.android.wm.shell.shared.desktopmode.FakeDesktopState;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -57,7 +60,6 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowSystemProperties;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {
@@ -82,10 +84,13 @@ public class DesktopExperiencePreferenceControllerTest {
     private Resources mResources;
     private Context mContext;
     private DesktopExperiencePreferenceController mController;
+    private FakeDesktopState mDesktopState;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+
+        mDesktopState = new FakeDesktopState();
 
         FragmentActivity activity = spy(Robolectric.buildActivity(
                 FragmentActivity.class).create().get());
@@ -97,29 +102,25 @@ public class DesktopExperiencePreferenceControllerTest {
         mResources = spy(mContext.getResources());
         when(mContext.getResources()).thenReturn(mResources);
 
-        mController = new DesktopExperiencePreferenceController(mContext, mFragment);
+        mController = new DesktopExperiencePreferenceController(mContext, mFragment, mDesktopState);
 
         when(mScreen.findPreference(mController.getPreferenceKey())).thenReturn(mPreference);
         mController.displayPreference(mScreen);
 
         // Set desktop mode available
-        when(mResources.getBoolean(com.android.internal.R.bool.config_isDesktopModeSupported))
-                .thenReturn(true);
-        when(mResources
-                .getBoolean(com.android.internal.R.bool.config_canInternalDisplayHostDesktops))
-                .thenReturn(true);
-        ShadowSystemProperties.override("persist.wm.debug.desktop_mode_enforce_device_restrictions",
-                "false");
+        mDesktopState.setCanEnterDesktopMode(true);
     }
 
     @Test
     public void isAvailable_returnsTrue() {
         mController = spy(mController);
+        mDesktopState.setCanShowDesktopExperienceDevOption(true);
 
         assertThat(mController.isAvailable()).isTrue();
     }
 
     @Test
+    @DisableFlags(FLAG_ENABLE_DISPLAY_CONTENT_MODE_MANAGEMENT)
     public void onPreferenceChange_switchEnabled_putsSettingsOverrideOnAndTriggersRestart() {
         mController.onPreferenceChange(mPreference, true /* new value */);
 
@@ -130,6 +131,7 @@ public class DesktopExperiencePreferenceControllerTest {
     }
 
     @Test
+    @DisableFlags(FLAG_ENABLE_DISPLAY_CONTENT_MODE_MANAGEMENT)
     public void onPreferenceChange_switchDisabled_putsSettingsOverrideOffAndTriggersRestart() {
         mController.onPreferenceChange(mPreference, false /* new value */);
 
@@ -140,6 +142,7 @@ public class DesktopExperiencePreferenceControllerTest {
     }
 
     @Test
+    @DisableFlags(FLAG_ENABLE_DISPLAY_CONTENT_MODE_MANAGEMENT)
     public void updateState_overrideOn_checksPreference() {
         Settings.Global.putInt(mContext.getContentResolver(),
                 DEVELOPMENT_OVERRIDE_DESKTOP_EXPERIENCE_FEATURES, OVERRIDE_ON.getSetting());
@@ -150,6 +153,7 @@ public class DesktopExperiencePreferenceControllerTest {
     }
 
     @Test
+    @DisableFlags(FLAG_ENABLE_DISPLAY_CONTENT_MODE_MANAGEMENT)
     public void updateState_overrideOff_unchecksPreference() {
         Settings.Global.putInt(mContext.getContentResolver(),
                 DEVELOPMENT_OVERRIDE_DESKTOP_EXPERIENCE_FEATURES, OVERRIDE_OFF.getSetting());
@@ -160,6 +164,7 @@ public class DesktopExperiencePreferenceControllerTest {
     }
 
     @Test
+    @DisableFlags(FLAG_ENABLE_DISPLAY_CONTENT_MODE_MANAGEMENT)
     public void updateState_noOverride_noNewSettingsOverride() {
         // Set no override
         Settings.Global.putString(mContext.getContentResolver(),
@@ -173,6 +178,7 @@ public class DesktopExperiencePreferenceControllerTest {
     }
 
     @Test
+    @DisableFlags(FLAG_ENABLE_DISPLAY_CONTENT_MODE_MANAGEMENT)
     public void onDeveloperOptionsSwitchDisabled_putsSettingsOverrideOff() {
         mController.onDeveloperOptionsSwitchDisabled();
 
@@ -182,8 +188,10 @@ public class DesktopExperiencePreferenceControllerTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ENABLE_DESKTOP_WINDOWING_MODE)
+    @DisableFlags({Flags.FLAG_ENABLE_DESKTOP_WINDOWING_MODE,
+            FLAG_ENABLE_DISPLAY_CONTENT_MODE_MANAGEMENT})
     public void updateState_whenDesktopModeAvailableButNotEnabled_checkSummary() {
+        mDesktopState.setDeviceEligibleForDesktopMode(true);
         SwitchPreference pref = new SwitchPreference(mContext);
 
         mController.updateState(pref);
@@ -193,13 +201,38 @@ public class DesktopExperiencePreferenceControllerTest {
     }
 
     @Test
+    @DisableFlags(FLAG_ENABLE_DISPLAY_CONTENT_MODE_MANAGEMENT)
     @EnableFlags(Flags.FLAG_ENABLE_DESKTOP_WINDOWING_MODE)
     public void updateState_whenDesktopModeAvailableAndEnabled_checkSummary() {
+        mDesktopState.setDeviceEligibleForDesktopMode(true);
         SwitchPreference pref = new SwitchPreference(mContext);
 
         mController.updateState(pref);
 
         assertThat(pref.getSummary()).isEqualTo(mContext.getString(
                 R.string.enable_desktop_experience_features_summary_without_desktop));
+    }
+
+    @Test
+    @EnableFlags(FLAG_ENABLE_DISPLAY_CONTENT_MODE_MANAGEMENT)
+    public void updateState_whenContentModeEnabled_checkDisabled() {
+        SwitchPreference pref = new SwitchPreference(mContext);
+
+        mController.updateState(pref);
+
+        assertThat(pref.isEnabled()).isFalse();
+        assertThat(pref.isChecked()).isTrue();
+    }
+
+    @Test
+    @EnableFlags(FLAG_ENABLE_DISPLAY_CONTENT_MODE_MANAGEMENT)
+    public void updateState_whenContentModeEnabledAndCanShowDesktopModeDevOption_checkEnabled() {
+        SwitchPreference pref = new SwitchPreference(mContext);
+        mDesktopState.setCanShowDesktopModeDevOption(true);
+
+        mController.updateState(pref);
+
+        assertThat(pref.isEnabled()).isTrue();
+        assertThat(pref.isChecked()).isFalse();
     }
 }

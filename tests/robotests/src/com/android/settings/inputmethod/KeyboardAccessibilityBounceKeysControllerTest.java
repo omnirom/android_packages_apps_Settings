@@ -25,8 +25,6 @@ import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.hardware.input.InputSettings;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.fragment.app.Fragment;
@@ -35,7 +33,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.Preference;
 
 import com.android.settings.core.BasePreferenceController;
-import com.android.settings.keyboard.Flags;
 import com.android.settings.testutils.shadow.ShadowAlertDialogCompat;
 
 import org.junit.Before;
@@ -94,17 +91,9 @@ public class KeyboardAccessibilityBounceKeysControllerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_KEYBOARD_AND_TOUCHPAD_A11Y_NEW_PAGE_ENABLED)
     public void getAvailabilityStatus_flagIsEnabled_isAvailable() {
         assertThat(mKeyboardAccessibilityBounceKeysController.getAvailabilityStatus())
                 .isEqualTo(BasePreferenceController.AVAILABLE);
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_KEYBOARD_AND_TOUCHPAD_A11Y_NEW_PAGE_ENABLED)
-    public void getAvailabilityStatus_flagIsDisabled_notSupport() {
-        assertThat(mKeyboardAccessibilityBounceKeysController.getAvailabilityStatus())
-                .isEqualTo(BasePreferenceController.UNSUPPORTED_ON_DEVICE);
     }
 
     @Test

@@ -101,10 +101,10 @@ public class SatelliteCarrierSettingUtilsTest {
                     }
                 };
 
-        boolean result = SatelliteCarrierSettingUtils.isSatelliteDataRestricted(mContext,
+        int result = SatelliteCarrierSettingUtils.getSatelliteDataMode(mContext,
                 TEST_SUB_ID);
 
-        assertThat(result).isFalse();
+        assertThat(result).isEqualTo(SATELLITE_DATA_SUPPORT_ALL);
     }
 
     @Test
@@ -117,9 +117,9 @@ public class SatelliteCarrierSettingUtilsTest {
                     }
                 };
 
-        boolean result = SatelliteCarrierSettingUtils.isSatelliteDataRestricted(mContext,
+        int result = SatelliteCarrierSettingUtils.getSatelliteDataMode(mContext,
                 TEST_SUB_ID);
 
-        assertThat(result).isTrue();
+        assertThat(result).isEqualTo(SATELLITE_DATA_SUPPORT_ONLY_RESTRICTED);
     }
 }

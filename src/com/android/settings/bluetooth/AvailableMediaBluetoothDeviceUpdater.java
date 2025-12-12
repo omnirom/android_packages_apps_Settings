@@ -15,9 +15,10 @@
  */
 package com.android.settings.bluetooth;
 
+import static com.android.settingslib.Utils.isAudioModeOngoingCall;
+
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
-import android.media.AudioManager;
 import android.util.Log;
 
 import androidx.preference.Preference;
@@ -28,43 +29,43 @@ import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
 import com.android.settingslib.utils.ThreadUtils;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /** Controller to maintain available media Bluetooth devices */
 public class AvailableMediaBluetoothDeviceUpdater extends BluetoothDeviceUpdater
         implements Preference.OnPreferenceClickListener {
 
     private static final String TAG = "AvailableMediaBluetoothDeviceUpdater";
-    private static final boolean DBG = Log.isLoggable(BluetoothDeviceUpdater.TAG, Log.DEBUG);
 
     private static final String PREF_KEY_PREFIX = "available_media_bt_";
-
-    private final AudioManager mAudioManager;
     private final LocalBluetoothManager mLocalBtManager;
-    private int mAudioMode;
+    private AtomicBoolean mIsOngoingCall = new AtomicBoolean(false);
 
     public AvailableMediaBluetoothDeviceUpdater(
             Context context,
             DevicePreferenceCallback devicePreferenceCallback,
             int metricsCategory) {
         super(context, devicePreferenceCallback, metricsCategory);
-        mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         mLocalBtManager = Utils.getLocalBtManager(context);
-        mAudioMode = mAudioManager.getMode();
+        var unused =
+                ThreadUtils.postOnBackgroundThread(
+                        () -> mIsOngoingCall.set(isAudioModeOngoingCall(mContext)));
     }
 
-    @Override
-    public void onAudioModeChanged() {
-        // TODO: move to background thread
-        mAudioMode = mAudioManager.getMode();
-        forceUpdate();
+    /**
+     * Set if the device is in ongoing call mode.
+     *
+     * <p>This should be set whe the activity is onStart and when audio mode is changed.
+     */
+    public void setIsOngoingCall(boolean isOngoingCall) {
+        mIsOngoingCall.set(isOngoingCall);
     }
 
     @Override
     public boolean isFilterMatched(CachedBluetoothDevice cachedDevice) {
         final int currentAudioProfile;
 
-        if (mAudioMode == AudioManager.MODE_RINGTONE
-                || mAudioMode == AudioManager.MODE_IN_CALL
-                || mAudioMode == AudioManager.MODE_IN_COMMUNICATION) {
+        if (mIsOngoingCall.get()) {
             // in phone call
             currentAudioProfile = BluetoothProfile.HEADSET;
         } else {
@@ -75,6 +76,7 @@ public class AvailableMediaBluetoothDeviceUpdater extends BluetoothDeviceUpdater
         boolean isFilterMatched = false;
         if (isDeviceConnected(cachedDevice) && isDeviceInCachedDevicesList(cachedDevice)) {
             Log.d(TAG, "isFilterMatched() current audio profile : " + currentAudioProfile);
+            String deviceName = cachedDevice.getName();
 
             // If device is LE Audio, it is compatible with HFP and A2DP.
             // It would show in Available Devices group if the audio sharing flag is disabled or
@@ -83,21 +85,19 @@ public class AvailableMediaBluetoothDeviceUpdater extends BluetoothDeviceUpdater
                     || cachedDevice.hasConnectedLeAudioMemberDevice()) {
                 if (BluetoothUtils.isAudioSharingUIAvailable(mContext)
                         && BluetoothUtils.hasConnectedBroadcastSource(
-                        cachedDevice, mLocalBtManager)) {
+                                cachedDevice, mLocalBtManager)) {
                     Log.d(
                             TAG,
-                            "Filter out device : "
-                                    + cachedDevice.getName()
-                                    + ", it is in audio sharing.");
+                            "isFilterMatched() device : "
+                                    + deviceName
+                                    + ", isFilterMatched : false, in audio sharing.");
                     return false;
-
                 } else {
                     Log.d(
                             TAG,
                             "isFilterMatched() device : "
-                                    + cachedDevice.getName()
-                                    + ", the LE Audio profile is connected and not in sharing "
-                                    + "if broadcast enabled.");
+                                    + deviceName
+                                    + ", isFilterMatched : true, the LEA profile is connected.");
                     return true;
                 }
             }
@@ -108,8 +108,8 @@ public class AvailableMediaBluetoothDeviceUpdater extends BluetoothDeviceUpdater
                 Log.d(
                         TAG,
                         "isFilterMatched() device : "
-                                + cachedDevice.getName()
-                                + ", the Hearing Aid profile is connected.");
+                                + deviceName
+                                + ", isFilterMatched : true, the HA profile is connected.");
                 return true;
             }
 
@@ -130,7 +130,7 @@ public class AvailableMediaBluetoothDeviceUpdater extends BluetoothDeviceUpdater
             Log.d(
                     TAG,
                     "isFilterMatched() device : "
-                            + cachedDevice.getName()
+                            + deviceName
                             + ", isFilterMatched : "
                             + isFilterMatched);
         }

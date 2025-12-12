@@ -20,12 +20,6 @@
     android:title="@string/app_locale_picker_title"
     android:key="key_app_language_picker_page">
 
-    <com.android.settingslib.widget.TopIntroPreference
-        android:key="app_locale_disclaimer"
-        android:title="@string/desc_app_locale_disclaimer"
-        settings:isPreferenceVisible="false"
-        android:order="1"/>
-
     <com.android.settingslib.widget.IntroPreference
         android:key="app_intro"
         android:order="2"/>
@@ -34,7 +28,6 @@
         android:key="app_locale_description"
         android:title="@string/desc_no_available_supported_locale"
         android:order="3"
-        android:selectable="false"
         settings:isPreferenceVisible="false"
         settings:searchable="false"/>
 

@@ -41,8 +41,7 @@
                 android:layout_width="@dimen/admin_details_dialog_icon_size"
                 android:layout_height="@dimen/admin_details_dialog_icon_size"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_settings_language"
-                android:tint="#4F8438"
+                android:src="@drawable/ic_settings_globe"
                 android:contentDescription="@null"/>
             <TextView
                 android:id="@+id/dialog_title"

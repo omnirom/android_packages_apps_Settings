@@ -14,3 +14,10 @@ flag {
   description: "Flag for Battery Saver"
   bug: "323791114"
 }
+
+flag {
+  name: "deeplink_battery_25q4"
+  namespace: "android_settings"
+  description: "Flag using for all common deeplink migration in 25Q4"
+  bug: "405344827"
+}
