@@ -34,7 +34,6 @@ import androidx.preference.PreferenceScreen;
 import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.core.BasePreferenceController;
-import com.android.settings.deviceinfo.PhoneNumberSummaryPreference;
 import com.android.settings.deviceinfo.simstatus.SlotSimStatus;
 import com.android.settings.flags.Flags;
 
@@ -111,6 +110,7 @@ public class ImeiInfoPreferenceController extends BasePreferenceController {
             multiImeiPreference.setKey(DEFAULT_KEY + (1 + simSlotNumber));
             multiImeiPreference.setEnabled(true);
             multiImeiPreference.setCopyingEnabled(true);
+
             category.addPreference(multiImeiPreference);
        }
     }
@@ -118,11 +118,6 @@ public class ImeiInfoPreferenceController extends BasePreferenceController {
     @Override
     public void updateState(Preference preference) {
         updatePreference(preference, keyToSlotIndex(preference.getKey()));
-    }
-
-    @Override
-    public CharSequence getSummary() {
-        return mContext.getString(R.string.device_info_protected_single_press);
     }
 
     private CharSequence getSummary(int simSlot) {
@@ -161,8 +156,12 @@ public class ImeiInfoPreferenceController extends BasePreferenceController {
 
     @VisibleForTesting
     protected void updatePreference(Preference preference, int simSlot) {
+        if (simSlot < 0) {
+            preference.setVisible(false);
+            return;
+        }
         preference.setTitle(getTitle(simSlot));
-        preference.setSummary(getSummary());
+        preference.setSummary(getSummary(simSlot));
     }
 
     private CharSequence getTitleForGsmPhone(int simSlot, boolean isPrimaryImei) {
@@ -206,6 +205,6 @@ public class ImeiInfoPreferenceController extends BasePreferenceController {
 
     @VisibleForTesting
     Preference createNewPreference(Context context) {
-        return new PhoneNumberSummaryPreference(context);
+        return new Preference(context);
     }
 }

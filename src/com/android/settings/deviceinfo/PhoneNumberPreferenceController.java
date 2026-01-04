@@ -63,27 +63,6 @@ public class PhoneNumberPreferenceController extends BasePreferenceController {
     }
 
     @Override
-    public CharSequence getSummary() {
-        return mContext.getString(R.string.device_info_protected_single_press);
-    }
-
-    @Override
-    public boolean handlePreferenceTreeClick(Preference preference) {
-        String prefKey = preference.getKey();
-        if (prefKey.startsWith(KEY_PHONE_NUMBER)) {
-            int simSlotNumber = 0;
-            if (!TextUtils.equals(prefKey, KEY_PHONE_NUMBER)) {
-                // Get multisim slot number from preference key.
-                // Multisim preference key is KEY_PHONE_NUMBER + simSlotNumber
-                simSlotNumber = Integer.parseInt(
-                        prefKey.replaceAll("[^0-9]", ""));
-            }
-            setPhoneNumber(simSlotNumber);
-        }
-        return super.handlePreferenceTreeClick(preference);
-    }
-
-    @Override
     public void displayPreference(PreferenceScreen screen) {
         super.displayPreference(screen);
         if (!isAvailable()) {
@@ -112,7 +91,7 @@ public class PhoneNumberPreferenceController extends BasePreferenceController {
         for (int simSlotNumber = 0; simSlotNumber < mPreferenceList.size(); simSlotNumber++) {
             final Preference simStatusPreference = mPreferenceList.get(simSlotNumber);
             simStatusPreference.setTitle(getPreferenceTitle(simSlotNumber));
-            simStatusPreference.setSummary(getSummary());
+            setPhoneNumber(simSlotNumber);
         }
     }
 
@@ -153,7 +132,7 @@ public class PhoneNumberPreferenceController extends BasePreferenceController {
     }
 
     @VisibleForTesting
-    protected CharSequence getFormattedPhoneNumber(SubscriptionInfo subscriptionInfo) {
+    protected String getFormattedPhoneNumber(SubscriptionInfo subscriptionInfo) {
         final String phoneNumber = SubscriptionUtil.getBidiFormattedPhoneNumber(mContext,
                 subscriptionInfo);
         return TextUtils.isEmpty(phoneNumber) ? mContext.getString(R.string.device_info_default)
@@ -162,6 +141,6 @@ public class PhoneNumberPreferenceController extends BasePreferenceController {
 
     @VisibleForTesting
     protected Preference createNewPreference(Context context) {
-        return new PhoneNumberSummaryPreference(context);
+        return new Preference(context);
     }
 }
